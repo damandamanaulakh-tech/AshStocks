@@ -1,11 +1,9 @@
+node_modules/
 .env
 .env.*
 !.env.example
-__pycache__/
-*.py[cod]
-.pytest_cache/
-.venv/
-venv/
+.DS_Store
+npm-debug.log*
 data/q1_inputs/*.csv
 data/q1_outputs/*.csv
 data/q1_outputs/*.log

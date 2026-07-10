@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ash Stock Q1 Runner</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
+    <script src="./q1.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Primary">
+        <div class="brand-block">
+          <div class="brand-mark">AS</div>
+          <div>
+            <h1>Ash Stock</h1>
+            <p>Q1 Render runner</p>
+          </div>
+        </div>
+        <nav class="nav-list" aria-label="Views">
+          <a class="nav-item" href="/">
+            <i data-lucide="layout-dashboard" aria-hidden="true"></i>
+            <span>Dashboard</span>
+          </a>
+          <a class="nav-item active" href="/q1">
+            <i data-lucide="upload-cloud" aria-hidden="true"></i>
+            <span>Q1 Runner</span>
+          </a>
+        </nav>
+        <div class="sidebar-panel">
+          <span class="eyebrow">Safety</span>
+          <strong>Historical only</strong>
+          <p>No live orders. Token never displayed.</p>
+        </div>
+      </aside>
+
+      <main class="main-panel">
+        <header class="topbar">
+          <div class="topbar-copy">
+            <span class="eyebrow">Render Workflow</span>
+            <h2>Q1 FII 20D Price Join</h2>
+          </div>
+          <div class="toolbar">
+            <a class="text-button" href="/">Dashboard</a>
+            <button class="icon-button" id="refreshStatusBtn" type="button" title="Refresh status" aria-label="Refresh status">
+              <i data-lucide="refresh-cw" aria-hidden="true"></i>
+            </button>
+          </div>
+        </header>
+
+        <section class="metric-grid q1-metrics">
+          <article class="metric-card">
+            <span>Render Runtime</span>
+            <strong id="renderRuntime">No</strong>
+            <small>required to run</small>
+          </article>
+          <article class="metric-card">
+            <span>Upstox Key</span>
+            <strong id="keyVisible">No</strong>
+            <small>env only</small>
+          </article>
+          <article class="metric-card">
+            <span>Upstox Token</span>
+            <strong id="tokenVisible">No</strong>
+            <small>env only</small>
+          </article>
+          <article class="metric-card">
+            <span>Input Files</span>
+            <strong id="inputFound">No</strong>
+            <small>two CSVs required</small>
+          </article>
+        </section>
+
+        <section class="dashboard-grid q1-grid">
+          <section class="panel">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow">Inputs</span>
+                <h3>Upload CSV Files</h3>
+              </div>
+            </div>
+            <form class="q1-upload-form" id="q1UploadForm">
+              <label>
+                <span>fii_symbol_daily.csv</span>
+                <input type="file" name="fii_symbol_daily.csv" accept=".csv,text/csv" required />
+              </label>
+              <label>
+                <span>Q1 ready for price join</span>
+                <input type="file" name="Q1_FII_20D_ranked_top_bottom_deciles_READY_FOR_PRICE_JOIN.csv" accept=".csv,text/csv" required />
+              </label>
+              <button class="primary-button" type="submit">
+                <i data-lucide="upload" aria-hidden="true"></i>
+                Upload Inputs
+              </button>
+            </form>
+            <div class="q1-status-list" id="inputStatus"></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow">Runner</span>
+                <h3>Render-side Upstox Fetch</h3>
+              </div>
+            </div>
+            <div class="q1-run-block">
+              <button class="primary-button" id="runQ1Btn" type="button">
+                <i data-lucide="play" aria-hidden="true"></i>
+                Run Historical Fetch
+              </button>
+              <p class="subtle">This endpoint is blocked outside Render and only reads `UPSTOX_ACCESS_TOKEN` from the environment.</p>
+              <pre id="runOutput" class="q1-output" aria-live="polite">Waiting.</pre>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow">Outputs</span>
+                <h3>Download CSV Results</h3>
+              </div>
+            </div>
+            <div class="q1-download-list" id="downloadList"></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow">Guardrails</span>
+                <h3>Safety Rules</h3>
+              </div>
+            </div>
+            <div class="q1-status-list">
+              <div class="q1-check good">Token is shown only as yes/no.</div>
+              <div class="q1-check good">API key is shown only as yes/no.</div>
+              <div class="q1-check good">No live orders are available here.</div>
+              <div class="q1-check good">Runner fetches historical daily candles only.</div>
+              <div class="q1-check good">Generated CSVs are ignored by git.</div>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+    <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="true"></div>
+  </body>
+</html>

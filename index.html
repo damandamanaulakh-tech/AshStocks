@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ash Stock</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Primary">
+        <div class="brand-block">
+          <div class="brand-mark">AS</div>
+          <div>
+            <h1>Ash Stock</h1>
+            <p id="marketStatus">Market sync</p>
+          </div>
+        </div>
+
+        <nav class="nav-list" aria-label="Views">
+          <button class="nav-item active" type="button" data-view-target="dashboard">
+            <i data-lucide="layout-dashboard" aria-hidden="true"></i>
+            <span>Dashboard</span>
+          </button>
+          <button class="nav-item" type="button" data-view-target="portfolio">
+            <i data-lucide="pie-chart" aria-hidden="true"></i>
+            <span>Portfolio</span>
+          </button>
+          <button class="nav-item" type="button" data-view-target="watchlist">
+            <i data-lucide="list-plus" aria-hidden="true"></i>
+            <span>Watchlist</span>
+          </button>
+          <button class="nav-item" type="button" data-view-target="journal">
+            <i data-lucide="book-open-check" aria-hidden="true"></i>
+            <span>Journal</span>
+          </button>
+          <button class="nav-item" type="button" data-view-target="alerts">
+            <i data-lucide="bell-ring" aria-hidden="true"></i>
+            <span>Alerts</span>
+          </button>
+          <a class="nav-item" href="/q1">
+            <i data-lucide="upload-cloud" aria-hidden="true"></i>
+            <span>Q1 Runner</span>
+          </a>
+        </nav>
+
+        <div class="sidebar-panel">
+          <span class="eyebrow">Session</span>
+          <strong id="clockLabel">--:--</strong>
+          <p id="sessionLabel">Loading</p>
+        </div>
+      </aside>
+
+      <main class="main-panel">
+        <header class="topbar">
+          <div class="topbar-copy">
+            <span class="eyebrow">Trading Desk</span>
+            <h2 id="pageTitle">Dashboard</h2>
+          </div>
+
+          <div class="toolbar">
+            <label class="search-box" for="symbolSearch">
+              <i data-lucide="search" aria-hidden="true"></i>
+              <input id="symbolSearch" type="search" placeholder="Symbol, company, sector" autocomplete="off" list="symbolSuggestions" />
+            </label>
+            <datalist id="symbolSuggestions"></datalist>
+            <button class="icon-button" id="refreshBtn" type="button" title="Refresh prices" aria-label="Refresh prices">
+              <i data-lucide="refresh-cw" aria-hidden="true"></i>
+            </button>
+            <button class="icon-button" id="themeBtn" type="button" title="Toggle theme" aria-label="Toggle theme">
+              <i data-lucide="moon" aria-hidden="true"></i>
+            </button>
+            <div class="sync-cluster" aria-live="polite">
+              <span class="status-badge" id="dataSourceBadge">Starting</span>
+              <span id="lastSyncLabel">Not synced</span>
+            </div>
+          </div>
+        </header>
+
+        <section class="view active" id="dashboard" aria-labelledby="pageTitle">
+          <div class="metric-grid">
+            <article class="metric-card">
+              <span>Total Equity</span>
+              <strong id="totalEquity">$0.00</strong>
+              <small id="totalEquityDelta">0.00%</small>
+            </article>
+            <article class="metric-card">
+              <span>Day P/L</span>
+              <strong id="dayPnL">$0.00</strong>
+              <small id="dayPnLPercent">0.00%</small>
+            </article>
+            <article class="metric-card">
+              <span>Open Alerts</span>
+              <strong id="openAlerts">0</strong>
+              <small id="triggeredAlerts">0 triggered</small>
+            </article>
+            <article class="metric-card">
+              <span>Watchlist Breadth</span>
+              <strong id="breadthLabel">0 / 0</strong>
+              <small id="breadthDetail">advancing</small>
+            </article>
+          </div>
+
+          <div class="dashboard-grid">
+            <section class="panel performance-panel">
+              <div class="panel-header">
+                <div>
+                  <span class="eyebrow">Portfolio</span>
+                  <h3>Performance</h3>
+                </div>
+                <div class="segmented" aria-label="Chart range">
+                  <button class="active" type="button" data-range="30">1M</button>
+                  <button type="button" data-range="90">3M</button>
+                  <button type="button" data-range="180">6M</button>
+                </div>
+              </div>
+              <canvas id="performanceChart" height="260" aria-label="Portfolio performance chart"></canvas>
+            </section>
+
+            <section class="panel research-panel">
+              <div class="panel-header">
+                <div>
+                  <span class="eyebrow">Focus</span>
+                  <h3 id="focusName">Select a symbol</h3>
+                </div>
+                <button class="icon-button" id="pinFocusBtn" type="button" title="Pin to watchlist" aria-label="Pin to watchlist">
+                  <i data-lucide="pin" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="quote-block">
+                <div>
+                  <strong id="focusPrice">$0.00</strong>
+                  <span id="focusMove">0.00%</span>
+                </div>
+                <canvas id="focusSpark" width="320" height="84" aria-label="Selected symbol price trend"></canvas>
+              </div>
+              <dl class="quote-grid">
+                <div>
+                  <dt>Sector</dt>
+                  <dd id="focusSector">-</dd>
+                </div>
+                <div>
+                  <dt>Exchange</dt>
+                  <dd id="focusExchange">-</dd>
+                </div>
+                <div>
+                  <dt>P/E</dt>
+                  <dd id="focusPe">-</dd>
+                </div>
+                <div>
+                  <dt>Beta</dt>
+                  <dd id="focusBeta">-</dd>
+                </div>
+              </dl>
+              <div class="signal-strip" id="signalStrip"></div>
+              <div class="news-block">
+                <div class="panel-subhead">
+                  <span class="eyebrow">Market News</span>
+                  <button class="text-button compact" id="newsRefreshBtn" type="button">Refresh</button>
+                </div>
+                <div class="news-list" id="focusNews"></div>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <span class="eyebrow">Watchlist</span>
+                  <h3>Momentum</h3>
+                </div>
+                <button class="text-button" type="button" data-view-target="watchlist">Manage</button>
+              </div>
+              <div class="table-wrap compact-table">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Symbol</th>
+                      <th>Price</th>
+                      <th>Move</th>
+                      <th>Trend</th>
+                    </tr>
+                  </thead>
+                  <tbody id="watchlistPreview"></tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <span class="eyebrow">Allocation</span>
+                  <h3>By Sector</h3>
+                </div>
+              </div>
+              <div class="allocation-wrap">
+                <canvas id="allocationChart" width="220" height="220" aria-label="Portfolio allocation chart"></canvas>
+                <div id="allocationLegend" class="legend-list"></div>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="portfolio" aria-labelledby="portfolioTitle">
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">Holdings</span>
+              <h2 id="portfolioTitle">Portfolio</h2>
+            </div>
+            <button class="text-button" id="exportBtn" type="button">Export CSV</button>
+          </div>
+
+          <form class="entry-form" id="positionForm">
+            <label>
+              <span>Symbol</span>
+              <input name="symbol" required maxlength="18" placeholder="NVDA" list="symbolSuggestions" />
+            </label>
+            <label>
+              <span>Shares</span>
+              <input name="shares" required min="0.01" step="0.01" type="number" placeholder="10" />
+            </label>
+            <label>
+              <span>Avg Cost</span>
+              <input name="cost" required min="0.01" step="0.01" type="number" placeholder="420" />
+            </label>
+            <label>
+              <span>Note</span>
+              <input name="note" maxlength="60" placeholder="Core AI position" />
+            </label>
+            <button class="primary-button" type="submit">
+              <i data-lucide="plus" aria-hidden="true"></i>
+              Add
+            </button>
+          </form>
+
+          <div class="panel">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Symbol</th>
+                    <th>Shares</th>
+                    <th>Avg Cost</th>
+                    <th>Last</th>
+                    <th>Market Value</th>
+                    <th>P/L</th>
+                    <th>Weight</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="positionsTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="watchlist" aria-labelledby="watchlistTitle">
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">Ideas</span>
+              <h2 id="watchlistTitle">Watchlist</h2>
+            </div>
+            <button class="text-button" id="clearSearchBtn" type="button">Clear Search</button>
+          </div>
+
+          <form class="entry-form short-form" id="watchForm">
+            <label>
+              <span>Symbol</span>
+              <input name="symbol" required maxlength="18" placeholder="MSFT" list="symbolSuggestions" />
+            </label>
+            <label>
+              <span>Target</span>
+              <input name="target" min="0" step="0.01" type="number" placeholder="Optional" />
+            </label>
+            <button class="primary-button" type="submit">
+              <i data-lucide="plus" aria-hidden="true"></i>
+              Add
+            </button>
+          </form>
+
+          <div class="panel">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Symbol</th>
+                    <th>Company</th>
+                    <th>Last</th>
+                    <th>Day</th>
+                    <th>Signal</th>
+                    <th>Target</th>
+                    <th>Trend</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="watchlistTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="journal" aria-labelledby="journalTitle">
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">Review</span>
+              <h2 id="journalTitle">Trade Journal</h2>
+            </div>
+          </div>
+
+          <form class="entry-form" id="journalForm">
+            <label>
+              <span>Symbol</span>
+              <input name="symbol" required maxlength="18" placeholder="AAPL" list="symbolSuggestions" />
+            </label>
+            <label>
+              <span>Side</span>
+              <select name="side">
+                <option>Buy</option>
+                <option>Sell</option>
+                <option>Watch</option>
+              </select>
+            </label>
+            <label>
+              <span>Conviction</span>
+              <select name="conviction">
+                <option>High</option>
+                <option>Medium</option>
+                <option>Low</option>
+              </select>
+            </label>
+            <label class="wide-input">
+              <span>Thesis</span>
+              <input name="thesis" required maxlength="120" placeholder="Breakout above resistance with strong volume" />
+            </label>
+            <button class="primary-button" type="submit">
+              <i data-lucide="plus" aria-hidden="true"></i>
+              Add
+            </button>
+          </form>
+
+          <div class="journal-list" id="journalList"></div>
+        </section>
+
+        <section class="view" id="alerts" aria-labelledby="alertsTitle">
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">Risk</span>
+              <h2 id="alertsTitle">Alerts</h2>
+            </div>
+          </div>
+
+          <form class="entry-form short-form" id="alertForm">
+            <label>
+              <span>Symbol</span>
+              <input name="symbol" required maxlength="18" placeholder="TSLA" list="symbolSuggestions" />
+            </label>
+            <label>
+              <span>Condition</span>
+              <select name="operator">
+                <option value="above">Above</option>
+                <option value="below">Below</option>
+              </select>
+            </label>
+            <label>
+              <span>Price</span>
+              <input name="price" required min="0.01" step="0.01" type="number" placeholder="250" />
+            </label>
+            <button class="primary-button" type="submit">
+              <i data-lucide="plus" aria-hidden="true"></i>
+              Add
+            </button>
+          </form>
+
+          <div class="alert-list" id="alertList"></div>
+        </section>
+      </main>
+    </div>
+    <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="true"></div>
+  </body>
+</html>
