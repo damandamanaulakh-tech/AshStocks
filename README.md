@@ -52,6 +52,17 @@ MONGODB_DB=ashstock
 
 If `APP_PASSWORD` or `MONGODB_URI` is missing in production, `/api/health` returns an error instead of silently becoming a public/offline app.
 
+If an existing Render service is still using the old Python dashboard settings, change it to a Node web service or create a new Node web service with:
+
+```text
+Runtime: Node
+Build Command: npm install
+Start Command: npm start
+Health Check Path: /api/health
+```
+
+The repository also keeps a minimal Python fallback (`runtime.txt`, `.python-version`, `requirements.txt`) so the old `uvicorn ashstocks.api:app` path no longer tries to compile pandas, numpy, or pydantic on Python 3.14. That fallback is only a deployment guard; the finished product is the Node app.
+
 ## Private Access
 
 Production is private. Set `APP_PASSWORD` in Render, then open the Render URL and sign in. The session uses an HTTP-only cookie signed with `APP_SESSION_SECRET`; Render can generate that secret from `render.yaml`.
