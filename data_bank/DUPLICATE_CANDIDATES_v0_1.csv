@@ -1,0 +1,12 @@
+file_name,observed_locations_or_ids,reason,decision_now,next_check
+table.csv,multiple,Same filename appears in several folders,KEEP_ALL_CANDIDATES,compare size/hash/columns
+am07.xlsx,multiple,Same filename appears more than once,KEEP_ALL_CANDIDATES,compare size/hash/sheets
+Chityy_Stock_Master_Parameter_Workbook_v0_1.xlsx,multiple,Workbook name repeated with different IDs/sizes,KEEP_ALL_CANDIDATES,compare sheets/rows/hash
+Chityy_REVERSE_PATTERN_PARAMETER_ENGINE_v0_4.xlsx,multiple,Workbook name repeated,KEEP_ALL_CANDIDATES,compare sheets/rows/hash
+Chityy_all_filled.xlsx,multiple,Workbook name repeated,KEEP_ALL_CANDIDATES,compare sheets/rows/hash
+SOURCEBORN_AM07_CARRYFORWARD_v1.md/docx,multiple,Same title exported in md/docx/copies,KEEP_CANON_PLUS_EXPORTS,compare text content and use newest complete version
+fao_participant_oi_08062026.csv,multiple,Same participant OI file appears in root/FII,KEEP_ONE_AFTER_HASH,compare size/hash exact
+fii-dii-combined-latest.csv,multiple,Same current FII/DII file appears twice,KEEP_ONE_AFTER_HASH,compare size/hash exact
+chityy_paper_proto.py,multiple,Same code file appears more than once,KEEP_LATEST_AND_DIFF,compare hash/diff
+AM07-main.zip / sourceborn-engine branch,Drive zip plus GitHub repo branch may overlap,KEEP_BOTH_UNTIL_DIFF,compare file tree and commit history
+G07-main.zip / Lovable/GitHub work,Drive zip plus generated app history may overlap,KEEP_BOTH_UNTIL_DIFF,compare file tree and features
