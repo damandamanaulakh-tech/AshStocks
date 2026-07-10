@@ -1,0 +1,16 @@
+date,area,item,status,source,reason,next_action
+2026-07-10,repo,AshStocks repository initialized,DONE,GitHub damandamanaulakh-tech/AshStocks,Source of truth started,Continue adding brain/data ledgers
+2026-07-10,product,AM07 and G07 merged under AshStocks,DONE,User instruction,Remove split product confusion,Use AshStocks as app name
+2026-07-10,reference,sourceborn-engine claude/control-panel-ui-1 inspected,DONE,GitHub damandamanaulakh-tech/sourceborn-engine,Read-only inspection showed useful AM07 paper engine modules,Adopt useful parts with reason not blind copy
+2026-07-10,engine,nifty200_momentum formula,ADOPT,sourceborn-engine trading/strategies/nifty200_momentum.py,Good clean base formula but not enough alone,Use as base scoring module
+2026-07-10,engine,risk_v2 drawdown/correlation/liquidity gates,ADOPT,sourceborn-engine trading/risk_v2.py,Strong risk layer,Port into AshStocks risk brain
+2026-07-10,engine,IFR DAMAGE_CLUSTER + TAIL_DAMAGE_RATIO,ADOPT,sourceborn-engine trading/ifr.py,Matches prior Q2 validated direction,Port as market damage overlay
+2026-07-10,engine,quality low-vol/liquidity blend,ADOPT,sourceborn-engine trading/quality.py,Improves pure momentum weakness,Use as co-score not final brain
+2026-07-10,engine,proof_gap_ledger idea,ADOPT,sourceborn-engine trading/proof.py,Prevents false confidence,Expand into AshStocks ProofLedger
+2026-07-10,data,Upstox historical candle fetch,MISSING_CODE,Upstox API,Needed for real candles,Build real fetch not placeholder
+2026-07-10,data,NSE FO bhavcopy Drive source,FOUND,Google Drive BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv,Real FO/OI data found,Build parser
+2026-07-10,data,NSE equity bhavcopy,TO_VERIFY,Google Drive/Upstox/NSE,Needed for stock scanner,Search/index source and build parser
+2026-07-10,data,FII/DII cash flow,FOUND,Google Drive sourceborn_fii_volume_derivatives_review_v0_3.xlsx and v0_2,Ready sources found,Build importer
+2026-07-10,data,PWOI participant-wise OI,FOUND,Google Drive sourceborn_fii_derivatives_cash_review_v0_2.xlsx,Ready source found,Build importer
+2026-07-10,ui,Lovable removed as dependency,DONE,User instruction,Credit blocked and user wants repo-built dashboard,Build private dashboard in AshStocks repo
+2026-07-10,policy,Private tool direction,DONE,User instruction,Compliance is owner decision; app will label risks but not remove features,Keep paper-first locks until owner explicitly changes
