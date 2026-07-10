@@ -1,0 +1,34 @@
+source_folder,file_id,file_name,mime_type,size_bytes,observed_status,duplicate_name_group,ashstocks_use,read_priority,next_action
+Stocks Data,1tPCRLtpEmId3Gxajrk8U0C2s7efSknut,Stocks Data,folder,,FOUND,ROOT,master drive source,P0,index recursively
+Stocks Data,1j-lLD279liyGRxfOHOItVf1vGyhoNakc,Full App,folder,,FOUND,folder,app/code/archive source,P1,index recursively
+Stocks Data,12q2c0Y2ENhjy5ao0xet81fE8iOsU6Jzg,FII,folder,,FOUND,folder,FII/PWOI/raw institutional source,P0,index recursively
+Stocks Data,1EFgBgWofB5Biea5fwENb4VqUqNZL-J0P,complete.json.gz,application/gzip,3539364,FOUND,json_gz,instrument/universe master candidate,P0,decompress inspect schema rows
+Stocks Data,14Vjvp8znDwLG40p411svW4PRebcHmFxP,NSE.json.gz,application/gzip,2114922,FOUND,json_gz,NSE instrument master,P0,decompress inspect schema rows
+Stocks Data,1bCW_spL1e2w5omeh-ASwAqoiTaFaIWBj,BSE.json.gz,application/gzip,765574,FOUND,json_gz,BSE instrument master,P1,decompress inspect schema rows
+Stocks Data,13yIrcvnM9dYLwq59gYoPJvk606B6GOSS,MCX.json.gz,application/gzip,279932,FOUND,json_gz,commodity instrument master,P2,decompress inspect schema rows
+Stocks Data,1TzZN-4SZrLNpo16usk5Ho7bYt5C-JJ0V,NSE_MIS.json.gz,application/gzip,58742,FOUND,json_gz,NSE MIS instrument subset,P1,decompress inspect schema rows
+Stocks Data,103alMlp2wftgzr5m3o_BWbWP1aKhuecp,BSE_MIS.json.gz,application/gzip,52614,FOUND,json_gz,BSE MIS instrument subset,P2,decompress inspect schema rows
+Stocks Data,16q5JMNJvqp6xbEITenqKyYSshJzQ5er0,MTF.json.gz,application/gzip,63702,FOUND,json_gz,MTF eligibility/finance source,P2,decompress inspect schema rows
+Stocks Data,1tceY9eL_Q0mAuSLCScqBfnALjMeHBS-t,mf-instruments.json.gz,application/gzip,1341366,FOUND,json_gz,mutual fund instrument master,P3,decompress inspect schema rows
+Stocks Data,1BwyIrUVmhNPZCIacyWHDfZCckVlkumZj,suspended-instrument.json.gz,application/gzip,815709,FOUND,json_gz,avoid/suspended instrument filter,P0,decompress inspect schema rows
+Stocks Data,1_SlVUoMgRpLPG7aKj-_fjODrtoaAnitJ,nse_all_stock_data (1).csv,text/csv,82801152,FOUND,stock_ohlcv,equity historical data candidate,P0,inspect columns/date range/sample rows
+Stocks Data,1nUYGgp-mJa9TOdDngEfxWjD27262iLDf,PWOI_data.csv,text/csv,1385616,FOUND,pwoi,participant-wise OI source,P0,inspect columns/date range
+Stocks Data,1JTeLn50zzJ0aZbX1HmIMi6zNwNXxT4G5,Fii Dii Trading activity.csv,text/csv,218801,FOUND,fii_dii,FII/DII cash activity source,P0,inspect columns/date range
+FII,1MwTmTGds468pKm_0znnKrShdE1uHZRH9,fii_entity_daily.csv,text/csv,21125420,FOUND,fii_entity,institutional entity daily flow,P0,inspect columns/date range
+FII,1LVogif1_uabb_qq_Ypj6rOGFgzgV46Uh,fii_symbol_daily.csv,text/csv,4678434,FOUND,fii_symbol,symbol-level FII flow,P0,join with OHLCV for forward returns
+FII,1Bz6rqv4uf8tqYeWeKQH2zZrc7Dm5iuzJ,fii_daily_aggregate.csv,text/csv,110093,FOUND,fii_aggregate,daily aggregate institutional flow,P0,inspect columns/date range
+Stocks Data,1MSYFL8buXH3MPyLlyrUSVrjHrVIfxXyv,fii_dii.xlsx,xlsx,150075,FOUND,fii_dii_xlsx,FII/DII workbook source,P1,inspect sheets/columns
+Stocks Data,1Sfr8COc5a-_HjbiiIoA_UYpi2c9nhA5d,Indian Stock Market Chronicles FIIDII and Nifty Historical Study.xlsx,xlsx,821252,FOUND,study,FII/DII + Nifty historical study,P1,inspect sheets/claims/data
+Stocks Data,1MaYYrLPv9jG8z0ztURQ4K4ESCs81wPX8,master_30000_stock_list.csv,text/csv,1622133,FOUND,universe_30000,30k stock/slot universe,P0,inspect columns/category mapping
+Stocks Data,1uG9RW1VAS6LpDaPLgT4b4l1QSBFZ6br2,ARD_Chityy_Sourceborn_Stock_Parameter_Master_Upstox_Ready_v1.xlsx,xlsx,1882241,FOUND,parameter_master,Upstox-ready parameter/history record,P0,inspect sheets/parameter rows
+Stocks Data,1eIAWXulNpOOunzozUvxTbzp3wWT4xicH,ARD_Opportunity_Stock_Parameter_Master_v0_6.xlsx,xlsx,1772696,FOUND,parameter_master,1000+ parameter dictionary,P0,inspect sheets/parameter rows
+Stocks Data,1D2d6o75jo7NERchy2l2TzeqmE0snEhsB,ARD_Opportunity_Stock_Asset_Master_v0_8_FILLED.xlsx,xlsx,1934794,FOUND,asset_master,asset + 30k stock slot layer,P1,inspect sheets
+Stocks Data,1aQ6URKZNsob6RTKfYIN-RuU-jjM_LhVm,Chityy_Sourceborn_FINAL_MICRO_SPLIT_ENGINE_v0_6.xlsx,xlsx,299741,FOUND,final_engine_workbook,final micro-split engine source,P0,inspect sheets
+Stocks Data,1R4ZJBnMhDvZjnUQ0PWiVzg-9faEhOp6R,Stock Industry Asset Database.docx,docx,28936,FOUND,master_doc,stock/industry/asset database prompt,P0,extract text
+Stocks Data,1Vs1SLBRQSZHCt38tPd2PafxXq2TnjBrD,AM07-main.zip,zip,3547571,FOUND,am07_code,old app/code reference,P1,expand file tree compare with GitHub branch
+Stocks Data,1ktkl_8wvHzOVslN1JEfqTXehay4rCIZS,G07-main.zip,zip,55944,FOUND,g07_code,old dashboard/app reference,P1,expand file tree
+Stocks Data,1XPVS_sny95Mp2-BL4wvwJcdTBrGd1Vul,BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv,folder,,FOUND,nse_fo_folder,NSE FO bhavcopy folder,P0,index child CSVs parse
+Stocks Data,1D0S-H8ixniXbjHTklEJsp3mOpQRHq5wN,15 stock 10 years trades,folder,,FOUND,trade_history_folder,manual/old trade history source,P2,index recursively
+Stocks Data,1kNIi5C9TeFAoxhzknNmTN69gKS5zEnO6,Filter data details,folder,,FOUND,filter_folder,parameter/filter source,P1,index recursively
+FII,multiple,2009_1.zip to 2023 monthly zips,zip,various,FOUND,fii_monthly_archives,FII long history archive,P0,index all zip names then extract schemas
+FII,multiple,FII Derivative Investment FY09-FY26 PDFs,pdf,various,FOUND,fii_derivative_pdf,FII derivatives historical source,P1,extract tables if possible
