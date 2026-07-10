@@ -1,0 +1,8 @@
+gap_id,area,gap,status,severity,blocking_what,owner,next_action,last_updated
+G001,data,15-year point-in-time equity OHLCV not yet indexed,OPEN,HIGH,walk-forward proof and reverse pattern engine,AshStocks,search Drive then Upstox/NSE import,2026-07-10
+G002,data,NSE equity bhavcopy source not yet confirmed in AshStocks repo,OPEN,HIGH,equity scanner base,AshStocks,search Drive and add parser,2026-07-10
+G003,data,FII/DII and PWOI files found but parser not implemented,OPEN,HIGH,institutional parameter layer,AshStocks,build workbook/CSV parser,2026-07-10
+G004,infrastructure,AWS deployment not configured,OPEN,MEDIUM,always-on auto scan,user/AshStocks,choose AWS service and secrets path,2026-07-10
+G005,security,Upstox secrets not installed in AWS/GitHub,OPEN,HIGH,live market-data fetch,user,add secrets outside chat,2026-07-10
+G006,proof,AM07 evidence did not prove positive alpha,OPEN,HIGH,claim of edge,AshStocks,run new proof with improved data/brain,2026-07-10
+G007,ui,dashboard screenshots not yet supplied,OPEN,LOW,final private dashboard polish,user,upload screenshots when ready,2026-07-10
