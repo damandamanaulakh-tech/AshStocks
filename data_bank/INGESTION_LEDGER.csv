@@ -1,0 +1,6 @@
+ingestion_id,source,status,rows_parsed,rows_inserted,date_min,date_max,error,next_action,last_updated
+ING001,Upstox historical candles,CODE_CREATED_NOT_TESTED,0,0,,,not run yet,test with UPSTOX_ACCESS_TOKEN and instrument_key,2026-07-10
+ING002,NSE FO bhavcopy 2026-06-08,PARSER_CREATED_NOT_RUN,0,0,,,full CSV not yet imported into repo runtime,fetch raw file and run parser,2026-07-10
+ING003,FII/DII cash v0_3,SOURCE_FOUND,0,0,2007-01-06,2022-12-08,parser pending,build parser and import rows,2026-07-10
+ING004,PWOI participant OI v0_2,SOURCE_FOUND,0,0,2012-01-02,2023-04-27,parser pending,build parser and import rows,2026-07-10
+ING005,NSE equity bhavcopy,SEARCH_PENDING,0,0,,,not indexed yet,search Drive and add parser,2026-07-10
