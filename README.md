@@ -55,3 +55,11 @@ Improve beyond inspected repo:
 - full data-bank index
 - stronger result-proof and yearwise walk-forward
 - transparent AshStocks dashboard
+
+## Q1 Render-side Upstox fetch
+
+- Visit `/q1` to upload the two Q1 input CSV files and see yes/no status for the Render token, inputs, and outputs.
+- Uploads are saved to `data/q1_inputs/`.
+- `POST /api/q1/run-upstox-fetch` runs only on Render and reads `UPSTOX_ACCESS_TOKEN` with `os.getenv`.
+- The endpoint is historical-candle only and has no live order path.
+- Output CSVs are written under `data/q1_outputs/` and downloadable from `/q1`.
