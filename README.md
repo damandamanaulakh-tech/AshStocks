@@ -2,6 +2,8 @@
 
 Ash Stock is a server-backed trading workflow app. The browser is only the client; watchlists, positions, alerts, and journal entries are owned by the backend and can be persisted to MongoDB for deployment.
 
+[Deploy this repo on Render](https://render.com/deploy?repo=https://github.com/damandamanaulakh-tech/AshStocks)
+
 ## Run Locally
 
 ```bash
