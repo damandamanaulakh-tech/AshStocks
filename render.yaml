@@ -1,14 +1,28 @@
 services:
   - type: web
-    name: ashstocks-api
-    runtime: python
-    plan: free
-    buildCommand: pip install -r requirements-render.txt
-    startCommand: uvicorn ashstocks.api:app --host 0.0.0.0 --port $PORT
+    name: ash-stock
+    env: node
+    plan: starter
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
     envVars:
-      - key: PYTHON_VERSION
-        value: 3.11.9
-      - key: PAPER_ONLY
+      - key: NODE_ENV
+        value: production
+      - key: REQUIRE_DB
         value: "true"
-      - key: BROKER_WRITE_ENABLED
-        value: "false"
+      - key: REQUIRE_AUTH
+        value: "true"
+      - key: APP_PASSWORD
+        sync: false
+      - key: APP_SESSION_SECRET
+        generateValue: true
+      - key: MONGODB_URI
+        sync: false
+      - key: MONGODB_DB
+        value: ashstock
+      - key: UPSTOX_API_KEY
+        sync: false
+      - key: UPSTOX_ACCESS_TOKEN
+        sync: false
