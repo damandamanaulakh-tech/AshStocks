@@ -1,0 +1,9 @@
+parameter_id,parameter_name,family,status,source,formula_or_logic,current_use,proof_status,hit_count,block_count,last_reviewed,reason,next_action
+ASH_MOM_001,6m volatility-adjusted momentum,selection,ACTIVE,AM07 adopted/improved,6m return divided by annualized 6m vol,stock ranking,NEEDS_WALK_FORWARD,0,0,2026-07-10,clean base score but not proven alone,run yearly proof
+ASH_MOM_002,12m volatility-adjusted momentum,selection,ACTIVE,AM07 adopted/improved,12m return divided by annualized 12m vol,stock ranking,NEEDS_WALK_FORWARD,0,0,2026-07-10,clean base score but not proven alone,run yearly proof
+ASH_QTY_001,quality blend low-vol liquidity,selection,ACTIVE,AM07 quality.py,low volatility plus liquidity blended into momentum,reduce high-beta damage,NEEDS_WALK_FORWARD,0,0,2026-07-10,adopted to avoid pure momentum weakness,compare with pure momentum
+ASH_RISK_001,liquidity gate,risk,ACTIVE,AM07 risk_v2,20d average volume and 5d rupee turnover,block illiquid stocks,LOGIC_PROVEN_NOT_EDGE,0,0,2026-07-10,hard safety filter,track rejects
+ASH_RISK_002,correlation gate,risk,ACTIVE,AM07 risk_v2,candidate 60d return correlation against open positions,avoid same-bet portfolio,NEEDS_LIVE_TRACKING,0,0,2026-07-10,protect diversification,track blocked opportunities
+ASH_IFR_001,DAMAGE_CLUSTER_5IN10,market damage,ACTIVE,AM07 IFR,market tail-down ratio exceeds 90pctile 5 of 10 days,throttle size,NEEDS_REVALIDATION_ON_REAL_DATA,0,0,2026-07-10,useful overlay but verify,run on full internals
+ASH_IFR_002,TAIL_DAMAGE_RATIO,market damage,ACTIVE,AM07 IFR,down-tail ratio over down+up exceeds 85pctile,throttle size,NEEDS_REVALIDATION_ON_REAL_DATA,0,0,2026-07-10,strong candidate overlay,run on full internals
+ASH_TARGET_001,15 percent potential-left label,selection,ACTIVE,AshStocks new,252d high distance from last close,target-potential label not guarantee,NEEDS_VALIDATION,0,0,2026-07-10,reduced from 20pct fixed target to flexible potential,replace with richer valuation later
