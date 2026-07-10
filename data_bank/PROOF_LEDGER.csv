@@ -1,0 +1,6 @@
+proof_id,claim,status,evidence_source,result,weakness,next_action,last_updated
+P001,AshStocks base momentum selection has positive edge,OPEN,AM07 branch evidence says no proven edge,NOT_PROVEN,AM07 backtest alpha negative versus Nifty,run AshStocks walk-forward with real 15y OHLCV,2026-07-10
+P002,IFR damage overlay improves drawdown,REVIEW,AM07 IFR notes and prior Q2 discussion,CANDIDATE_EDGE,needs re-run on raw internals and current universe,run IFR validation on full data bank,2026-07-10
+P003,NSE FO bhavcopy parser can ingest real derivatives/OI rows,OPEN,Drive file found and columns confirmed,SOURCE_FOUND,not yet inserted into storage,run parser on full CSV and store summary,2026-07-10
+P004,Upstox historical candles are wired,OPEN,ashstocks/data/upstox_candles.py created,CODE_CREATED_NOT_TESTED,no token/server run yet,test with AWS/GitHub secret and one instrument_key,2026-07-10
+P005,15 percent target-potential label improves selection,OPEN,AshStocks new parameter,UNPROVEN,uses 252d high as first rough proxy,compare target potential buckets against future returns,2026-07-10
