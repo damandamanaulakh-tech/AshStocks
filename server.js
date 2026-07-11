@@ -34,6 +34,7 @@ const YAHOO_BASE = "https://query1.finance.yahoo.com";
 const SESSION_COOKIE = "ash_stock_session";
 const fsp = fs.promises;
 const DEFAULT_MONGO_TIMEOUT_MS = 8_000;
+const MONGO_URI_KEYS = ["MONGODB_URI", "MONGO_URI", "DATABASE_URL"];
 
 function requireDb() {
   return ENV.REQUIRE_DB === "true" || ENV.NODE_ENV === "production";
@@ -107,7 +108,14 @@ function stripSrvPortWithUrlParser(uri) {
 }
 
 function mongoUri() {
-  return normalizeMongoUri(ENV.MONGODB_URI || "");
+  return mongoUriCandidates()[0]?.uri || "";
+}
+
+function mongoUriCandidates() {
+  return MONGO_URI_KEYS
+    .map((key) => ({ key, raw: ENV[key] || "" }))
+    .filter(({ raw }) => /^mongodb(?:\+srv)?:\/\//i.test(String(raw || "").trim().replace(/^['"]|['"]$/g, "")))
+    .map(({ key, raw }) => ({ key, uri: normalizeMongoUri(raw), raw }));
 }
 
 function urlParserShape(uri) {
@@ -154,8 +162,14 @@ function mongoUriShape(uri) {
 
 function mongoUriDiagnostics() {
   return {
-    raw: mongoUriShape(ENV.MONGODB_URI || ""),
-    normalized: mongoUriShape(mongoUri())
+    selected: mongoUriCandidates()[0]?.key || null,
+    candidates: MONGO_URI_KEYS
+      .filter((key) => ENV[key])
+      .map((key) => ({
+        key,
+        raw: mongoUriShape(ENV[key] || ""),
+        normalized: mongoUriShape(normalizeMongoUri(ENV[key] || ""))
+      }))
   };
 }
 
@@ -414,9 +428,9 @@ async function getStore() {
 }
 
 async function createStore() {
-  if (mongoUri()) return createMongoStore();
+  if (mongoUriCandidates().length) return createMongoStore();
   if (requireDb()) {
-    throw new Error("MONGODB_URI is required in production. Set it in Render or your hosting environment.");
+    throw new Error("A MongoDB URI is required in production. Set MONGODB_URI or MONGO_URI in Render.");
   }
   let state = sanitizeState(defaultState());
   return {
@@ -435,42 +449,50 @@ async function createStore() {
 async function createMongoStore() {
   const { MongoClient } = await import("mongodb");
   const timeoutMs = mongoTimeoutMs();
-  const client = new MongoClient(mongoUri(), {
-    appName: "ash-stock",
-    serverSelectionTimeoutMS: timeoutMs,
-    connectTimeoutMS: timeoutMs,
-    socketTimeoutMS: Math.max(timeoutMs, 15_000)
-  });
-  try {
-    await withTimeout(client.connect(), timeoutMs + 2_000, `MongoDB connection timed out after ${timeoutMs}ms`);
-    const database = client.db(ENV.MONGODB_DB || "ashstock");
-    const collection = database.collection("app_state");
-    await withTimeout(collection.createIndex({ updatedAt: -1 }), timeoutMs + 2_000, `MongoDB setup timed out after ${timeoutMs}ms`);
+  const candidates = mongoUriCandidates();
+  let lastError;
 
-    return {
-      mode: "mongodb",
-      persistent: true,
-      async getState() {
-        const doc = await collection.findOne({ _id: "default" });
-        if (doc?.state) return sanitizeState(doc.state);
-        const seeded = sanitizeState(defaultState());
-        await this.saveState(seeded);
-        return seeded;
-      },
-      async saveState(nextState) {
-        const state = sanitizeState(nextState);
-        await collection.updateOne(
-          { _id: "default" },
-          { $set: { state, updatedAt: new Date() }, $setOnInsert: { createdAt: new Date() } },
-          { upsert: true }
-        );
-        return state;
-      }
-    };
-  } catch (error) {
-    await client.close().catch(() => {});
-    throw error;
+  for (const candidate of candidates) {
+    const client = new MongoClient(candidate.uri, {
+      appName: "ash-stock",
+      serverSelectionTimeoutMS: timeoutMs,
+      connectTimeoutMS: timeoutMs,
+      socketTimeoutMS: Math.max(timeoutMs, 15_000)
+    });
+    try {
+      await withTimeout(client.connect(), timeoutMs + 2_000, `MongoDB connection timed out after ${timeoutMs}ms`);
+      const database = client.db(ENV.MONGODB_DB || "ashstock");
+      const collection = database.collection("app_state");
+      await withTimeout(collection.createIndex({ updatedAt: -1 }), timeoutMs + 2_000, `MongoDB setup timed out after ${timeoutMs}ms`);
+
+      return {
+        mode: "mongodb",
+        source: candidate.key,
+        persistent: true,
+        async getState() {
+          const doc = await collection.findOne({ _id: "default" });
+          if (doc?.state) return sanitizeState(doc.state);
+          const seeded = sanitizeState(defaultState());
+          await this.saveState(seeded);
+          return seeded;
+        },
+        async saveState(nextState) {
+          const state = sanitizeState(nextState);
+          await collection.updateOne(
+            { _id: "default" },
+            { $set: { state, updatedAt: new Date() }, $setOnInsert: { createdAt: new Date() } },
+            { upsert: true }
+          );
+          return state;
+        }
+      };
+    } catch (error) {
+      await client.close().catch(() => {});
+      lastError = new Error(`${candidate.key}: ${error.message}`);
+    }
   }
+
+  throw lastError || new Error("No valid MongoDB URI candidates are configured.");
 }
 
 async function readJsonBody(req) {
