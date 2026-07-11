@@ -18,11 +18,19 @@ jobs:
         with:
           node-version: "20"
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
       - name: Install
         run: npm install
 
       - name: Syntax check
         run: npm run check
+
+      - name: Python compatibility check
+        run: python -m py_compile app.py main.py ashstocks/api.py
 
       - name: Smoke test
         run: npm run smoke
