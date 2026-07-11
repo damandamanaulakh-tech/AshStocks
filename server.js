@@ -81,6 +81,37 @@ function mongoUri() {
   return normalizeMongoUri(ENV.MONGODB_URI || "");
 }
 
+function mongoUriShape(uri) {
+  let value = String(uri || "").trim();
+  const wrappedInQuotes = (value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"));
+  if (wrappedInQuotes) value = value.slice(1, -1).trim();
+  const schemeEnd = value.indexOf("://");
+  const scheme = schemeEnd >= 0 ? value.slice(0, schemeEnd).toLowerCase() : "";
+  const rest = schemeEnd >= 0 ? value.slice(schemeEnd + 3) : value;
+  const hostStart = rest.lastIndexOf("@") + 1;
+  const hostAndSuffix = rest.slice(hostStart);
+  const boundary = hostAndSuffix.search(/[/?#]/);
+  const host = boundary === -1 ? hostAndSuffix : hostAndSuffix.slice(0, boundary);
+  return {
+    present: Boolean(value),
+    length: value.length,
+    wrappedInQuotes,
+    scheme,
+    hasUserInfo: hostStart > 0,
+    hostCount: host ? host.split(",").length : 0,
+    hostLength: host.length,
+    hostPortMarkers: (host.match(/(?::|%3A)\d+/gi) || []).length,
+    hasComma: host.includes(",")
+  };
+}
+
+function mongoUriDiagnostics() {
+  return {
+    raw: mongoUriShape(ENV.MONGODB_URI || ""),
+    normalized: mongoUriShape(mongoUri())
+  };
+}
+
 async function withTimeout(promise, ms, message) {
   let timeoutId;
   const timeout = new Promise((_, reject) => {
@@ -744,7 +775,14 @@ export function createServer() {
             time: Date.now()
           });
         } catch (error) {
-          json(res, 503, { ok: false, error: error.message, auth: authStatus(), storage: "unconfigured", persistent: false });
+          json(res, 503, {
+            ok: false,
+            error: error.message,
+            auth: authStatus(),
+            storage: "unconfigured",
+            persistent: false,
+            mongo: mongoUriDiagnostics()
+          });
         }
         return;
       }
