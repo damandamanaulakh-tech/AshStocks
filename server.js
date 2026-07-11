@@ -683,6 +683,21 @@ export function createServer() {
       const url = new URL(req.url, `http://${req.headers.host || "localhost"}`);
 
       if (url.pathname === "/api/health") {
+        const auth = authStatus();
+        json(res, 200, {
+          ok: true,
+          provider: "Yahoo Finance",
+          cacheMs: CACHE_MS,
+          storage: ENV.MONGODB_URI ? "mongodb" : "unconfigured",
+          persistent: Boolean(ENV.MONGODB_URI),
+          auth,
+          ready: auth.configured && (!requireDb() || Boolean(ENV.MONGODB_URI)),
+          time: Date.now()
+        });
+        return;
+      }
+
+      if (url.pathname === "/api/ready") {
         try {
           const auth = authStatus();
           if (!auth.configured) {

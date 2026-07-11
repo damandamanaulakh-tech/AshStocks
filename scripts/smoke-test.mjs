@@ -62,14 +62,23 @@ const port = server.address().port;
 const started = Date.now();
 let result;
 try {
-  const response = await fetch("http://127.0.0.1:" + port + "/api/health");
-  result = { status: response.status, body: await response.json(), elapsedMs: Date.now() - started };
+  const healthResponse = await fetch("http://127.0.0.1:" + port + "/api/health");
+  const readyResponse = await fetch("http://127.0.0.1:" + port + "/api/ready");
+  result = {
+    healthStatus: healthResponse.status,
+    healthBody: await healthResponse.json(),
+    readyStatus: readyResponse.status,
+    readyBody: await readyResponse.json(),
+    elapsedMs: Date.now() - started
+  };
 } finally {
   await new Promise((resolve) => server.close(resolve));
 }
-if (result.status !== 503) throw new Error("production Mongo health guard should return 503");
-if (result.body.ok !== false) throw new Error("production Mongo health guard should report ok=false");
-if (result.elapsedMs > 6000) throw new Error("production Mongo health guard took too long");
+if (result.healthStatus !== 200) throw new Error("production health should stay live");
+if (result.healthBody.ok !== true) throw new Error("production health should report ok=true");
+if (result.readyStatus !== 503) throw new Error("production Mongo readiness guard should return 503");
+if (result.readyBody.ok !== false) throw new Error("production Mongo readiness guard should report ok=false");
+if (result.elapsedMs > 6000) throw new Error("production Mongo readiness guard took too long");
 console.log(JSON.stringify(result));
 `;
 
@@ -96,8 +105,8 @@ console.log(JSON.stringify(result));
     });
   });
 
-  assert(!result.timedOut, "production Mongo health guard should not hang");
-  assert(result.code === 0, result.stderr || result.stdout || "production Mongo health guard failed");
+  assert(!result.timedOut, "production Mongo readiness guard should not hang");
+  assert(result.code === 0, result.stderr || result.stdout || "production Mongo readiness guard failed");
 }
 
 async function main() {
@@ -144,7 +153,7 @@ async function main() {
     assert(runGuard.response.status === 409, "q1 run should be blocked outside Render");
     assert(runGuard.body.error === "render_only_endpoint", "q1 run guard should be render_only_endpoint");
 
-    console.log(JSON.stringify({ ok: true, checks: ["mongo-health-timeout", "health", "state", "q1-status", "q1-upload", "q1-render-guard"] }));
+    console.log(JSON.stringify({ ok: true, checks: ["mongo-readiness-timeout", "health", "state", "q1-status", "q1-upload", "q1-render-guard"] }));
   } finally {
     await Promise.all(Q1_INPUTS.map((file) => fs.unlink(file).catch((error) => {
       if (error.code !== "ENOENT") throw error;
