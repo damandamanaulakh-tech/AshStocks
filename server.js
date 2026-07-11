@@ -33,6 +33,7 @@ const CACHE_MS = 15_000;
 const YAHOO_BASE = "https://query1.finance.yahoo.com";
 const SESSION_COOKIE = "ash_stock_session";
 const fsp = fs.promises;
+const DEFAULT_MONGO_TIMEOUT_MS = 8_000;
 
 function requireDb() {
   return ENV.REQUIRE_DB === "true" || ENV.NODE_ENV === "production";
@@ -48,6 +49,23 @@ function appPassword() {
 
 function sessionSecret() {
   return ENV.APP_SESSION_SECRET || appPassword() || "ash-stock-dev-session";
+}
+
+function mongoTimeoutMs() {
+  const value = Number(ENV.MONGO_TIMEOUT_MS || DEFAULT_MONGO_TIMEOUT_MS);
+  return Number.isFinite(value) && value > 0 ? value : DEFAULT_MONGO_TIMEOUT_MS;
+}
+
+async function withTimeout(promise, ms, message) {
+  let timeoutId;
+  const timeout = new Promise((_, reject) => {
+    timeoutId = setTimeout(() => reject(new Error(message)), ms);
+  });
+  try {
+    return await Promise.race([promise, timeout]);
+  } finally {
+    clearTimeout(timeoutId);
+  }
 }
 
 const MIME_TYPES = {
@@ -283,7 +301,12 @@ function cryptoId() {
 }
 
 async function getStore() {
-  if (!storePromise) storePromise = createStore();
+  if (!storePromise) {
+    storePromise = createStore().catch((error) => {
+      storePromise = null;
+      throw error;
+    });
+  }
   return storePromise;
 }
 
@@ -308,34 +331,43 @@ async function createStore() {
 
 async function createMongoStore() {
   const { MongoClient } = await import("mongodb");
+  const timeoutMs = mongoTimeoutMs();
   const client = new MongoClient(ENV.MONGODB_URI, {
-    appName: "ash-stock"
+    appName: "ash-stock",
+    serverSelectionTimeoutMS: timeoutMs,
+    connectTimeoutMS: timeoutMs,
+    socketTimeoutMS: Math.max(timeoutMs, 15_000)
   });
-  await client.connect();
-  const database = client.db(ENV.MONGODB_DB || "ashstock");
-  const collection = database.collection("app_state");
-  await collection.createIndex({ updatedAt: -1 });
+  try {
+    await withTimeout(client.connect(), timeoutMs + 2_000, `MongoDB connection timed out after ${timeoutMs}ms`);
+    const database = client.db(ENV.MONGODB_DB || "ashstock");
+    const collection = database.collection("app_state");
+    await withTimeout(collection.createIndex({ updatedAt: -1 }), timeoutMs + 2_000, `MongoDB setup timed out after ${timeoutMs}ms`);
 
-  return {
-    mode: "mongodb",
-    persistent: true,
-    async getState() {
-      const doc = await collection.findOne({ _id: "default" });
-      if (doc?.state) return sanitizeState(doc.state);
-      const seeded = sanitizeState(defaultState());
-      await this.saveState(seeded);
-      return seeded;
-    },
-    async saveState(nextState) {
-      const state = sanitizeState(nextState);
-      await collection.updateOne(
-        { _id: "default" },
-        { $set: { state, updatedAt: new Date() }, $setOnInsert: { createdAt: new Date() } },
-        { upsert: true }
-      );
-      return state;
-    }
-  };
+    return {
+      mode: "mongodb",
+      persistent: true,
+      async getState() {
+        const doc = await collection.findOne({ _id: "default" });
+        if (doc?.state) return sanitizeState(doc.state);
+        const seeded = sanitizeState(defaultState());
+        await this.saveState(seeded);
+        return seeded;
+      },
+      async saveState(nextState) {
+        const state = sanitizeState(nextState);
+        await collection.updateOne(
+          { _id: "default" },
+          { $set: { state, updatedAt: new Date() }, $setOnInsert: { createdAt: new Date() } },
+          { upsert: true }
+        );
+        return state;
+      }
+    };
+  } catch (error) {
+    await client.close().catch(() => {});
+    throw error;
+  }
 }
 
 async function readJsonBody(req) {
@@ -657,7 +689,8 @@ export function createServer() {
             json(res, 503, { ok: false, error: "APP_PASSWORD is required in production", auth, storage: "unconfigured", persistent: false });
             return;
           }
-          const store = await getStore();
+          const timeoutMs = mongoTimeoutMs();
+          const store = await withTimeout(getStore(), timeoutMs + 2_000, `MongoDB health check timed out after ${timeoutMs}ms`);
           json(res, 200, {
             ok: true,
             provider: "Yahoo Finance",

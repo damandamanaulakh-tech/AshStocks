@@ -1,4 +1,5 @@
 import { createServer } from "../server.js";
+import { spawn } from "node:child_process";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -42,7 +43,66 @@ function multipartBody(files) {
   };
 }
 
+async function runProductionMongoHealthGuard() {
+  const script = `
+process.env.NODE_ENV = "production";
+process.env.REQUIRE_AUTH = "true";
+process.env.REQUIRE_DB = "true";
+process.env.APP_PASSWORD = "smoke-password";
+process.env.APP_SESSION_SECRET = "smoke-session";
+process.env.MONGODB_URI = "mongodb://192.0.2.1:27017/ashstock";
+process.env.MONGO_TIMEOUT_MS = "500";
+const { createServer } = await import("./server.js");
+const server = createServer();
+await new Promise((resolve, reject) => {
+  server.once("error", reject);
+  server.listen(0, "127.0.0.1", resolve);
+});
+const port = server.address().port;
+const started = Date.now();
+let result;
+try {
+  const response = await fetch("http://127.0.0.1:" + port + "/api/health");
+  result = { status: response.status, body: await response.json(), elapsedMs: Date.now() - started };
+} finally {
+  await new Promise((resolve) => server.close(resolve));
+}
+if (result.status !== 503) throw new Error("production Mongo health guard should return 503");
+if (result.body.ok !== false) throw new Error("production Mongo health guard should report ok=false");
+if (result.elapsedMs > 6000) throw new Error("production Mongo health guard took too long");
+console.log(JSON.stringify(result));
+`;
+
+  const result = await new Promise((resolve) => {
+    const child = spawn(process.execPath, ["--input-type=module", "-e", script], {
+      cwd: ROOT,
+      windowsHide: true
+    });
+    let stdout = "";
+    let stderr = "";
+    const timer = setTimeout(() => {
+      child.kill();
+      resolve({ code: null, stdout, stderr, timedOut: true });
+    }, 10_000);
+    child.stdout.on("data", (chunk) => {
+      stdout += chunk.toString();
+    });
+    child.stderr.on("data", (chunk) => {
+      stderr += chunk.toString();
+    });
+    child.on("close", (code) => {
+      clearTimeout(timer);
+      resolve({ code, stdout, stderr, timedOut: false });
+    });
+  });
+
+  assert(!result.timedOut, "production Mongo health guard should not hang");
+  assert(result.code === 0, result.stderr || result.stdout || "production Mongo health guard failed");
+}
+
 async function main() {
+  await runProductionMongoHealthGuard();
+
   const server = createServer();
   await new Promise((resolve, reject) => {
     server.once("error", reject);
@@ -84,7 +144,7 @@ async function main() {
     assert(runGuard.response.status === 409, "q1 run should be blocked outside Render");
     assert(runGuard.body.error === "render_only_endpoint", "q1 run guard should be render_only_endpoint");
 
-    console.log(JSON.stringify({ ok: true, checks: ["health", "state", "q1-status", "q1-upload", "q1-render-guard"] }));
+    console.log(JSON.stringify({ ok: true, checks: ["mongo-health-timeout", "health", "state", "q1-status", "q1-upload", "q1-render-guard"] }));
   } finally {
     await Promise.all(Q1_INPUTS.map((file) => fs.unlink(file).catch((error) => {
       if (error.code !== "ENOENT") throw error;
