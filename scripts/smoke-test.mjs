@@ -115,6 +115,11 @@ async function main() {
       "mongodb+srv://user:pass@example.mongodb.net/ashstock?retryWrites=true",
     "mongodb+srv URIs must not keep port numbers"
   );
+  assert(
+    normalizeMongoUri(" mongodb+srv://user:p@ss@example.mongodb.net:27017/ashstock ") ===
+      "mongodb+srv://user:p@ss@example.mongodb.net/ashstock",
+    "mongodb+srv URI cleanup should tolerate whitespace and @ in credentials"
+  );
   await runProductionMongoHealthGuard();
 
   const server = createServer();

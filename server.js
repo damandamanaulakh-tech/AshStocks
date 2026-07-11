@@ -59,8 +59,18 @@ function mongoTimeoutMs() {
 const RELEASE = "2026-07-11-mongo-srv-normalizer";
 
 function normalizeMongoUri(uri) {
-  if (!uri.startsWith("mongodb+srv://")) return uri;
-  return uri.replace(/^(mongodb\+srv:\/\/(?:[^@/?#]+@)?[^/?#:]+):\d+([/?#]|$)/, "$1$2");
+  const value = String(uri || "").trim();
+  const scheme = "mongodb+srv://";
+  if (!value.startsWith(scheme)) return value;
+
+  const rest = value.slice(scheme.length);
+  const boundary = rest.search(/[/?#]/);
+  const authority = boundary === -1 ? rest : rest.slice(0, boundary);
+  const suffix = boundary === -1 ? "" : rest.slice(boundary);
+  const userInfoEnd = authority.lastIndexOf("@");
+  const userInfo = userInfoEnd >= 0 ? authority.slice(0, userInfoEnd + 1) : "";
+  const host = userInfoEnd >= 0 ? authority.slice(userInfoEnd + 1) : authority;
+  return `${scheme}${userInfo}${host.replace(/:\d+$/, "")}${suffix}`;
 }
 
 function mongoUri() {
