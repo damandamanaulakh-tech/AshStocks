@@ -64,12 +64,12 @@ function normalizeMongoUri(uri) {
   if (!value.startsWith(scheme)) return value;
 
   const rest = value.slice(scheme.length);
-  const boundary = rest.search(/[/?#]/);
-  const authority = boundary === -1 ? rest : rest.slice(0, boundary);
-  const suffix = boundary === -1 ? "" : rest.slice(boundary);
-  const userInfoEnd = authority.lastIndexOf("@");
-  const userInfo = userInfoEnd >= 0 ? authority.slice(0, userInfoEnd + 1) : "";
-  const host = userInfoEnd >= 0 ? authority.slice(userInfoEnd + 1) : authority;
+  const hostStart = rest.lastIndexOf("@") + 1;
+  const userInfo = rest.slice(0, hostStart);
+  const hostAndSuffix = rest.slice(hostStart);
+  const boundary = hostAndSuffix.search(/[/?#]/);
+  const host = boundary === -1 ? hostAndSuffix : hostAndSuffix.slice(0, boundary);
+  const suffix = boundary === -1 ? "" : hostAndSuffix.slice(boundary);
   if (host.includes(",")) return `mongodb://${userInfo}${host}${suffix}`;
   return `${scheme}${userInfo}${host.replace(/:\d+/g, "").replace(/%3A\d+/gi, "")}${suffix}`;
 }
