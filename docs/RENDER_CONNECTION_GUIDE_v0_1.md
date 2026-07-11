@@ -6,102 +6,62 @@ Repo: `damandamanaulakh-tech/AshStocks`
 
 ```text
 Service type: Web Service
-Runtime: Python
-Build command: pip install -r requirements.txt
-Start command: uvicorn ashstocks.api:app --host 0.0.0.0 --port $PORT
-Health URL: /health
+Runtime: Node
+Build command: npm install
+Start command: npm start
+Health URL: /api/health
+Readiness URL: /api/ready
 ```
 
-## Files added for Render
+The live product is the Node dashboard. The Python files remain only as a lightweight compatibility API for older Render services.
+
+## Required environment variables
 
 ```text
-requirements.txt
-render.yaml
-ashstocks/api.py
-```
-
-## Render setup steps
-
-1. Open Render.
-2. Choose New → Web Service.
-3. Connect GitHub repo: `damandamanaulakh-tech/AshStocks`.
-4. Select branch: `main`.
-5. Runtime: Python.
-6. Build command:
-
-```bash
-pip install -r requirements.txt
-```
-
-7. Start command:
-
-```bash
-uvicorn ashstocks.api:app --host 0.0.0.0 --port $PORT
-```
-
-8. Add environment variables:
-
-```text
-PAPER_ONLY=true
-BROKER_WRITE_ENABLED=false
-```
-
-9. Do not add Upstox token until historical candle ingestion is being tested.
-10. Do not paste secrets into chat or commit `.env`.
-
-## Later env vars
-
-```text
+APP_PASSWORD
+APP_SESSION_SECRET
 UPSTOX_API_KEY
-UPSTOX_API_SECRET
-UPSTOX_REDIRECT_URI
 UPSTOX_ACCESS_TOKEN
-MONGO_URI or MONGODB_URI
-SENTRY_DSN
-SUPABASE_URL
-SUPABASE_SERVICE_ROLE_KEY
 ```
 
-Use Render Environment settings, AWS Secrets Manager, or GitHub Actions Secrets. Never store secrets in Drive docs or repo files.
+MongoDB is preferred:
 
-## Smoke test after deploy
+```text
+MONGODB_URI
+MONGODB_DB=ashstock
+```
+
+If Mongo is missing or rejected, the Node app falls back to server-side Render file storage so the app remains usable. `/api/ready` reports `storage: "file"` and includes a warning until Mongo credentials are fixed.
+
+## Mongo notes
+
+- Use the exact MongoDB Atlas driver URI.
+- Do not include a port in `mongodb+srv://` hostnames.
+- URL-encode special characters in the username or password.
+- If Atlas authentication fails, create a new database user and paste a fresh URI into Render.
+
+## Upstox scope
+
+The app uses Upstox for historical candle fetches only. It does not place live orders.
+
+```text
+https://api.upstox.com/v2/historical-candle/{instrument_key}/day/{to_date}/{from_date}
+```
+
+## Smoke checks after deploy
 
 Open:
 
 ```text
-https://YOUR-RENDER-APP.onrender.com/health
+https://ashstocks-api.onrender.com/api/health
+https://ashstocks-api.onrender.com/api/ready
+https://ashstocks-api.onrender.com/login
 ```
 
 Expected:
 
-```json
-{
-  "ok": true,
-  "app": "AshStocks",
-  "paper_only": true,
-  "broker_write_enabled": false
-}
-```
+- `/api/health` returns `200`.
+- `/api/ready` returns `200` with either `storage: "mongodb"` or `storage: "file"`.
+- `/login` shows the private app login.
 
-Then open:
-
-```text
-/api/config
-/api/spec
-```
-
-## What this deploy is
-
-This is a working API shell for AshStocks engine verification. It does not yet run live data scans, place broker orders, import all Drive files, or show final dashboard.
-
-## What comes next
-
-```text
-1. Deploy API shell.
-2. Confirm /health works.
-3. Add Mongo/Supabase storage.
-4. Add Upstox historical candle ingestion endpoint.
-5. Add Drive/NSE/FII/PWOI ingestion jobs.
-6. Add dashboard.
-7. Add paper scan scheduler.
-```
+Never paste secrets into chat or commit `.env`.

@@ -1,6 +1,6 @@
 # Ash Stock
 
-Ash Stock is a server-backed trading workflow app. The browser is only the client; watchlists, positions, alerts, and journal entries are owned by the backend and can be persisted to MongoDB for deployment.
+Ash Stock is a server-backed trading workflow app. The browser is only the client; watchlists, positions, alerts, and journal entries are owned by the backend. Production prefers MongoDB and falls back to Render file storage if Mongo credentials are not valid yet.
 
 [Deploy this repo on Render](https://render.com/deploy?repo=https://github.com/damandamanaulakh-tech/AshStocks)
 
@@ -17,7 +17,7 @@ Open:
 http://localhost:4173
 ```
 
-Local development runs with server memory if `MONGODB_URI` is not set. Production is configured to require MongoDB.
+Local development runs with server memory if `MONGODB_URI` is not set. Production is configured to require backend storage; MongoDB is preferred, and the Render filesystem fallback keeps the live app usable while Mongo credentials are corrected.
 
 ## Verify
 
@@ -28,7 +28,7 @@ npm run smoke
 
 `npm run smoke` starts a temporary local server, checks health/state/Q1 status, uploads sample Q1 input CSVs, verifies the Render-only Upstox run guard, and removes the sample inputs afterward. It does not call Upstox.
 
-## Deploy On Render With MongoDB
+## Deploy On Render With MongoDB Or File Fallback
 
 1. Create a MongoDB Atlas cluster.
 2. Copy its connection string.
@@ -52,7 +52,7 @@ REQUIRE_AUTH=true
 MONGODB_DB=ashstock
 ```
 
-If `APP_PASSWORD` or `MONGODB_URI` is missing in production, `/api/health` returns an error instead of silently becoming a public/offline app.
+If `APP_PASSWORD` is missing in production, `/api/ready` returns an error. If Mongo credentials are missing or rejected, the app falls back to server-side Render file storage and `/api/ready` reports `storage: "file"` with a warning. Fix `MONGODB_URI` to move persistence back to MongoDB.
 
 If an existing Render service is still using the old Python dashboard settings, change it to a Node web service or create a new Node web service with:
 
@@ -116,7 +116,7 @@ Safety rules:
 
 - Server-owned watchlist, positions, alerts, and journal state
 - Private production login gate
-- MongoDB persistence adapter for production
+- MongoDB persistence adapter for production with Render file-storage fallback
 - Render blueprint in `render.yaml`
 - Q1 Render-side upload/fetch/download job runner
 - Yahoo Finance quote/search/news proxy with short caching
@@ -130,7 +130,7 @@ Safety rules:
 
 ## Files
 
-- `server.js` - HTTP server, market-data proxy, state API, MongoDB store
+- `server.js` - HTTP server, market-data proxy, state API, MongoDB store, and Render file-storage fallback
 - `app.js` - browser client and workflow UI
 - `index.html` - app shell served by `server.js`
 - `styles.css` - product UI styling
