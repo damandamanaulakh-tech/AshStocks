@@ -68,13 +68,31 @@ function normalizeMongoUri(uri) {
 
   const rest = value.slice(scheme.length);
   const hostStart = rest.lastIndexOf("@") + 1;
-  const userInfo = rest.slice(0, hostStart);
+  const userInfo = encodeMongoUserInfo(rest.slice(0, hostStart));
   const hostAndSuffix = rest.slice(hostStart);
   const boundary = hostAndSuffix.search(/[/?#]/);
   const host = boundary === -1 ? hostAndSuffix : hostAndSuffix.slice(0, boundary);
   const suffix = boundary === -1 ? "" : hostAndSuffix.slice(boundary);
   if (host.includes(",")) return `mongodb://${userInfo}${host}${suffix}`;
   return stripSrvPortWithUrlParser(`${scheme}${userInfo}${host.replace(/:\d+/g, "").replace(/%3A\d+/gi, "")}${suffix}`);
+}
+
+function encodeMongoUserInfo(userInfo) {
+  if (!userInfo.endsWith("@")) return userInfo;
+  const raw = userInfo.slice(0, -1);
+  const separator = raw.indexOf(":");
+  if (separator < 0) return `${encodeMongoCredentialPart(raw)}@`;
+  const username = raw.slice(0, separator);
+  const password = raw.slice(separator + 1);
+  return `${encodeMongoCredentialPart(username)}:${encodeMongoCredentialPart(password)}@`;
+}
+
+function encodeMongoCredentialPart(value) {
+  try {
+    return encodeURIComponent(decodeURIComponent(value));
+  } catch {
+    return encodeURIComponent(value);
+  }
 }
 
 function stripSrvPortWithUrlParser(uri) {

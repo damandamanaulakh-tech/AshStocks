@@ -117,7 +117,7 @@ async function main() {
   );
   assert(
     normalizeMongoUri(" mongodb+srv://user:p@ss@example.mongodb.net:27017/ashstock ") ===
-      "mongodb+srv://user:p@ss@example.mongodb.net/ashstock",
+      "mongodb+srv://user:p%40ss@example.mongodb.net/ashstock",
     "mongodb+srv URI cleanup should tolerate whitespace and @ in credentials"
   );
   assert(
@@ -132,7 +132,7 @@ async function main() {
   );
   assert(
     normalizeMongoUri("mongodb+srv://user:p?ss/w@rd@example.mongodb.net:27017/ashstock") ===
-      "mongodb+srv://user:p?ss/w@rd@example.mongodb.net/ashstock",
+      "mongodb+srv://user:p%3Fss%2Fw%40rd@example.mongodb.net/ashstock",
     "mongodb+srv host cleanup must find the host after credentials"
   );
   assert(
