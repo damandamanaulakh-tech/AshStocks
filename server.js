@@ -56,6 +56,12 @@ function mongoTimeoutMs() {
   return Number.isFinite(value) && value > 0 ? value : DEFAULT_MONGO_TIMEOUT_MS;
 }
 
+function mongoUri() {
+  const uri = ENV.MONGODB_URI || "";
+  if (!uri.startsWith("mongodb+srv://")) return uri;
+  return uri.replace(/^(mongodb\+srv:\/\/(?:[^@/?#]+@)?[^/?#:]+):\d+([/?#]|$)/, "$1$2");
+}
+
 async function withTimeout(promise, ms, message) {
   let timeoutId;
   const timeout = new Promise((_, reject) => {
@@ -311,7 +317,7 @@ async function getStore() {
 }
 
 async function createStore() {
-  if (ENV.MONGODB_URI) return createMongoStore();
+  if (mongoUri()) return createMongoStore();
   if (requireDb()) {
     throw new Error("MONGODB_URI is required in production. Set it in Render or your hosting environment.");
   }
@@ -332,7 +338,7 @@ async function createStore() {
 async function createMongoStore() {
   const { MongoClient } = await import("mongodb");
   const timeoutMs = mongoTimeoutMs();
-  const client = new MongoClient(ENV.MONGODB_URI, {
+  const client = new MongoClient(mongoUri(), {
     appName: "ash-stock",
     serverSelectionTimeoutMS: timeoutMs,
     connectTimeoutMS: timeoutMs,
@@ -684,14 +690,15 @@ export function createServer() {
 
       if (url.pathname === "/api/health") {
         const auth = authStatus();
+        const hasMongoUri = Boolean(mongoUri());
         json(res, 200, {
           ok: true,
           provider: "Yahoo Finance",
           cacheMs: CACHE_MS,
-          storage: ENV.MONGODB_URI ? "mongodb" : "unconfigured",
-          persistent: Boolean(ENV.MONGODB_URI),
+          storage: hasMongoUri ? "mongodb" : "unconfigured",
+          persistent: hasMongoUri,
           auth,
-          ready: auth.configured && (!requireDb() || Boolean(ENV.MONGODB_URI)),
+          ready: auth.configured && (!requireDb() || hasMongoUri),
           time: Date.now()
         });
         return;
