@@ -125,6 +125,11 @@ async function main() {
       "mongodb://user:pass@host-a.example.net:27017,host-b.example.net:27017/ashstock",
     "multi-host seed lists must use the standard mongodb scheme"
   );
+  assert(
+    normalizeMongoUri("mongodb+srv://example.mongodb.net%3A27017/ashstock") ===
+      "mongodb+srv://example.mongodb.net/ashstock",
+    "encoded mongodb+srv ports must be stripped from hostnames"
+  );
   await runProductionMongoHealthGuard();
 
   const server = createServer();
