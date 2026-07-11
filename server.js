@@ -74,11 +74,39 @@ function normalizeMongoUri(uri) {
   const host = boundary === -1 ? hostAndSuffix : hostAndSuffix.slice(0, boundary);
   const suffix = boundary === -1 ? "" : hostAndSuffix.slice(boundary);
   if (host.includes(",")) return `mongodb://${userInfo}${host}${suffix}`;
-  return `${scheme}${userInfo}${host.replace(/:\d+/g, "").replace(/%3A\d+/gi, "")}${suffix}`;
+  return stripSrvPortWithUrlParser(`${scheme}${userInfo}${host.replace(/:\d+/g, "").replace(/%3A\d+/gi, "")}${suffix}`);
+}
+
+function stripSrvPortWithUrlParser(uri) {
+  try {
+    const parsed = new URL(uri.replace(/^mongodb\+srv:\/\//i, "http://"));
+    if (!parsed.port) return uri;
+    parsed.port = "";
+    return `mongodb+srv://${parsed.href.slice("http://".length)}`;
+  } catch {
+    return uri;
+  }
 }
 
 function mongoUri() {
   return normalizeMongoUri(ENV.MONGODB_URI || "");
+}
+
+function urlParserShape(uri) {
+  const value = String(uri || "").trim();
+  if (!value) return { parsed: false };
+  try {
+    const parsed = new URL(value.replace(/^mongodb(?:\+srv)?:\/\//i, "http://"));
+    return {
+      parsed: true,
+      hostnameLength: parsed.hostname.length,
+      portPresent: Boolean(parsed.port),
+      pathnameLength: parsed.pathname.length,
+      searchLength: parsed.search.length
+    };
+  } catch {
+    return { parsed: false };
+  }
 }
 
 function mongoUriShape(uri) {
@@ -101,7 +129,8 @@ function mongoUriShape(uri) {
     hostCount: host ? host.split(",").length : 0,
     hostLength: host.length,
     hostPortMarkers: (host.match(/(?::|%3A)\d+/gi) || []).length,
-    hasComma: host.includes(",")
+    hasComma: host.includes(","),
+    urlParser: urlParserShape(value)
   };
 }
 

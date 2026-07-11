@@ -140,6 +140,11 @@ async function main() {
       "mongodb+srv://example.mongodb.net/ashstock",
     "quoted mongodb+srv values must be normalized case-insensitively"
   );
+  assert(
+    normalizeMongoUri("mongodb+srv://user:pass@example.mongodb.net:27017/?retryWrites=true") ===
+      "mongodb+srv://user:pass@example.mongodb.net/?retryWrites=true",
+    "mongodb+srv URI cleanup should match URL parser port handling"
+  );
   await runProductionMongoHealthGuard();
 
   const server = createServer();
