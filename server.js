@@ -56,10 +56,15 @@ function mongoTimeoutMs() {
   return Number.isFinite(value) && value > 0 ? value : DEFAULT_MONGO_TIMEOUT_MS;
 }
 
-function mongoUri() {
-  const uri = ENV.MONGODB_URI || "";
+const RELEASE = "2026-07-11-mongo-srv-normalizer";
+
+function normalizeMongoUri(uri) {
   if (!uri.startsWith("mongodb+srv://")) return uri;
   return uri.replace(/^(mongodb\+srv:\/\/(?:[^@/?#]+@)?[^/?#:]+):\d+([/?#]|$)/, "$1$2");
+}
+
+function mongoUri() {
+  return normalizeMongoUri(ENV.MONGODB_URI || "");
 }
 
 async function withTimeout(promise, ms, message) {
@@ -693,6 +698,8 @@ export function createServer() {
         const hasMongoUri = Boolean(mongoUri());
         json(res, 200, {
           ok: true,
+          release: RELEASE,
+          commit: ENV.RENDER_GIT_COMMIT || ENV.RENDER_COMMIT || null,
           provider: "Yahoo Finance",
           cacheMs: CACHE_MS,
           storage: hasMongoUri ? "mongodb" : "unconfigured",
@@ -879,4 +886,4 @@ if (runtimeProcess?.argv?.[1] && import.meta.url === pathToFileURL(runtimeProces
   });
 }
 
-export { quoteFor, searchSymbols, newsFor, sanitizeState };
+export { quoteFor, searchSymbols, newsFor, sanitizeState, normalizeMongoUri };

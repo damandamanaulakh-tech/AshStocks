@@ -1,4 +1,4 @@
-import { createServer } from "../server.js";
+import { createServer, normalizeMongoUri } from "../server.js";
 import { spawn } from "node:child_process";
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -110,6 +110,11 @@ console.log(JSON.stringify(result));
 }
 
 async function main() {
+  assert(
+    normalizeMongoUri("mongodb+srv://user:pass@example.mongodb.net:27017/ashstock?retryWrites=true") ===
+      "mongodb+srv://user:pass@example.mongodb.net/ashstock?retryWrites=true",
+    "mongodb+srv URIs must not keep port numbers"
+  );
   await runProductionMongoHealthGuard();
 
   const server = createServer();
