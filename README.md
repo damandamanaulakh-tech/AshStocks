@@ -63,7 +63,7 @@ Start Command: npm start
 Health Check Path: /api/health
 ```
 
-The repository also keeps a minimal Python fallback (`runtime.txt`, `.python-version`, `requirements.txt`) so the old `uvicorn ashstocks.api:app` path no longer tries to compile pandas, numpy, or pydantic on Python 3.14. That fallback is only a deployment guard; the finished product is the Node app.
+The repository also keeps a minimal Python compatibility API (`app.py`, `main.py`, `ashstocks/api.py`, `runtime.txt`, `.python-version`, `requirements.txt`) so old Render services that still use `uvicorn app:app`, `uvicorn main:app`, or `uvicorn ashstocks.api:app` no longer try to compile pandas, numpy, or pydantic on Python 3.14. That compatibility path keeps the Q1/API guard alive; the finished dashboard product is the Node app.
 
 ## Private Access
 
