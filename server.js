@@ -59,9 +59,12 @@ function mongoTimeoutMs() {
 const RELEASE = "2026-07-11-mongo-srv-normalizer";
 
 function normalizeMongoUri(uri) {
-  const value = String(uri || "").trim();
+  let value = String(uri || "").trim();
+  if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+    value = value.slice(1, -1).trim();
+  }
   const scheme = "mongodb+srv://";
-  if (!value.startsWith(scheme)) return value;
+  if (!value.toLowerCase().startsWith(scheme)) return value;
 
   const rest = value.slice(scheme.length);
   const hostStart = rest.lastIndexOf("@") + 1;

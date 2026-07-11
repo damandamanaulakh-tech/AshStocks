@@ -135,6 +135,11 @@ async function main() {
       "mongodb+srv://user:p?ss/w@rd@example.mongodb.net/ashstock",
     "mongodb+srv host cleanup must find the host after credentials"
   );
+  assert(
+    normalizeMongoUri("'MongoDB+SRV://example.mongodb.net:27017/ashstock'") ===
+      "mongodb+srv://example.mongodb.net/ashstock",
+    "quoted mongodb+srv values must be normalized case-insensitively"
+  );
   await runProductionMongoHealthGuard();
 
   const server = createServer();
