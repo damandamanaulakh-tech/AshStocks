@@ -120,6 +120,11 @@ async function main() {
       "mongodb+srv://user:p@ss@example.mongodb.net/ashstock",
     "mongodb+srv URI cleanup should tolerate whitespace and @ in credentials"
   );
+  assert(
+    normalizeMongoUri("mongodb+srv://user:pass@host-a.example.net:27017,host-b.example.net:27017/ashstock") ===
+      "mongodb://user:pass@host-a.example.net:27017,host-b.example.net:27017/ashstock",
+    "multi-host seed lists must use the standard mongodb scheme"
+  );
   await runProductionMongoHealthGuard();
 
   const server = createServer();

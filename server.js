@@ -70,6 +70,7 @@ function normalizeMongoUri(uri) {
   const userInfoEnd = authority.lastIndexOf("@");
   const userInfo = userInfoEnd >= 0 ? authority.slice(0, userInfoEnd + 1) : "";
   const host = userInfoEnd >= 0 ? authority.slice(userInfoEnd + 1) : authority;
+  if (host.includes(",")) return `mongodb://${userInfo}${host}${suffix}`;
   return `${scheme}${userInfo}${host.replace(/:\d+$/, "")}${suffix}`;
 }
 
