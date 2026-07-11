@@ -11,6 +11,7 @@ const Q1_INPUTS = [
   path.join(ROOT, "data", "q1_inputs", "fii_symbol_daily.csv"),
   path.join(ROOT, "data", "q1_inputs", "Q1_FII_20D_ranked_top_bottom_deciles_READY_FOR_PRICE_JOIN.csv")
 ];
+const STATE_FILE = path.join(ROOT, "data", "app_state.json");
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -76,9 +77,10 @@ try {
 }
 if (result.healthStatus !== 200) throw new Error("production health should stay live");
 if (result.healthBody.ok !== true) throw new Error("production health should report ok=true");
-if (result.readyStatus !== 503) throw new Error("production Mongo readiness guard should return 503");
-if (result.readyBody.ok !== false) throw new Error("production Mongo readiness guard should report ok=false");
-if (result.elapsedMs > 6000) throw new Error("production Mongo readiness guard took too long");
+if (result.readyStatus !== 200) throw new Error("production fallback readiness should return 200");
+if (result.readyBody.ok !== true) throw new Error("production fallback readiness should report ok=true");
+if (result.readyBody.storage !== "file") throw new Error("production fallback readiness should use file storage");
+if (result.elapsedMs > 6000) throw new Error("production Mongo fallback took too long");
 console.log(JSON.stringify(result));
 `;
 
@@ -105,8 +107,8 @@ console.log(JSON.stringify(result));
     });
   });
 
-  assert(!result.timedOut, "production Mongo readiness guard should not hang");
-  assert(result.code === 0, result.stderr || result.stdout || "production Mongo readiness guard failed");
+  assert(!result.timedOut, "production Mongo fallback should not hang");
+  assert(result.code === 0, result.stderr || result.stdout || "production Mongo fallback failed");
 }
 
 async function main() {
@@ -188,9 +190,9 @@ async function main() {
     assert(runGuard.response.status === 409, "q1 run should be blocked outside Render");
     assert(runGuard.body.error === "render_only_endpoint", "q1 run guard should be render_only_endpoint");
 
-    console.log(JSON.stringify({ ok: true, checks: ["mongo-readiness-timeout", "health", "state", "q1-status", "q1-upload", "q1-render-guard"] }));
+    console.log(JSON.stringify({ ok: true, checks: ["mongo-file-fallback", "health", "state", "q1-status", "q1-upload", "q1-render-guard"] }));
   } finally {
-    await Promise.all(Q1_INPUTS.map((file) => fs.unlink(file).catch((error) => {
+    await Promise.all([...Q1_INPUTS, STATE_FILE].map((file) => fs.unlink(file).catch((error) => {
       if (error.code !== "ENOENT") throw error;
     })));
     await new Promise((resolve) => server.close(resolve));

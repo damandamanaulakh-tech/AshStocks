@@ -35,6 +35,7 @@ const SESSION_COOKIE = "ash_stock_session";
 const fsp = fs.promises;
 const DEFAULT_MONGO_TIMEOUT_MS = 8_000;
 const MONGO_URI_KEYS = ["MONGODB_URI", "MONGO_URI", "DATABASE_URL"];
+const STATE_FILE = path.join(ROOT, "data", "app_state.json");
 
 function requireDb() {
   return ENV.REQUIRE_DB === "true" || ENV.NODE_ENV === "production";
@@ -42,6 +43,10 @@ function requireDb() {
 
 function requireAuth() {
   return ENV.REQUIRE_AUTH === "true" || ENV.NODE_ENV === "production";
+}
+
+function allowFileStoreFallback() {
+  return ENV.DISABLE_FILE_STORE_FALLBACK !== "true" && ENV.FILE_STORE_FALLBACK !== "false";
 }
 
 function appPassword() {
@@ -428,10 +433,23 @@ async function getStore() {
 }
 
 async function createStore() {
-  if (mongoUriCandidates().length) return createMongoStore();
-  if (requireDb()) {
+  if (mongoUriCandidates().length) {
+    try {
+      return await createMongoStore();
+    } catch (error) {
+      if (!allowFileStoreFallback()) throw error;
+      return createFileStore(error);
+    }
+  }
+  if (requireDb() && !allowFileStoreFallback()) {
     throw new Error("A MongoDB URI is required in production. Set MONGODB_URI or MONGO_URI in Render.");
   }
+  if (requireDb()) return createFileStore(new Error("MongoDB URI is not configured; using Render file storage fallback."));
+
+  return createMemoryStore();
+}
+
+function createMemoryStore() {
   let state = sanitizeState(defaultState());
   return {
     mode: "memory",
@@ -441,6 +459,47 @@ async function createStore() {
     },
     async saveState(nextState) {
       state = sanitizeState(nextState);
+      return state;
+    }
+  };
+}
+
+async function createFileStore(warning) {
+  await fsp.mkdir(path.dirname(STATE_FILE), { recursive: true });
+
+  async function readState() {
+    try {
+      const payload = JSON.parse(await fsp.readFile(STATE_FILE, "utf8"));
+      return sanitizeState(payload.state || payload);
+    } catch (error) {
+      if (error.code !== "ENOENT") console.warn(`File store read failed: ${error.message}`);
+      return sanitizeState(defaultState());
+    }
+  }
+
+  async function writeState(state) {
+    const payload = JSON.stringify({ state, updatedAt: new Date().toISOString() }, null, 2);
+    const temp = `${STATE_FILE}.${runtimeProcess?.pid || Date.now()}.tmp`;
+    await fsp.mkdir(path.dirname(STATE_FILE), { recursive: true });
+    await fsp.writeFile(temp, payload);
+    await fsp.rename(temp, STATE_FILE);
+  }
+
+  let state = await readState();
+  await writeState(state);
+
+  return {
+    mode: "file",
+    source: "render-filesystem",
+    persistent: true,
+    warning: warning?.message || null,
+    async getState() {
+      state = await readState();
+      return state;
+    },
+    async saveState(nextState) {
+      state = sanitizeState(nextState);
+      await writeState(state);
       return state;
     }
   };
@@ -810,16 +869,17 @@ export function createServer() {
       if (url.pathname === "/api/health") {
         const auth = authStatus();
         const hasMongoUri = Boolean(mongoUri());
+        const fallbackReady = allowFileStoreFallback();
         json(res, 200, {
           ok: true,
           release: RELEASE,
           commit: ENV.RENDER_GIT_COMMIT || ENV.RENDER_COMMIT || null,
           provider: "Yahoo Finance",
           cacheMs: CACHE_MS,
-          storage: hasMongoUri ? "mongodb" : "unconfigured",
-          persistent: hasMongoUri,
+          storage: hasMongoUri ? "mongodb" : fallbackReady ? "file" : "unconfigured",
+          persistent: hasMongoUri || fallbackReady,
           auth,
-          ready: auth.configured && (!requireDb() || hasMongoUri),
+          ready: auth.configured && (!requireDb() || hasMongoUri || fallbackReady),
           time: Date.now()
         });
         return;
@@ -839,7 +899,9 @@ export function createServer() {
             provider: "Yahoo Finance",
             cacheMs: CACHE_MS,
             storage: store.mode,
+            source: store.source || null,
             persistent: store.persistent,
+            warning: store.warning || null,
             auth,
             time: Date.now()
           });
@@ -922,13 +984,27 @@ export function createServer() {
       if (url.pathname === "/api/state") {
         const store = await getStore();
         if (req.method === "GET") {
-          json(res, 200, { ok: true, storage: store.mode, persistent: store.persistent, state: await store.getState() });
+          json(res, 200, {
+            ok: true,
+            storage: store.mode,
+            source: store.source || null,
+            persistent: store.persistent,
+            warning: store.warning || null,
+            state: await store.getState()
+          });
           return;
         }
         if (req.method === "PUT" || req.method === "PATCH") {
           const body = await readJsonBody(req);
           const state = await store.saveState(body.state || body);
-          json(res, 200, { ok: true, storage: store.mode, persistent: store.persistent, state });
+          json(res, 200, {
+            ok: true,
+            storage: store.mode,
+            source: store.source || null,
+            persistent: store.persistent,
+            warning: store.warning || null,
+            state
+          });
           return;
         }
         json(res, 405, { ok: false, error: "Method not allowed" });
