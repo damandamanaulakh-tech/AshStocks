@@ -32,5 +32,8 @@ jobs:
       - name: Python compatibility check
         run: python -m py_compile app.py main.py ashstocks/api.py
 
+      - name: Python API smoke test
+        run: python scripts/check_python_api.py
+
       - name: Smoke test
         run: npm run smoke

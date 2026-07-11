@@ -369,9 +369,9 @@ async def app(scope, receive, send):
             "app": "AshStocks",
             "status": "alive",
             "mode": "paper_only",
-            "message": "AshStocks API is running. Use /health, /api/config, /api/spec, /q1.",
+            "message": "AshStocks API is running. Use /health, /api/health, /api/config, /api/spec, /q1.",
         })
-    elif path == "/health":
+    elif path in {"/health", "/api/health"}:
         status, headers, body = _json_response({
             "ok": True,
             "app": "AshStocks",
