@@ -22,6 +22,8 @@ services:
         sync: false
       - key: MONGODB_DB
         value: ashstock
+      - key: MONGO_TIMEOUT_MS
+        value: "8000"
       - key: UPSTOX_API_KEY
         sync: false
       - key: UPSTOX_ACCESS_TOKEN
