@@ -49,6 +49,8 @@ const Q1_OUTPUT_FILES = [
 const Q1_EXTRA_DOWNLOADS = ["Q1_FII_20D_fetch_errors.csv"];
 const Q1_ALLOWED_UPLOADS = new Set(Q1_REQUIRED_INPUTS);
 const Q1_ALLOWED_DOWNLOADS = new Set([...Q1_OUTPUT_FILES, ...Q1_EXTRA_DOWNLOADS]);
+const ENGINE_VERSION = "ashstocks-selection-v0.1-proof";
+const DEFAULT_STARTING_CAPITAL = 1_000_000;
 
 const MIME_TYPES = {
   ".html": "text/html; charset=utf-8",
@@ -96,19 +98,22 @@ const INDIA_UNIVERSE = Object.freeze([
 ]);
 
 const SCANNER_PARAMETERS = Object.freeze([
-  { key: "data_sufficiency", group: "Data", label: "253 daily candles", threshold: ">= 253", weight: 0, gate: true },
+  { key: "data_sufficiency", group: "Data", label: "253 clean daily closes", threshold: ">= 253", weight: 0, gate: true },
   { key: "absolute_momentum", group: "Momentum", label: "6M and 12M return positive", threshold: "> 0%", weight: 0, gate: true },
-  { key: "risk_adjusted_momentum", group: "Momentum", label: "Risk adjusted momentum", threshold: "ranked score", weight: 65, gate: false },
-  { key: "low_volatility", group: "Risk", label: "63D volatility quality", threshold: "lower is better", weight: 21, gate: false },
-  { key: "quality_blend", group: "Quality", label: "Optional quality score", threshold: "0-100", weight: 14, gate: false },
+  { key: "risk_adjusted_momentum", group: "Momentum", label: "6M/12M volatility-adjusted momentum", threshold: "formula score", weight: 65, gate: false },
+  { key: "quality_score", group: "Quality", label: "Low-vol plus liquidity quality", threshold: "formula score", weight: 35, gate: false },
   { key: "adv20", group: "Liquidity", label: "20D average volume", threshold: ">= 200,000 shares", weight: 0, gate: true },
   { key: "rupee_turnover", group: "Liquidity", label: "5D rupee turnover", threshold: ">= 5 crore", weight: 0, gate: true },
-  { key: "stale_candle", group: "Data", label: "Fresh last candle", threshold: "<= 5 days old", weight: 0, gate: true },
-  { key: "stuck_candle", group: "Data", label: "No stuck candle", threshold: "last 5 closes not flat", weight: 0, gate: true }
+  { key: "stale_candle", group: "Data", label: "Fresh last candle", threshold: "<= 7 calendar days", weight: 0, gate: true },
+  { key: "stuck_candle", group: "Data", label: "No latest OHLC stuck candle", threshold: "open/high/low/close not all equal", weight: 0, gate: true },
+  { key: "correlation", group: "Portfolio", label: "60D correlation to holdings", threshold: "<= 0.85", weight: 0, gate: true },
+  { key: "target_potential", group: "Portfolio", label: "252D high potential label", threshold: ">= 15% PASS", weight: 0, gate: false },
+  { key: "portfolio_caps", group: "Portfolio", label: "Max positions and sector caps", threshold: "paper-only sizing", weight: 0, gate: true },
+  { key: "paper_only", group: "Safety", label: "Paper order only", threshold: "broker write disabled", weight: 0, gate: true }
 ]);
 
 const CSV_TEMPLATE = [
-  "symbol,name,sector,exchange,instrument_key,close,close_127,close_253,adv20,rupee_turnover_cr,quality_score,last_candle_date,stuck_candle"
+  "symbol,name,sector,exchange,instrument_key,close,close_127,close_253,high_252,adv20,rupee_turnover_cr,vol63,vol126,vol252,last_candle_date,last_candle_age_days,stuck_candle,existing_holding"
 ].join("\n");
 
 let storePromise;
@@ -242,17 +247,57 @@ async function withTimeout(promise, ms, message) {
   }
 }
 
+function defaultScannerSettings() {
+  return {
+    minScoreSelect: 70,
+    minScoreWatch: 55,
+    targetPotentialPct: 15,
+    maxPositionPct: 0.025,
+    maxPositions: 50,
+    maxSectorPositions: 12,
+    maxSectorExposurePct: 25,
+    maxStaleDays: 7,
+    adv20Min: 200000,
+    turnoverCrMin: 5,
+    correlationThreshold: 0.85,
+    startingCapital: DEFAULT_STARTING_CAPITAL,
+    regimeMultiplier: 1,
+    ifrMultiplier: 1,
+    drawdownMultiplier: 1,
+    paperOnly: true,
+    brokerWriteEnabled: false
+  };
+}
+
+function normalizeScannerSettings(input = {}) {
+  return {
+    ...defaultScannerSettings(),
+    minScoreSelect: finiteOr(input.minScoreSelect ?? input.min_select_score, 70),
+    minScoreWatch: finiteOr(input.minScoreWatch ?? input.min_watch_score, 55),
+    targetPotentialPct: finiteOr(input.targetPotentialPct ?? input.target_potential_pct, 15),
+    maxPositionPct: finiteOr(input.maxPositionPct ?? input.max_position_pct, 0.025),
+    maxPositions: Math.max(0, Math.floor(finiteOr(input.maxPositions ?? input.max_positions, 50))),
+    maxSectorPositions: Math.max(0, Math.floor(finiteOr(input.maxSectorPositions ?? input.max_sector_positions, 12))),
+    maxSectorExposurePct: finiteOr(input.maxSectorExposurePct ?? input.max_sector_exposure_pct, 25),
+    maxStaleDays: finiteOr(input.maxStaleDays ?? input.max_stale_days, 7),
+    adv20Min: finiteOr(input.adv20Min ?? input.min_avg_volume_shares, 200000),
+    turnoverCrMin: finiteOr(input.turnoverCrMin ?? input.min_rupee_volume_cr, 5),
+    correlationThreshold: finiteOr(input.correlationThreshold ?? input.correlation_threshold, 0.85),
+    startingCapital: finiteOr(input.startingCapital ?? input.starting_capital, DEFAULT_STARTING_CAPITAL),
+    regimeMultiplier: finiteOr(input.regimeMultiplier ?? input.regime_multiplier, 1),
+    ifrMultiplier: finiteOr(input.ifrMultiplier ?? input.ifr_multiplier, 1),
+    drawdownMultiplier: finiteOr(input.drawdownMultiplier ?? input.drawdown_multiplier, 1),
+    paperOnly: parseBoolean(input.paperOnly ?? input.paper_only ?? true),
+    brokerWriteEnabled: parseBoolean(input.brokerWriteEnabled ?? input.broker_write_enabled ?? false)
+  };
+}
+
 function defaultState() {
   return {
     theme: "light",
     selectedView: "scanner",
     universe: INDIA_UNIVERSE,
-    scannerSettings: {
-      minScoreSelect: 70,
-      minScoreWatch: 55,
-      adv20Min: 200000,
-      turnoverCrMin: 5
-    }
+    scannerSettings: defaultScannerSettings()
   };
 }
 
@@ -261,13 +306,8 @@ function sanitizeState(input = {}) {
   return {
     theme: state.theme === "dark" ? "dark" : "light",
     selectedView: String(state.selectedView || "scanner").slice(0, 40),
-    universe: normalizeScannerUniverse(state.universe).slice(0, 500),
-    scannerSettings: {
-      minScoreSelect: finiteOr(state.scannerSettings?.minScoreSelect, 70),
-      minScoreWatch: finiteOr(state.scannerSettings?.minScoreWatch, 55),
-      adv20Min: finiteOr(state.scannerSettings?.adv20Min, 200000),
-      turnoverCrMin: finiteOr(state.scannerSettings?.turnoverCrMin, 5)
-    }
+    universe: normalizeScannerUniverse(state.universe).slice(0, 1000),
+    scannerSettings: normalizeScannerSettings(state.scannerSettings || {})
   };
 }
 
@@ -526,24 +566,29 @@ async function createMongoStore() {
   throw lastError || new Error("No valid MongoDB URI candidates are configured.");
 }
 
-function normalizeScannerUniverse(input) {
-  const source = Array.isArray(input) && input.length ? input : INDIA_UNIVERSE;
-  return source
+function normalizeScannerRows(input) {
+  return (Array.isArray(input) ? input : [])
     .map((row) => normalizeScannerRow(row))
     .filter((row) => row.symbol)
     .slice(0, 1000);
 }
 
+function normalizeScannerUniverse(input) {
+  const source = Array.isArray(input) && input.length ? input : INDIA_UNIVERSE;
+  return normalizeScannerRows(source);
+}
+
 function normalizeScannerRow(row = {}) {
   return {
-    symbol: normalizeSymbol(row.symbol || row.tradingsymbol || row.ticker),
-    name: String(row.name || row.company || row.company_name || row.symbol || "").trim().slice(0, 120),
+    symbol: normalizeSymbol(row.symbol || row.tradingsymbol || row.trading_symbol || row.ticker),
+    name: String(row.name || row.company || row.company_name || row.short_name || row.symbol || "").trim().slice(0, 120),
     sector: String(row.sector || row.industry || "Unmapped").trim().slice(0, 80),
     exchange: String(row.exchange || "NSE").trim().toUpperCase().slice(0, 12),
     instrument_key: String(row.instrument_key || row.instrumentKey || row.upstox_key || "").trim(),
     close: numericValue(row.close ?? row.current_close ?? row.currentClose ?? row.last_price),
     close_127: numericValue(row.close_127 ?? row.close127 ?? row.close_6m),
     close_253: numericValue(row.close_253 ?? row.close253 ?? row.close_12m),
+    high_252: numericValue(row.high_252 ?? row.high252 ?? row.high_1y ?? row.year_high),
     adv20: numericValue(row.adv20 ?? row.avg_volume_20d ?? row.average_volume_20d),
     rupee_turnover_cr: numericValue(row.rupee_turnover_cr ?? row.turnover_cr ?? row.avg_turnover_5d_cr),
     quality_score: numericValue(row.quality_score ?? row.qualityScore),
@@ -553,6 +598,7 @@ function normalizeScannerRow(row = {}) {
     last_candle_date: String(row.last_candle_date || row.lastCandleDate || row.date || "").trim(),
     last_candle_age_days: numericValue(row.last_candle_age_days ?? row.lastCandleAgeDays),
     stuck_candle: parseBoolean(row.stuck_candle ?? row.stuckCandle),
+    existing_holding: parseBoolean(row.existing_holding ?? row.existingHolding ?? row.holding),
     data_source: String(row.data_source || row.source || "manual/input").slice(0, 80),
     fetch_error: row.fetch_error ? String(row.fetch_error).slice(0, 240) : "",
     candles: normalizeCandles(row.candles || row.history || [])
@@ -573,9 +619,9 @@ function normalizeVol(value) {
 
 function parseBoolean(value) {
   if (typeof value === "boolean") return value;
-  const text = String(value || "").trim().toLowerCase();
+  const text = String(value ?? "").trim().toLowerCase();
   if (["true", "yes", "1", "y"].includes(text)) return true;
-  if (["false", "no", "0", "n"].includes(text)) return false;
+  if (["false", "no", "0", "n", ""].includes(text)) return false;
   return false;
 }
 
@@ -608,9 +654,17 @@ function normalizeCandles(candles) {
 
 function runScanner(universe, options = {}) {
   const rows = normalizeScannerUniverse(universe);
+  const settings = normalizeScannerSettings(options);
+  const holdings = [
+    ...normalizeScannerRows(options.existingHoldings || options.holdings || []),
+    ...rows.filter((row) => row.existing_holding)
+  ];
   const asOf = options.asOf || new Date().toISOString();
-  const evaluated = rows.map((row) => evaluateStock(row, options));
-  const summary = evaluated.reduce(
+  const evaluated = rows.map((row) => evaluateStock(row, { settings, holdings }));
+  const proofRows = applyPortfolio(evaluated, settings).sort(
+    (a, b) => decisionRank(a.decision) - decisionRank(b.decision) || b.score - a.score || a.symbol.localeCompare(b.symbol)
+  );
+  const summary = proofRows.reduce(
     (acc, row) => {
       acc.total += 1;
       acc[row.decision] = (acc[row.decision] || 0) + 1;
@@ -618,15 +672,17 @@ function runScanner(universe, options = {}) {
     },
     { total: 0, SELECT: 0, WATCH: 0, REJECT: 0, BLOCKED: 0, DATA_NEEDED: 0 }
   );
+
   return {
     ok: true,
-    engine: "ashstocks-india-selection-v0.1",
+    engine: ENGINE_VERSION,
     asOf,
     source: options.source || "server-scanner",
     universe: rows.length,
     summary,
     parameters: SCANNER_PARAMETERS,
-    rows: evaluated.sort((a, b) => b.score - a.score || decisionRank(a.decision) - decisionRank(b.decision) || a.symbol.localeCompare(b.symbol))
+    settings,
+    rows: proofRows
   };
 }
 
@@ -634,45 +690,50 @@ function decisionRank(decision) {
   return { SELECT: 0, WATCH: 1, REJECT: 2, BLOCKED: 3, DATA_NEEDED: 4 }[decision] ?? 9;
 }
 
-function evaluateStock(row, options = {}) {
-  const settings = {
-    minScoreSelect: finiteOr(options.minScoreSelect, 70),
-    minScoreWatch: finiteOr(options.minScoreWatch, 55),
-    adv20Min: finiteOr(options.adv20Min, 200000),
-    turnoverCrMin: finiteOr(options.turnoverCrMin, 5)
-  };
+function evaluateStock(row, context) {
+  const { settings, holdings } = context;
   const reasons = [];
   const missing = [];
   const metrics = deriveMetrics(row);
 
   if (row.fetch_error) reasons.push(`Upstox fetch failed: ${row.fetch_error}`);
-  if (!metrics.hasFullData) missing.push(metrics.missingReason || "253 daily candles or equivalent metrics");
+  if (!metrics.hasFullData) missing.push(metrics.missingReason || "253 clean daily candles or equivalent metrics");
   if (metrics.close === null) missing.push("latest close");
   if (metrics.close127 === null) missing.push("6M close");
   if (metrics.close253 === null) missing.push("12M close");
+  if (metrics.vol63 === null) missing.push("63D volatility");
+  if (metrics.vol126 === null || metrics.vol252 === null) missing.push("126D/252D volatility");
   if (metrics.adv20 === null) missing.push("20D average volume");
   if (metrics.turnoverCr === null) missing.push("5D rupee turnover");
+  if (metrics.lastCandleAgeDays === null) missing.push("last candle freshness");
 
   const momentumOk = metrics.return6m !== null && metrics.return12m !== null && metrics.return6m > 0 && metrics.return12m > 0;
-  const liquidityOk = metrics.adv20 !== null && metrics.adv20 >= settings.adv20Min && metrics.turnoverCr !== null && metrics.turnoverCr >= settings.turnoverCrMin;
-  const staleOk = metrics.lastCandleAgeDays === null || metrics.lastCandleAgeDays <= 5;
-  const stuckOk = !metrics.stuckCandle;
-  const qualityScore = metrics.qualityScore ?? 50;
-  const lowVolScore = metrics.lowVolScore ?? 50;
-  const momentumScore = metrics.momentumScore ?? 0;
-  const blendedQuality = clamp(0.6 * lowVolScore + 0.4 * qualityScore, 0, 100);
-  const score = missing.length ? 0 : round(0.65 * momentumScore + 0.35 * blendedQuality, 2);
+  const liquiditySharesOk = metrics.adv20 !== null && metrics.adv20 >= settings.adv20Min;
+  const liquidityRupeeOk = metrics.turnoverCr !== null && metrics.turnoverCr >= settings.turnoverCrMin;
+  const staleOk = metrics.lastCandleAgeDays !== null && metrics.lastCandleAgeDays <= settings.maxStaleDays;
+  const stuckOk = metrics.stuckCandle === false;
+  const correlation = correlationGate(row, holdings, settings.correlationThreshold);
+  if (correlation.data_needed) missing.push("60D holding correlation");
+
+  const momentum = scoreMomentum(metrics.return6m, metrics.return12m, metrics.vol126, metrics.vol252);
+  const lowVolScore = scoreLowVol(metrics.vol63);
+  const liquidityQuality = scoreLiquidityQuality(metrics.adv20);
+  const qualityScore = lowVolScore === null || liquidityQuality === null ? null : (lowVolScore + liquidityQuality) / 2;
+  const score = missing.length || momentum === null || qualityScore === null ? 0 : round(0.65 * momentum + 0.35 * qualityScore, 2);
+  const targetPotential = targetPotentialLabel(metrics, settings.targetPotentialPct);
 
   let decision = "REJECT";
   if (missing.length || row.fetch_error) {
     decision = "DATA_NEEDED";
     reasons.push(`Need ${unique(missing).join(", ")}`);
-  } else if (!staleOk || !stuckOk || !momentumOk || !liquidityOk) {
+  } else if (!momentumOk || !liquiditySharesOk || !liquidityRupeeOk || !staleOk || !stuckOk || !correlation.ok) {
     decision = "BLOCKED";
     if (!momentumOk) reasons.push("absolute momentum gate failed");
-    if (!liquidityOk) reasons.push("liquidity gate failed");
+    if (!liquiditySharesOk) reasons.push("ADV20 liquidity gate failed");
+    if (!liquidityRupeeOk) reasons.push("rupee turnover gate failed");
     if (!staleOk) reasons.push("last candle is stale");
-    if (!stuckOk) reasons.push("stuck candle check failed");
+    if (!stuckOk) reasons.push("latest OHLC stuck candle check failed");
+    if (!correlation.ok) reasons.push(`correlation gate failed${correlation.blocking_symbol ? ` vs ${correlation.blocking_symbol}` : ""}`);
   } else if (score >= settings.minScoreSelect) {
     decision = "SELECT";
     reasons.push("score and all hard gates passed");
@@ -684,6 +745,8 @@ function evaluateStock(row, options = {}) {
     reasons.push("hard gates passed, score below watch line");
   }
 
+  if (targetPotential.label === "WARN") reasons.push("target-potential label is WARN");
+
   return {
     symbol: row.symbol,
     name: row.name || row.symbol,
@@ -692,59 +755,83 @@ function evaluateStock(row, options = {}) {
     instrument_key: row.instrument_key,
     decision,
     score,
-    momentum_score: round(momentumScore, 2),
-    quality_score: round(blendedQuality, 2),
+    momentum_score: momentum === null ? null : round(momentum, 2),
+    quality_score: qualityScore === null ? null : round(qualityScore, 2),
+    low_vol_score: lowVolScore === null ? null : round(lowVolScore, 2),
+    liquidity_quality: liquidityQuality,
     return_6m_pct: metrics.return6m === null ? null : round(metrics.return6m * 100, 2),
     return_12m_pct: metrics.return12m === null ? null : round(metrics.return12m * 100, 2),
     vol_63d_pct: metrics.vol63 === null ? null : round(metrics.vol63 * 100, 2),
+    vol_126d_pct: metrics.vol126 === null ? null : round(metrics.vol126 * 100, 2),
+    vol_252d_pct: metrics.vol252 === null ? null : round(metrics.vol252 * 100, 2),
     adv20: metrics.adv20,
     rupee_turnover_cr: metrics.turnoverCr,
+    close: metrics.close,
     last_candle_date: metrics.lastCandleDate,
+    last_candle_age_days: metrics.lastCandleAgeDays,
+    target_potential: targetPotential,
+    correlation,
     gates: {
       data_sufficiency: !missing.length,
       absolute_momentum: momentumOk,
-      liquidity: liquidityOk,
+      liquidity_shares: liquiditySharesOk,
+      liquidity_rupee: liquidityRupeeOk,
       fresh_candle: staleOk,
-      stuck_candle: stuckOk
+      stuck_candle: stuckOk,
+      correlation: correlation.ok,
+      paper_only: true,
+      broker_write_enabled: false
     },
     reason: unique(reasons).join("; ") || "scored",
-    data_source: row.candles.length ? "Upstox/manual candles" : row.data_source
+    data_source: row.candles.length ? "Upstox/manual candles" : row.data_source,
+    proof: {
+      engine: ENGINE_VERSION,
+      formula: "0.65 * momentum_score + 0.35 * quality_score",
+      hard_gates: ["data_sufficiency", "absolute_momentum", "liquidity_shares", "liquidity_rupee", "fresh_candle", "stuck_candle", "correlation"],
+      missing: unique(missing)
+    },
+    portfolio: { status: "NOT_EVALUATED" },
+    paper_order: { status: "NOT_CREATED", paper_only: true, broker_write_enabled: false }
   };
 }
 
 function deriveMetrics(row) {
   if (row.candles.length) return deriveCandleMetrics(row);
-  const hasManual = row.close !== null && row.close_127 !== null && row.close_253 !== null;
-  const return6m = hasManual ? row.close / row.close_127 - 1 : null;
-  const return12m = hasManual ? row.close / row.close_253 - 1 : null;
-  const vol63 = row.vol63;
-  const vol252 = row.vol252 ?? row.vol126 ?? row.vol63 ?? 0.28;
+  return deriveManualMetrics(row);
+}
+
+function deriveManualMetrics(row) {
+  const close = row.close;
+  const close127 = row.close_127;
+  const close253 = row.close_253;
+  const hasPrice = close !== null && close127 !== null && close253 !== null;
+  const vol126 = row.vol126 ?? row.vol252;
+  const vol252 = row.vol252 ?? row.vol126;
   return {
-    hasFullData: hasManual,
-    missingReason: "manual close/close_127/close_253 fields",
-    close: row.close,
-    close127: row.close_127,
-    close253: row.close_253,
-    return6m,
-    return12m,
-    vol63,
+    hasFullData: hasPrice && row.vol63 !== null && vol126 !== null && vol252 !== null,
+    missingReason: "manual close/close_127/close_253/vol63/vol126/vol252 fields",
+    close,
+    close127,
+    close253,
+    high252: row.high_252,
+    return6m: hasPrice && close127 > 0 ? close / close127 - 1 : null,
+    return12m: hasPrice && close253 > 0 ? close / close253 - 1 : null,
+    vol63: row.vol63,
+    vol126,
     vol252,
     adv20: row.adv20,
     turnoverCr: row.rupee_turnover_cr,
     lastCandleDate: row.last_candle_date || null,
     lastCandleAgeDays: row.last_candle_age_days,
-    stuckCandle: row.stuck_candle,
-    qualityScore: row.quality_score,
-    lowVolScore: vol63 === null ? null : clamp(100 - vol63 * 140, 0, 100),
-    momentumScore: return6m === null || return12m === null ? null : momentumScore(return6m, return12m, vol252)
+    stuckCandle: row.stuck_candle
   };
 }
 
 function deriveCandleMetrics(row) {
   const candles = row.candles;
   const close = candles.at(-1)?.close ?? null;
-  const close127 = candles.length >= 128 ? candles.at(-128)?.close ?? null : null;
-  const close253 = candles.length >= 254 ? candles.at(-254)?.close ?? null : null;
+  const close127 = candles.length >= 127 ? candles.at(-127)?.close ?? null : null;
+  const close253 = candles.length >= 253 ? candles.at(-253)?.close ?? null : null;
   const return6m = close !== null && close127 ? close / close127 - 1 : null;
   const return12m = close !== null && close253 ? close / close253 - 1 : null;
   const returns = dailyReturns(candles);
@@ -753,18 +840,21 @@ function deriveCandleMetrics(row) {
   const vol252 = annualizedVol(returns.slice(-252));
   const last20 = candles.slice(-20);
   const last5 = candles.slice(-5);
-  const adv20 = last20.length ? average(last20.map((candle) => candle.volume || 0)) : null;
-  const turnoverCr = last5.length ? average(last5.map((candle) => ((candle.close || 0) * (candle.volume || 0)) / 10000000)) : null;
-  const lastCandleDate = candles.at(-1)?.date || null;
+  const adv20 = last20.length >= 20 ? average(last20.map((candle) => candle.volume || 0)) : null;
+  const turnoverCr = last5.length >= 5 ? average(last5.map((candle) => ((candle.close || 0) * (candle.volume || 0)) / 10000000)) : null;
+  const lastCandle = candles.at(-1) || {};
+  const lastCandleDate = lastCandle.date || null;
   const lastCandleAgeDays = lastCandleDate ? Math.floor((Date.now() - Date.parse(lastCandleDate)) / 86400000) : null;
-  const closeValues = last5.map((candle) => candle.close).filter(Number.isFinite);
-  const stuckCandle = closeValues.length >= 5 && Math.max(...closeValues) - Math.min(...closeValues) <= Math.max(0.01, closeValues.at(-1) * 0.0001);
+  const ohlc = [lastCandle.open, lastCandle.high, lastCandle.low, lastCandle.close].filter(Number.isFinite);
+  const stuckCandle = ohlc.length === 4 && Math.max(...ohlc) - Math.min(...ohlc) <= Math.max(0.01, close * 0.0001);
+  const high252 = candles.length >= 252 ? Math.max(...candles.slice(-252).map((candle) => candle.close).filter(Number.isFinite)) : null;
   return {
-    hasFullData: candles.length >= 254,
-    missingReason: `${candles.length}/254 daily candles`,
+    hasFullData: candles.length >= 253 && returns.length >= 252,
+    missingReason: `${candles.length}/253 daily candles`,
     close,
     close127,
     close253,
+    high252,
     return6m,
     return12m,
     vol63,
@@ -774,10 +864,7 @@ function deriveCandleMetrics(row) {
     turnoverCr,
     lastCandleDate,
     lastCandleAgeDays,
-    stuckCandle: row.stuck_candle || stuckCandle,
-    qualityScore: row.quality_score,
-    lowVolScore: vol63 === null ? null : clamp(100 - vol63 * 140, 0, 100),
-    momentumScore: return6m === null || return12m === null ? null : momentumScore(return6m, return12m, vol252 ?? 0.28)
+    stuckCandle: row.stuck_candle || stuckCandle
   };
 }
 
@@ -786,15 +873,16 @@ function dailyReturns(candles) {
   for (let index = 1; index < candles.length; index += 1) {
     const previous = candles[index - 1].close;
     const current = candles[index].close;
-    if (previous > 0 && current > 0) values.push(Math.log(current / previous));
+    if (previous > 0 && current > 0) values.push(current / previous - 1);
   }
   return values;
 }
 
 function annualizedVol(values) {
-  if (!values.length) return null;
-  const mean = average(values);
-  const variance = average(values.map((value) => (value - mean) ** 2));
+  const clean = values.filter(Number.isFinite);
+  if (!clean.length) return null;
+  const mean = average(clean);
+  const variance = average(clean.map((value) => (value - mean) ** 2));
   return Math.sqrt(variance) * Math.sqrt(252);
 }
 
@@ -804,9 +892,173 @@ function average(values) {
   return clean.reduce((sum, value) => sum + value, 0) / clean.length;
 }
 
-function momentumScore(return6m, return12m, vol252) {
-  const raw = 0.55 * return6m + 0.45 * return12m - 0.35 * (vol252 || 0);
-  return clamp(((raw + 0.25) / 0.75) * 100, 0, 100);
+function scoreMomentum(return6m, return12m, vol126, vol252) {
+  if (![return6m, return12m, vol126, vol252].every(Number.isFinite) || vol126 <= 0 || vol252 <= 0) return null;
+  const raw = (return6m / vol126 + return12m / vol252) / 2;
+  return clamp(50 + raw * 25, 0, 100);
+}
+
+function scoreLowVol(vol63) {
+  if (!Number.isFinite(vol63) || vol63 <= 0) return null;
+  return clamp(100 - (vol63 * 100 - 10) * 1.7, 0, 100);
+}
+
+function scoreLiquidityQuality(adv20) {
+  if (!Number.isFinite(adv20)) return null;
+  if (adv20 > 1_000_000) return 90;
+  if (adv20 > 300_000) return 70;
+  if (adv20 > 100_000) return 55;
+  return 30;
+}
+
+function targetPotentialLabel(metrics, threshold) {
+  if (!Number.isFinite(metrics.high252) || !Number.isFinite(metrics.close) || metrics.close <= 0) {
+    return { label: "DATA_NEEDED", potential_left_pct: null, threshold_pct: threshold };
+  }
+  const potentialLeft = (metrics.high252 / metrics.close - 1) * 100;
+  return { label: potentialLeft >= threshold ? "PASS" : "WARN", potential_left_pct: round(potentialLeft, 2), threshold_pct: threshold };
+}
+
+function correlationGate(row, holdings, threshold) {
+  if (!holdings.length) return { ok: true, status: "not_applicable", max_correlation: null, blocking_symbol: null, threshold };
+  if (!row.candles.length) return { ok: false, status: "data_needed", data_needed: true, max_correlation: null, blocking_symbol: null, threshold };
+
+  let maxCorrelation = null;
+  let blockingSymbol = null;
+  for (const holding of holdings) {
+    if (!holding.candles.length || holding.symbol === row.symbol) continue;
+    const corr = correlateReturnSeries(row.candles, holding.candles, 60);
+    if (corr === null) continue;
+    if (maxCorrelation === null || corr > maxCorrelation) {
+      maxCorrelation = corr;
+      blockingSymbol = holding.symbol;
+    }
+  }
+  if (maxCorrelation === null) return { ok: false, status: "data_needed", data_needed: true, max_correlation: null, blocking_symbol: null, threshold };
+  return {
+    ok: maxCorrelation <= threshold,
+    status: maxCorrelation <= threshold ? "pass" : "blocked",
+    max_correlation: round(maxCorrelation, 4),
+    blocking_symbol: maxCorrelation <= threshold ? null : blockingSymbol,
+    threshold
+  };
+}
+
+function correlateReturnSeries(candidateCandles, holdingCandles, windowSize) {
+  const candidate = returnsByDate(candidateCandles);
+  const holding = returnsByDate(holdingCandles);
+  const pairs = [];
+  for (const [date, value] of candidate) {
+    if (holding.has(date)) pairs.push([value, holding.get(date)]);
+  }
+  const window = pairs.slice(-windowSize);
+  if (window.length < Math.min(30, windowSize)) return null;
+  return pearson(window.map((pair) => pair[0]), window.map((pair) => pair[1]));
+}
+
+function returnsByDate(candles) {
+  const values = new Map();
+  for (let index = 1; index < candles.length; index += 1) {
+    const previous = candles[index - 1].close;
+    const current = candles[index].close;
+    if (previous > 0 && current > 0) values.set(String(candles[index].date).slice(0, 10), current / previous - 1);
+  }
+  return values;
+}
+
+function pearson(xs, ys) {
+  if (xs.length !== ys.length || xs.length < 2) return null;
+  const meanX = average(xs);
+  const meanY = average(ys);
+  let numerator = 0;
+  let denomX = 0;
+  let denomY = 0;
+  for (let index = 0; index < xs.length; index += 1) {
+    const dx = xs[index] - meanX;
+    const dy = ys[index] - meanY;
+    numerator += dx * dy;
+    denomX += dx * dx;
+    denomY += dy * dy;
+  }
+  const denominator = Math.sqrt(denomX * denomY);
+  return denominator ? numerator / denominator : null;
+}
+
+function applyPortfolio(rows, settings) {
+  const output = rows.map((row) => ({ ...row }));
+  const baseValue = settings.startingCapital * settings.maxPositionPct;
+  const finalValue = baseValue * settings.regimeMultiplier * settings.ifrMultiplier * settings.drawdownMultiplier;
+  const sectorMaxValue = settings.startingCapital * (settings.maxSectorExposurePct / 100);
+  const sectorCounts = new Map();
+  const sectorValues = new Map();
+  let positionCount = 0;
+
+  for (const row of output.sort((a, b) => b.score - a.score || a.symbol.localeCompare(b.symbol))) {
+    row.portfolio = {
+      status: row.decision === "SELECT" ? "CANDIDATE" : "NOT_CANDIDATE",
+      max_positions: settings.maxPositions,
+      max_sector_positions: settings.maxSectorPositions,
+      max_sector_exposure_pct: settings.maxSectorExposurePct,
+      base_position_value: round(baseValue, 2),
+      final_position_value: row.decision === "SELECT" ? round(finalValue, 2) : 0,
+      regime_multiplier: settings.regimeMultiplier,
+      ifr_multiplier: settings.ifrMultiplier,
+      drawdown_multiplier: settings.drawdownMultiplier
+    };
+    row.paper_order = { status: "NOT_CREATED", paper_only: true, broker_write_enabled: false };
+    row.gates.portfolio_caps = true;
+
+    if (row.decision !== "SELECT") continue;
+    const sector = row.sector || "Unmapped";
+    const sectorCount = sectorCounts.get(sector) || 0;
+    const sectorValue = sectorValues.get(sector) || 0;
+    const blocked = [];
+    if (positionCount >= settings.maxPositions) blocked.push("max positions reached");
+    if (sectorCount >= settings.maxSectorPositions) blocked.push("max sector positions reached");
+    if (sectorValue + finalValue > sectorMaxValue) blocked.push("max sector exposure reached");
+    if (finalValue <= 0) blocked.push("risk multiplier blocks new entries");
+    if (!Number.isFinite(row.close) || row.close <= 0) blocked.push("entry price missing");
+
+    const qty = Number.isFinite(row.close) && row.close > 0 ? Math.floor(finalValue / row.close) : 0;
+    if (qty < 1 && !blocked.length) blocked.push("position value too small for one share");
+
+    if (blocked.length) {
+      row.decision = "BLOCKED";
+      row.gates.portfolio_caps = false;
+      row.reason = unique([row.reason, ...blocked]).join("; ");
+      row.portfolio.status = "BLOCKED";
+      row.portfolio.blockers = blocked;
+      row.paper_order = { status: "SKIPPED", reason: blocked.join("; "), paper_only: true, broker_write_enabled: false };
+      continue;
+    }
+
+    positionCount += 1;
+    sectorCounts.set(sector, sectorCount + 1);
+    sectorValues.set(sector, sectorValue + finalValue);
+    row.portfolio = {
+      ...row.portfolio,
+      status: "SIZED",
+      rank: positionCount,
+      qty,
+      entry_price: row.close,
+      position_value: round(qty * row.close, 2),
+      weight_pct: round((qty * row.close / settings.startingCapital) * 100, 2),
+      sector_position_count: sectorCount + 1,
+      sector_exposure_value: round(sectorValue + finalValue, 2)
+    };
+    row.paper_order = {
+      status: "READY",
+      type: "paper",
+      side: "BUY",
+      symbol: row.symbol,
+      qty,
+      limit_price: row.close,
+      estimated_value: round(qty * row.close, 2),
+      paper_only: true,
+      broker_write_enabled: false
+    };
+  }
+  return output;
 }
 
 function clamp(value, min, max) {
@@ -857,8 +1109,7 @@ async function fetchUpstoxCandles(instrumentKey, from, to) {
     throw new Error(`Upstox ${response.status}: ${text.slice(0, 180) || response.statusText}`);
   }
   const payload = await response.json();
-  const candles = payload?.data?.candles || [];
-  return normalizeCandles(candles);
+  return normalizeCandles(payload?.data?.candles || []);
 }
 
 async function runUpstoxScanner(body = {}) {
@@ -866,7 +1117,8 @@ async function runUpstoxScanner(body = {}) {
   const window = defaultDateWindow();
   const from = String(body.from || window.from).slice(0, 10);
   const to = String(body.to || window.to).slice(0, 10);
-  const baseRows = normalizeScannerUniverse(body.universe).filter((row) => row.instrument_key).slice(0, 60);
+  const maxLimit = Math.min(200, Math.max(1, Math.floor(finiteOr(ENV.UPSTOX_SCAN_LIMIT, 60))));
+  const baseRows = normalizeScannerUniverse(body.universe).filter((row) => row.instrument_key).slice(0, maxLimit);
   if (!baseRows.length) return { ok: false, error: "instrument_key_missing", status: upstoxStatus() };
 
   const fetchedRows = await Promise.all(
@@ -880,12 +1132,14 @@ async function runUpstoxScanner(body = {}) {
     })
   );
 
-  const scan = runScanner(fetchedRows, { source: "Upstox historical candles" });
+  const scan = runScanner(fetchedRows, { ...(body.settings || {}), source: "Upstox historical candles", holdings: body.holdings || body.existingHoldings || [] });
   return {
     ...scan,
     ok: true,
     from,
     to,
+    scanned: fetchedRows.length,
+    scan_limit: maxLimit,
     status: upstoxStatus(),
     failures: scan.rows.filter((row) => row.decision === "DATA_NEEDED" && row.reason.includes("Upstox fetch failed"))
   };
@@ -1092,6 +1346,7 @@ export function createServer() {
           release: RELEASE,
           commit: ENV.RENDER_GIT_COMMIT || ENV.RENDER_COMMIT || null,
           provider: "AshStocks India Scanner",
+          engine: ENGINE_VERSION,
           storage: hasMongoUri ? "mongodb" : fallbackReady ? "file" : "unconfigured",
           persistent: hasMongoUri || fallbackReady,
           upstox: upstoxStatus(),
@@ -1114,6 +1369,7 @@ export function createServer() {
           json(res, 200, {
             ok: true,
             provider: "AshStocks India Scanner",
+            engine: ENGINE_VERSION,
             storage: store.mode,
             source: store.source || null,
             persistent: store.persistent,
@@ -1218,7 +1474,7 @@ export function createServer() {
       }
 
       if (url.pathname === "/api/scanner/parameters") {
-        json(res, 200, { ok: true, parameters: SCANNER_PARAMETERS, universe: INDIA_UNIVERSE, upstox: upstoxStatus() });
+        json(res, 200, { ok: true, parameters: SCANNER_PARAMETERS, universe: INDIA_UNIVERSE, settings: defaultScannerSettings(), upstox: upstoxStatus() });
         return;
       }
 
@@ -1234,7 +1490,7 @@ export function createServer() {
 
       if (url.pathname === "/api/scanner/run") {
         const body = req.method === "POST" ? await readJsonBody(req) : {};
-        json(res, 200, runScanner(body.universe, body.settings || {}));
+        json(res, 200, runScanner(body.universe, { ...(body.settings || {}), holdings: body.holdings, existingHoldings: body.existingHoldings }));
         return;
       }
 
