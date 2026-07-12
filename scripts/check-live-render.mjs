@@ -5,6 +5,7 @@ const RETRY_DELAY_MS = Number(process.env.LIVE_RETRY_DELAY_MS || 20_000);
 const REQUEST_TIMEOUT_MS = Number(process.env.LIVE_REQUEST_TIMEOUT_MS || 20_000);
 const EXPECTED_RELEASE = "2026-07-12-india-scanner";
 const EXPECTED_PROVIDER = "AshStocks India Scanner";
+const EXPECTED_ENGINE = "ashstocks-selection-v0.1-proof";
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -38,6 +39,7 @@ async function tryCheck() {
   assert(health.ok === true, "health ok must be true");
   assert(health.provider === EXPECTED_PROVIDER, `health provider must be ${EXPECTED_PROVIDER}`);
   assert(health.release === EXPECTED_RELEASE, `health release must be ${EXPECTED_RELEASE}`);
+  assert(health.engine === EXPECTED_ENGINE, `health engine must be ${EXPECTED_ENGINE}`);
   assert(health.ready === true, "health ready must be true");
   assert(health.upstox?.historical_candles_only === true, "health must expose historical-candle-only Upstox mode");
   assert(health.upstox?.live_orders === false, "health must not expose live orders");
@@ -45,6 +47,7 @@ async function tryCheck() {
   const ready = await fetchJson("/api/ready");
   assert(ready.ok === true, "ready ok must be true");
   assert(ready.provider === EXPECTED_PROVIDER, `ready provider must be ${EXPECTED_PROVIDER}`);
+  assert(ready.engine === EXPECTED_ENGINE, `ready engine must be ${EXPECTED_ENGINE}`);
   assert(["mongodb", "file"].includes(ready.storage), "ready storage must be mongodb or file fallback");
   assert(ready.persistent === true, "ready storage must be persistent");
   assert(ready.auth?.configured === true, "Render APP_PASSWORD must be configured");
@@ -55,6 +58,7 @@ async function tryCheck() {
     ok: true,
     liveUrl: LIVE_URL,
     release: health.release,
+    engine: health.engine,
     commit: health.commit,
     storage: ready.storage,
     upstox: ready.upstox
