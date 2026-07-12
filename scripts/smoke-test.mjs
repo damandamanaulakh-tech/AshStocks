@@ -38,6 +38,25 @@ function multipartBody(files) {
   return { body, headers: { "content-type": `multipart/form-data; boundary=${boundary}` } };
 }
 
+function proofCandles(offset = 0) {
+  const today = new Date();
+  const candles = [];
+  for (let index = 0; index < 253; index += 1) {
+    const date = new Date(today);
+    date.setDate(today.getDate() - (252 - index));
+    const close = 100 + index + offset;
+    candles.push({
+      date: date.toISOString().slice(0, 10),
+      open: close * 0.99,
+      high: close * 1.01,
+      low: close * 0.98,
+      close,
+      volume: 500000
+    });
+  }
+  return candles;
+}
+
 async function runProductionMongoHealthGuard() {
   const script = `
 process.env.NODE_ENV = "production";
@@ -146,7 +165,18 @@ async function main() {
       stuck_candle: false
     }
   ]);
+  assert(directScan.engine === "ashstocks-selection-v0.1-proof", "scanner should expose proof engine version");
   assert(directScan.rows[0].decision === "SELECT", "manual metric row should be selectable");
+  assert(directScan.rows[0].paper_order.status === "READY", "selectable row should create a paper-only order intent");
+  assert(directScan.rows[0].paper_order.broker_write_enabled === false, "scanner must not enable broker writes");
+  assert(directScan.rows[0].proof.formula.includes("momentum_score"), "proof row should expose scoring formula");
+
+  const correlationScan = runScanner(
+    [{ symbol: "CORRCAND", name: "Correlation Candidate", sector: "Test", candles: proofCandles(0) }],
+    { holdings: [{ symbol: "HOLDING", name: "Existing Holding", sector: "Test", candles: proofCandles(0) }] }
+  );
+  assert(correlationScan.rows[0].decision === "BLOCKED", "over-correlated candidate should be blocked");
+  assert(correlationScan.rows[0].gates.correlation === false, "correlation gate should fail for identical return series");
 
   const server = createServer();
   await new Promise((resolve, reject) => {
@@ -208,7 +238,7 @@ async function main() {
     assert(q1RunGuard.response.status === 409, "q1 run should be blocked outside Render");
     assert(q1RunGuard.body.error === "render_only_endpoint", "q1 run guard should be render_only_endpoint");
 
-    console.log(JSON.stringify({ ok: true, checks: ["mongo-file-fallback", "scanner-parameters", "scanner-run", "upstox-guard", "q1-status", "q1-upload", "q1-render-guard"] }));
+    console.log(JSON.stringify({ ok: true, checks: ["mongo-file-fallback", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "upstox-guard", "q1-status", "q1-upload", "q1-render-guard"] }));
   } finally {
     await Promise.all([...Q1_INPUTS, STATE_FILE].map((file) => fs.unlink(file).catch((error) => {
       if (error.code !== "ENOENT") throw error;
