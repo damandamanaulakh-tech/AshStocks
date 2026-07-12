@@ -12,6 +12,8 @@ const state = {
 };
 
 const DECISIONS = ["SELECT", "WATCH", "REJECT", "BLOCKED", "DATA_NEEDED"];
+const UPSTOX_NSE_INSTRUMENTS_URL = "https://assets.upstox.com/market-quote/instruments/exchange/NSE.json.gz";
+const MAX_MASTER_POOL = 1000;
 
 function init() {
   document.body.classList.toggle("dark", localStorage.getItem("ashstocks-theme") === "dark");
@@ -41,6 +43,7 @@ function bindEvents() {
     await loadParameters();
     await runServerScan();
   });
+  $("#masterPoolBtn")?.addEventListener("click", loadUpstoxMasterPool);
   $("#runScanBtn")?.addEventListener("click", runServerScan);
   $("#runUpstoxBtn")?.addEventListener("click", runUpstoxScan);
   $("#exportBtn")?.addEventListener("click", exportRows);
@@ -102,6 +105,69 @@ async function runUpstoxScan() {
   } finally {
     setBusy(false);
   }
+}
+
+async function loadUpstoxMasterPool() {
+  setBusy(true, "Loading Upstox NSE master");
+  try {
+    const instruments = await fetchUpstoxNseMaster();
+    const rows = instrumentsToUniverse(instruments);
+    if (!rows.length) throw new Error("No NSE equity instruments found in Upstox master");
+    state.universe = rows;
+    $("#csvInput").value = rowsToCsv(rows);
+    await runServerScan();
+    switchView("scanner");
+    setMessage(`Loaded ${rows.length} NSE equity instruments from Upstox master`, "positive");
+  } catch (error) {
+    setMessage(error.message, "negative");
+  } finally {
+    setBusy(false);
+  }
+}
+
+async function fetchUpstoxNseMaster() {
+  const response = await fetch(UPSTOX_NSE_INSTRUMENTS_URL, { cache: "no-store" });
+  if (!response.ok) throw new Error(`Upstox NSE master unavailable: ${response.status}`);
+  const buffer = await response.arrayBuffer();
+  const plainText = new TextDecoder().decode(buffer);
+  try {
+    return JSON.parse(plainText);
+  } catch {
+    if (!("DecompressionStream" in window)) throw new Error("Browser cannot decompress Upstox NSE master file");
+    const stream = new Blob([buffer]).stream().pipeThrough(new DecompressionStream("gzip"));
+    const text = await new Response(stream).text();
+    return JSON.parse(text);
+  }
+}
+
+function instrumentsToUniverse(instruments) {
+  const seen = new Set();
+  return (Array.isArray(instruments) ? instruments : [])
+    .filter((item) => item?.segment === "NSE_EQ" && item?.exchange === "NSE")
+    .filter((item) => ["EQ", "BE"].includes(String(item.instrument_type || "").toUpperCase()))
+    .map((item) => ({
+      symbol: item.trading_symbol || item.short_name || item.name,
+      name: item.name || item.short_name || item.trading_symbol,
+      sector: "NSE Equity",
+      exchange: "NSE",
+      instrument_key: item.instrument_key,
+      data_source: "Upstox NSE instrument master"
+    }))
+    .filter((row) => row.symbol && row.instrument_key)
+    .filter((row) => {
+      const key = `${row.symbol}|${row.instrument_key}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .slice(0, MAX_MASTER_POOL);
+}
+
+function rowsToCsv(rows) {
+  const headers = ["symbol", "name", "sector", "exchange", "instrument_key", "data_source"];
+  return [headers.join(",")]
+    .concat(rows.map((row) => headers.map((header) => csvCell(row[header])).join(",")))
+    .join("\n");
 }
 
 function applyScanPayload(payload, message) {
