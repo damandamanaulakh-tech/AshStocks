@@ -1,6 +1,6 @@
-# Ash Stock
+# AshStocks
 
-Ash Stock is a server-backed trading workflow app. The browser is only the client; watchlists, positions, alerts, and journal entries are owned by the backend. Production prefers MongoDB and falls back to Render file storage if Mongo credentials are not valid yet.
+AshStocks is a private, server-backed Indian stock selection engine. The browser is only the client; the scanner, parameter bank, Upstox historical-candle workflow, Q1 runner, auth, and storage live behind the Node backend. Production prefers MongoDB and falls back to Render file storage if Mongo credentials are not valid yet.
 
 [Deploy this repo on Render](https://render.com/deploy?repo=https://github.com/damandamanaulakh-tech/AshStocks)
 
@@ -26,7 +26,7 @@ npm run check
 npm run smoke
 ```
 
-`npm run smoke` starts a temporary local server, checks health/state/Q1 status, uploads sample Q1 input CSVs, verifies the Render-only Upstox run guard, and removes the sample inputs afterward. It does not call Upstox.
+`npm run smoke` starts a temporary local server, checks health/state/scanner/Q1 status, verifies scanner decisions, uploads sample Q1 input CSVs, verifies the Render-only Upstox run guard, and removes sample inputs afterward. It does not call Upstox.
 
 ## Deploy On Render With MongoDB Or File Fallback
 
@@ -63,7 +63,7 @@ Start Command: npm start
 Health Check Path: /api/health
 ```
 
-The repository also keeps a minimal Python compatibility API (`app.py`, `main.py`, `ashstocks/api.py`, `runtime.txt`, `.python-version`, `requirements.txt`) so old Render services that still use `uvicorn app:app`, `uvicorn main:app`, or `uvicorn ashstocks.api:app` no longer try to compile pandas, numpy, or pydantic on Python 3.14. That compatibility path keeps the Q1/API guard alive; the finished dashboard product is the Node app.
+The repository also keeps a minimal Python compatibility API (`app.py`, `main.py`, `ashstocks/api.py`, `runtime.txt`, `.python-version`, `requirements.txt`) so old Render services that still use `uvicorn app:app`, `uvicorn main:app`, or `uvicorn ashstocks.api:app` no longer try to compile pandas, numpy, or pydantic on Python 3.14. That compatibility path keeps the API guard alive; the product app is the Node scanner.
 
 ## Private Access
 
@@ -75,6 +75,36 @@ Local development stays open unless you set:
 REQUIRE_AUTH=true
 APP_PASSWORD=...
 ```
+
+## Main Scanner
+
+The first screen is the Indian selection engine. It supports:
+
+- Default NSE large-cap pool with Upstox instrument keys
+- CSV stock-pool upload or paste
+- Parameter bank with hard gates and weighted factors
+- Server-side scanner run from supplied metrics
+- Render-side Upstox historical daily candle scan from `UPSTOX_ACCESS_TOKEN`
+- Ranked decisions: `SELECT`, `WATCH`, `REJECT`, `BLOCKED`, `DATA_NEEDED`
+- Per-stock reasons, gate status, score, 6M/12M returns, liquidity, and export CSV
+
+Scanner endpoints:
+
+```text
+GET  /api/scanner/parameters
+GET  /api/scanner/template
+POST /api/scanner/run
+POST /api/scanner/run-upstox
+GET  /api/upstox/status
+```
+
+Upstox scope:
+
+```text
+https://api.upstox.com/v2/historical-candle/{instrument_key}/day/{to_date}/{from_date}
+```
+
+No live orders are exposed.
 
 ## Q1 Render-side Upstox Runner
 
@@ -114,25 +144,22 @@ Safety rules:
 
 ## What Is Built
 
-- Server-owned watchlist, positions, alerts, and journal state
-- Private production login gate
+- Private Render login gate
 - MongoDB persistence adapter for production with Render file-storage fallback
-- Render blueprint in `render.yaml`
+- Indian scanner backend under `/api/scanner/*`
+- Default NSE universe with Upstox instrument keys
+- Parameter bank based on data sufficiency, momentum, risk, liquidity, stale candle, and stuck candle gates
+- Server-side manual metric scan from uploaded/pasted CSV data
+- Render-side Upstox historical-candle scan
+- Scanner UI with filters, decision table, parameter view, CSV import, and CSV export
 - Q1 Render-side upload/fetch/download job runner
-- Yahoo Finance quote/search/news proxy with short caching
-- US and NSE symbol support, including aliases like `RELIANCE`
-- Dashboard with equity, day P/L, alerts, watchlist breadth, performance, allocation, focus quote, signals, and news
-- Portfolio positions with market value, weight, P/L, and CSV export
-- Watchlist with targets, live search suggestions, momentum signals, and sparklines
-- Price alerts for above/below triggers
-- Trade journal with side, conviction, thesis, and timestamps
 - Light/dark theme and responsive desktop/mobile UI
 
 ## Files
 
-- `server.js` - HTTP server, market-data proxy, state API, MongoDB store, and Render file-storage fallback
-- `app.js` - browser client and workflow UI
-- `index.html` - app shell served by `server.js`
+- `server.js` - HTTP server, auth, scanner API, Upstox candle scan, Q1 runner, MongoDB store, and Render file-storage fallback
+- `app.js` - browser scanner client and CSV workflow
+- `index.html` - scanner app shell served by `server.js`
 - `styles.css` - product UI styling
 - `render.yaml` - Render deployment blueprint
 - `.env.example` - required environment variable shape
