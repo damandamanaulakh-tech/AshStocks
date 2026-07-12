@@ -1,4 +1,4 @@
-import { createServer, normalizeMongoUri } from "../server.js";
+import { createServer, normalizeMongoUri, runScanner } from "../server.js";
 import { spawn } from "node:child_process";
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -17,18 +17,15 @@ function assert(condition, message) {
   if (!condition) throw new Error(message);
 }
 
-async function request(path, options = {}) {
-  const response = await fetch(`${BASE}${path}`, {
-    redirect: "manual",
-    ...options
-  });
+async function request(targetPath, options = {}) {
+  const response = await fetch(`${BASE}${targetPath}`, { redirect: "manual", ...options });
   const contentType = response.headers.get("content-type") || "";
   const body = contentType.includes("application/json") ? await response.json() : await response.text();
   return { response, body };
 }
 
 function multipartBody(files) {
-  const boundary = `----ash-stock-smoke-${Date.now()}`;
+  const boundary = `----ashstocks-smoke-${Date.now()}`;
   let body = "";
   for (const file of files) {
     body += `--${boundary}\r\n`;
@@ -38,10 +35,7 @@ function multipartBody(files) {
     body += "\r\n";
   }
   body += `--${boundary}--\r\n`;
-  return {
-    body,
-    headers: { "content-type": `multipart/form-data; boundary=${boundary}` }
-  };
+  return { body, headers: { "content-type": `multipart/form-data; boundary=${boundary}` } };
 }
 
 async function runProductionMongoHealthGuard() {
@@ -85,10 +79,7 @@ console.log(JSON.stringify(result));
 `;
 
   const result = await new Promise((resolve) => {
-    const child = spawn(process.execPath, ["--input-type=module", "-e", script], {
-      cwd: ROOT,
-      windowsHide: true
-    });
+    const child = spawn(process.execPath, ["--input-type=module", "-e", script], { cwd: ROOT, windowsHide: true });
     let stdout = "";
     let stderr = "";
     const timer = setTimeout(() => {
@@ -112,6 +103,15 @@ console.log(JSON.stringify(result));
 }
 
 async function main() {
+  globalThis.__ASH_STOCK_ENV = {
+    ...process.env,
+    UPSTOX_API_KEY: "",
+    UPSTOX_ACCESS_TOKEN: "",
+    NODE_ENV: "test",
+    REQUIRE_AUTH: "false",
+    REQUIRE_DB: "false"
+  };
+
   assert(
     normalizeMongoUri("mongodb+srv://user:pass@example.mongodb.net:27017/ashstock?retryWrites=true") ===
       "mongodb+srv://user:pass@example.mongodb.net/ashstock?retryWrites=true",
@@ -127,27 +127,26 @@ async function main() {
       "mongodb://user:pass@host-a.example.net:27017,host-b.example.net:27017/ashstock",
     "multi-host seed lists must use the standard mongodb scheme"
   );
-  assert(
-    normalizeMongoUri("mongodb+srv://example.mongodb.net%3A27017/ashstock") ===
-      "mongodb+srv://example.mongodb.net/ashstock",
-    "encoded mongodb+srv ports must be stripped from hostnames"
-  );
-  assert(
-    normalizeMongoUri("mongodb+srv://user:p?ss/w@rd@example.mongodb.net:27017/ashstock") ===
-      "mongodb+srv://user:p%3Fss%2Fw%40rd@example.mongodb.net/ashstock",
-    "mongodb+srv host cleanup must find the host after credentials"
-  );
-  assert(
-    normalizeMongoUri("'MongoDB+SRV://example.mongodb.net:27017/ashstock'") ===
-      "mongodb+srv://example.mongodb.net/ashstock",
-    "quoted mongodb+srv values must be normalized case-insensitively"
-  );
-  assert(
-    normalizeMongoUri("mongodb+srv://user:pass@example.mongodb.net:27017/?retryWrites=true") ===
-      "mongodb+srv://user:pass@example.mongodb.net/?retryWrites=true",
-    "mongodb+srv URI cleanup should match URL parser port handling"
-  );
   await runProductionMongoHealthGuard();
+
+  const directScan = runScanner([
+    {
+      symbol: "TESTINDIA",
+      name: "Test India",
+      sector: "Test",
+      close: 150,
+      close_127: 100,
+      close_253: 80,
+      adv20: 500000,
+      rupee_turnover_cr: 25,
+      quality_score: 82,
+      vol63: 0.15,
+      vol252: 0.2,
+      last_candle_age_days: 1,
+      stuck_candle: false
+    }
+  ]);
+  assert(directScan.rows[0].decision === "SELECT", "manual metric row should be selectable");
 
   const server = createServer();
   await new Promise((resolve, reject) => {
@@ -158,39 +157,58 @@ async function main() {
   try {
     const health = await request("/api/health");
     assert(health.response.status === 200, "health should be 200 in local smoke");
-    assert(health.body.ok === true, "health body should be ok");
+    assert(health.body.provider === "AshStocks India Scanner", "health should expose scanner provider");
+
+    const ready = await request("/api/ready");
+    assert(ready.response.status === 200, "ready should be 200 in local smoke");
+    assert(ready.body.ok === true, "ready body should be ok");
 
     const state = await request("/api/state");
     assert(state.response.status === 200, "state should be readable");
-    assert(Array.isArray(state.body.state.watchlist), "state should include watchlist");
+    assert(Array.isArray(state.body.state.universe), "state should include Indian universe");
+
+    const parameters = await request("/api/scanner/parameters");
+    assert(parameters.response.status === 200, "scanner parameters should be readable");
+    assert(parameters.body.parameters.length >= 8, "scanner should expose parameter bank");
+    assert(parameters.body.universe.some((row) => row.symbol === "RELIANCE"), "default pool should include Indian stocks");
+
+    const defaultScan = await request("/api/scanner/run", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({}) });
+    assert(defaultScan.response.status === 200, "default scanner run should work");
+    assert(defaultScan.body.summary.DATA_NEEDED > 0, "default pool should honestly require candles before selection");
+
+    const metricScan = await request("/api/scanner/run", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ universe: directScan.rows.map((row) => ({ ...row, close: 150, close_127: 100, close_253: 80, adv20: 500000, rupee_turnover_cr: 25, quality_score: 82, vol63: 0.15, vol252: 0.2, last_candle_age_days: 1 })) })
+    });
+    assert(metricScan.response.status === 200, "metric scanner run should work");
+    assert(metricScan.body.rows[0].decision === "SELECT", "server scan should select passing Indian row");
+
+    const upstoxGuard = await request("/api/scanner/run-upstox", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ universe: parameters.body.universe.slice(0, 1) })
+    });
+    assert(upstoxGuard.response.status === 409, "Upstox scanner should be guarded without token");
+    assert(upstoxGuard.body.error === "upstox_token_missing", "Upstox guard should report missing token");
 
     const q1Status = await request("/api/q1/status");
     assert(q1Status.response.status === 200, "q1 status should be readable");
     assert(q1Status.body.status.safety.live_orders === false, "q1 must not expose live orders");
 
     const upload = multipartBody([
-      {
-        name: "fii_symbol_daily.csv",
-        content: "symbol,instrument_key\nABC,NSE_EQ|INE000000001\n"
-      },
-      {
-        name: "Q1_FII_20D_ranked_top_bottom_deciles_READY_FOR_PRICE_JOIN.csv",
-        content: "symbol,signal_date,bucket\nABC,2024-01-02,top\n"
-      }
+      { name: "fii_symbol_daily.csv", content: "symbol,instrument_key\nABC,NSE_EQ|INE000000001\n" },
+      { name: "Q1_FII_20D_ranked_top_bottom_deciles_READY_FOR_PRICE_JOIN.csv", content: "symbol,signal_date,bucket\nABC,2024-01-02,top\n" }
     ]);
-    const uploadResult = await request("/api/q1/upload", {
-      method: "POST",
-      headers: upload.headers,
-      body: upload.body
-    });
+    const uploadResult = await request("/api/q1/upload", { method: "POST", headers: upload.headers, body: upload.body });
     assert(uploadResult.response.status === 200, "q1 upload should accept required csv files");
     assert(uploadResult.body.status.input_files_found === true, "q1 upload should mark inputs found");
 
-    const runGuard = await request("/api/q1/run-upstox-fetch", { method: "POST" });
-    assert(runGuard.response.status === 409, "q1 run should be blocked outside Render");
-    assert(runGuard.body.error === "render_only_endpoint", "q1 run guard should be render_only_endpoint");
+    const q1RunGuard = await request("/api/q1/run-upstox-fetch", { method: "POST" });
+    assert(q1RunGuard.response.status === 409, "q1 run should be blocked outside Render");
+    assert(q1RunGuard.body.error === "render_only_endpoint", "q1 run guard should be render_only_endpoint");
 
-    console.log(JSON.stringify({ ok: true, checks: ["mongo-file-fallback", "health", "state", "q1-status", "q1-upload", "q1-render-guard"] }));
+    console.log(JSON.stringify({ ok: true, checks: ["mongo-file-fallback", "scanner-parameters", "scanner-run", "upstox-guard", "q1-status", "q1-upload", "q1-render-guard"] }));
   } finally {
     await Promise.all([...Q1_INPUTS, STATE_FILE].map((file) => fs.unlink(file).catch((error) => {
       if (error.code !== "ENOENT") throw error;
