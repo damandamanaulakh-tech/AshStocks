@@ -2,6 +2,7 @@ import http from "node:http";
 import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
+import zlib from "node:zlib";
 import { spawn } from "node:child_process";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
@@ -51,6 +52,9 @@ const Q1_ALLOWED_UPLOADS = new Set(Q1_REQUIRED_INPUTS);
 const Q1_ALLOWED_DOWNLOADS = new Set([...Q1_OUTPUT_FILES, ...Q1_EXTRA_DOWNLOADS]);
 const ENGINE_VERSION = "ashstocks-selection-v0.1-proof";
 const DEFAULT_STARTING_CAPITAL = 1_000_000;
+const MAX_UNIVERSE_ROWS = 5_000;
+const UPSTOX_NSE_INSTRUMENTS_URL = "https://assets.upstox.com/market-quote/instruments/exchange/NSE.json.gz";
+const UPSTOX_COMPLETE_INSTRUMENTS_URL = "https://assets.upstox.com/market-quote/instruments/exchange/complete.json.gz";
 
 const MIME_TYPES = {
   ".html": "text/html; charset=utf-8",
@@ -306,7 +310,7 @@ function sanitizeState(input = {}) {
   return {
     theme: state.theme === "dark" ? "dark" : "light",
     selectedView: String(state.selectedView || "scanner").slice(0, 40),
-    universe: normalizeScannerUniverse(state.universe).slice(0, 1000),
+    universe: normalizeScannerUniverse(state.universe).slice(0, MAX_UNIVERSE_ROWS),
     scannerSettings: normalizeScannerSettings(state.scannerSettings || {})
   };
 }
@@ -570,7 +574,7 @@ function normalizeScannerRows(input) {
   return (Array.isArray(input) ? input : [])
     .map((row) => normalizeScannerRow(row))
     .filter((row) => row.symbol)
-    .slice(0, 1000);
+    .slice(0, MAX_UNIVERSE_ROWS);
 }
 
 function normalizeScannerUniverse(input) {
@@ -580,11 +584,14 @@ function normalizeScannerUniverse(input) {
 
 function normalizeScannerRow(row = {}) {
   return {
-    symbol: normalizeSymbol(row.symbol || row.tradingsymbol || row.trading_symbol || row.ticker),
-    name: String(row.name || row.company || row.company_name || row.short_name || row.symbol || "").trim().slice(0, 120),
+    symbol: normalizeSymbol(row.symbol || row.tradingsymbol || row.trading_symbol || row.tradingSymbol || row.ticker),
+    name: String(row.name || row.company || row.company_name || row.short_name || row.shortName || row.symbol || "").trim().slice(0, 120),
     sector: String(row.sector || row.industry || "Unmapped").trim().slice(0, 80),
     exchange: String(row.exchange || "NSE").trim().toUpperCase().slice(0, 12),
     instrument_key: String(row.instrument_key || row.instrumentKey || row.upstox_key || "").trim(),
+    isin: String(row.isin || "").trim(),
+    instrument_type: String(row.instrument_type || row.instrumentType || "").trim().toUpperCase(),
+    security_type: String(row.security_type || row.securityType || "").trim(),
     close: numericValue(row.close ?? row.current_close ?? row.currentClose ?? row.last_price),
     close_127: numericValue(row.close_127 ?? row.close127 ?? row.close_6m),
     close_253: numericValue(row.close_253 ?? row.close253 ?? row.close_12m),
@@ -1080,7 +1087,144 @@ function upstoxStatus() {
     token_visible: Boolean(ENV.UPSTOX_ACCESS_TOKEN),
     historical_candles_only: true,
     live_orders: false,
-    endpoint: "https://api.upstox.com/v2/historical-candle/{instrument_key}/day/{to_date}/{from_date}"
+    endpoint: "https://api.upstox.com/v2/historical-candle/{instrument_key}/day/{to_date}/{from_date}",
+    instruments_json_url: UPSTOX_NSE_INSTRUMENTS_URL,
+    complete_instruments_json_url: UPSTOX_COMPLETE_INSTRUMENTS_URL
+  };
+}
+
+function dataBankSummary(state = defaultState()) {
+  const universe = normalizeScannerUniverse(state.universe);
+  const withInstrumentKeys = universe.filter((row) => row.instrument_key).length;
+  const dataSources = unique(universe.map((row) => row.data_source || "manual/input"));
+  return {
+    provider: "AshStocks India Scanner",
+    engine: ENGINE_VERSION,
+    universe_count: universe.length,
+    rows_with_instrument_key: withInstrumentKeys,
+    built_in_universe_count: INDIA_UNIVERSE.length,
+    max_universe_rows: MAX_UNIVERSE_ROWS,
+    data_sources: dataSources,
+    upstox: upstoxStatus(),
+    requirements: {
+      exchange: "NSE",
+      segment: "NSE_EQ",
+      instrument_type: "EQ",
+      daily_candles_required: 253,
+      historical_window_days_requested: 470,
+      min_adv20_shares: defaultScannerSettings().adv20Min,
+      min_rupee_turnover_cr: defaultScannerSettings().turnoverCrMin,
+      max_stale_days: defaultScannerSettings().maxStaleDays,
+      max_correlation: defaultScannerSettings().correlationThreshold,
+      live_orders: false,
+      paper_only: true
+    },
+    remaining_gaps: [
+      "15Y point-in-time OHLCV bank is not complete",
+      "FII/DII/PWOI/IFR overlays are not complete",
+      "Scheduled daily paper loop is not complete",
+      "Live Render proof must pass verify:live after deploy"
+    ]
+  };
+}
+
+async function dataBankStatus() {
+  const store = await getStore();
+  const state = await store.getState();
+  return {
+    ok: true,
+    storage: store.mode,
+    source: store.source || null,
+    persistent: store.persistent,
+    warning: store.warning || null,
+    data_bank: dataBankSummary(state)
+  };
+}
+
+async function resolveRequestUniverse(body = {}) {
+  if (Array.isArray(body.universe) && body.universe.length) {
+    return { universe: body.universe, source: body.source || "request-universe" };
+  }
+  const store = await getStore();
+  const state = await store.getState();
+  return { universe: state.universe, source: body.source || "saved-data-bank" };
+}
+
+async function gunzipMaybe(buffer) {
+  const data = Buffer.from(buffer);
+  if (data.length >= 2 && data[0] === 0x1f && data[1] === 0x8b) {
+    return new Promise((resolve, reject) => {
+      zlib.gunzip(data, (error, unzipped) => {
+        if (error) reject(error);
+        else resolve(unzipped);
+      });
+    });
+  }
+  return data;
+}
+
+async function fetchUpstoxInstrumentRecords(url = UPSTOX_NSE_INSTRUMENTS_URL) {
+  const response = await fetch(url, { headers: { accept: "application/json, application/gzip" } });
+  if (!response.ok) {
+    const text = await response.text().catch(() => "");
+    throw new Error(`Upstox instruments ${response.status}: ${text.slice(0, 180) || response.statusText}`);
+  }
+  const unzipped = await gunzipMaybe(await response.arrayBuffer());
+  const payload = JSON.parse(unzipped.toString("utf8"));
+  if (Array.isArray(payload)) return payload;
+  if (Array.isArray(payload?.data)) return payload.data;
+  throw new Error("Upstox instruments response did not contain an array");
+}
+
+function upstoxInstrumentToScannerRow(record = {}) {
+  const exchange = String(record.exchange || "").trim().toUpperCase();
+  const segment = String(record.segment || "").trim().toUpperCase();
+  const instrumentType = String(record.instrument_type || "").trim().toUpperCase();
+  const symbol = normalizeSymbol(record.trading_symbol || record.tradingsymbol || record.short_name || record.name);
+  const instrumentKey = String(record.instrument_key || "").trim();
+  if (!symbol || !instrumentKey) return null;
+  if (exchange !== "NSE" || segment !== "NSE_EQ" || instrumentType !== "EQ") return null;
+  return {
+    symbol,
+    name: String(record.short_name || record.name || symbol).trim(),
+    sector: "Unmapped",
+    exchange: "NSE",
+    instrument_key: instrumentKey,
+    isin: String(record.isin || "").trim(),
+    instrument_type: instrumentType,
+    security_type: String(record.security_type || "").trim(),
+    data_source: "Upstox NSE instruments JSON"
+  };
+}
+
+function normalizeUpstoxEquityUniverse(records, limit = MAX_UNIVERSE_ROWS) {
+  const bySymbol = new Map();
+  for (const record of records) {
+    const row = upstoxInstrumentToScannerRow(record);
+    if (!row) continue;
+    if (!bySymbol.has(row.symbol)) bySymbol.set(row.symbol, row);
+  }
+  return normalizeScannerRows([...bySymbol.values()]).slice(0, limit);
+}
+
+async function loadUpstoxNseDataBank(options = {}) {
+  const limit = Math.min(MAX_UNIVERSE_ROWS, Math.max(1, Math.floor(finiteOr(options.limit ?? options.max, MAX_UNIVERSE_ROWS))));
+  const url = String(options.url || UPSTOX_NSE_INSTRUMENTS_URL);
+  const records = await fetchUpstoxInstrumentRecords(url);
+  const universe = normalizeUpstoxEquityUniverse(records, limit);
+  if (!universe.length) throw new Error("No NSE EQ rows found in Upstox instruments file");
+  const store = await getStore();
+  const previous = await store.getState();
+  const state = await store.saveState({ ...previous, universe });
+  return {
+    ok: true,
+    source: "Upstox NSE instruments JSON",
+    url,
+    total_records_read: records.length,
+    saved_universe: state.universe.length,
+    rows_with_instrument_key: state.universe.filter((row) => row.instrument_key).length,
+    sample: state.universe.slice(0, 5),
+    data_bank: dataBankSummary(state)
   };
 }
 
@@ -1112,13 +1256,14 @@ async function fetchUpstoxCandles(instrumentKey, from, to) {
   return normalizeCandles(payload?.data?.candles || []);
 }
 
-async function runUpstoxScanner(body = {}) {
+async function runUpstoxScanner(body = {}, fallbackUniverse = null) {
   if (!ENV.UPSTOX_ACCESS_TOKEN) return { ok: false, error: "upstox_token_missing", status: upstoxStatus() };
   const window = defaultDateWindow();
   const from = String(body.from || window.from).slice(0, 10);
   const to = String(body.to || window.to).slice(0, 10);
   const maxLimit = Math.min(200, Math.max(1, Math.floor(finiteOr(ENV.UPSTOX_SCAN_LIMIT, 60))));
-  const baseRows = normalizeScannerUniverse(body.universe).filter((row) => row.instrument_key).slice(0, maxLimit);
+  const universeInput = Array.isArray(body.universe) && body.universe.length ? body.universe : fallbackUniverse;
+  const baseRows = normalizeScannerUniverse(universeInput).filter((row) => row.instrument_key).slice(0, maxLimit);
   if (!baseRows.length) return { ok: false, error: "instrument_key_missing", status: upstoxStatus() };
 
   const fetchedRows = await Promise.all(
@@ -1323,9 +1468,11 @@ async function quoteFor(symbol) {
   };
 }
 
-async function searchSymbols(query) {
+async function searchSymbols(query, universe = INDIA_UNIVERSE) {
   const q = normalizeSymbol(query);
-  return INDIA_UNIVERSE.filter((row) => !q || row.symbol.includes(q) || row.name.toUpperCase().includes(q)).slice(0, 10);
+  return normalizeScannerUniverse(universe)
+    .filter((row) => !q || row.symbol.includes(q) || row.name.toUpperCase().includes(q))
+    .slice(0, 20);
 }
 
 async function newsFor() {
@@ -1349,6 +1496,7 @@ export function createServer() {
           engine: ENGINE_VERSION,
           storage: hasMongoUri ? "mongodb" : fallbackReady ? "file" : "unconfigured",
           persistent: hasMongoUri || fallbackReady,
+          data_bank: dataBankSummary(),
           upstox: upstoxStatus(),
           auth,
           ready: auth.configured && (!requireDb() || hasMongoUri || fallbackReady),
@@ -1366,6 +1514,7 @@ export function createServer() {
           }
           const timeoutMs = mongoTimeoutMs();
           const store = await withTimeout(getStore(), timeoutMs + 2_000, `MongoDB health check timed out after ${timeoutMs}ms`);
+          const state = await store.getState();
           json(res, 200, {
             ok: true,
             provider: "AshStocks India Scanner",
@@ -1374,6 +1523,7 @@ export function createServer() {
             source: store.source || null,
             persistent: store.persistent,
             warning: store.warning || null,
+            data_bank: dataBankSummary(state),
             upstox: upstoxStatus(),
             auth,
             time: Date.now()
@@ -1473,8 +1623,31 @@ export function createServer() {
         return;
       }
 
+      if (url.pathname === "/api/data-bank/status") {
+        json(res, 200, await dataBankStatus());
+        return;
+      }
+
+      if (url.pathname === "/api/data-bank/load-upstox-nse") {
+        if (req.method !== "POST") {
+          json(res, 405, { ok: false, error: "Method not allowed" });
+          return;
+        }
+        json(res, 200, await loadUpstoxNseDataBank(await readJsonBody(req)));
+        return;
+      }
+
       if (url.pathname === "/api/scanner/parameters") {
-        json(res, 200, { ok: true, parameters: SCANNER_PARAMETERS, universe: INDIA_UNIVERSE, settings: defaultScannerSettings(), upstox: upstoxStatus() });
+        const store = await getStore();
+        const state = await store.getState();
+        json(res, 200, {
+          ok: true,
+          parameters: SCANNER_PARAMETERS,
+          universe: state.universe,
+          settings: state.scannerSettings || defaultScannerSettings(),
+          data_bank: dataBankSummary(state),
+          upstox: upstoxStatus()
+        });
         return;
       }
 
@@ -1490,7 +1663,8 @@ export function createServer() {
 
       if (url.pathname === "/api/scanner/run") {
         const body = req.method === "POST" ? await readJsonBody(req) : {};
-        json(res, 200, runScanner(body.universe, { ...(body.settings || {}), holdings: body.holdings, existingHoldings: body.existingHoldings }));
+        const resolved = await resolveRequestUniverse(body);
+        json(res, 200, runScanner(resolved.universe, { ...(body.settings || {}), source: resolved.source, holdings: body.holdings, existingHoldings: body.existingHoldings }));
         return;
       }
 
@@ -1499,7 +1673,9 @@ export function createServer() {
           json(res, 405, { ok: false, error: "Method not allowed" });
           return;
         }
-        const result = await runUpstoxScanner(await readJsonBody(req));
+        const body = await readJsonBody(req);
+        const resolved = await resolveRequestUniverse(body);
+        const result = await runUpstoxScanner(body, resolved.universe);
         json(res, result.ok ? 200 : 409, result);
         return;
       }
@@ -1545,7 +1721,9 @@ export function createServer() {
       }
 
       if (url.pathname === "/api/search") {
-        json(res, 200, { ok: true, results: await searchSymbols(url.searchParams.get("q")) });
+        const store = await getStore();
+        const state = await store.getState();
+        json(res, 200, { ok: true, results: await searchSymbols(url.searchParams.get("q"), state.universe) });
         return;
       }
 
@@ -1567,4 +1745,4 @@ if (runtimeProcess?.argv?.[1] && import.meta.url === pathToFileURL(runtimeProces
   });
 }
 
-export { quoteFor, searchSymbols, newsFor, sanitizeState, normalizeMongoUri, runScanner, normalizeSymbol };
+export { quoteFor, searchSymbols, newsFor, sanitizeState, normalizeMongoUri, runScanner, normalizeSymbol, dataBankSummary, loadUpstoxNseDataBank };
