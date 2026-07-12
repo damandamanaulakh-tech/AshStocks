@@ -188,14 +188,21 @@ async function main() {
     const health = await request("/api/health");
     assert(health.response.status === 200, "health should be 200 in local smoke");
     assert(health.body.provider === "AshStocks India Scanner", "health should expose scanner provider");
+    assert(health.body.data_bank.requirements.daily_candles_required === 253, "health should expose data-bank candle requirement");
 
     const ready = await request("/api/ready");
     assert(ready.response.status === 200, "ready should be 200 in local smoke");
     assert(ready.body.ok === true, "ready body should be ok");
+    assert(ready.body.data_bank.upstox.instruments_json_url.endsWith("NSE.json.gz"), "ready should expose Upstox NSE instruments JSON URL");
 
     const state = await request("/api/state");
     assert(state.response.status === 200, "state should be readable");
     assert(Array.isArray(state.body.state.universe), "state should include Indian universe");
+
+    const dataBank = await request("/api/data-bank/status");
+    assert(dataBank.response.status === 200, "data-bank status should be readable");
+    assert(dataBank.body.data_bank.universe_count >= 30, "data-bank status should count current universe");
+    assert(dataBank.body.data_bank.upstox.instruments_json_url.includes("assets.upstox.com"), "data-bank status should show official Upstox instruments source");
 
     const parameters = await request("/api/scanner/parameters");
     assert(parameters.response.status === 200, "scanner parameters should be readable");
@@ -205,6 +212,38 @@ async function main() {
     const defaultScan = await request("/api/scanner/run", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({}) });
     assert(defaultScan.response.status === 200, "default scanner run should work");
     assert(defaultScan.body.summary.DATA_NEEDED > 0, "default pool should honestly require candles before selection");
+
+    const savedUniverse = [
+      {
+        symbol: "SAVEDINDIA",
+        name: "Saved India",
+        sector: "Test",
+        exchange: "NSE",
+        instrument_key: "NSE_EQ|INESAVED0001",
+        close: 150,
+        close_127: 100,
+        close_253: 80,
+        adv20: 500000,
+        rupee_turnover_cr: 25,
+        vol63: 0.15,
+        vol252: 0.2,
+        last_candle_age_days: 1,
+        stuck_candle: false
+      }
+    ];
+    const saveState = await request("/api/state", {
+      method: "PUT",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ state: { ...state.body.state, universe: savedUniverse } })
+    });
+    assert(saveState.response.status === 200, "state should save data-bank universe");
+    assert(saveState.body.state.universe[0].symbol === "SAVEDINDIA", "saved universe should be stored");
+
+    const savedScan = await request("/api/scanner/run", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({}) });
+    assert(savedScan.response.status === 200, "scanner should run from saved data bank");
+    assert(savedScan.body.source === "saved-data-bank", "scanner should label saved data-bank source");
+    assert(savedScan.body.rows[0].symbol === "SAVEDINDIA", "scanner should use saved universe when request has no universe");
+    assert(savedScan.body.rows[0].decision === "SELECT", "saved data-bank row should be selectable");
 
     const metricScan = await request("/api/scanner/run", {
       method: "POST",
@@ -238,7 +277,7 @@ async function main() {
     assert(q1RunGuard.response.status === 409, "q1 run should be blocked outside Render");
     assert(q1RunGuard.body.error === "render_only_endpoint", "q1 run guard should be render_only_endpoint");
 
-    console.log(JSON.stringify({ ok: true, checks: ["mongo-file-fallback", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "upstox-guard", "q1-status", "q1-upload", "q1-render-guard"] }));
+    console.log(JSON.stringify({ ok: true, checks: ["mongo-file-fallback", "data-bank-status", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "upstox-guard", "q1-status", "q1-upload", "q1-render-guard"] }));
   } finally {
     await Promise.all([...Q1_INPUTS, STATE_FILE].map((file) => fs.unlink(file).catch((error) => {
       if (error.code !== "ENOENT") throw error;
