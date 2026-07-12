@@ -8,12 +8,11 @@ const state = {
   summary: { total: 0, SELECT: 0, WATCH: 0, REJECT: 0, BLOCKED: 0, DATA_NEEDED: 0 },
   activeView: "scanner",
   lastPayload: null,
+  dataBank: null,
   sectors: []
 };
 
 const DECISIONS = ["SELECT", "WATCH", "REJECT", "BLOCKED", "DATA_NEEDED"];
-const UPSTOX_NSE_INSTRUMENTS_URL = "https://assets.upstox.com/market-quote/instruments/exchange/NSE.json.gz";
-const MAX_MASTER_POOL = 1000;
 
 function init() {
   document.body.classList.toggle("dark", localStorage.getItem("ashstocks-theme") === "dark");
@@ -58,15 +57,24 @@ function bindEvents() {
 async function loadReady() {
   const payload = await api("/api/ready");
   const upstox = payload.upstox || {};
+  state.dataBank = payload.data_bank || state.dataBank;
   $("#connectionLabel").textContent = payload.storage ? `${payload.storage} storage` : "backend ready";
-  $("#runtimeLabel").textContent = payload.warning || payload.engine || "Render backend";
+  $("#runtimeLabel").textContent = dataBankRuntimeLabel(payload);
   $("#upstoxLabel").textContent = upstox.token_visible ? "Token visible" : "Token missing";
+}
+
+function dataBankRuntimeLabel(payload = {}) {
+  if (payload.warning) return payload.warning;
+  const count = payload.data_bank?.universe_count;
+  if (Number.isFinite(Number(count))) return `${payload.engine || "engine"} | ${count} rows`;
+  return payload.engine || "Render backend";
 }
 
 async function loadParameters() {
   const payload = await api("/api/scanner/parameters");
   state.parameters = payload.parameters || [];
-  if (!state.universe.length) state.universe = payload.universe || [];
+  state.dataBank = payload.data_bank || state.dataBank;
+  state.universe = payload.universe || [];
   renderParameters();
 }
 
@@ -110,57 +118,22 @@ async function runUpstoxScan() {
 async function loadUpstoxMasterPool() {
   setBusy(true, "Loading Upstox NSE master");
   try {
-    const instruments = await fetchUpstoxNseMaster();
-    const rows = instrumentsToUniverse(instruments);
-    if (!rows.length) throw new Error("No NSE equity instruments found in Upstox master");
-    state.universe = rows;
-    $("#csvInput").value = rowsToCsv(rows);
+    const loaded = await api("/api/data-bank/load-upstox-nse", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({})
+    });
+    state.dataBank = loaded.data_bank || state.dataBank;
+    await loadParameters();
+    $("#csvInput").value = rowsToCsv(loaded.sample || state.universe.slice(0, 25));
     await runServerScan();
     switchView("scanner");
-    setMessage(`Loaded ${rows.length} NSE equity instruments from Upstox master`, "positive");
+    setMessage(`Loaded ${loaded.saved_universe} NSE equity rows into data bank`, "positive");
   } catch (error) {
     setMessage(error.message, "negative");
   } finally {
     setBusy(false);
   }
-}
-
-async function fetchUpstoxNseMaster() {
-  const response = await fetch(UPSTOX_NSE_INSTRUMENTS_URL, { cache: "no-store" });
-  if (!response.ok) throw new Error(`Upstox NSE master unavailable: ${response.status}`);
-  const buffer = await response.arrayBuffer();
-  const plainText = new TextDecoder().decode(buffer);
-  try {
-    return JSON.parse(plainText);
-  } catch {
-    if (!("DecompressionStream" in window)) throw new Error("Browser cannot decompress Upstox NSE master file");
-    const stream = new Blob([buffer]).stream().pipeThrough(new DecompressionStream("gzip"));
-    const text = await new Response(stream).text();
-    return JSON.parse(text);
-  }
-}
-
-function instrumentsToUniverse(instruments) {
-  const seen = new Set();
-  return (Array.isArray(instruments) ? instruments : [])
-    .filter((item) => item?.segment === "NSE_EQ" && item?.exchange === "NSE")
-    .filter((item) => ["EQ", "BE"].includes(String(item.instrument_type || "").toUpperCase()))
-    .map((item) => ({
-      symbol: item.trading_symbol || item.short_name || item.name,
-      name: item.name || item.short_name || item.trading_symbol,
-      sector: "NSE Equity",
-      exchange: "NSE",
-      instrument_key: item.instrument_key,
-      data_source: "Upstox NSE instrument master"
-    }))
-    .filter((row) => row.symbol && row.instrument_key)
-    .filter((row) => {
-      const key = `${row.symbol}|${row.instrument_key}`;
-      if (seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    })
-    .slice(0, MAX_MASTER_POOL);
 }
 
 function rowsToCsv(rows) {
@@ -236,9 +209,9 @@ function renderRows() {
         <td>${formatNumber(row.score)}</td>
         <td>${formatScorePair(row)}</td>
         <td>${formatReturnPair(row)}</td>
-        <td>${formatTarget(row)}</td>
-        <td>${formatPaper(row)}</td>
-        <td>${formatLiquidity(row)}</td>
+        <td>${escapeHtml(formatTarget(row))}</td>
+        <td>${escapeHtml(formatPaper(row))}</td>
+        <td>${escapeHtml(formatLiquidity(row))}</td>
         <td class="reason-cell">${escapeHtml(row.reason || "")}</td>
       </tr>
     `)
@@ -295,8 +268,13 @@ async function applyCsv() {
   try {
     const rows = csvToObjects($("#csvInput").value);
     if (!rows.length) throw new Error("CSV has no stock rows");
-    state.universe = rows;
-    setMessage(`${rows.length} stock rows applied`, "positive");
+    const saved = await api("/api/state", {
+      method: "PUT",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ universe: rows })
+    });
+    state.universe = saved.state?.universe || rows;
+    setMessage(`${state.universe.length} stock rows saved`, "positive");
     await runServerScan();
     switchView("scanner");
   } catch (error) {
