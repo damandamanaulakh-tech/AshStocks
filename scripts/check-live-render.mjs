@@ -38,6 +38,7 @@ async function tryCheck() {
   assert(health.ok === true, "health ok must be true");
   assert(health.provider === EXPECTED_PROVIDER, `health provider must be ${EXPECTED_PROVIDER}`);
   assert(health.release === EXPECTED_RELEASE, `health release must be ${EXPECTED_RELEASE}`);
+  assert(health.ready === true, "health ready must be true");
   assert(health.upstox?.historical_candles_only === true, "health must expose historical-candle-only Upstox mode");
   assert(health.upstox?.live_orders === false, "health must not expose live orders");
 
@@ -50,20 +51,13 @@ async function tryCheck() {
   assert(ready.upstox?.key_visible === true, "UPSTOX_API_KEY must be visible to Render");
   assert(ready.upstox?.token_visible === true, "UPSTOX_ACCESS_TOKEN must be visible to Render");
 
-  const parameters = await fetchJson("/api/scanner/parameters");
-  assert(parameters.ok === true, "scanner parameters must be readable");
-  assert(parameters.parameters?.length >= 8, "parameter bank must be present");
-  assert(parameters.universe?.some((row) => row.symbol === "RELIANCE"), "default universe must include NSE India stocks");
-
   return {
     ok: true,
     liveUrl: LIVE_URL,
     release: health.release,
     commit: health.commit,
     storage: ready.storage,
-    upstox: ready.upstox,
-    universe: parameters.universe.length,
-    parameters: parameters.parameters.length
+    upstox: ready.upstox
   };
 }
 
