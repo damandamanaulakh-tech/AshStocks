@@ -59,7 +59,7 @@ async function loadReady() {
   const payload = await api("/api/ready");
   const upstox = payload.upstox || {};
   $("#connectionLabel").textContent = payload.storage ? `${payload.storage} storage` : "backend ready";
-  $("#runtimeLabel").textContent = payload.warning || "Render backend";
+  $("#runtimeLabel").textContent = payload.warning || payload.engine || "Render backend";
   $("#upstoxLabel").textContent = upstox.token_visible ? "Token visible" : "Token missing";
 }
 
@@ -212,7 +212,7 @@ function visibleRows() {
   const decision = $("#decisionFilter").value;
   const sector = $("#sectorFilter").value;
   return state.rows.filter((row) => {
-    const text = `${row.symbol} ${row.name} ${row.sector} ${row.reason}`.toLowerCase();
+    const text = `${row.symbol} ${row.name} ${row.sector} ${row.reason} ${formatTarget(row)} ${formatPaper(row)}`.toLowerCase();
     return (!query || text.includes(query)) && (decision === "ALL" || row.decision === decision) && (sector === "ALL" || row.sector === sector);
   });
 }
@@ -221,7 +221,7 @@ function renderRows() {
   const rows = visibleRows();
   const body = $("#resultBody");
   if (!rows.length) {
-    body.innerHTML = `<tr><td colspan="8" class="empty-cell">No rows match the current filters.</td></tr>`;
+    body.innerHTML = `<tr><td colspan="10" class="empty-cell">No rows match the current filters.</td></tr>`;
     return;
   }
   body.innerHTML = rows
@@ -234,8 +234,10 @@ function renderRows() {
         <td>${escapeHtml(row.sector || "")}</td>
         <td><span class="decision ${row.decision}">${row.decision}</span></td>
         <td>${formatNumber(row.score)}</td>
-        <td>${formatPct(row.return_6m_pct)}</td>
-        <td>${formatPct(row.return_12m_pct)}</td>
+        <td>${formatScorePair(row)}</td>
+        <td>${formatReturnPair(row)}</td>
+        <td>${formatTarget(row)}</td>
+        <td>${formatPaper(row)}</td>
         <td>${formatLiquidity(row)}</td>
         <td class="reason-cell">${escapeHtml(row.reason || "")}</td>
       </tr>
@@ -360,9 +362,27 @@ function normalizeHeader(header) {
 
 function exportRows() {
   const rows = visibleRows();
-  const headers = ["symbol", "name", "sector", "decision", "score", "return_6m_pct", "return_12m_pct", "adv20", "rupee_turnover_cr", "reason"];
+  const headers = [
+    "symbol",
+    "name",
+    "sector",
+    "decision",
+    "score",
+    "momentum_score",
+    "quality_score",
+    "return_6m_pct",
+    "return_12m_pct",
+    "target_potential_label",
+    "target_potential_left_pct",
+    "paper_order_status",
+    "paper_order_qty",
+    "paper_order_value",
+    "adv20",
+    "rupee_turnover_cr",
+    "reason"
+  ];
   const csv = [headers.join(",")]
-    .concat(rows.map((row) => headers.map((header) => csvCell(row[header])).join(",")))
+    .concat(rows.map((row) => headers.map((header) => csvCell(exportValue(row, header))).join(",")))
     .join("\n");
   const url = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
   const link = document.createElement("a");
@@ -370,6 +390,15 @@ function exportRows() {
   link.download = `ashstocks_scan_${new Date().toISOString().slice(0, 10)}.csv`;
   link.click();
   URL.revokeObjectURL(url);
+}
+
+function exportValue(row, header) {
+  if (header === "target_potential_label") return row.target_potential?.label || "";
+  if (header === "target_potential_left_pct") return row.target_potential?.potential_left_pct ?? "";
+  if (header === "paper_order_status") return row.paper_order?.status || "";
+  if (header === "paper_order_qty") return row.paper_order?.qty ?? "";
+  if (header === "paper_order_value") return row.paper_order?.estimated_value ?? row.portfolio?.position_value ?? "";
+  return row[header];
 }
 
 function csvCell(value) {
@@ -422,6 +451,27 @@ function formatNumber(value) {
 
 function formatPct(value) {
   return value === null || value === undefined || !Number.isFinite(Number(value)) ? "-" : `${Number(value).toFixed(2)}%`;
+}
+
+function formatScorePair(row) {
+  return `${formatNumber(row.momentum_score)} / ${formatNumber(row.quality_score)}`;
+}
+
+function formatReturnPair(row) {
+  return `${formatPct(row.return_6m_pct)} / ${formatPct(row.return_12m_pct)}`;
+}
+
+function formatTarget(row) {
+  const target = row.target_potential || {};
+  if (!target.label) return "-";
+  const potential = Number.isFinite(Number(target.potential_left_pct)) ? ` ${Number(target.potential_left_pct).toFixed(1)}%` : "";
+  return `${target.label}${potential}`;
+}
+
+function formatPaper(row) {
+  const order = row.paper_order || {};
+  if (order.status === "READY") return `READY ${order.qty || 0}`;
+  return order.status || "-";
 }
 
 function formatLiquidity(row) {
