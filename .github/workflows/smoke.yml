@@ -17,6 +17,6 @@ jobs:
           node-version: 20
           cache: npm
       - name: Install
-        run: npm ci
+        run: npm install
       - name: Check and smoke
         run: npm run check
