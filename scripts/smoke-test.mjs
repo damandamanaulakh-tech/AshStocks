@@ -273,6 +273,16 @@ async function main() {
     assert(upstoxGuard.response.status === 409, "Upstox scanner should be guarded without token");
     assert(upstoxGuard.body.error === "upstox_token_missing", "Upstox guard should report missing token");
 
+    const paperStatus = await request("/api/paper-engine/status");
+    assert(paperStatus.response.status === 200, "paper-engine status should be readable");
+    assert(paperStatus.body.status.safety.live_orders === false, "paper-engine must not expose live orders");
+    assert(paperStatus.body.status.safety.paper_only === true, "paper-engine should be paper-only");
+    assert(paperStatus.body.status.slots_ist.includes("09:20"), "paper-engine should expose IST schedule");
+
+    const paperRunGuard = await request("/api/paper-engine/run", { method: "POST" });
+    assert(paperRunGuard.response.status === 409, "paper-engine manual run should be guarded without token");
+    assert(paperRunGuard.body.error === "upstox_token_missing", "paper-engine guard should report missing token");
+
     const q1Status = await request("/api/q1/status");
     assert(q1Status.response.status === 200, "q1 status should be readable");
     assert(q1Status.body.status.safety.live_orders === false, "q1 must not expose live orders");
@@ -289,7 +299,7 @@ async function main() {
     assert(q1RunGuard.response.status === 409, "q1 run should be blocked outside Render");
     assert(q1RunGuard.body.error === "render_only_endpoint", "q1 run guard should be render_only_endpoint");
 
-    console.log(JSON.stringify({ ok: true, checks: ["mongo-file-fallback", "data-bank-status", "scan-ledger", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "upstox-guard", "q1-status", "q1-upload", "q1-render-guard"] }));
+    console.log(JSON.stringify({ ok: true, checks: ["mongo-file-fallback", "data-bank-status", "scan-ledger", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "upstox-guard", "paper-engine-status", "paper-engine-guard", "q1-status", "q1-upload", "q1-render-guard"] }));
   } finally {
     await Promise.all([...Q1_INPUTS, STATE_FILE, SCAN_LEDGER_FILE].map((file) => fs.unlink(file).catch((error) => {
       if (error.code !== "ENOENT") throw error;

@@ -14,6 +14,7 @@ AshStocks is a private, server-backed Indian/NSE stock selection engine. The bro
 - Durable scan ledger for scanner proof records
 - Upstox historical daily candle fetch only
 - Q1 FII 20D Render-side runner
+- Production paper-engine schedule at 09:20, 14:30, and 15:35 IST
 - MongoDB adapter with Render file-storage fallback
 - No live orders and no broker write endpoint
 
@@ -122,6 +123,25 @@ https://api.upstox.com/v2/historical-candle/{instrument_key}/day/{to_date}/{from
 
 No live orders are exposed.
 
+## Paper Engine
+
+Production starts a paper-only scheduler with these IST slots:
+
+```text
+09:20
+14:30
+15:35
+```
+
+The scheduler reuses the saved data bank and Upstox historical candles, appends a scan-ledger proof record, and produces paper-order intent only. It never writes broker orders.
+
+```text
+GET  /api/paper-engine/status
+POST /api/paper-engine/run
+```
+
+Use `DISABLE_PAPER_ENGINE_SCHEDULER=true` to disable the production timer, or `ENABLE_PAPER_ENGINE_SCHEDULER=true` to force-enable it outside production.
+
 ## Q1 Render-side Upstox Runner
 
 The Q1 path is available at:
@@ -158,7 +178,6 @@ This is now a real NSE scanner/proof engine, but it is not the full final resear
 - 15-year point-in-time OHLCV ingestion and yearly walk-forward proof
 - NSE equity bhavcopy, FII/DII, and PWOI parsers
 - IFR damage overlay from live cross-sectional data
-- scheduled 09:20 / 14:30 / 15:35 paper-engine loop
 - Mongo is still allowed to fall back to Render file storage until credentials are proven live
 
 ## Files

@@ -56,6 +56,8 @@ const DEFAULT_STARTING_CAPITAL = 1_000_000;
 const MAX_UNIVERSE_ROWS = 5_000;
 const MAX_SCAN_LEDGER_RECORDS = 250;
 const MAX_SCAN_LEDGER_ROWS = 75;
+const PAPER_ENGINE_SLOTS_IST = Object.freeze(["09:20", "14:30", "15:35"]);
+const PAPER_ENGINE_POLL_MS = 60_000;
 const UPSTOX_NSE_INSTRUMENTS_URL = "https://assets.upstox.com/market-quote/instruments/exchange/NSE.json.gz";
 const UPSTOX_COMPLETE_INSTRUMENTS_URL = "https://assets.upstox.com/market-quote/instruments/exchange/complete.json.gz";
 
@@ -124,6 +126,17 @@ const CSV_TEMPLATE = [
 ].join("\n");
 
 let storePromise;
+let paperEngineScheduler;
+const paperEngineState = {
+  enabled: false,
+  running: false,
+  startedAt: null,
+  lastCheckAt: null,
+  lastRunAt: null,
+  lastSlotKey: null,
+  lastResult: null,
+  runKeys: {}
+};
 
 function requireDb() {
   return ENV.REQUIRE_DB === "true" || ENV.NODE_ENV === "production";
@@ -1432,6 +1445,117 @@ async function runUpstoxScanner(body = {}, fallbackUniverse = null) {
   };
 }
 
+function paperEngineSchedulerEnabled() {
+  if (ENV.DISABLE_PAPER_ENGINE_SCHEDULER === "true") return false;
+  if (ENV.ENABLE_PAPER_ENGINE_SCHEDULER === "true") return true;
+  return ENV.NODE_ENV === "production";
+}
+
+function paperEngineStatus() {
+  return {
+    enabled: paperEngineSchedulerEnabled(),
+    running: paperEngineState.running,
+    startedAt: paperEngineState.startedAt,
+    lastCheckAt: paperEngineState.lastCheckAt,
+    lastRunAt: paperEngineState.lastRunAt,
+    lastSlotKey: paperEngineState.lastSlotKey,
+    slots_ist: PAPER_ENGINE_SLOTS_IST,
+    poll_ms: PAPER_ENGINE_POLL_MS,
+    safety: { paper_only: true, live_orders: false, broker_write_enabled: false, historical_candles_only: true },
+    lastResult: paperEngineState.lastResult
+  };
+}
+
+function istClockParts(date = new Date()) {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Kolkata",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false
+  }).formatToParts(date);
+  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  return {
+    date: `${values.year}-${values.month}-${values.day}`,
+    time: `${values.hour}:${values.minute}`
+  };
+}
+
+function duePaperEngineSlot(date = new Date()) {
+  const ist = istClockParts(date);
+  if (!PAPER_ENGINE_SLOTS_IST.includes(ist.time)) return null;
+  const key = `${ist.date}T${ist.time}+05:30`;
+  if (paperEngineState.runKeys[key]) return null;
+  return { key, date: ist.date, time: ist.time };
+}
+
+async function runPaperEngineOnce(trigger = "manual", slot = null) {
+  const store = await getStore();
+  const state = await store.getState();
+  if (!ENV.UPSTOX_ACCESS_TOKEN) {
+    const result = { ok: false, error: "upstox_token_missing", trigger, slot, status: upstoxStatus() };
+    paperEngineState.lastResult = result;
+    return result;
+  }
+
+  const scan = await runUpstoxScanner({ universe: state.universe, settings: state.scannerSettings }, state.universe);
+  if (!scan.ok) {
+    const result = { ...scan, trigger, slot };
+    paperEngineState.lastResult = result;
+    return result;
+  }
+
+  const ledger = await appendScanLedger(scan, {
+    store,
+    mode: slot?.time ? `paper-engine-${slot.time}` : "paper-engine-manual",
+    source: "paper-engine-upstox-historical"
+  });
+  const result = {
+    ok: true,
+    trigger,
+    slot,
+    ledger: scanLedgerMeta(ledger),
+    summary: scan.summary,
+    scanned: scan.scanned,
+    safety: { paper_only: true, live_orders: false, broker_write_enabled: false, historical_candles_only: true }
+  };
+  paperEngineState.lastRunAt = new Date().toISOString();
+  paperEngineState.lastSlotKey = slot?.key || null;
+  paperEngineState.lastResult = result;
+  return result;
+}
+
+async function paperEngineTick() {
+  if (!paperEngineSchedulerEnabled() || paperEngineState.running) return;
+  paperEngineState.lastCheckAt = new Date().toISOString();
+  const slot = duePaperEngineSlot();
+  if (!slot) return;
+  paperEngineState.runKeys[slot.key] = true;
+  paperEngineState.running = true;
+  try {
+    await runPaperEngineOnce("schedule", slot);
+  } catch (error) {
+    paperEngineState.lastResult = { ok: false, trigger: "schedule", slot, error: error.message };
+  } finally {
+    paperEngineState.running = false;
+  }
+}
+
+function startPaperEngineScheduler() {
+  if (paperEngineScheduler || !paperEngineSchedulerEnabled()) return;
+  paperEngineState.enabled = true;
+  paperEngineState.startedAt = new Date().toISOString();
+  paperEngineScheduler = setInterval(() => {
+    paperEngineTick().catch((error) => {
+      paperEngineState.lastResult = { ok: false, trigger: "schedule", error: error.message };
+    });
+  }, PAPER_ENGINE_POLL_MS);
+  paperEngineScheduler.unref?.();
+  paperEngineTick().catch(() => {});
+}
+
 async function ensureQ1Dirs() {
   await fsp.mkdir(Q1_INPUT_DIR, { recursive: true });
   await fsp.mkdir(Q1_OUTPUT_DIR, { recursive: true });
@@ -1622,6 +1746,7 @@ async function newsFor() {
 }
 
 export function createServer() {
+  startPaperEngineScheduler();
   return http.createServer(async (req, res) => {
     try {
       const url = new URL(req.url, `http://${req.headers.host || "localhost"}`);
@@ -1845,6 +1970,21 @@ export function createServer() {
 
       if (url.pathname === "/api/upstox/status") {
         json(res, 200, { ok: true, status: upstoxStatus() });
+        return;
+      }
+
+      if (url.pathname === "/api/paper-engine/status") {
+        json(res, 200, { ok: true, status: paperEngineStatus() });
+        return;
+      }
+
+      if (url.pathname === "/api/paper-engine/run") {
+        if (req.method !== "POST") {
+          json(res, 405, { ok: false, error: "Method not allowed" });
+          return;
+        }
+        const result = await runPaperEngineOnce("manual", null);
+        json(res, result.ok ? 200 : 409, result);
         return;
       }
 
