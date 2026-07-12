@@ -3,12 +3,13 @@
   "version": "0.2.0",
   "private": true,
   "type": "module",
-  "description": "Server-backed Ash Stock dashboard with live market data, MongoDB persistence, and Q1 Render runner.",
+  "description": "Server-backed Indian NSE stock selection engine with Upstox historical candles, MongoDB persistence, and Q1 Render runner.",
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "check": "node --check server.js && node --check app.js && node --check q1.js && node --check scripts/q1_upstox_price_join.mjs && node --check scripts/smoke-test.mjs",
-    "smoke": "node scripts/smoke-test.mjs"
+    "check": "node --check server.js && node --check app.js && node --check q1.js && node --check scripts/q1_upstox_price_join.mjs && node --check scripts/smoke-test.mjs && node --check scripts/check-live-render.mjs",
+    "smoke": "node scripts/smoke-test.mjs",
+    "verify:live": "node scripts/check-live-render.mjs"
   },
   "dependencies": {
     "mongodb": "^6.12.0"
