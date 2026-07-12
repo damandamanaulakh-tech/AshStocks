@@ -157,7 +157,8 @@ async function loadInnerServer() {
   if (!response.ok) throw new Error(`Unable to load base server source: ${response.status} ${response.statusText}`);
   const patched = patchServerSource(await response.text());
   const hash = crypto.createHash("sha256").update(patched).digest("hex").slice(0, 16);
-  const runtimeDir = path.join(os.tmpdir(), "ashstocks-runtime-server");
+  const runtimeRoot = runtimeProcess?.cwd?.() || os.tmpdir();
+  const runtimeDir = path.join(runtimeRoot, ".ashstocks-runtime-server");
   await fs.promises.mkdir(runtimeDir, { recursive: true });
   const runtimeFile = path.join(runtimeDir, `server-${hash}.mjs`);
   await fs.promises.writeFile(runtimeFile, patched, "utf8");
