@@ -1,6 +1,6 @@
 # AshStocks
 
-AshStocks is a private, server-backed Indian/NSE stock selection engine. The browser is only the client; scanning, parameters, Upstox historical candles, Q1 upload/fetch/download, auth, storage, proof rows, and paper-only order intent live behind the Node backend.
+AshStocks is a private, server-backed Indian/NSE stock selection engine. The browser is only the client; scanning, parameters, Upstox historical candles, NSE data-bank loading, Q1 upload/fetch/download, auth, storage, proof rows, and paper-only order intent live behind the Node backend.
 
 [Deploy this repo on Render](https://render.com/deploy?repo=https://github.com/damandamanaulakh-tech/AshStocks)
 
@@ -8,8 +8,9 @@ AshStocks is a private, server-backed Indian/NSE stock selection engine. The bro
 
 - Private Render app with login gate
 - Indian/NSE scanner, not a USA stock dashboard
-- Curated NSE pool plus browser-side Upstox NSE Master loader
+- Curated NSE pool plus backend Upstox NSE instruments JSON loader
 - Server-side scanner endpoint with AshStocks v0.1 proof rows
+- Saved backend data bank used by scanner runs
 - Upstox historical daily candle fetch only
 - Q1 FII 20D Render-side runner
 - MongoDB adapter with Render file-storage fallback
@@ -29,6 +30,28 @@ The current engine is `ashstocks-selection-v0.1-proof`. Each scan row can return
 - portfolio sizing and paper-only order intent when a row is selectable
 
 Hard gates include data sufficiency, absolute momentum, ADV20, rupee turnover, stale candle, stuck candle, and 60D correlation to existing holdings when holdings are supplied.
+
+## Data Bank
+
+The `NSE Master` button calls the backend loader:
+
+```text
+POST /api/data-bank/load-upstox-nse
+```
+
+That endpoint downloads the official Upstox NSE instruments JSON file, filters `NSE_EQ` equity rows, stores up to 5,000 rows in backend app state, and then scanner runs can use that saved universe.
+
+Status is available at:
+
+```text
+GET /api/data-bank/status
+```
+
+Upstox NSE instruments source:
+
+```text
+https://assets.upstox.com/market-quote/instruments/exchange/NSE.json.gz
+```
 
 ## Run Locally
 
@@ -53,7 +76,7 @@ npm run smoke
 npm run verify:live
 ```
 
-`npm run smoke` checks Mongo/file fallback, scanner parameters, proof-row shape, paper-only order intent, correlation blocking, Upstox missing-token guard, Q1 status/upload, and the Render-only Q1 run guard. It does not call Upstox.
+`npm run smoke` checks Mongo/file fallback, data-bank status, saved-universe scanner behavior, scanner parameters, proof-row shape, paper-only order intent, correlation blocking, Upstox missing-token guard, Q1 status/upload, and the Render-only Q1 run guard. It does not call Upstox.
 
 ## Render Environment
 
@@ -137,8 +160,8 @@ This is now a real NSE scanner/proof engine, but it is not the full final resear
 
 ## Files
 
-- `server.js` - backend, auth, scanner proof engine, Upstox fetch, Q1 runner, Mongo/file storage
-- `app.js` - browser scanner client, NSE Master loader, CSV workflow, proof-field rendering
+- `server.js` - backend, auth, scanner proof engine, Upstox data-bank loader/fetch, Q1 runner, Mongo/file storage
+- `app.js` - browser scanner client, backend NSE Master action, CSV workflow, proof-field rendering
 - `index.html` - scanner app shell
 - `styles.css` - product UI styling
 - `render.yaml` - Render deployment blueprint
