@@ -35,6 +35,7 @@ const SESSION_COOKIE = "ash_stock_session";
 const DEFAULT_MONGO_TIMEOUT_MS = 8_000;
 const MONGO_URI_KEYS = ["MONGODB_URI", "MONGO_URI", "DATABASE_URL"];
 const STATE_FILE = path.join(ROOT, "data", "app_state.json");
+const SCAN_LEDGER_FILE = path.join(ROOT, "data", "scan_ledger.jsonl");
 const Q1_INPUT_DIR = path.join(ROOT, "data", "q1_inputs");
 const Q1_OUTPUT_DIR = path.join(ROOT, "data", "q1_outputs");
 const Q1_REQUIRED_INPUTS = [
@@ -53,6 +54,8 @@ const Q1_ALLOWED_DOWNLOADS = new Set([...Q1_OUTPUT_FILES, ...Q1_EXTRA_DOWNLOADS]
 const ENGINE_VERSION = "ashstocks-selection-v0.1-proof";
 const DEFAULT_STARTING_CAPITAL = 1_000_000;
 const MAX_UNIVERSE_ROWS = 5_000;
+const MAX_SCAN_LEDGER_RECORDS = 250;
+const MAX_SCAN_LEDGER_ROWS = 75;
 const UPSTOX_NSE_INSTRUMENTS_URL = "https://assets.upstox.com/market-quote/instruments/exchange/NSE.json.gz";
 const UPSTOX_COMPLETE_INSTRUMENTS_URL = "https://assets.upstox.com/market-quote/instruments/exchange/complete.json.gz";
 
@@ -470,6 +473,7 @@ async function createStore() {
 
 function createMemoryStore() {
   let state = sanitizeState(defaultState());
+  let scanLedger = [];
   return {
     mode: "memory",
     persistent: false,
@@ -479,6 +483,15 @@ function createMemoryStore() {
     async saveState(nextState) {
       state = sanitizeState(nextState);
       return state;
+    },
+    async appendScanRecord(record) {
+      const saved = sanitizeScanRecord(record);
+      scanLedger.unshift(saved);
+      scanLedger = scanLedger.slice(0, MAX_SCAN_LEDGER_RECORDS);
+      return saved;
+    },
+    async listScanRecords(limit) {
+      return scanLedger.slice(0, normalizeLedgerLimit(limit));
     }
   };
 }
@@ -504,6 +517,35 @@ async function createFileStore(warning) {
     await fsp.rename(temp, STATE_FILE);
   }
 
+  async function appendLedger(record) {
+    const saved = sanitizeScanRecord(record);
+    await fsp.mkdir(path.dirname(SCAN_LEDGER_FILE), { recursive: true });
+    await fsp.appendFile(SCAN_LEDGER_FILE, `${JSON.stringify(saved)}\n`);
+    return saved;
+  }
+
+  async function readLedger(limit) {
+    try {
+      const text = await fsp.readFile(SCAN_LEDGER_FILE, "utf8");
+      const records = text
+        .split(/\r?\n/)
+        .filter(Boolean)
+        .map((line) => {
+          try {
+            return sanitizeScanRecord(JSON.parse(line));
+          } catch {
+            return null;
+          }
+        })
+        .filter(Boolean)
+        .reverse();
+      return records.slice(0, normalizeLedgerLimit(limit));
+    } catch (error) {
+      if (error.code === "ENOENT") return [];
+      throw error;
+    }
+  }
+
   let state = await readState();
   await writeState(state);
   return {
@@ -519,6 +561,12 @@ async function createFileStore(warning) {
       state = sanitizeState(nextState);
       await writeState(state);
       return state;
+    },
+    async appendScanRecord(record) {
+      return appendLedger(record);
+    },
+    async listScanRecords(limit) {
+      return readLedger(limit);
     }
   };
 }
@@ -540,7 +588,9 @@ async function createMongoStore() {
       await withTimeout(client.connect(), timeoutMs + 2_000, `MongoDB connection timed out after ${timeoutMs}ms`);
       const database = client.db(ENV.MONGODB_DB || "ashstock");
       const collection = database.collection("app_state");
+      const scanLedger = database.collection("scan_ledger");
       await withTimeout(collection.createIndex({ updatedAt: -1 }), timeoutMs + 2_000, `MongoDB setup timed out after ${timeoutMs}ms`);
+      await withTimeout(scanLedger.createIndex({ createdAt: -1 }), timeoutMs + 2_000, `MongoDB scan ledger setup timed out after ${timeoutMs}ms`);
       return {
         mode: "mongodb",
         source: candidate.key,
@@ -560,6 +610,22 @@ async function createMongoStore() {
             { upsert: true }
           );
           return state;
+        },
+        async appendScanRecord(record) {
+          const saved = sanitizeScanRecord(record);
+          await scanLedger.insertOne({ ...saved, createdAtDate: new Date(saved.createdAt) });
+          return saved;
+        },
+        async listScanRecords(limit) {
+          const docs = await scanLedger
+            .find({})
+            .sort({ createdAt: -1 })
+            .limit(normalizeLedgerLimit(limit))
+            .toArray();
+          return docs.map((doc) => {
+            const { _id, createdAtDate, ...record } = doc;
+            return sanitizeScanRecord(record);
+          });
         }
       };
     } catch (error) {
@@ -1081,6 +1147,81 @@ function unique(values) {
   return [...new Set(values.filter(Boolean))];
 }
 
+function normalizeLedgerLimit(limit) {
+  const value = Math.floor(finiteOr(limit, 25));
+  return Math.min(MAX_SCAN_LEDGER_RECORDS, Math.max(1, value));
+}
+
+function compactScanRow(row = {}) {
+  return {
+    symbol: row.symbol,
+    name: row.name,
+    sector: row.sector,
+    exchange: row.exchange,
+    decision: row.decision,
+    score: row.score,
+    momentum_score: row.momentum_score,
+    quality_score: row.quality_score,
+    return_6m_pct: row.return_6m_pct,
+    return_12m_pct: row.return_12m_pct,
+    adv20: row.adv20,
+    rupee_turnover_cr: row.rupee_turnover_cr,
+    close: row.close,
+    target_potential: row.target_potential,
+    paper_order: row.paper_order,
+    gates: row.gates,
+    reason: row.reason,
+    data_source: row.data_source
+  };
+}
+
+function sanitizeScanRecord(record = {}) {
+  const summary = record.summary && typeof record.summary === "object" ? record.summary : {};
+  const rows = Array.isArray(record.rows) ? record.rows.map(compactScanRow).slice(0, MAX_SCAN_LEDGER_ROWS) : [];
+  return {
+    id: String(record.id || crypto.randomUUID()),
+    createdAt: Number.isFinite(Date.parse(record.createdAt)) ? new Date(record.createdAt).toISOString() : new Date().toISOString(),
+    engine: String(record.engine || ENGINE_VERSION),
+    mode: String(record.mode || "scanner").slice(0, 40),
+    source: String(record.source || "server-scanner").slice(0, 120),
+    universe: Math.max(0, Math.floor(finiteOr(record.universe, rows.length))),
+    summary: {
+      total: Math.max(0, Math.floor(finiteOr(summary.total, rows.length))),
+      SELECT: Math.max(0, Math.floor(finiteOr(summary.SELECT, 0))),
+      WATCH: Math.max(0, Math.floor(finiteOr(summary.WATCH, 0))),
+      REJECT: Math.max(0, Math.floor(finiteOr(summary.REJECT, 0))),
+      BLOCKED: Math.max(0, Math.floor(finiteOr(summary.BLOCKED, 0))),
+      DATA_NEEDED: Math.max(0, Math.floor(finiteOr(summary.DATA_NEEDED, 0)))
+    },
+    settings: normalizeScannerSettings(record.settings || {}),
+    rows
+  };
+}
+
+function buildScanRecord(scan, context = {}) {
+  return sanitizeScanRecord({
+    id: crypto.randomUUID(),
+    createdAt: new Date().toISOString(),
+    engine: scan.engine || ENGINE_VERSION,
+    mode: context.mode || "scanner",
+    source: context.source || scan.source,
+    universe: scan.universe,
+    summary: scan.summary,
+    settings: scan.settings,
+    rows: scan.rows
+  });
+}
+
+async function appendScanLedger(scan, context = {}) {
+  const store = context.store || (await getStore());
+  if (!store.appendScanRecord) return null;
+  return store.appendScanRecord(buildScanRecord(scan, context));
+}
+
+function scanLedgerMeta(record) {
+  return record ? { id: record.id, createdAt: record.createdAt, mode: record.mode, source: record.source } : null;
+}
+
 function upstoxStatus() {
   return {
     key_visible: Boolean(ENV.UPSTOX_API_KEY || ENV.UPSTOX_CLIENT_ID),
@@ -1123,6 +1264,7 @@ function dataBankSummary(state = defaultState()) {
       "15Y point-in-time OHLCV bank is not complete",
       "FII/DII/PWOI/IFR overlays are not complete",
       "Scheduled daily paper loop is not complete",
+      "Mongo credentials are not proven live when storage reports file fallback",
       "Live Render proof must pass verify:live after deploy"
     ]
   };
@@ -1661,10 +1803,26 @@ export function createServer() {
         return;
       }
 
+      if (url.pathname === "/api/scanner/ledger") {
+        const store = await getStore();
+        const records = store.listScanRecords ? await store.listScanRecords(url.searchParams.get("limit")) : [];
+        json(res, 200, {
+          ok: true,
+          storage: store.mode,
+          source: store.source || null,
+          persistent: store.persistent,
+          records
+        });
+        return;
+      }
+
       if (url.pathname === "/api/scanner/run") {
         const body = req.method === "POST" ? await readJsonBody(req) : {};
+        const store = await getStore();
         const resolved = await resolveRequestUniverse(body);
-        json(res, 200, runScanner(resolved.universe, { ...(body.settings || {}), source: resolved.source, holdings: body.holdings, existingHoldings: body.existingHoldings }));
+        const scan = runScanner(resolved.universe, { ...(body.settings || {}), source: resolved.source, holdings: body.holdings, existingHoldings: body.existingHoldings });
+        const ledger = await appendScanLedger(scan, { store, mode: "scanner", source: resolved.source });
+        json(res, 200, { ...scan, ledger: scanLedgerMeta(ledger) });
         return;
       }
 
@@ -1674,8 +1832,13 @@ export function createServer() {
           return;
         }
         const body = await readJsonBody(req);
+        const store = await getStore();
         const resolved = await resolveRequestUniverse(body);
         const result = await runUpstoxScanner(body, resolved.universe);
+        if (result.ok) {
+          const ledger = await appendScanLedger(result, { store, mode: "upstox-historical", source: result.source || "Upstox historical candles" });
+          result.ledger = scanLedgerMeta(ledger);
+        }
         json(res, result.ok ? 200 : 409, result);
         return;
       }

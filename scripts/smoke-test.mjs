@@ -12,6 +12,7 @@ const Q1_INPUTS = [
   path.join(ROOT, "data", "q1_inputs", "Q1_FII_20D_ranked_top_bottom_deciles_READY_FOR_PRICE_JOIN.csv")
 ];
 const STATE_FILE = path.join(ROOT, "data", "app_state.json");
+const SCAN_LEDGER_FILE = path.join(ROOT, "data", "scan_ledger.jsonl");
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -212,6 +213,12 @@ async function main() {
     const defaultScan = await request("/api/scanner/run", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({}) });
     assert(defaultScan.response.status === 200, "default scanner run should work");
     assert(defaultScan.body.summary.DATA_NEEDED > 0, "default pool should honestly require candles before selection");
+    assert(defaultScan.body.ledger?.id, "default scanner run should create a scan ledger record");
+
+    const initialLedger = await request("/api/scanner/ledger?limit=5");
+    assert(initialLedger.response.status === 200, "scan ledger should be readable");
+    assert(initialLedger.body.records.length >= 1, "scan ledger should include the default scan");
+    assert(initialLedger.body.records[0].summary.DATA_NEEDED > 0, "scan ledger should preserve scan summary");
 
     const savedUniverse = [
       {
@@ -244,6 +251,11 @@ async function main() {
     assert(savedScan.body.source === "saved-data-bank", "scanner should label saved data-bank source");
     assert(savedScan.body.rows[0].symbol === "SAVEDINDIA", "scanner should use saved universe when request has no universe");
     assert(savedScan.body.rows[0].decision === "SELECT", "saved data-bank row should be selectable");
+    assert(savedScan.body.ledger?.source === "saved-data-bank", "saved scan should report ledger metadata");
+
+    const savedLedger = await request("/api/scanner/ledger?limit=3");
+    assert(savedLedger.body.records[0].source === "saved-data-bank", "latest ledger record should be the saved data-bank scan");
+    assert(savedLedger.body.records[0].rows[0].symbol === "SAVEDINDIA", "scan ledger should store compact proof rows");
 
     const metricScan = await request("/api/scanner/run", {
       method: "POST",
@@ -277,9 +289,9 @@ async function main() {
     assert(q1RunGuard.response.status === 409, "q1 run should be blocked outside Render");
     assert(q1RunGuard.body.error === "render_only_endpoint", "q1 run guard should be render_only_endpoint");
 
-    console.log(JSON.stringify({ ok: true, checks: ["mongo-file-fallback", "data-bank-status", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "upstox-guard", "q1-status", "q1-upload", "q1-render-guard"] }));
+    console.log(JSON.stringify({ ok: true, checks: ["mongo-file-fallback", "data-bank-status", "scan-ledger", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "upstox-guard", "q1-status", "q1-upload", "q1-render-guard"] }));
   } finally {
-    await Promise.all([...Q1_INPUTS, STATE_FILE].map((file) => fs.unlink(file).catch((error) => {
+    await Promise.all([...Q1_INPUTS, STATE_FILE, SCAN_LEDGER_FILE].map((file) => fs.unlink(file).catch((error) => {
       if (error.code !== "ENOENT") throw error;
     })));
     await new Promise((resolve) => server.close(resolve));

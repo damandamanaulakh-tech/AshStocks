@@ -11,6 +11,7 @@ AshStocks is a private, server-backed Indian/NSE stock selection engine. The bro
 - Curated NSE pool plus backend Upstox NSE instruments JSON loader
 - Server-side scanner endpoint with AshStocks v0.1 proof rows
 - Saved backend data bank used by scanner runs
+- Durable scan ledger for scanner proof records
 - Upstox historical daily candle fetch only
 - Q1 FII 20D Render-side runner
 - MongoDB adapter with Render file-storage fallback
@@ -105,10 +106,13 @@ If `APP_PASSWORD` is missing in production, `/api/ready` fails. If Mongo is miss
 ```text
 GET  /api/scanner/parameters
 GET  /api/scanner/template
+GET  /api/scanner/ledger
 POST /api/scanner/run
 POST /api/scanner/run-upstox
 GET  /api/upstox/status
 ```
+
+Every successful scanner run appends a compact proof record to the scan ledger. Mongo deployments use the `scan_ledger` collection. Render file fallback uses `data/scan_ledger.jsonl`.
 
 Upstox historical candle URI:
 
@@ -155,7 +159,6 @@ This is now a real NSE scanner/proof engine, but it is not the full final resear
 - NSE equity bhavcopy, FII/DII, and PWOI parsers
 - IFR damage overlay from live cross-sectional data
 - scheduled 09:20 / 14:30 / 15:35 paper-engine loop
-- durable scan ledger beyond the current app-state store
 - Mongo is still allowed to fall back to Render file storage until credentials are proven live
 
 ## Files
