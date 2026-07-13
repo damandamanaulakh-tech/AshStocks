@@ -4,6 +4,7 @@ import path from "node:path";
 import crypto from "node:crypto";
 import { pathToFileURL } from "node:url";
 import { applyAdvancedScannerPatches } from "./server-quality-patch.mjs";
+import { applySelectionFlowPatches } from "./server-selection-patch.mjs";
 
 const runtimeProcess = globalThis.process;
 const PORT = Number(runtimeProcess?.env?.PORT || 4173);
@@ -151,6 +152,7 @@ function startDataBankBootstrap() {
     'start bootstrap'
   );
   output = applyAdvancedScannerPatches(output, mustReplace);
+  output = applySelectionFlowPatches(output, mustReplace);
   return output;
 }
 
