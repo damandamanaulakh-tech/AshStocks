@@ -1,0 +1,248 @@
+.benchmark-view {
+  display: none;
+}
+
+.benchmark-view.active {
+  display: block;
+}
+
+.benchmark-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px;
+  margin-bottom: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--panel), var(--panel-soft));
+  box-shadow: var(--shadow);
+}
+
+.benchmark-hero h3,
+.benchmark-hero p {
+  margin: 0;
+}
+
+.benchmark-hero h3 {
+  margin-top: 4px;
+  font-size: 1.35rem;
+}
+
+.benchmark-hero p {
+  color: var(--muted);
+}
+
+.benchmark-summary {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(120px, 1fr));
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.benchmark-tile,
+.competitor-card,
+.parameter-map-card,
+.build-step {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.benchmark-tile {
+  min-height: 90px;
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+}
+
+.benchmark-tile span {
+  color: var(--muted);
+}
+
+.benchmark-tile strong {
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+.benchmark-tile.built {
+  border-top: 4px solid var(--green);
+}
+
+.benchmark-tile.partial,
+.benchmark-tile.intentional {
+  border-top: 4px solid var(--blue);
+}
+
+.benchmark-tile.gap {
+  border-top: 4px solid var(--red);
+}
+
+.benchmark-tile.later {
+  border-top: 4px solid var(--saffron);
+}
+
+.competitor-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(170px, 1fr));
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.competitor-card {
+  display: grid;
+  gap: 8px;
+  min-height: 150px;
+  padding: 14px;
+}
+
+.competitor-card span,
+.competitor-card p {
+  color: var(--muted);
+}
+
+.competitor-card p {
+  margin: 0;
+  line-height: 1.45;
+}
+
+.benchmark-panel {
+  margin-bottom: 14px;
+}
+
+.comparison-table-wrap {
+  overflow: auto;
+}
+
+.comparison-table-wrap table {
+  min-width: 1320px;
+}
+
+.comparison-table-wrap td {
+  min-width: 150px;
+  line-height: 1.45;
+}
+
+.status-chip {
+  display: inline-flex;
+  width: fit-content;
+  margin-top: 8px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  background: var(--panel-soft);
+  color: var(--muted);
+}
+
+.status-chip.built {
+  color: var(--green);
+}
+
+.status-chip.gap {
+  color: var(--red);
+}
+
+.status-chip.partial,
+.status-chip.intentional {
+  color: var(--blue);
+}
+
+.status-chip.later {
+  color: var(--saffron);
+}
+
+.parameter-map-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.parameter-map-card {
+  display: grid;
+  gap: 10px;
+  min-height: 168px;
+  padding: 14px;
+}
+
+.parameter-map-card div {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.parameter-map-card span {
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: var(--panel-soft);
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.parameter-map-card.partial span {
+  color: var(--blue);
+}
+
+.parameter-map-card.gap span {
+  color: var(--red);
+}
+
+.parameter-map-card p,
+.parameter-map-card small {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.build-order {
+  display: grid;
+  gap: 10px;
+}
+
+.build-step {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  min-height: 46px;
+  padding: 10px;
+}
+
+.build-step b {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: var(--teal);
+  color: #fff;
+}
+
+@media (max-width: 1280px) {
+  .competitor-grid,
+  .benchmark-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .parameter-map-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 780px) {
+  .benchmark-hero {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .competitor-grid,
+  .benchmark-summary,
+  .parameter-map-grid {
+    grid-template-columns: 1fr;
+  }
+}
