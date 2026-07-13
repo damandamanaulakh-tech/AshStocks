@@ -591,6 +591,218 @@ td span {
   padding: 14px;
 }
 
+.trade-hero {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+  padding: 18px;
+  margin-bottom: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--panel), var(--panel-soft));
+  box-shadow: var(--shadow);
+}
+
+.trade-hero h3,
+.trade-hero p {
+  margin: 0;
+}
+
+.trade-hero h3 {
+  margin-top: 4px;
+  font-size: 1.35rem;
+}
+
+.trade-hero p {
+  color: var(--muted);
+}
+
+.trade-mode {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.mode-pill,
+.action-pill,
+.status-dot {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 10px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-weight: 800;
+  font-size: 0.78rem;
+}
+
+.mode-pill.active,
+.action-pill.ready {
+  background: rgba(22, 138, 95, 0.14);
+  border-color: rgba(22, 138, 95, 0.3);
+  color: var(--green);
+}
+
+.action-pill.review {
+  background: rgba(199, 122, 22, 0.16);
+  border-color: rgba(199, 122, 22, 0.3);
+  color: var(--saffron);
+}
+
+.status-dot {
+  color: var(--green);
+}
+
+.trade-metric {
+  min-height: 92px;
+}
+
+.trade-grid-main,
+.paper-layout.actionable-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(320px, 0.6fr);
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.paper-table-wrap {
+  overflow: auto;
+}
+
+.paper-table-wrap table {
+  min-width: 1100px;
+}
+
+.urr-thesis {
+  display: grid;
+  gap: 10px;
+  color: var(--muted);
+}
+
+.urr-thesis strong {
+  color: var(--text);
+  font-size: 1.05rem;
+}
+
+.urr-thesis p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.thesis-row,
+.readiness-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.thesis-row span,
+.ready-card {
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+  color: var(--text);
+  font-weight: 800;
+}
+
+.factor-bars {
+  display: grid;
+  gap: 10px;
+}
+
+.factor-row {
+  display: grid;
+  grid-template-columns: 150px minmax(80px, 1fr) 44px;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.factor-row div {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--panel-soft);
+}
+
+.factor-row i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--green);
+}
+
+.factor-row b {
+  color: var(--text);
+  text-align: right;
+}
+
+.compact-list {
+  display: grid;
+  gap: 10px;
+}
+
+.compact-row {
+  display: grid;
+  gap: 3px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+}
+
+.compact-row span {
+  color: var(--green);
+  font-weight: 800;
+}
+
+.compact-row small {
+  color: var(--muted);
+}
+
+.watchlist-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.watchlist-card {
+  display: grid;
+  gap: 7px;
+  min-height: 128px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+}
+
+.watchlist-card strong {
+  color: var(--text);
+}
+
+.watchlist-card span {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.ready-card {
+  display: grid;
+  gap: 4px;
+}
+
+.ready-card span {
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
 .server-required-screen {
   min-height: 100vh;
   display: grid;
@@ -706,13 +918,17 @@ td span {
   .metric-grid,
   .parameter-grid,
   .framework-grid,
-  .feed-grid {
+  .feed-grid,
+  .watchlist-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .controls-band,
   .data-grid,
-  .q1-grid {
+  .q1-grid,
+  .trade-grid-main,
+  .paper-layout.actionable-layout,
+  .readiness-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -728,13 +944,15 @@ td span {
 
   .topbar,
   .section-head,
-  .panel-header {
+  .panel-header,
+  .trade-hero {
     align-items: stretch;
     flex-direction: column;
   }
 
   .toolbar,
-  .inline-actions {
+  .inline-actions,
+  .trade-mode {
     justify-content: flex-start;
   }
 
@@ -743,7 +961,9 @@ td span {
   .q1-metrics,
   .parameter-grid,
   .framework-grid,
-  .feed-grid {
+  .feed-grid,
+  .watchlist-grid,
+  .thesis-row {
     grid-template-columns: 1fr;
   }
 
