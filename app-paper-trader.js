@@ -136,10 +136,11 @@
     try {
       const status = await loadPaperTraderStatus();
       const lastPlan = status.status?.last_plan;
-      const key = `ashstocks-paper-auto-${new Date().toISOString().slice(0, 10)}`;
-      if (!lastPlan && !sessionStorage.getItem(key)) {
+      const emptyOrOldPlan = !lastPlan || lastPlan.engine !== "ashstocks-paper-trader-v0.3" || Number(lastPlan.summary?.buy_queue || 0) === 0;
+      const key = `ashstocks-paper-auto-v3-${new Date().toISOString().slice(0, 10)}`;
+      if (emptyOrOldPlan && !sessionStorage.getItem(key)) {
         sessionStorage.setItem(key, "1");
-        setTimeout(() => runPaperTrader().catch(showError), 1200);
+        setTimeout(() => runPaperTrader().catch(showError), 500);
       }
     } catch (error) {
       showError(error);
