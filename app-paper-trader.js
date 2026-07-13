@@ -61,14 +61,14 @@
           <div id="urrThesis" class="urr-thesis"></div>
         </section>
         <section class="panel signal-panel">
-          <div class="panel-header"><h3>10-Factor Ranking</h3><span id="rankingScore">0 / 100</span></div>
+          <div class="panel-header"><h3>10-Factor Ranking</h3><span id="rankingScore">Pending</span></div>
           <div id="factorBars" class="factor-bars"></div>
         </section>
       </div>
 
       <div class="paper-layout actionable-layout">
         <section class="panel paper-panel buy-panel">
-          <div class="panel-header"><h3>Selected Stocks</h3><span id="buyQueueCount">0</span></div>
+          <div class="panel-header"><h3>Selected Stocks</h3><span id="buyQueueCount">Pending</span></div>
           <div class="paper-table-wrap"><table><thead><tr><th>Rank</th><th>Stock</th><th>Conviction</th><th>Score</th><th>Entry Zone</th><th>T1 / T2</th><th>Stop</th><th>Qty</th><th>Why / Exit</th></tr></thead><tbody id="buyQueueBody"></tbody></table></div>
         </section>
         <section class="panel paper-panel side-panel">
@@ -79,11 +79,11 @@
 
       <div class="trade-grid-main">
         <section class="panel paper-panel">
-          <div class="panel-header"><h3>Theme Watchlists</h3><span id="watchlistCount">0 buckets</span></div>
+          <div class="panel-header"><h3>Theme Watchlists</h3><span id="watchlistCount">Pending</span></div>
           <div class="watchlist-grid" id="watchlistGrid"></div>
         </section>
         <section class="panel paper-panel">
-          <div class="panel-header"><h3>Order Readiness</h3><span>Upstox Historical</span></div>
+          <div class="panel-header"><h3>Order Readiness</h3><span>Upstox + Yahoo Fallback</span></div>
           <div id="orderReadiness" class="readiness-grid"></div>
         </section>
       </div>
@@ -112,16 +112,17 @@
   }
 
   async function runPaperTrader() {
-    setBusy(true, "Running advisor engine");
+    setBusy(true, "Running advisor engine with fallback feeds");
     try {
       const payload = await api("/api/paper-trader/run", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ useUpstox: true, settings: { replaceBelowScore: 35, buyQueueSize: 30, maxCandidates: 50 } })
+        body: JSON.stringify({ useUpstox: true, useYahooFallback: true, yahooLimit: 60, settings: { replaceBelowScore: 35, buyQueueSize: 30, maxCandidates: 50 } })
       });
       traderState.lastPlan = payload;
       renderPaperTrader(payload);
-      setLine(`Selected ${payload.summary?.buy_queue || 0} advisor paper stocks`, "positive");
+      const source = payload.fallback_used ? ` via ${payload.fallback_used}` : "";
+      setLine(`Selected ${payload.summary?.buy_queue || 0} advisor paper stocks${source}`, "positive");
     } catch (error) {
       showError(error);
     } finally {
@@ -138,7 +139,7 @@
       const status = await loadPaperTraderStatus();
       const lastPlan = status.status?.last_plan;
       const emptyOrOldPlan = !lastPlan || lastPlan.engine !== ADVISOR_ENGINE || Number(lastPlan.summary?.buy_queue || 0) === 0;
-      const key = `ashstocks-paper-auto-v4-${new Date().toISOString().slice(0, 10)}`;
+      const key = `ashstocks-paper-auto-v4-noblanks-${new Date().toISOString().slice(0, 10)}`;
       if (emptyOrOldPlan && !sessionStorage.getItem(key)) {
         sessionStorage.setItem(key, "1");
         setTimeout(() => runPaperTrader().catch(showError), 500);
@@ -151,7 +152,7 @@
   function renderPaperTrader(plan, statusPayload = {}) {
     const summary = plan?.summary || {};
     const stamp = $("#paperTraderStamp");
-    if (stamp) stamp.textContent = plan?.asOf ? `${plan.engine || ADVISOR_ENGINE} | Last run ${new Date(plan.asOf).toLocaleString()}` : `${statusPayload?.data_bank?.universe_count || 0} NSE rows ready. Run advisor engine.`;
+    if (stamp) stamp.textContent = plan?.asOf ? `${plan.engine || ADVISOR_ENGINE} | ${plan.fallback_used || plan.source || "primary feeds"} | Last run ${new Date(plan.asOf).toLocaleString()}` : `${statusPayload?.data_bank?.universe_count || 0} NSE rows ready. Advisor engine will use Upstox first, Yahoo fallback second.`;
     renderMetrics(summary, statusPayload);
     renderThesis(plan);
     renderFactors(plan);
@@ -179,8 +180,8 @@
     const thesis = $("#urrThesis");
     if (!thesis) return;
     thesis.innerHTML = top
-      ? `<strong>${escapeHtml(top.symbol)}: ${escapeHtml(top.conviction || top.readiness || "READY")} | ${escapeHtml(top.horizon || "")}</strong><p>${escapeHtml(top.thesis || "Ranked by momentum, liquidity, target room, event resilience and theme heat.")}</p><div class="thesis-row"><span>Entry ${entryZone(top)}</span><span>T1/T2 ${money(top.target1)} / ${money(top.target2 || top.target_price)}</span><span>Stop ${money(top.stop_price)}</span></div>`
-      : `<strong>No selected stock yet</strong><p>Run Morning Engine to create paper buy, sell, hold and watchlist decisions.</p>`;
+      ? `<strong>${escapeHtml(top.symbol)}: ${escapeHtml(top.conviction || top.readiness || "REVIEW")} | ${escapeHtml(top.horizon || "Horizon calculating")}</strong><p>${escapeHtml(top.thesis || "Advisor thesis is being calculated from price, momentum, liquidity, theme and risk feeds.")}</p><div class="thesis-row"><span>Entry ${entryZone(top)}</span><span>T1/T2 ${money(top.target1)} / ${money(top.target2 || top.target_price)}</span><span>Stop ${money(top.stop_price)}</span></div>`
+      : `<strong>Advisor engine waiting for run</strong><p>It will fetch Upstox first and Yahoo NSE fallback second. If a feed fails, the failed feed will be named instead of leaving blanks.</p>`;
   }
 
   function renderFactors(plan) {
@@ -196,21 +197,21 @@
     ];
     const panel = $("#factorBars");
     const score = $("#rankingScore");
-    if (score) score.textContent = `${number(top.paper_score || 0)} / 100`;
+    if (score) score.textContent = Number.isFinite(Number(top.paper_score)) ? `${number(top.paper_score)} / 100` : "Pending";
     if (!panel) return;
     panel.innerHTML = rows.map(([label, value]) => {
       const width = Math.max(4, Math.min(100, Number(value) || 0));
-      return `<div class="factor-row"><span>${escapeHtml(label)}</span><div><i style="width:${width}%"></i></div><b>${number(width / 10)}</b></div>`;
+      return `<div class="factor-row"><span>${escapeHtml(label)}</span><div><i style="width:${width}%"></i></div><b>${Number(value) ? number(width / 10) : "Pending"}</b></div>`;
     }).join("");
   }
 
   function renderBuyQueue(rows) {
-    $("#buyQueueCount").textContent = String(rows.length);
+    $("#buyQueueCount").textContent = rows.length ? String(rows.length) : "Run needed";
     const body = $("#buyQueueBody");
     if (!body) return;
     body.innerHTML = rows.length
-      ? rows.map((row) => `<tr><td>${row.rank}</td><td><strong>${escapeHtml(row.symbol)}</strong><span>${escapeHtml(row.name || "")}</span><span>${escapeHtml(row.sector || "")}</span></td><td><span class="action-pill ${row.conviction === "HIGH" ? "ready" : "review"}">${escapeHtml(row.conviction || row.readiness || "REVIEW")}</span><span>${escapeHtml(row.horizon || "")}</span></td><td>${number(row.paper_score)}</td><td>${entryZone(row)}</td><td>${money(row.target1)}<span>${money(row.target2 || row.target_price)}</span></td><td>${money(row.stop_price)}<span>${pct(-row.stop_loss_pct)}</span></td><td>${row.qty || 0}</td><td class="reason-cell"><strong>${escapeHtml(row.setup || "Advisor setup")}</strong><span>${escapeHtml(row.thesis || "")}</span><span>${escapeHtml(row.exit_rule || "")}</span></td></tr>`).join("")
-      : '<tr><td colspan="9" class="empty-cell">No selected stocks yet. Run Morning Engine.</td></tr>';
+      ? rows.map((row) => `<tr><td>${row.rank}</td><td><strong>${escapeHtml(row.symbol || "Symbol pending")}</strong><span>${escapeHtml(row.name || "Name from instrument master")}</span><span>${escapeHtml(row.sector || "Sector inferred")}</span></td><td><span class="action-pill ${row.conviction === "HIGH" ? "ready" : "review"}">${escapeHtml(row.conviction || row.readiness || "REVIEW")}</span><span>${escapeHtml(row.horizon || "Horizon calculating")}</span></td><td>${number(row.paper_score)}</td><td>${entryZone(row)}</td><td>${money(row.target1)}<span>${money(row.target2 || row.target_price)}</span></td><td>${money(row.stop_price)}<span>${pct(-row.stop_loss_pct)}</span></td><td>${row.qty || "Qty after price"}</td><td class="reason-cell"><strong>${escapeHtml(row.setup || "Advisor setup")}</strong><span>${escapeHtml(row.thesis || "Thesis calculating from available feeds")}</span><span>${escapeHtml(row.exit_rule || "Exit rule: target, stop, or score deterioration")}</span></td></tr>`).join("")
+      : '<tr><td colspan="9" class="empty-cell">No selected stocks displayed yet. Run Morning Engine; if Upstox has gaps, Yahoo NSE fallback will fill price candles and the failed feed will be named.</td></tr>';
   }
 
   function renderSellQueue(rows) {
@@ -218,8 +219,8 @@
     const body = $("#sellQueueBody");
     if (!body) return;
     body.innerHTML = rows.length
-      ? rows.map((row) => `<div class="compact-row"><strong>${escapeHtml(row.symbol)}</strong><span>${escapeHtml(row.action)}</span><small>${escapeHtml(row.reason || "")}</small></div>`).join("")
-      : '<div class="compact-row"><strong>No sell now</strong><span>Hold cash discipline</span><small>Targets and stops will appear here after positions exist.</small></div>';
+      ? rows.map((row) => `<div class="compact-row"><strong>${escapeHtml(row.symbol || "Position")}</strong><span>${escapeHtml(row.action || "CHECK")}</span><small>${escapeHtml(row.reason || "Rotation rule pending")}</small></div>`).join("")
+      : '<div class="compact-row"><strong>No sell now</strong><span>Hold or wait</span><small>Targets, stops and replacement rules appear after paper positions exist.</small></div>';
   }
 
   function renderWatchlists(watchlists) {
@@ -227,8 +228,10 @@
     if (!grid) return;
     const themeBuckets = watchlists.themes || {};
     const entries = Object.entries({ Selected: watchlists.selected_30 || watchlists.morning_top_50 || [], "Target Room": watchlists.target_room || [], "Event Resilient": watchlists.event_resilient || [], ...themeBuckets }).filter(([, rows]) => Array.isArray(rows));
-    $("#watchlistCount").textContent = `${entries.length} buckets`;
-    grid.innerHTML = entries.map(([name, rows]) => `<article class="watchlist-card"><strong>${escapeHtml(name)}</strong>${rows.slice(0, 6).map((row) => `<span>${escapeHtml(row.symbol)} <small>${escapeHtml(row.conviction || number(row.paper_score))}</small></span>`).join("") || '<span class="subtle">Empty</span>'}</article>`).join("");
+    $("#watchlistCount").textContent = entries.length ? `${entries.length} buckets` : "Run needed";
+    grid.innerHTML = entries.length
+      ? entries.map(([name, rows]) => `<article class="watchlist-card"><strong>${escapeHtml(name)}</strong>${rows.slice(0, 6).map((row) => `<span>${escapeHtml(row.symbol || "Symbol")} <small>${escapeHtml(row.conviction || number(row.paper_score))}</small></span>`).join("") || '<span class="subtle">No candidates in this bucket yet</span>'}</article>`).join("")
+      : '<article class="watchlist-card"><strong>Waiting for advisor run</strong><span>Theme buckets populate after candles are fetched</span></article>';
   }
 
   function renderReadiness(plan, statusPayload) {
@@ -236,7 +239,8 @@
     if (!el) return;
     const upstox = statusPayload.upstox || {};
     const selected = plan?.summary?.buy_queue || 0;
-    el.innerHTML = `<div class="ready-card"><strong>Mode</strong><span>Paper trading only</span></div><div class="ready-card"><strong>Upstox</strong><span>${upstox.token_visible ? "Token visible" : "Token missing"}</span></div><div class="ready-card"><strong>Selected</strong><span>${selected} advisor stocks</span></div><div class="ready-card"><strong>Live Orders</strong><span>Locked</span></div>`;
+    const source = plan?.fallback_used || plan?.source || "Upstox first, Yahoo fallback second";
+    el.innerHTML = `<div class="ready-card"><strong>Mode</strong><span>Paper trading only</span></div><div class="ready-card"><strong>Upstox</strong><span>${upstox.token_visible ? "Token visible" : "Token missing"}</span></div><div class="ready-card"><strong>Selected</strong><span>${selected} advisor stocks</span></div><div class="ready-card"><strong>Data Source</strong><span>${escapeHtml(source)}</span></div>`;
   }
 
   function setBusy(busy, message) {
@@ -263,15 +267,15 @@
   }
 
   function number(value) {
-    return Number.isFinite(Number(value)) ? Number(value).toFixed(2) : "-";
+    return Number.isFinite(Number(value)) ? Number(value).toFixed(2) : "Pending";
   }
 
   function pct(value) {
-    return Number.isFinite(Number(value)) ? `${Number(value).toFixed(1)}%` : "-";
+    return Number.isFinite(Number(value)) ? `${Number(value).toFixed(1)}%` : "Pending";
   }
 
   function money(value) {
-    return Number.isFinite(Number(value)) ? `Rs ${Number(value).toFixed(2)}` : "-";
+    return Number.isFinite(Number(value)) ? `Rs ${Number(value).toFixed(2)}` : "Needs price feed";
   }
 
   function escapeHtml(value) {
