@@ -7,6 +7,7 @@ import { applyAdvancedScannerPatches } from "./server-quality-patch.mjs";
 import { applySelectionFlowPatches } from "./server-selection-patch.mjs";
 import { applyFrameworkPatches } from "./server-framework-patch.mjs";
 import { applyPaperTraderPatches } from "./server-paper-trader-patch.mjs";
+import { applyAdvisorEnginePatches } from "./server-advisor-engine-patch.mjs";
 import { applyMarketContextPatches } from "./server-market-context-patch.mjs";
 
 const runtimeProcess = globalThis.process;
@@ -158,6 +159,7 @@ function startDataBankBootstrap() {
   output = applySelectionFlowPatches(output, mustReplace);
   output = applyFrameworkPatches(output, mustReplace);
   output = applyPaperTraderPatches(output, mustReplace);
+  output = applyAdvisorEnginePatches(output, mustReplace);
   output = applyMarketContextPatches(output, mustReplace);
   return output;
 }
