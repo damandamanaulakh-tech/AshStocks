@@ -26,6 +26,13 @@ export function applyAdvancedScannerPatches(output, mustReplace) {
 
   output = mustReplace(
     output,
+    '    instrument_key: String(row.instrument_key || row.instrumentKey || row.upstox_key || "").trim(),\n    isin: String(row.isin || "").trim(),',
+    '    instrument_key: String(row.instrument_key || row.instrumentKey || row.upstox_key || "").trim(),\n    trading_symbol: String(row.trading_symbol || row.tradingsymbol || row.tradingSymbol || row.symbol || "").trim().slice(0, 80),\n    exchange_token: String(row.exchange_token || row.exchangeToken || "").trim(),\n    lot_size: numericValue(row.lot_size ?? row.lotSize),\n    tick_size: numericValue(row.tick_size ?? row.tickSize),\n    asset_type: String(row.asset_type || row.assetType || "").trim().toUpperCase(),\n    isin: String(row.isin || "").trim(),',
+    'preserve complete master metadata'
+  );
+
+  output = mustReplace(
+    output,
     '  const momentumOk = metrics.return6m !== null && metrics.return12m !== null && metrics.return6m > 0 && metrics.return12m > 0;\n  const liquiditySharesOk = metrics.adv20 !== null && metrics.adv20 >= settings.adv20Min;',
     '  const minReturn6m = settings.minReturn6mPct / 100;\n  const minReturn12m = settings.minReturn12mPct / 100;\n  const return6mOk = metrics.return6m !== null && metrics.return6m >= minReturn6m;\n  const return12mOk = metrics.return12m !== null && metrics.return12m >= minReturn12m;\n  const momentumOk = return6mOk && return12mOk;\n  const liquiditySharesOk = metrics.adv20 !== null && metrics.adv20 >= settings.adv20Min;',
     'advanced momentum thresholds'
@@ -92,6 +99,39 @@ export function applyAdvancedScannerPatches(output, mustReplace) {
     '  const maxLimit = Math.min(200, Math.max(1, Math.floor(finiteOr(ENV.UPSTOX_SCAN_LIMIT, 60))));',
     '  const maxLimit = Math.min(200, Math.max(1, Math.floor(finiteOr(ENV.UPSTOX_SCAN_LIMIT, 120))));',
     'upstox scan default limit'
+  );
+
+  output = mustReplace(
+    output,
+    '  const url = String(options.url || UPSTOX_NSE_INSTRUMENTS_URL);',
+    '  const url = String(options.url || ENV.UPSTOX_INSTRUMENTS_URL || UPSTOX_COMPLETE_INSTRUMENTS_URL);',
+    'complete master default url'
+  );
+
+  output = mustReplace(
+    output,
+    '    data_source: "Upstox NSE instruments JSON"',
+    '    trading_symbol: String(record.trading_symbol || record.tradingsymbol || symbol).trim(),\n    exchange_token: String(record.exchange_token || "").trim(),\n    lot_size: numericValue(record.lot_size),\n    tick_size: numericValue(record.tick_size),\n    asset_type: String(record.asset_type || "").trim().toUpperCase(),\n    data_source: "Upstox complete instruments JSON"',
+    'complete master scanner row fields'
+  );
+
+  output = mustReplace(
+    output,
+    '    source: "Upstox NSE instruments JSON",',
+    '    source: url.includes("complete") ? "Upstox complete instruments JSON" : "Upstox NSE instruments JSON",',
+    'complete master load source'
+  );
+
+  output = mustReplace(
+    output,
+    `      const summary = dataBankSummary(state);
+      if (summary.universe_count > INDIA_UNIVERSE.length && summary.rows_with_instrument_key > INDIA_UNIVERSE.length) {
+        const skipped = {`,
+    `      const summary = dataBankSummary(state);
+      const hasCompleteMaster = summary.data_sources.some((source) => String(source).includes("complete instruments"));
+      if (hasCompleteMaster && summary.universe_count > INDIA_UNIVERSE.length && summary.rows_with_instrument_key > INDIA_UNIVERSE.length) {
+        const skipped = {`,
+    'reload if existing master is not complete'
   );
 
   output = mustReplace(
