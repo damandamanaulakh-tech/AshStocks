@@ -17,12 +17,6 @@
     line.className = "alert-line";
   }
 
-  function hasDeadMasterRows() {
-    const summary = textOf("#summaryGrid");
-    const body = textOf("#resultBody");
-    return summary.includes("DATA_NEEDED") || body.includes("DATA_NEEDED") || body.includes("Need 253");
-  }
-
   function hasUpstoxToken() {
     return /token visible/i.test(textOf("#upstoxLabel"));
   }
@@ -33,17 +27,21 @@
     autoRunInFlight = true;
 
     try {
-      for (let attempt = 0; attempt < 40; attempt += 1) {
+      for (let attempt = 0; attempt < 60; attempt += 1) {
         const button = document.querySelector("#runUpstoxBtn");
-        if (button && !button.disabled && hasUpstoxToken()) {
-          if (reason === "dead-master" || hasDeadMasterRows()) {
-            lastAutoRunAt = Date.now();
-            setLine("Fetching Upstox historical candles for scored selection");
-            button.click();
-            return;
-          }
+        const universeText = textOf("#summaryGrid");
+        const pageReady = button && hasUpstoxToken() && !/Loading scanner|Running scanner/i.test(textOf("#messageLine"));
+        if (pageReady && !button.disabled) {
+          lastAutoRunAt = Date.now();
+          setLine(reason === "master" ? "NSE master loaded. Fetching Upstox candles." : "Fetching Upstox candles for ranked selection.");
+          button.click();
+          return;
         }
-        await sleep(750);
+        if (pageReady && /Universe/i.test(universeText)) {
+          await sleep(500);
+        } else {
+          await sleep(750);
+        }
       }
     } finally {
       autoRunInFlight = false;
@@ -51,9 +49,9 @@
   }
 
   window.addEventListener("DOMContentLoaded", () => {
-    setTimeout(() => autoRunUpstox("startup"), 2500);
+    setTimeout(() => autoRunUpstox("startup"), 3500);
     document.querySelector("#masterPoolBtn")?.addEventListener("click", () => {
-      setTimeout(() => autoRunUpstox("dead-master"), 3500);
+      setTimeout(() => autoRunUpstox("master"), 4500);
     });
   });
 })();
