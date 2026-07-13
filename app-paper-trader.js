@@ -1,5 +1,6 @@
 (() => {
   const traderState = { lastPlan: null, status: null, booted: false };
+  const ADVISOR_ENGINE = "ashstocks-paper-trader-v0.4-advisor";
 
   function $(selector) {
     return document.querySelector(selector);
@@ -41,9 +42,9 @@
     section.innerHTML = `
       <div class="trade-hero">
         <div>
-          <span class="eyebrow">AM07 Paper Trading</span>
+          <span class="eyebrow">AM07 Advisor Engine</span>
           <h3>Good morning, Trader</h3>
-          <p id="paperTraderStamp">Rules first. Capital second. Emotions last.</p>
+          <p id="paperTraderStamp">Advisor score, entry, target, stop, exit rule. Paper only.</p>
         </div>
         <div class="trade-mode">
           <span class="mode-pill active">Paper</span>
@@ -56,7 +57,7 @@
 
       <div class="trade-grid-main">
         <section class="panel signal-panel">
-          <div class="panel-header"><h3>URR Verified Thesis</h3><span class="status-dot">Paper Only</span></div>
+          <div class="panel-header"><h3>Advisor Thesis</h3><span class="status-dot">Paper Only</span></div>
           <div id="urrThesis" class="urr-thesis"></div>
         </section>
         <section class="panel signal-panel">
@@ -68,7 +69,7 @@
       <div class="paper-layout actionable-layout">
         <section class="panel paper-panel buy-panel">
           <div class="panel-header"><h3>Selected Stocks</h3><span id="buyQueueCount">0</span></div>
-          <div class="paper-table-wrap"><table><thead><tr><th>Rank</th><th>Stock</th><th>Action</th><th>Score</th><th>Entry</th><th>Target</th><th>Stop</th><th>Qty</th><th>Reason</th></tr></thead><tbody id="buyQueueBody"></tbody></table></div>
+          <div class="paper-table-wrap"><table><thead><tr><th>Rank</th><th>Stock</th><th>Conviction</th><th>Score</th><th>Entry Zone</th><th>T1 / T2</th><th>Stop</th><th>Qty</th><th>Why / Exit</th></tr></thead><tbody id="buyQueueBody"></tbody></table></div>
         </section>
         <section class="panel paper-panel side-panel">
           <div class="panel-header"><h3>Sell / Replace</h3><span id="sellQueueCount">0</span></div>
@@ -111,7 +112,7 @@
   }
 
   async function runPaperTrader() {
-    setBusy(true, "Running morning paper engine");
+    setBusy(true, "Running advisor engine");
     try {
       const payload = await api("/api/paper-trader/run", {
         method: "POST",
@@ -120,7 +121,7 @@
       });
       traderState.lastPlan = payload;
       renderPaperTrader(payload);
-      setLine(`Selected ${payload.summary?.buy_queue || 0} paper stocks`, "positive");
+      setLine(`Selected ${payload.summary?.buy_queue || 0} advisor paper stocks`, "positive");
     } catch (error) {
       showError(error);
     } finally {
@@ -136,8 +137,8 @@
     try {
       const status = await loadPaperTraderStatus();
       const lastPlan = status.status?.last_plan;
-      const emptyOrOldPlan = !lastPlan || lastPlan.engine !== "ashstocks-paper-trader-v0.3" || Number(lastPlan.summary?.buy_queue || 0) === 0;
-      const key = `ashstocks-paper-auto-v3-${new Date().toISOString().slice(0, 10)}`;
+      const emptyOrOldPlan = !lastPlan || lastPlan.engine !== ADVISOR_ENGINE || Number(lastPlan.summary?.buy_queue || 0) === 0;
+      const key = `ashstocks-paper-auto-v4-${new Date().toISOString().slice(0, 10)}`;
       if (emptyOrOldPlan && !sessionStorage.getItem(key)) {
         sessionStorage.setItem(key, "1");
         setTimeout(() => runPaperTrader().catch(showError), 500);
@@ -150,7 +151,7 @@
   function renderPaperTrader(plan, statusPayload = {}) {
     const summary = plan?.summary || {};
     const stamp = $("#paperTraderStamp");
-    if (stamp) stamp.textContent = plan?.asOf ? `Last run ${new Date(plan.asOf).toLocaleString()}` : `${statusPayload?.data_bank?.universe_count || 0} NSE rows ready. Run morning engine.`;
+    if (stamp) stamp.textContent = plan?.asOf ? `${plan.engine || ADVISOR_ENGINE} | Last run ${new Date(plan.asOf).toLocaleString()}` : `${statusPayload?.data_bank?.universe_count || 0} NSE rows ready. Run advisor engine.`;
     renderMetrics(summary, statusPayload);
     renderThesis(plan);
     renderFactors(plan);
@@ -163,8 +164,8 @@
   function renderMetrics(summary, statusPayload) {
     const metrics = [
       ["NSE Pool", summary.scanned ?? statusPayload?.data_bank?.universe_count ?? 0, "Universe scanned"],
-      ["Selected", summary.buy_queue ?? 0, "Paper buy queue"],
-      ["Review", summary.candidates ? Math.max(0, summary.candidates - (summary.buy_queue || 0)) : 0, "Needs manual check"],
+      ["Selected", summary.buy_queue ?? 0, "Advisor buy queue"],
+      ["Review", summary.candidates ? Math.max(0, summary.candidates - (summary.buy_queue || 0)) : 0, "Manual check"],
       ["Sell / Replace", summary.sell_queue ?? 0, "Rotation queue"],
       ["Data Gaps", summary.data_needed ?? 0, "Missing candles/feed"]
     ];
@@ -178,7 +179,7 @@
     const thesis = $("#urrThesis");
     if (!thesis) return;
     thesis.innerHTML = top
-      ? `<strong>${escapeHtml(top.symbol)}: ${escapeHtml(top.readiness || "READY")}</strong><p>${escapeHtml(top.thesis || "Ranked by momentum, liquidity, target room, event resilience and theme heat.")}</p><div class="thesis-row"><span>Entry ${money(top.close)}</span><span>Target ${money(top.target_price)}</span><span>Stop ${money(top.stop_price)}</span></div>`
+      ? `<strong>${escapeHtml(top.symbol)}: ${escapeHtml(top.conviction || top.readiness || "READY")} | ${escapeHtml(top.horizon || "")}</strong><p>${escapeHtml(top.thesis || "Ranked by momentum, liquidity, target room, event resilience and theme heat.")}</p><div class="thesis-row"><span>Entry ${entryZone(top)}</span><span>T1/T2 ${money(top.target1)} / ${money(top.target2 || top.target_price)}</span><span>Stop ${money(top.stop_price)}</span></div>`
       : `<strong>No selected stock yet</strong><p>Run Morning Engine to create paper buy, sell, hold and watchlist decisions.</p>`;
   }
 
@@ -208,7 +209,7 @@
     const body = $("#buyQueueBody");
     if (!body) return;
     body.innerHTML = rows.length
-      ? rows.map((row) => `<tr><td>${row.rank}</td><td><strong>${escapeHtml(row.symbol)}</strong><span>${escapeHtml(row.name || "")}</span></td><td><span class="action-pill ${row.readiness === "READY" ? "ready" : "review"}">${escapeHtml(row.action)} ${escapeHtml(row.readiness || "")}</span></td><td>${number(row.paper_score)}</td><td>${money(row.close)}</td><td>${money(row.target_price)}<span>${pct(row.target_pct)}</span></td><td>${money(row.stop_price)}<span>${pct(-row.stop_loss_pct)}</span></td><td>${row.qty || 0}</td><td class="reason-cell">${escapeHtml(row.thesis || "")}</td></tr>`).join("")
+      ? rows.map((row) => `<tr><td>${row.rank}</td><td><strong>${escapeHtml(row.symbol)}</strong><span>${escapeHtml(row.name || "")}</span><span>${escapeHtml(row.sector || "")}</span></td><td><span class="action-pill ${row.conviction === "HIGH" ? "ready" : "review"}">${escapeHtml(row.conviction || row.readiness || "REVIEW")}</span><span>${escapeHtml(row.horizon || "")}</span></td><td>${number(row.paper_score)}</td><td>${entryZone(row)}</td><td>${money(row.target1)}<span>${money(row.target2 || row.target_price)}</span></td><td>${money(row.stop_price)}<span>${pct(-row.stop_loss_pct)}</span></td><td>${row.qty || 0}</td><td class="reason-cell"><strong>${escapeHtml(row.setup || "Advisor setup")}</strong><span>${escapeHtml(row.thesis || "")}</span><span>${escapeHtml(row.exit_rule || "")}</span></td></tr>`).join("")
       : '<tr><td colspan="9" class="empty-cell">No selected stocks yet. Run Morning Engine.</td></tr>';
   }
 
@@ -227,7 +228,7 @@
     const themeBuckets = watchlists.themes || {};
     const entries = Object.entries({ Selected: watchlists.selected_30 || watchlists.morning_top_50 || [], "Target Room": watchlists.target_room || [], "Event Resilient": watchlists.event_resilient || [], ...themeBuckets }).filter(([, rows]) => Array.isArray(rows));
     $("#watchlistCount").textContent = `${entries.length} buckets`;
-    grid.innerHTML = entries.map(([name, rows]) => `<article class="watchlist-card"><strong>${escapeHtml(name)}</strong>${rows.slice(0, 6).map((row) => `<span>${escapeHtml(row.symbol)} <small>${number(row.paper_score)}</small></span>`).join("") || '<span class="subtle">Empty</span>'}</article>`).join("");
+    grid.innerHTML = entries.map(([name, rows]) => `<article class="watchlist-card"><strong>${escapeHtml(name)}</strong>${rows.slice(0, 6).map((row) => `<span>${escapeHtml(row.symbol)} <small>${escapeHtml(row.conviction || number(row.paper_score))}</small></span>`).join("") || '<span class="subtle">Empty</span>'}</article>`).join("");
   }
 
   function renderReadiness(plan, statusPayload) {
@@ -235,7 +236,7 @@
     if (!el) return;
     const upstox = statusPayload.upstox || {};
     const selected = plan?.summary?.buy_queue || 0;
-    el.innerHTML = `<div class="ready-card"><strong>Mode</strong><span>Paper trading only</span></div><div class="ready-card"><strong>Upstox</strong><span>${upstox.token_visible ? "Token visible" : "Token missing"}</span></div><div class="ready-card"><strong>Selected</strong><span>${selected} stocks ready</span></div><div class="ready-card"><strong>Live Orders</strong><span>Locked</span></div>`;
+    el.innerHTML = `<div class="ready-card"><strong>Mode</strong><span>Paper trading only</span></div><div class="ready-card"><strong>Upstox</strong><span>${upstox.token_visible ? "Token visible" : "Token missing"}</span></div><div class="ready-card"><strong>Selected</strong><span>${selected} advisor stocks</span></div><div class="ready-card"><strong>Live Orders</strong><span>Locked</span></div>`;
   }
 
   function setBusy(busy, message) {
@@ -253,6 +254,12 @@
 
   function showError(error) {
     setLine(error.message || String(error), "negative");
+  }
+
+  function entryZone(row) {
+    const zone = row.entry_zone || row.advisor?.entry_zone;
+    if (zone?.low && zone?.high) return `${money(zone.low)} - ${money(zone.high)}`;
+    return money(row.close);
   }
 
   function number(value) {
