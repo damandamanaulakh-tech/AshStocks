@@ -3,6 +3,7 @@ const $$ = (selector) => Array.from(document.querySelectorAll(selector));
 
 const state = {
   parameters: [],
+  framework: null,
   universe: [],
   rows: [],
   summary: { total: 0, SELECT: 0, WATCH: 0, REJECT: 0, BLOCKED: 0, DATA_NEEDED: 0 },
@@ -24,7 +25,7 @@ function init() {
 
 async function boot() {
   try {
-    await Promise.all([loadReady(), loadParameters()]);
+    await Promise.all([loadReady(), loadParameters(), loadFramework()]);
     await runServerScan();
   } catch (error) {
     setMessage(error.message, "negative");
@@ -73,9 +74,16 @@ function dataBankRuntimeLabel(payload = {}) {
 async function loadParameters() {
   const payload = await api("/api/scanner/parameters");
   state.parameters = payload.parameters || [];
+  state.framework = payload.framework || state.framework;
   state.dataBank = payload.data_bank || state.dataBank;
   state.universe = payload.universe || [];
   renderParameters();
+}
+
+async function loadFramework() {
+  const payload = await api("/api/framework");
+  state.framework = payload;
+  renderFramework();
 }
 
 async function runServerScan() {
@@ -234,11 +242,52 @@ function renderParameters() {
     .join("");
 }
 
+function renderFramework() {
+  const framework = state.framework || {};
+  const layers = framework.layers || [];
+  const feeds = framework.required_feeds || [];
+  $("#frameworkCount").textContent = `${layers.length} layers`;
+  $("#frameworkTruth").innerHTML = framework.truth
+    ? `
+      <article class="framework-truth">
+        <strong>${escapeHtml(framework.product || "AshStocks framework")}</strong>
+        <span>Paper only: ${framework.truth.paper_only ? "YES" : "NO"}</span>
+        <span>Live trade: ${framework.truth.live_trade ? "YES" : "NO"}</span>
+        <p>${escapeHtml(framework.truth.reason || "")}</p>
+      </article>
+    `
+    : "";
+  $("#frameworkGrid").innerHTML = layers
+    .map((layer) => `
+      <article class="framework-card">
+        <div class="framework-card-head">
+          <span class="eyebrow">${escapeHtml(layer.id)}</span>
+          <span class="status-pill">${escapeHtml(layer.status)}</span>
+        </div>
+        <strong>${escapeHtml(layer.name)}</strong>
+        <p>${escapeHtml(layer.role)}</p>
+        <small>${escapeHtml(layer.product_use || "")}</small>
+      </article>
+    `)
+    .join("");
+  $("#feedGrid").innerHTML = feeds
+    .map((feed) => `
+      <article class="feed-card">
+        <strong>${escapeHtml(feed.name)}</strong>
+        <span class="status-pill">${escapeHtml(feed.status)}</span>
+        <small>Priority ${escapeHtml(feed.priority)} | ${escapeHtml(feed.minimum_history)}</small>
+        <p>${escapeHtml((feed.unlocks || []).join(", "))}</p>
+      </article>
+    `)
+    .join("");
+}
+
 function switchView(view) {
   state.activeView = view;
   $$("[data-view]").forEach((button) => button.classList.toggle("active", button.dataset.view === view));
   $$("[data-view-panel]").forEach((panel) => panel.classList.toggle("active", panel.dataset.viewPanel === view));
-  $("#pageTitle").textContent = view === "data" ? "Data" : view === "parameters" ? "Parameters" : "Scanner";
+  const titles = { scanner: "Scanner", parameters: "Parameters", framework: "Framework", data: "Data" };
+  $("#pageTitle").textContent = titles[view] || "Scanner";
   refreshIcons();
 }
 
