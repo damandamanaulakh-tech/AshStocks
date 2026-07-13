@@ -6,10 +6,9 @@ export function applySelectionFlowPatches(output, mustReplace) {
     'scan up to 200 prioritized names by default'
   );
 
-  output = mustReplace(
-    output,
-    '  return normalizeScannerRows([...bySymbol.values()]).slice(0, limit);\n}',
-    `  const prioritySymbols = new Map([
+  const prioritySortBlock = `
+function prioritizedStockRows(rows, limit) {
+  const prioritySymbols = new Map([
     "RELIANCE", "HDFCBANK", "ICICIBANK", "INFY", "TCS", "SBIN", "BHARTIARTL", "LT", "AXISBANK", "KOTAKBANK",
     "ITC", "HINDUNILVR", "BAJFINANCE", "MARUTI", "SUNPHARMA", "M&M", "NTPC", "POWERGRID", "TATAMOTORS", "ADANIENT",
     "ADANIPORTS", "ONGC", "COALINDIA", "ASIANPAINT", "HCLTECH", "WIPRO", "ULTRACEMCO", "TITAN", "BAJAJFINSV", "TECHM",
@@ -21,16 +20,36 @@ export function applySelectionFlowPatches(output, mustReplace) {
     "BANKBARODA", "PNB", "CANBK", "UNIONBANK", "IDFCFIRSTB", "FEDERALBNK", "YESBANK", "TATAPOWER", "ADANIPOWER", "INDIGO"
   ].map((symbol, index) => [symbol, index]));
   const fundLikePattern = /\\b(ETF|BEES|LIQUID|GILT|SDL|TBILL|TREASURY|BOND)\\b|KOTAKMAMC|ICICIPRAMC|NIPPONAMC|NIP IND ETF|NETF|MIRAEASSET|HDFCMF|SBIMF|UTIAMC -|BIRLASLAMC -/i;
-  const rows = normalizeScannerRows([...bySymbol.values()])
+  return normalizeScannerRows(rows)
     .filter((row) => !fundLikePattern.test(\`\${row.symbol} \${row.name} \${row.trading_symbol || ""}\`))
     .sort((a, b) => {
       const rankA = prioritySymbols.has(a.symbol) ? prioritySymbols.get(a.symbol) : 10000;
       const rankB = prioritySymbols.has(b.symbol) ? prioritySymbols.get(b.symbol) : 10000;
       return rankA - rankB || a.symbol.localeCompare(b.symbol);
-    });
-  return rows.slice(0, limit);
-}`,
-    'prioritize liquid stock universe'
+    })
+    .slice(0, limit);
+}
+`;
+
+  output = mustReplace(
+    output,
+    'function normalizeUpstoxEquityUniverse(records, limit = MAX_UNIVERSE_ROWS) {',
+    `${prioritySortBlock}\nfunction normalizeUpstoxEquityUniverse(records, limit = MAX_UNIVERSE_ROWS) {`,
+    'insert priority sort helper'
+  );
+
+  output = mustReplace(
+    output,
+    '  return normalizeScannerRows([...bySymbol.values()]).slice(0, limit);\n}',
+    '  return prioritizedStockRows([...bySymbol.values()], limit);\n}',
+    'prioritize loaded stock universe'
+  );
+
+  output = mustReplace(
+    output,
+    '  const baseRows = normalizeScannerUniverse(universeInput).filter((row) => row.instrument_key).slice(0, maxLimit);',
+    '  const baseRows = prioritizedStockRows(normalizeScannerUniverse(universeInput).filter((row) => row.instrument_key), maxLimit);',
+    'prioritize actual candle scan rows'
   );
 
   return output;
