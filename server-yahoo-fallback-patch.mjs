@@ -27,7 +27,7 @@ async function fetchYahooNseCandles(row) {
   const result = payload?.chart?.result?.[0];
   const timestamps = result?.timestamp || [];
   const quote = result?.indicators?.quote?.[0] || {};
-  const candles = timestamps.map((ts, index) => ({
+  return timestamps.map((ts, index) => ({
     date: new Date(Number(ts) * 1000).toISOString().slice(0, 10),
     open: numericValue(quote.open?.[index]),
     high: numericValue(quote.high?.[index]),
@@ -35,7 +35,6 @@ async function fetchYahooNseCandles(row) {
     close: numericValue(quote.close?.[index]),
     volume: numericValue(quote.volume?.[index])
   })).filter((candle) => Number.isFinite(candle.close));
-  return candles;
 }
 async function runYahooNseFallbackScanner(universe, body = {}) {
   const limit = Math.min(80, Math.max(20, Math.floor(finiteOr(body.yahooLimit ?? body.yahoo_limit, 60))));
@@ -57,7 +56,7 @@ async function runYahooNseFallbackScanner(universe, body = {}) {
 `;
 export function applyYahooFallbackPatches(source, mustReplace) {
   let output = source;
-  output = mustReplace(output, '\nconst PAPER_TRADER_ROUTES = String.raw`', `\n${YAHOO_FALLBACK_FUNCTIONS}\nconst PAPER_TRADER_ROUTES = String.raw\``, 'insert yahoo fallback helpers');
+  output = mustReplace(output, '\nfunction paperTraderStatusPayload(state = defaultState()) {', `\n${YAHOO_FALLBACK_FUNCTIONS}\nfunction paperTraderStatusPayload(state = defaultState()) {`, 'insert yahoo fallback helpers');
   output = mustReplace(output, '        if (!scan || scan.ok === false) scan = runScanner(resolved.universe, { ...(body.settings || {}), source: resolved.source, holdings: body.holdings || state.paperTrader?.positions || [] });\n        const ledger = await appendScanLedger(scan, { store, mode: "paper-trader-scan", source: scan.source || resolved.source });\n        const plan = buildPaperTraderPlan(scan, state, body);', '        if (!scan || scan.ok === false) scan = runScanner(resolved.universe, { ...(body.settings || {}), source: resolved.source, holdings: body.holdings || state.paperTrader?.positions || [] });\n        let plan = buildPaperTraderPlan(scan, state, body);\n        if ((plan.summary?.buy_queue || 0) === 0 && body.useYahooFallback !== false) {\n          const fallbackScan = await runYahooNseFallbackScanner(resolved.universe, { ...body, holdings: body.holdings || state.paperTrader?.positions || [] });\n          const fallbackPlan = buildPaperTraderPlan(fallbackScan, state, body);\n          if ((fallbackPlan.summary?.buy_queue || 0) > (plan.summary?.buy_queue || 0)) {\n            scan = fallbackScan;\n            plan = { ...fallbackPlan, fallback_used: "Yahoo Finance NSE fallback" };\n          }\n        }\n        const ledger = await appendScanLedger(scan, { store, mode: "paper-trader-scan", source: scan.source || resolved.source });', 'advisor yahoo fallback when empty');
   return output;
 }
