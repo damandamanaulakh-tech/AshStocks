@@ -21,16 +21,19 @@
   }
 
   function installPaperTraderView() {
-    if ($('[data-view="paperTrader"]')) return;
     const nav = $(".nav-list");
-    const first = nav?.firstElementChild;
-    const button = document.createElement("button");
-    button.className = "nav-item";
-    button.type = "button";
-    button.dataset.view = "paperTrader";
-    button.innerHTML = '<i data-lucide="layout-dashboard" aria-hidden="true"></i><span>Dashboard</span>';
-    nav?.insertBefore(button, first || null);
+    let button = $('[data-view="paperTrader"]');
+    if (!button) {
+      const first = nav?.firstElementChild;
+      button = document.createElement("button");
+      button.className = "nav-item";
+      button.type = "button";
+      button.dataset.view = "paperTrader";
+      button.innerHTML = '<i data-lucide="layout-dashboard" aria-hidden="true"></i><span>Dashboard</span>';
+      nav?.insertBefore(button, first || null);
+    }
 
+    if ($("#paperTraderView")) return;
     const section = document.createElement("section");
     section.className = "view paper-dashboard-view";
     section.id = "paperTraderView";
@@ -126,6 +129,8 @@
   }
 
   async function bootPaperTrader() {
+    if (traderState.booted) return;
+    traderState.booted = true;
     installPaperTraderView();
     switchPaperView();
     try {
@@ -266,6 +271,6 @@
   }
 
   window.addEventListener("DOMContentLoaded", () => {
-    setTimeout(() => bootPaperTrader(), 650);
+    bootPaperTrader();
   });
 })();
