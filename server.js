@@ -11,6 +11,7 @@ import { applyAdvisorEnginePatches } from "./server-advisor-engine-patch.mjs";
 import { applyYahooFallbackPatches } from "./server-yahoo-fallback-patch.mjs";
 import { applyMarketContextPatches } from "./server-market-context-patch.mjs";
 import { applyCompetitiveFrameworkPatches } from "./server-competitive-framework-patch.mjs";
+import { applyDataIntelligencePatches } from "./server-data-intelligence-patch.mjs";
 
 const runtimeProcess = globalThis.process;
 const PORT = Number(runtimeProcess?.env?.PORT || 4173);
@@ -165,6 +166,7 @@ function startDataBankBootstrap() {
   output = applyYahooFallbackPatches(output, mustReplace);
   output = applyMarketContextPatches(output, mustReplace);
   output = applyCompetitiveFrameworkPatches(output, mustReplace);
+  output = applyDataIntelligencePatches(output, mustReplace);
   return output;
 }
 
