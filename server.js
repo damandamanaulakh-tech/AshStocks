@@ -10,6 +10,7 @@ import { applyPaperTraderPatches } from "./server-paper-trader-patch.mjs";
 import { applyAdvisorEnginePatches } from "./server-advisor-engine-patch.mjs";
 import { applyYahooFallbackPatches } from "./server-yahoo-fallback-patch.mjs";
 import { applyMarketContextPatches } from "./server-market-context-patch.mjs";
+import { applyCompetitiveFrameworkPatches } from "./server-competitive-framework-patch.mjs";
 
 const runtimeProcess = globalThis.process;
 const PORT = Number(runtimeProcess?.env?.PORT || 4173);
@@ -163,6 +164,7 @@ function startDataBankBootstrap() {
   output = applyAdvisorEnginePatches(output, mustReplace);
   output = applyYahooFallbackPatches(output, mustReplace);
   output = applyMarketContextPatches(output, mustReplace);
+  output = applyCompetitiveFrameworkPatches(output, mustReplace);
   return output;
 }
 
