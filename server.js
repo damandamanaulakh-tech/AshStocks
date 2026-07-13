@@ -3,6 +3,7 @@ import os from "node:os";
 import path from "node:path";
 import crypto from "node:crypto";
 import { pathToFileURL } from "node:url";
+import { applyAdvancedScannerPatches } from "./server-quality-patch.mjs";
 
 const runtimeProcess = globalThis.process;
 const PORT = Number(runtimeProcess?.env?.PORT || 4173);
@@ -149,6 +150,7 @@ function startDataBankBootstrap() {
     'export function createServer() {\n  startDataBankBootstrap();\n  startPaperEngineScheduler();',
     'start bootstrap'
   );
+  output = applyAdvancedScannerPatches(output, mustReplace);
   return output;
 }
 
