@@ -1,0 +1,72 @@
+{
+  "framework_version": "ashstocks-sourceborn-framework-v1",
+  "product": "India/NSE stock-selection proof engine",
+  "created_from_drive_handoff": "ARD / Chityy / Sourceborn / IFR handoff v1 part 1 and part 2",
+  "source_files_reviewed": [
+    "PROJECT_FILE_MANIFEST_ALL_AVAILABLE.csv",
+    "PROJECT_FILE_LIST_THIS_PART.txt",
+    "NEW_CHAT_CONTINUATION_PROMPT.txt",
+    "06_EARLY_WARNING.md",
+    "07_DATA_FORMATS.md",
+    "Chityy_Sourceborn_FINAL_MICRO_SPLIT_ENGINE_v0_6.xlsx",
+    "Chityy_Sourceborn_IFR_FII_Cash_Stack_Test_v0_6.xlsx"
+  ],
+  "truth": {
+    "live_trade": false,
+    "paper_only": true,
+    "upstox_use": "historical candles only",
+    "current_active_engine": "price/liquidity/risk scanner with paper ledger",
+    "big_framework_status": "designed and exposed; feed wiring still required for IFR/FII/PWOI/volume-delivery to control SELECT"
+  },
+  "core_layers": [
+    "file ledger and source map",
+    "NSE equity master",
+    "OHLCV momentum and liquidity",
+    "portfolio caps and correlation",
+    "IFR damage and repair state machine",
+    "FII/DII cash pressure",
+    "PWOI and derivatives positioning",
+    "volume delivery breadth",
+    "India regime early warning",
+    "event lead-time validation",
+    "Sourceborn + URR control loop",
+    "paper engine and safety"
+  ],
+  "active_parameters_now": [
+    "253 daily candles",
+    "6M return >= 8%",
+    "12M return >= 12%",
+    "252D volatility <= 55%",
+    "ADV20 >= 200000 shares",
+    "5D rupee turnover >= 5 crore",
+    "fresh candle <= 7 calendar days",
+    "no stuck latest candle",
+    "target potential hard gate",
+    "60D holding correlation <= 0.85",
+    "portfolio caps",
+    "paper only"
+  ],
+  "paper_ready_not_live_parameters": [
+    "IFR damage cluster exposure throttle",
+    "adaptive IFR + FII cash stack",
+    "strict IFR + FII confirmation",
+    "state-machine repair exit",
+    "FII/DII divergence pressure"
+  ],
+  "data_needed_parameters": [
+    "NSE bhavcopy delivery breadth 2018-present",
+    "FII/DII cash history to present",
+    "PWOI participant OI and volume to present",
+    "F&O bhavcopy event windows",
+    "Nifty/VIX/market breadth daily",
+    "FX/gold/10Y/crude daily",
+    "GST/SIP/demat/SME/insider monthly datasets"
+  ],
+  "decision_policy": {
+    "select": "Only active scanner gates can produce SELECT today.",
+    "watch": "Useful but incomplete rows stay WATCH or DATA_NEEDED until proof and feed coverage exist.",
+    "blocked": "Portfolio, correlation, freshness, volatility, target or safety gates can block.",
+    "data_needed": "Never fake a missing feed. Record exact feed, column and loop.",
+    "archive": "Duplicate, story-only, late or false-positive-heavy parameters are archived, not deleted."
+  }
+}
