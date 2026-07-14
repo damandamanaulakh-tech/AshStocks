@@ -21,6 +21,7 @@
 
   let latestPlan = null;
   let latestStatus = null;
+  let lastRenderSignature = "";
   const originalFetch = window.fetch.bind(window);
 
   window.fetch = async (...args) => {
@@ -83,6 +84,21 @@
     const summary = plan?.summary || {};
     const top = plan?.top_ranked?.[0] || plan?.buy_queue?.[0] || {};
     const overlay = plan?.intelligence_overlay || {};
+    const signature = JSON.stringify({
+      asOf: plan?.asOf || "waiting",
+      scanned: summary.scanned || 0,
+      buyQueue: summary.buy_queue || 0,
+      dataNeeded: summary.data_needed || 0,
+      avgIntelligence: summary.avg_intelligence_score || 0,
+      avgRisk: summary.avg_regime_risk || 0,
+      top: top.symbol || "",
+      topScore: top.intelligence_score || top.paper_score || 0,
+      risk: top.regime_risk || 0,
+      coverage: top.parameter_coverage || 0
+    });
+    if (signature === lastRenderSignature && target.dataset.rendered === "1") return;
+    lastRenderSignature = signature;
+    target.dataset.rendered = "1";
     const context = { plan: plan || {}, summary, top, overlay, statusPayload: statusPayload || {} };
     let hitTotal = 0;
     const rows = FAMILIES.map((family) => {
