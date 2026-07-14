@@ -41,11 +41,11 @@ function regimeRiskScore(row = {}) {
 }
 function hotPocketScore(row = {}, themes = []) {
   const sector = String(row.sector || "").toUpperCase();
-  const text = `${row.symbol || ""} ${row.name || ""} ${sector} ${(themes || []).join(" ")}`.toUpperCase();
+  const text = String(row.symbol || "") + " " + String(row.name || "") + " " + sector + " " + (themes || []).join(" ");
   let score = 30;
-  if (/DEFENCE|AEROSPACE|RAIL|INFRA|CAPITAL GOODS|POWER|GREEN|ENERGY|EV|AUTO|AI|DIGITAL|PSU/.test(text)) score += 35;
-  if (/BANK|FINANCE|NBFC/.test(text)) score += 15;
-  if (/PHARMA|HEALTH/.test(text)) score += 10;
+  if (/DEFENCE|AEROSPACE|RAIL|INFRA|CAPITAL GOODS|POWER|GREEN|ENERGY|EV|AUTO|AI|DIGITAL|PSU/.test(text.toUpperCase())) score += 35;
+  if (/BANK|FINANCE|NBFC/.test(text.toUpperCase())) score += 15;
+  if (/PHARMA|HEALTH/.test(text.toUpperCase())) score += 10;
   if ((themes || []).length) score += Math.min(20, themes.length * 8);
   return clampScore(score, 0, 100);
 }
@@ -66,11 +66,11 @@ function intelligenceOverlay(row = {}, basePaperScore = 0, themes = []) {
   );
   const status = intelligenceScore >= 72 && regimeRisk < 45 ? "SELECT_READY" : intelligenceScore >= 58 ? "WATCH_READY" : regimeRisk >= 60 ? "RISK_REVIEW" : "BUILD_DATA";
   const notes = [
-    `coverage ${round(coverage, 1)}/100`,
-    `FII+DII flow ${round(flow, 1)}/100`,
-    `regime risk ${round(regimeRisk, 1)}/100`,
-    `theme ${round(hotPocket, 1)}/100`,
-    `status ${status}`
+    "coverage " + round(coverage, 1) + "/100",
+    "FII+DII flow " + round(flow, 1) + "/100",
+    "regime risk " + round(regimeRisk, 1) + "/100",
+    "theme " + round(hotPocket, 1) + "/100",
+    "status " + status
   ];
   return { score: intelligenceScore, coverage, flow, regime_risk: round(regimeRisk, 2), hot_pocket: round(hotPocket, 2), target_room_score: round(targetRoom, 2), status, notes };
 }
@@ -84,7 +84,7 @@ function intelligenceDecision(row = {}) {
 function intelligenceReason(row = {}) {
   const base = row.paper_reason || row.reason || "advisor scoring";
   const notes = row.intelligence?.notes || [];
-  return `${base}; intelligence overlay: ${notes.join("; ")}`;
+  return base + "; intelligence overlay: " + notes.join("; ");
 }
 `;
 export function applyIntelligenceScorePatches(source, mustReplace) {
