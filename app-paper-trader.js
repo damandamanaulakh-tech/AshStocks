@@ -61,7 +61,7 @@
           <div id="urrThesis" class="urr-thesis"></div>
         </section>
         <section class="panel signal-panel">
-          <div class="panel-header"><h3>10-Factor Ranking</h3><span id="rankingScore">Pending</span></div>
+          <div class="panel-header"><h3>10-Factor + Intelligence Ranking</h3><span id="rankingScore">Pending</span></div>
           <div id="factorBars" class="factor-bars"></div>
         </section>
       </div>
@@ -69,7 +69,7 @@
       <div class="paper-layout actionable-layout">
         <section class="panel paper-panel buy-panel">
           <div class="panel-header"><h3>Selected Stocks</h3><span id="buyQueueCount">Pending</span></div>
-          <div class="paper-table-wrap"><table><thead><tr><th>Rank</th><th>Stock</th><th>Conviction</th><th>Score</th><th>Entry Zone</th><th>T1 / T2</th><th>Stop</th><th>Qty</th><th>Why / Exit</th></tr></thead><tbody id="buyQueueBody"></tbody></table></div>
+          <div class="paper-table-wrap"><table><thead><tr><th>Rank</th><th>Stock</th><th>Conviction</th><th>Intel / Risk</th><th>Entry Zone</th><th>T1 / T2</th><th>Stop</th><th>Qty</th><th>Why / Exit</th></tr></thead><tbody id="buyQueueBody"></tbody></table></div>
         </section>
         <section class="panel paper-panel side-panel">
           <div class="panel-header"><h3>Sell / Replace</h3><span id="sellQueueCount">0</span></div>
@@ -122,7 +122,8 @@
       traderState.lastPlan = payload;
       renderPaperTrader(payload);
       const source = payload.fallback_used ? ` via ${payload.fallback_used}` : "";
-      setLine(`Selected ${payload.summary?.buy_queue || 0} advisor paper stocks${source}`, "positive");
+      const intel = payload.summary?.avg_intelligence_score ? ` | avg intel ${number(payload.summary.avg_intelligence_score)}` : "";
+      setLine(`Selected ${payload.summary?.buy_queue || 0} advisor paper stocks${source}${intel}`, "positive");
     } catch (error) {
       showError(error);
     } finally {
@@ -152,7 +153,7 @@
   function renderPaperTrader(plan, statusPayload = {}) {
     const summary = plan?.summary || {};
     const stamp = $("#paperTraderStamp");
-    if (stamp) stamp.textContent = plan?.asOf ? `${plan.engine || ADVISOR_ENGINE} | ${plan.fallback_used || plan.source || "primary feeds"} | Last run ${new Date(plan.asOf).toLocaleString()}` : `${statusPayload?.data_bank?.universe_count || 0} NSE rows ready. Advisor engine will use Upstox first, Yahoo fallback second.`;
+    if (stamp) stamp.textContent = plan?.asOf ? `${plan.intelligence_engine || plan.engine || ADVISOR_ENGINE} | ${plan.fallback_used || plan.source || "primary feeds"} | Last run ${new Date(plan.asOf).toLocaleString()}` : `${statusPayload?.data_bank?.universe_count || 0} NSE rows ready. Advisor engine will use Upstox first, Yahoo fallback second.`;
     renderMetrics(summary, statusPayload);
     renderThesis(plan);
     renderFactors(plan);
@@ -166,8 +167,9 @@
     const metrics = [
       ["NSE Pool", summary.scanned ?? statusPayload?.data_bank?.universe_count ?? 0, "Universe scanned"],
       ["Selected", summary.buy_queue ?? 0, "Advisor buy queue"],
-      ["Review", summary.candidates ? Math.max(0, summary.candidates - (summary.buy_queue || 0)) : 0, "Manual check"],
-      ["Sell / Replace", summary.sell_queue ?? 0, "Rotation queue"],
+      ["Intel Avg", summary.avg_intelligence_score ?? "Pending", "Overlay score"],
+      ["Regime Risk", summary.avg_regime_risk ?? "Pending", "Macro/event pressure"],
+      ["Coverage", summary.avg_parameter_coverage ?? "Pending", "Data richness"],
       ["Data Gaps", summary.data_needed ?? 0, "Missing candles/feed"]
     ];
     const grid = $("#paperTraderMetrics");
@@ -180,24 +182,24 @@
     const thesis = $("#urrThesis");
     if (!thesis) return;
     thesis.innerHTML = top
-      ? `<strong>${escapeHtml(top.symbol)}: ${escapeHtml(top.conviction || top.readiness || "REVIEW")} | ${escapeHtml(top.horizon || "Horizon calculating")}</strong><p>${escapeHtml(top.thesis || "Advisor thesis is being calculated from price, momentum, liquidity, theme and risk feeds.")}</p><div class="thesis-row"><span>Entry ${entryZone(top)}</span><span>T1/T2 ${money(top.target1)} / ${money(top.target2 || top.target_price)}</span><span>Stop ${money(top.stop_price)}</span></div>`
+      ? `<strong>${escapeHtml(top.symbol)}: ${escapeHtml(top.conviction || top.readiness || "REVIEW")} | Intel ${number(top.intelligence_score || top.paper_score)} | Risk ${number(top.regime_risk)}</strong><p>${escapeHtml(top.thesis || "Advisor thesis is being calculated from price, momentum, liquidity, theme and risk feeds.")}</p><div class="thesis-row"><span>Entry ${entryZone(top)}</span><span>T1/T2 ${money(top.target1)} / ${money(top.target2 || top.target_price)}</span><span>Stop ${money(top.stop_price)}</span></div>`
       : `<strong>Advisor engine waiting for run</strong><p>It will fetch Upstox first and Yahoo NSE fallback second. If a feed fails, the failed feed will be named instead of leaving blanks.</p>`;
   }
 
   function renderFactors(plan) {
     const top = plan?.top_ranked?.[0] || plan?.buy_queue?.[0] || {};
     const rows = [
-      ["Trend Strength", top.momentum_score || top.paper_score || 0],
-      ["Relative Strength", top.score || 0],
-      ["Volume / Liquidity", Math.min(100, Number(top.rupee_turnover_cr || 0) * 6)],
+      ["Intelligence Overlay", top.intelligence_score || top.paper_score || 0],
+      ["Parameter Coverage", top.parameter_coverage || 0],
+      ["FII/DII Flow", top.flow_score || 0],
+      ["Theme Hot Pocket", top.hot_pocket_score || top.theme_heat || 0],
       ["Target Room", Number(top.target_pct || 0) * 1.2],
-      ["Event Resilience", top.event_resilience || 0],
-      ["Theme Heat", top.theme_heat || ((top.themes || []).length ? 70 : 35)],
-      ["Risk Reward", top.paper_score || 0]
+      ["Price Momentum", top.momentum_score || top.paper_score || 0],
+      ["Regime Safety", Math.max(0, 100 - Number(top.regime_risk || 0))]
     ];
     const panel = $("#factorBars");
     const score = $("#rankingScore");
-    if (score) score.textContent = Number.isFinite(Number(top.paper_score)) ? `${number(top.paper_score)} / 100` : "Pending";
+    if (score) score.textContent = Number.isFinite(Number(top.intelligence_score || top.paper_score)) ? `${number(top.intelligence_score || top.paper_score)} / 100` : "Pending";
     if (!panel) return;
     panel.innerHTML = rows.map(([label, value]) => {
       const width = Math.max(4, Math.min(100, Number(value) || 0));
@@ -210,7 +212,7 @@
     const body = $("#buyQueueBody");
     if (!body) return;
     body.innerHTML = rows.length
-      ? rows.map((row) => `<tr><td>${row.rank}</td><td><strong>${escapeHtml(row.symbol || "Symbol pending")}</strong><span>${escapeHtml(row.name || "Name from instrument master")}</span><span>${escapeHtml(row.sector || "Sector inferred")}</span></td><td><span class="action-pill ${row.conviction === "HIGH" ? "ready" : "review"}">${escapeHtml(row.conviction || row.readiness || "REVIEW")}</span><span>${escapeHtml(row.horizon || "Horizon calculating")}</span></td><td>${number(row.paper_score)}</td><td>${entryZone(row)}</td><td>${money(row.target1)}<span>${money(row.target2 || row.target_price)}</span></td><td>${money(row.stop_price)}<span>${pct(-row.stop_loss_pct)}</span></td><td>${row.qty || "Qty after price"}</td><td class="reason-cell"><strong>${escapeHtml(row.setup || "Advisor setup")}</strong><span>${escapeHtml(row.thesis || "Thesis calculating from available feeds")}</span><span>${escapeHtml(row.exit_rule || "Exit rule: target, stop, or score deterioration")}</span></td></tr>`).join("")
+      ? rows.map((row) => `<tr><td>${row.rank}</td><td><strong>${escapeHtml(row.symbol || "Symbol pending")}</strong><span>${escapeHtml(row.name || "Name from instrument master")}</span><span>${escapeHtml(row.sector || "Sector inferred")}</span></td><td><span class="action-pill ${row.conviction === "HIGH" ? "ready" : "review"}">${escapeHtml(row.conviction || row.readiness || "REVIEW")}</span><span>${escapeHtml(row.horizon || "Horizon calculating")}</span></td><td><strong>${number(row.intelligence_score || row.paper_score)}</strong><span>Risk ${number(row.regime_risk)} | Cov ${number(row.parameter_coverage)}</span><span>Flow ${number(row.flow_score)} | Theme ${number(row.hot_pocket_score)}</span></td><td>${entryZone(row)}</td><td>${money(row.target1)}<span>${money(row.target2 || row.target_price)}</span></td><td>${money(row.stop_price)}<span>${pct(-row.stop_loss_pct)}</span></td><td>${row.qty || "Qty after price"}</td><td class="reason-cell"><strong>${escapeHtml(row.setup || "Advisor setup")}</strong><span>${escapeHtml(row.thesis || "Thesis calculating from available feeds")}</span><span>${escapeHtml(row.exit_rule || "Exit rule: target, stop, or score deterioration")}</span></td></tr>`).join("")
       : '<tr><td colspan="9" class="empty-cell">No selected stocks displayed yet. Run Morning Engine; if Upstox has gaps, Yahoo NSE fallback will fill price candles and the failed feed will be named.</td></tr>';
   }
 
@@ -230,7 +232,7 @@
     const entries = Object.entries({ Selected: watchlists.selected_30 || watchlists.morning_top_50 || [], "Target Room": watchlists.target_room || [], "Event Resilient": watchlists.event_resilient || [], ...themeBuckets }).filter(([, rows]) => Array.isArray(rows));
     $("#watchlistCount").textContent = entries.length ? `${entries.length} buckets` : "Run needed";
     grid.innerHTML = entries.length
-      ? entries.map(([name, rows]) => `<article class="watchlist-card"><strong>${escapeHtml(name)}</strong>${rows.slice(0, 6).map((row) => `<span>${escapeHtml(row.symbol || "Symbol")} <small>${escapeHtml(row.conviction || number(row.paper_score))}</small></span>`).join("") || '<span class="subtle">No candidates in this bucket yet</span>'}</article>`).join("")
+      ? entries.map(([name, rows]) => `<article class="watchlist-card"><strong>${escapeHtml(name)}</strong>${rows.slice(0, 6).map((row) => `<span>${escapeHtml(row.symbol || "Symbol")} <small>${escapeHtml(row.conviction || number(row.intelligence_score || row.paper_score))}</small></span>`).join("") || '<span class="subtle">No candidates in this bucket yet</span>'}</article>`).join("")
       : '<article class="watchlist-card"><strong>Waiting for advisor run</strong><span>Theme buckets populate after candles are fetched</span></article>';
   }
 
@@ -240,7 +242,8 @@
     const upstox = statusPayload.upstox || {};
     const selected = plan?.summary?.buy_queue || 0;
     const source = plan?.fallback_used || plan?.source || "Upstox first, Yahoo fallback second";
-    el.innerHTML = `<div class="ready-card"><strong>Mode</strong><span>Paper trading only</span></div><div class="ready-card"><strong>Upstox</strong><span>${upstox.token_visible ? "Token visible" : "Token missing"}</span></div><div class="ready-card"><strong>Selected</strong><span>${selected} advisor stocks</span></div><div class="ready-card"><strong>Data Source</strong><span>${escapeHtml(source)}</span></div>`;
+    const overlay = plan?.intelligence_overlay?.uses?.slice(0, 3).join(", ") || "price, momentum, liquidity";
+    el.innerHTML = `<div class="ready-card"><strong>Mode</strong><span>Paper trading only</span></div><div class="ready-card"><strong>Upstox</strong><span>${upstox.token_visible ? "Token visible" : "Token missing"}</span></div><div class="ready-card"><strong>Selected</strong><span>${selected} advisor stocks</span></div><div class="ready-card"><strong>Data Source</strong><span>${escapeHtml(source)}</span></div><div class="ready-card"><strong>Intelligence</strong><span>${escapeHtml(overlay)}</span></div>`;
   }
 
   function setBusy(busy, message) {
