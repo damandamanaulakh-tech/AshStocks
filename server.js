@@ -12,6 +12,7 @@ import { applyYahooFallbackPatches } from "./server-yahoo-fallback-patch.mjs";
 import { applyMarketContextPatches } from "./server-market-context-patch.mjs";
 import { applyCompetitiveFrameworkPatches } from "./server-competitive-framework-patch.mjs";
 import { applyDataIntelligencePatches } from "./server-data-intelligence-patch.mjs";
+import { applyIntelligenceScorePatches } from "./server-intelligence-score-patch.mjs";
 import { applySuspendedEmptyScanPatch } from "./server-suspended-empty-patch.mjs";
 
 const runtimeProcess = globalThis.process;
@@ -168,6 +169,7 @@ function startDataBankBootstrap() {
   output = applyMarketContextPatches(output, mustReplace);
   output = applyCompetitiveFrameworkPatches(output, mustReplace);
   output = applyDataIntelligencePatches(output, mustReplace);
+  output = applyIntelligenceScorePatches(output, mustReplace);
   output = applySuspendedEmptyScanPatch(output, mustReplace);
   return output;
 }
