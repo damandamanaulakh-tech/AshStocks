@@ -24,17 +24,17 @@ const ASHSTOCKS_FRAMEWORK_LAYERS = Object.freeze([
   {
     id: "L01_UNIVERSE_MASTER",
     name: "NSE Equity Master",
-    status: "ACTIVE",
-    role: "Build the real India/NSE stock pool from Upstox complete instruments, excluding fund-like rows.",
-    sources: ["Upstox complete instruments JSON"],
+    status: "ACTIVE_UPSTOX_CONNECTED",
+    role: "Build the real India/NSE stock pool from Upstox complete instruments, excluding fund-like and suspended rows.",
+    sources: ["Upstox complete instruments JSON", "Upstox suspended instruments JSON"],
     product_use: "Scanner universe and Upstox instrument_key source."
   },
   {
     id: "L02_PRICE_LIQUIDITY_TECH",
     name: "OHLCV Momentum And Liquidity",
-    status: "ACTIVE",
-    role: "Use historical candles for 6M/12M return, volatility, ADV20, turnover, stale candle, stuck candle and target-potential gates.",
-    sources: ["Upstox historical candle API"],
+    status: "ACTIVE_UPSTOX_RATE_LIMIT_AWARE",
+    role: "Use historical candles for 6M/12M return, volatility, ADV20, turnover, stale candle, stuck candle and target-potential gates. If Upstox returns 429, the app names that rate limit instead of faking values.",
+    sources: ["Upstox historical candle API", "Yahoo NSE fallback when Upstox is rate-limited"],
     product_use: "Current hard gates and score engine."
   },
   {
@@ -48,7 +48,7 @@ const ASHSTOCKS_FRAMEWORK_LAYERS = Object.freeze([
   {
     id: "L04_IFR_DAMAGE_REPAIR",
     name: "IFR Damage And Repair State Machine",
-    status: "KEEP_FOR_PAPER_DATA_NEEDED",
+    status: "DATA_AVAILABLE_NOT_SELECT_WIRED",
     role: "Internal Fracture and Repair is a risk/exposure throttle, not a standalone buy/sell signal.",
     sources: ["Chityy_Sourceborn_IFR_Validation_Hard_Checks_v0_5", "Chityy_Sourceborn_IFR_FII_Cash_Stack_Test_v0_6"],
     product_use: "Reduce exposure during fracture; restore only after repair state confirms."
@@ -56,15 +56,15 @@ const ASHSTOCKS_FRAMEWORK_LAYERS = Object.freeze([
   {
     id: "L05_FII_DII_CASH",
     name: "FII/DII Cash Pressure",
-    status: "KEEP_FOR_PAPER_DATA_NEEDED",
-    role: "Confirm risk pressure and divergence using FII/DII cash flow stacks.",
-    sources: ["fii_dii_cash_flow_2012_2023.csv", "fii_dii_cash_full_history_clean.csv"],
-    product_use: "Exposure throttle and regime confirmation."
+    status: "ACTIVE_SNAPSHOT_IN_INTELLIGENCE",
+    role: "Use latest FII/DII cash snapshot in intelligence overlay now; full history is still needed before it controls SELECT by itself.",
+    sources: ["fii-dii-nse-latest.csv", "fii_dii_cash_flow_2012_2023.csv", "fii_dii_cash_full_history_clean.csv"],
+    product_use: "Institutional flow score and future exposure throttle."
   },
   {
     id: "L06_PWOI_DERIVATIVES",
     name: "PWOI And Derivatives Positioning",
-    status: "DATA_NEEDED",
+    status: "DATA_NEEDED_TO_WIRE",
     role: "Add participant-wise OI, FII derivatives, PCR, futures basis and F&O event-window checks.",
     sources: ["pwoi_participant_oi_long_2012_2023.csv", "pwoi_fii_derivatives_features_2012_2023.csv", "fo_options_pcr_oi_by_symbol_2026_06_03.csv"],
     product_use: "Early risk confirmation before cash data is obvious."
@@ -72,7 +72,7 @@ const ASHSTOCKS_FRAMEWORK_LAYERS = Object.freeze([
   {
     id: "L07_VOLUME_DELIVERY_BREADTH",
     name: "Market-Wide Volume Delivery Breadth",
-    status: "DATA_NEEDED",
+    status: "DATA_NEEDED_TO_WIRE",
     role: "Use delivery, volume concentration, up/down volume decay, dispersion and breadth to avoid narrow leadership traps.",
     sources: ["nse_volume_delivery_16stocks_eq_merged.csv", "05_daily_market_internals.csv", "06_EARLY_WARNING.md"],
     product_use: "Regime warning and false-positive filter."
@@ -80,7 +80,7 @@ const ASHSTOCKS_FRAMEWORK_LAYERS = Object.freeze([
   {
     id: "L08_REGIME_EARLY_WARNING",
     name: "India Regime Early Warning",
-    status: "PARAMETER_BANK_READY_DATA_NEEDED",
+    status: "PARAMETER_BANK_READY_NEEDS_FEEDS",
     role: "Thirty India-specific early warning hypotheses: DBI, volume HHI, FII futures shift, PCR skew, basis anomaly, GST, SIP, demat velocity and more.",
     sources: ["06_EARLY_WARNING.md", "07_DATA_FORMATS.md"],
     product_use: "Market exposure multiplier after validation."
@@ -99,27 +99,27 @@ const ASHSTOCKS_FRAMEWORK_LAYERS = Object.freeze([
     status: "ACTIVE_CONTROL",
     role: "Run Point Zero, Source, Pattern, Evidence, Reality Check, URR pass, Halt Point, ProofLedger, GapTable and next loop.",
     sources: ["NEW_CHAT_CONTINUATION_PROMPT.txt", "URR Core.txt", "urr07.txt"],
-    product_use: "Prevents fake proof and routes missing data to DATA_NEEDED."
+    product_use: "Prevents fake proof and routes missing data to exact feed status."
   },
   {
     id: "L11_PAPER_ENGINE_ONLY",
     name: "Paper Engine And Safety",
     status: "ACTIVE",
-    role: "Historical-candle-only Upstox scan and paper order output. No live broker orders.",
-    sources: ["Upstox historical candle API", "scan_ledger"],
+    role: "Historical-candle-only Upstox/Yahoo-fallback scan and paper order output. No live broker orders.",
+    sources: ["Upstox historical candle API", "Yahoo Finance NSE fallback", "scan_ledger"],
     product_use: "Daily proof loop, scheduler and audit trail."
   }
 ]);
 
 const ASHSTOCKS_REQUIRED_FEEDS = Object.freeze([
-  { id: "F01", name: "NSE Bhavcopy EQ", status: "DATA_NEEDED", priority: 1, minimum_history: "2018-01-01 to present", unlocks: ["DBI", "volume HHI", "up/down volume", "delivery breadth"] },
-  { id: "F02", name: "Upstox Daily OHLCV", status: "ACTIVE_RECENT_WINDOW", priority: 1, minimum_history: "253 trading days active now, 15Y still needed", unlocks: ["price/liquidity scanner", "paper engine"] },
-  { id: "F03", name: "FII/DII Cash", status: "DATA_NEEDED_TO_WIRE", priority: 1, minimum_history: "2012/2018 to present", unlocks: ["FII cash pressure", "DII divergence"] },
+  { id: "F01", name: "NSE Bhavcopy EQ", status: "DATA_NEEDED_NON_UPSTOX", priority: 1, minimum_history: "2018-01-01 to present", unlocks: ["DBI", "volume HHI", "up/down volume", "delivery breadth"] },
+  { id: "F02", name: "Upstox Daily OHLCV", status: "CONNECTED_RATE_LIMIT_AWARE", priority: 1, minimum_history: "253 trading days active now; 15Y point-in-time history still needed", unlocks: ["price/liquidity scanner", "paper engine", "entry/target/stop"] },
+  { id: "F03", name: "FII/DII Cash", status: "LATEST_SNAPSHOT_WIRED_FULL_HISTORY_NEEDED", priority: 1, minimum_history: "latest snapshot active; 2012/2018 to present history still needed", unlocks: ["FII cash pressure", "DII divergence", "flow_score"] },
   { id: "F04", name: "PWOI Participant OI", status: "DATA_NEEDED_TO_WIRE", priority: 2, minimum_history: "2012 to present", unlocks: ["PWOI stress", "derivatives confirmation"] },
-  { id: "F05", name: "NSE F&O Bhavcopy", status: "DATA_NEEDED", priority: 2, minimum_history: "2020 to present", unlocks: ["PCR", "basis", "F&O event windows"] },
-  { id: "F06", name: "Index/VIX/Breadth", status: "DATA_NEEDED", priority: 2, minimum_history: "2018 to present", unlocks: ["regime multiplier", "repair state"] },
-  { id: "F07", name: "FX/Gold/10Y/Crude", status: "DATA_NEEDED", priority: 3, minimum_history: "2018 to present", unlocks: ["cross-asset stress"] },
-  { id: "F08", name: "GST/SIP/Demat/SME/Insider", status: "FUTURE_DATA_NEEDED", priority: 4, minimum_history: "monthly history", unlocks: ["macro and sentiment early warning"] }
+  { id: "F05", name: "NSE F&O Bhavcopy", status: "DATA_NEEDED_TO_WIRE", priority: 2, minimum_history: "2020 to present", unlocks: ["PCR", "basis", "F&O event windows"] },
+  { id: "F06", name: "Index/VIX/Breadth", status: "YAHOO_FALLBACK_PARTIAL_HISTORY_NEEDED", priority: 2, minimum_history: "2018 to present", unlocks: ["regime multiplier", "repair state"] },
+  { id: "F07", name: "FX/Gold/10Y/Crude", status: "PARTIAL_ONLINE_HISTORY_NEEDED", priority: 3, minimum_history: "2018 to present", unlocks: ["cross-asset stress"] },
+  { id: "F08", name: "GST/SIP/Demat/SME/Insider", status: "FUTURE_DATA_NEEDED_NON_UPSTOX", priority: 4, minimum_history: "monthly history", unlocks: ["macro and sentiment early warning"] }
 ]);
 
 const ASHSTOCKS_DECISION_RULES = Object.freeze({
@@ -147,9 +147,9 @@ function ashstocksFrameworkSummary(state = defaultState()) {
     truth: {
       live_trade: false,
       paper_only: true,
-      current_scanner_layers_active: ["L01_UNIVERSE_MASTER", "L02_PRICE_LIQUIDITY_TECH", "L03_PORTFOLIO_RISK", "L11_PAPER_ENGINE_ONLY"],
-      not_yet_active_as_buy_signal: ["IFR", "FII/DII", "PWOI", "market-wide delivery", "macro early warning"],
-      reason: "Those layers need full feeds and validation before they can control SELECT."
+      current_scanner_layers_active: ["L01_UNIVERSE_MASTER", "L02_PRICE_LIQUIDITY_TECH", "L03_PORTFOLIO_RISK", "L05_FII_DII_CASH", "L11_PAPER_ENGINE_ONLY"],
+      not_yet_active_as_buy_signal: ["IFR full state", "PWOI", "market-wide delivery", "macro early warning"],
+      reason: "Upstox instruments/OHLCV and FII/DII latest snapshot are wired; 429 rate limits are named separately; remaining layers need full feeds and validation before they can control SELECT."
     },
     source_handoff: {
       folders: 2,
@@ -168,8 +168,9 @@ function ashstocksFrameworkSummary(state = defaultState()) {
     required_feeds: ASHSTOCKS_REQUIRED_FEEDS,
     decision_rules: ASHSTOCKS_DECISION_RULES,
     next_build_loop: [
+      "Keep Upstox 429 rate-limit failures separate from true DATA_NEEDED gaps",
       "Create durable feed ledger for uploaded CSV/XLSX sources",
-      "Wire FII/DII cash and IFR state columns as paper exposure multipliers",
+      "Wire full FII/DII cash history and IFR state columns as paper exposure multipliers",
       "Wire market-wide delivery/volume breadth before allowing IFR/FII to affect SELECT",
       "Add event lead-time report for KEEP/WATCH/ARCHIVE parameter decisions",
       "Keep live orders disabled"
@@ -188,7 +189,7 @@ function ashstocksFrameworkSummary(state = defaultState()) {
   output = mustReplace(
     output,
     '      "FII/DII/PWOI/IFR overlays are not complete",',
-    '      "IFR/FII/DII/PWOI/volume-delivery overlays are framework layers but not fully wired into SELECT",',
+    '      "IFR full state/PWOI/volume-delivery overlays are not complete; Upstox/FII snapshot are wired separately",',
     'framework-specific data-bank gap'
   );
 
