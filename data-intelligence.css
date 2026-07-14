@@ -149,11 +149,134 @@
   text-transform: uppercase;
 }
 
+.parameter-piano-panel {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+
+.parameter-piano-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.parameter-piano-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.parameter-piano-legend i {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  border: 1px solid var(--line);
+}
+
+.parameter-piano-legend .hit,
+.piano-key.hit {
+  background: var(--green);
+  color: #ffffff;
+  border-color: color-mix(in srgb, var(--green) 70%, #000000 10%);
+}
+
+.parameter-piano-legend .warn,
+.piano-key.warn {
+  background: var(--saffron);
+  color: #111111;
+  border-color: color-mix(in srgb, var(--saffron) 70%, #000000 10%);
+}
+
+.parameter-piano-legend .block,
+.piano-key.block {
+  background: var(--red);
+  color: #ffffff;
+  border-color: color-mix(in srgb, var(--red) 70%, #000000 10%);
+}
+
+.parameter-piano-legend .idle,
+.piano-key.idle {
+  background: color-mix(in srgb, var(--panel-soft) 82%, transparent);
+  color: var(--muted);
+  border-color: var(--line);
+}
+
+.parameter-piano-rows {
+  display: grid;
+  gap: 10px;
+  max-height: 420px;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.piano-family {
+  display: grid;
+  grid-template-columns: 168px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--panel-soft) 42%, transparent);
+}
+
+.piano-family-head {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.piano-family-head strong {
+  font-size: 0.86rem;
+  overflow-wrap: anywhere;
+}
+
+.piano-family-head span,
+.piano-family-head b {
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+
+.piano-key-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(24px, 1fr));
+  gap: 4px;
+}
+
+.piano-key {
+  min-width: 0;
+  height: 22px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  font-size: 0.58rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.piano-key:hover,
+.piano-key:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 1px;
+  transform: translateY(-1px);
+}
+
 @media (max-width: 1180px) {
   .data-intel-summary,
   .data-source-grid,
   .block-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .piano-family {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -167,5 +290,18 @@
   .data-source-grid,
   .block-grid {
     grid-template-columns: 1fr;
+  }
+
+  .parameter-piano-panel {
+    padding: 12px;
+  }
+
+  .piano-key-grid {
+    grid-template-columns: repeat(auto-fill, minmax(21px, 1fr));
+  }
+
+  .piano-key {
+    height: 20px;
+    font-size: 0.52rem;
   }
 }
