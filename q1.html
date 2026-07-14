@@ -67,6 +67,11 @@
             <small>env only</small>
           </article>
           <article class="metric-card">
+            <span>Data Source</span>
+            <strong>Upstox</strong>
+            <small>no Yahoo in Q1</small>
+          </article>
+          <article class="metric-card">
             <span>Input Files</span>
             <strong id="inputFound">No</strong>
             <small>two CSVs required</small>
@@ -110,7 +115,7 @@
                 <i data-lucide="play" aria-hidden="true"></i>
                 Run Historical Fetch
               </button>
-              <p class="subtle">This endpoint is blocked outside Render and only reads `UPSTOX_ACCESS_TOKEN` from the environment.</p>
+              <p class="subtle">This endpoint is blocked outside Render, reads only `UPSTOX_ACCESS_TOKEN` from the environment, and does not use Yahoo fallback.</p>
               <pre id="runOutput" class="q1-output" aria-live="polite">Waiting.</pre>
             </div>
           </section>
@@ -136,7 +141,8 @@
               <div class="q1-check good">Token is shown only as yes/no.</div>
               <div class="q1-check good">API key is shown only as yes/no.</div>
               <div class="q1-check good">No live orders are available here.</div>
-              <div class="q1-check good">Runner fetches historical daily candles only.</div>
+              <div class="q1-check good">Runner fetches historical daily candles from Upstox only.</div>
+              <div class="q1-check good">Yahoo fallback is not used by Q1.</div>
               <div class="q1-check good">Generated CSVs are ignored by git.</div>
             </div>
           </section>
