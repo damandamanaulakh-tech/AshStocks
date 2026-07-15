@@ -16,6 +16,69 @@
   border-top: 1px solid var(--line);
 }
 
+.terminal-param-controls {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) minmax(130px, 0.32fr);
+  gap: 8px;
+}
+
+.terminal-param-controls input,
+.terminal-param-controls select {
+  min-height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--text);
+  padding: 0 10px;
+}
+
+.terminal-param-board {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(34px, 1fr));
+  gap: 4px;
+  max-height: 260px;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+  padding: 8px;
+}
+
+.terminal-param-board button {
+  min-width: 0;
+  min-height: 28px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--panel);
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 900;
+  padding: 0 3px;
+}
+
+.terminal-param-board button.HIT {
+  border-color: color-mix(in srgb, var(--green) 55%, var(--line));
+  background: color-mix(in srgb, var(--green) 18%, var(--panel));
+  color: var(--green);
+}
+
+.terminal-param-board button.WAITING {
+  border-color: color-mix(in srgb, var(--saffron) 55%, var(--line));
+  background: color-mix(in srgb, var(--saffron) 15%, var(--panel));
+  color: var(--saffron);
+}
+
+.terminal-param-board button.DATA_NEEDED {
+  border-color: color-mix(in srgb, var(--violet) 52%, var(--line));
+  background: color-mix(in srgb, var(--violet) 10%, var(--panel));
+  color: var(--violet);
+}
+
+.terminal-param-board button.selected {
+  outline: 2px solid var(--teal);
+  outline-offset: 1px;
+}
+
 #terminalGateBody {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -32,11 +95,11 @@
   padding: 9px;
 }
 
-#terminalGateBody article:nth-child(3),
 #terminalGateBody article:nth-child(4),
 #terminalGateBody article:nth-child(5),
 #terminalGateBody article:nth-child(6),
-#terminalGateBody article:nth-child(7) {
+#terminalGateBody article:nth-child(7),
+#terminalGateBody article:nth-child(8) {
   grid-column: 1 / -1;
 }
 
@@ -63,13 +126,15 @@
 }
 
 #terminalParameterGates article:hover,
-#terminalProof .terminal-proof-grid span:hover {
+#terminalProof .terminal-proof-grid span:hover,
+.terminal-param-board button:hover {
   outline: 2px solid color-mix(in srgb, var(--teal) 46%, transparent);
   outline-offset: 2px;
 }
 
 @media (max-width: 860px) {
-  #terminalGateBody {
+  #terminalGateBody,
+  .terminal-param-controls {
     grid-template-columns: 1fr;
   }
 }
