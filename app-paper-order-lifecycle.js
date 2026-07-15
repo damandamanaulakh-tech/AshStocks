@@ -37,9 +37,9 @@
       const label = (button.textContent || "").trim().toUpperCase();
       if (!label.includes("PAPER")) continue;
       const action = label.includes("SELL") ? "SELL" : label.includes("GTT") ? "GTT" : "BUY";
-      button.disabled = false;
-      button.dataset.paperAction = action;
-      button.setAttribute("aria-label", ACTION_LABELS[action]);
+      if (button.disabled) button.disabled = false;
+      if (button.dataset.paperAction !== action) button.dataset.paperAction = action;
+      if (button.getAttribute("aria-label") !== ACTION_LABELS[action]) button.setAttribute("aria-label", ACTION_LABELS[action]);
       if (!button.dataset.paperLifecycleBound) {
         button.dataset.paperLifecycleBound = "1";
         button.addEventListener("click", () => submitPaperAction(action));
@@ -120,7 +120,7 @@
     const positions = status.positions || status.paperTrader?.positions || status.status?.positions || [];
     const gtt = status.gtt || status.paperTrader?.gtt || status.status?.gtt || [];
     const funds = status.funds || status.paperTrader?.funds || status.status?.funds || {};
-    ledger.innerHTML = `
+    const html = `
       <div class="panel-header"><h3>Paper Order Book</h3><span>${escapeHtml(fundsText(funds))}</span></div>
       <div class="uw-table-wrap"><table><thead><tr><th>Order</th><th>Side</th><th>Qty</th><th>Price</th><th>Status</th><th>Reason</th></tr></thead><tbody>${orderRows(orders)}</tbody></table></div>
       <div class="uw-report-grid">
@@ -132,6 +132,7 @@
       <div class="uw-table-wrap"><table><thead><tr><th>Position</th><th>Qty</th><th>Entry</th><th>Current</th><th>Target</th><th>Stop</th></tr></thead><tbody>${positionRows(positions)}</tbody></table></div>
       <div class="uw-table-wrap"><table><thead><tr><th>GTT</th><th>Side</th><th>Entry</th><th>Target</th><th>Stop</th><th>Status</th></tr></thead><tbody>${gttRows(gtt)}</tbody></table></div>
     `;
+    if (ledger.innerHTML !== html) ledger.innerHTML = html;
   }
 
   function orderRows(orders) {
@@ -181,7 +182,7 @@
       const text = (label.querySelector("span")?.textContent || "").trim().toLowerCase();
       if (text === "status") {
         const input = label.querySelector("input");
-        if (input && message) input.value = message;
+        if (input && message && input.value !== message) input.value = message;
       }
     }
     let note = ticket.querySelector("[data-paper-lifecycle-note]");
@@ -190,7 +191,8 @@
       note.dataset.paperLifecycleNote = "1";
       ticket.appendChild(note);
     }
-    note.textContent = message || "Paper execution only. Broker write path remains locked.";
+    const text = message || "Paper execution only. Broker write path remains locked.";
+    if (note.textContent !== text) note.textContent = text;
   }
 
   function lastStatusText() {
