@@ -19,6 +19,7 @@
     appendScript("./app-parameter-piano-candle-bridge.js");
     appendScript("./app-paper-order-lifecycle.js");
     appendScript("./app-upstox-parameter-filter.js");
+    appendScript("./app-upstox-reasoning-dock.js");
     appendScript("./app-upstox-autostart.js");
   }
 
