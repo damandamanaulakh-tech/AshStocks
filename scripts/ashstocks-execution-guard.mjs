@@ -38,14 +38,17 @@ for (const [file, checks] of Object.entries({
   "server-paper-order-lifecycle-patch.mjs": ["PAPER_ORDER_LIFECYCLE_VERSION", "/api/paper-trader/order", "/api/paper-trader/orders", "broker_write_enabled: false"],
   "server-candle-pattern-patch.mjs": ["CANDLE_PATTERN_VERSION", "candlePatternAnalysis", "candle_patterns", "candle_score", "candle_status", "bullish_engulfing", "hammer_rejection", "near_252d_breakout", "volume_confirmation"],
   "app-ashstocks-broker-terminal.js": ["#ashBrokerTerminal", "AshStocks Terminal", "Market Watch", "Order Ticket", "Parameter Proof", "Candle Trigger", "Order Book", "Positions / GTT", "/api/scanner/run", "/api/upstox/quote", "/api/paper-trader/orders", "/api/paper-trader/order", "P681", "P683", "P686", "P688", "submitTerminalOrder", "source: \"ashstocks-broker-terminal\"", "broker_write_enabled: false", "paper_only: true"],
+  "app-ashstocks-terminal-filter-bridge.js": ["data-terminal-filter", "SELECT", "WATCH", "CANDLE", "DATA_NEEDED", "No rows match this real scanner filter", "/api/scanner/run"],
   "ashstocks-broker-terminal.css": [".ash-broker-terminal", ".abt-layout", ".abt-watch-table", ".abt-chart-box", ".abt-ticket-actions", ".abt-param-grid", ".abt-ledger"],
+  "app-upstox-realtime-monitor.js": ["#upstoxRealtimeMonitor", "Upstox Quote Monitor", "POLLING_FALLBACK_NO_WEBSOCKET", "POLL_MS = 15000", "/api/upstox/quote", "ashstocks:upstox-realtime-tick", "TARGET_TOUCH", "STOP_TOUCH", "CANDLE_CONTINUATION", "DATA_NEEDED: scanner rows with instrument_key required", "source: \"upstox-realtime-monitor\""],
+  "upstox-realtime-monitor.css": [".upstox-realtime-monitor", ".urt-summary", ".urt-grid", ".urt-selected", ".urt-triggers", ".urt-stream"],
   "app-upstox-symbol-workspace.js": ["#uwSymbolWorkspace", "Upstox-Style Symbol Workspace", "/api/scanner/run", "/api/upstox/quote", "/api/paper-trader/orders", "/api/paper-trader/order", "requestUpstoxQuote", "publishQuote", "ashstocks:upstox-quote", "#uwProduct", "#uwOrderType", "#uwValidity", "#uwRiskPct", "#uwCapital", "#uwTriggerPrice", "brokerReadiness", "quoteStatusText", "UPSTOX_DEPTH", "candleSvg", "DATA_NEEDED: candle chart not available", "BUY", "SELL", "GTT", "Selected Stock Ledger", "broker_write_enabled stays false"],
   "upstox-symbol-workspace.css": [".uw-quote-micro", ".uw-ticket-status", ".uw-ticket-grid", ".uw-ticket-actions", ".uw-paper-action-grid select"],
   "app-upstox-market-watch-pulse.js": ["#uwMarketWatchPulse", "Upstox Market Watch", "Scanner Quote Pulse", "#brokerMarketWatchPulse", "MAX_KEYS_PER_PULSE = 12", "RATE_LIMIT_BACKOFF_MS", "/api/upstox/quote", "instrument_keys", "ashstocks:upstox-quote", "window.__ashstocksUpstoxQuoteCache", "quote + depth ok", "rate-limit backoff", "DATA_NEEDED: scanner rows with instrument_key required"],
   "upstox-market-watch-pulse.css": [".upstox-market-watch-pulse", ".pulse-status", ".pulse-strip", ".pulse-card", ".pulse-table-wrap"],
   "app-paper-risk-console.js": ["#paperRiskConsole", "Paper Broker Risk", "Account, Positions, GTT", "#riskOrdersPanel", "#riskPositionsPanel", "#riskGttPanel", "/api/paper-trader/orders", "/api/paper-trader/order", "ashstocks:upstox-quote", "ashstocks:broker-select-symbol", "Buying Power", "Exposure", "Position Manager", "Paper Holdings & Exits", "GTT Risk Book", "EXIT_POSITION", "PROTECT_POSITION", "paper_only: true", "broker_write_enabled: false", "source: \"paper-risk-console\""],
   "paper-risk-console.css": [".paper-risk-console", ".risk-summary", ".risk-selected", ".risk-table-wrap", ".risk-actions", ".risk-status.PAPER_FILLED"],
-  "app-broker-equivalence-audit.js": ["#brokerEquivalenceAudit", "Broker Workflow Checker", "Unified broker terminal", "#ashBrokerTerminal", "NOT_UPSTOX_EQUIVALENT_YET", "BROKER_WORKFLOW_READY_PAPER_ONLY", "NSE universe and scanner", "2000 parameter piano", "Candle parameters 681-800", "Upstox quote and depth", "Buy Sell GTT ticket", "Order book and trade book", "Realtime websocket ticks", "LOCKED_BY_RULE", "No websocket tick stream is implemented yet", "/api/health", "/api/paper-trader/orders", "/api/upstox/quote"],
+  "app-broker-equivalence-audit.js": ["#brokerEquivalenceAudit", "Broker Workflow Checker", "Unified broker terminal", "#ashBrokerTerminal", "Realtime quote polling", "#upstoxRealtimeMonitor", "NOT_UPSTOX_EQUIVALENT_YET", "BROKER_WORKFLOW_READY_PAPER_ONLY", "NSE universe and scanner", "2000 parameter piano", "Candle parameters 681-800", "Upstox quote and depth", "Buy Sell GTT ticket", "Order book and trade book", "Realtime websocket ticks", "LOCKED_BY_RULE", "No websocket tick stream is implemented yet; polling fallback is not the same as websocket streaming", "/api/health", "/api/paper-trader/orders", "/api/upstox/quote"],
   "broker-equivalence-audit.css": [".broker-equivalence-audit", ".equivalence-verdict", ".equivalence-summary", ".equivalence-grid", ".equivalence-status.DATA_NEEDED", ".equivalence-status.LOCKED_BY_RULE"],
   "app-upstox-trade-queue-bridge.js": ["#uwTradeQueueBridge", "Scanner To Execution", "Broker Trade Queue", "/api/scanner/run", "/api/paper-trader/orders", "/api/paper-trader/order", "ashstocks:upstox-quote", "submitQueuePaperAction", "upstox-trade-queue-bridge", "Momentum", "Candle", "Liquidity", "Target", "Risk", "Quote", "BUY", "GTT", "source: \"upstox-trade-queue-bridge\"", "quote_source"],
   "upstox-trade-queue-bridge.css": [".uw-trade-queue-bridge", ".uw-trade-queue-summary", ".uw-trade-param-chips", ".uw-trade-actions", ".uw-trade-queue-table tr.selected"],
@@ -82,6 +85,7 @@ for (const asset of [
   "./upstox-market-watch-pulse.css",
   "./paper-risk-console.css",
   "./ashstocks-broker-terminal.css",
+  "./upstox-realtime-monitor.css",
   "./broker-equivalence-audit.css",
   "./app-upstox-workspace.js",
   "./app-upstox-symbol-workspace.js",
@@ -98,6 +102,8 @@ for (const asset of [
   "./app-candle-trigger-tape.js",
   "./app-paper-risk-console.js",
   "./app-ashstocks-broker-terminal.js",
+  "./app-ashstocks-terminal-filter-bridge.js",
+  "./app-upstox-realtime-monitor.js",
   "./app-broker-equivalence-audit.js",
   "./app-upstox-autostart.js"
 ]) {
@@ -115,11 +121,16 @@ mustMatch("app-ashstocks-broker-terminal.js", /submitTerminalOrder[\s\S]*fetch\(
 mustMatch("app-ashstocks-broker-terminal.js", /parameterProof[\s\S]*P681[\s\S]*P683[\s\S]*P686[\s\S]*P688[\s\S]*P1701/, "terminal parameter proof includes candle and quote parameters");
 mustMatch("app-ashstocks-broker-terminal.js", /terminalChart[\s\S]*DATA_NEEDED: candle chart[\s\S]*svg/, "terminal chart uses candle data and no fake chart");
 mustMatch("app-ashstocks-broker-terminal.js", /requestSelectedQuote[\s\S]*\/api\/upstox\/quote[\s\S]*instrument_keys/, "terminal selected Upstox quote fetch");
+mustMatch("app-ashstocks-terminal-filter-bridge.js", /matches[\s\S]*SELECT[\s\S]*WATCH[\s\S]*DATA_NEEDED[\s\S]*CANDLE/, "terminal watch filters use scanner row state");
+mustMatch("app-upstox-realtime-monitor.js", /runRealtimePoll[\s\S]*fetch\("\/api\/upstox\/quote"[\s\S]*instrument_keys[\s\S]*source: "upstox-realtime-monitor"/, "realtime monitor polls Upstox quote endpoint");
+mustMatch("app-upstox-realtime-monitor.js", /recordTick[\s\S]*previous[\s\S]*direction[\s\S]*UP[\s\S]*DOWN/, "realtime monitor records previous tick direction");
+mustMatch("app-upstox-realtime-monitor.js", /triggerText[\s\S]*TARGET_TOUCH[\s\S]*STOP_TOUCH[\s\S]*CANDLE_CONTINUATION/, "realtime monitor target stop candle triggers");
 mustMatch("app-paper-risk-console.js", /renderSummary[\s\S]*Buying Power[\s\S]*Exposure[\s\S]*Realized P&L/, "risk console funds/exposure summary");
 mustMatch("app-paper-risk-console.js", /renderPositions[\s\S]*EXIT_POSITION[\s\S]*PROTECT_POSITION/, "risk console position exit/protect actions");
 mustMatch("app-paper-risk-console.js", /submitRiskAction[\s\S]*fetch\("\/api\/paper-trader\/order"[\s\S]*paper_only: true[\s\S]*broker_write_enabled: false/, "risk console paper-only order payload");
-mustMatch("app-broker-equivalence-audit.js", /auditItems[\s\S]*Unified broker terminal[\s\S]*NSE universe and scanner[\s\S]*2000 parameter piano[\s\S]*Candle parameters 681-800[\s\S]*Realtime websocket ticks/, "broker equivalence audit workflow requirements");
+mustMatch("app-broker-equivalence-audit.js", /auditItems[\s\S]*Unified broker terminal[\s\S]*Realtime quote polling[\s\S]*NSE universe and scanner[\s\S]*2000 parameter piano[\s\S]*Candle parameters 681-800[\s\S]*Realtime websocket ticks/, "broker equivalence audit workflow requirements");
 mustMatch("app-broker-equivalence-audit.js", /NOT_UPSTOX_EQUIVALENT_YET[\s\S]*BROKER_WORKFLOW_READY_PAPER_ONLY|BROKER_WORKFLOW_READY_PAPER_ONLY[\s\S]*NOT_UPSTOX_EQUIVALENT_YET/, "broker equivalence verdict labels");
+mustMatch("app-broker-equivalence-audit.js", /polling fallback is not the same as websocket streaming[\s\S]*Add safe websocket\/streaming quote layer/, "websocket gap remains explicit");
 mustMatch("app-broker-equivalence-audit.js", /LOCKED_BY_RULE[\s\S]*Intentionally disabled[\s\S]*paper execution only|paper execution only[\s\S]*LOCKED_BY_RULE/, "live money locked by product rule");
 mustMatch("app-upstox-symbol-workspace.js", /normalizeCandles[\s\S]*candleSvg[\s\S]*svg/, "symbol candle chart from scanner candles");
 mustMatch("app-upstox-symbol-workspace.js", /\/api\/upstox\/quote[\s\S]*fetch\(url\)/, "symbol workspace Upstox quote fetch");
