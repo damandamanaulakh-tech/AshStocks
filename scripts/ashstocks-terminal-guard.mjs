@@ -74,6 +74,12 @@ for (const text of [
 }
 
 for (const text of [
+  "TOTAL_PARAMETERS = 2000",
+  "1-2000 Parameter Board",
+  "terminalParamBoard",
+  "data-terminal-param-key",
+  "terminalParamSearch",
+  "terminalParamStatus",
   "PARAMETER_DETAILS",
   "#terminalSearchInput",
   "terminalGateInspector",
@@ -81,8 +87,10 @@ for (const text of [
   "Current evidence",
   "Pass line",
   "Engine impact",
+  "parameter dictionary did not return metadata",
   "/api/scanner/parameters",
   "applyTerminalFilters",
+  "renderParameterBoard",
   "data-terminal-filter",
   "P681",
   "P683",
@@ -96,6 +104,11 @@ for (const text of [
 for (const text of [
   ".terminal-search-input",
   ".terminal-gate-inspector",
+  ".terminal-param-controls",
+  ".terminal-param-board",
+  ".terminal-param-board button.HIT",
+  ".terminal-param-board button.WAITING",
+  ".terminal-param-board button.DATA_NEEDED",
   "#terminalGateBody",
   "#terminalParameterGates article:hover",
   "#terminalProof .terminal-proof-grid span:hover"
@@ -110,6 +123,8 @@ mustMatch("app-ashstocks-trading-terminal.js", /requestSelectedQuote[\s\S]*\/api
 mustMatch("app-ashstocks-trading-terminal.js", /paper_only: true[\s\S]*broker_write_enabled: false|broker_write_enabled: false[\s\S]*paper_only: true/, "paper safety flags");
 mustMatch("app-ashstocks-terminal-inspector.js", /applyTerminalFilters[\s\S]*SELECT[\s\S]*WATCH[\s\S]*DATA_NEEDED/, "terminal watch filters");
 mustMatch("app-ashstocks-terminal-inspector.js", /renderInspector[\s\S]*Rule[\s\S]*Source[\s\S]*Pass line[\s\S]*Current evidence[\s\S]*Engine impact/, "parameter inspector fields");
+mustMatch("app-ashstocks-terminal-inspector.js", /renderParameterBoard[\s\S]*TOTAL_PARAMETERS[\s\S]*data-terminal-param-key[\s\S]*terminalParamCoverage/, "1-2000 parameter board render");
+mustMatch("app-ashstocks-terminal-inspector.js", /generatedDetail[\s\S]*DATA_NEEDED[\s\S]*parameter dictionary did not return metadata/, "honest missing parameter metadata state");
 
 if (failures.length) {
   console.error("AshStocks terminal guard failed:");
