@@ -1,0 +1,136 @@
+.broker-scanner-hub {
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+}
+
+.broker-hub-summary,
+.broker-hub-selected,
+.broker-hub-order-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.broker-hub-summary article,
+.broker-hub-selected article,
+.broker-hub-empty {
+  display: grid;
+  gap: 4px;
+  min-height: 66px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+  padding: 10px;
+}
+
+.broker-hub-summary span,
+.broker-hub-selected span,
+.broker-hub-selected b,
+.broker-hub-empty span,
+.broker-hub-order-grid span,
+.broker-hub-signal-body span {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.broker-hub-selected {
+  grid-template-columns: 0.7fr 1.4fr 1.1fr 0.8fr;
+}
+
+.broker-hub-param-proof,
+.broker-hub-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.broker-hub-param-proof span,
+.broker-hub-actions button {
+  min-height: 26px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--panel);
+  color: var(--text);
+  padding: 4px 7px;
+  font-size: 0.73rem;
+  font-weight: 900;
+}
+
+.broker-hub-param-proof .hit {
+  border-color: var(--teal);
+  background: color-mix(in srgb, var(--teal) 12%, var(--panel));
+  color: var(--teal);
+}
+
+.broker-hub-param-proof .need {
+  border-color: #c47a10;
+  background: #fff3df;
+  color: #a85e00;
+}
+
+.broker-hub-actions button:first-child,
+.broker-hub-actions button:nth-child(2) {
+  border-color: var(--teal);
+  background: var(--teal);
+  color: #fff;
+}
+
+.broker-hub-actions button:nth-child(3) {
+  border-color: #b33b3b;
+  color: #b33b3b;
+}
+
+.broker-hub-bucket button[data-broker-symbol],
+#brokerHubSignalBody button[data-broker-symbol] {
+  cursor: pointer;
+}
+
+.broker-hub-order-box {
+  display: grid;
+  gap: 10px;
+}
+
+.broker-hub-order-grid label {
+  display: grid;
+  gap: 5px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.broker-hub-order-grid input {
+  width: 100%;
+  min-height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--text);
+  padding: 0 10px;
+}
+
+.broker-hub-selected-line {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+  padding: 8px;
+}
+
+@media (max-width: 1320px) {
+  .broker-hub-summary,
+  .broker-hub-order-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .broker-hub-selected {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .broker-hub-summary,
+  .broker-hub-selected,
+  .broker-hub-order-grid {
+    grid-template-columns: 1fr;
+  }
+}
