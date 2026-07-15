@@ -43,6 +43,8 @@ for (const [file, checks] of Object.entries({
   "upstox-trade-queue-bridge.css": [".uw-trade-queue-bridge", ".uw-trade-queue-summary", ".uw-trade-param-chips", ".uw-trade-actions", ".uw-trade-queue-table tr.selected"],
   "app-broker-scanner-hub.js": ["#brokerScannerSnapshot", "AshStocks Brain In Broker Shell", "Scanner, Quote, Paper Ledger", "#brokerHubWatchlists", "#brokerHubSignalBody", "#brokerScannerOrderPanel", "data-broker-run-scanner", "/api/scanner/run", "/api/paper-trader/orders", "/api/paper-trader/order", "ashstocks:upstox-quote", "ashstocks:broker-select-symbol", "Momentum", "Candle", "Liquidity", "Target", "Risk", "Quote", "Paper BUY", "Paper GTT", "broker_write_enabled: false", "paper_only: true", "source: \"broker-scanner-hub\""],
   "broker-scanner-hub.css": [".broker-scanner-hub", ".broker-hub-summary", ".broker-hub-selected", ".broker-hub-param-proof", ".broker-hub-actions", ".broker-hub-order-grid"],
+  "app-candle-trigger-tape.js": ["#uwCandleTriggerTape", "Candle Parameters 681-800", "Candle Trigger Tape", "#brokerCandleTriggerTape", "PATTERN_PARAMS", "bullish_engulfing: 681", "hammer_rejection: 683", "near_252d_breakout: 686", "volume_confirmation: 688", "/api/scanner/run", "/api/paper-trader/orders", "/api/paper-trader/order", "ashstocks:upstox-quote", "ashstocks:broker-select-symbol", "data-candle-param", "data-candle-tape-action", "Paper", "BUY", "GTT", "source: \"candle-trigger-tape\"", "broker_write_enabled: false", "paper_only: true"],
+  "candle-trigger-tape.css": [".candle-trigger-tape", ".candle-tape-summary", ".candle-tape-selected", ".candle-param-list", ".candle-actions", ".candle-status.HIT"],
   "app-upstox-parameter-filter.js": ["TOTAL_PARAMETERS = 2000", "/api/data-intelligence", "/api/framework", "#uwParameterFilterPanel", "#uwBlockFilter", "#uwFamilyFilter", "#uwFeedFilter", "#uwParamNumber", "Filtered Candidates", "Candle Structure + Volume", "FII/DII Flow", "Entry Target Stop", "Paper Safety"],
   "app-upstox-parameter-keys.js": ["TOTAL_PARAMETERS = 2000", "#uwParameterKeyBoard", "1-2000 Parameter Board", "data-uw-param-key", "rule, source, evidence, pass line and engine impact", "Current evidence", "Pass line", "Engine impact", "Candle Structure + Volume", "Paper Safety", "DATA_NEEDED", "bullish engulfing", "hammer rejection", "near 252D breakout", "volume confirmation"],
   "app-upstox-parameter-exact-sync.js": ["data-uw-param-key", "#uwParamNumber", "exactParameter", "syncExactParameter"],
@@ -68,6 +70,7 @@ for (const asset of [
   "./upstox-parameter-keys.css",
   "./upstox-trade-queue-bridge.css",
   "./broker-scanner-hub.css",
+  "./candle-trigger-tape.css",
   "./app-upstox-workspace.js",
   "./app-upstox-symbol-workspace.js",
   "./app-candle-engine-bridge.js",
@@ -79,6 +82,7 @@ for (const asset of [
   "./app-upstox-reasoning-dock.js",
   "./app-upstox-trade-queue-bridge.js",
   "./app-broker-scanner-hub.js",
+  "./app-candle-trigger-tape.js",
   "./app-upstox-autostart.js"
 ]) {
   mustLoad("app-broker-nav-guard.js", asset);
@@ -100,6 +104,9 @@ mustMatch("app-broker-scanner-hub.js", /window\.fetch[\s\S]*\/api\/scanner\/run[
 mustMatch("app-broker-scanner-hub.js", /renderBuckets[\s\S]*Candle Ready[\s\S]*Target Room[\s\S]*Quote Ready[\s\S]*DATA_NEEDED/, "broker hub renders real scanner buckets");
 mustMatch("app-broker-scanner-hub.js", /submitBrokerHubAction[\s\S]*fetch\("\/api\/paper-trader\/order"[\s\S]*broker_write_enabled: false[\s\S]*paper_only: true/, "broker hub paper order safety payload");
 mustMatch("app-broker-scanner-hub.js", /renderParamProof[\s\S]*Momentum[\s\S]*Candle[\s\S]*Liquidity[\s\S]*Target[\s\S]*Risk[\s\S]*Quote/, "broker hub parameter proof chips");
+mustMatch("app-candle-trigger-tape.js", /PATTERN_PARAMS[\s\S]*bullish_engulfing: 681[\s\S]*volume_confirmation: 688/, "candle parameter number map");
+mustMatch("app-candle-trigger-tape.js", /renderSelected[\s\S]*Active Parameter[\s\S]*Evidence/, "selected candle proof panel");
+mustMatch("app-candle-trigger-tape.js", /submitCandlePaperAction[\s\S]*fetch\("\/api\/paper-trader\/order"[\s\S]*candle_status[\s\S]*candle_patterns[\s\S]*paper_only: true/, "candle paper action payload");
 mustMatch("app-upstox-reasoning-dock.js", /Quote proof[\s\S]*quoteStatus[\s\S]*Depth/, "quote proof and depth gate in reasoning dock");
 mustMatch("app-upstox-parameter-exact-sync.js", /setTimeout\(\(\) => syncExactParameter\(parameterNumber\), 0\)/, "post-click exact parameter sync");
 
