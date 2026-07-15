@@ -41,6 +41,8 @@ for (const [file, checks] of Object.entries({
   "upstox-symbol-workspace.css": [".uw-quote-micro", ".uw-ticket-status", ".uw-ticket-grid", ".uw-ticket-actions", ".uw-paper-action-grid select"],
   "app-upstox-market-watch-pulse.js": ["#uwMarketWatchPulse", "Upstox Market Watch", "Scanner Quote Pulse", "#brokerMarketWatchPulse", "MAX_KEYS_PER_PULSE = 12", "RATE_LIMIT_BACKOFF_MS", "/api/upstox/quote", "instrument_keys", "ashstocks:upstox-quote", "window.__ashstocksUpstoxQuoteCache", "quote + depth ok", "rate-limit backoff", "DATA_NEEDED: scanner rows with instrument_key required"],
   "upstox-market-watch-pulse.css": [".upstox-market-watch-pulse", ".pulse-status", ".pulse-strip", ".pulse-card", ".pulse-table-wrap"],
+  "app-paper-risk-console.js": ["#paperRiskConsole", "Paper Broker Risk", "Account, Positions, GTT", "#riskOrdersPanel", "#riskPositionsPanel", "#riskGttPanel", "/api/paper-trader/orders", "/api/paper-trader/order", "ashstocks:upstox-quote", "ashstocks:broker-select-symbol", "Buying Power", "Exposure", "Position Manager", "Paper Holdings & Exits", "GTT Risk Book", "EXIT_POSITION", "PROTECT_POSITION", "paper_only: true", "broker_write_enabled: false", "source: \"paper-risk-console\""],
+  "paper-risk-console.css": [".paper-risk-console", ".risk-summary", ".risk-selected", ".risk-table-wrap", ".risk-actions", ".risk-status.PAPER_FILLED"],
   "app-upstox-trade-queue-bridge.js": ["#uwTradeQueueBridge", "Scanner To Execution", "Broker Trade Queue", "/api/scanner/run", "/api/paper-trader/orders", "/api/paper-trader/order", "ashstocks:upstox-quote", "submitQueuePaperAction", "upstox-trade-queue-bridge", "Momentum", "Candle", "Liquidity", "Target", "Risk", "Quote", "BUY", "GTT", "source: \"upstox-trade-queue-bridge\"", "quote_source"],
   "upstox-trade-queue-bridge.css": [".uw-trade-queue-bridge", ".uw-trade-queue-summary", ".uw-trade-param-chips", ".uw-trade-actions", ".uw-trade-queue-table tr.selected"],
   "app-broker-scanner-hub.js": ["#brokerScannerSnapshot", "AshStocks Brain In Broker Shell", "Scanner, Quote, Paper Ledger", "#brokerHubWatchlists", "#brokerHubSignalBody", "#brokerScannerOrderPanel", "data-broker-run-scanner", "/api/scanner/run", "/api/paper-trader/orders", "/api/paper-trader/order", "ashstocks:upstox-quote", "ashstocks:broker-select-symbol", "Momentum", "Candle", "Liquidity", "Target", "Risk", "Quote", "Paper BUY", "Paper GTT", "broker_write_enabled: false", "paper_only: true", "source: \"broker-scanner-hub\""],
@@ -74,6 +76,7 @@ for (const asset of [
   "./broker-scanner-hub.css",
   "./candle-trigger-tape.css",
   "./upstox-market-watch-pulse.css",
+  "./paper-risk-console.css",
   "./app-upstox-workspace.js",
   "./app-upstox-symbol-workspace.js",
   "./app-upstox-market-watch-pulse.js",
@@ -87,6 +90,7 @@ for (const asset of [
   "./app-upstox-trade-queue-bridge.js",
   "./app-broker-scanner-hub.js",
   "./app-candle-trigger-tape.js",
+  "./app-paper-risk-console.js",
   "./app-upstox-autostart.js"
 ]) {
   mustLoad("app-broker-nav-guard.js", asset);
@@ -99,6 +103,9 @@ mustMatch("app-upstox-market-watch-pulse.js", /publishQuote[\s\S]*ashstocks:upst
 mustMatch("app-upstox-market-watch-pulse.js", /429\|rate limit\|1015[\s\S]*RATE_LIMIT_BACKOFF_MS/, "market watch Upstox rate-limit backoff");
 mustMatch("server-paper-order-lifecycle-patch.mjs", /orders.*trades.*gtt|gtt.*trades.*orders/s, "orders/trades/GTT ledger fields");
 mustMatch("server-paper-order-lifecycle-patch.mjs", /PAPER_BUY_FILLED|PAPER_SELL_FILLED|PAPER_GTT_CREATED/, "paper order lifecycle actions");
+mustMatch("app-paper-risk-console.js", /renderSummary[\s\S]*Buying Power[\s\S]*Exposure[\s\S]*Realized P&L/, "risk console funds/exposure summary");
+mustMatch("app-paper-risk-console.js", /renderPositions[\s\S]*EXIT_POSITION[\s\S]*PROTECT_POSITION/, "risk console position exit/protect actions");
+mustMatch("app-paper-risk-console.js", /submitRiskAction[\s\S]*fetch\("\/api\/paper-trader\/order"[\s\S]*paper_only: true[\s\S]*broker_write_enabled: false/, "risk console paper-only order payload");
 mustMatch("app-upstox-symbol-workspace.js", /normalizeCandles[\s\S]*candleSvg[\s\S]*svg/, "symbol candle chart from scanner candles");
 mustMatch("app-upstox-symbol-workspace.js", /\/api\/upstox\/quote[\s\S]*fetch\(url\)/, "symbol workspace Upstox quote fetch");
 mustMatch("app-upstox-symbol-workspace.js", /fetch\("\/api\/paper-trader\/order"[\s\S]*source: "upstox-symbol-workspace"/, "symbol workspace paper order post");
