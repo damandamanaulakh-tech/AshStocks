@@ -41,6 +41,8 @@ for (const [file, checks] of Object.entries({
   "upstox-symbol-workspace.css": [".uw-quote-micro", ".uw-ticket-status", ".uw-ticket-grid", ".uw-ticket-actions", ".uw-paper-action-grid select"],
   "app-upstox-trade-queue-bridge.js": ["#uwTradeQueueBridge", "Scanner To Execution", "Broker Trade Queue", "/api/scanner/run", "/api/paper-trader/orders", "/api/paper-trader/order", "ashstocks:upstox-quote", "submitQueuePaperAction", "upstox-trade-queue-bridge", "Momentum", "Candle", "Liquidity", "Target", "Risk", "Quote", "BUY", "GTT", "source: \"upstox-trade-queue-bridge\"", "quote_source"],
   "upstox-trade-queue-bridge.css": [".uw-trade-queue-bridge", ".uw-trade-queue-summary", ".uw-trade-param-chips", ".uw-trade-actions", ".uw-trade-queue-table tr.selected"],
+  "app-broker-scanner-hub.js": ["#brokerScannerSnapshot", "AshStocks Brain In Broker Shell", "Scanner, Quote, Paper Ledger", "#brokerHubWatchlists", "#brokerHubSignalBody", "#brokerScannerOrderPanel", "data-broker-run-scanner", "/api/scanner/run", "/api/paper-trader/orders", "/api/paper-trader/order", "ashstocks:upstox-quote", "ashstocks:broker-select-symbol", "Momentum", "Candle", "Liquidity", "Target", "Risk", "Quote", "Paper BUY", "Paper GTT", "broker_write_enabled: false", "paper_only: true", "source: \"broker-scanner-hub\""],
+  "broker-scanner-hub.css": [".broker-scanner-hub", ".broker-hub-summary", ".broker-hub-selected", ".broker-hub-param-proof", ".broker-hub-actions", ".broker-hub-order-grid"],
   "app-upstox-parameter-filter.js": ["TOTAL_PARAMETERS = 2000", "/api/data-intelligence", "/api/framework", "#uwParameterFilterPanel", "#uwBlockFilter", "#uwFamilyFilter", "#uwFeedFilter", "#uwParamNumber", "Filtered Candidates", "Candle Structure + Volume", "FII/DII Flow", "Entry Target Stop", "Paper Safety"],
   "app-upstox-parameter-keys.js": ["TOTAL_PARAMETERS = 2000", "#uwParameterKeyBoard", "1-2000 Parameter Board", "data-uw-param-key", "rule, source, evidence, pass line and engine impact", "Current evidence", "Pass line", "Engine impact", "Candle Structure + Volume", "Paper Safety", "DATA_NEEDED", "bullish engulfing", "hammer rejection", "near 252D breakout", "volume confirmation"],
   "app-upstox-parameter-exact-sync.js": ["data-uw-param-key", "#uwParamNumber", "exactParameter", "syncExactParameter"],
@@ -65,6 +67,7 @@ for (const asset of [
   "./upstox-reasoning-dock.css",
   "./upstox-parameter-keys.css",
   "./upstox-trade-queue-bridge.css",
+  "./broker-scanner-hub.css",
   "./app-upstox-workspace.js",
   "./app-upstox-symbol-workspace.js",
   "./app-candle-engine-bridge.js",
@@ -75,6 +78,7 @@ for (const asset of [
   "./app-upstox-parameter-exact-sync.js",
   "./app-upstox-reasoning-dock.js",
   "./app-upstox-trade-queue-bridge.js",
+  "./app-broker-scanner-hub.js",
   "./app-upstox-autostart.js"
 ]) {
   mustLoad("app-broker-nav-guard.js", asset);
@@ -92,6 +96,10 @@ mustMatch("app-upstox-trade-queue-bridge.js", /window\.fetch[\s\S]*\/api\/scanne
 mustMatch("app-upstox-trade-queue-bridge.js", /submitQueuePaperAction[\s\S]*fetch\("\/api\/paper-trader\/order"[\s\S]*order_type[\s\S]*validity[\s\S]*risk_pct[\s\S]*capital/, "trade queue submits broker-style paper order payload");
 mustMatch("app-upstox-trade-queue-bridge.js", /parameterHits[\s\S]*Momentum[\s\S]*Candle[\s\S]*Liquidity[\s\S]*Target[\s\S]*Risk[\s\S]*Quote/, "trade queue parameter chips include quote and candle readiness");
 mustMatch("app-upstox-trade-queue-bridge.js", /quote_source[\s\S]*Upstox Market Quote API[\s\S]*scanner-fallback/, "trade queue quote source is explicit");
+mustMatch("app-broker-scanner-hub.js", /window\.fetch[\s\S]*\/api\/scanner\/run[\s\S]*\/api\/paper-trader\/orders/, "broker hub captures scanner and paper ledger");
+mustMatch("app-broker-scanner-hub.js", /renderBuckets[\s\S]*Candle Ready[\s\S]*Target Room[\s\S]*Quote Ready[\s\S]*DATA_NEEDED/, "broker hub renders real scanner buckets");
+mustMatch("app-broker-scanner-hub.js", /submitBrokerHubAction[\s\S]*fetch\("\/api\/paper-trader\/order"[\s\S]*broker_write_enabled: false[\s\S]*paper_only: true/, "broker hub paper order safety payload");
+mustMatch("app-broker-scanner-hub.js", /renderParamProof[\s\S]*Momentum[\s\S]*Candle[\s\S]*Liquidity[\s\S]*Target[\s\S]*Risk[\s\S]*Quote/, "broker hub parameter proof chips");
 mustMatch("app-upstox-reasoning-dock.js", /Quote proof[\s\S]*quoteStatus[\s\S]*Depth/, "quote proof and depth gate in reasoning dock");
 mustMatch("app-upstox-parameter-exact-sync.js", /setTimeout\(\(\) => syncExactParameter\(parameterNumber\), 0\)/, "post-click exact parameter sync");
 
