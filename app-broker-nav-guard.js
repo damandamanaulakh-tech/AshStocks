@@ -42,6 +42,7 @@
     appendScript("./app-candle-trigger-tape.js");
     appendScript("./app-paper-risk-console.js");
     appendScript("./app-ashstocks-broker-terminal.js");
+    appendScript("./app-ashstocks-terminal-filter-bridge.js");
     appendScript("./app-broker-equivalence-audit.js");
     appendScript("./app-upstox-autostart.js");
   }
