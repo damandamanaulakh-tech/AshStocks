@@ -1,0 +1,307 @@
+.ash-trading-terminal {
+  gap: 14px;
+}
+
+.terminal-head,
+.terminal-status,
+.terminal-market-strip article,
+.terminal-layout > .panel,
+.terminal-bottom-grid > .panel {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.terminal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px;
+}
+
+.terminal-head h3 {
+  margin: 4px 0 0;
+  font-size: 1.45rem;
+}
+
+.terminal-actions,
+.terminal-action-row,
+.terminal-filter-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.terminal-status {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 10px 12px;
+}
+
+.terminal-status span,
+.terminal-proof-grid span {
+  min-height: 28px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 5px 8px;
+}
+
+.terminal-status span.primary {
+  border-color: var(--teal);
+  color: var(--teal);
+}
+
+.terminal-market-strip {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(130px, 1fr));
+  gap: 10px;
+}
+
+.terminal-market-strip article {
+  display: grid;
+  gap: 5px;
+  min-height: 76px;
+  padding: 10px 12px;
+}
+
+.terminal-market-strip article span,
+.terminal-market-strip article b,
+.terminal-watch-list small,
+.terminal-ticket p,
+.terminal-proof p,
+.terminal-empty {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.terminal-layout {
+  display: grid;
+  grid-template-columns: minmax(250px, 0.58fr) minmax(420px, 1.2fr) minmax(300px, 0.72fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.terminal-layout > .panel,
+.terminal-bottom-grid > .panel {
+  padding: 12px;
+}
+
+.terminal-filter-row {
+  margin-bottom: 10px;
+}
+
+.terminal-filter-row button {
+  min-height: 30px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+  color: var(--text);
+  font-weight: 800;
+  padding: 0 9px;
+}
+
+.terminal-filter-row button.active {
+  border-color: var(--teal);
+  color: var(--teal);
+}
+
+.terminal-watch-list,
+.terminal-ledger,
+.terminal-proof {
+  display: grid;
+  gap: 8px;
+}
+
+.terminal-watch-list {
+  max-height: 620px;
+  overflow: auto;
+}
+
+.terminal-watch-list button {
+  display: grid;
+  grid-template-columns: minmax(90px, 1fr) auto auto;
+  gap: 6px 8px;
+  align-items: center;
+  width: 100%;
+  min-height: 54px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+  color: var(--text);
+  text-align: left;
+  padding: 8px;
+}
+
+.terminal-watch-list button.selected {
+  border-color: var(--teal);
+  background: color-mix(in srgb, var(--teal) 11%, var(--panel));
+}
+
+.terminal-watch-list button small {
+  grid-column: 1 / -1;
+}
+
+.terminal-quote-tape,
+.terminal-parameter-gates,
+.terminal-ticket-grid,
+.terminal-bottom-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.terminal-quote-tape {
+  grid-template-columns: repeat(6, minmax(90px, 1fr));
+  margin-bottom: 10px;
+}
+
+.terminal-quote-tape article,
+.terminal-parameter-gates article,
+.terminal-ledger article {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+  padding: 9px;
+}
+
+.terminal-quote-tape span,
+.terminal-parameter-gates span,
+.terminal-ledger span,
+.terminal-parameter-gates small {
+  display: block;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.terminal-candle-chart {
+  min-height: 278px;
+  margin-bottom: 10px;
+}
+
+.terminal-candle-chart svg {
+  display: block;
+  width: 100%;
+  min-height: 260px;
+}
+
+.terminal-parameter-gates {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.terminal-parameter-gates article.HIT,
+.terminal-proof-grid span.HIT {
+  border-color: color-mix(in srgb, var(--green) 52%, var(--line));
+  background: color-mix(in srgb, var(--green) 10%, var(--panel));
+}
+
+.terminal-parameter-gates article.WAITING,
+.terminal-proof-grid span.WAITING {
+  border-color: color-mix(in srgb, var(--saffron) 52%, var(--line));
+  background: color-mix(in srgb, var(--saffron) 10%, var(--panel));
+}
+
+.terminal-parameter-gates article.DATA_NEEDED,
+.terminal-proof-grid span.DATA_NEEDED,
+.terminal-market-strip article.data-needed {
+  border-color: color-mix(in srgb, var(--violet) 52%, var(--line));
+  background: color-mix(in srgb, var(--violet) 9%, var(--panel));
+}
+
+.terminal-ticket-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.terminal-ticket-grid label {
+  display: grid;
+  gap: 5px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.terminal-ticket-grid input,
+.terminal-ticket-grid select {
+  width: 100%;
+  min-height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--text);
+  padding: 0 9px;
+}
+
+.terminal-action-row {
+  margin: 12px 0;
+}
+
+.terminal-action-row button {
+  flex: 1;
+  min-height: 40px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: #ffffff;
+  font-weight: 900;
+}
+
+.terminal-action-row .buy { background: var(--green); }
+.terminal-action-row .sell { background: var(--red); }
+.terminal-action-row .gtt { background: var(--blue); }
+
+.terminal-bottom-grid {
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.86fr);
+}
+
+.terminal-ledger article {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 8px;
+}
+
+.terminal-proof-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.terminal-empty {
+  display: grid;
+  align-content: center;
+  min-height: 74px;
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+  padding: 12px;
+}
+
+@media (max-width: 1320px) {
+  .terminal-layout,
+  .terminal-bottom-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .terminal-watch-list {
+    max-height: 360px;
+  }
+}
+
+@media (max-width: 820px) {
+  .terminal-head,
+  .terminal-status {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .terminal-market-strip,
+  .terminal-quote-tape,
+  .terminal-parameter-gates,
+  .terminal-ticket-grid {
+    grid-template-columns: 1fr;
+  }
+}
