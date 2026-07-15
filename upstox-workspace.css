@@ -6,7 +6,8 @@
 .uw-commandbar,
 .uw-market-strip article,
 .uw-main-grid > .panel,
-.uw-lower-grid > .panel {
+.uw-lower-grid > .panel,
+.uw-parameter-filter-panel {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--panel);
@@ -38,7 +39,8 @@
 }
 
 .uw-commandbar,
-.uw-ticket {
+.uw-ticket,
+.uw-param-controls {
   display: grid;
   grid-template-columns: repeat(5, minmax(150px, 1fr));
   gap: 10px;
@@ -46,7 +48,8 @@
 }
 
 .uw-commandbar label,
-.uw-ticket label {
+.uw-ticket label,
+.uw-param-controls label {
   display: grid;
   gap: 5px;
   color: var(--muted);
@@ -57,7 +60,9 @@
 .uw-commandbar input,
 .uw-commandbar select,
 .uw-ticket input,
-.uw-ticket select {
+.uw-ticket select,
+.uw-param-controls input,
+.uw-param-controls select {
   min-height: 38px;
   width: 100%;
   border: 1px solid var(--line);
@@ -86,7 +91,9 @@
 .uw-facts span,
 .uw-report-grid span,
 .uw-copy span,
-.uw-param-detail span {
+.uw-param-detail span,
+.uw-param-summary span,
+.uw-param-summary small {
   color: var(--muted);
   font-size: 0.82rem;
 }
@@ -108,7 +115,8 @@
 }
 
 .uw-main-grid > .panel,
-.uw-lower-grid > .panel {
+.uw-lower-grid > .panel,
+.uw-parameter-filter-panel {
   padding: 12px;
 }
 
@@ -142,15 +150,21 @@
 }
 
 .uw-facts,
-.uw-report-grid {
+.uw-report-grid,
+.uw-param-summary {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
   margin-top: 12px;
 }
 
+.uw-param-summary {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
 .uw-facts article,
-.uw-report-grid article {
+.uw-report-grid article,
+.uw-param-summary article {
   display: grid;
   gap: 4px;
   min-height: 56px;
@@ -258,7 +272,8 @@
   padding: 0;
 }
 
-.uw-table-wrap button span {
+.uw-table-wrap button span,
+.uw-table-wrap td span {
   display: block;
   color: var(--muted);
   font-size: 0.78rem;
@@ -292,16 +307,73 @@
   background: var(--panel-soft);
 }
 
+.uw-param-detail-grid {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.72fr) minmax(0, 1fr);
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.uw-param-detail-grid > section,
+.uw-param-blocks > section {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+  padding: 10px;
+}
+
+.uw-param-blocks {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.uw-chip-grid,
+.uw-warning-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.uw-chip-grid button,
+.uw-warning-strip span {
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--panel);
+  color: var(--text);
+  padding: 7px 9px;
+  text-align: left;
+}
+
+.uw-chip-grid button {
+  display: grid;
+  gap: 2px;
+}
+
+.uw-chip-grid button.active {
+  border-color: var(--teal);
+  background: color-mix(in srgb, var(--teal) 12%, var(--panel));
+}
+
+.uw-chip-grid button span,
+.uw-warning-strip span {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
 @media (max-width: 1320px) {
   .uw-commandbar,
   .uw-market-strip,
-  .uw-ticket {
+  .uw-ticket,
+  .uw-param-controls,
+  .uw-param-summary {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .uw-main-grid,
   .uw-lower-grid,
-  .uw-lower-grid.compact {
+  .uw-lower-grid.compact,
+  .uw-param-detail-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -320,7 +392,9 @@
   .uw-market-strip,
   .uw-ticket,
   .uw-facts,
-  .uw-report-grid {
+  .uw-report-grid,
+  .uw-param-controls,
+  .uw-param-summary {
     grid-template-columns: 1fr;
   }
 
