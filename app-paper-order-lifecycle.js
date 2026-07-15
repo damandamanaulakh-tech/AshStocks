@@ -25,6 +25,8 @@
     const observer = new MutationObserver(() => refreshTicketActions());
     observer.observe(document.body, { childList: true, subtree: true });
     refreshTicketActions();
+    setTimeout(fetchPaperLedger, 800);
+    setInterval(fetchPaperLedger, 60000);
   });
 
   function refreshTicketActions() {
@@ -44,6 +46,7 @@
       }
     }
     writeTicketStatus(lastStatusText());
+    renderPaperLedger();
   }
 
   async function submitPaperAction(action) {
@@ -82,10 +85,68 @@
         ? (result.action || "PAPER_ORDER_DONE") + " " + (result.order?.id || result.gtt?.id || "")
         : "REJECTED: " + (result.order?.rejection_reason || result.error || "paper order failed");
       writeTicketStatus(message);
+      await fetchPaperLedger();
       await fetch("/api/paper-trader/status").catch(() => null);
     } catch (error) {
       writeTicketStatus("ERROR: " + error.message);
     }
+  }
+
+  async function fetchPaperLedger() {
+    if (!document.querySelector("#upstoxWorkspaceView")) return;
+    try {
+      const response = await fetch("/api/paper-trader/orders");
+      const payload = await response.json();
+      state.paperStatus = payload;
+      renderPaperLedger();
+    } catch {
+      renderPaperLedger();
+    }
+  }
+
+  function renderPaperLedger() {
+    const panel = document.querySelector("#upstoxWorkspaceView");
+    const anchor = panel?.querySelector(".uw-main-grid");
+    if (!panel || !anchor) return;
+    let ledger = panel.querySelector("#uwPaperLedgerPanel");
+    if (!ledger) {
+      ledger = document.createElement("section");
+      ledger.id = "uwPaperLedgerPanel";
+      ledger.className = "panel uw-paper-ledger";
+      anchor.insertAdjacentElement("afterend", ledger);
+    }
+    const status = state.paperStatus || {};
+    const orders = status.orders || status.paperTrader?.orders || status.status?.orders || [];
+    const positions = status.positions || status.paperTrader?.positions || status.status?.positions || [];
+    const gtt = status.gtt || status.paperTrader?.gtt || status.status?.gtt || [];
+    const funds = status.funds || status.paperTrader?.funds || status.status?.funds || {};
+    ledger.innerHTML = `
+      <div class="panel-header"><h3>Paper Order Book</h3><span>${escapeHtml(fundsText(funds))}</span></div>
+      <div class="uw-table-wrap"><table><thead><tr><th>Order</th><th>Side</th><th>Qty</th><th>Price</th><th>Status</th><th>Reason</th></tr></thead><tbody>${orderRows(orders)}</tbody></table></div>
+      <div class="uw-report-grid">
+        <article><span>Positions</span><strong>${positions.length}</strong></article>
+        <article><span>Orders</span><strong>${orders.length}</strong></article>
+        <article><span>GTT</span><strong>${gtt.length}</strong></article>
+        <article><span>Mode</span><strong>Paper only</strong></article>
+      </div>
+      <div class="uw-table-wrap"><table><thead><tr><th>Position</th><th>Qty</th><th>Entry</th><th>Current</th><th>Target</th><th>Stop</th></tr></thead><tbody>${positionRows(positions)}</tbody></table></div>
+      <div class="uw-table-wrap"><table><thead><tr><th>GTT</th><th>Side</th><th>Entry</th><th>Target</th><th>Stop</th><th>Status</th></tr></thead><tbody>${gttRows(gtt)}</tbody></table></div>
+    `;
+  }
+
+  function orderRows(orders) {
+    if (!orders.length) return '<tr><td colspan="6" class="empty-cell">No paper orders yet. Click Paper BUY, SELL, or GTT from the ticket.</td></tr>';
+    return orders.slice(0, 8).map((order) => `<tr><td><strong>${escapeHtml(order.symbol)}</strong><span>${escapeHtml(shortId(order.id))}</span></td><td>${escapeHtml(order.side)}</td><td>${escapeHtml(order.qty)}</td><td>${money(order.price)}</td><td>${escapeHtml(order.status)}</td><td>${escapeHtml(order.rejection_reason || order.thesis || "paper fill")}</td></tr>`).join("");
+  }
+
+  function positionRows(positions) {
+    if (!positions.length) return '<tr><td colspan="6" class="empty-cell">No open paper positions.</td></tr>';
+    return positions.slice(0, 8).map((position) => `<tr><td><strong>${escapeHtml(position.symbol)}</strong><span>${escapeHtml(position.name || "")}</span></td><td>${escapeHtml(position.qty)}</td><td>${money(position.entry_price)}</td><td>${money(position.current_price)}</td><td>${money(position.target_price)}</td><td>${money(position.stop_price)}</td></tr>`).join("");
+  }
+
+  function gttRows(gtt) {
+    if (!gtt.length) return '<tr><td colspan="6" class="empty-cell">No active paper GTT plans.</td></tr>';
+    return gtt.slice(0, 8).map((plan) => `<tr><td><strong>${escapeHtml(plan.symbol)}</strong><span>${escapeHtml(shortId(plan.id))}</span></td><td>${escapeHtml(plan.side)}</td><td>${money(plan.entry_price)}</td><td>${money(plan.target_price)}</td><td>${money(plan.stop_price)}</td><td>${escapeHtml(plan.status)}</td></tr>`).join("");
   }
 
   function selectedRow(symbol) {
@@ -139,9 +200,27 @@
     return "REJECTED: " + (result.order?.rejection_reason || result.error || "paper order failed");
   }
 
+  function fundsText(funds) {
+    const buyingPower = funds.buying_power ?? funds.starting_capital;
+    return Number.isFinite(Number(buyingPower)) ? "Buying power Rs " + Number(buyingPower).toLocaleString("en-IN", { maximumFractionDigits: 0 }) : "Paper funds";
+  }
+
+  function shortId(id) {
+    return String(id || "").slice(-12);
+  }
+
+  function money(value) {
+    const n = Number(value);
+    return Number.isFinite(n) ? "Rs " + n.toLocaleString("en-IN", { maximumFractionDigits: 2 }) : "not available";
+  }
+
   function numberFrom(value) {
     const n = Number(String(value || "").replace(/[^0-9.-]/g, ""));
     return Number.isFinite(n) ? n : 0;
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[char]));
   }
 
   function captureJson(response, callback) {
