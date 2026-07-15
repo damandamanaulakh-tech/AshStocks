@@ -9,7 +9,7 @@
     if (!document.querySelector('script[src="./app-upstox-workspace.js"]')) {
       const script = document.createElement("script");
       script.src = "./app-upstox-workspace.js";
-      script.defer = true;
+      script.async = false;
       document.head.appendChild(script);
     }
   }
