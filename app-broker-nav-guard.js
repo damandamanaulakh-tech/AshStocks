@@ -17,9 +17,11 @@
 
   function loadMergedWorkspaceAssets() {
     appendStylesheet("./upstox-workspace.css");
+    appendStylesheet("./upstox-symbol-workspace.css");
     appendStylesheet("./upstox-reasoning-dock.css");
     appendStylesheet("./upstox-parameter-keys.css");
     appendScript("./app-upstox-workspace.js");
+    appendScript("./app-upstox-symbol-workspace.js");
     appendScript("./app-candle-engine-bridge.js");
     appendScript("./app-parameter-piano-candle-bridge.js");
     appendScript("./app-paper-order-lifecycle.js");
