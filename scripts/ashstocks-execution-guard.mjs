@@ -24,11 +24,6 @@ function mustMatch(file, regex, reason) {
   if (!regex.test(body)) failures.push(`${file}: missing ${reason}`);
 }
 
-function warnUnless(file, regex, reason) {
-  const body = read(file);
-  if (!regex.test(body)) warnings.push(`${file}: ${reason}`);
-}
-
 mustInclude("ASHSTOCKS_EXECUTION_GUARD.md", "AshStocks is a broker-grade Indian market product", "confirmed product rule");
 mustInclude("ASHSTOCKS_EXECUTION_GUARD.md", "Candle Parameter Family", "candle parameter contract");
 mustInclude("ASHSTOCKS_EXECUTION_GUARD.md", "A vs X Check", "asked-vs-delivered check");
@@ -43,8 +38,21 @@ mustInclude("index.html", "./app-broker-shell.js", "broker shell script");
 mustInclude("index.html", "./app-broker-nav-guard.js", "broker nav guard script");
 mustInclude("index.html", "./app-parameter-piano.js", "Parameter Piano script");
 mustInclude("app-broker-nav-guard.js", "./app-upstox-workspace.js", "merged Upstox workspace loader");
+mustInclude("app-broker-nav-guard.js", "./app-candle-engine-bridge.js", "server candle bridge loader");
 mustInclude("app-broker-nav-guard.js", "./app-upstox-autostart.js", "merged dashboard autostart loader");
 mustInclude("app-broker-nav-guard.js", "./upstox-workspace.css", "merged Upstox workspace stylesheet loader");
+
+mustInclude("server.js", "applyCandlePatternPatches", "server candle pattern patch wiring");
+mustInclude("server-candle-pattern-patch.mjs", "CANDLE_PATTERN_VERSION", "server candle pattern version");
+mustInclude("server-candle-pattern-patch.mjs", "candlePatternAnalysis", "server candle pattern analysis function");
+mustInclude("server-candle-pattern-patch.mjs", "candle_patterns", "scanner row candle pattern output");
+mustInclude("server-candle-pattern-patch.mjs", "candle_score", "scanner row candle score output");
+mustInclude("server-candle-pattern-patch.mjs", "candle_status", "scanner row candle status output");
+mustMatch("server-candle-pattern-patch.mjs", /bullish_engulfing|hammer_rejection|near_252d_breakout|inside_bar|volume_confirmation/, "server candle pattern names");
+
+mustInclude("app-candle-engine-bridge.js", "candle_engine", "server candle engine UI bridge");
+mustInclude("app-candle-engine-bridge.js", "candle_score", "server candle score UI bridge");
+mustInclude("app-candle-engine-bridge.js", "candle_patterns", "server candle patterns UI bridge");
 
 mustInclude("app-upstox-autostart.js", "ashstocks-workspace-scan-warmed", "single warm scanner guard");
 mustInclude("app-upstox-autostart.js", "runScanBtn", "scanner warm-up button bridge");
@@ -58,7 +66,7 @@ mustInclude("app-upstox-workspace.js", "Candle Structure", "candle structure wor
 mustMatch("app-upstox-workspace.js", /api\/scanner\/run/, "scanner payload bridge");
 mustMatch("app-upstox-workspace.js", /api\/paper-trader\/status/, "paper status bridge");
 mustMatch("app-upstox-workspace.js", /api\/market-context/, "market context bridge");
-mustMatch("app-upstox-workspace.js", /analyzeCandles|bullish engulfing|hammer rejection|near 252D breakout/, "candle parameter analysis");
+mustMatch("app-upstox-workspace.js", /analyzeCandles|bullish engulfing|hammer rejection|near 252D breakout/, "browser fallback candle analysis");
 mustMatch("app-upstox-workspace.js", /Live orders locked|Live broker order path is locked/, "live order lock in merged workspace");
 
 for (const label of ["Markets", "Watchlist", "Signals", "Orders", "Positions", "GTT", "Reports", "Settings"]) {
@@ -73,12 +81,6 @@ mustMatch("app-parameter-piano.js", /click|addEventListener/i, "clickable Parame
 mustMatch("app-parameter-piano.js", /parameter/i, "parameter detail behavior");
 
 mustMatch("q1.html", /Upstox/i, "Q1 Upstox source label");
-warnUnless("server.js", /hammer|engulf|doji|inside bar|breakout candle|candle_pattern/i, "candle pattern scoring is not yet fully implemented in the server engine; keep it in gap list");
-
-if (warnings.length) {
-  console.warn("AshStocks guard warnings:");
-  for (const warning of warnings) console.warn(`- ${warning}`);
-}
 
 if (failures.length) {
   console.error("AshStocks execution guard failed:");
