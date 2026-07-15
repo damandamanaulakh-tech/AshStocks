@@ -1,0 +1,108 @@
+.upstox-market-watch-pulse {
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+}
+
+.pulse-status {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.pulse-status article,
+.pulse-card,
+.pulse-empty {
+  display: grid;
+  gap: 4px;
+  min-height: 64px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+  padding: 10px;
+}
+
+.pulse-status span,
+.pulse-card span,
+.pulse-card small,
+.pulse-empty span,
+.pulse-table-wrap td span {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.pulse-strip {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(150px, 1fr));
+  gap: 8px;
+}
+
+.pulse-card {
+  cursor: pointer;
+  color: var(--text);
+  text-align: left;
+}
+
+.pulse-card.selected {
+  border-color: var(--teal);
+  box-shadow: inset 0 0 0 1px var(--teal);
+}
+
+.pulse-card strong {
+  font-size: 1.08rem;
+}
+
+.pulse-card b {
+  font-size: 0.78rem;
+}
+
+.pulse-empty {
+  grid-column: 1 / -1;
+}
+
+.pulse-table-wrap {
+  overflow-x: auto;
+}
+
+.pulse-table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pulse-table-wrap th,
+.pulse-table-wrap td {
+  padding: 10px 12px;
+  border-top: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.pulse-table-wrap th {
+  color: var(--muted);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.pulse-table-wrap button[data-pulse-symbol] {
+  display: grid;
+  gap: 2px;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+  padding: 0;
+}
+
+@media (max-width: 1320px) {
+  .pulse-status,
+  .pulse-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .pulse-status,
+  .pulse-strip {
+    grid-template-columns: 1fr;
+  }
+}
