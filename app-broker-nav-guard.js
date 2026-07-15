@@ -50,6 +50,7 @@
     appendScript("./app-upstox-parameter-exact-sync.js");
     appendScript("./app-upstox-reasoning-dock.js");
     appendScript("./app-upstox-trade-queue-bridge.js");
+    appendScript("./app-upstox-parameter-trade-bridge.js");
     appendScript("./app-broker-scanner-hub.js");
     appendScript("./app-candle-trigger-tape.js");
     appendScript("./app-paper-risk-console.js");
