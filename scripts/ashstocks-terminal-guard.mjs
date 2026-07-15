@@ -23,8 +23,10 @@ function mustMatch(file, regex, reason) {
 
 mustInclude("app-broker-nav-guard.js", "./ashstocks-trading-terminal.css", "Trading terminal stylesheet loader");
 mustInclude("app-broker-nav-guard.js", "./ashstocks-terminal-inspector.css", "Terminal inspector stylesheet loader");
+mustInclude("app-broker-nav-guard.js", "./ashstocks-terminal-reasoning.css", "Terminal reasoning stylesheet loader");
 mustInclude("app-broker-nav-guard.js", "./app-ashstocks-trading-terminal.js", "Trading terminal script loader");
 mustInclude("app-broker-nav-guard.js", "./app-ashstocks-terminal-inspector.js", "Terminal inspector script loader");
+mustInclude("app-broker-nav-guard.js", "./app-ashstocks-terminal-reasoning.js", "Terminal reasoning script loader");
 mustInclude("app-broker-nav-guard.js", "[data-ash-terminal-panel]", "Terminal panel close handling");
 mustInclude("app-broker-nav-guard.js", "[data-ash-terminal-nav]", "Terminal nav close handling");
 
@@ -116,6 +118,36 @@ for (const text of [
   mustInclude("ashstocks-terminal-inspector.css", text);
 }
 
+for (const text of [
+  "terminalReasonVerifyExecute",
+  "Reason, Verify, Execute",
+  "buildModel",
+  "readinessChecks",
+  "PAPER_BUY_READY",
+  "WATCH_READY",
+  "VERIFY_DATA",
+  "data-reason-paper-action",
+  "Paper BUY",
+  "Paper GTT",
+  "Paper SELL",
+  "Need /api/upstox/quote or stream tick",
+  "paper_only true; live broker write disabled"
+]) {
+  mustInclude("app-ashstocks-terminal-reasoning.js", text);
+}
+
+for (const text of [
+  ".terminal-rve",
+  ".terminal-rve-grid",
+  ".terminal-rve-checks",
+  ".terminal-rve-actions",
+  ".terminal-rve-checks article.PASS",
+  ".terminal-rve-checks article.BLOCKED",
+  ".terminal-rve-checks article.DATA_NEEDED"
+]) {
+  mustInclude("ashstocks-terminal-reasoning.css", text);
+}
+
 mustMatch("app-ashstocks-trading-terminal.js", /submitPaperAction[\s\S]*fetch|submitPaperAction[\s\S]*api\("\/api\/paper-trader\/order"/, "paper order submission path");
 mustMatch("app-ashstocks-trading-terminal.js", /parameterGates[\s\S]*P681[\s\S]*P683[\s\S]*P686[\s\S]*P688[\s\S]*P1701/, "candle and quote parameter gates");
 mustMatch("app-ashstocks-trading-terminal.js", /candleChart[\s\S]*normalizeCandles[\s\S]*DATA_NEEDED: Upstox daily candles/, "real candle chart or explicit data-needed state");
@@ -125,6 +157,8 @@ mustMatch("app-ashstocks-terminal-inspector.js", /applyTerminalFilters[\s\S]*SEL
 mustMatch("app-ashstocks-terminal-inspector.js", /renderInspector[\s\S]*Rule[\s\S]*Source[\s\S]*Pass line[\s\S]*Current evidence[\s\S]*Engine impact/, "parameter inspector fields");
 mustMatch("app-ashstocks-terminal-inspector.js", /renderParameterBoard[\s\S]*TOTAL_PARAMETERS[\s\S]*data-terminal-param-key[\s\S]*terminalParamCoverage/, "1-2000 parameter board render");
 mustMatch("app-ashstocks-terminal-inspector.js", /generatedDetail[\s\S]*DATA_NEEDED[\s\S]*parameter dictionary did not return metadata/, "honest missing parameter metadata state");
+mustMatch("app-ashstocks-terminal-reasoning.js", /readinessChecks[\s\S]*Scanner decision[\s\S]*6M momentum[\s\S]*Candle trigger[\s\S]*Upstox quote[\s\S]*Paper safety/, "reasoning readiness checklist");
+mustMatch("app-ashstocks-terminal-reasoning.js", /buildModel[\s\S]*hardBlocks[\s\S]*nextAction[\s\S]*allowBuy[\s\S]*allowGtt/, "reasoning verdict and paper action gating");
 
 if (failures.length) {
   console.error("AshStocks terminal guard failed:");
