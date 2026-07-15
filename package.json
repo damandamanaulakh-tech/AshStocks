@@ -8,7 +8,7 @@
     "start": "node server.js",
     "dev": "node server.js",
     "guard": "node scripts/ashstocks-execution-guard.mjs && node scripts/ashstocks-terminal-guard.mjs",
-    "check": "npm run guard && node --check server.js && node --check app.js && node --check app-ashstocks-trading-terminal.js && node --check app-ashstocks-terminal-inspector.js && node --check app-ashstocks-terminal-reasoning.js && node --check app-ashstocks-terminal-depth-risk.js && node --check app-ashstocks-parameter-market-filter.js && node --check q1.js && node --check scripts/q1_upstox_price_join.mjs && node --check scripts/smoke-test.mjs && node --check scripts/check-live-render.mjs",
+    "check": "npm run guard && node --check server.js && node --check server-paper-order-lifecycle-patch.mjs && node --check app.js && node --check app-paper-order-lifecycle.js && node --check app-ashstocks-trading-terminal.js && node --check app-ashstocks-terminal-inspector.js && node --check app-ashstocks-terminal-reasoning.js && node --check app-ashstocks-terminal-depth-risk.js && node --check app-ashstocks-parameter-market-filter.js && node --check q1.js && node --check scripts/q1_upstox_price_join.mjs && node --check scripts/smoke-test.mjs && node --check scripts/check-live-render.mjs",
     "smoke": "node scripts/smoke-test.mjs",
     "verify:live": "node scripts/check-live-render.mjs"
   },
