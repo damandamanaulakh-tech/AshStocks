@@ -43,7 +43,12 @@ mustInclude("index.html", "./app-broker-shell.js", "broker shell script");
 mustInclude("index.html", "./app-broker-nav-guard.js", "broker nav guard script");
 mustInclude("index.html", "./app-parameter-piano.js", "Parameter Piano script");
 mustInclude("app-broker-nav-guard.js", "./app-upstox-workspace.js", "merged Upstox workspace loader");
+mustInclude("app-broker-nav-guard.js", "./app-upstox-autostart.js", "merged dashboard autostart loader");
 mustInclude("app-broker-nav-guard.js", "./upstox-workspace.css", "merged Upstox workspace stylesheet loader");
+
+mustInclude("app-upstox-autostart.js", "ashstocks-workspace-scan-warmed", "single warm scanner guard");
+mustInclude("app-upstox-autostart.js", "runScanBtn", "scanner warm-up button bridge");
+mustInclude("app-upstox-autostart.js", "data-ash-workspace", "dashboard activation bridge");
 
 mustInclude("app-upstox-workspace.js", "AshStocks x Upstox Workflow", "merged dashboard label");
 mustInclude("app-upstox-workspace.js", "Paper Order Ticket", "paper order ticket in merged workspace");
