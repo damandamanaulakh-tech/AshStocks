@@ -24,9 +24,11 @@ function mustMatch(file, regex, reason) {
 mustInclude("app-broker-nav-guard.js", "./ashstocks-trading-terminal.css", "Trading terminal stylesheet loader");
 mustInclude("app-broker-nav-guard.js", "./ashstocks-terminal-inspector.css", "Terminal inspector stylesheet loader");
 mustInclude("app-broker-nav-guard.js", "./ashstocks-terminal-reasoning.css", "Terminal reasoning stylesheet loader");
+mustInclude("app-broker-nav-guard.js", "./ashstocks-terminal-depth-risk.css", "Terminal depth/risk stylesheet loader");
 mustInclude("app-broker-nav-guard.js", "./app-ashstocks-trading-terminal.js", "Trading terminal script loader");
 mustInclude("app-broker-nav-guard.js", "./app-ashstocks-terminal-inspector.js", "Terminal inspector script loader");
 mustInclude("app-broker-nav-guard.js", "./app-ashstocks-terminal-reasoning.js", "Terminal reasoning script loader");
+mustInclude("app-broker-nav-guard.js", "./app-ashstocks-terminal-depth-risk.js", "Terminal depth/risk script loader");
 mustInclude("app-broker-nav-guard.js", "[data-ash-terminal-panel]", "Terminal panel close handling");
 mustInclude("app-broker-nav-guard.js", "[data-ash-terminal-nav]", "Terminal nav close handling");
 
@@ -148,6 +150,33 @@ for (const text of [
   mustInclude("ashstocks-terminal-reasoning.css", text);
 }
 
+for (const text of [
+  "terminalDepthRisk",
+  "Depth, Funds & Risk",
+  "Market Depth",
+  "Funds & Exposure",
+  "Position Sizing",
+  "UPSTOX_DEPTH",
+  "/api/paper-trader/orders",
+  "/api/paper-trader/status",
+  "Depth not returned by /api/upstox/quote yet",
+  "broker_write_enabled false",
+  "virtual only",
+  "R:R"
+]) {
+  mustInclude("app-ashstocks-terminal-depth-risk.js", text);
+}
+
+for (const text of [
+  ".terminal-depth-risk",
+  ".terminal-depth-risk-grid",
+  ".terminal-depth-ladder",
+  ".terminal-risk-metrics",
+  ".terminal-depth-needed"
+]) {
+  mustInclude("ashstocks-terminal-depth-risk.css", text);
+}
+
 mustMatch("app-ashstocks-trading-terminal.js", /submitPaperAction[\s\S]*fetch|submitPaperAction[\s\S]*api\("\/api\/paper-trader\/order"/, "paper order submission path");
 mustMatch("app-ashstocks-trading-terminal.js", /parameterGates[\s\S]*P681[\s\S]*P683[\s\S]*P686[\s\S]*P688[\s\S]*P1701/, "candle and quote parameter gates");
 mustMatch("app-ashstocks-trading-terminal.js", /candleChart[\s\S]*normalizeCandles[\s\S]*DATA_NEEDED: Upstox daily candles/, "real candle chart or explicit data-needed state");
@@ -159,6 +188,8 @@ mustMatch("app-ashstocks-terminal-inspector.js", /renderParameterBoard[\s\S]*TOT
 mustMatch("app-ashstocks-terminal-inspector.js", /generatedDetail[\s\S]*DATA_NEEDED[\s\S]*parameter dictionary did not return metadata/, "honest missing parameter metadata state");
 mustMatch("app-ashstocks-terminal-reasoning.js", /readinessChecks[\s\S]*Scanner decision[\s\S]*6M momentum[\s\S]*Candle trigger[\s\S]*Upstox quote[\s\S]*Paper safety/, "reasoning readiness checklist");
 mustMatch("app-ashstocks-terminal-reasoning.js", /buildModel[\s\S]*hardBlocks[\s\S]*nextAction[\s\S]*allowBuy[\s\S]*allowGtt/, "reasoning verdict and paper action gating");
+mustMatch("app-ashstocks-terminal-depth-risk.js", /renderDepth[\s\S]*quote\?\.depth\?\.bids[\s\S]*quote\?\.depth\?\.asks[\s\S]*DATA_NEEDED/, "real Upstox depth or explicit data-needed state");
+mustMatch("app-ashstocks-terminal-depth-risk.js", /renderSizing[\s\S]*Risk[\s\S]*Qty[\s\S]*R:R/, "position sizing risk metrics");
 
 if (failures.length) {
   console.error("AshStocks terminal guard failed:");
