@@ -361,6 +361,33 @@
   font-size: 0.78rem;
 }
 
+.uw-paper-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 10px 0;
+  padding: 9px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+}
+
+.uw-paper-toolbar button {
+  min-height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--text);
+  font-weight: 900;
+  padding: 0 11px;
+}
+
+.uw-paper-toolbar small {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
 @media (max-width: 1320px) {
   .uw-commandbar,
   .uw-market-strip,
@@ -379,7 +406,8 @@
 }
 
 @media (max-width: 760px) {
-  .uw-topline {
+  .uw-topline,
+  .uw-paper-toolbar {
     align-items: stretch;
     flex-direction: column;
   }
