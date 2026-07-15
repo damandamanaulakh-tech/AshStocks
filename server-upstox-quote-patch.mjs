@@ -105,10 +105,10 @@ async function fetchUpstoxMarketQuotes(keys = []) {
     return upstoxQuoteCache.payload;
   }
   const query = instrumentKeys.map((key) => encodeURIComponent(key)).join(",");
-  const response = await fetch(`${UPSTOX_FULL_MARKET_QUOTE_URL}?instrument_key=${query}`, {
+  const response = await fetch(UPSTOX_FULL_MARKET_QUOTE_URL + "?instrument_key=" + query, {
     headers: {
       accept: "application/json",
-      authorization: `Bearer ${ENV.UPSTOX_ACCESS_TOKEN}`
+      authorization: "Bearer " + ENV.UPSTOX_ACCESS_TOKEN
     }
   });
   const text = await response.text();
@@ -116,7 +116,7 @@ async function fetchUpstoxMarketQuotes(keys = []) {
   try { payload = JSON.parse(text); } catch (_) {}
   if (!response.ok) {
     const detail = payload?.errors?.[0]?.message || payload?.message || text.slice(0, 220);
-    throw new Error(`Upstox quote ${response.status}: ${detail}`);
+    throw new Error("Upstox quote " + response.status + ": " + detail);
   }
   const data = payload?.data || {};
   const values = Array.isArray(data) ? data : Object.entries(data).map(([key, value]) => ({ key, value }));
