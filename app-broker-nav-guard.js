@@ -19,6 +19,7 @@
     appendStylesheet("./ashstocks-trading-terminal.css");
     appendStylesheet("./ashstocks-terminal-inspector.css");
     appendStylesheet("./ashstocks-terminal-reasoning.css");
+    appendStylesheet("./ashstocks-terminal-depth-risk.css");
     appendStylesheet("./upstox-workspace.css");
     appendStylesheet("./upstox-symbol-workspace.css");
     appendStylesheet("./upstox-reasoning-dock.css");
@@ -35,6 +36,7 @@
     appendScript("./app-ashstocks-trading-terminal.js");
     appendScript("./app-ashstocks-terminal-inspector.js");
     appendScript("./app-ashstocks-terminal-reasoning.js");
+    appendScript("./app-ashstocks-terminal-depth-risk.js");
     appendScript("./app-upstox-workspace.js");
     appendScript("./app-upstox-symbol-workspace.js");
     appendScript("./app-upstox-market-watch-pulse.js");
