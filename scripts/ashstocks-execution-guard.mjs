@@ -42,6 +42,19 @@ mustInclude("index.html", "./broker-shell.css", "broker shell CSS");
 mustInclude("index.html", "./app-broker-shell.js", "broker shell script");
 mustInclude("index.html", "./app-broker-nav-guard.js", "broker nav guard script");
 mustInclude("index.html", "./app-parameter-piano.js", "Parameter Piano script");
+mustInclude("app-broker-nav-guard.js", "./app-upstox-workspace.js", "merged Upstox workspace loader");
+mustInclude("app-broker-nav-guard.js", "./upstox-workspace.css", "merged Upstox workspace stylesheet loader");
+
+mustInclude("app-upstox-workspace.js", "AshStocks x Upstox Workflow", "merged dashboard label");
+mustInclude("app-upstox-workspace.js", "Paper Order Ticket", "paper order ticket in merged workspace");
+mustInclude("app-upstox-workspace.js", "Scanner to Trade Queue", "scanner-to-trade queue");
+mustInclude("app-upstox-workspace.js", "Parameter Piano Check", "parameter piano quick check");
+mustInclude("app-upstox-workspace.js", "Candle Structure", "candle structure workspace block");
+mustMatch("app-upstox-workspace.js", /api\/scanner\/run/, "scanner payload bridge");
+mustMatch("app-upstox-workspace.js", /api\/paper-trader\/status/, "paper status bridge");
+mustMatch("app-upstox-workspace.js", /api\/market-context/, "market context bridge");
+mustMatch("app-upstox-workspace.js", /analyzeCandles|bullish engulfing|hammer rejection|near 252D breakout/, "candle parameter analysis");
+mustMatch("app-upstox-workspace.js", /Live orders locked|Live broker order path is locked/, "live order lock in merged workspace");
 
 for (const label of ["Markets", "Watchlist", "Signals", "Orders", "Positions", "GTT", "Reports", "Settings"]) {
   mustInclude("app-broker-shell.js", `label: "${label}"`, `${label} broker workflow view`);
@@ -55,8 +68,7 @@ mustMatch("app-parameter-piano.js", /click|addEventListener/i, "clickable Parame
 mustMatch("app-parameter-piano.js", /parameter/i, "parameter detail behavior");
 
 mustMatch("q1.html", /Upstox/i, "Q1 Upstox source label");
-warnUnless("app-broker-shell.js", /candle/i, "candle hits are not yet visible in broker shell; do not claim candle merge complete");
-warnUnless("server.js", /hammer|engulf|doji|inside bar|breakout candle|candle_pattern/i, "candle pattern scoring is not yet fully implemented; keep it in gap list");
+warnUnless("server.js", /hammer|engulf|doji|inside bar|breakout candle|candle_pattern/i, "candle pattern scoring is not yet fully implemented in the server engine; keep it in gap list");
 
 if (warnings.length) {
   console.warn("AshStocks guard warnings:");
