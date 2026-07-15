@@ -14,8 +14,9 @@
       if (Array.isArray(payload.rows)) state.rows = payload.rows;
       refreshTicketActions();
     });
-    if (url.includes("/api/paper-trader/status") || url.includes("/api/paper-trader/orders") || url.includes("/api/paper-trader/order")) captureJson(response, (payload) => {
+    if (url.includes("/api/paper-trader/status") || url.includes("/api/paper-trader/orders") || url.includes("/api/paper-trader/order") || url.includes("/api/paper-trader/monitor")) captureJson(response, (payload) => {
       state.paperStatus = payload;
+      state.lastResult = payload.action ? payload : state.lastResult;
       refreshTicketActions();
     });
     return response;
@@ -29,23 +30,29 @@
     setInterval(fetchPaperLedger, 60000);
   });
 
+  document.addEventListener("click", (event) => {
+    const monitor = event.target.closest("button[data-paper-monitor]");
+    if (monitor) runPaperMonitor().catch((error) => writeTicketStatus("MONITOR ERROR: " + error.message));
+  }, true);
+
   function refreshTicketActions() {
     const ticket = document.querySelector("#uwOrderTicket");
-    if (!ticket) return;
-    const buttons = Array.from(ticket.querySelectorAll("button"));
-    for (const button of buttons) {
-      const label = (button.textContent || "").trim().toUpperCase();
-      if (!label.includes("PAPER")) continue;
-      const action = label.includes("SELL") ? "SELL" : label.includes("GTT") ? "GTT" : "BUY";
-      if (button.disabled) button.disabled = false;
-      if (button.dataset.paperAction !== action) button.dataset.paperAction = action;
-      if (button.getAttribute("aria-label") !== ACTION_LABELS[action]) button.setAttribute("aria-label", ACTION_LABELS[action]);
-      if (!button.dataset.paperLifecycleBound) {
-        button.dataset.paperLifecycleBound = "1";
-        button.addEventListener("click", () => submitPaperAction(action));
+    if (ticket) {
+      const buttons = Array.from(ticket.querySelectorAll("button"));
+      for (const button of buttons) {
+        const label = (button.textContent || "").trim().toUpperCase();
+        if (!label.includes("PAPER")) continue;
+        const action = label.includes("SELL") ? "SELL" : label.includes("GTT") ? "GTT" : "BUY";
+        if (button.disabled) button.disabled = false;
+        if (button.dataset.paperAction !== action) button.dataset.paperAction = action;
+        if (button.getAttribute("aria-label") !== ACTION_LABELS[action]) button.setAttribute("aria-label", ACTION_LABELS[action]);
+        if (!button.dataset.paperLifecycleBound) {
+          button.dataset.paperLifecycleBound = "1";
+          button.addEventListener("click", () => submitPaperAction(action));
+        }
       }
+      writeTicketStatus(lastStatusText());
     }
-    writeTicketStatus(lastStatusText());
     renderPaperLedger();
   }
 
@@ -92,6 +99,22 @@
     }
   }
 
+  async function runPaperMonitor() {
+    writeTicketStatus("Monitoring paper targets, stops and GTT using latest scanner/Upstox prices...");
+    const response = await fetch("/api/paper-trader/monitor", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ useUpstox: true, source: "upstox-workspace-monitor-button" })
+    });
+    const result = await response.json();
+    state.lastResult = result;
+    state.paperStatus = result;
+    const events = Array.isArray(result.events) ? result.events.length : 0;
+    const gaps = Array.isArray(result.data_needed) ? result.data_needed.length : 0;
+    writeTicketStatus(`${result.action || "MONITOR_DONE"}: ${events} events, ${gaps} DATA_NEEDED`);
+    await fetchPaperLedger();
+  }
+
   async function fetchPaperLedger() {
     if (!document.querySelector("#upstoxWorkspaceView")) return;
     try {
@@ -120,8 +143,13 @@
     const positions = status.positions || status.paperTrader?.positions || status.status?.positions || [];
     const gtt = status.gtt || status.paperTrader?.gtt || status.status?.gtt || [];
     const funds = status.funds || status.paperTrader?.funds || status.status?.funds || {};
+    const lastMonitor = status.last_monitor || status.paperTrader?.last_monitor || status.status?.last_monitor || null;
     const html = `
       <div class="panel-header"><h3>Paper Order Book</h3><span>${escapeHtml(fundsText(funds))}</span></div>
+      <div class="uw-paper-toolbar">
+        <button class="secondary-button" type="button" data-paper-monitor>Monitor Targets / Stops / GTT</button>
+        <small>${escapeHtml(monitorText(lastMonitor))}</small>
+      </div>
       <div class="uw-table-wrap"><table><thead><tr><th>Order</th><th>Side</th><th>Qty</th><th>Price</th><th>Status</th><th>Reason</th></tr></thead><tbody>${orderRows(orders)}</tbody></table></div>
       <div class="uw-report-grid">
         <article><span>Positions</span><strong>${positions.length}</strong></article>
@@ -198,6 +226,7 @@
   function lastStatusText() {
     const result = state.lastResult;
     if (!result) return "Paper execution only. Broker write path remains locked.";
+    if (result.action === "PAPER_LIFECYCLE_MONITORED") return `PAPER_LIFECYCLE_MONITORED: ${(result.events || []).length} events, ${(result.data_needed || []).length} DATA_NEEDED`;
     if (result.ok) return result.action || result.order?.status || result.gtt?.status || "PAPER_OK";
     return "REJECTED: " + (result.order?.rejection_reason || result.error || "paper order failed");
   }
@@ -205,6 +234,11 @@
   function fundsText(funds) {
     const buyingPower = funds.buying_power ?? funds.starting_capital;
     return Number.isFinite(Number(buyingPower)) ? "Buying power Rs " + Number(buyingPower).toLocaleString("en-IN", { maximumFractionDigits: 0 }) : "Paper funds";
+  }
+
+  function monitorText(lastMonitor) {
+    if (!lastMonitor) return "Monitor has not run yet.";
+    return `Last monitor ${lastMonitor.at || ""}: ${lastMonitor.events || 0} events, ${lastMonitor.data_needed || 0} DATA_NEEDED`;
   }
 
   function shortId(id) {
