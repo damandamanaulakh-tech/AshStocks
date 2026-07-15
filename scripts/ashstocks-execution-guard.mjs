@@ -39,6 +39,8 @@ for (const [file, checks] of Object.entries({
   "server-candle-pattern-patch.mjs": ["CANDLE_PATTERN_VERSION", "candlePatternAnalysis", "candle_patterns", "candle_score", "candle_status", "bullish_engulfing", "hammer_rejection", "near_252d_breakout", "volume_confirmation"],
   "app-upstox-symbol-workspace.js": ["#uwSymbolWorkspace", "Upstox-Style Symbol Workspace", "/api/scanner/run", "/api/upstox/quote", "/api/paper-trader/orders", "/api/paper-trader/order", "requestUpstoxQuote", "publishQuote", "ashstocks:upstox-quote", "#uwProduct", "#uwOrderType", "#uwValidity", "#uwRiskPct", "#uwCapital", "#uwTriggerPrice", "brokerReadiness", "quoteStatusText", "UPSTOX_DEPTH", "candleSvg", "DATA_NEEDED: candle chart not available", "BUY", "SELL", "GTT", "Selected Stock Ledger", "broker_write_enabled stays false"],
   "upstox-symbol-workspace.css": [".uw-quote-micro", ".uw-ticket-status", ".uw-ticket-grid", ".uw-ticket-actions", ".uw-paper-action-grid select"],
+  "app-upstox-market-watch-pulse.js": ["#uwMarketWatchPulse", "Upstox Market Watch", "Scanner Quote Pulse", "#brokerMarketWatchPulse", "MAX_KEYS_PER_PULSE = 12", "RATE_LIMIT_BACKOFF_MS", "/api/upstox/quote", "instrument_keys", "ashstocks:upstox-quote", "window.__ashstocksUpstoxQuoteCache", "quote + depth ok", "rate-limit backoff", "DATA_NEEDED: scanner rows with instrument_key required"],
+  "upstox-market-watch-pulse.css": [".upstox-market-watch-pulse", ".pulse-status", ".pulse-strip", ".pulse-card", ".pulse-table-wrap"],
   "app-upstox-trade-queue-bridge.js": ["#uwTradeQueueBridge", "Scanner To Execution", "Broker Trade Queue", "/api/scanner/run", "/api/paper-trader/orders", "/api/paper-trader/order", "ashstocks:upstox-quote", "submitQueuePaperAction", "upstox-trade-queue-bridge", "Momentum", "Candle", "Liquidity", "Target", "Risk", "Quote", "BUY", "GTT", "source: \"upstox-trade-queue-bridge\"", "quote_source"],
   "upstox-trade-queue-bridge.css": [".uw-trade-queue-bridge", ".uw-trade-queue-summary", ".uw-trade-param-chips", ".uw-trade-actions", ".uw-trade-queue-table tr.selected"],
   "app-broker-scanner-hub.js": ["#brokerScannerSnapshot", "AshStocks Brain In Broker Shell", "Scanner, Quote, Paper Ledger", "#brokerHubWatchlists", "#brokerHubSignalBody", "#brokerScannerOrderPanel", "data-broker-run-scanner", "/api/scanner/run", "/api/paper-trader/orders", "/api/paper-trader/order", "ashstocks:upstox-quote", "ashstocks:broker-select-symbol", "Momentum", "Candle", "Liquidity", "Target", "Risk", "Quote", "Paper BUY", "Paper GTT", "broker_write_enabled: false", "paper_only: true", "source: \"broker-scanner-hub\""],
@@ -71,8 +73,10 @@ for (const asset of [
   "./upstox-trade-queue-bridge.css",
   "./broker-scanner-hub.css",
   "./candle-trigger-tape.css",
+  "./upstox-market-watch-pulse.css",
   "./app-upstox-workspace.js",
   "./app-upstox-symbol-workspace.js",
+  "./app-upstox-market-watch-pulse.js",
   "./app-candle-engine-bridge.js",
   "./app-parameter-piano-candle-bridge.js",
   "./app-paper-order-lifecycle.js",
@@ -90,6 +94,9 @@ for (const asset of [
 
 mustMatch("server-upstox-quote-patch.mjs", /\/api\/upstox\/quote[\s\S]*GET[\s\S]*POST/, "Upstox quote GET/POST route");
 mustMatch("server-upstox-quote-patch.mjs", /paper_only: true[\s\S]*live_orders: false[\s\S]*broker_write_enabled: false/, "Upstox quote safety lock");
+mustMatch("app-upstox-market-watch-pulse.js", /fetch\("\/api\/upstox\/quote"[\s\S]*method: "POST"[\s\S]*instrument_keys/, "market watch batched Upstox quote POST");
+mustMatch("app-upstox-market-watch-pulse.js", /publishQuote[\s\S]*ashstocks:upstox-quote[\s\S]*window\.__ashstocksUpstoxQuoteCache/, "market watch quote event bridge");
+mustMatch("app-upstox-market-watch-pulse.js", /429\|rate limit\|1015[\s\S]*RATE_LIMIT_BACKOFF_MS/, "market watch Upstox rate-limit backoff");
 mustMatch("server-paper-order-lifecycle-patch.mjs", /orders.*trades.*gtt|gtt.*trades.*orders/s, "orders/trades/GTT ledger fields");
 mustMatch("server-paper-order-lifecycle-patch.mjs", /PAPER_BUY_FILLED|PAPER_SELL_FILLED|PAPER_GTT_CREATED/, "paper order lifecycle actions");
 mustMatch("app-upstox-symbol-workspace.js", /normalizeCandles[\s\S]*candleSvg[\s\S]*svg/, "symbol candle chart from scanner candles");
