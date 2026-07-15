@@ -63,7 +63,7 @@ for (const text of [
   "runPaperMonitor",
   "PAPER_LIFECYCLE_MONITORED",
   "DATA_NEEDED",
-  "paper execution only"
+  "Paper execution only"
 ]) {
   mustInclude("app-paper-order-lifecycle.js", text);
 }
