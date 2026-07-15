@@ -26,6 +26,7 @@
     appendStylesheet("./upstox-reasoning-dock.css");
     appendStylesheet("./upstox-parameter-keys.css");
     appendStylesheet("./upstox-trade-queue-bridge.css");
+    appendStylesheet("./upstox-candle-hit-flow.css");
     appendStylesheet("./broker-scanner-hub.css");
     appendStylesheet("./candle-trigger-tape.css");
     appendStylesheet("./upstox-market-watch-pulse.css");
@@ -52,6 +53,7 @@
     appendScript("./app-upstox-trade-queue-bridge.js");
     appendScript("./app-upstox-parameter-trade-bridge.js");
     appendScript("./app-upstox-parameter-reasoning-bridge.js");
+    appendScript("./app-upstox-candle-hit-flow.js");
     appendScript("./app-broker-scanner-hub.js");
     appendScript("./app-candle-trigger-tape.js");
     appendScript("./app-paper-risk-console.js");
