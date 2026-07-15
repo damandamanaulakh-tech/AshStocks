@@ -1,4 +1,5 @@
 (() => {
+  const CANDLE_HIT_ANCHORS = Object.freeze(["P681", "P686", "P688"]);
   const PATTERN_PARAMS = Object.freeze({
     bullish_engulfing: { parameter: 681, label: "Bullish engulfing" },
     bearish_engulfing: { parameter: 698, label: "Bearish engulfing" },
@@ -208,6 +209,7 @@
         candle_status: row?.candle_status || "DATA_NEEDED",
         candle_score: row?.candle_score || 0,
         candle_parameter_hits: candleHits(row),
+        anchors: CANDLE_HIT_ANCHORS,
         source: "app-upstox-candle-hit-flow"
       }
     }));
