@@ -15,6 +15,7 @@
       document.head.appendChild(link);
     }
     appendScript("./app-upstox-workspace.js");
+    appendScript("./app-candle-engine-bridge.js");
     appendScript("./app-upstox-autostart.js");
   }
 
