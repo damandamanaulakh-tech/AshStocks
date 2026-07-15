@@ -22,6 +22,7 @@
     appendStylesheet("./upstox-parameter-keys.css");
     appendStylesheet("./upstox-trade-queue-bridge.css");
     appendStylesheet("./broker-scanner-hub.css");
+    appendStylesheet("./candle-trigger-tape.css");
     appendScript("./app-upstox-workspace.js");
     appendScript("./app-upstox-symbol-workspace.js");
     appendScript("./app-candle-engine-bridge.js");
@@ -33,6 +34,7 @@
     appendScript("./app-upstox-reasoning-dock.js");
     appendScript("./app-upstox-trade-queue-bridge.js");
     appendScript("./app-broker-scanner-hub.js");
+    appendScript("./app-candle-trigger-tape.js");
     appendScript("./app-upstox-autostart.js");
   }
 
