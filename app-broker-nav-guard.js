@@ -20,6 +20,7 @@
     appendStylesheet("./upstox-symbol-workspace.css");
     appendStylesheet("./upstox-reasoning-dock.css");
     appendStylesheet("./upstox-parameter-keys.css");
+    appendStylesheet("./upstox-trade-queue-bridge.css");
     appendScript("./app-upstox-workspace.js");
     appendScript("./app-upstox-symbol-workspace.js");
     appendScript("./app-candle-engine-bridge.js");
