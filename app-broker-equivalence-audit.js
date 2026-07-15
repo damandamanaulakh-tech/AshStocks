@@ -44,6 +44,11 @@
     state.lastQuoteAt = new Date().toLocaleTimeString();
     renderBrokerEquivalenceAudit();
   });
+  window.addEventListener("ashstocks:upstox-realtime-tick", () => {
+    state.quoteSeen += 1;
+    state.lastQuoteAt = new Date().toLocaleTimeString();
+    renderBrokerEquivalenceAudit();
+  });
 
   async function bootBrokerEquivalenceAudit() {
     if (state.booted) return;
@@ -161,6 +166,7 @@
     const positions = arrayFrom(ledger.positions, ledger.paperTrader?.positions, ledger.status?.positions);
     const gtt = arrayFrom(ledger.gtt, ledger.paperTrader?.gtt, ledger.status?.gtt);
     const terminalReady = Boolean(document.querySelector("#ashBrokerTerminal"));
+    const realtimeMonitorReady = Boolean(document.querySelector("#upstoxRealtimeMonitor"));
     const paramsReady = Boolean(document.querySelector("#uwParameterKeyBoard") || document.querySelector("#uwPianoQuick") || document.querySelector("#parameterPiano") || document.querySelector("#abtParamGrid"));
     const quoteReady = state.quoteSeen > 0 || Object.keys(window.__ashstocksUpstoxQuoteCache || {}).length > 0;
     const scannerReady = r.length > 0;
@@ -174,6 +180,7 @@
       item("2000 parameter piano", paramsReady ? "ACTIVE" : "DATA_NEEDED", paramsReady ? "Parameter board exists in DOM" : "Parameter board not found on current page", paramsReady ? "none" : "Load parameter board and exact-click detail"),
       item("Candle parameters 681-800", candleRows.length ? "ACTIVE" : document.querySelector("#uwCandleTriggerTape") || document.querySelector("#abtCandleBox") ? "PARTIAL" : "DATA_NEEDED", candleRows.length ? `${candleRows.length} rows have candle evidence` : "Candle tape exists but row candle evidence is not present", candleRows.length ? "none" : "Upstox historical candles or server candle_status rows"),
       item("Upstox quote and depth", quoteReady ? "ACTIVE" : document.querySelector("#uwMarketWatchPulse") || document.querySelector("#ashBrokerTerminal") ? "PARTIAL" : "DATA_NEEDED", quoteReady ? `${state.quoteSeen} quote events, last ${state.lastQuoteAt || "unknown"}` : "Quote module loaded without quote evidence yet", quoteReady ? "none" : "Valid Upstox token and quote request during market/data availability"),
+      item("Realtime quote polling", realtimeMonitorReady && quoteReady ? "ACTIVE" : realtimeMonitorReady ? "PARTIAL" : "DATA_NEEDED", realtimeMonitorReady ? "Upstox realtime monitor mounted with 15s quote polling fallback" : "#upstoxRealtimeMonitor not mounted", quoteReady ? "none" : "Need successful /api/upstox/quote tick payload"),
       item("Broker market watch", document.querySelector("#brokerMarketWatchPulse") || document.querySelector("#uwMarketWatchPulse") || document.querySelector("#abtWatchBody") ? "ACTIVE" : "DATA_NEEDED", document.querySelector("#abtWatchBody") ? "Unified terminal market watch mounted" : document.querySelector("#brokerMarketWatchPulse") ? "Broker market watch pulse mounted" : document.querySelector("#uwMarketWatchPulse") ? "Dashboard quote pulse mounted" : "No market watch pulse in DOM", "Mount watchlist quote strip and table"),
       item("Symbol workspace and chart", document.querySelector("#uwSymbolWorkspace") || document.querySelector("#abtChartBox") ? "ACTIVE" : "PARTIAL", document.querySelector("#abtChartBox") ? "Unified terminal chart panel mounted" : document.querySelector("#uwSymbolWorkspace") ? "Selected symbol workspace mounted" : "Main dashboard has selected-stock mini chart only", document.querySelector("#uwSymbolWorkspace") || document.querySelector("#abtChartBox") ? "none" : "Full broker symbol chart panel"),
       item("Buy Sell GTT ticket", document.querySelector("#uwOrderTicket button[data-paper-action]") || document.querySelector("#brokerHubOrderBox") || document.querySelector("#abtTicket") ? "ACTIVE" : "PARTIAL", document.querySelector("#abtTicket") ? "Unified terminal paper ticket mounted" : document.querySelector("#uwOrderTicket") ? "Paper ticket mounted and lifecycle script can bind actions" : "Ticket not visible on current view", "Keep only paper order POST, no broker write"),
@@ -184,7 +191,7 @@
       item("Funds and risk console", document.querySelector("#paperRiskConsole") ? "ACTIVE" : "DATA_NEEDED", document.querySelector("#paperRiskConsole") ? "Paper broker risk console mounted" : "Risk console not mounted", "Funds, exposure and P&L panel"),
       item("Data persistence", mongoReady ? "ACTIVE" : "PARTIAL", mongoReady ? "Mongo/persistent storage reported by health" : "Health did not prove Mongo persistence in this browser check", mongoReady ? "none" : "Fix MONGODB_URI if Render ready still falls back to file"),
       item("Upstox auth readiness", tokenReady ? "ACTIVE" : "DATA_NEEDED", tokenReady ? "Upstox key/token visible as yes/no in health" : "Health did not prove Upstox key/token", tokenReady ? "none" : "Set Render env UPSTOX_API_KEY and UPSTOX_ACCESS_TOKEN"),
-      item("Realtime websocket ticks", "DATA_NEEDED", "No websocket tick stream is implemented yet", "Add safe websocket/streaming quote layer or scheduled quote pulse"),
+      item("Realtime websocket ticks", "DATA_NEEDED", "No websocket tick stream is implemented yet; polling fallback is not the same as websocket streaming", "Add safe websocket/streaming quote layer"),
       item("Live money broker order", "LOCKED_BY_RULE", "Intentionally disabled. AshStocks paper execution only.", "none by product rule")
     ];
   }
