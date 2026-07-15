@@ -17,6 +17,7 @@
 
   function loadMergedWorkspaceAssets() {
     appendStylesheet("./ashstocks-trading-terminal.css");
+    appendStylesheet("./ashstocks-terminal-inspector.css");
     appendStylesheet("./upstox-workspace.css");
     appendStylesheet("./upstox-symbol-workspace.css");
     appendStylesheet("./upstox-reasoning-dock.css");
@@ -31,6 +32,7 @@
     appendStylesheet("./upstox-stream-client.css");
     appendStylesheet("./broker-equivalence-audit.css");
     appendScript("./app-ashstocks-trading-terminal.js");
+    appendScript("./app-ashstocks-terminal-inspector.js");
     appendScript("./app-upstox-workspace.js");
     appendScript("./app-upstox-symbol-workspace.js");
     appendScript("./app-upstox-market-watch-pulse.js");
