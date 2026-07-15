@@ -1,0 +1,125 @@
+.terminal-depth-risk {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+
+.terminal-depth-risk .panel-header button {
+  min-height: 30px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+  color: var(--text);
+  font-weight: 800;
+  padding: 0 9px;
+}
+
+.terminal-depth-risk-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.terminal-depth-risk-grid > section {
+  display: grid;
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+  padding: 10px;
+}
+
+.depth-risk-title {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.terminal-depth-ladder {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.terminal-depth-ladder article,
+.terminal-risk-metrics article,
+.terminal-depth-needed {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  padding: 8px;
+}
+
+.terminal-depth-ladder article {
+  display: grid;
+  gap: 5px;
+}
+
+.terminal-depth-ladder article span {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 24px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.terminal-depth-ladder article span:first-of-type {
+  border-top: 0;
+}
+
+.terminal-depth-ladder b {
+  color: var(--text);
+}
+
+.terminal-depth-ladder em,
+.depth-risk-note,
+.terminal-depth-needed span,
+.terminal-risk-metrics small {
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-style: normal;
+}
+
+.terminal-risk-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.terminal-risk-metrics article {
+  display: grid;
+  gap: 4px;
+  min-height: 62px;
+}
+
+.terminal-risk-metrics span,
+.terminal-depth-needed strong {
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.terminal-risk-metrics strong {
+  color: var(--text);
+}
+
+.terminal-depth-needed {
+  display: grid;
+  gap: 5px;
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--violet) 52%, var(--line));
+  background: color-mix(in srgb, var(--violet) 8%, var(--panel));
+}
+
+@media (max-width: 760px) {
+  .terminal-depth-ladder,
+  .terminal-risk-metrics {
+    grid-template-columns: 1fr;
+  }
+}
