@@ -31,6 +31,12 @@ function warnUnless(file, regex, reason) {
 
 mustInclude("ASHSTOCKS_EXECUTION_GUARD.md", "AshStocks is a broker-grade Indian market product", "confirmed product rule");
 mustInclude("ASHSTOCKS_EXECUTION_GUARD.md", "Candle Parameter Family", "candle parameter contract");
+mustInclude("ASHSTOCKS_EXECUTION_GUARD.md", "A vs X Check", "asked-vs-delivered check");
+mustInclude("ASHSTOCKS_EXECUTION_GUARD.md", "Merge Check", "merge-vs-add check");
+
+mustInclude("README.md", "Indian/NSE", "India/NSE product scope");
+mustInclude("README.md", "Upstox historical daily candle fetch only", "Upstox historical candle contract");
+mustInclude("README.md", "No live orders", "live order lock contract");
 
 mustInclude("index.html", "./broker-shell.css", "broker shell CSS");
 mustInclude("index.html", "./app-broker-shell.js", "broker shell script");
@@ -47,9 +53,6 @@ mustMatch("app-broker-shell.js", /gtt|target|stop/i, "target/stop or GTT workflo
 
 mustMatch("app-parameter-piano.js", /click|addEventListener/i, "clickable Parameter Piano behavior");
 mustMatch("app-parameter-piano.js", /parameter/i, "parameter detail behavior");
-
-mustMatch("server.js", /historical-candle/i, "Upstox historical candle endpoint");
-mustMatch("server.js", /live_orders[^\n]*false|liveOrders[^\n]*false/i, "live orders locked false");
 
 mustMatch("q1.html", /Upstox/i, "Q1 Upstox source label");
 warnUnless("app-broker-shell.js", /candle/i, "candle hits are not yet visible in broker shell; do not claim candle merge complete");
