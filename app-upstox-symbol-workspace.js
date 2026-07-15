@@ -138,6 +138,9 @@
     host.innerHTML = `
       <strong>${money(price)}</strong>
       <span>${escapeHtml(row.decision || "DATA_NEEDED")} | Score ${number(row.score || row.paper_score)} | 6M ${number(row.return_6m_pct)}% | 12M ${number(row.return_12m_pct)}% | ${escapeHtml(source)}</span>
+      <div class="uw-quote-micro">
+        <span>O ${money(quote?.open)}</span><span>H ${money(quote?.high)}</span><span>L ${money(quote?.low)}</span><span>Vol ${compact(quote?.volume || row.volume)}</span><span>${escapeHtml(spreadText(quote))}</span>
+      </div>
     `;
   }
 
@@ -170,7 +173,10 @@
       return;
     }
     if (hasExchangeDepth) {
-      host.innerHTML = `<div class="uw-depth-ladder"><section><b>Bids</b>${quote.depth.bids.slice(0, 5).map(depthRow).join("")}</section><section><b>Asks</b>${quote.depth.asks.slice(0, 5).map(depthRow).join("")}</section></div>`;
+      host.innerHTML = `
+        <div class="uw-depth-ladder"><section><b>Bids</b>${quote.depth.bids.slice(0, 5).map(depthRow).join("")}</section><section><b>Asks</b>${quote.depth.asks.slice(0, 5).map(depthRow).join("")}</section></div>
+        <article><strong>Readiness</strong><span>${escapeHtml(brokerReadiness(row, quoteState))}</span></article>
+      `;
       return;
     }
     host.innerHTML = `
@@ -189,21 +195,31 @@
       host.innerHTML = `<span>No stock selected.</span>`;
       return;
     }
+    const quoteState = quoteStateFor(row);
+    const quote = quoteState.quote;
     const price = quotePrice(row);
     const qty = row.paper_order?.qty || row.advisor?.qty || estimatedQty(row);
+    const trigger = quote?.last_price ? (Number(quote.last_price) * 1.002).toFixed(2) : "";
     host.innerHTML = `
-      <div class="uw-paper-action-grid">
+      <div class="uw-ticket-status"><strong>${escapeHtml(brokerReadiness(row, quoteState))}</strong><span>${escapeHtml(quoteStatusText(row, quoteState))}</span></div>
+      <div class="uw-paper-action-grid uw-ticket-grid">
+        <label><span>Product</span><select id="uwProduct"><option>Paper Intraday</option><option selected>Paper Swing</option><option>Paper Positional</option><option>Paper Portfolio</option></select></label>
+        <label><span>Order Type</span><select id="uwOrderType"><option selected>MARKET</option><option>LIMIT</option><option>SL</option><option>GTT</option></select></label>
+        <label><span>Validity</span><select id="uwValidity"><option selected>DAY</option><option>IOC</option><option>GTT</option></select></label>
+        <label><span>Risk %</span><input id="uwRiskPct" value="0.75" /></label>
+        <label><span>Capital</span><input id="uwCapital" value="100000" /></label>
         <label><span>Qty</span><input id="uwSymbolQty" value="${escapeAttr(qty)}" /></label>
         <label><span>Price</span><input id="uwSymbolPrice" value="${escapeAttr(numberValue(price || row.paper_order?.entry_price))}" /></label>
+        <label><span>Trigger</span><input id="uwTriggerPrice" value="${escapeAttr(trigger)}" /></label>
         <label><span>Target</span><input id="uwSymbolTarget" value="${escapeAttr(numberValue(row.target_price || row.target2 || row.advisor?.target2 || row.advisor?.target1))}" /></label>
         <label><span>Stop</span><input id="uwSymbolStop" value="${escapeAttr(numberValue(row.stop_price || row.advisor?.stop || row.paper_order?.stop_price))}" /></label>
       </div>
-      <div class="uw-paper-action-row">
-        <button type="button" data-uw-symbol-action="BUY">Paper BUY</button>
-        <button type="button" data-uw-symbol-action="SELL">Paper SELL</button>
-        <button type="button" data-uw-symbol-action="GTT">Paper GTT</button>
+      <div class="uw-paper-action-row uw-ticket-actions">
+        <button type="button" data-uw-symbol-action="BUY">BUY</button>
+        <button type="button" data-uw-symbol-action="SELL">SELL</button>
+        <button type="button" data-uw-symbol-action="GTT">GTT</button>
       </div>
-      <small>These post only to /api/paper-trader/order. broker_write_enabled stays false.</small>
+      <small>Real market data where Upstox allows it. Execution posts only to /api/paper-trader/order; broker_write_enabled stays false.</small>
     `;
   }
 
@@ -214,7 +230,7 @@
     const ledger = state.ledger || {};
     const match = (item) => String(item?.symbol || "").toUpperCase() === String(symbol || "").toUpperCase();
     const rows = [
-      ...(ledger.orders || []).filter(match).map((item) => ({ type: "Order", text: `${item.side} ${item.qty} @ ${money(item.price)} | ${item.status}` })),
+      ...(ledger.orders || []).filter(match).map((item) => ({ type: "Order", text: `${item.side} ${item.qty} @ ${money(item.price)} | ${item.order_type || item.type || "MARKET"} | ${item.status}` })),
       ...(ledger.trades || []).filter(match).map((item) => ({ type: "Trade", text: `${item.side} ${item.qty} @ ${money(item.price)} | value ${money(item.value)}` })),
       ...(ledger.gtt || []).filter(match).map((item) => ({ type: "GTT", text: `target ${money(item.target_price)} / stop ${money(item.stop_price)} | ${item.status}` })),
       ...(ledger.positions || []).filter(match).map((item) => ({ type: "Position", text: `${item.qty} qty | avg ${money(item.entry_price || item.avg_price)} | pnl ${number(item.pnl_pct)}%` }))
@@ -242,6 +258,7 @@
       ["Stop", money(row.stop_price || advisor.stop || row.paper_order?.stop_price)],
       ["Candle", candleText(row)],
       ["Quote Feed", quoteStatusText(row, quoteState)],
+      ["Broker Readiness", brokerReadiness(row, quoteState)],
       ["Risk", `regime ${number(row.regime_risk)} | flow ${number(row.flow_score)} | target room ${number(row.target_potential?.potential_left_pct || row.target_pct)}%`]
     ];
     host.innerHTML = lines.map(([label, value]) => `<article><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></article>`).join("");
@@ -254,6 +271,7 @@
     if (state.quoteBusyKey === key || (cached && Date.now() - cached.at < 15000)) return;
     state.quoteBusyKey = key;
     state.quoteCache[key] = { ...(cached || {}), at: cached?.at || 0, loading: true };
+    publishQuote(row, state.quoteCache[key]);
     try {
       const url = `/api/upstox/quote?instrument_key=${encodeURIComponent(key)}&symbol=${encodeURIComponent(row.symbol)}`;
       const response = await fetch(url);
@@ -264,8 +282,14 @@
       state.quoteCache[key] = { at: Date.now(), ok: false, error: error.message || String(error), payload: null, quote: null };
     } finally {
       if (state.quoteBusyKey === key) state.quoteBusyKey = "";
+      publishQuote(row, state.quoteCache[key]);
       renderSymbolWorkspace();
     }
+  }
+
+  function publishQuote(row, quoteState) {
+    window.__ashstocksUpstoxQuoteCache = state.quoteCache;
+    window.dispatchEvent(new CustomEvent("ashstocks:upstox-quote", { detail: { symbol: row.symbol, instrument_key: instrumentKey(row), quoteState } }));
   }
 
   async function submitPaperAction(action) {
@@ -276,20 +300,27 @@
     state.message = `Sending ${action}...`;
     renderSymbolWorkspace();
     try {
+      const selectedType = inputValue("#uwOrderType") || "MARKET";
       const payload = {
         symbol: row.symbol,
         name: row.name || row.symbol,
         sector: row.sector || "Unmapped",
+        instrument_key: instrumentKey(row) || null,
         side: action === "SELL" ? "SELL" : "BUY",
-        product: document.querySelector("#uwProduct")?.value || "Paper Swing",
-        order_type: action === "GTT" ? "GTT" : "MARKET",
+        product: inputValue("#uwProduct") || "Paper Swing",
+        order_type: action === "GTT" ? "GTT" : selectedType,
+        validity: inputValue("#uwValidity") || "DAY",
         qty: Math.max(0, Math.floor(Number(inputValue("#uwSymbolQty")) || estimatedQty(row))),
         price: Number(inputValue("#uwSymbolPrice")) || Number(quotePrice(row) || 0),
+        trigger_price: Number(inputValue("#uwTriggerPrice")) || null,
         target_price: Number(inputValue("#uwSymbolTarget")) || Number(row.target_price || row.target2 || row.advisor?.target2 || 0) || null,
         stop_price: Number(inputValue("#uwSymbolStop")) || Number(row.stop_price || row.advisor?.stop || 0) || null,
+        risk_pct: Number(inputValue("#uwRiskPct")) || 0.75,
+        capital: Number(inputValue("#uwCapital")) || 100000,
         thesis: row.advisor?.why || row.paper_reason || row.reason || "AshStocks symbol workspace paper action",
         source: "upstox-symbol-workspace",
-        gtt: action === "GTT"
+        quote_source: quoteStateFor(row).quote ? "Upstox Market Quote API" : "scanner-fallback",
+        gtt: action === "GTT" || selectedType === "GTT"
       };
       const response = await fetch("/api/paper-trader/order", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload) });
       const result = await response.json().catch(() => ({}));
@@ -377,6 +408,23 @@
     if (quoteState.quote) return quoteState.quote.depth_available ? "Upstox quote + market depth available" : "Upstox quote available; depth absent in REST response";
     if (quoteState.error) return `Upstox quote failed: ${quoteState.error}`;
     return "Upstox quote requested";
+  }
+
+  function brokerReadiness(row, quoteState) {
+    const parts = [];
+    if (quoteState.quote) parts.push("quote ok"); else parts.push("quote pending");
+    if (quoteState.quote?.depth_available) parts.push("depth ok"); else parts.push("depth needed");
+    if (row.candles?.length || row.close) parts.push("scanner price ok"); else parts.push("candle needed");
+    if (row.target_price || row.target2 || row.advisor?.target2) parts.push("target ok"); else parts.push("target needed");
+    if (row.stop_price || row.advisor?.stop) parts.push("stop ok"); else parts.push("stop needed");
+    return parts.join(" | ");
+  }
+
+  function spreadText(quote) {
+    const bid = quote?.depth?.bids?.[0]?.price;
+    const ask = quote?.depth?.asks?.[0]?.price;
+    if (!Number.isFinite(Number(bid)) || !Number.isFinite(Number(ask))) return "Spread DATA_NEEDED";
+    return `Bid ${money(bid)} / Ask ${money(ask)}`;
   }
 
   function depthRow(row) {
