@@ -10,7 +10,7 @@
 
 .uw-symbol-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.65fr);
+  grid-template-columns: minmax(0, 1.45fr) minmax(360px, 0.72fr);
   gap: 12px;
 }
 
@@ -33,7 +33,7 @@
 
 .uw-symbol-quote {
   display: grid;
-  gap: 3px;
+  gap: 5px;
 }
 
 .uw-symbol-quote strong {
@@ -47,6 +47,32 @@
 .uw-symbol-plan span,
 .uw-symbol-empty span {
   color: var(--muted);
+}
+
+.uw-quote-micro {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.uw-quote-micro span,
+.uw-ticket-status {
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--panel);
+  padding: 5px 7px;
+  font-size: 0.76rem;
+  font-weight: 850;
+}
+
+.uw-ticket-status {
+  display: grid;
+  gap: 3px;
+  margin-bottom: 8px;
+}
+
+.uw-ticket-status strong {
+  color: var(--teal);
 }
 
 .uw-symbol-tabs {
@@ -71,6 +97,16 @@
   border-color: var(--teal);
   background: var(--teal);
   color: #fff;
+}
+
+.uw-ticket-actions button:nth-child(2) {
+  border-color: #d94d4d;
+  color: #d94d4d;
+}
+
+.uw-ticket-actions button:nth-child(3) {
+  border-color: #3154d4;
+  color: #3154d4;
 }
 
 .uw-symbol-chart {
@@ -168,6 +204,10 @@
   gap: 8px;
 }
 
+.uw-ticket-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .uw-paper-action-grid label {
   display: grid;
   gap: 4px;
@@ -176,13 +216,17 @@
   font-weight: 800;
 }
 
-.uw-paper-action-grid input {
+.uw-paper-action-grid input,
+.uw-paper-action-grid select {
   min-height: 34px;
   border: 1px solid var(--line);
   border-radius: 7px;
   background: var(--panel);
   color: var(--text);
   padding: 0 8px;
+  font: inherit;
+  font-weight: 850;
+  min-width: 0;
 }
 
 .uw-paper-action-row {
