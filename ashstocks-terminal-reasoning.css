@@ -1,0 +1,105 @@
+.terminal-rve {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+
+.terminal-rve-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.terminal-rve-grid article,
+.terminal-rve-checks article {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+  padding: 10px;
+}
+
+.terminal-rve-grid span,
+.terminal-rve-checks span,
+.terminal-rve-checks small {
+  display: block;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.terminal-rve-grid strong,
+.terminal-rve-grid p,
+.terminal-rve-checks strong,
+.terminal-rve-checks b {
+  margin: 0;
+}
+
+.terminal-rve-grid p {
+  color: var(--muted);
+  line-height: 1.42;
+  margin-top: 6px;
+}
+
+.terminal-rve-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.terminal-rve-actions button {
+  min-height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--text);
+  font-weight: 900;
+}
+
+.terminal-rve-actions button:not(:disabled):first-child {
+  background: var(--green);
+  color: #fff;
+}
+
+.terminal-rve-actions button:not(:disabled):nth-child(2) {
+  background: var(--blue);
+  color: #fff;
+}
+
+.terminal-rve-actions button:not(:disabled):nth-child(3) {
+  background: var(--red);
+  color: #fff;
+}
+
+.terminal-rve-actions button:disabled {
+  cursor: not-allowed;
+}
+
+.terminal-rve-checks {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.terminal-rve-checks article.PASS {
+  border-color: color-mix(in srgb, var(--green) 52%, var(--line));
+  background: color-mix(in srgb, var(--green) 10%, var(--panel));
+}
+
+.terminal-rve-checks article.BLOCKED {
+  border-color: color-mix(in srgb, var(--red) 52%, var(--line));
+  background: color-mix(in srgb, var(--red) 10%, var(--panel));
+}
+
+.terminal-rve-checks article.DATA_NEEDED {
+  border-color: color-mix(in srgb, var(--violet) 52%, var(--line));
+  background: color-mix(in srgb, var(--violet) 9%, var(--panel));
+}
+
+@media (max-width: 1080px) {
+  .terminal-rve-grid,
+  .terminal-rve-checks {
+    grid-template-columns: 1fr;
+  }
+}
