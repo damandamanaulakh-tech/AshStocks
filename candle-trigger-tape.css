@@ -1,0 +1,122 @@
+.candle-trigger-tape {
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+}
+
+.candle-tape-summary,
+.candle-tape-selected {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.candle-tape-selected {
+  grid-template-columns: 0.7fr 0.8fr 0.9fr 1.6fr;
+}
+
+.candle-tape-summary article,
+.candle-tape-selected article,
+.candle-empty {
+  display: grid;
+  gap: 4px;
+  min-height: 64px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+  padding: 10px;
+}
+
+.candle-tape-summary span,
+.candle-tape-selected span,
+.candle-tape-selected b,
+.candle-empty span,
+.candle-tape-table small,
+.candle-tape-table td span {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.candle-tape-table td,
+.candle-tape-table th {
+  white-space: normal;
+}
+
+.candle-param-list,
+.candle-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.candle-param-list button,
+.candle-actions button,
+.candle-status {
+  min-height: 26px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--panel);
+  color: var(--text);
+  padding: 4px 7px;
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.candle-param-list button {
+  display: inline-grid;
+  gap: 1px;
+  text-align: left;
+}
+
+.candle-param-list button span {
+  max-width: 148px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.candle-param-list .hit,
+.candle-status.HIT,
+.candle-status.PASS {
+  border-color: var(--teal);
+  background: color-mix(in srgb, var(--teal) 12%, var(--panel));
+  color: var(--teal);
+}
+
+.candle-param-list .need,
+.candle-status.WATCH {
+  border-color: #c47a10;
+  background: #fff3df;
+  color: #a85e00;
+}
+
+.candle-status.DATA_NEEDED,
+.candle-status.NO_HIT {
+  border-color: #7c5bd6;
+  background: #f0ebff;
+  color: #6842c2;
+}
+
+.candle-actions button:first-child,
+.candle-actions button:nth-child(2) {
+  border-color: var(--teal);
+  background: var(--teal);
+  color: #fff;
+}
+
+@media (max-width: 1320px) {
+  .candle-tape-summary {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .candle-tape-selected {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .candle-tape-summary,
+  .candle-tape-selected {
+    grid-template-columns: 1fr;
+  }
+}
