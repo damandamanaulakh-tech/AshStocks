@@ -57,7 +57,7 @@ function candlePatternAnalysis(row = {}, metrics = {}) {
     status,
     score,
     patterns,
-    evidence: `O ${round(open, 2)} H ${round(high, 2)} L ${round(low, 2)} C ${round(close, 2)}; body ${round((body / range) * 100, 1)}% range; volume ${Number.isFinite(volume) ? Math.round(volume) : "NA"}`,
+    evidence: "O " + round(open, 2) + " H " + round(high, 2) + " L " + round(low, 2) + " C " + round(close, 2) + "; body " + round((body / range) * 100, 1) + "% range; volume " + (Number.isFinite(volume) ? Math.round(volume) : "NA"),
     reason: patterns.length ? patterns.join(", ") : "No proven candle structure hit on latest candle"
   };
 }
