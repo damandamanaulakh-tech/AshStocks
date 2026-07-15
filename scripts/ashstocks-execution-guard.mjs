@@ -39,10 +39,18 @@ mustInclude("index.html", "./app-parameter-piano.js", "Parameter Piano script");
 mustInclude("app-broker-nav-guard.js", "./app-upstox-workspace.js", "merged Upstox workspace loader");
 mustInclude("app-broker-nav-guard.js", "./app-candle-engine-bridge.js", "server candle bridge loader");
 mustInclude("app-broker-nav-guard.js", "./app-parameter-piano-candle-bridge.js", "Parameter Piano candle bridge loader");
+mustInclude("app-broker-nav-guard.js", "./app-paper-order-lifecycle.js", "paper order lifecycle UI loader");
 mustInclude("app-broker-nav-guard.js", "./app-upstox-autostart.js", "merged dashboard autostart loader");
 mustInclude("app-broker-nav-guard.js", "./upstox-workspace.css", "merged Upstox workspace stylesheet loader");
 
 mustInclude("server.js", "applyCandlePatternPatches", "server candle pattern patch wiring");
+mustInclude("server.js", "applyPaperOrderLifecyclePatches", "paper order lifecycle patch wiring");
+mustInclude("server-paper-order-lifecycle-patch.mjs", "PAPER_ORDER_LIFECYCLE_VERSION", "paper order lifecycle version");
+mustInclude("server-paper-order-lifecycle-patch.mjs", "/api/paper-trader/order", "paper order endpoint");
+mustInclude("server-paper-order-lifecycle-patch.mjs", "/api/paper-trader/orders", "paper orders ledger endpoint");
+mustMatch("server-paper-order-lifecycle-patch.mjs", /orders.*trades.*gtt|gtt.*trades.*orders/s, "orders/trades/GTT ledger fields");
+mustMatch("server-paper-order-lifecycle-patch.mjs", /PAPER_BUY_FILLED|PAPER_SELL_FILLED|PAPER_GTT_CREATED/, "paper order lifecycle actions");
+mustMatch("server-paper-order-lifecycle-patch.mjs", /broker_write_enabled:\s*false/, "broker write lock in paper lifecycle");
 mustInclude("server-candle-pattern-patch.mjs", "CANDLE_PATTERN_VERSION", "server candle pattern version");
 mustInclude("server-candle-pattern-patch.mjs", "candlePatternAnalysis", "server candle pattern analysis function");
 mustInclude("server-candle-pattern-patch.mjs", "candle_patterns", "scanner row candle pattern output");
@@ -56,6 +64,11 @@ mustInclude("app-candle-engine-bridge.js", "candle_patterns", "server candle pat
 mustInclude("app-parameter-piano-candle-bridge.js", "Candle Structure + Volume", "old Parameter Piano candle relabel");
 mustInclude("app-parameter-piano-candle-bridge.js", "candle_evidence", "old Parameter Piano server candle evidence");
 mustInclude("app-parameter-piano-candle-bridge.js", "candle_score", "old Parameter Piano server candle score");
+
+mustInclude("app-paper-order-lifecycle.js", "/api/paper-trader/order", "paper order action post");
+mustInclude("app-paper-order-lifecycle.js", "Paper BUY", "paper buy button action text");
+mustMatch("app-paper-order-lifecycle.js", /SELL|GTT/, "paper sell and GTT actions");
+mustMatch("app-paper-order-lifecycle.js", /broker write path remains locked|broker_write_enabled/, "paper UI live-order lock");
 
 mustInclude("app-upstox-autostart.js", "ashstocks-workspace-scan-warmed", "single warm scanner guard");
 mustInclude("app-upstox-autostart.js", "runScanBtn", "scanner warm-up button bridge");
