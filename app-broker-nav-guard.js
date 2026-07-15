@@ -23,8 +23,10 @@
     appendStylesheet("./upstox-trade-queue-bridge.css");
     appendStylesheet("./broker-scanner-hub.css");
     appendStylesheet("./candle-trigger-tape.css");
+    appendStylesheet("./upstox-market-watch-pulse.css");
     appendScript("./app-upstox-workspace.js");
     appendScript("./app-upstox-symbol-workspace.js");
+    appendScript("./app-upstox-market-watch-pulse.js");
     appendScript("./app-candle-engine-bridge.js");
     appendScript("./app-parameter-piano-candle-bridge.js");
     appendScript("./app-paper-order-lifecycle.js");
