@@ -69,6 +69,78 @@
   color: #6842c2;
 }
 
+.uw-parameter-reasoning-bridge {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.1fr) repeat(3, minmax(160px, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+  padding: 9px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+}
+
+.uw-parameter-reasoning-bridge > div,
+.uw-parameter-reasoning-bridge > article {
+  display: grid;
+  gap: 4px;
+  min-height: 54px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.uw-parameter-reasoning-bridge span,
+.uw-parameter-ticket-note span,
+.uw-parameter-ticket-note small {
+  color: var(--muted);
+}
+
+.uw-parameter-reasoning-bridge.pass {
+  border-color: var(--teal);
+}
+
+.uw-parameter-reasoning-bridge.blocked {
+  border-color: #c47a10;
+}
+
+.uw-parameter-reasoning-bridge.waiting,
+.uw-parameter-reasoning-bridge.watch {
+  border-color: #3158d4;
+}
+
+.uw-parameter-ticket-note,
+[data-uw-active-parameter-ticket] {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 130px minmax(180px, 1fr) 90px minmax(0, 1.5fr);
+  gap: 8px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+  padding: 9px;
+}
+
+.uw-parameter-ticket-note b {
+  justify-self: start;
+  border-radius: 999px;
+  padding: 3px 8px;
+  background: #eef2ff;
+  color: #3158d4;
+}
+
+.uw-parameter-ticket-note[data-status="PASS"] b {
+  background: color-mix(in srgb, var(--teal) 16%, var(--panel));
+  color: var(--teal);
+}
+
+.uw-parameter-ticket-note[data-status="BLOCKED"] b {
+  background: #fff3df;
+  color: #a85f00;
+}
+
 .uw-reason-grid {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
@@ -150,7 +222,8 @@
 }
 
 @media (max-width: 1320px) {
-  .uw-reason-grid {
+  .uw-reason-grid,
+  .uw-parameter-reasoning-bridge {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
@@ -166,7 +239,10 @@
   }
 
   .uw-reason-grid,
-  .uw-reason-checklist article {
+  .uw-reason-checklist article,
+  .uw-parameter-reasoning-bridge,
+  .uw-parameter-ticket-note,
+  [data-uw-active-parameter-ticket] {
     grid-template-columns: 1fr;
   }
 }
