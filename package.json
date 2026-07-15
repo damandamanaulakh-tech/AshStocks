@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "check": "node --check server.js && node --check app.js && node --check q1.js && node --check scripts/q1_upstox_price_join.mjs && node --check scripts/smoke-test.mjs && node --check scripts/check-live-render.mjs",
+    "guard": "node scripts/ashstocks-execution-guard.mjs",
+    "check": "npm run guard && node --check server.js && node --check app.js && node --check q1.js && node --check scripts/q1_upstox_price_join.mjs && node --check scripts/smoke-test.mjs && node --check scripts/check-live-render.mjs",
     "smoke": "node scripts/smoke-test.mjs",
     "verify:live": "node scripts/check-live-render.mjs"
   },
