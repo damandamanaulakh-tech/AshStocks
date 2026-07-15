@@ -4,6 +4,7 @@
     paperStatus: null,
     lastResult: null
   };
+  const ACTION_LABELS = { BUY: "Paper BUY", SELL: "Paper SELL", GTT: "Paper GTT" };
 
   const previousFetch = window.fetch.bind(window);
   window.fetch = async (...args) => {
@@ -36,6 +37,7 @@
       const action = label.includes("SELL") ? "SELL" : label.includes("GTT") ? "GTT" : "BUY";
       button.disabled = false;
       button.dataset.paperAction = action;
+      button.setAttribute("aria-label", ACTION_LABELS[action]);
       if (!button.dataset.paperLifecycleBound) {
         button.dataset.paperLifecycleBound = "1";
         button.addEventListener("click", () => submitPaperAction(action));
