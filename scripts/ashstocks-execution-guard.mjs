@@ -34,6 +34,7 @@ mustInclude("README.md", "No live orders", "live order lock contract");
 
 mustInclude("index.html", "./broker-shell.css", "broker shell CSS");
 mustInclude("index.html", "./app-broker-shell.js", "broker shell script");
+mustInclude("index.html", "./app-broker-ledger-bridge.js", "real broker ledger bridge script");
 mustInclude("index.html", "./app-broker-nav-guard.js", "broker nav guard script");
 mustInclude("index.html", "./app-parameter-piano.js", "Parameter Piano script");
 mustInclude("app-broker-nav-guard.js", "./app-upstox-workspace.js", "merged Upstox workspace loader");
@@ -70,6 +71,16 @@ mustInclude("app-paper-order-lifecycle.js", "Paper BUY", "paper buy button actio
 mustInclude("app-paper-order-lifecycle.js", "Paper Order Book", "paper order book visible in dashboard");
 mustMatch("app-paper-order-lifecycle.js", /SELL|GTT/, "paper sell and GTT actions");
 mustMatch("app-paper-order-lifecycle.js", /broker write path remains locked|broker_write_enabled/, "paper UI live-order lock");
+
+mustInclude("app-broker-ledger-bridge.js", "/api/paper-trader/orders", "broker tabs real paper ledger endpoint");
+mustInclude("app-broker-ledger-bridge.js", "/api/paper-trader/order", "broker tabs paper order endpoint");
+mustInclude("app-broker-ledger-bridge.js", "#brokerOrdersView", "broker Orders tab bridge");
+mustInclude("app-broker-ledger-bridge.js", "#brokerPositionsView", "broker Positions tab bridge");
+mustInclude("app-broker-ledger-bridge.js", "#brokerGttView", "broker GTT tab bridge");
+mustInclude("app-broker-ledger-bridge.js", "Paper BUY", "broker tab paper buy action");
+mustInclude("app-broker-ledger-bridge.js", "Paper SELL", "broker tab paper sell action");
+mustInclude("app-broker-ledger-bridge.js", "Paper GTT", "broker tab paper GTT action");
+mustMatch("app-broker-ledger-bridge.js", /Order Book|Trade Book|Buying Power/, "broker ledger visible sections");
 
 mustInclude("app-upstox-autostart.js", "ashstocks-workspace-scan-warmed", "single warm scanner guard");
 mustInclude("app-upstox-autostart.js", "runScanBtn", "scanner warm-up button bridge");
