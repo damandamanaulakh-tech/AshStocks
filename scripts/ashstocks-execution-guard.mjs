@@ -96,7 +96,7 @@ mustMatch("server-paper-order-lifecycle-patch.mjs", /orders.*trades.*gtt|gtt.*tr
 mustMatch("server-paper-order-lifecycle-patch.mjs", /PAPER_BUY_FILLED|PAPER_SELL_FILLED|PAPER_GTT_CREATED/, "paper order lifecycle actions");
 mustMatch("server-candle-pattern-patch.mjs", /bullish_engulfing|hammer_rejection|near_252d_breakout|inside_bar|volume_confirmation/, "server candle pattern names");
 mustMatch("app-upstox-symbol-workspace.js", /normalizeCandles[\s\S]*candleSvg[\s\S]*svg/, "symbol candle chart from scanner candles");
-mustMatch("app-upstox-symbol-workspace.js", /fetch\(url\)[\s\S]*\/api\/upstox\/quote/, "symbol workspace Upstox quote fetch");
+mustMatch("app-upstox-symbol-workspace.js", /\/api\/upstox\/quote[\s\S]*fetch\(url\)/, "symbol workspace Upstox quote fetch");
 mustMatch("app-upstox-symbol-workspace.js", /Upstox quote failed[\s\S]*DATA_NEEDED|DATA_NEEDED[\s\S]*Upstox quote failed/, "truthful missing quote state");
 mustMatch("app-upstox-symbol-workspace.js", /fetch\("\/api\/paper-trader\/order"[\s\S]*source: "upstox-symbol-workspace"/, "symbol workspace paper order post");
 mustMatch("app-upstox-parameter-filter.js", /Candle Structure \+ Volume|FII\/DII Flow|Entry Target Stop|Paper Safety/, "key AshStocks parameter families in Upstox filter");
