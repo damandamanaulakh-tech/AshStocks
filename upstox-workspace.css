@@ -1,0 +1,330 @@
+.upstox-workspace {
+  gap: 14px;
+}
+
+.uw-topline,
+.uw-commandbar,
+.uw-market-strip article,
+.uw-main-grid > .panel,
+.uw-lower-grid > .panel {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.uw-topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+}
+
+.uw-topline h3 {
+  margin: 3px 0 0;
+  font-size: 1.45rem;
+}
+
+.uw-mode {
+  display: grid;
+  justify-items: end;
+  gap: 4px;
+  color: var(--muted);
+}
+
+.uw-mode b {
+  color: var(--teal);
+}
+
+.uw-commandbar,
+.uw-ticket {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(150px, 1fr));
+  gap: 10px;
+  padding: 12px;
+}
+
+.uw-commandbar label,
+.uw-ticket label {
+  display: grid;
+  gap: 5px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.uw-commandbar input,
+.uw-commandbar select,
+.uw-ticket input,
+.uw-ticket select {
+  min-height: 38px;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--text);
+  padding: 0 10px;
+}
+
+.uw-market-strip,
+.uw-lower-grid.compact {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.uw-market-strip article {
+  display: grid;
+  gap: 6px;
+  min-height: 82px;
+  padding: 12px;
+}
+
+.uw-market-strip span,
+.uw-market-strip b,
+.uw-facts span,
+.uw-report-grid span,
+.uw-copy span,
+.uw-param-detail span {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.uw-market-strip strong {
+  font-size: 1.25rem;
+}
+
+.uw-main-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.85fr) minmax(300px, 0.8fr);
+  gap: 14px;
+}
+
+.uw-lower-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 0.75fr);
+  gap: 14px;
+}
+
+.uw-main-grid > .panel,
+.uw-lower-grid > .panel {
+  padding: 12px;
+}
+
+.uw-mini-chart {
+  display: grid;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.uw-mini-chart div {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr) 78px;
+  gap: 8px;
+  align-items: center;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.uw-mini-chart i {
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--panel-soft);
+}
+
+.uw-mini-chart b {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--teal);
+}
+
+.uw-facts,
+.uw-report-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.uw-facts article,
+.uw-report-grid article {
+  display: grid;
+  gap: 4px;
+  min-height: 56px;
+  padding: 9px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+}
+
+.uw-copy,
+.uw-param-detail {
+  display: grid;
+  gap: 8px;
+  line-height: 1.45;
+}
+
+.uw-copy p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.uw-lifecycle {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 12px;
+}
+
+.uw-lifecycle span,
+.uw-key {
+  min-height: 26px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  font-weight: 900;
+}
+
+.uw-lifecycle .hit,
+.uw-key.hit {
+  border-color: var(--teal);
+  background: color-mix(in srgb, var(--teal) 15%, var(--panel));
+  color: var(--teal);
+}
+
+.uw-lifecycle .idle,
+.uw-key.idle {
+  color: var(--muted);
+  background: var(--panel-soft);
+}
+
+.uw-key.warn {
+  border-color: #c47a10;
+  color: #b96d00;
+  background: #fff3df;
+}
+
+.uw-ticket {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 0;
+}
+
+.uw-ticket button {
+  min-height: 40px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+  color: var(--muted);
+  font-weight: 900;
+}
+
+.uw-ticket small {
+  grid-column: 1 / -1;
+  color: var(--muted);
+}
+
+.uw-table-wrap {
+  overflow-x: auto;
+}
+
+.uw-table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.uw-table-wrap th,
+.uw-table-wrap td {
+  padding: 10px;
+  border-top: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.uw-table-wrap th {
+  color: var(--muted);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.uw-table-wrap button {
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+  padding: 0;
+}
+
+.uw-table-wrap button span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.uw-piano-quick {
+  display: grid;
+  gap: 10px;
+}
+
+.uw-piano-quick article {
+  display: grid;
+  gap: 7px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+}
+
+.uw-piano-quick article div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.uw-param-detail {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+}
+
+@media (max-width: 1320px) {
+  .uw-commandbar,
+  .uw-market-strip,
+  .uw-ticket {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .uw-main-grid,
+  .uw-lower-grid,
+  .uw-lower-grid.compact {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .uw-topline {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .uw-mode {
+    justify-items: start;
+  }
+
+  .uw-commandbar,
+  .uw-market-strip,
+  .uw-ticket,
+  .uw-facts,
+  .uw-report-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .uw-mini-chart div {
+    grid-template-columns: 72px minmax(0, 1fr) 68px;
+  }
+}
