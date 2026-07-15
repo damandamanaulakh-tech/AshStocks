@@ -65,14 +65,15 @@ for (const asset of [
 ]) mustLoad("app-broker-nav-guard.js", asset);
 
 for (const [file, checks] of Object.entries({
-  "server.js": ["applyCandlePatternPatches", "applyPaperOrderLifecyclePatches"],
+  "server.js": ["applyCandlePatternPatches", "applyPaperOrderLifecyclePatches", "applyUpstoxQuotePatches"],
+  "server-upstox-quote-patch.mjs": ["UPSTOX_QUOTE_VERSION", "/api/upstox/quote", "UPSTOX_FULL_MARKET_QUOTE_URL", "Upstox Market Quote API", "broker_write_enabled: false", "live_orders: false", "token_printed: false", "fetchUpstoxMarketQuotes", "normalizeUpstoxQuoteRow"],
   "server-paper-order-lifecycle-patch.mjs": ["PAPER_ORDER_LIFECYCLE_VERSION", "/api/paper-trader/order", "/api/paper-trader/orders", "broker_write_enabled: false"],
   "server-candle-pattern-patch.mjs": ["CANDLE_PATTERN_VERSION", "candlePatternAnalysis", "candle_patterns", "candle_score", "candle_status"],
   "app-candle-engine-bridge.js": ["candle_engine", "candle_score", "candle_patterns"],
   "app-parameter-piano-candle-bridge.js": ["Candle Structure + Volume", "candle_evidence", "candle_score"],
   "app-paper-order-lifecycle.js": ["/api/paper-trader/order", "Paper BUY", "Paper Order Book", "Paper SELL", "Paper GTT"],
   "app-broker-ledger-bridge.js": ["/api/paper-trader/orders", "/api/paper-trader/order", "#brokerOrdersView", "#brokerPositionsView", "#brokerGttView", "Paper BUY", "Paper SELL", "Paper GTT", "Order Book", "Trade Book", "Buying Power"],
-  "app-upstox-symbol-workspace.js": ["#uwSymbolWorkspace", "Upstox-Style Symbol Workspace", "/api/scanner/run", "/api/paper-trader/orders", "/api/paper-trader/order", "candleSvg", "DATA_NEEDED: candle chart not available", "Exchange depth not wired", "Paper BUY", "Paper SELL", "Paper GTT", "Selected Stock Ledger", "broker_write_enabled stays false"],
+  "app-upstox-symbol-workspace.js": ["#uwSymbolWorkspace", "Upstox-Style Symbol Workspace", "/api/scanner/run", "/api/upstox/quote", "/api/paper-trader/orders", "/api/paper-trader/order", "requestUpstoxQuote", "quoteStatusText", "UPSTOX_DEPTH", "candleSvg", "DATA_NEEDED: candle chart not available", "Paper BUY", "Paper SELL", "Paper GTT", "Selected Stock Ledger", "broker_write_enabled stays false"],
   "app-upstox-parameter-filter.js": ["TOTAL_PARAMETERS = 2000", "/api/data-intelligence", "/api/framework", "#uwParameterFilterPanel", "#uwBlockFilter", "#uwFamilyFilter", "#uwFeedFilter", "#uwParamNumber", "Filtered Candidates"],
   "app-upstox-parameter-keys.js": ["TOTAL_PARAMETERS = 2000", "#uwParameterKeyBoard", "1-2000 Parameter Board", "data-uw-param-key", "rule, source, evidence, pass line and engine impact", "syncExistingFilter", "Candle Structure + Volume", "Paper Safety", "DATA_NEEDED"],
   "app-upstox-parameter-exact-sync.js": ["data-uw-param-key", "#uwParamNumber", "exactParameter", "syncExactParameter"],
@@ -88,11 +89,15 @@ for (const [file, checks] of Object.entries({
   for (const check of checks) mustInclude(file, check);
 }
 
+mustMatch("server-upstox-quote-patch.mjs", /\/api\/upstox\/quote[\s\S]*GET[\s\S]*POST/, "Upstox quote GET/POST route");
+mustMatch("server-upstox-quote-patch.mjs", /authorization: `Bearer \$\{ENV\.UPSTOX_ACCESS_TOKEN\}`/, "Upstox quote token from env only");
+mustMatch("server-upstox-quote-patch.mjs", /paper_only: true[\s\S]*live_orders: false[\s\S]*broker_write_enabled: false/, "Upstox quote safety lock");
 mustMatch("server-paper-order-lifecycle-patch.mjs", /orders.*trades.*gtt|gtt.*trades.*orders/s, "orders/trades/GTT ledger fields");
 mustMatch("server-paper-order-lifecycle-patch.mjs", /PAPER_BUY_FILLED|PAPER_SELL_FILLED|PAPER_GTT_CREATED/, "paper order lifecycle actions");
 mustMatch("server-candle-pattern-patch.mjs", /bullish_engulfing|hammer_rejection|near_252d_breakout|inside_bar|volume_confirmation/, "server candle pattern names");
 mustMatch("app-upstox-symbol-workspace.js", /normalizeCandles[\s\S]*candleSvg[\s\S]*svg/, "symbol candle chart from scanner candles");
-mustMatch("app-upstox-symbol-workspace.js", /Exchange depth not wired[\s\S]*DATA_NEEDED/, "truthful missing market depth state");
+mustMatch("app-upstox-symbol-workspace.js", /fetch\(url\)[\s\S]*\/api\/upstox\/quote/, "symbol workspace Upstox quote fetch");
+mustMatch("app-upstox-symbol-workspace.js", /Upstox quote failed[\s\S]*DATA_NEEDED|DATA_NEEDED[\s\S]*Upstox quote failed/, "truthful missing quote state");
 mustMatch("app-upstox-symbol-workspace.js", /fetch\("\/api\/paper-trader\/order"[\s\S]*source: "upstox-symbol-workspace"/, "symbol workspace paper order post");
 mustMatch("app-upstox-parameter-filter.js", /Candle Structure \+ Volume|FII\/DII Flow|Entry Target Stop|Paper Safety/, "key AshStocks parameter families in Upstox filter");
 mustMatch("app-upstox-parameter-filter.js", /familyScore|rowEvidence|evidenceStatus/, "real row evidence scoring in Upstox filter");
