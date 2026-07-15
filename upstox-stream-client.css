@@ -1,0 +1,39 @@
+.upstox-stream-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border: 1px solid var(--line, #d9e2ec);
+  border-left: 4px solid #2563eb;
+  border-radius: 8px;
+  background: #eff6ff;
+  padding: 10px 12px;
+}
+
+.upstox-stream-status strong {
+  display: block;
+  margin-top: 2px;
+}
+
+.upstox-stream-status div:last-of-type {
+  color: #1e40af;
+  font-weight: 800;
+  font-size: 0.82rem;
+}
+
+.upstox-stream-status button {
+  min-height: 34px;
+  border: 1px solid #2563eb;
+  border-radius: 8px;
+  background: #2563eb;
+  color: #ffffff;
+  font-weight: 800;
+  padding: 0 10px;
+}
+
+@media (max-width: 760px) {
+  .upstox-stream-status {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
