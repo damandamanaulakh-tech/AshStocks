@@ -1,0 +1,226 @@
+.uw-symbol-workspace {
+  display: grid;
+  gap: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  padding: 12px;
+}
+
+.uw-symbol-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.65fr);
+  gap: 12px;
+}
+
+.uw-symbol-chart-card,
+.uw-symbol-side-card,
+.uw-symbol-bottom > section {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+  padding: 10px;
+}
+
+.uw-symbol-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.uw-symbol-quote {
+  display: grid;
+  gap: 3px;
+}
+
+.uw-symbol-quote strong {
+  font-size: 1.35rem;
+}
+
+.uw-symbol-quote span,
+.uw-depth-box span,
+.uw-paper-actions small,
+.uw-symbol-ledger span,
+.uw-symbol-plan span,
+.uw-symbol-empty span {
+  color: var(--muted);
+}
+
+.uw-symbol-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.uw-symbol-tabs button,
+.uw-paper-action-row button {
+  min-height: 32px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--panel);
+  color: var(--text);
+  font-weight: 900;
+  padding: 0 10px;
+}
+
+.uw-symbol-tabs button.active,
+.uw-paper-action-row button:first-child {
+  border-color: var(--teal);
+  background: var(--teal);
+  color: #fff;
+}
+
+.uw-symbol-chart {
+  min-height: 270px;
+}
+
+.uw-symbol-chart svg {
+  width: 100%;
+  min-height: 260px;
+  display: block;
+}
+
+.uw-symbol-chart .bg {
+  fill: var(--panel);
+}
+
+.uw-symbol-chart line.up,
+.uw-symbol-chart rect.up {
+  stroke: var(--teal);
+  fill: var(--teal);
+}
+
+.uw-symbol-chart line.down,
+.uw-symbol-chart rect.down {
+  stroke: #d94d4d;
+  fill: #d94d4d;
+}
+
+.uw-symbol-chart .last {
+  stroke: var(--muted);
+  stroke-dasharray: 4 4;
+}
+
+.uw-symbol-chart text {
+  fill: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.uw-symbol-empty {
+  display: grid;
+  place-content: center;
+  gap: 8px;
+  min-height: 260px;
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  text-align: center;
+  padding: 18px;
+}
+
+.uw-depth-box,
+.uw-paper-actions,
+.uw-symbol-ledger,
+.uw-symbol-plan {
+  display: grid;
+  gap: 8px;
+}
+
+.uw-depth-box article,
+.uw-symbol-ledger article,
+.uw-symbol-plan article {
+  display: grid;
+  gap: 4px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  padding: 8px;
+}
+
+.uw-depth-ladder {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.uw-depth-ladder section {
+  display: grid;
+  gap: 5px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  padding: 8px;
+}
+
+.uw-depth-ladder span {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.uw-paper-action-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.uw-paper-action-grid label {
+  display: grid;
+  gap: 4px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.uw-paper-action-grid input {
+  min-height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--panel);
+  color: var(--text);
+  padding: 0 8px;
+}
+
+.uw-paper-action-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.uw-symbol-bottom {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 12px;
+}
+
+.uw-symbol-plan {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.panel-header.compact {
+  margin-top: 12px;
+}
+
+@media (max-width: 1320px) {
+  .uw-symbol-layout,
+  .uw-symbol-bottom {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .uw-symbol-toolbar {
+    flex-direction: column;
+  }
+
+  .uw-paper-action-grid,
+  .uw-paper-action-row,
+  .uw-symbol-plan,
+  .uw-depth-ladder {
+    grid-template-columns: 1fr;
+  }
+}
