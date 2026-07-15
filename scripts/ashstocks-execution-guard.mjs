@@ -57,6 +57,7 @@ for (const asset of [
   "./app-paper-order-lifecycle.js",
   "./app-upstox-parameter-filter.js",
   "./app-upstox-parameter-keys.js",
+  "./app-upstox-parameter-exact-sync.js",
   "./app-upstox-reasoning-dock.js",
   "./app-upstox-autostart.js"
 ]) mustLoad("app-broker-nav-guard.js", asset);
@@ -71,6 +72,7 @@ for (const [file, checks] of Object.entries({
   "app-broker-ledger-bridge.js": ["/api/paper-trader/orders", "/api/paper-trader/order", "#brokerOrdersView", "#brokerPositionsView", "#brokerGttView", "Paper BUY", "Paper SELL", "Paper GTT", "Order Book", "Trade Book", "Buying Power"],
   "app-upstox-parameter-filter.js": ["TOTAL_PARAMETERS = 2000", "/api/data-intelligence", "/api/framework", "#uwParameterFilterPanel", "#uwBlockFilter", "#uwFamilyFilter", "#uwFeedFilter", "#uwParamNumber", "Filtered Candidates"],
   "app-upstox-parameter-keys.js": ["TOTAL_PARAMETERS = 2000", "#uwParameterKeyBoard", "1-2000 Parameter Board", "data-uw-param-key", "rule, source, evidence, pass line and engine impact", "syncExistingFilter", "Candle Structure + Volume", "Paper Safety", "DATA_NEEDED"],
+  "app-upstox-parameter-exact-sync.js": ["data-uw-param-key", "#uwParamNumber", "exactParameter", "syncExactParameter"],
   "app-upstox-reasoning-dock.js": ["#uwReasoningDock", "/api/scanner/run", "/api/paper-trader/orders", "Reason, Verify, Execute", "intelligence", "advisor", "candle", "DATA_NEEDED", "broker_write_enabled: false"],
   "app-upstox-workspace.js": ["AshStocks x Upstox Workflow", "Paper Order Ticket", "Scanner to Trade Queue", "Parameter Piano Check", "Candle Structure", "api/scanner/run", "api/paper-trader/status", "api/market-context", "Live orders locked"],
   "app-upstox-autostart.js": ["ashstocks-workspace-scan-warmed", "runScanBtn", "data-ash-workspace"],
@@ -90,6 +92,7 @@ mustMatch("app-upstox-parameter-filter.js", /familyScore|rowEvidence|evidenceSta
 mustMatch("app-upstox-parameter-keys.js", /addEventListener\("click"[\s\S]*data-uw-param-key/, "clickable Upstox parameter keys");
 mustMatch("app-upstox-parameter-keys.js", /Current evidence|Pass line|Engine impact|Framework block|Selected stock/, "non-placeholder parameter detail fields");
 mustMatch("app-upstox-parameter-keys.js", /bullish engulfing|hammer rejection|near 252D breakout|volume confirmation/, "candle rules in Upstox parameter board");
+mustMatch("app-upstox-parameter-exact-sync.js", /setTimeout\(\(\) => syncExactParameter\(parameterNumber\), 0\)/, "post-click exact parameter sync");
 mustMatch("app-upstox-reasoning-dock.js", /Decision Evidence|Parameter Gates|Paper Execution/, "reasoning dock sections");
 mustMatch("app-upstox-reasoning-dock.js", /entry_zone|target1|target2|stop|exit_rule|parameters_used/, "advisor execution contract in dock");
 mustMatch("app-upstox-workspace.js", /analyzeCandles|bullish engulfing|hammer rejection|near 252D breakout/, "browser fallback candle analysis");
