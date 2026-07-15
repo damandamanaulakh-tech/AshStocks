@@ -25,6 +25,7 @@
     appendScript("./app-paper-order-lifecycle.js");
     appendScript("./app-upstox-parameter-filter.js");
     appendScript("./app-upstox-parameter-keys.js");
+    appendScript("./app-upstox-parameter-exact-sync.js");
     appendScript("./app-upstox-reasoning-dock.js");
     appendScript("./app-upstox-autostart.js");
   }
