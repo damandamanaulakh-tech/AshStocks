@@ -1,7 +1,10 @@
 (() => {
+  const TOTAL_PARAMETERS = 2000;
   const state = {
     activeFilter: "ALL",
     search: "",
+    paramSearch: "",
+    paramStatus: "ALL",
     selectedGate: null,
     parameters: [],
     loaded: false
@@ -120,6 +123,11 @@
       updateFilterButtons();
       applyTerminalFilters();
     }
+    const paramKey = event.target.closest("button[data-terminal-param-key]");
+    if (paramKey) {
+      state.selectedGate = paramKey.dataset.terminalParamKey || "P681";
+      renderInspector();
+    }
     const gate = event.target.closest("#terminalParameterGates article, #terminalProof .terminal-proof-grid span");
     if (gate) {
       state.selectedGate = extractGateId(gate.textContent || "");
@@ -131,6 +139,17 @@
     if (event.target?.id === "terminalSearchInput") {
       state.search = event.target.value || "";
       applyTerminalFilters();
+    }
+    if (event.target?.id === "terminalParamSearch") {
+      state.paramSearch = event.target.value || "";
+      renderParameterBoard();
+    }
+  }, true);
+
+  document.addEventListener("change", (event) => {
+    if (event.target?.id === "terminalParamStatus") {
+      state.paramStatus = event.target.value || "ALL";
+      renderParameterBoard();
     }
   }, true);
 
@@ -170,7 +189,18 @@
     if (!terminal || !proof || document.querySelector("#terminalGateInspector")) return;
     proof.insertAdjacentHTML("beforeend", `
       <section class="terminal-gate-inspector" id="terminalGateInspector">
-        <div class="panel-header"><h3>Clicked Parameter Detail</h3><span id="terminalGateState">Select a gate</span></div>
+        <div class="panel-header"><h3>1-2000 Parameter Board</h3><span id="terminalGateState">Select a parameter</span></div>
+        <div class="terminal-param-controls">
+          <input id="terminalParamSearch" type="search" autocomplete="off" placeholder="Search 1-2000, P681, candle, quote" />
+          <select id="terminalParamStatus">
+            <option value="ALL">All</option>
+            <option value="HIT">Hit</option>
+            <option value="WAITING">Waiting</option>
+            <option value="DATA_NEEDED">Data needed</option>
+          </select>
+        </div>
+        <div class="terminal-param-board" id="terminalParamBoard" aria-label="1-2000 parameter board"></div>
+        <div class="panel-header compact"><h3>Clicked Parameter Detail</h3><span id="terminalParamCoverage">0 / 2000</span></div>
         <div id="terminalGateBody"></div>
       </section>
     `);
@@ -179,6 +209,7 @@
 
   function renderInspector() {
     installInspector();
+    renderParameterBoard();
     const body = document.querySelector("#terminalGateBody");
     const stateNode = document.querySelector("#terminalGateState");
     if (!body) return;
@@ -189,6 +220,10 @@
       <article>
         <span>Parameter</span>
         <strong>${escapeHtml(id)} - ${escapeHtml(detail.family)}</strong>
+      </article>
+      <article>
+        <span>Status</span>
+        <strong>${escapeHtml(parameterStatus(id))}</strong>
       </article>
       <article>
         <span>Block</span>
@@ -217,9 +252,33 @@
     `;
   }
 
+  function renderParameterBoard() {
+    const board = document.querySelector("#terminalParamBoard");
+    if (!board) return;
+    const query = state.paramSearch.trim().toLowerCase();
+    const ids = [];
+    let visible = 0;
+    let known = 0;
+    for (let number = 1; number <= TOTAL_PARAMETERS; number += 1) {
+      const id = parameterId(number);
+      const detail = enrichDetail(id);
+      const status = parameterStatus(id);
+      const haystack = `${number} ${id} ${detail.block} ${detail.family} ${detail.rule} ${detail.source}`.toLowerCase();
+      const matchesQuery = !query || haystack.includes(query) || String(number).includes(query.replace(/^p/i, ""));
+      const matchesStatus = state.paramStatus === "ALL" || status === state.paramStatus;
+      if (!matchesQuery || !matchesStatus) continue;
+      visible += 1;
+      if (hasMetadata(id)) known += 1;
+      ids.push(`<button type="button" class="${status} ${state.selectedGate === id ? "selected" : ""}" data-terminal-param-key="${id}" title="${escapeAttr(`${id} ${detail.family} | ${status}`)}">${number}</button>`);
+    }
+    board.innerHTML = ids.length ? ids.join("") : `<div class="terminal-empty">No parameters match this filter.</div>`;
+    const coverage = document.querySelector("#terminalParamCoverage");
+    if (coverage) coverage.textContent = `${visible} visible | ${known} with metadata | ${TOTAL_PARAMETERS} total`;
+  }
+
   function enrichDetail(id) {
     const base = PARAMETER_DETAILS[id] || generatedDetail(id);
-    const dictionary = state.parameters.find((param) => String(param.id || param.parameter || param.number || "").toUpperCase() === id);
+    const dictionary = state.parameters.find((param) => parameterMatches(param, id));
     if (!dictionary) return base;
     return {
       ...base,
@@ -234,20 +293,36 @@
 
   function generatedDetail(id) {
     return {
-      block: "Parameter Bank",
-      family: "AshStocks parameter",
+      block: "DATA_NEEDED",
+      family: "Parameter metadata missing",
       source: "/api/scanner/parameters",
-      rule: "Loaded from the parameter dictionary when available.",
-      pass: "See parameter dictionary and selected-stock evidence.",
-      impact: "This parameter contributes only when the engine returns evidence for the selected stock."
+      rule: `DATA_NEEDED: parameter dictionary did not return metadata for ${id}.`,
+      pass: "DATA_NEEDED: pass line missing from parameter dictionary.",
+      impact: "DATA_NEEDED: engine impact not wired for this parameter yet."
     };
   }
 
   function currentEvidence(id) {
     const cards = Array.from(document.querySelectorAll("#terminalParameterGates article, #terminalProof .terminal-proof-grid span"));
     const match = cards.find((card) => (card.textContent || "").includes(id));
-    if (!match) return "DATA_NEEDED: selected stock has not returned this gate yet.";
+    if (!match) return `DATA_NEEDED: selected stock has not returned live evidence for ${id}.`;
     return (match.textContent || "").replace(/\s+/g, " ").trim();
+  }
+
+  function parameterStatus(id) {
+    const evidence = currentEvidence(id);
+    if (/\bHIT\b/i.test(evidence)) return "HIT";
+    if (/DATA_NEEDED/i.test(evidence)) return "DATA_NEEDED";
+    return hasMetadata(id) ? "WAITING" : "DATA_NEEDED";
+  }
+
+  function hasMetadata(id) {
+    return Boolean(PARAMETER_DETAILS[id] || state.parameters.some((param) => parameterMatches(param, id)));
+  }
+
+  function parameterMatches(param, id) {
+    const rawValues = [param.id, param.parameter, param.number, param.parameter_id, param.param_id].filter((value) => value !== undefined && value !== null);
+    return rawValues.some((value) => normalizeParameterId(value) === id);
   }
 
   function applyTerminalFilters() {
@@ -290,10 +365,24 @@
   }
 
   function extractGateId(text) {
-    return (String(text || "").match(/P\d{3,4}/i)?.[0] || "P681").toUpperCase();
+    return normalizeParameterId(String(text || "").match(/P?\d{1,4}/i)?.[0] || "P681");
+  }
+
+  function parameterId(number) {
+    return `P${String(number).padStart(number < 1000 ? 3 : 4, "0")}`;
+  }
+
+  function normalizeParameterId(value) {
+    const match = String(value || "").match(/\d{1,4}/);
+    if (!match) return String(value || "").toUpperCase();
+    return parameterId(Math.max(1, Math.min(TOTAL_PARAMETERS, Number(match[0]))));
   }
 
   function escapeHtml(value) {
     return String(value ?? "").replace(/[&<>"]/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;" }[ch]));
+  }
+
+  function escapeAttr(value) {
+    return escapeHtml(value).replace(/'/g, "&#39;");
   }
 })();
