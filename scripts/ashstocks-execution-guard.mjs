@@ -50,11 +50,13 @@ for (const asset of [
 for (const asset of [
   "./upstox-workspace.css",
   "./upstox-reasoning-dock.css",
+  "./upstox-parameter-keys.css",
   "./app-upstox-workspace.js",
   "./app-candle-engine-bridge.js",
   "./app-parameter-piano-candle-bridge.js",
   "./app-paper-order-lifecycle.js",
   "./app-upstox-parameter-filter.js",
+  "./app-upstox-parameter-keys.js",
   "./app-upstox-reasoning-dock.js",
   "./app-upstox-autostart.js"
 ]) mustLoad("app-broker-nav-guard.js", asset);
@@ -68,9 +70,11 @@ for (const [file, checks] of Object.entries({
   "app-paper-order-lifecycle.js": ["/api/paper-trader/order", "Paper BUY", "Paper Order Book", "Paper SELL", "Paper GTT"],
   "app-broker-ledger-bridge.js": ["/api/paper-trader/orders", "/api/paper-trader/order", "#brokerOrdersView", "#brokerPositionsView", "#brokerGttView", "Paper BUY", "Paper SELL", "Paper GTT", "Order Book", "Trade Book", "Buying Power"],
   "app-upstox-parameter-filter.js": ["TOTAL_PARAMETERS = 2000", "/api/data-intelligence", "/api/framework", "#uwParameterFilterPanel", "#uwBlockFilter", "#uwFamilyFilter", "#uwFeedFilter", "#uwParamNumber", "Filtered Candidates"],
+  "app-upstox-parameter-keys.js": ["TOTAL_PARAMETERS = 2000", "#uwParameterKeyBoard", "1-2000 Parameter Board", "data-uw-param-key", "rule, source, evidence, pass line and engine impact", "syncExistingFilter", "Candle Structure + Volume", "Paper Safety", "DATA_NEEDED"],
   "app-upstox-reasoning-dock.js": ["#uwReasoningDock", "/api/scanner/run", "/api/paper-trader/orders", "Reason, Verify, Execute", "intelligence", "advisor", "candle", "DATA_NEEDED", "broker_write_enabled: false"],
   "app-upstox-workspace.js": ["AshStocks x Upstox Workflow", "Paper Order Ticket", "Scanner to Trade Queue", "Parameter Piano Check", "Candle Structure", "api/scanner/run", "api/paper-trader/status", "api/market-context", "Live orders locked"],
   "app-upstox-autostart.js": ["ashstocks-workspace-scan-warmed", "runScanBtn", "data-ash-workspace"],
+  "upstox-parameter-keys.css": [".uw-parameter-keyboard", ".uw-param-key", ".uw-param-key-family", ".uw-parameter-key-detail"],
   "upstox-reasoning-dock.css": [".uw-reasoning-dock", ".uw-reason-grid", ".uw-reason-checklist", ".uw-reason-verdict"],
   "upstox-workspace.css": ["uw-parameter-filter-panel", "uw-param-controls", "uw-param-blocks"],
   "q1.html": ["Upstox"]
@@ -83,6 +87,9 @@ mustMatch("server-paper-order-lifecycle-patch.mjs", /PAPER_BUY_FILLED|PAPER_SELL
 mustMatch("server-candle-pattern-patch.mjs", /bullish_engulfing|hammer_rejection|near_252d_breakout|inside_bar|volume_confirmation/, "server candle pattern names");
 mustMatch("app-upstox-parameter-filter.js", /Candle Structure \+ Volume|FII\/DII Flow|Entry Target Stop|Paper Safety/, "key AshStocks parameter families in Upstox filter");
 mustMatch("app-upstox-parameter-filter.js", /familyScore|rowEvidence|evidenceStatus/, "real row evidence scoring in Upstox filter");
+mustMatch("app-upstox-parameter-keys.js", /addEventListener\("click"[\s\S]*data-uw-param-key/, "clickable Upstox parameter keys");
+mustMatch("app-upstox-parameter-keys.js", /Current evidence|Pass line|Engine impact|Framework block|Selected stock/, "non-placeholder parameter detail fields");
+mustMatch("app-upstox-parameter-keys.js", /bullish engulfing|hammer rejection|near 252D breakout|volume confirmation/, "candle rules in Upstox parameter board");
 mustMatch("app-upstox-reasoning-dock.js", /Decision Evidence|Parameter Gates|Paper Execution/, "reasoning dock sections");
 mustMatch("app-upstox-reasoning-dock.js", /entry_zone|target1|target2|stop|exit_rule|parameters_used/, "advisor execution contract in dock");
 mustMatch("app-upstox-workspace.js", /analyzeCandles|bullish engulfing|hammer rejection|near 252D breakout/, "browser fallback candle analysis");
