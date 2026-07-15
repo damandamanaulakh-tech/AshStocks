@@ -1,4 +1,12 @@
 (() => {
+  function appendScript(src) {
+    if (document.querySelector(`script[src="${src}"]`)) return;
+    const script = document.createElement("script");
+    script.src = src;
+    script.async = false;
+    document.head.appendChild(script);
+  }
+
   function loadMergedWorkspaceAssets() {
     if (!document.querySelector('link[href="./upstox-workspace.css"]')) {
       const link = document.createElement("link");
@@ -6,12 +14,8 @@
       link.href = "./upstox-workspace.css";
       document.head.appendChild(link);
     }
-    if (!document.querySelector('script[src="./app-upstox-workspace.js"]')) {
-      const script = document.createElement("script");
-      script.src = "./app-upstox-workspace.js";
-      script.async = false;
-      document.head.appendChild(script);
-    }
+    appendScript("./app-upstox-workspace.js");
+    appendScript("./app-upstox-autostart.js");
   }
 
   function closeBrokerPanels() {
