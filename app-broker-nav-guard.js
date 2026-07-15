@@ -7,13 +7,17 @@
     document.head.appendChild(script);
   }
 
+  function appendStylesheet(href) {
+    if (document.querySelector(`link[href="${href}"]`)) return;
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = href;
+    document.head.appendChild(link);
+  }
+
   function loadMergedWorkspaceAssets() {
-    if (!document.querySelector('link[href="./upstox-workspace.css"]')) {
-      const link = document.createElement("link");
-      link.rel = "stylesheet";
-      link.href = "./upstox-workspace.css";
-      document.head.appendChild(link);
-    }
+    appendStylesheet("./upstox-workspace.css");
+    appendStylesheet("./upstox-reasoning-dock.css");
     appendScript("./app-upstox-workspace.js");
     appendScript("./app-candle-engine-bridge.js");
     appendScript("./app-parameter-piano-candle-bridge.js");
