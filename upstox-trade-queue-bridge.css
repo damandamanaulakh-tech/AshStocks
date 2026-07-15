@@ -25,13 +25,44 @@
 }
 
 .uw-trade-queue-summary span,
-.uw-trade-queue-table small {
+.uw-trade-queue-table small,
+.uw-parameter-trade-bridge span {
   color: var(--muted);
   font-size: 0.78rem;
 }
 
+.uw-parameter-trade-bridge {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+  padding: 8px 10px;
+}
+
+.uw-parameter-trade-bridge strong {
+  flex: 1;
+  overflow-wrap: anywhere;
+}
+
+.uw-parameter-trade-bridge button {
+  min-height: 30px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--text);
+  font-weight: 900;
+  padding: 0 10px;
+}
+
 .uw-trade-queue-table tr.selected td {
   background: color-mix(in srgb, var(--teal) 8%, transparent);
+}
+
+.uw-trade-queue-table tr.uw-param-filter-hidden {
+  display: none;
 }
 
 .uw-trade-param-chips,
@@ -88,7 +119,13 @@
 }
 
 @media (max-width: 760px) {
-  .uw-trade-queue-summary {
+  .uw-trade-queue-summary,
+  .uw-parameter-trade-bridge {
     grid-template-columns: 1fr;
+  }
+
+  .uw-parameter-trade-bridge {
+    align-items: stretch;
+    flex-direction: column;
   }
 }
