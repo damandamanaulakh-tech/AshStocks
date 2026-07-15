@@ -2,6 +2,7 @@
   const state = {
     scan: null,
     paperLedger: null,
+    quoteCache: {},
     selectedSymbol: "",
     booted: false
   };
@@ -23,6 +24,12 @@
   };
 
   window.addEventListener("DOMContentLoaded", () => bootReasoningDock().catch(() => {}));
+  window.addEventListener("ashstocks:upstox-quote", (event) => {
+    const detail = event.detail || {};
+    if (detail.instrument_key && detail.quoteState) state.quoteCache[detail.instrument_key] = detail.quoteState;
+    if (detail.symbol) state.selectedSymbol = detail.symbol;
+    renderReasoningDock();
+  });
 
   document.addEventListener("click", (event) => {
     const selected = event.target.closest("button[data-select-symbol]");
@@ -37,6 +44,7 @@
     state.booted = true;
     await waitForWorkspace();
     installReasoningDock();
+    state.quoteCache = window.__ashstocksUpstoxQuoteCache || state.quoteCache;
     await refreshPaperLedger();
     renderReasoningDock();
     setInterval(() => refreshPaperLedger().catch(() => {}), 45000);
@@ -104,8 +112,9 @@
     if (!dock) return;
     const rows = state.scan?.rows || [];
     const row = rows.find((item) => item.symbol === state.selectedSymbol) || pickActionableRow(rows) || {};
+    const quoteState = quoteStateFor(row);
     const source = document.querySelector("#uwReasonSource");
-    if (source) source.textContent = state.scan?.asOf ? `scanner ${new Date(state.scan.asOf).toLocaleString()}` : "No scanner payload yet";
+    if (source) source.textContent = state.scan?.asOf ? `scanner ${new Date(state.scan.asOf).toLocaleString()} | ${quoteStatus(row, quoteState)}` : `No scanner payload yet | ${quoteStatus(row, quoteState)}`;
 
     if (!row.symbol) {
       setHtml("#uwReasonHead", `<strong>No stock selected</strong><span>Run the scanner/Upstox scan. This dock does not invent a thesis without a real scanner row.</span>`);
@@ -144,6 +153,7 @@
 
     setHtml("#uwReasonGrid", summaryCards([
       ["Scanner Score", number(score)],
+      ["Quote", quoteCardValue(row, quoteState)],
       ["Intel Coverage", `${number(coverage)} / 100`],
       ["Candle", `${escapeHtml(candle.status)} ${number(candle.score)}`],
       ["FII/DII Flow", `${number(flow)} / 100`],
@@ -151,15 +161,16 @@
       ["Regime Risk", `${number(risk)} / 100`]
     ]));
 
-    setHtml("#uwReasonEvidence", stackItems(evidenceLines(row, advisor, intelligence, candle, target)));
-    setHtml("#uwReasonChecklist", checklist(gates(row, candle, target, ledger)));
-    setHtml("#uwReasonExecution", stackItems(executionLines(row, advisor, paperOrder, ledger)));
+    setHtml("#uwReasonEvidence", stackItems(evidenceLines(row, advisor, intelligence, candle, target, quoteState)));
+    setHtml("#uwReasonChecklist", checklist(gates(row, candle, target, ledger, quoteState)));
+    setHtml("#uwReasonExecution", stackItems(executionLines(row, advisor, paperOrder, ledger, quoteState)));
   }
 
-  function evidenceLines(row, advisor, intelligence, candle, target) {
+  function evidenceLines(row, advisor, intelligence, candle, target, quoteState) {
     const lines = [];
     const decision = row.decision || row.scanner_decision || "DATA_NEEDED";
     lines.push(`${decision}: ${row.reason || row.paper_reason || row.fetch_error || "No engine reason returned."}`);
+    lines.push(`Quote proof: ${quoteStatus(row, quoteState)}${quoteState.quote ? `; LTP ${formatPrice(quoteState.quote.last_price || quoteState.quote.close)}; spread ${spreadText(quoteState.quote)}` : ""}.`);
     if (row.fetch_error) lines.push(`DATA_NEEDED source: ${row.fetch_error}`);
     if (advisor.setup || advisor.conviction || advisor.horizon) lines.push(`Advisor: ${advisor.setup || "setup missing"}; conviction ${advisor.conviction || "not returned"}; horizon ${advisor.horizon || "not returned"}.`);
     if (advisor.why) lines.push(`Advisor why: ${advisor.why}`);
@@ -170,13 +181,15 @@
     return lines.filter(Boolean);
   }
 
-  function executionLines(row, advisor, paperOrder, ledger) {
-    const entry = advisor.entry_zone || paperOrder.entry_price || row.close;
+  function executionLines(row, advisor, paperOrder, ledger, quoteState) {
+    const quotePrice = firstNumber(quoteState.quote?.last_price, quoteState.quote?.close, row.close, 0);
+    const entry = advisor.entry_zone || paperOrder.entry_price || quotePrice || row.close;
     const target1 = advisor.target1 || paperOrder.target_price || row.target_price || row.target1;
     const target2 = advisor.target2 || row.target2;
     const stop = advisor.stop || paperOrder.stop_price || row.stop_price;
     const qty = paperOrder.qty || advisor.qty || row.qty || 0;
     const lines = [
+      `Quote source: ${quoteState.quote ? "Upstox Market Quote API" : "scanner fallback / DATA_NEEDED"}.`,
       `Entry: ${formatPrice(entry)} | Qty: ${qty || "not sized"}`,
       `Target: ${formatPrice(target1)}${target2 ? ` / ${formatPrice(target2)}` : ""}`,
       `Stop: ${formatPrice(stop)} | Exit rule: ${advisor.exit_rule || row.exit_rule || "not returned"}`,
@@ -188,10 +201,12 @@
     return lines;
   }
 
-  function gates(row, candle, target, ledger) {
+  function gates(row, candle, target, ledger, quoteState) {
     const decision = row.decision || row.scanner_decision || "DATA_NEEDED";
     return [
       ["Universe", Boolean(row.symbol && row.instrument_key), row.instrument_key || row.isin || "instrument key missing"],
+      ["Quote", Boolean(quoteState.quote), quoteStatus(row, quoteState)],
+      ["Depth", Boolean(quoteState.quote?.depth_available), quoteState.quote?.depth_available ? spreadText(quoteState.quote) : "REST depth missing or quote not loaded"],
       ["Data", !row.fetch_error && Boolean(row.close || row.last_candle_date || row.candles?.length), row.fetch_error || row.last_candle_date || "latest close/candle missing"],
       ["Momentum", firstNumber(row.momentum_score, row.score, 0) >= 60 || firstNumber(row.return_6m_pct, 0) >= 8, `score ${number(row.momentum_score || row.score)}; 6M ${number(row.return_6m_pct)}%`],
       ["Candle", candle.status === "HIT" || candle.status === "PASS", candle.text],
@@ -217,6 +232,34 @@
     const evidence = row.candle_evidence || row.candle_engine?.evidence || "";
     const text = [Array.isArray(names) && names.length ? names.slice(0, 5).join(", ") : "no proven candle pattern returned", evidence, row.last_candle_date ? `last candle ${row.last_candle_date}` : "last candle date missing"].filter(Boolean).join("; ");
     return { status, score, text };
+  }
+
+  function quoteStateFor(row) {
+    const key = row.instrument_key || row.instrumentKey || row.instrument_token || "";
+    return state.quoteCache[key] || window.__ashstocksUpstoxQuoteCache?.[key] || {};
+  }
+
+  function quoteStatus(row, quoteState) {
+    if (!row.symbol) return "no stock selected";
+    if (!(row.instrument_key || row.instrumentKey || row.instrument_token)) return "DATA_NEEDED: no Upstox instrument_key";
+    if (quoteState.loading) return "Upstox quote loading";
+    if (quoteState.quote) return quoteState.quote.depth_available ? "Upstox quote + depth ok" : "Upstox quote ok; depth missing";
+    if (quoteState.error) return `Upstox quote failed: ${quoteState.error}`;
+    return "Upstox quote not requested yet";
+  }
+
+  function quoteCardValue(row, quoteState) {
+    if (quoteState.quote) return formatPrice(quoteState.quote.last_price || quoteState.quote.close);
+    if (quoteState.error) return "FAILED";
+    if (row.instrument_key) return "WAITING";
+    return "DATA_NEEDED";
+  }
+
+  function spreadText(quote) {
+    const bid = quote?.depth?.bids?.[0]?.price;
+    const ask = quote?.depth?.asks?.[0]?.price;
+    if (!Number.isFinite(Number(bid)) || !Number.isFinite(Number(ask))) return "spread DATA_NEEDED";
+    return `bid ${formatPrice(bid)} / ask ${formatPrice(ask)}`;
   }
 
   function checklist(items) {
