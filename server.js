@@ -8,6 +8,7 @@ import { applySelectionFlowPatches } from "./server-selection-patch.mjs";
 import { applyCandlePatternPatches } from "./server-candle-pattern-patch.mjs";
 import { applyFrameworkPatches } from "./server-framework-patch.mjs";
 import { applyPaperTraderPatches } from "./server-paper-trader-patch.mjs";
+import { applyPaperOrderLifecyclePatches } from "./server-paper-order-lifecycle-patch.mjs";
 import { applyAdvisorEnginePatches } from "./server-advisor-engine-patch.mjs";
 import { applyYahooFallbackPatches } from "./server-yahoo-fallback-patch.mjs";
 import { applyMarketContextPatches } from "./server-market-context-patch.mjs";
@@ -166,6 +167,7 @@ function startDataBankBootstrap() {
   output = applyCandlePatternPatches(output, mustReplace);
   output = applyFrameworkPatches(output, mustReplace);
   output = applyPaperTraderPatches(output, mustReplace);
+  output = applyPaperOrderLifecyclePatches(output, mustReplace);
   output = applyAdvisorEnginePatches(output, mustReplace);
   output = applyYahooFallbackPatches(output, mustReplace);
   output = applyMarketContextPatches(output, mustReplace);
