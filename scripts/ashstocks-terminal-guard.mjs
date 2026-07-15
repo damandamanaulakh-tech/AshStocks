@@ -25,10 +25,12 @@ mustInclude("app-broker-nav-guard.js", "./ashstocks-trading-terminal.css", "Trad
 mustInclude("app-broker-nav-guard.js", "./ashstocks-terminal-inspector.css", "Terminal inspector stylesheet loader");
 mustInclude("app-broker-nav-guard.js", "./ashstocks-terminal-reasoning.css", "Terminal reasoning stylesheet loader");
 mustInclude("app-broker-nav-guard.js", "./ashstocks-terminal-depth-risk.css", "Terminal depth/risk stylesheet loader");
+mustInclude("app-broker-nav-guard.js", "./ashstocks-parameter-market-filter.css", "Parameter market filter stylesheet loader");
 mustInclude("app-broker-nav-guard.js", "./app-ashstocks-trading-terminal.js", "Trading terminal script loader");
 mustInclude("app-broker-nav-guard.js", "./app-ashstocks-terminal-inspector.js", "Terminal inspector script loader");
 mustInclude("app-broker-nav-guard.js", "./app-ashstocks-terminal-reasoning.js", "Terminal reasoning script loader");
 mustInclude("app-broker-nav-guard.js", "./app-ashstocks-terminal-depth-risk.js", "Terminal depth/risk script loader");
+mustInclude("app-broker-nav-guard.js", "./app-ashstocks-parameter-market-filter.js", "Parameter market filter script loader");
 mustInclude("app-broker-nav-guard.js", "[data-ash-terminal-panel]", "Terminal panel close handling");
 mustInclude("app-broker-nav-guard.js", "[data-ash-terminal-nav]", "Terminal nav close handling");
 
@@ -177,6 +179,32 @@ for (const text of [
   mustInclude("ashstocks-terminal-depth-risk.css", text);
 }
 
+for (const text of [
+  "terminalParameterMarketFilter",
+  "Parameter market filter",
+  "data-terminal-param-key",
+  "data-clear-parameter-market-filter",
+  "applyParameterMarketFilter",
+  "rowPassesParameter",
+  "n === 261",
+  "return_6m_pct",
+  "n === 681",
+  "bullish_engulfing",
+  "n === 688",
+  "volume_confirmation",
+  "No rows match",
+  "DATA_NEEDED: ${id} is not mapped to a market-watch row filter yet."
+]) {
+  mustInclude("app-ashstocks-parameter-market-filter.js", text);
+}
+
+for (const text of [
+  ".terminal-parameter-market-filter",
+  "#terminalWatchList button.parameter-filtered-out"
+]) {
+  mustInclude("ashstocks-parameter-market-filter.css", text);
+}
+
 mustMatch("app-ashstocks-trading-terminal.js", /submitPaperAction[\s\S]*fetch|submitPaperAction[\s\S]*api\("\/api\/paper-trader\/order"/, "paper order submission path");
 mustMatch("app-ashstocks-trading-terminal.js", /parameterGates[\s\S]*P681[\s\S]*P683[\s\S]*P686[\s\S]*P688[\s\S]*P1701/, "candle and quote parameter gates");
 mustMatch("app-ashstocks-trading-terminal.js", /candleChart[\s\S]*normalizeCandles[\s\S]*DATA_NEEDED: Upstox daily candles/, "real candle chart or explicit data-needed state");
@@ -190,6 +218,8 @@ mustMatch("app-ashstocks-terminal-reasoning.js", /readinessChecks[\s\S]*Scanner 
 mustMatch("app-ashstocks-terminal-reasoning.js", /buildModel[\s\S]*hardBlocks[\s\S]*nextAction[\s\S]*allowBuy[\s\S]*allowGtt/, "reasoning verdict and paper action gating");
 mustMatch("app-ashstocks-terminal-depth-risk.js", /renderDepth[\s\S]*quote\?\.depth\?\.bids[\s\S]*quote\?\.depth\?\.asks[\s\S]*DATA_NEEDED/, "real Upstox depth or explicit data-needed state");
 mustMatch("app-ashstocks-terminal-depth-risk.js", /renderSizing[\s\S]*Risk[\s\S]*Qty[\s\S]*R:R/, "position sizing risk metrics");
+mustMatch("app-ashstocks-parameter-market-filter.js", /rowPassesParameter[\s\S]*n === 261[\s\S]*return_6m_pct[\s\S]*n === 681[\s\S]*bullish_engulfing[\s\S]*n === 1901/, "parameter-to-market-watch filter map");
+mustMatch("app-ashstocks-parameter-market-filter.js", /applyParameterMarketFilter[\s\S]*button\.hidden[\s\S]*parameterFilterEvidence/, "parameter filter hides non-matching watch rows and records evidence");
 
 if (failures.length) {
   console.error("AshStocks terminal guard failed:");
