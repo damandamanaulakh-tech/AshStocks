@@ -1,0 +1,47 @@
+.terminal-parameter-market-filter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  padding: 8px 10px;
+}
+
+.terminal-parameter-market-filter div {
+  display: grid;
+  gap: 2px;
+}
+
+.terminal-parameter-market-filter span {
+  color: var(--muted);
+  font-size: 0.74rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.terminal-parameter-market-filter strong {
+  font-size: 0.86rem;
+}
+
+.terminal-parameter-market-filter button {
+  min-height: 30px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+  color: var(--text);
+  font-weight: 800;
+  padding: 0 10px;
+}
+
+#terminalWatchList button.parameter-filtered-out {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .terminal-parameter-market-filter {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
