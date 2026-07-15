@@ -3,6 +3,8 @@
     scan: null,
     ledger: null,
     selectedSymbol: "",
+    quoteCache: {},
+    quoteBusyKey: "",
     booted: false,
     busy: false,
     message: ""
@@ -111,6 +113,7 @@
     if (!host) return;
     const rows = state.scan?.rows || [];
     const row = rows.find((item) => item.symbol === state.selectedSymbol) || pickActionableRow(rows) || {};
+    requestUpstoxQuote(row);
     const selectedName = document.querySelector("#uwSymbolName");
     if (selectedName) selectedName.textContent = row.symbol ? `${row.symbol} ${row.name || ""}` : "No stock selected";
     renderQuote(row);
@@ -128,9 +131,13 @@
       host.innerHTML = `<strong>Run scanner</strong><span>No selected stock row yet.</span>`;
       return;
     }
+    const quoteState = quoteStateFor(row);
+    const quote = quoteState.quote;
+    const price = quotePrice(row);
+    const source = quote ? `Upstox quote ${quote.timestamp ? "| " + quote.timestamp : ""}` : quoteStatusText(row, quoteState);
     host.innerHTML = `
-      <strong>${money(row.close)}</strong>
-      <span>${escapeHtml(row.decision || "DATA_NEEDED")} | Score ${number(row.score || row.paper_score)} | 6M ${number(row.return_6m_pct)}% | 12M ${number(row.return_12m_pct)}%</span>
+      <strong>${money(price)}</strong>
+      <span>${escapeHtml(row.decision || "DATA_NEEDED")} | Score ${number(row.score || row.paper_score)} | 6M ${number(row.return_6m_pct)}% | 12M ${number(row.return_12m_pct)}% | ${escapeHtml(source)}</span>
     `;
   }
 
@@ -154,21 +161,23 @@
     const stateNode = document.querySelector("#uwDepthState");
     const host = document.querySelector("#uwDepthBox");
     if (!host) return;
-    const hasExchangeDepth = Array.isArray(row.depth?.bids) && Array.isArray(row.depth?.asks);
-    if (stateNode) stateNode.textContent = hasExchangeDepth ? "LIVE_DEPTH" : "DATA_NEEDED";
+    const quoteState = quoteStateFor(row);
+    const quote = quoteState.quote;
+    const hasExchangeDepth = Array.isArray(quote?.depth?.bids) && Array.isArray(quote?.depth?.asks) && (quote.depth.bids.length || quote.depth.asks.length);
+    if (stateNode) stateNode.textContent = hasExchangeDepth ? "UPSTOX_DEPTH" : "DATA_NEEDED";
     if (!row.symbol) {
       host.innerHTML = `<article><strong>No stock selected</strong><span>Depth waits for selected scanner row.</span></article>`;
       return;
     }
-    if (!hasExchangeDepth) {
-      host.innerHTML = `
-        <article><strong>Exchange depth not wired</strong><span>DATA_NEEDED: Upstox market depth/websocket feed is not present in this app yet.</span></article>
-        <article><strong>Paper risk preview</strong><span>LTP ${money(row.close)} | Stop ${money(row.stop_price || row.advisor?.stop)} | Target ${targetText(row)}</span></article>
-        <article><strong>Tradability</strong><span>Turnover ${number(row.rupee_turnover_cr)} cr | ADV ${compact(row.adv20)} | Liquidity parameter remains evidence-based.</span></article>
-      `;
+    if (hasExchangeDepth) {
+      host.innerHTML = `<div class="uw-depth-ladder"><section><b>Bids</b>${quote.depth.bids.slice(0, 5).map(depthRow).join("")}</section><section><b>Asks</b>${quote.depth.asks.slice(0, 5).map(depthRow).join("")}</section></div>`;
       return;
     }
-    host.innerHTML = `<div class="uw-depth-ladder"><section><b>Bids</b>${row.depth.bids.slice(0, 5).map(depthRow).join("")}</section><section><b>Asks</b>${row.depth.asks.slice(0, 5).map(depthRow).join("")}</section></div>`;
+    host.innerHTML = `
+      <article><strong>Upstox quote status</strong><span>${escapeHtml(quoteStatusText(row, quoteState))}</span></article>
+      <article><strong>Paper risk preview</strong><span>LTP ${money(quotePrice(row))} | Stop ${money(row.stop_price || row.advisor?.stop)} | Target ${targetText(row)}</span></article>
+      <article><strong>Tradability</strong><span>Turnover ${number(row.rupee_turnover_cr)} cr | ADV ${compact(row.adv20)} | Volume ${compact(quote?.volume || row.volume)}</span></article>
+    `;
   }
 
   function renderActions(row) {
@@ -180,11 +189,12 @@
       host.innerHTML = `<span>No stock selected.</span>`;
       return;
     }
+    const price = quotePrice(row);
     const qty = row.paper_order?.qty || row.advisor?.qty || estimatedQty(row);
     host.innerHTML = `
       <div class="uw-paper-action-grid">
         <label><span>Qty</span><input id="uwSymbolQty" value="${escapeAttr(qty)}" /></label>
-        <label><span>Price</span><input id="uwSymbolPrice" value="${escapeAttr(numberValue(row.close || row.paper_order?.entry_price))}" /></label>
+        <label><span>Price</span><input id="uwSymbolPrice" value="${escapeAttr(numberValue(price || row.paper_order?.entry_price))}" /></label>
         <label><span>Target</span><input id="uwSymbolTarget" value="${escapeAttr(numberValue(row.target_price || row.target2 || row.advisor?.target2 || row.advisor?.target1))}" /></label>
         <label><span>Stop</span><input id="uwSymbolStop" value="${escapeAttr(numberValue(row.stop_price || row.advisor?.stop || row.paper_order?.stop_price))}" /></label>
       </div>
@@ -224,15 +234,38 @@
     }
     if (stateNode) stateNode.textContent = row.paper_order?.status || row.decision || "WATCH";
     const advisor = row.advisor || {};
+    const quoteState = quoteStateFor(row);
     const lines = [
       ["Thesis", advisor.why || row.reason || row.paper_reason || "No thesis returned by engine."],
       ["Entry", entryText(row)],
       ["Target", targetText(row)],
       ["Stop", money(row.stop_price || advisor.stop || row.paper_order?.stop_price)],
       ["Candle", candleText(row)],
+      ["Quote Feed", quoteStatusText(row, quoteState)],
       ["Risk", `regime ${number(row.regime_risk)} | flow ${number(row.flow_score)} | target room ${number(row.target_potential?.potential_left_pct || row.target_pct)}%`]
     ];
     host.innerHTML = lines.map(([label, value]) => `<article><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></article>`).join("");
+  }
+
+  async function requestUpstoxQuote(row) {
+    const key = instrumentKey(row);
+    if (!row.symbol || !key) return;
+    const cached = state.quoteCache[key];
+    if (state.quoteBusyKey === key || (cached && Date.now() - cached.at < 15000)) return;
+    state.quoteBusyKey = key;
+    state.quoteCache[key] = { ...(cached || {}), at: cached?.at || 0, loading: true };
+    try {
+      const url = `/api/upstox/quote?instrument_key=${encodeURIComponent(key)}&symbol=${encodeURIComponent(row.symbol)}`;
+      const response = await fetch(url);
+      const payload = await response.json().catch(() => ({}));
+      const quote = Array.isArray(payload.quotes) ? payload.quotes[0] : null;
+      state.quoteCache[key] = { at: Date.now(), ok: response.ok && payload.ok !== false, payload, quote, error: response.ok ? payload.error : `${response.status} ${payload.error || response.statusText}` };
+    } catch (error) {
+      state.quoteCache[key] = { at: Date.now(), ok: false, error: error.message || String(error), payload: null, quote: null };
+    } finally {
+      if (state.quoteBusyKey === key) state.quoteBusyKey = "";
+      renderSymbolWorkspace();
+    }
   }
 
   async function submitPaperAction(action) {
@@ -251,7 +284,7 @@
         product: document.querySelector("#uwProduct")?.value || "Paper Swing",
         order_type: action === "GTT" ? "GTT" : "MARKET",
         qty: Math.max(0, Math.floor(Number(inputValue("#uwSymbolQty")) || estimatedQty(row))),
-        price: Number(inputValue("#uwSymbolPrice")) || Number(row.close || 0),
+        price: Number(inputValue("#uwSymbolPrice")) || Number(quotePrice(row) || 0),
         target_price: Number(inputValue("#uwSymbolTarget")) || Number(row.target_price || row.target2 || row.advisor?.target2 || 0) || null,
         stop_price: Number(inputValue("#uwSymbolStop")) || Number(row.stop_price || row.advisor?.stop || 0) || null,
         thesis: row.advisor?.why || row.paper_reason || row.reason || "AshStocks symbol workspace paper action",
@@ -332,8 +365,22 @@
     return rows.find((row) => row.decision === "SELECT") || rows.find((row) => row.decision === "WATCH") || rows[0];
   }
 
+  function instrumentKey(row) { return row.instrument_key || row.instrumentKey || row.instrument_token || ""; }
+  function quoteStateFor(row) { return state.quoteCache[instrumentKey(row)] || {}; }
+  function quotePrice(row) {
+    const quote = quoteStateFor(row).quote || {};
+    return firstFinite(quote.last_price, quote.close, row.close, row.entry_price, row.paper_order?.entry_price);
+  }
+  function quoteStatusText(row, quoteState) {
+    if (!instrumentKey(row)) return "DATA_NEEDED: selected row has no Upstox instrument_key";
+    if (state.quoteBusyKey === instrumentKey(row) || quoteState.loading) return "Upstox quote loading";
+    if (quoteState.quote) return quoteState.quote.depth_available ? "Upstox quote + market depth available" : "Upstox quote available; depth absent in REST response";
+    if (quoteState.error) return `Upstox quote failed: ${quoteState.error}`;
+    return "Upstox quote requested";
+  }
+
   function depthRow(row) {
-    return `<span><b>${money(row.price)}</b><em>${escapeHtml(row.qty || row.quantity || 0)}</em></span>`;
+    return `<span><b>${money(row.price)}</b><em>${escapeHtml(row.quantity || row.qty || 0)}</em></span>`;
   }
 
   function candleText(row) {
@@ -344,7 +391,7 @@
   function entryText(row) {
     const zone = row.advisor?.entry_zone || row.entry_zone;
     if (zone?.low && zone?.high) return `${money(zone.low)} - ${money(zone.high)}`;
-    return money(row.close || row.entry_price || row.paper_order?.entry_price);
+    return money(quotePrice(row));
   }
 
   function targetText(row) {
@@ -354,12 +401,19 @@
   }
 
   function estimatedQty(row) {
-    const price = Number(row.close || row.entry_price || 0);
+    const price = Number(quotePrice(row) || 0);
     return price ? Math.max(1, Math.floor(100000 / price)) : 0;
   }
 
   function inputValue(selector) { return document.querySelector(selector)?.value || ""; }
   function numberValue(value) { return Number.isFinite(Number(value)) ? Number(value).toFixed(2) : ""; }
+  function firstFinite(...values) {
+    for (const value of values) {
+      const n = Number(value);
+      if (Number.isFinite(n)) return n;
+    }
+    return null;
+  }
   function money(value) { return Number.isFinite(Number(value)) ? "Rs " + Number(value).toLocaleString("en-IN", { maximumFractionDigits: 2 }) : "not available"; }
   function number(value) { return Number.isFinite(Number(value)) ? Number(value).toFixed(2) : "0.00"; }
   function compact(value) {
