@@ -26,6 +26,7 @@
     appendStylesheet("./upstox-market-watch-pulse.css");
     appendStylesheet("./paper-risk-console.css");
     appendStylesheet("./ashstocks-broker-terminal.css");
+    appendStylesheet("./upstox-realtime-monitor.css");
     appendStylesheet("./broker-equivalence-audit.css");
     appendScript("./app-upstox-workspace.js");
     appendScript("./app-upstox-symbol-workspace.js");
@@ -43,6 +44,7 @@
     appendScript("./app-paper-risk-console.js");
     appendScript("./app-ashstocks-broker-terminal.js");
     appendScript("./app-ashstocks-terminal-filter-bridge.js");
+    appendScript("./app-upstox-realtime-monitor.js");
     appendScript("./app-broker-equivalence-audit.js");
     appendScript("./app-upstox-autostart.js");
   }
