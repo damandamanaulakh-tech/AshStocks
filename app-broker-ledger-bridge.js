@@ -70,8 +70,8 @@
       <section class="panel"><div class="panel-header"><h3>Order Book</h3><span>${orders.length} orders / ${trades.length} trades</span></div><div class="broker-table-wrap"><table><thead><tr><th>Order</th><th>Side</th><th>Qty</th><th>Price</th><th>Status</th><th>Reason</th></tr></thead><tbody>${orderRows(orders)}</tbody></table></div></section>
       <section class="panel"><div class="panel-header"><h3>Trade Book</h3><span>${trades.length}</span></div><div class="broker-table-wrap"><table><thead><tr><th>Trade</th><th>Side</th><th>Qty</th><th>Price</th><th>Value</th><th>P&L</th></tr></thead><tbody>${tradeRows(trades)}</tbody></table></div></section>
     `;
-    if (host.dataset.ledgerHtml !== html) {
-      host.dataset.ledgerHtml = html;
+    if (host.__ashLedgerHtml !== html) {
+      host.__ashLedgerHtml = html;
       host.innerHTML = html;
       host.querySelectorAll("[data-broker-paper-action]").forEach((button) => button.addEventListener("click", () => submitBrokerPaperOrder(button.dataset.brokerPaperAction)));
     }
