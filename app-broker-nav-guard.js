@@ -16,6 +16,7 @@
   }
 
   function loadMergedWorkspaceAssets() {
+    appendStylesheet("./ashstocks-trading-terminal.css");
     appendStylesheet("./upstox-workspace.css");
     appendStylesheet("./upstox-symbol-workspace.css");
     appendStylesheet("./upstox-reasoning-dock.css");
@@ -29,6 +30,7 @@
     appendStylesheet("./upstox-realtime-monitor.css");
     appendStylesheet("./upstox-stream-client.css");
     appendStylesheet("./broker-equivalence-audit.css");
+    appendScript("./app-ashstocks-trading-terminal.js");
     appendScript("./app-upstox-workspace.js");
     appendScript("./app-upstox-symbol-workspace.js");
     appendScript("./app-upstox-market-watch-pulse.js");
@@ -56,14 +58,17 @@
     document.querySelectorAll("[data-broker-view]").forEach((button) => button.classList.remove("active"));
     document.querySelectorAll("[data-ash-workspace-panel]").forEach((panel) => panel.classList.remove("active"));
     document.querySelectorAll("[data-ash-workspace]").forEach((button) => button.classList.remove("active"));
+    document.querySelectorAll("[data-ash-terminal-panel]").forEach((panel) => panel.classList.remove("active"));
+    document.querySelectorAll("[data-ash-terminal-nav]").forEach((button) => button.classList.remove("active"));
   }
 
   loadMergedWorkspaceAssets();
 
   document.addEventListener("click", (event) => {
+    const terminalButton = event.target.closest("[data-ash-terminal-nav]");
     const brokerButton = event.target.closest("[data-broker-view]");
     const workspaceButton = event.target.closest("[data-ash-workspace]");
-    if (brokerButton || workspaceButton) return;
+    if (terminalButton || brokerButton || workspaceButton) return;
     const nativeView = event.target.closest("[data-view]");
     if (nativeView) closeBrokerPanels();
   }, true);
