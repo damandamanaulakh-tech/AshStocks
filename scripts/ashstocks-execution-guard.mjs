@@ -41,6 +41,7 @@ mustInclude("app-broker-nav-guard.js", "./app-upstox-workspace.js", "merged Upst
 mustInclude("app-broker-nav-guard.js", "./app-candle-engine-bridge.js", "server candle bridge loader");
 mustInclude("app-broker-nav-guard.js", "./app-parameter-piano-candle-bridge.js", "Parameter Piano candle bridge loader");
 mustInclude("app-broker-nav-guard.js", "./app-paper-order-lifecycle.js", "paper order lifecycle UI loader");
+mustInclude("app-broker-nav-guard.js", "./app-upstox-parameter-filter.js", "Upstox parameter filter bridge loader");
 mustInclude("app-broker-nav-guard.js", "./app-upstox-autostart.js", "merged dashboard autostart loader");
 mustInclude("app-broker-nav-guard.js", "./upstox-workspace.css", "merged Upstox workspace stylesheet loader");
 
@@ -82,6 +83,18 @@ mustInclude("app-broker-ledger-bridge.js", "Paper SELL", "broker tab paper sell 
 mustInclude("app-broker-ledger-bridge.js", "Paper GTT", "broker tab paper GTT action");
 mustMatch("app-broker-ledger-bridge.js", /Order Book|Trade Book|Buying Power/, "broker ledger visible sections");
 
+mustInclude("app-upstox-parameter-filter.js", "TOTAL_PARAMETERS = 2000", "2000-key parameter filter scope");
+mustInclude("app-upstox-parameter-filter.js", "/api/data-intelligence", "data intelligence source in Upstox filters");
+mustInclude("app-upstox-parameter-filter.js", "/api/framework", "framework source in Upstox filters");
+mustInclude("app-upstox-parameter-filter.js", "#uwParameterFilterPanel", "Upstox parameter filter panel");
+mustInclude("app-upstox-parameter-filter.js", "#uwBlockFilter", "framework block filter control");
+mustInclude("app-upstox-parameter-filter.js", "#uwFamilyFilter", "parameter family filter control");
+mustInclude("app-upstox-parameter-filter.js", "#uwFeedFilter", "feed status filter control");
+mustInclude("app-upstox-parameter-filter.js", "#uwParamNumber", "parameter number control");
+mustInclude("app-upstox-parameter-filter.js", "Filtered Candidates", "filtered candidate table");
+mustMatch("app-upstox-parameter-filter.js", /Candle Structure \+ Volume|FII\/DII Flow|Entry Target Stop|Paper Safety/, "key AshStocks parameter families in Upstox filter");
+mustMatch("app-upstox-parameter-filter.js", /familyScore|rowEvidence|evidenceStatus/, "real row evidence scoring in Upstox filter");
+
 mustInclude("app-upstox-autostart.js", "ashstocks-workspace-scan-warmed", "single warm scanner guard");
 mustInclude("app-upstox-autostart.js", "runScanBtn", "scanner warm-up button bridge");
 mustInclude("app-upstox-autostart.js", "data-ash-workspace", "dashboard activation bridge");
@@ -96,6 +109,8 @@ mustMatch("app-upstox-workspace.js", /api\/paper-trader\/status/, "paper status 
 mustMatch("app-upstox-workspace.js", /api\/market-context/, "market context bridge");
 mustMatch("app-upstox-workspace.js", /analyzeCandles|bullish engulfing|hammer rejection|near 252D breakout/, "browser fallback candle analysis");
 mustMatch("app-upstox-workspace.js", /Live orders locked|Live broker order path is locked/, "live order lock in merged workspace");
+
+mustMatch("upstox-workspace.css", /uw-parameter-filter-panel|uw-param-controls|uw-param-blocks/, "Upstox parameter filter styling");
 
 for (const label of ["Markets", "Watchlist", "Signals", "Orders", "Positions", "GTT", "Reports", "Settings"]) {
   mustInclude("app-broker-shell.js", `label: "${label}"`, `${label} broker workflow view`);
