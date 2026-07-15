@@ -3,7 +3,6 @@ import path from "node:path";
 
 const root = process.cwd();
 const failures = [];
-const warnings = [];
 
 function read(file) {
   const fullPath = path.join(root, file);
@@ -39,6 +38,7 @@ mustInclude("index.html", "./app-broker-nav-guard.js", "broker nav guard script"
 mustInclude("index.html", "./app-parameter-piano.js", "Parameter Piano script");
 mustInclude("app-broker-nav-guard.js", "./app-upstox-workspace.js", "merged Upstox workspace loader");
 mustInclude("app-broker-nav-guard.js", "./app-candle-engine-bridge.js", "server candle bridge loader");
+mustInclude("app-broker-nav-guard.js", "./app-parameter-piano-candle-bridge.js", "Parameter Piano candle bridge loader");
 mustInclude("app-broker-nav-guard.js", "./app-upstox-autostart.js", "merged dashboard autostart loader");
 mustInclude("app-broker-nav-guard.js", "./upstox-workspace.css", "merged Upstox workspace stylesheet loader");
 
@@ -53,6 +53,9 @@ mustMatch("server-candle-pattern-patch.mjs", /bullish_engulfing|hammer_rejection
 mustInclude("app-candle-engine-bridge.js", "candle_engine", "server candle engine UI bridge");
 mustInclude("app-candle-engine-bridge.js", "candle_score", "server candle score UI bridge");
 mustInclude("app-candle-engine-bridge.js", "candle_patterns", "server candle patterns UI bridge");
+mustInclude("app-parameter-piano-candle-bridge.js", "Candle Structure + Volume", "old Parameter Piano candle relabel");
+mustInclude("app-parameter-piano-candle-bridge.js", "candle_evidence", "old Parameter Piano server candle evidence");
+mustInclude("app-parameter-piano-candle-bridge.js", "candle_score", "old Parameter Piano server candle score");
 
 mustInclude("app-upstox-autostart.js", "ashstocks-workspace-scan-warmed", "single warm scanner guard");
 mustInclude("app-upstox-autostart.js", "runScanBtn", "scanner warm-up button bridge");
