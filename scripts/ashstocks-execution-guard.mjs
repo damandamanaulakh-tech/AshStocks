@@ -67,6 +67,7 @@ mustInclude("app-parameter-piano-candle-bridge.js", "candle_score", "old Paramet
 
 mustInclude("app-paper-order-lifecycle.js", "/api/paper-trader/order", "paper order action post");
 mustInclude("app-paper-order-lifecycle.js", "Paper BUY", "paper buy button action text");
+mustInclude("app-paper-order-lifecycle.js", "Paper Order Book", "paper order book visible in dashboard");
 mustMatch("app-paper-order-lifecycle.js", /SELL|GTT/, "paper sell and GTT actions");
 mustMatch("app-paper-order-lifecycle.js", /broker write path remains locked|broker_write_enabled/, "paper UI live-order lock");
 
