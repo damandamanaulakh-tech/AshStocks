@@ -1,7 +1,9 @@
 const UPSTOX_QUOTE_FUNCTIONS = String.raw`
-const UPSTOX_QUOTE_VERSION = "ashstocks-upstox-quote-v0.1";
+const UPSTOX_QUOTE_VERSION = "ashstocks-upstox-quote-v0.2-stream";
 const UPSTOX_FULL_MARKET_QUOTE_URL = "https://api.upstox.com/v2/market-quote/quotes";
 const UPSTOX_QUOTE_CACHE_MS = 15000;
+const UPSTOX_QUOTE_STREAM_MS = 15000;
+const UPSTOX_QUOTE_STREAM_MAX_KEYS = 12;
 let upstoxQuoteCache = { at: 0, key: "", payload: null };
 
 function upstoxQuotePublicStatus() {
@@ -9,9 +11,13 @@ function upstoxQuotePublicStatus() {
     version: UPSTOX_QUOTE_VERSION,
     provider: "Upstox Market Quote API",
     endpoint: UPSTOX_FULL_MARKET_QUOTE_URL + "?instrument_key=...",
+    stream_endpoint: "/api/upstox/quote-stream?instrument_key=NSE_EQ|...",
     token_visible: Boolean(ENV.UPSTOX_ACCESS_TOKEN),
     api_key_visible: Boolean(ENV.UPSTOX_API_KEY || ENV.UPSTOX_CLIENT_ID),
     cache_ms: UPSTOX_QUOTE_CACHE_MS,
+    stream_ms: UPSTOX_QUOTE_STREAM_MS,
+    stream_max_keys: UPSTOX_QUOTE_STREAM_MAX_KEYS,
+    stream_transport: "server_sent_events_polling_backed",
     paper_only: true,
     live_orders: false,
     broker_write_enabled: false,
@@ -168,9 +174,86 @@ async function upstoxQuoteResponse(url, req) {
     };
   }
 }
+
+function writeSseEvent(res, event, payload) {
+  res.write("event: " + event + "\n");
+  res.write("data: " + JSON.stringify(payload).replace(/\n/g, " ") + "\n\n");
+}
+
+async function streamUpstoxQuotes(url, req, res) {
+  const input = await resolveUpstoxQuoteInput(url, {});
+  const keys = normalizeQuoteKeys(input.keys).slice(0, UPSTOX_QUOTE_STREAM_MAX_KEYS);
+  res.writeHead(200, {
+    "content-type": "text/event-stream; charset=utf-8",
+    "cache-control": "no-cache, no-transform",
+    connection: "keep-alive",
+    "x-accel-buffering": "no"
+  });
+
+  const streamMeta = {
+    ok: true,
+    version: UPSTOX_QUOTE_VERSION,
+    provider: "Upstox Market Quote API",
+    transport: "server_sent_events_polling_backed",
+    interval_ms: UPSTOX_QUOTE_STREAM_MS,
+    requested_keys: keys,
+    symbol: input.symbol,
+    paper_only: true,
+    live_orders: false,
+    broker_write_enabled: false,
+    token_printed: false
+  };
+  writeSseEvent(res, "status", { ...streamMeta, status: upstoxQuotePublicStatus() });
+
+  if (!keys.length) {
+    writeSseEvent(res, "error", { ...streamMeta, ok: false, error: "instrument_key_required", message: "Pass instrument_key or symbol. No fake stream started." });
+    res.end();
+    return;
+  }
+
+  let closed = false;
+  req.on("close", () => { closed = true; });
+
+  const poll = async () => {
+    if (closed) return;
+    try {
+      const payload = await fetchUpstoxMarketQuotes(keys);
+      writeSseEvent(res, "quote", {
+        ...streamMeta,
+        ok: true,
+        asOf: new Date().toISOString(),
+        quotes: payload.quotes,
+        failures: payload.failures,
+        safety: payload.safety
+      });
+    } catch (error) {
+      writeSseEvent(res, "error", {
+        ...streamMeta,
+        ok: false,
+        asOf: new Date().toISOString(),
+        error: error.message,
+        rate_limited: /429|rate limit|1015/i.test(error.message || "")
+      });
+    }
+  };
+
+  await poll();
+  const timer = setInterval(poll, UPSTOX_QUOTE_STREAM_MS);
+  timer.unref?.();
+  req.on("close", () => clearInterval(timer));
+}
 `;
 
 const UPSTOX_QUOTE_ROUTES = String.raw`
+      if (url.pathname === "/api/upstox/quote-stream") {
+        if (req.method !== "GET") {
+          json(res, 405, { ok: false, error: "method_not_allowed", allowed: ["GET"] });
+          return;
+        }
+        await streamUpstoxQuotes(url, req, res);
+        return;
+      }
+
       if (url.pathname === "/api/upstox/quote") {
         if (!["GET", "POST"].includes(req.method)) {
           json(res, 405, { ok: false, error: "method_not_allowed", allowed: ["GET", "POST"] });
