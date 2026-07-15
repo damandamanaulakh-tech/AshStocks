@@ -39,6 +39,8 @@ for (const [file, checks] of Object.entries({
   "server-candle-pattern-patch.mjs": ["CANDLE_PATTERN_VERSION", "candlePatternAnalysis", "candle_patterns", "candle_score", "candle_status", "bullish_engulfing", "hammer_rejection", "near_252d_breakout", "volume_confirmation"],
   "app-upstox-symbol-workspace.js": ["#uwSymbolWorkspace", "Upstox-Style Symbol Workspace", "/api/scanner/run", "/api/upstox/quote", "/api/paper-trader/orders", "/api/paper-trader/order", "requestUpstoxQuote", "publishQuote", "ashstocks:upstox-quote", "#uwProduct", "#uwOrderType", "#uwValidity", "#uwRiskPct", "#uwCapital", "#uwTriggerPrice", "brokerReadiness", "quoteStatusText", "UPSTOX_DEPTH", "candleSvg", "DATA_NEEDED: candle chart not available", "BUY", "SELL", "GTT", "Selected Stock Ledger", "broker_write_enabled stays false"],
   "upstox-symbol-workspace.css": [".uw-quote-micro", ".uw-ticket-status", ".uw-ticket-grid", ".uw-ticket-actions", ".uw-paper-action-grid select"],
+  "app-upstox-trade-queue-bridge.js": ["#uwTradeQueueBridge", "Scanner To Execution", "Broker Trade Queue", "/api/scanner/run", "/api/paper-trader/orders", "/api/paper-trader/order", "ashstocks:upstox-quote", "submitQueuePaperAction", "upstox-trade-queue-bridge", "Momentum", "Candle", "Liquidity", "Target", "Risk", "Quote", "BUY", "GTT", "source: \"upstox-trade-queue-bridge\"", "quote_source"],
+  "upstox-trade-queue-bridge.css": [".uw-trade-queue-bridge", ".uw-trade-queue-summary", ".uw-trade-param-chips", ".uw-trade-actions", ".uw-trade-queue-table tr.selected"],
   "app-upstox-parameter-filter.js": ["TOTAL_PARAMETERS = 2000", "/api/data-intelligence", "/api/framework", "#uwParameterFilterPanel", "#uwBlockFilter", "#uwFamilyFilter", "#uwFeedFilter", "#uwParamNumber", "Filtered Candidates", "Candle Structure + Volume", "FII/DII Flow", "Entry Target Stop", "Paper Safety"],
   "app-upstox-parameter-keys.js": ["TOTAL_PARAMETERS = 2000", "#uwParameterKeyBoard", "1-2000 Parameter Board", "data-uw-param-key", "rule, source, evidence, pass line and engine impact", "Current evidence", "Pass line", "Engine impact", "Candle Structure + Volume", "Paper Safety", "DATA_NEEDED", "bullish engulfing", "hammer rejection", "near 252D breakout", "volume confirmation"],
   "app-upstox-parameter-exact-sync.js": ["data-uw-param-key", "#uwParamNumber", "exactParameter", "syncExactParameter"],
@@ -62,6 +64,7 @@ for (const asset of [
   "./upstox-symbol-workspace.css",
   "./upstox-reasoning-dock.css",
   "./upstox-parameter-keys.css",
+  "./upstox-trade-queue-bridge.css",
   "./app-upstox-workspace.js",
   "./app-upstox-symbol-workspace.js",
   "./app-candle-engine-bridge.js",
@@ -71,6 +74,7 @@ for (const asset of [
   "./app-upstox-parameter-keys.js",
   "./app-upstox-parameter-exact-sync.js",
   "./app-upstox-reasoning-dock.js",
+  "./app-upstox-trade-queue-bridge.js",
   "./app-upstox-autostart.js"
 ]) {
   mustLoad("app-broker-nav-guard.js", asset);
@@ -84,6 +88,10 @@ mustMatch("app-upstox-symbol-workspace.js", /normalizeCandles[\s\S]*candleSvg[\s
 mustMatch("app-upstox-symbol-workspace.js", /\/api\/upstox\/quote[\s\S]*fetch\(url\)/, "symbol workspace Upstox quote fetch");
 mustMatch("app-upstox-symbol-workspace.js", /fetch\("\/api\/paper-trader\/order"[\s\S]*source: "upstox-symbol-workspace"/, "symbol workspace paper order post");
 mustMatch("app-upstox-symbol-workspace.js", /order_type[\s\S]*validity[\s\S]*risk_pct[\s\S]*capital/, "broker ticket fields in paper payload");
+mustMatch("app-upstox-trade-queue-bridge.js", /window\.fetch[\s\S]*\/api\/scanner\/run[\s\S]*\/api\/paper-trader\/orders/, "trade queue captures scanner and paper ledger");
+mustMatch("app-upstox-trade-queue-bridge.js", /submitQueuePaperAction[\s\S]*fetch\("\/api\/paper-trader\/order"[\s\S]*order_type[\s\S]*validity[\s\S]*risk_pct[\s\S]*capital/, "trade queue submits broker-style paper order payload");
+mustMatch("app-upstox-trade-queue-bridge.js", /parameterHits[\s\S]*Momentum[\s\S]*Candle[\s\S]*Liquidity[\s\S]*Target[\s\S]*Risk[\s\S]*Quote/, "trade queue parameter chips include quote and candle readiness");
+mustMatch("app-upstox-trade-queue-bridge.js", /quote_source[\s\S]*Upstox Market Quote API[\s\S]*scanner-fallback/, "trade queue quote source is explicit");
 mustMatch("app-upstox-reasoning-dock.js", /Quote proof[\s\S]*quoteStatus[\s\S]*Depth/, "quote proof and depth gate in reasoning dock");
 mustMatch("app-upstox-parameter-exact-sync.js", /setTimeout\(\(\) => syncExactParameter\(parameterNumber\), 0\)/, "post-click exact parameter sync");
 
