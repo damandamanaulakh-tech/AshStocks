@@ -26,6 +26,7 @@ mustInclude("app-broker-nav-guard.js", "./app-upstox-candle-hit-flow.js", "candl
 
 for (const text of [
   "ashstocks:upstox-candle-hit-flow",
+  "CANDLE_HIT_ANCHORS",
   "candle_parameter_hits",
   "patchPaperOrderPayload",
   "/api/paper-trader/order",
@@ -35,13 +36,15 @@ for (const text of [
   "uw-candle-hit-mini",
   "bullish_engulfing",
   "near_252d_breakout",
-  "volume_confirmation",
-  "P" + "681",
-  "P" + "686",
-  "P" + "688"
+  "volume_confirmation"
 ]) {
   mustInclude("app-upstox-candle-hit-flow.js", text);
 }
+
+mustMatch("app-upstox-candle-hit-flow.js", /CANDLE_HIT_ANCHORS[\s\S]*P681[\s\S]*P686[\s\S]*P688/, "anchor labels for P681/P686/P688");
+mustMatch("app-upstox-candle-hit-flow.js", /bullish_engulfing:\s*\{\s*parameter:\s*681/, "bullish engulfing mapped to P681");
+mustMatch("app-upstox-candle-hit-flow.js", /near_252d_breakout:\s*\{\s*parameter:\s*686/, "near 252D breakout mapped to P686");
+mustMatch("app-upstox-candle-hit-flow.js", /volume_confirmation:\s*\{\s*parameter:\s*688/, "volume confirmation mapped to P688");
 
 mustMatch(
   "app-upstox-candle-hit-flow.js",
