@@ -1,0 +1,110 @@
+.uw-candle-hit-flow,
+.uw-candle-hit-ticket,
+.uw-symbol-candle-hit-proof {
+  display: grid;
+  grid-template-columns: minmax(170px, 0.75fr) minmax(180px, 0.9fr) minmax(240px, 1.25fr) minmax(260px, 1.4fr);
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+  padding: 9px;
+}
+
+.uw-candle-hit-ticket,
+.uw-symbol-candle-hit-proof {
+  grid-column: 1 / -1;
+}
+
+.uw-symbol-candle-hit-proof {
+  margin-bottom: 8px;
+}
+
+.uw-candle-hit-title,
+.uw-candle-hit-flow article,
+.uw-candle-hit-ticket article,
+.uw-symbol-candle-hit-proof article {
+  display: grid;
+  gap: 4px;
+  min-height: 56px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  padding: 8px;
+}
+
+.uw-candle-hit-title span,
+.uw-candle-hit-flow article span,
+.uw-candle-hit-flow article small,
+.uw-candle-hit-ticket article span,
+.uw-candle-hit-ticket article small,
+.uw-symbol-candle-hit-proof article span,
+.uw-symbol-candle-hit-proof article small,
+.uw-candle-hit-mini span {
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+
+.uw-candle-hit-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.uw-candle-hit-chips b {
+  display: inline-grid;
+  gap: 1px;
+  min-height: 28px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--panel);
+  padding: 4px 7px;
+  font-size: 0.72rem;
+  font-weight: 900;
+  max-width: 150px;
+}
+
+.uw-candle-hit-chips.compact b {
+  min-height: 24px;
+  max-width: 108px;
+  padding: 3px 6px;
+}
+
+.uw-candle-hit-chips b span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.uw-candle-hit-chips .hit {
+  border-color: var(--teal);
+  background: color-mix(in srgb, var(--teal) 12%, var(--panel));
+  color: var(--teal);
+}
+
+.uw-candle-hit-chips .need {
+  border-color: #c47a10;
+  background: #fff3df;
+  color: #a85e00;
+}
+
+.uw-candle-hit-mini {
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px dashed var(--line);
+}
+
+@media (max-width: 1320px) {
+  .uw-candle-hit-flow,
+  .uw-candle-hit-ticket,
+  .uw-symbol-candle-hit-proof {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .uw-candle-hit-flow,
+  .uw-candle-hit-ticket,
+  .uw-symbol-candle-hit-proof {
+    grid-template-columns: 1fr;
+  }
+}
