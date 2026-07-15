@@ -29,6 +29,7 @@
     appendScript("./app-upstox-parameter-keys.js");
     appendScript("./app-upstox-parameter-exact-sync.js");
     appendScript("./app-upstox-reasoning-dock.js");
+    appendScript("./app-upstox-trade-queue-bridge.js");
     appendScript("./app-upstox-autostart.js");
   }
 
