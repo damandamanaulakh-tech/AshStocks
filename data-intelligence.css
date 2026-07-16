@@ -217,6 +217,97 @@
   background: color-mix(in srgb, var(--panel-soft) 56%, transparent);
 }
 
+.parameter-string-board {
+  min-height: 260px;
+  padding: 16px;
+  border: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px) 0 0 / 10% 100%,
+    #111514;
+  color: #f7fbfa;
+}
+
+.string-board-stage {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(86px, 1fr));
+  gap: 12px;
+  min-height: 230px;
+}
+
+.string-board-empty {
+  display: grid;
+  min-height: 230px;
+  place-items: center;
+  color: rgba(247, 251, 250, 0.72);
+  text-align: center;
+}
+
+.stock-string {
+  display: grid;
+  grid-template-rows: auto minmax(160px, 1fr) auto auto;
+  gap: 7px;
+  min-height: 230px;
+  padding: 10px 6px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  text-align: center;
+}
+
+.stock-string:hover,
+.stock-string:focus-visible {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.07);
+  outline: 2px solid rgba(56, 183, 176, 0.58);
+  outline-offset: 1px;
+}
+
+.string-hit {
+  color: #dbe8e5;
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.string-track {
+  position: relative;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  min-height: 160px;
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.string-helix {
+  width: 72px;
+  min-height: 28px;
+  max-height: 100%;
+  border-radius: 50%;
+  background:
+    repeating-radial-gradient(ellipse at center, transparent 0 10px, currentColor 11px 12px, transparent 13px 22px),
+    linear-gradient(currentColor, currentColor);
+  opacity: 0.94;
+  filter: drop-shadow(0 0 8px currentColor);
+}
+
+.string-helix.green { color: #29c35a; }
+.string-helix.blue { color: #378bff; }
+.string-helix.teal { color: #1fc8a3; }
+.string-helix.amber { color: #e0a100; }
+.string-helix.pink { color: #f05f9d; }
+.string-helix.violet { color: #9b83ef; }
+
+.stock-string strong {
+  font-size: 0.92rem;
+}
+
+.stock-string small {
+  color: rgba(247, 251, 250, 0.64);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
 .parameter-detail-panel > span,
 .parameter-detail-grid span {
   color: var(--muted);

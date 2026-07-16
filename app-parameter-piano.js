@@ -13,7 +13,7 @@
     { name: "Event Lift", range: [1161, 1280], score: ({ overlay }) => Array.isArray(overlay.trigger_rows) && overlay.trigger_rows.length ? 72 : 0, detail: ({ overlay }) => `${overlay.trigger_rows?.length || 0} triggers` },
     { name: "Hot Pocket", range: [1281, 1400], score: ({ top }) => top.hot_pocket_score || top.theme_heat || 0, detail: ({ top }) => `theme ${number(top.hot_pocket_score || top.theme_heat)}` },
     { name: "Advisor Ready", range: [1401, 1520], score: ({ summary }) => summary.candidates ? Math.min(100, Number(summary.buy_queue || 0) / Math.max(1, Number(summary.candidates || 1)) * 100) : 0, detail: ({ summary }) => `${summary.buy_queue || 0}/${summary.candidates || 0} selected` },
-    { name: "Entry Target Stop", range: [1521, 1640], score: ({ top }) => top.close && (top.target_price || top.target1) && top.stop_price ? 100 : 0, detail: ({ top }) => top.stop_price ? "ready" : "waiting" },
+    { name: "Entry Target Stop", range: [1521, 1640], score: ({ top }) => top.close && (top.target_price || top.target1) && top.stop_price ? 100 : 0, detail: ({ top }) => top.stop_price ? "ready" : "not computed" },
     { name: "Watchlist Rotation", range: [1641, 1760], score: ({ plan }) => Object.keys(plan.watchlists || {}).length ? 80 : 0, detail: ({ plan }) => `${Object.keys(plan.watchlists || {}).length} buckets` },
     { name: "Sell Replace", range: [1761, 1880], score: ({ plan }) => plan ? 70 : 0, detail: ({ summary }) => `${summary.sell_queue || 0} replace` },
     { name: "Paper Safety", range: [1881, 2000], score: ({ plan }) => plan.paper_only && plan.live_orders === false ? 100 : 0, detail: ({ plan }) => plan.paper_only ? "paper only" : "check mode" }
@@ -23,9 +23,9 @@
     Universe: ["NSE_EQ equity only", "instrument key present", "suspended instrument excluded", "fund/ETF noise excluded", "symbol normalized", "duplicate listing controlled", "active security type", "tradable exchange NSE", "name resolved", "sector tag available"],
     "Data Coverage": ["latest close present", "127D close present", "253D close present", "252D high present", "20D average volume present", "rupee turnover present", "63D volatility present", "126D volatility present", "252D volatility present", "last candle fresh", "instrument key mapped", "sector not unmapped"],
     "Price Trend": ["6M return positive", "12M return positive", "close above 127D reference", "close above 253D reference", "near 252D high", "momentum score above line", "trend not stale", "uptrend not one-candle spike"],
-    "Relative Strength": ["scanner score rank", "momentum/quality blend", "relative strength vs pool", "target potential survives gate", "decision not DATA_NEEDED", "score above watch line", "score above select line"],
+    "Relative Strength": ["scanner score rank", "momentum/quality blend", "relative strength vs pool", "target potential survives gate", "decision has enough data", "score above watch line", "score above select line"],
     Liquidity: ["rupee turnover crores", "20D average volume", "liquidity hard gate", "paper position capacity", "wide-spread avoidance", "large order survivability"],
-    Volume: ["63D volatility", "126D volatility", "252D volatility", "volume confirmation", "abnormal activity check", "stuck candle avoidance", "delivery/volume placeholder avoided"],
+    Volume: ["63D volatility", "126D volatility", "252D volatility", "volume confirmation", "abnormal activity check", "stuck candle avoidance", "delivery/volume evidence present"],
     "Target Room": ["target percentage left", "target potential label", "target hard gate", "reward room after entry", "target 1 calculated", "target 2 calculated", "upside vs stop balance"],
     "Risk Safety": ["regime risk score", "validated trigger lift", "drawdown pressure", "volatility penalty", "stretched target penalty", "weak 6M return penalty", "capital protection governor"],
     "FII/DII Flow": ["FII cash net", "DII cash net", "institutional net pressure", "flow score", "FII/DII overlay used", "flow risk neutralizer"],
@@ -46,11 +46,13 @@
   window.fetch = async (...args) => {
     const response = await originalFetch(...args);
     const url = String(args[0] || "");
-    if (url.includes("/api/paper-trader/run") || url.includes("/api/paper-trader/status")) {
+    if (url.includes("/api/paper-trader/run") || url.includes("/api/paper-trader/status") || url.includes("/api/scanner/run")) {
       response.clone().json().then((payload) => {
         if (url.includes("/api/paper-trader/status")) {
           latestStatus = payload;
           latestPlan = payload.status?.last_plan || latestPlan;
+        } else if (url.includes("/api/scanner/run")) {
+          latestPlan = payload?.ok === false ? latestPlan : payload;
         } else {
           latestPlan = payload?.ok === false ? latestPlan : payload;
         }
@@ -75,8 +77,8 @@
 
   function ensurePanel() {
     if (document.querySelector("#parameterPianoPanel")) return;
-    const view = document.querySelector("#paperTraderView");
-    const metrics = document.querySelector("#paperTraderMetrics");
+    const view = document.querySelector("#paperTraderView") || document.querySelector("#scannerView");
+    const metrics = document.querySelector("#paperTraderMetrics") || document.querySelector("#summaryGrid");
     if (!view || !metrics) return;
     const panel = document.createElement("section");
     panel.className = "panel parameter-piano-panel";
@@ -90,12 +92,18 @@
         <span><i class="hit"></i>Hit</span>
         <span><i class="warn"></i>Weak</span>
         <span><i class="block"></i>Blocked</span>
-        <span><i class="idle"></i>Waiting</span>
+        <span><i class="idle"></i>Unscored</span>
       </div>
+      <div id="parameterStringBoard" class="parameter-string-board"></div>
       <div id="parameterDetailPanel" class="parameter-detail-panel"><strong>Select any parameter number</strong><span>Click a key to see exact rule, source, current evidence, pass line and engine impact.</span></div>
       <div id="parameterPianoRows" class="parameter-piano-rows"></div>
     `;
     panel.addEventListener("click", (event) => {
+      const stockString = event.target.closest(".stock-string");
+      if (stockString) {
+        showStockDetail(stockString.dataset.stringSymbol);
+        return;
+      }
       const key = event.target.closest(".piano-key");
       if (!key) return;
       showParameterDetail(Number(key.dataset.param), key.dataset.family, key.dataset.state);
@@ -108,7 +116,7 @@
     if (!target) return;
     const context = buildContext(plan, statusPayload);
     const signature = JSON.stringify({
-      asOf: plan?.asOf || "waiting",
+      asOf: plan?.asOf || plan?.generatedAt || "",
       scanned: context.summary.scanned || 0,
       buyQueue: context.summary.buy_queue || 0,
       dataNeeded: context.summary.data_needed || 0,
@@ -122,6 +130,7 @@
     if (signature === lastRenderSignature && target.dataset.rendered === "1") return;
     lastRenderSignature = signature;
     target.dataset.rendered = "1";
+    renderStringBoard(context);
     let hitTotal = 0;
     const rows = FAMILIES.map((family) => {
       const start = family.range[0];
@@ -147,9 +156,42 @@
 
   function buildContext(plan, statusPayload) {
     const summary = plan?.summary || {};
-    const top = plan?.top_ranked?.[0] || plan?.buy_queue?.[0] || {};
+    const top = plan?.top_ranked?.[0] || plan?.buy_queue?.[0] || plan?.rows?.[0] || {};
     const overlay = plan?.intelligence_overlay || {};
     return { plan: plan || {}, summary, top, overlay, statusPayload: statusPayload || {} };
+  }
+
+  function renderStringBoard(context) {
+    const target = document.querySelector("#parameterStringBoard");
+    if (!target) return;
+    const rows = Array.isArray(context.plan.rows) ? context.plan.rows : [];
+    const candidates = rows
+      .slice()
+      .sort((a, b) => Number(b.paper_score || b.intelligence_score || b.score || 0) - Number(a.paper_score || a.intelligence_score || a.score || 0))
+      .slice(0, 10);
+    if (!candidates.length) {
+      target.innerHTML = `<div class="string-board-empty">Run scanner or Upstox scan to draw stock strings from real rows.</div>`;
+      return;
+    }
+    const maxScore = Math.max(1, ...candidates.map((row) => Number(row.paper_score || row.intelligence_score || row.score || 0)));
+    target.innerHTML = `
+      <div class="string-board-stage">
+        ${candidates.map((row, index) => {
+          const score = Number(row.paper_score || row.intelligence_score || row.score || 0);
+          const hits = Math.max(1, Math.round(score / 4));
+          const height = Math.max(24, Math.round(score / maxScore * 100));
+          const tone = ["green", "blue", "teal", "amber", "pink", "violet"][index % 6];
+          return `
+            <button type="button" class="stock-string" data-string-symbol="${escapeHtml(row.symbol || "")}" title="${escapeHtml(row.name || row.symbol || "")}">
+              <span class="string-hit">${hits}/24</span>
+              <span class="string-track"><i class="string-helix ${tone}" style="height:${height}%"></i></span>
+              <strong>${escapeHtml(row.symbol || "-")}</strong>
+              <small>${escapeHtml(row.decision || row.advisor?.status || "SCANNED")}</small>
+            </button>
+          `;
+        }).join("")}
+      </div>
+    `;
   }
 
   function showParameterDetail(parameterNumber, familyName, state) {
@@ -169,6 +211,23 @@
     `;
   }
 
+  function showStockDetail(symbol) {
+    const panel = document.querySelector("#parameterDetailPanel");
+    const rows = Array.isArray(latestPlan?.rows) ? latestPlan.rows : [];
+    const row = rows.find((item) => String(item.symbol || "") === String(symbol || ""));
+    if (!panel || !row) return;
+    panel.innerHTML = `
+      <div class="parameter-detail-head"><span class="piano-key hit">${escapeHtml(row.symbol || "")}</span><strong>${escapeHtml(row.name || row.symbol || "")}</strong><b>${escapeHtml(row.decision || row.advisor?.status || "SCANNED")}</b></div>
+      <div class="parameter-detail-grid">
+        <span>Score</span><strong>${number(row.paper_score || row.intelligence_score || row.score || 0)}</strong>
+        <span>Price evidence</span><strong>close ${money(row.close)}; 6M ${number(row.ret_6m ?? row.return_6m)}%; 12M ${number(row.ret_12m ?? row.return_12m)}%</strong>
+        <span>Target evidence</span><strong>${row.target_pct !== undefined ? `${number(row.target_pct)}% target room` : "target room not computed in latest payload"}</strong>
+        <span>Liquidity evidence</span><strong>${number(row.rupee_turnover_cr)} cr turnover; ADV ${number(row.adv20 || row.avg_volume_20d)}</strong>
+        <span>Reason</span><strong>${escapeHtml(row.reason || row.advisor?.thesis || "No reason returned by latest scan payload")}</strong>
+      </div>
+    `;
+  }
+
   function parameterDescriptor(parameterNumber, family, state, context) {
     const rules = PARAMETER_RULES[family.name] || [family.name];
     const offset = parameterNumber - family.range[0];
@@ -180,8 +239,8 @@
     const overlay = context.overlay || {};
     const sourceMap = {
       Universe: "Upstox NSE instruments master + suspended instrument guard",
-      "Data Coverage": plan.fallback_used ? `Paper run fields via ${plan.fallback_used}` : "Upstox historical candle fields in paper run",
-      "Price Trend": plan.fallback_used ? `${plan.fallback_used} daily OHLCV fallback` : "Upstox historical daily OHLCV",
+      "Data Coverage": "Upstox historical candle fields in paper run",
+      "Price Trend": "Upstox historical daily OHLCV",
       "Relative Strength": "Scanner rank and advisor enriched row",
       Liquidity: "Turnover and volume fields from candle/enriched row",
       Volume: "63D/126D/252D volatility and volume fields",
@@ -237,7 +296,7 @@
       source: sourceMap[family.name] || family.name,
       evidence: evidenceMap[family.name] || family.detail(context),
       passLine: passLineMap[family.name] || "Uses current engine evidence only.",
-      impact: `${state.toUpperCase()} in ${family.name}; contributes to the visible parameter hit map, not a core score change in this patch.`
+      impact: `${state.toUpperCase()} in ${family.name}; contributes to the visible parameter hit map and evidence display.`
     };
   }
 

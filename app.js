@@ -169,7 +169,7 @@ function renderSummary() {
     ["SELECT", summary.SELECT || 0, "select"],
     ["WATCH", summary.WATCH || 0, "watch"],
     ["BLOCKED", summary.BLOCKED || 0, "blocked"],
-    ["DATA_NEEDED", summary.DATA_NEEDED || 0, "needed"]
+    ["DATA GAP", summary.DATA_NEEDED || 0, "needed"]
   ];
   $("#summaryGrid").innerHTML = items
     .map(([label, value, tone]) => `
