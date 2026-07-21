@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: ashstocks-api
+    name: ashstocks
     runtime: node
     plan: free
     buildCommand: npm install

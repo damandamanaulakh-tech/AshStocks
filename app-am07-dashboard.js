@@ -93,7 +93,7 @@
       <div class="am07-top">
         <div>
           <span class="am07-label">Sourceborn Stocks</span>
-          <strong>Broker-grade NSE dashboard sample</strong>
+          <strong>Broker-grade NSE dashboard</strong>
           <span id="am07Status">Starting</span>
         </div>
         <button class="secondary-button" type="button" id="am07Refresh">

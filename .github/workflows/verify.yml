@@ -41,7 +41,7 @@ jobs:
       - name: Live Render verification
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
-          LIVE_RENDER_URL: https://ashstocks-api.onrender.com
+          LIVE_RENDER_URL: https://ashstocks.onrender.com
           LIVE_RETRY_COUNT: "30"
           LIVE_RETRY_DELAY_MS: "20000"
           LIVE_REQUEST_TIMEOUT_MS: "20000"
