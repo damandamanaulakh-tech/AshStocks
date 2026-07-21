@@ -1,0 +1,400 @@
+.am07-view {
+  color: var(--text);
+}
+
+.am07-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--green);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.am07-top strong {
+  display: block;
+  font-size: 1rem;
+}
+
+.am07-top span,
+.am07-muted {
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.am07-market-strip {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.am07-market-card,
+.am07-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.am07-market-card {
+  min-height: 86px;
+  padding: 13px;
+}
+
+.am07-label {
+  display: block;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.am07-market-card strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 1.35rem;
+}
+
+.am07-positive {
+  color: var(--green);
+}
+
+.am07-negative {
+  color: var(--red);
+}
+
+.am07-grid {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.78fr) minmax(480px, 1.5fr) minmax(280px, 0.88fr);
+  gap: 14px;
+}
+
+.am07-lower,
+.am07-piano-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.am07-card {
+  min-width: 0;
+  padding: 14px;
+}
+
+.am07-card-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.am07-card h3 {
+  margin: 2px 0 0;
+  font-size: 1rem;
+}
+
+.am07-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 0 9px;
+  border-radius: 999px;
+  background: rgba(15, 139, 141, 0.14);
+  color: var(--teal);
+  font-size: 0.74rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.am07-pill.green {
+  background: rgba(22, 138, 95, 0.16);
+  color: var(--green);
+}
+
+.am07-pill.warn {
+  background: rgba(199, 122, 22, 0.16);
+  color: var(--saffron);
+}
+
+.am07-candidates {
+  display: grid;
+  gap: 8px;
+  max-height: 508px;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.am07-candidate {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  width: 100%;
+  min-height: 75px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+  color: var(--text);
+  text-align: left;
+}
+
+.am07-candidate:hover,
+.am07-candidate.active {
+  border-color: var(--green);
+}
+
+.am07-candidate strong,
+.am07-score b {
+  display: block;
+}
+
+.am07-candidate small {
+  display: block;
+  margin-top: 2px;
+  color: var(--muted);
+}
+
+.am07-score {
+  text-align: right;
+}
+
+.am07-score b {
+  color: var(--green);
+  font-size: 1.1rem;
+}
+
+.am07-workspace {
+  min-height: 560px;
+}
+
+.am07-workspace-meta {
+  text-align: right;
+}
+
+.am07-workspace-meta strong {
+  display: block;
+  font-size: 1.35rem;
+}
+
+.am07-chart {
+  display: block;
+  width: 100%;
+  min-height: 340px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #08120f;
+}
+
+body:not(.dark) .am07-chart {
+  background: #f7fbf8;
+}
+
+.am07-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.am07-ticket {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.am07-ticket label {
+  display: grid;
+  gap: 5px;
+}
+
+.am07-ticket label span {
+  color: var(--muted);
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.am07-ticket input,
+.am07-ticket select {
+  min-height: 38px;
+  min-width: 0;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+  color: var(--text);
+}
+
+.am07-submit {
+  grid-column: 1 / -1;
+  min-height: 42px;
+  border: 1px solid var(--green);
+  border-radius: 8px;
+  background: var(--green);
+  color: #fff;
+  font-weight: 900;
+}
+
+.am07-list {
+  display: grid;
+  gap: 10px;
+}
+
+.am07-row {
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+}
+
+.am07-row strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.am07-row span,
+.am07-row p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+.am07-piano {
+  margin-top: 14px;
+  overflow: hidden;
+}
+
+.am07-piano-stage {
+  min-height: 390px;
+  overflow: auto;
+}
+
+.am07-piano-columns {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(86px, 1fr);
+  align-items: end;
+  gap: 14px;
+  min-width: 920px;
+  padding: 18px 8px 8px;
+}
+
+.am07-string {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+}
+
+.am07-string-count {
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.am07-string-stack {
+  display: grid;
+  align-content: end;
+  justify-items: center;
+  min-height: 260px;
+  width: 76px;
+  padding: 8px 0;
+  border-left: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+}
+
+.am07-note {
+  width: 70px;
+  height: 12px;
+  margin-top: -1px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--green);
+  font-size: 0;
+}
+
+.am07-note.fail {
+  color: var(--red);
+  opacity: 0.45;
+}
+
+.am07-note:hover,
+.am07-note.active {
+  background: currentColor;
+  opacity: 1;
+}
+
+.am07-string-symbol {
+  font-weight: 950;
+}
+
+.am07-string-name {
+  min-height: 30px;
+  color: var(--muted);
+  font-size: 0.74rem;
+  text-align: center;
+}
+
+.am07-table-wrap {
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.am07-table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+}
+
+.am07-table th,
+.am07-table td {
+  padding: 11px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+
+.am07-table th {
+  color: var(--muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+}
+
+.am07-open {
+  min-height: 30px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--text);
+  font-weight: 800;
+}
+
+@media (max-width: 1220px) {
+  .am07-grid,
+  .am07-lower,
+  .am07-piano-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .am07-market-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .am07-market-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .am07-ticket {
+    grid-template-columns: 1fr;
+  }
+}
