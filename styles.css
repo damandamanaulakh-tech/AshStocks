@@ -441,6 +441,15 @@ button {
   color: var(--ink);
 }
 
+.basket-meta {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+}
+
 .watch-list {
   height: 650px;
   overflow: auto;

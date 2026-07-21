@@ -11,7 +11,9 @@ const state = {
   activeSection: "dashboard",
   horizon: "intraday",
   lastError: "",
-  activeParameter: null
+  activeParameter: null,
+  universeRows: [],
+  scanBasket: []
 };
 
 const indexKeys = [
@@ -21,6 +23,16 @@ const indexKeys = [
   { label: "MIDCAP 150", key: "NSE_INDEX|Nifty Midcap 150" },
   { label: "INDIA VIX", key: "NSE_INDEX|India VIX" }
 ];
+
+const DEFAULT_SCAN_LIMIT = 200;
+const FAMILIAR_DEFAULT_EXCLUDE = new Set([
+  "ADANIENT", "ADANIPORTS", "ASIANPAINT", "AXISBANK", "BAJAJFINSV", "BAJFINANCE",
+  "BHARTIARTL", "HCLTECH", "HDFC", "HDFCAMC", "HDFCBANK", "HDFCLIFE", "HINDUNILVR",
+  "ICICIBANK", "INFY", "ITC", "KOTAKBANK", "LT", "MARUTI", "NESTLEIND", "NTPC",
+  "POWERGRID", "RELIANCE", "SBIN", "SUNPHARMA", "TATACONSUM", "TATAMOTORS",
+  "TATAPOWER", "TATASTEEL", "TCS", "TECHM", "TITAN", "ULTRACEMCO"
+]);
+const NON_EQUITY_NAME_PATTERN = /\b(?:ETF|BEES|LIQUID|GILT|SDL|NIFTY|SENSEX|INDEX|GOLD|SILVER|NASDAQ|HANGSENG|MON100|BANKETF|PSUBANK|LOWVOL|MOMENTUM|VALUE|ALPHA)\b/i;
 
 const el = (id) => document.getElementById(id);
 const all = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -77,6 +89,61 @@ function isoDate(value) {
   const date = new Date(value);
   if (!Number.isFinite(date.getTime())) return String(value).slice(0, 19);
   return date.toLocaleString("en-IN", { timeZone: "Asia/Kolkata", hour12: false });
+}
+
+function nseSymbol(row) {
+  return String(row?.symbol || row?.trading_symbol || row?.tradingsymbol || "").trim().toUpperCase();
+}
+
+function stableHash(value) {
+  let hash = 2166136261;
+  for (let index = 0; index < value.length; index += 1) {
+    hash ^= value.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+  return hash >>> 0;
+}
+
+function freshScanSeed() {
+  return `${new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" })}:${state.horizon}`;
+}
+
+function isFreshScanCandidate(row) {
+  const symbol = nseSymbol(row);
+  if (!symbol || !row?.instrument_key) return false;
+  if (FAMILIAR_DEFAULT_EXCLUDE.has(symbol)) return false;
+  const exchange = String(row.exchange || "NSE").toUpperCase();
+  if (exchange && exchange !== "NSE") return false;
+  const instrumentType = String(row.instrument_type || "EQ").toUpperCase();
+  if (instrumentType && instrumentType !== "EQ") return false;
+  const joined = `${symbol} ${row.name || ""} ${row.short_name || ""}`;
+  return !NON_EQUITY_NAME_PATTERN.test(joined);
+}
+
+function buildFreshScanBasket(universe = []) {
+  const rows = universe
+    .filter((row) => row && nseSymbol(row) && row.instrument_key)
+    .map((row) => ({ ...row, symbol: nseSymbol(row) }));
+  const freshRows = rows.filter(isFreshScanCandidate);
+  const sourceRows = freshRows.length >= 80 ? freshRows : rows.filter((row) => !FAMILIAR_DEFAULT_EXCLUDE.has(nseSymbol(row)));
+  const seed = freshScanSeed();
+  return [...sourceRows]
+    .sort((a, b) => stableHash(`${seed}:${nseSymbol(a)}`) - stableHash(`${seed}:${nseSymbol(b)}`))
+    .slice(0, DEFAULT_SCAN_LIMIT);
+}
+
+async function loadUniverseForFreshScan() {
+  const meta = await api("/api/scanner/parameters");
+  state.universeRows = Array.isArray(meta.universe) ? meta.universe : [];
+  state.scanBasket = buildFreshScanBasket(state.universeRows);
+  if (!state.scanBasket.length) throw new Error("Mongo NSE universe is empty; reload NSE Master first.");
+}
+
+function renderBasketMeta() {
+  const node = el("basketMeta");
+  if (!node) return;
+  const total = state.universeRows.length || state.scanBasket.length || state.rows.length;
+  node.textContent = `Fresh NSE rotation: ${state.scanBasket.length || state.rows.length}/${total || 0}`;
 }
 
 function setNotice(message, tone = "info") {
@@ -467,7 +534,9 @@ function renderCandidates() {
   const node = el("candidateList");
   if (!node) return;
   const rows = visibleRows().slice(0, 80);
-  el("selectionCount").textContent = `${state.rows.length}`;
+  const total = state.universeRows.length || state.rows.length;
+  el("selectionCount").textContent = total ? `${state.rows.length}/${total}` : `${state.rows.length}`;
+  renderBasketMeta();
   if (!rows.length) {
     node.innerHTML = `<div class="empty-state">No stock rows matched the current filter. Refresh runs the Upstox scan.</div>`;
     return;
@@ -872,7 +941,9 @@ async function refreshScan() {
   try {
     state.ready = await api("/api/ready");
     await refreshUpstoxStatus();
+    await loadUniverseForFreshScan();
     renderRuntime();
+    renderBasketMeta();
   } catch (error) {
     state.lastError = error.message;
     setNotice(`Runtime check failed: ${error.message}`, "error");
@@ -881,12 +952,12 @@ async function refreshScan() {
   }
   await refreshMarketStrip();
   try {
-    const scan = await api("/api/scanner/run-upstox", { method: "POST", body: { horizon: state.horizon } });
+    const scan = await api("/api/scanner/run-upstox", { method: "POST", body: { horizon: state.horizon, universe: state.scanBasket } });
     state.scan = scan;
     state.rows = Array.isArray(scan.rows) ? scan.rows : [];
     const summary = scan.summary || {};
     const failures = Array.isArray(scan.failures) ? scan.failures.length : 0;
-    setNotice(`Upstox scan ${state.rows.length} rows | SELECT ${summary.SELECT || 0} | WATCH ${summary.WATCH || 0} | BLOCKED ${summary.BLOCKED || 0} | feed gaps ${failures}`, failures ? "warn" : "ok");
+    setNotice(`Fresh NSE scan ${state.rows.length}/${state.universeRows.length || state.rows.length} rows | SELECT ${summary.SELECT || 0} | WATCH ${summary.WATCH || 0} | BLOCKED ${summary.BLOCKED || 0} | feed gaps ${failures}`, failures ? "warn" : "ok");
     if (!state.selected || !state.rows.some((row) => row.symbol === state.selected.symbol)) {
       const first = sortedRows().find((row) => ["SELECT", "WATCH"].includes(row.decision)) || sortedRows()[0] || null;
       state.selected = first;
@@ -909,6 +980,7 @@ function renderAll() {
   renderSymbol();
   renderPiano();
   renderRuntime();
+  renderBasketMeta();
   renderOrders();
   if (state.activeParameter) renderParameterProof(state.activeParameter);
   window.lucide?.createIcons?.();
