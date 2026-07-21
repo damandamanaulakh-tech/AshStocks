@@ -15,7 +15,9 @@ const state = {
 
 const indexKeys = [
   { label: "NIFTY 50", key: "NSE_INDEX|Nifty 50" },
+  { label: "SENSEX", key: "BSE_INDEX|SENSEX" },
   { label: "NIFTY BANK", key: "NSE_INDEX|Nifty Bank" },
+  { label: "MIDCAP 150", key: "NSE_INDEX|Nifty Midcap 150" },
   { label: "INDIA VIX", key: "NSE_INDEX|India VIX" }
 ];
 
@@ -81,6 +83,19 @@ function setNotice(message, tone = "info") {
   if (!node) return;
   node.className = `notice-line ${tone}`;
   node.textContent = message;
+}
+
+function startClock() {
+  const node = el("marketClock");
+  if (!node) return;
+  const draw = () => {
+    const now = new Date();
+    const ist = now.toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata", hour12: false });
+    const weekday = now.toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata", weekday: "short" });
+    node.textContent = `${weekday} ${ist} IST`;
+  };
+  draw();
+  setInterval(draw, 1000);
 }
 
 async function api(path, options = {}) {
@@ -952,6 +967,7 @@ function bindUi() {
 
 document.addEventListener("DOMContentLoaded", async () => {
   bindUi();
+  startClock();
   renderMarketStrip();
   renderAll();
   window.lucide?.createIcons?.();
