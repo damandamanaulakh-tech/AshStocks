@@ -50,6 +50,10 @@
     installView();
     bind();
     await refresh();
+    window.setTimeout(switchToAm07, 100);
+    window.setTimeout(() => {
+      if (document.querySelector("#am07DeskView") && !document.querySelector("#am07DeskView.active")) switchToAm07();
+    }, 900);
   }
 
   function waitForShell() {
@@ -74,7 +78,7 @@
     button.dataset.am07Nav = "1";
     button.innerHTML = `<i data-lucide="candlestick-chart" aria-hidden="true"></i><span>AM07 Desk</span>`;
     button.addEventListener("click", switchToAm07);
-    nav.insertBefore(button, q1 || null);
+    nav.insertBefore(button, nav.firstElementChild || q1 || null);
     window.lucide?.createIcons();
   }
 
