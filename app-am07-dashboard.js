@@ -7,7 +7,7 @@
     selected: "",
     selectedParameter: "B22_P001",
     source: "starting",
-    message: "AM07 starting",
+    message: "ASH Stock starting",
     preview: false,
     loaded: false
   };
@@ -76,7 +76,7 @@
     button.className = "nav-item";
     button.type = "button";
     button.dataset.am07Nav = "1";
-    button.innerHTML = `<i data-lucide="candlestick-chart" aria-hidden="true"></i><span>AM07 Desk</span>`;
+    button.innerHTML = `<i data-lucide="candlestick-chart" aria-hidden="true"></i><span>ASH Stock</span>`;
     button.addEventListener("click", switchToAm07);
     nav.insertBefore(button, nav.firstElementChild || q1 || null);
     window.lucide?.createIcons();
@@ -92,7 +92,7 @@
     section.innerHTML = `
       <div class="am07-top">
         <div>
-          <span class="am07-label">Sourceborn AM07</span>
+          <span class="am07-label">Sourceborn Stocks</span>
           <strong>Broker-grade NSE dashboard sample</strong>
           <span id="am07Status">Starting</span>
         </div>
@@ -247,8 +247,8 @@
       stop_price: Number(data.get("stop_price")) || round(price * 0.94),
       risk_pct: 0.75,
       capital: 100000,
-      thesis: row.reason || row.paper_reason || "AM07 dashboard paper order",
-      candle_status: row.candle_status || "AM07_PARAMETER_REVIEW",
+      thesis: row.reason || row.paper_reason || "ASH Stock dashboard paper order",
+      candle_status: row.candle_status || "ASH_STOCK_PARAMETER_REVIEW",
       candle_patterns: row.candle_patterns || [],
       quote_source: state.preview ? "local dashboard sample" : state.source,
       source: "am07-dashboard",
