@@ -190,7 +190,7 @@
   }
 
   async function refresh() {
-    state.message = "Running scanner through current AshStocks API";
+    state.message = "Running scanner through current ASH Stock API";
     render();
     try {
       const payload = await api("/api/scanner/run-upstox", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ source: "am07-dashboard", limit: 200 }) });
@@ -198,7 +198,7 @@
     } catch (upstoxError) {
       try {
         const payload = await api("/api/scanner/run", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ source: "am07-dashboard", limit: 200 }) });
-        ingestScan(payload, "AshStocks scanner");
+        ingestScan(payload, "ASH Stock scanner");
       } catch (scanError) {
         if (!LOCAL_PREVIEW_ALLOWED) throw new Error(`Scanner blocked: ${scanError.message}`);
         state.preview = true;
@@ -360,7 +360,7 @@
   function renderOrders() {
     htmlSet("#am07Orders", state.orders.slice(0, 12).map((order) => `
       <tr><td>${time(order.created_at || order.time || Date.now())}</td><td>${html(order.symbol)}</td><td>${html(order.side || order.action || "BUY")}</td><td>${number(order.qty || order.quantity || 0)}</td><td>${rupee(order.fill_price || order.price || order.entry_price || 0)}</td><td>${html(order.status || order.lifecycle || "FILLED")}</td></tr>
-    `).join("") || `<tr><td colspan="6">No paper order yet in this AM07 view.</td></tr>`);
+    `).join("") || `<tr><td colspan="6">No paper order yet in this ASH Stock view.</td></tr>`);
   }
 
   function renderPiano() {
@@ -476,7 +476,7 @@
     document.querySelectorAll(".nav-item").forEach((button) => button.classList.remove("active"));
     document.querySelector("[data-am07-nav]")?.classList.add("active");
     const title = document.querySelector("#pageTitle");
-    if (title) title.textContent = "AM07 Desk";
+    if (title) title.textContent = "ASH Stock";
     if (!state.loaded) refresh().catch((error) => {
       state.message = error.message || String(error);
       render();

@@ -42,7 +42,7 @@
     section.innerHTML = `
       <div class="trade-hero">
         <div>
-          <span class="eyebrow">AM07 Advisor Engine</span>
+          <span class="eyebrow">ASH Stock Advisor Engine</span>
           <h3>Good morning, Trader</h3>
           <p id="paperTraderStamp">Advisor score, entry, target, stop, exit rule. Paper only.</p>
         </div>

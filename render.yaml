@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: ashstocks
+    name: ashstocks-b6jj
     runtime: node
     plan: free
     buildCommand: npm install

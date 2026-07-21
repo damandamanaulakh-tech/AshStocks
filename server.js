@@ -28,6 +28,12 @@ function mustReplace(source, search, replacement, label) {
 
 function patchServerSource(source) {
   let output = source;
+  output = output
+    .replaceAll("AshStocks Login", "ASH Stock Login")
+    .replaceAll("Private India Scanner", "Private NSE Paper Trading")
+    .replaceAll("<h1>AshStocks</h1>", "<h1>ASH Stock</h1>")
+    .replaceAll("Sign in to the Render app.", "Sign in to ASH Stock.")
+    .replaceAll("AshStocks running", "ASH Stock running");
   output = mustReplace(
     output,
     'const ROOT = path.dirname(fileURLToPath(import.meta.url));\nconst runtimeProcess = globalThis.process;',
