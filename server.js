@@ -15,6 +15,7 @@ import { applyCompetitiveFrameworkPatches } from "./server-competitive-framework
 import { applyDataIntelligencePatches } from "./server-data-intelligence-patch.mjs";
 import { applyIntelligenceScorePatches } from "./server-intelligence-score-patch.mjs";
 import { applyUpstoxQuotePatches } from "./server-upstox-quote-patch.mjs";
+import { applyUpstoxOAuthPatches } from "./server-upstox-oauth-patch.mjs";
 import { applySuspendedEmptyScanPatch } from "./server-suspended-empty-patch.mjs";
 
 const runtimeProcess = globalThis.process;
@@ -194,6 +195,7 @@ function startDataBankBootstrap() {
   output = applyCompetitiveFrameworkPatches(output, mustReplace);
   output = applyDataIntelligencePatches(output, mustReplace);
   output = applyIntelligenceScorePatches(output, mustReplace);
+  output = applyUpstoxOAuthPatches(output, mustReplace);
   output = applyUpstoxQuotePatches(output, mustReplace);
   output = applySuspendedEmptyScanPatch(output, mustReplace);
   return output;

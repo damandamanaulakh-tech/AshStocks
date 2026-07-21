@@ -7,6 +7,7 @@ const state = {
   selected: null,
   selectedQuote: null,
   orders: null,
+  upstoxStatus: null,
   activeSection: "dashboard",
   horizon: "intraday",
   lastError: "",
@@ -776,15 +777,15 @@ function renderScreener() {
 function renderRuntime() {
   const ready = state.ready || {};
   const bank = ready.data_bank || {};
-  const upstox = ready.upstox || {};
+  const upstox = state.upstoxStatus || ready.upstox || {};
   const runtimeRows = [
     ["Render URL", location.origin],
     ["Storage", ready.storage || "checking"],
     ["Mongo source", ready.source || ready.warning || "Render env pending"],
     ["NSE universe", `${bank.universe_count || 0} rows`],
     ["Instrument keys", `${bank.rows_with_instrument_key || 0} rows`],
-    ["Upstox token", upstox.token_visible ? "visible to server" : "not visible to server"],
-    ["Upstox key", upstox.key_visible ? "visible to server" : "not visible to server"]
+    ["Upstox token", upstox.token_visible ? `active via ${upstox.token_source || "server"}` : "token absent"],
+    ["Upstox key", upstox.key_visible || upstox.api_key_visible ? "active in server env" : "key absent"]
   ];
   el("runtimeDetails").innerHTML = runtimeRows.map(([k, v]) => `<div class="detail-row"><span>${escapeHtml(k)}</span><strong>${escapeHtml(v)}</strong></div>`).join("");
   el("safetyDetails").innerHTML = [
@@ -796,6 +797,33 @@ function renderRuntime() {
   ].map(([k, v]) => `<div class="detail-row"><span>${escapeHtml(k)}</span><strong>${escapeHtml(v)}</strong></div>`).join("");
   const storage = ready.storage === "mongodb" ? "MongoDB storage" : `${ready.storage || "Storage check"} - fix Mongo env if this is not mongodb`;
   el("railConnection").textContent = storage;
+  renderUpstoxSettings();
+}
+
+function renderUpstoxSettings() {
+  const node = el("upstoxDetails");
+  if (!node) return;
+  const status = state.upstoxStatus || state.ready?.upstox || {};
+  const callbackUrl = status.callback_url || `${location.origin}/api/upstox/callback`;
+  const rows = [
+    ["Token source", status.token_visible ? (status.token_source || "server") : "token absent"],
+    ["Saved at", status.token_saved_at ? isoDate(status.token_saved_at) : "env token or no stored token"],
+    ["Expires at", status.token_expires_at ? isoDate(status.token_expires_at) : "not supplied by token response"],
+    ["OAuth configured", status.oauth_configured ? "client key and secret active" : "client key/secret missing"],
+    ["Callback URL", callbackUrl],
+    ["Secret display", status.token_printed === false ? "token never printed" : "token hidden"]
+  ];
+  node.innerHTML = rows.map(([k, v]) => `<div class="detail-row"><span>${escapeHtml(k)}</span><strong>${escapeHtml(v)}</strong></div>`).join("");
+}
+
+async function refreshUpstoxStatus() {
+  try {
+    const payload = await api("/api/upstox/status");
+    state.upstoxStatus = payload.status || null;
+  } catch (error) {
+    state.upstoxStatus = { token_visible: false, error: error.message, callback_url: `${location.origin}/api/upstox/callback`, token_printed: false };
+  }
+  renderUpstoxSettings();
 }
 
 async function loadOrders() {
@@ -843,6 +871,7 @@ async function refreshScan() {
   setNotice("Reading Render runtime, Mongo state, and Upstox candles", "info");
   try {
     state.ready = await api("/api/ready");
+    await refreshUpstoxStatus();
     renderRuntime();
   } catch (error) {
     state.lastError = error.message;
@@ -949,6 +978,48 @@ async function submitPaperOrder(event) {
   }
 }
 
+async function startUpstoxOAuth() {
+  try {
+    const payload = await api("/api/upstox/oauth/start");
+    if (!payload.authorize_url) throw new Error("authorize_url_missing");
+    window.location.href = payload.authorize_url;
+  } catch (error) {
+    setNotice(`Upstox OAuth failed: ${error.message}`, "error");
+    await refreshUpstoxStatus();
+  }
+}
+
+async function submitUpstoxToken(event) {
+  event.preventDefault();
+  const tokenInput = el("upstoxAccessToken");
+  const expiryInput = el("upstoxTokenExpiry");
+  const resultNode = el("upstoxTokenResult");
+  const token = String(tokenInput?.value || "").trim();
+  if (!token) {
+    setNotice("Upstox token save blocked: paste the access token first", "error");
+    return;
+  }
+  const expiresIn = numberValue(expiryInput?.value);
+  try {
+    const payload = await api("/api/upstox/token", {
+      method: "POST",
+      body: {
+        access_token: token,
+        expires_in: expiresIn
+      }
+    });
+    tokenInput.value = "";
+    if (expiryInput) expiryInput.value = "";
+    state.upstoxStatus = payload.status || null;
+    if (resultNode) resultNode.textContent = `Token saved in Mongo at ${isoDate(state.upstoxStatus?.token_saved_at)}`;
+    setNotice("Upstox token saved in Mongo. Scanner and quotes will use it now.", "ok");
+    renderRuntime();
+  } catch (error) {
+    if (resultNode) resultNode.textContent = `Token save failed: ${error.message}`;
+    setNotice(`Upstox token save failed: ${error.message}`, "error");
+  }
+}
+
 function bindUi() {
   all(".rail-item[data-section]").forEach((button) => button.addEventListener("click", () => switchSection(button.dataset.section)));
   all(".tab-button").forEach((button) => button.addEventListener("click", () => {
@@ -958,6 +1029,8 @@ function bindUi() {
   }));
   el("refreshBtn")?.addEventListener("click", refreshScan);
   el("refreshOrdersBtn")?.addEventListener("click", loadOrders);
+  el("upstoxConnectBtn")?.addEventListener("click", startUpstoxOAuth);
+  el("upstoxTokenForm")?.addEventListener("submit", submitUpstoxToken);
   el("symbolSearch")?.addEventListener("input", () => { renderCandidates(); renderScreener(); });
   el("decisionFilter")?.addEventListener("change", () => { renderCandidates(); renderScreener(); });
   el("exportBtn")?.addEventListener("click", exportCsv);

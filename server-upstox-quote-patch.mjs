@@ -105,7 +105,8 @@ async function resolveUpstoxQuoteInput(url, body = {}) {
 async function fetchUpstoxMarketQuotes(keys = []) {
   const instrumentKeys = normalizeQuoteKeys(keys);
   if (!instrumentKeys.length) throw new Error("instrument_key_required");
-  if (!ENV.UPSTOX_ACCESS_TOKEN) throw new Error("upstox_token_missing");
+  const accessToken = await currentUpstoxAccessToken();
+  if (!accessToken) throw new Error("upstox_token_missing");
   const cacheKey = instrumentKeys.join(",");
   if (upstoxQuoteCache.payload && upstoxQuoteCache.key === cacheKey && Date.now() - upstoxQuoteCache.at < UPSTOX_QUOTE_CACHE_MS) {
     return upstoxQuoteCache.payload;
@@ -114,7 +115,7 @@ async function fetchUpstoxMarketQuotes(keys = []) {
   const response = await fetch(UPSTOX_FULL_MARKET_QUOTE_URL + "?instrument_key=" + query, {
     headers: {
       accept: "application/json",
-      authorization: "Bearer " + ENV.UPSTOX_ACCESS_TOKEN
+      authorization: "Bearer " + accessToken
     }
   });
   const text = await response.text();
@@ -138,7 +139,7 @@ async function fetchUpstoxMarketQuotes(keys = []) {
     quotes,
     failures: instrumentKeys.filter((key) => !quotes.some((quote) => quote.instrument_key === key || quote.instrument_key === key.replace("|", ":"))),
     safety: { paper_only: true, live_orders: false, broker_write_enabled: false, token_printed: false },
-    status: upstoxQuotePublicStatus()
+    status: await upstoxRuntimeStatus()
   };
   upstoxQuoteCache = { at: Date.now(), key: cacheKey, payload: result };
   return result;
@@ -154,7 +155,7 @@ async function upstoxQuoteResponse(url, req) {
       error: "instrument_key_required",
       symbol: input.symbol,
       message: "Run NSE Master first or pass instrument_key=NSE_EQ|...",
-      status: upstoxQuotePublicStatus(),
+      status: await upstoxRuntimeStatus(),
       safety: { paper_only: true, live_orders: false, broker_write_enabled: false, token_printed: false }
     };
   }
@@ -169,7 +170,7 @@ async function upstoxQuoteResponse(url, req) {
       requested_keys: input.keys,
       quotes: [],
       failures: input.keys,
-      status: upstoxQuotePublicStatus(),
+      status: await upstoxRuntimeStatus(),
       safety: { paper_only: true, live_orders: false, broker_write_enabled: false, token_printed: false }
     };
   }
@@ -203,7 +204,7 @@ async function streamUpstoxQuotes(url, req, res) {
     broker_write_enabled: false,
     token_printed: false
   };
-  writeSseEvent(res, "status", { ...streamMeta, status: upstoxQuotePublicStatus() });
+  writeSseEvent(res, "status", { ...streamMeta, status: await upstoxRuntimeStatus() });
 
   if (!keys.length) {
     writeSseEvent(res, "error", { ...streamMeta, ok: false, error: "instrument_key_required", message: "Pass instrument_key or symbol. No fake stream started." });

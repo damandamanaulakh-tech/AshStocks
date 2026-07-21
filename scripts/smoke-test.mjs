@@ -13,6 +13,7 @@ const Q1_INPUTS = [
 ];
 const STATE_FILE = path.join(ROOT, "data", "app_state.json");
 const SCAN_LEDGER_FILE = path.join(ROOT, "data", "scan_ledger.jsonl");
+const UPSTOX_AUTH_FILE = path.join(ROOT, "data", "upstox_auth.json");
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -125,7 +126,8 @@ console.log(JSON.stringify(result));
 async function main() {
   globalThis.__ASH_STOCK_ENV = {
     ...process.env,
-    UPSTOX_API_KEY: "",
+    UPSTOX_API_KEY: "smoke-key",
+    UPSTOX_API_SECRET: "smoke-secret",
     UPSTOX_ACCESS_TOKEN: "",
     NODE_ENV: "test",
     REQUIRE_AUTH: "false",
@@ -299,9 +301,34 @@ async function main() {
     assert(q1RunGuard.response.status === 409, "q1 run should be blocked outside Render");
     assert(q1RunGuard.body.error === "render_only_endpoint", "q1 run guard should be render_only_endpoint");
 
-    console.log(JSON.stringify({ ok: true, checks: ["mongo-file-fallback", "data-bank-status", "scan-ledger", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "upstox-guard", "paper-engine-status", "paper-engine-guard", "q1-status", "q1-upload", "q1-render-guard"] }));
+    const upstoxStatusBefore = await request("/api/upstox/status");
+    assert(upstoxStatusBefore.response.status === 200, "Upstox status should be readable");
+    assert(upstoxStatusBefore.body.status.oauth_configured === true, "Upstox OAuth should see client key and secret");
+    assert(upstoxStatusBefore.body.status.token_visible === false, "Upstox status should not invent a token");
+    assert(upstoxStatusBefore.body.status.callback_url === `${BASE}/api/upstox/callback`, "Upstox callback URL should match app origin");
+
+    const upstoxOAuthStart = await request("/api/upstox/oauth/start");
+    assert(upstoxOAuthStart.response.status === 200, "Upstox OAuth start should return an authorize URL");
+    assert(upstoxOAuthStart.body.authorize_url.startsWith("https://api.upstox.com/v2/login/authorization/dialog?"), "Upstox OAuth start should use the official dialog endpoint");
+    assert(upstoxOAuthStart.body.authorize_url.includes(encodeURIComponent(`${BASE}/api/upstox/callback`)), "Upstox OAuth start should include the callback URL");
+
+    const tokenSave = await request("/api/upstox/token", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ access_token: "smoke-upstox-token", expires_in: 3600 })
+    });
+    assert(tokenSave.response.status === 200, "Upstox token paste should save");
+    assert(tokenSave.body.status.token_visible === true, "saved Upstox token should be visible as presence only");
+    assert(tokenSave.body.status.token_source === "manual_paste", "saved Upstox token should record manual source");
+    assert(!JSON.stringify(tokenSave.body).includes("smoke-upstox-token"), "Upstox token must never be printed");
+
+    const upstoxStatusAfter = await request("/api/upstox/status");
+    assert(upstoxStatusAfter.body.status.token_visible === true, "Upstox status should detect saved token");
+    assert(upstoxStatusAfter.body.status.token_source === "manual_paste", "Upstox status should read token from store");
+
+    console.log(JSON.stringify({ ok: true, checks: ["mongo-file-fallback", "data-bank-status", "scan-ledger", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "upstox-guard", "paper-engine-status", "paper-engine-guard", "q1-status", "q1-upload", "q1-render-guard", "upstox-oauth-start", "upstox-token-paste"] }));
   } finally {
-    await Promise.all([...Q1_INPUTS, STATE_FILE, SCAN_LEDGER_FILE].map((file) => fs.unlink(file).catch((error) => {
+    await Promise.all([...Q1_INPUTS, STATE_FILE, SCAN_LEDGER_FILE, UPSTOX_AUTH_FILE].map((file) => fs.unlink(file).catch((error) => {
       if (error.code !== "ENOENT") throw error;
     })));
     await new Promise((resolve) => server.close(resolve));
