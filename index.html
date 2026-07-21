@@ -5,198 +5,308 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>ASH Stock</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="./styles.css" />
-    <link rel="stylesheet" href="./market-context.css" />
-    <link rel="stylesheet" href="./competitive-framework.css" />
-    <link rel="stylesheet" href="./data-intelligence.css" />
-    <link rel="stylesheet" href="./broker-shell.css" />
-    <link rel="stylesheet" href="./am07-dashboard.css" />
+    <link rel="stylesheet" href="/styles.css" />
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
-    <script src="./app.js" defer></script>
-    <script src="./app-paper-trader.js" defer></script>
-    <script src="./app-broker-shell.js" defer></script>
-    <script src="./app-broker-ledger-bridge.js" defer></script>
-    <script src="./app-broker-nav-guard.js" defer></script>
-    <script src="./app-parameter-piano.js" defer></script>
-    <script src="./app-market-context.js" defer></script>
-    <script src="./app-competitive-framework.js" defer></script>
-    <script src="./app-data-intelligence.js" defer></script>
-    <script src="./app-autoscan.js" defer></script>
-    <script src="./app-am07-dashboard.js" defer></script>
+    <script src="/app.js" defer></script>
   </head>
   <body>
-    <div class="app-shell">
-      <aside class="sidebar" aria-label="Primary">
-        <div class="brand-block">
+    <div class="terminal-shell">
+      <aside class="left-rail" aria-label="ASH Stock navigation">
+        <div class="brand-row">
           <div class="brand-mark">AS</div>
           <div>
             <h1>ASH Stock</h1>
-            <p id="connectionLabel">Connecting</p>
+            <p id="railConnection">Connecting</p>
           </div>
         </div>
 
-        <nav class="nav-list" aria-label="Views">
-          <button class="nav-item active" type="button" data-view="scanner">
+        <nav class="rail-nav" aria-label="Primary">
+          <button class="rail-item active" type="button" data-section="dashboard">
+            <i data-lucide="layout-dashboard" aria-hidden="true"></i>
+            <span>Dashboard</span>
+          </button>
+          <button class="rail-item" type="button" data-section="screener">
             <i data-lucide="radar" aria-hidden="true"></i>
-            <span>Scanner</span>
+            <span>Screener</span>
           </button>
-          <button class="nav-item" type="button" data-view="parameters">
-            <i data-lucide="sliders-horizontal" aria-hidden="true"></i>
-            <span>Parameters</span>
+          <button class="rail-item" type="button" data-section="piano">
+            <i data-lucide="activity" aria-hidden="true"></i>
+            <span>Signal Piano</span>
           </button>
-          <button class="nav-item" type="button" data-view="framework">
-            <i data-lucide="workflow" aria-hidden="true"></i>
-            <span>Framework</span>
+          <button class="rail-item" type="button" data-section="orders">
+            <i data-lucide="briefcase-business" aria-hidden="true"></i>
+            <span>Paper Orders</span>
           </button>
-          <button class="nav-item" type="button" data-view="data">
-            <i data-lucide="database" aria-hidden="true"></i>
-            <span>Data</span>
+          <button class="rail-item" type="button" data-section="settings">
+            <i data-lucide="settings" aria-hidden="true"></i>
+            <span>Settings</span>
           </button>
-          <a class="nav-item" href="/q1">
+          <a class="rail-item" href="/q1">
             <i data-lucide="upload-cloud" aria-hidden="true"></i>
             <span>Q1 Runner</span>
           </a>
         </nav>
 
-        <div class="sidebar-panel">
-          <span class="eyebrow">Upstox</span>
-          <strong id="upstoxLabel">Checking</strong>
-          <p id="runtimeLabel">Render backend</p>
-        </div>
+        <section class="rail-status" aria-label="Runtime status">
+          <span class="mini-label">Mode</span>
+          <strong>Paper execution</strong>
+          <p>Live broker orders disabled</p>
+        </section>
       </aside>
 
-      <main class="main-panel">
-        <header class="topbar">
+      <main class="workspace">
+        <header class="top-bar">
           <div>
-            <span class="eyebrow">India Selection Engine</span>
-            <h2 id="pageTitle">Scanner</h2>
+            <span class="mini-label">NSE Stock Selection</span>
+            <h2 id="sectionTitle">Dashboard</h2>
           </div>
-          <div class="toolbar">
-            <button class="secondary-button" id="defaultPoolBtn" type="button">
-              <i data-lucide="list-restart" aria-hidden="true"></i>
-              <span>Curated</span>
+          <div class="top-controls">
+            <div class="mode-tabs" role="group" aria-label="Trade horizon">
+              <button class="tab-button active" type="button" data-horizon="intraday">Intraday</button>
+              <button class="tab-button" type="button" data-horizon="swing">Swing</button>
+              <button class="tab-button" type="button" data-horizon="positional">Positional</button>
+              <button class="tab-button" type="button" data-horizon="portfolio">Portfolio</button>
+            </div>
+            <button class="ghost-button active" type="button" id="paperModeBtn">
+              <i data-lucide="wallet-cards" aria-hidden="true"></i>
+              <span>Paper</span>
             </button>
-            <button class="secondary-button" id="masterPoolBtn" type="button">
-              <i data-lucide="database-zap" aria-hidden="true"></i>
-              <span>NSE Master</span>
+            <button class="ghost-button locked" type="button" disabled>
+              <i data-lucide="lock" aria-hidden="true"></i>
+              <span>Live locked</span>
             </button>
-            <button class="secondary-button" id="runScanBtn" type="button">
-              <i data-lucide="play" aria-hidden="true"></i>
-              <span>Run</span>
-            </button>
-            <button class="primary-button" id="runUpstoxBtn" type="button">
-              <i data-lucide="satellite-dish" aria-hidden="true"></i>
-              <span>Upstox</span>
-            </button>
-            <button class="icon-button" id="exportBtn" type="button" title="Export CSV" aria-label="Export CSV">
-              <i data-lucide="download" aria-hidden="true"></i>
-            </button>
-            <button class="icon-button" id="themeBtn" type="button" title="Toggle theme" aria-label="Toggle theme">
-              <i data-lucide="moon" aria-hidden="true"></i>
+            <button class="icon-button" type="button" id="refreshBtn" aria-label="Refresh">
+              <i data-lucide="refresh-cw" aria-hidden="true"></i>
             </button>
           </div>
         </header>
 
-        <section class="alert-line" id="messageLine" role="status" aria-live="polite">Loading scanner</section>
+        <section class="notice-line" id="noticeLine" role="status" aria-live="polite">
+          Starting ASH Stock engine
+        </section>
 
-        <section class="view active" id="scannerView" data-view-panel="scanner">
-          <div class="summary-grid" id="summaryGrid"></div>
+        <section class="section active" id="dashboardSection" data-panel="dashboard">
+          <div class="market-strip" id="marketStrip"></div>
 
-          <div class="workband controls-band">
-            <label class="field compact-field">
-              <span>Search</span>
-              <input id="searchInput" type="search" autocomplete="off" aria-label="Search NSE symbol, company, or sector" />
-            </label>
-            <label class="field compact-field">
-              <span>Decision</span>
-              <select id="decisionFilter">
-                <option value="ALL">All</option>
-                <option value="SELECT">SELECT</option>
-                <option value="WATCH">WATCH</option>
-                <option value="REJECT">REJECT</option>
-                <option value="BLOCKED">BLOCKED</option>
-                <option value="DATA_NEEDED">DATA GAP</option>
-              </select>
-            </label>
-            <label class="field compact-field">
-              <span>Sector</span>
-              <select id="sectorFilter"><option value="ALL">All</option></select>
-            </label>
-            <label class="field compact-field">
-              <span>From</span>
-              <input id="fromDate" type="date" />
-            </label>
-            <label class="field compact-field">
-              <span>To</span>
-              <input id="toDate" type="date" />
-            </label>
+          <div class="broker-grid">
+            <section class="panel watch-panel">
+              <div class="panel-head">
+                <div>
+                  <span class="mini-label">Universe</span>
+                  <h3>Selection Tape</h3>
+                </div>
+                <strong id="selectionCount">0</strong>
+              </div>
+              <label class="search-box" for="symbolSearch">
+                <i data-lucide="search" aria-hidden="true"></i>
+                <input id="symbolSearch" type="search" autocomplete="off" aria-label="Search NSE symbol" />
+              </label>
+              <div class="watch-list" id="candidateList"></div>
+            </section>
+
+            <section class="panel chart-panel">
+              <div class="panel-head">
+                <div>
+                  <span class="mini-label">Symbol Workspace</span>
+                  <h3 id="symbolTitle">Select a stock</h3>
+                </div>
+                <div class="price-stack">
+                  <strong id="symbolPrice">Scan required</strong>
+                  <span id="symbolMeta">Pick a scanned NSE symbol</span>
+                </div>
+              </div>
+              <canvas id="priceChart" width="980" height="420" aria-label="Selected stock candles"></canvas>
+              <div class="signal-chips" id="signalChips"></div>
+            </section>
+
+            <aside class="right-stack">
+              <section class="panel">
+                <div class="panel-head">
+                  <div>
+                    <span class="mini-label">Ranking</span>
+                    <h3>10-Factor Score</h3>
+                  </div>
+                  <strong id="factorTotal">0 / 100</strong>
+                </div>
+                <div class="factor-list" id="factorList"></div>
+              </section>
+
+              <section class="panel">
+                <div class="panel-head">
+                  <div>
+                    <span class="mini-label">Execution</span>
+                    <h3>Paper Ticket</h3>
+                  </div>
+                  <span class="status-pill good">No real money</span>
+                </div>
+                <form class="ticket-grid" id="paperTicket">
+                  <label>
+                    <span>Symbol</span>
+                    <input name="symbol" id="ticketSymbol" required />
+                  </label>
+                  <label>
+                    <span>Side</span>
+                    <select name="side" id="ticketSide">
+                      <option value="BUY">BUY</option>
+                      <option value="SELL">SELL</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Order</span>
+                    <select name="order_type" id="ticketOrderType">
+                      <option value="MARKET">MARKET</option>
+                      <option value="LIMIT">LIMIT</option>
+                      <option value="GTT">GTT</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Qty</span>
+                    <input name="qty" id="ticketQty" type="number" min="1" step="1" value="1" />
+                  </label>
+                  <label>
+                    <span>Limit</span>
+                    <input name="price" id="ticketPrice" type="number" min="0" step="0.05" />
+                  </label>
+                  <label>
+                    <span>Stop</span>
+                    <input name="stop_price" id="ticketStop" type="number" min="0" step="0.05" />
+                  </label>
+                  <label>
+                    <span>Target</span>
+                    <input name="target_price" id="ticketTarget" type="number" min="0" step="0.05" />
+                  </label>
+                  <label>
+                    <span>Product</span>
+                    <select name="product" id="ticketProduct">
+                      <option value="Paper Intraday">Intraday</option>
+                      <option value="Paper Swing">Swing</option>
+                      <option value="Paper Positional">Positional</option>
+                    </select>
+                  </label>
+                  <button class="submit-button" type="submit">
+                    <i data-lucide="send" aria-hidden="true"></i>
+                    <span>Place Paper Order</span>
+                  </button>
+                </form>
+              </section>
+            </aside>
           </div>
 
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Symbol</th>
-                  <th>Sector</th>
-                  <th>Decision</th>
-                  <th>Score</th>
-                  <th>Mom / Qual</th>
-                  <th>6M / 12M</th>
-                  <th>Target</th>
-                  <th>Paper</th>
-                  <th>Liquidity</th>
-                  <th>Reason</th>
-                </tr>
-              </thead>
-              <tbody id="resultBody"></tbody>
-            </table>
+          <section class="panel piano-panel">
+            <div class="panel-head">
+              <div>
+                <span class="mini-label">Parameter Hits</span>
+                <h3>Signal Piano</h3>
+              </div>
+              <strong id="pianoCoverage">0 evaluated</strong>
+            </div>
+            <div class="piano-stage" id="pianoStage"></div>
+          </section>
+
+          <div class="lower-grid">
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <span class="mini-label">Reasoning</span>
+                  <h3>Why This Stock</h3>
+                </div>
+              </div>
+              <div class="detail-list" id="reasonList"></div>
+            </section>
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <span class="mini-label">Paper Book</span>
+                  <h3>Orders And Positions</h3>
+                </div>
+                <button class="small-button" type="button" id="refreshOrdersBtn">Refresh</button>
+              </div>
+              <div class="book-table" id="paperBook"></div>
+            </section>
           </div>
         </section>
 
-        <section class="view" id="parametersView" data-view-panel="parameters">
-          <div class="section-head">
-            <h3>Parameter Bank</h3>
-            <span id="parameterCount">0 active</span>
-          </div>
-          <div class="parameter-grid" id="parameterGrid"></div>
-        </section>
-
-        <section class="view" id="frameworkView" data-view-panel="framework">
-          <div class="section-head">
-            <h3>Sourceborn Framework</h3>
-            <span id="frameworkCount">0 layers</span>
-          </div>
-          <div id="frameworkTruth"></div>
-          <div class="framework-grid" id="frameworkGrid"></div>
-          <div class="section-head feed-head">
-            <h3>Required Feeds</h3>
-          </div>
-          <div class="feed-grid" id="feedGrid"></div>
-        </section>
-
-        <section class="view" id="dataView" data-view-panel="data">
-          <div class="section-head">
-            <h3>Stock Pool</h3>
-            <div class="inline-actions">
-              <button class="secondary-button" id="templateBtn" type="button">
-                <i data-lucide="file-spreadsheet" aria-hidden="true"></i>
-                <span>Template</span>
-              </button>
-              <button class="secondary-button" id="applyCsvBtn" type="button">
-                <i data-lucide="check" aria-hidden="true"></i>
-                <span>Apply</span>
-              </button>
+        <section class="section" id="screenerSection" data-panel="screener">
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <span class="mini-label">Full NSE Filter</span>
+                <h3>Screener</h3>
+              </div>
+              <div class="inline-controls">
+                <select id="decisionFilter" aria-label="Decision filter">
+                  <option value="ALL">All decisions</option>
+                  <option value="SELECT">SELECT</option>
+                  <option value="WATCH">WATCH</option>
+                  <option value="BLOCKED">BLOCKED</option>
+                  <option value="DATA_GAP">DATA GAP</option>
+                </select>
+                <button class="small-button" type="button" id="exportBtn">Export CSV</button>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Symbol</th>
+                    <th>Decision</th>
+                    <th>Score</th>
+                    <th>Momentum</th>
+                    <th>6M / 12M</th>
+                    <th>Liquidity</th>
+                    <th>Reason</th>
+                  </tr>
+                </thead>
+                <tbody id="screenerBody"></tbody>
+              </table>
             </div>
           </div>
-          <div class="data-grid">
-            <label class="field file-field">
-              <span>CSV Upload</span>
-              <input id="csvFile" type="file" accept=".csv,text/csv" />
-            </label>
-            <label class="field text-field">
-              <span>CSV Paste</span>
-              <textarea id="csvInput" spellcheck="false"></textarea>
-            </label>
+        </section>
+
+        <section class="section" id="pianoSection" data-panel="piano">
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <span class="mini-label">Clickable Parameter Proof</span>
+                <h3 id="parameterTitle">Select a parameter</h3>
+              </div>
+            </div>
+            <div class="parameter-proof" id="parameterProof"></div>
+          </div>
+        </section>
+
+        <section class="section" id="ordersSection" data-panel="orders">
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <span class="mini-label">Paper Execution</span>
+                <h3>Lifecycle Ledger</h3>
+              </div>
+            </div>
+            <div class="book-table" id="ordersLedger"></div>
+          </div>
+        </section>
+
+        <section class="section" id="settingsSection" data-panel="settings">
+          <div class="settings-grid">
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <span class="mini-label">Data Sources</span>
+                  <h3>Runtime</h3>
+                </div>
+              </div>
+              <div class="detail-list" id="runtimeDetails"></div>
+            </section>
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <span class="mini-label">Safety</span>
+                  <h3>Execution Lock</h3>
+                </div>
+              </div>
+              <div class="detail-list" id="safetyDetails"></div>
+            </section>
           </div>
         </section>
       </main>

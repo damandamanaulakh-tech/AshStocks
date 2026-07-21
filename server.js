@@ -29,6 +29,9 @@ function mustReplace(source, search, replacement, label) {
 function patchServerSource(source) {
   let output = source;
   output = output
+    .replaceAll('const MONGO_URI_KEYS = ["MONGODB_URI", "MONGO_URI", "DATABASE_URL"];', 'const MONGO_URI_KEYS = ["MONGODB_URI", "MONGO_URI", "MONGO_URL", "DATABASE_URL"];')
+    .replaceAll("Set MONGODB_URI or MONGO_URI in Render.", "Set MONGODB_URI, MONGO_URI, or MONGO_URL in Render.");
+  output = output
     .replaceAll("AshStocks Login", "ASH Stock Login")
     .replaceAll("Private India Scanner", "Private NSE Paper Trading")
     .replaceAll("<h1>AshStocks</h1>", "<h1>ASH Stock</h1>")
@@ -167,6 +170,18 @@ function startDataBankBootstrap() {
     'export function createServer() {\n  startPaperEngineScheduler();',
     'export function createServer() {\n  startDataBankBootstrap();\n  startPaperEngineScheduler();',
     'start bootstrap'
+  );
+  output = mustReplace(
+    output,
+    '    instrument_key: row.instrument_key,\n    decision,',
+    '    instrument_key: row.instrument_key,\n    candles: Array.isArray(row.candles) ? row.candles.slice(-260) : [],\n    decision,',
+    'include candle evidence in scanner rows'
+  );
+  output = mustReplace(
+    output,
+    '  const fetchedRows = await Promise.all(\n    baseRows.map(async (row) => {\n      try {\n        const candles = await fetchUpstoxCandles(row.instrument_key, from, to);\n        return { ...row, candles, data_source: "Upstox historical candles" };\n      } catch (error) {\n        return { ...row, candles: [], fetch_error: error.message, data_source: "Upstox historical candles" };\n      }\n    })\n  );',
+    '  const paceMs = Math.min(3000, Math.max(0, Math.floor(finiteOr(ENV.UPSTOX_SCAN_PACE_MS, 300))));\n  const retryMs = Math.min(15000, Math.max(1000, Math.floor(finiteOr(ENV.UPSTOX_SCAN_RETRY_MS, 2500))));\n  const fetchedRows = [];\n  for (let index = 0; index < baseRows.length; index += 1) {\n    const row = baseRows[index];\n    if (index > 0 && paceMs) await new Promise((resolve) => setTimeout(resolve, paceMs));\n    try {\n      const candles = await fetchUpstoxCandles(row.instrument_key, from, to);\n      fetchedRows.push({ ...row, candles, data_source: "Upstox historical candles" });\n    } catch (error) {\n      if (/429|rate limit|1015/i.test(error.message || "")) {\n        await new Promise((resolve) => setTimeout(resolve, retryMs));\n        try {\n          const candles = await fetchUpstoxCandles(row.instrument_key, from, to);\n          fetchedRows.push({ ...row, candles, data_source: "Upstox historical candles", retry_after_rate_limit: true });\n          continue;\n        } catch (retryError) {\n          fetchedRows.push({ ...row, candles: [], fetch_error: retryError.message, rate_limited: true, data_source: "Upstox historical candles" });\n          continue;\n        }\n      }\n      fetchedRows.push({ ...row, candles: [], fetch_error: error.message, data_source: "Upstox historical candles" });\n    }\n  }',
+    'pace Upstox candle fetches'
   );
   output = applyAdvancedScannerPatches(output, mustReplace);
   output = applySelectionFlowPatches(output, mustReplace);

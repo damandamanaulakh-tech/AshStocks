@@ -13,14 +13,14 @@ export function applyAdvancedScannerPatches(output, mustReplace) {
   output = mustReplace(
     output,
     '    turnoverCrMin: 5,\n    correlationThreshold: 0.85,',
-    '    turnoverCrMin: 5,\n    minReturn6mPct: 8,\n    minReturn12mPct: 12,\n    maxVol252Pct: 55,\n    targetPotentialHardGate: true,\n    correlationThreshold: 0.85,',
+    '    turnoverCrMin: 5,\n    minReturn6mPct: 8,\n    minReturn12mPct: 12,\n    maxVol252Pct: 55,\n    targetPotentialHardGate: false,\n    correlationThreshold: 0.85,',
     'advanced scanner default settings'
   );
 
   output = mustReplace(
     output,
     '    turnoverCrMin: finiteOr(input.turnoverCrMin ?? input.min_rupee_volume_cr, 5),\n    correlationThreshold: finiteOr(input.correlationThreshold ?? input.correlation_threshold, 0.85),',
-    '    turnoverCrMin: finiteOr(input.turnoverCrMin ?? input.min_rupee_volume_cr, 5),\n    minReturn6mPct: finiteOr(input.minReturn6mPct ?? input.min_return_6m_pct, 8),\n    minReturn12mPct: finiteOr(input.minReturn12mPct ?? input.min_return_12m_pct, 12),\n    maxVol252Pct: finiteOr(input.maxVol252Pct ?? input.max_252d_vol_pct, 55),\n    targetPotentialHardGate: parseBoolean(input.targetPotentialHardGate ?? input.target_potential_hard_gate ?? true),\n    correlationThreshold: finiteOr(input.correlationThreshold ?? input.correlation_threshold, 0.85),',
+    '    turnoverCrMin: finiteOr(input.turnoverCrMin ?? input.min_rupee_volume_cr, 5),\n    minReturn6mPct: finiteOr(input.minReturn6mPct ?? input.min_return_6m_pct, 8),\n    minReturn12mPct: finiteOr(input.minReturn12mPct ?? input.min_return_12m_pct, 12),\n    maxVol252Pct: finiteOr(input.maxVol252Pct ?? input.max_252d_vol_pct, 55),\n    targetPotentialHardGate: parseBoolean(input.targetPotentialHardGate ?? input.target_potential_hard_gate ?? false),\n    correlationThreshold: finiteOr(input.correlationThreshold ?? input.correlation_threshold, 0.85),',
     'advanced scanner normalized settings'
   );
 
