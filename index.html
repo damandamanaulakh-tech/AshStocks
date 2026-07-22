@@ -82,6 +82,10 @@
               <i data-lucide="database-zap" aria-hidden="true"></i>
               <span>NSE Master</span>
             </button>
+            <button class="ghost-button action" type="button" id="paperEngineBtn">
+              <i data-lucide="play-circle" aria-hidden="true"></i>
+              <span>Paper Engine</span>
+            </button>
             <button class="icon-button" type="button" id="refreshBtn" aria-label="Refresh">
               <i data-lucide="refresh-cw" aria-hidden="true"></i>
             </button>
@@ -92,11 +96,24 @@
           ASH Stock engine booting
         </section>
 
-        <section class="section active" id="dashboardSection" data-panel="dashboard">
-          <div class="market-strip" id="marketStrip"></div>
+        <section class="section active broker-cockpit" id="dashboardSection" data-panel="dashboard">
+          <section class="cockpit-top">
+            <div class="market-strip cockpit-market" id="marketStrip"></div>
 
-          <section class="cockpit-grid">
-            <aside class="panel watch-panel">
+            <aside class="panel signal-card cockpit-score">
+              <div class="panel-head">
+                <div>
+                  <span class="mini-label">10-Factor Engine</span>
+                  <h3>ASH Score</h3>
+                </div>
+                <div class="score-dial"><strong id="factorTotal">0 / 100</strong></div>
+              </div>
+              <div class="factor-list" id="factorList"></div>
+            </aside>
+          </section>
+
+          <section class="cockpit-main">
+            <aside class="panel watch-panel cockpit-watch">
               <div class="panel-head">
                 <div>
                   <span class="mini-label">NSE Universe</span>
@@ -112,7 +129,7 @@
               <div class="watch-list" id="candidateList"></div>
             </aside>
 
-            <section class="panel chart-panel">
+            <section class="panel chart-panel cockpit-chart">
               <div class="chart-toolbar">
                 <div>
                   <span class="mini-label">Symbol Workspace</span>
@@ -127,19 +144,8 @@
               <div class="signal-chips" id="signalChips"></div>
             </section>
 
-            <aside class="right-stack">
-              <section class="panel signal-card">
-                <div class="panel-head">
-                  <div>
-                    <span class="mini-label">Signal Engine</span>
-                    <h3>ASH Score</h3>
-                  </div>
-                  <div class="score-dial"><strong id="factorTotal">0 / 100</strong></div>
-                </div>
-                <div class="factor-list" id="factorList"></div>
-              </section>
-
-              <section class="panel thesis-card">
+            <aside class="cockpit-side">
+              <section class="panel thesis-card cockpit-thesis">
                 <div class="panel-head">
                   <div>
                     <span class="mini-label">Reason, Verify, Execute</span>
@@ -148,69 +154,70 @@
                 </div>
                 <div class="detail-list" id="reasonList"></div>
               </section>
-            </aside>
 
-            <section class="panel ticket-panel">
-              <div class="panel-head">
-                <div>
-                  <span class="mini-label">Order Readiness</span>
-                  <h3>Paper Ticket</h3>
+              <section class="panel ticket-panel cockpit-ticket">
+                <div class="panel-head">
+                  <div>
+                    <span class="mini-label">Order Readiness</span>
+                    <h3>Paper Ticket</h3>
+                  </div>
+                  <span class="status-pill good">Paper only</span>
                 </div>
-                <span class="status-pill good">Paper only</span>
-              </div>
-              <form class="ticket-grid" id="paperTicket">
-                <label>
-                  <span>Symbol</span>
-                  <input name="symbol" id="ticketSymbol" required />
-                </label>
-                <label>
-                  <span>Side</span>
-                  <select name="side" id="ticketSide">
-                    <option value="BUY">BUY</option>
-                    <option value="SELL">SELL</option>
-                  </select>
-                </label>
-                <label>
-                  <span>Order</span>
-                  <select name="order_type" id="ticketOrderType">
-                    <option value="MARKET">MARKET</option>
-                    <option value="LIMIT">LIMIT</option>
-                    <option value="GTT">GTT</option>
-                  </select>
-                </label>
-                <label>
-                  <span>Qty</span>
-                  <input name="qty" id="ticketQty" type="number" min="1" step="1" value="1" />
-                </label>
-                <label>
-                  <span>Limit</span>
-                  <input name="price" id="ticketPrice" type="number" min="0" step="0.05" />
-                </label>
-                <label>
-                  <span>Stop</span>
-                  <input name="stop_price" id="ticketStop" type="number" min="0" step="0.05" />
-                </label>
-                <label>
-                  <span>Target</span>
-                  <input name="target_price" id="ticketTarget" type="number" min="0" step="0.05" />
-                </label>
-                <label>
-                  <span>Product</span>
-                  <select name="product" id="ticketProduct">
-                    <option value="Paper Intraday">Intraday</option>
-                    <option value="Paper Swing">Swing</option>
-                    <option value="Paper Positional">Positional</option>
-                  </select>
-                </label>
-                <button class="submit-button" type="submit">
-                  <i data-lucide="send" aria-hidden="true"></i>
-                  <span>Place Paper Order</span>
-                </button>
-              </form>
-            </section>
+
+                <form class="ticket-grid" id="paperTicket">
+                  <label>
+                    <span>Symbol</span>
+                    <input name="symbol" id="ticketSymbol" required />
+                  </label>
+                  <label>
+                    <span>Side</span>
+                    <select name="side" id="ticketSide">
+                      <option value="BUY">BUY</option>
+                      <option value="SELL">SELL</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Order</span>
+                    <select name="order_type" id="ticketOrderType">
+                      <option value="MARKET">MARKET</option>
+                      <option value="LIMIT">LIMIT</option>
+                      <option value="GTT">GTT</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Qty</span>
+                    <input name="qty" id="ticketQty" type="number" min="1" step="1" value="1" />
+                  </label>
+                  <label>
+                    <span>Limit</span>
+                    <input name="price" id="ticketPrice" type="number" min="0" step="0.05" />
+                  </label>
+                  <label>
+                    <span>Stop</span>
+                    <input name="stop_price" id="ticketStop" type="number" min="0" step="0.05" />
+                  </label>
+                  <label>
+                    <span>Target</span>
+                    <input name="target_price" id="ticketTarget" type="number" min="0" step="0.05" />
+                  </label>
+                  <label>
+                    <span>Product</span>
+                    <select name="product" id="ticketProduct">
+                      <option value="Paper Intraday">Intraday</option>
+                      <option value="Paper Swing">Swing</option>
+                      <option value="Paper Positional">Positional</option>
+                    </select>
+                  </label>
+                  <button class="submit-button" type="submit">
+                    <i data-lucide="send" aria-hidden="true"></i>
+                    <span>Place Paper Order</span>
+                  </button>
+                </form>
+              </section>
+            </aside>
           </section>
 
-          <section class="terminal-bottom-grid">
+          <section class="cockpit-bottom">
             <section class="panel piano-panel">
               <div class="panel-head">
                 <div>

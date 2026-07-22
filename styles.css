@@ -1987,3 +1987,425 @@ td small {
     padding: 8px 9px;
   }
 }
+
+@media (min-width: 1200px) {
+  html,
+  body {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .terminal-shell {
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+    grid-template-columns: 230px minmax(0, 1fr);
+  }
+
+  .left-rail {
+    height: 100dvh;
+    min-height: 0;
+    padding: 14px 13px;
+    gap: 12px;
+    overflow: hidden;
+  }
+
+  .brand-row {
+    grid-template-columns: 44px 1fr;
+    gap: 10px;
+  }
+
+  .brand-mark {
+    width: 44px;
+    height: 44px;
+  }
+
+  .brand-row h1 {
+    font-size: 19px;
+  }
+
+  .brand-row p,
+  .rail-card p {
+    font-size: 12px;
+  }
+
+  .rail-nav {
+    gap: 5px;
+  }
+
+  .rail-item {
+    min-height: 37px;
+    padding: 7px 10px;
+  }
+
+  .rail-card {
+    padding: 11px;
+  }
+
+  .workspace {
+    height: 100dvh;
+    min-height: 0;
+    padding: 8px 12px 10px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .command-bar {
+    min-height: 50px;
+    padding: 0 0 6px;
+    grid-template-columns: 220px minmax(360px, 1fr) auto;
+    gap: 8px;
+  }
+
+  .command-title h2 {
+    margin-top: 2px;
+    font-size: 23px;
+  }
+
+  .command-center,
+  .top-controls {
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .session-chip {
+    min-height: 34px;
+    padding: 0 10px;
+    font-size: 13px;
+  }
+
+  .mode-tabs {
+    min-height: 34px;
+    padding: 3px;
+  }
+
+  .tab-button {
+    min-height: 28px;
+    padding: 0 10px;
+    font-size: 13px;
+  }
+
+  .ghost-button,
+  .icon-button,
+  .small-button,
+  .submit-button {
+    min-height: 34px;
+    padding: 0 10px;
+    font-size: 13px;
+  }
+
+  .ghost-button.action {
+    color: #03100c;
+    border-color: transparent;
+    background: linear-gradient(135deg, var(--green), var(--cyan));
+  }
+
+  .icon-button {
+    width: 36px;
+  }
+
+  .notice-line {
+    min-height: 32px;
+    margin-bottom: 7px;
+    padding: 6px 10px;
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  #dashboardSection.broker-cockpit.section.active {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-areas: none;
+    grid-template-rows: 82px minmax(0, 1fr) 168px;
+    gap: 8px;
+    overflow: hidden;
+  }
+
+  .cockpit-top {
+    min-height: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 330px;
+    gap: 8px;
+    overflow: hidden;
+  }
+
+  .cockpit-market {
+    min-height: 0;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 8px;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  .market-card {
+    min-height: 0;
+    padding: 9px 10px;
+  }
+
+  .market-card strong {
+    margin: 4px 0 2px;
+    font-size: 22px;
+  }
+
+  .market-card p {
+    font-size: 11px;
+  }
+
+  .market-card::after {
+    right: 8px;
+    bottom: 7px;
+    width: 64px;
+    height: 14px;
+  }
+
+  .cockpit-main {
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 300px minmax(0, 1fr) 348px;
+    gap: 8px;
+    overflow: hidden;
+  }
+
+  .cockpit-watch,
+  .cockpit-chart,
+  .cockpit-side,
+  .cockpit-score,
+  .cockpit-thesis,
+  .cockpit-ticket {
+    grid-area: auto;
+    align-self: stretch;
+  }
+
+  .cockpit-side {
+    min-height: 0;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) 220px;
+    gap: 8px;
+    overflow: hidden;
+  }
+
+  .cockpit-bottom {
+    min-height: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(430px, .95fr);
+    gap: 8px;
+    overflow: hidden;
+  }
+
+  .panel {
+    min-height: 0;
+    padding: 10px;
+    overflow: hidden;
+  }
+
+  .watch-panel,
+  .chart-panel,
+  .cockpit-score,
+  .cockpit-thesis,
+  .piano-panel,
+  .book-panel {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .panel-head,
+  .chart-toolbar {
+    margin-bottom: 7px;
+  }
+
+  .panel-head h3,
+  .chart-toolbar h3 {
+    font-size: 16px;
+  }
+
+  .panel-head strong {
+    font-size: 17px;
+  }
+
+  .search-box {
+    height: 34px;
+  }
+
+  .basket-meta {
+    margin-top: 5px;
+    font-size: 11px;
+  }
+
+  .watch-list,
+  .factor-list,
+  .detail-list,
+  .piano-stage,
+  .book-table {
+    min-height: 0;
+    overflow: auto;
+  }
+
+  .watch-list {
+    flex: 1;
+    height: auto;
+    margin-top: 7px;
+    gap: 5px;
+  }
+
+  .candidate-row {
+    min-height: 50px;
+    padding: 7px 8px;
+  }
+
+  .candidate-row small {
+    font-size: 11px;
+  }
+
+  .price-stack strong {
+    font-size: 20px;
+  }
+
+  .chart-panel,
+  .cockpit-chart {
+    min-height: 0;
+  }
+
+  #priceChart {
+    flex: 1;
+    min-height: 240px;
+    height: auto;
+  }
+
+  .signal-chips {
+    max-height: 36px;
+    margin-top: 7px;
+    overflow: auto;
+  }
+
+  .factor-list,
+  .thesis-card .detail-list {
+    flex: 1;
+  }
+
+  .factor-row {
+    grid-template-columns: 96px 1fr 34px;
+    gap: 6px;
+    font-size: 11px;
+  }
+
+  .detail-row {
+    grid-template-columns: 106px 1fr;
+    gap: 7px;
+    padding: 6px;
+  }
+
+  .ticket-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .ticket-grid label {
+    gap: 3px;
+    font-size: 10px;
+  }
+
+  .ticket-grid input,
+  .ticket-grid select {
+    height: 30px;
+    padding: 0 7px;
+  }
+
+  .ticket-grid .submit-button {
+    grid-column: 1 / -1;
+  }
+
+  .piano-stage {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(230px, .6fr);
+    gap: 8px;
+    overflow: hidden;
+  }
+
+  .piano-strings {
+    min-height: 0;
+    height: 108px;
+    grid-template-columns: repeat(12, minmax(48px, 1fr));
+    gap: 5px;
+    padding: 7px;
+  }
+
+  .piano-stock {
+    min-width: 48px;
+    min-height: 92px;
+    gap: 3px;
+    padding: 5px 4px;
+  }
+
+  .piano-stock strong {
+    font-size: 11px;
+  }
+
+  .piano-stock b {
+    max-width: 52px;
+    overflow: hidden;
+    font-size: 10px;
+    text-overflow: ellipsis;
+  }
+
+  .piano-stock em {
+    font-size: 9px;
+  }
+
+  .piano-string {
+    width: 36px;
+    gap: 1px;
+  }
+
+  .string-bit {
+    height: 5px;
+    border-width: 1px;
+  }
+
+  .piano-keys {
+    min-height: 0;
+    max-height: 108px;
+    gap: 5px;
+    overflow: auto;
+  }
+
+  .piano-key-group {
+    grid-template-columns: 78px 1fr;
+    gap: 6px;
+    padding: 6px;
+  }
+
+  .param-key {
+    min-width: 38px;
+    min-height: 23px;
+    margin: 0 2px 4px 0;
+    font-size: 10px;
+  }
+
+  .book-table {
+    flex: 1;
+  }
+
+  .book-summary {
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+
+  .book-summary article {
+    padding: 6px;
+  }
+
+  table {
+    min-width: 700px;
+  }
+
+  th,
+  td {
+    padding: 7px 8px;
+  }
+}

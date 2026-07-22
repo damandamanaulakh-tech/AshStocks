@@ -156,6 +156,30 @@ async function loadNseMaster() {
   }
 }
 
+async function runPaperEngineNow() {
+  const button = el("paperEngineBtn");
+  if (button) button.disabled = true;
+  setNotice("Running paper engine: Upstox scan, SELECT filter, paper fills, target/stop monitor", "info");
+  try {
+    const result = await api("/api/paper-engine/run", { method: "POST", body: { trigger: "dashboard" } });
+    const autoBuy = result.auto_buy || {};
+    const filled = Number(autoBuy.orders_filled || 0);
+    const ready = Number(autoBuy.candidates_ready || 0);
+    const rejected = Number(autoBuy.rejected || 0);
+    const positions = Array.isArray(result.positions) ? result.positions.length : 0;
+    const message = filled
+      ? `Paper engine filled ${filled} BUY order(s); open positions ${positions}`
+      : `Paper engine ran: ${ready} SELECT candidate(s), ${filled} fills, ${rejected} rejected`;
+    setNotice(message, filled ? "ok" : "warn");
+    await loadOrders();
+  } catch (error) {
+    state.lastError = error.message;
+    setNotice(`Paper engine failed: ${error.message}`, "error");
+  } finally {
+    if (button) button.disabled = false;
+  }
+}
+
 function renderBasketMeta() {
   const node = el("basketMeta");
   if (!node) return;
@@ -1118,6 +1142,7 @@ function bindUi() {
   }));
   el("refreshBtn")?.addEventListener("click", refreshScan);
   el("nseMasterBtn")?.addEventListener("click", loadNseMaster);
+  el("paperEngineBtn")?.addEventListener("click", runPaperEngineNow);
   el("refreshOrdersBtn")?.addEventListener("click", loadOrders);
   el("upstoxConnectBtn")?.addEventListener("click", startUpstoxOAuth);
   el("upstoxTokenForm")?.addEventListener("submit", submitUpstoxToken);
