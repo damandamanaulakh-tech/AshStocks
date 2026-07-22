@@ -1586,3 +1586,404 @@ td small {
     grid-template-columns: 1fr;
   }
 }
+
+@media (min-width: 1200px) and (min-height: 760px) {
+  .terminal-shell {
+    height: 100vh;
+    min-height: 0;
+    overflow: hidden;
+    grid-template-columns: 232px minmax(0, 1fr);
+  }
+
+  .left-rail {
+    height: 100vh;
+    padding: 16px 14px;
+    gap: 14px;
+    overflow: hidden;
+  }
+
+  .brand-row {
+    grid-template-columns: 46px 1fr;
+    gap: 11px;
+  }
+
+  .brand-mark {
+    width: 46px;
+    height: 46px;
+  }
+
+  .brand-row h1 {
+    font-size: 20px;
+  }
+
+  .brand-row p,
+  .rail-card p {
+    font-size: 12px;
+  }
+
+  .rail-nav {
+    gap: 6px;
+  }
+
+  .rail-item {
+    min-height: 38px;
+    padding: 8px 10px;
+    gap: 10px;
+  }
+
+  .rail-card {
+    padding: 12px;
+  }
+
+  .workspace {
+    height: 100vh;
+    min-height: 0;
+    padding: 10px 14px 12px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .command-bar {
+    min-height: 54px;
+    padding: 0 0 8px;
+    gap: 8px;
+  }
+
+  .command-title h2 {
+    font-size: 24px;
+  }
+
+  .command-title .mini-label {
+    font-size: 10px;
+  }
+
+  .tab-button {
+    min-height: 32px;
+    padding: 0 10px;
+  }
+
+  .ghost-button,
+  .icon-button,
+  .small-button,
+  .submit-button {
+    min-height: 36px;
+  }
+
+  .notice-line {
+    min-height: 34px;
+    margin-bottom: 8px;
+    padding: 7px 10px;
+    overflow: hidden;
+    color: var(--green);
+    font-size: 13px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .section.active {
+    min-height: 0;
+  }
+
+  #dashboardSection.section.active {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-areas:
+      "market"
+      "cockpit"
+      "bottom";
+    grid-template-rows: 76px minmax(0, 1fr) 188px;
+    gap: 8px;
+    overflow: hidden;
+  }
+
+  #dashboardSection > .market-strip {
+    grid-area: market;
+    margin-bottom: 0;
+  }
+
+  #dashboardSection > .cockpit-grid {
+    grid-area: cockpit;
+  }
+
+  #dashboardSection > .terminal-bottom-grid {
+    grid-area: bottom;
+  }
+
+  .market-strip {
+    gap: 8px;
+  }
+
+  .market-card {
+    min-height: 0;
+    padding: 10px 12px;
+  }
+
+  .market-card::after {
+    right: 10px;
+    bottom: 8px;
+    width: 70px;
+    height: 16px;
+  }
+
+  .market-card strong {
+    margin: 5px 0 2px;
+    font-size: 22px;
+  }
+
+  .market-card p {
+    font-size: 11px;
+  }
+
+  .cockpit-grid {
+    min-height: 0;
+    grid-template-columns: 260px minmax(500px, 1fr) 320px;
+    grid-template-rows: minmax(0, 1fr) 156px;
+    gap: 8px;
+  }
+
+  .panel {
+    padding: 12px;
+  }
+
+  .panel-head,
+  .chart-toolbar {
+    margin-bottom: 8px;
+  }
+
+  .panel-head h3,
+  .chart-toolbar h3 {
+    font-size: 16px;
+  }
+
+  .panel-head strong {
+    font-size: 17px;
+  }
+
+  .watch-panel,
+  .chart-panel,
+  .ticket-panel,
+  .right-stack,
+  .signal-card,
+  .thesis-card,
+  .piano-panel,
+  .book-panel {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .watch-panel,
+  .chart-panel,
+  .signal-card,
+  .thesis-card,
+  .piano-panel,
+  .book-panel {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .search-box {
+    height: 36px;
+  }
+
+  .basket-meta {
+    margin-top: 6px;
+    font-size: 11px;
+  }
+
+  .watch-list {
+    flex: 1;
+    min-height: 0;
+    height: auto;
+    margin-top: 8px;
+    gap: 6px;
+  }
+
+  .candidate-row {
+    min-height: 52px;
+    padding: 8px;
+  }
+
+  .candidate-row small {
+    font-size: 11px;
+  }
+
+  .chart-panel {
+    min-height: 0;
+  }
+
+  #priceChart {
+    flex: 1;
+    min-height: 220px;
+    height: auto;
+  }
+
+  .signal-chips {
+    max-height: 38px;
+    margin-top: 8px;
+    overflow: auto;
+  }
+
+  .right-stack {
+    grid-template-rows: minmax(0, .85fr) minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .factor-list,
+  .thesis-card .detail-list {
+    min-height: 0;
+    overflow: auto;
+  }
+
+  .factor-list {
+    gap: 7px;
+  }
+
+  .factor-row {
+    grid-template-columns: 100px 1fr 34px;
+    gap: 6px;
+    font-size: 11px;
+  }
+
+  .detail-list {
+    gap: 6px;
+  }
+
+  .detail-row {
+    grid-template-columns: 112px 1fr;
+    gap: 8px;
+    padding: 7px;
+  }
+
+  .ticket-panel {
+    padding: 10px;
+  }
+
+  .ticket-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .ticket-grid label {
+    gap: 3px;
+    font-size: 10px;
+  }
+
+  .ticket-grid input,
+  .ticket-grid select {
+    height: 32px;
+    padding: 0 8px;
+  }
+
+  .submit-button {
+    min-height: 34px;
+  }
+
+  .terminal-bottom-grid {
+    min-height: 0;
+    grid-template-columns: minmax(0, 1.35fr) minmax(320px, .85fr);
+    gap: 8px;
+    margin-top: 0;
+  }
+
+  .piano-stage {
+    min-height: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(230px, .68fr);
+    gap: 8px;
+    overflow: hidden;
+  }
+
+  .piano-strings {
+    min-height: 0;
+    height: 118px;
+    grid-template-columns: repeat(12, minmax(50px, 1fr));
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .piano-stock {
+    min-width: 50px;
+    min-height: 98px;
+    gap: 4px;
+    padding: 6px 4px;
+  }
+
+  .piano-stock strong {
+    font-size: 12px;
+  }
+
+  .piano-stock b {
+    max-width: 54px;
+    overflow: hidden;
+    font-size: 11px;
+    text-overflow: ellipsis;
+  }
+
+  .piano-stock em {
+    font-size: 9px;
+  }
+
+  .piano-string {
+    width: 38px;
+    gap: 1px;
+  }
+
+  .string-bit {
+    height: 5px;
+    border-width: 1px;
+  }
+
+  .piano-keys {
+    min-height: 0;
+    max-height: 118px;
+    gap: 5px;
+    overflow: auto;
+  }
+
+  .piano-key-group {
+    grid-template-columns: 80px 1fr;
+    gap: 6px;
+    padding: 6px;
+  }
+
+  .piano-key-group > span {
+    font-size: 11px;
+  }
+
+  .param-key {
+    min-width: 40px;
+    min-height: 24px;
+    margin: 0 2px 4px 0;
+    font-size: 11px;
+  }
+
+  .book-table {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+  }
+
+  .book-summary {
+    gap: 6px;
+    margin-bottom: 7px;
+  }
+
+  .book-summary article {
+    padding: 7px;
+  }
+
+  .book-summary strong {
+    font-size: 16px;
+  }
+
+  table {
+    min-width: 720px;
+  }
+
+  th,
+  td {
+    padding: 8px 9px;
+  }
+}
