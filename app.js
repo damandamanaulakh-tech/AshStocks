@@ -139,6 +139,23 @@ async function loadUniverseForFreshScan() {
   if (!state.scanBasket.length) throw new Error("Mongo NSE universe is empty; reload NSE Master first.");
 }
 
+async function loadNseMaster() {
+  const button = el("nseMasterBtn");
+  if (button) button.disabled = true;
+  setNotice("Loading fresh NSE Master from Upstox into Mongo", "info");
+  try {
+    const result = await api("/api/data-bank/load-upstox-nse", { method: "POST", body: { trigger: "dashboard" } });
+    const saved = result.saved_universe || result.universe_count || result.rows_saved || result.count || "NSE";
+    setNotice(`NSE Master loaded into Mongo: ${saved} instruments`, "ok");
+    await refreshScan();
+  } catch (error) {
+    state.lastError = error.message;
+    setNotice(`NSE Master load failed: ${error.message}`, "error");
+  } finally {
+    if (button) button.disabled = false;
+  }
+}
+
 function renderBasketMeta() {
   const node = el("basketMeta");
   if (!node) return;
@@ -1100,6 +1117,7 @@ function bindUi() {
     el("ticketProduct").value = state.horizon === "intraday" ? "Paper Intraday" : state.horizon === "positional" || state.horizon === "portfolio" ? "Paper Positional" : "Paper Swing";
   }));
   el("refreshBtn")?.addEventListener("click", refreshScan);
+  el("nseMasterBtn")?.addEventListener("click", loadNseMaster);
   el("refreshOrdersBtn")?.addEventListener("click", loadOrders);
   el("upstoxConnectBtn")?.addEventListener("click", startUpstoxOAuth);
   el("upstoxTokenForm")?.addEventListener("submit", submitUpstoxToken);

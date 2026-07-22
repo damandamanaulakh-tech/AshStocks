@@ -48,6 +48,17 @@ function renderStatus() {
   }).join("");
 
   $("#runQ1Btn").disabled = !status.render_runtime || !status.token_visible || !status.input_files_found;
+  const output = $("#runOutput");
+  if (output && output.dataset.activeRun !== "true") {
+    output.textContent = [
+      `Status checked: ${new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata", hour12: false })} IST`,
+      `Render runtime: ${yesNo(status.render_runtime)}`,
+      `Upstox key: ${yesNo(status.key_visible)}`,
+      `Upstox token: ${yesNo(status.token_visible)}`,
+      `Input files: ${yesNo(status.input_files_found)}`,
+      `Outputs ready: ${Object.values(status.outputs || {}).filter(Boolean).length}/${OUTPUT_FILES.length}`
+    ].join("\n");
+  }
 }
 
 function showToast(message) {
@@ -75,6 +86,7 @@ async function uploadInputs(event) {
 }
 
 async function runFetch() {
+  $("#runOutput").dataset.activeRun = "true";
   $("#runOutput").textContent = "Starting Render-side historical fetch...";
   const response = await fetch("/api/q1/run-upstox-fetch", { method: "POST" });
   const payload = await response.json();

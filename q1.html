@@ -10,13 +10,13 @@
     <script src="./q1.js" defer></script>
   </head>
   <body>
-    <div class="app-shell">
+    <div class="app-shell q1-shell">
       <aside class="sidebar" aria-label="Primary">
         <div class="brand-block">
           <div class="brand-mark">AS</div>
           <div>
             <h1>Ash Stock</h1>
-            <p>Q1 Render runner</p>
+            <p>Backtest console</p>
           </div>
         </div>
         <nav class="nav-list" aria-label="Views">
@@ -39,8 +39,8 @@
       <main class="main-panel">
         <header class="topbar">
           <div class="topbar-copy">
-            <span class="eyebrow">Render Workflow</span>
-            <h2>Q1 FII 20D Price Join</h2>
+            <span class="eyebrow">Dashboard + Backtests</span>
+            <h2>Q1 FII 20D Backtest Console</h2>
           </div>
           <div class="toolbar">
             <a class="text-button" href="/">Dashboard</a>
@@ -75,6 +75,29 @@
             <span>Input Files</span>
             <strong id="inputFound">No</strong>
             <small>two CSVs required</small>
+          </article>
+        </section>
+
+        <section class="q1-backtest-flow" aria-label="Backtest workflow">
+          <article>
+            <span>01</span>
+            <strong>FII Signal File</strong>
+            <small>Uploaded CSV input</small>
+          </article>
+          <article>
+            <span>02</span>
+            <strong>Upstox Candles</strong>
+            <small>Historical daily prices</small>
+          </article>
+          <article>
+            <span>03</span>
+            <strong>20D Join</strong>
+            <small>Signal to forward price</small>
+          </article>
+          <article>
+            <span>04</span>
+            <strong>Backtest Output</strong>
+            <small>CSV result + summary</small>
           </article>
         </section>
 
@@ -116,7 +139,7 @@
                 Run Historical Fetch
               </button>
               <p class="subtle">This endpoint is blocked outside Render, reads only `UPSTOX_ACCESS_TOKEN` from the environment, and does not use Yahoo fallback.</p>
-              <pre id="runOutput" class="q1-output" aria-live="polite">Waiting.</pre>
+              <pre id="runOutput" class="q1-output" aria-live="polite">Checking Render status...</pre>
             </div>
           </section>
 
