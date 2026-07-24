@@ -2409,3 +2409,108 @@ td small {
     padding: 7px 8px;
   }
 }
+
+@media (min-width: 1200px) {
+  #dashboardSection.broker-cockpit.section.active {
+    grid-template-rows: 96px minmax(0, 1fr) 214px;
+  }
+
+  .cockpit-top {
+    grid-template-columns: minmax(0, 1fr) minmax(380px, 440px);
+  }
+
+  .cockpit-score {
+    padding-right: 14px;
+  }
+
+  .cockpit-score::before {
+    top: -8px;
+    right: 14px;
+    width: 108px;
+    height: 108px;
+    border-width: 10px;
+  }
+
+  .cockpit-score .panel-head {
+    min-height: 100%;
+    align-items: center;
+    margin-bottom: 0;
+  }
+
+  .cockpit-score .score-dial {
+    width: 76px;
+    height: 76px;
+    flex: 0 0 76px;
+    margin-left: auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cockpit-score .score-dial strong {
+    width: 58px;
+    height: 58px;
+    font-size: 13px;
+    line-height: 1.15;
+  }
+
+  .cockpit-score .factor-list {
+    display: none;
+  }
+
+  .cockpit-bottom {
+    grid-template-columns: minmax(0, 1fr) minmax(520px, .92fr);
+  }
+
+  .book-panel .panel-head {
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  .book-panel .panel-head h3 {
+    font-size: 15px;
+    line-height: 1.05;
+  }
+
+  .book-panel .book-table {
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .book-panel .book-summary {
+    flex: 0 0 auto;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+
+  .book-panel .book-summary article {
+    min-height: 46px;
+    padding: 6px 7px;
+  }
+
+  .book-panel .book-summary span {
+    font-size: 9px;
+    line-height: 1;
+  }
+
+  .book-panel .book-summary strong {
+    margin-top: 3px;
+    font-size: 18px;
+  }
+
+  .book-panel table {
+    width: 100%;
+    min-width: 0;
+    table-layout: fixed;
+    font-size: 10px;
+  }
+
+  .book-panel th,
+  .book-panel td {
+    padding: 5px 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
