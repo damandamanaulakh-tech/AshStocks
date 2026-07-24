@@ -24,7 +24,12 @@ import { applyStockSelectionPatches } from "./server-stock-selection-patch.mjs";
 
 const runtimeProcess = globalThis.process;
 const PORT = Number(runtimeProcess?.env?.PORT || 4173);
-const BASE_SERVER_URL = "https://raw.githubusercontent.com/damandamanaulakh-tech/AshStocks/37a9e9ceacabd33bc5a2085ad621e368f8fc0cd8/server.js";
+const BASE_SERVER_REVISION = "37a9e9ceacabd33bc5a2085ad621e368f8fc0cd8";
+const BASE_SERVER_FILE = new URL(
+  "./vendor/base-server-37a9e9ceacabd33bc5a2085ad621e368f8fc0cd8.mjs",
+  import.meta.url
+);
+const BASE_SERVER_SHA256 = "156db2e19447e47c5b642a66f6b74f4809763d386d6cc40430b3dd98d264f324";
 
 function mustReplace(source, search, replacement, label) {
   if (!source.includes(search)) throw new Error(`Patch anchor missing: ${label}`);
@@ -210,9 +215,14 @@ function startDataBankBootstrap() {
 }
 
 async function loadInnerServer() {
-  const response = await fetch(BASE_SERVER_URL, { headers: { "user-agent": "ashstocks-render-bootstrap" } });
-  if (!response.ok) throw new Error(`Unable to load base server source: ${response.status} ${response.statusText}`);
-  const patched = patchServerSource(await response.text());
+  const source = await fs.promises.readFile(BASE_SERVER_FILE, "utf8");
+  const sourceHash = crypto.createHash("sha256").update(source).digest("hex");
+  if (sourceHash !== BASE_SERVER_SHA256) {
+    throw new Error(
+      `Bundled base server integrity check failed for ${BASE_SERVER_REVISION}: expected ${BASE_SERVER_SHA256}, received ${sourceHash}`
+    );
+  }
+  const patched = patchServerSource(source);
   const hash = crypto.createHash("sha256").update(patched).digest("hex").slice(0, 16);
   const runtimeRoot = runtimeProcess?.cwd?.() || os.tmpdir();
   const runtimeDir = path.join(runtimeRoot, ".ashstocks-runtime-server");

@@ -4,6 +4,8 @@ AshStocks is a private, server-backed Indian/NSE stock selection engine. The bro
 
 [Deploy this repo on Render](https://render.com/deploy?repo=https://github.com/damandamanaulakh-tech/AshStocks)
 
+The deployed server is self-contained: the base server pinned at revision `37a9e9ceacabd33bc5a2085ad621e368f8fc0cd8` is committed under `vendor/`, its SHA-256 is verified at startup, and the scanner, Upstox, and paper-trading patches are applied locally. Startup does not fetch application code from `raw.githubusercontent.com`.
+
 ## Current Product Shape
 
 - Private Render app with login gate
@@ -183,6 +185,7 @@ This is now a real NSE scanner/proof engine, but it is not the full final resear
 ## Files
 
 - `server.js` - backend, auth, scanner proof engine, Upstox data-bank loader/fetch, Q1 runner, Mongo/file storage
+- `vendor/base-server-37a9e9ceacabd33bc5a2085ad621e368f8fc0cd8.mjs` - exact bundled base server source verified and patched at startup
 - `app.js` - browser scanner client, backend NSE Master action, CSV workflow, proof-field rendering
 - `index.html` - scanner app shell
 - `styles.css` - product UI styling
