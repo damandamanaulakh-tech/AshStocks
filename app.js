@@ -13,7 +13,14 @@ const state = {
   lastError: "",
   activeParameter: null,
   universeRows: [],
-  scanBasket: []
+  scanBasket: [],
+  parameterCatalog: [],
+  parameterStages: [],
+  tunnelSelectedSymbols: [],
+  tunnelStage: "ALL",
+  tunnelParameterQuery: "",
+  tunnelStockQuery: "",
+  lastAutoPortfolioAttemptAt: 0
 };
 
 const indexKeys = [
@@ -135,6 +142,8 @@ function buildFreshScanBasket(universe = []) {
 async function loadUniverseForFreshScan() {
   const meta = await api("/api/scanner/parameters");
   state.universeRows = Array.isArray(meta.universe) ? meta.universe : [];
+  state.parameterCatalog = Array.isArray(meta.parameter_tunnel?.parameters) ? meta.parameter_tunnel.parameters : [];
+  state.parameterStages = Array.isArray(meta.parameter_tunnel?.stages) ? meta.parameter_tunnel.stages : [];
   state.scanBasket = buildFreshScanBasket(state.universeRows);
   if (!state.scanBasket.length) throw new Error("Mongo NSE universe is empty; reload NSE Master first.");
 }
@@ -172,12 +181,37 @@ async function runPaperEngineNow() {
       : `Paper engine ran: ${ready} SELECT candidate(s), ${filled} fills, ${rejected} rejected`;
     setNotice(message, filled ? "ok" : "warn");
     await loadOrders();
+    return result;
   } catch (error) {
     state.lastError = error.message;
     setNotice(`Paper engine failed: ${error.message}`, "error");
+    return null;
   } finally {
     if (button) button.disabled = false;
   }
+}
+
+function nseMarketOpenNow() {
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Asia/Kolkata",
+    weekday: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23"
+  }).formatToParts(new Date());
+  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  const minute = Number(values.hour) * 60 + Number(values.minute);
+  return !["Sat", "Sun"].includes(values.weekday) && minute >= 9 * 60 + 15 && minute <= 15 * 60 + 30;
+}
+
+async function maybeAutoStartPaperPortfolio() {
+  if (!nseMarketOpenNow()) return;
+  if (!state.upstoxStatus?.token_visible) return;
+  if ((state.orders?.positions || []).length) return;
+  if (!state.rows.some((row) => row.decision === "SELECT" && row.parameter_tunnel?.summary?.evaluated >= 35)) return;
+  if (Date.now() - state.lastAutoPortfolioAttemptAt < 15 * 60 * 1000) return;
+  state.lastAutoPortfolioAttemptAt = Date.now();
+  await runPaperEngineNow();
 }
 
 function renderBasketMeta() {
@@ -741,7 +775,10 @@ function renderFactors(row, ctx) {
   }
   const m = rowMetrics(row);
   const results = rowParameterResults(row, ctx);
-  const hitRatio = results.length ? results.filter((item) => item.result.state === "hit").length / results.length : 0;
+  const tunnelSummary = row.parameter_tunnel?.summary;
+  const hitRatio = tunnelSummary?.evaluated
+    ? ((tunnelSummary.positive_hits || 0) + (tunnelSummary.risk_clear || 0)) / tunnelSummary.evaluated
+    : results.length ? results.filter((item) => item.result.state === "hit").length / results.length : 0;
   const score = numberValue(row.score) || 0;
   const momentum = numberValue(row.momentum_score) || 0;
   const quality = numberValue(row.quality_score) || 0;
@@ -771,6 +808,7 @@ function renderReason(row, ctx) {
     return;
   }
   const m = rowMetrics(row);
+  const tunnelHits = (row.parameter_tunnel?.results || []).filter((item) => item.state === "HIT").slice(0, 10);
   const topHits = rowParameterResults(row, ctx).filter((item) => item.result.state === "hit").slice(0, 10);
   const blockers = rowParameterResults(row, ctx).filter((item) => item.result.state === "blocked").slice(0, 8);
   const lines = [
@@ -778,50 +816,56 @@ function renderReason(row, ctx) {
     ["Reason", row.reason || "No server reason returned"],
     ["Data source", row.data_source || "Upstox scanner"],
     ["Candle evidence", row.candle_evidence || `${m.candles.length} candles returned`],
+    ["Parameter tunnel", row.parameter_tunnel?.summary ? `${row.parameter_tunnel.summary.positive_hits} hits / ${row.parameter_tunnel.summary.evaluated} evaluated | score ${fmtNumber(row.parameter_tunnel.summary.evidence_score)}` : "No tunnel evidence returned"],
     ["Paper action", row.paper_order?.status || "Paper ticket uses selected symbol price"],
     ["Latest price", fmtPrice(m.close)]
   ];
   node.innerHTML = lines.map(([k, v]) => `<div class="detail-row"><span>${escapeHtml(k)}</span><strong>${escapeHtml(v)}</strong></div>`).join("") +
     `<h4>Passed parameters</h4>` +
-    topHits.map(({ param, result }) => `<button class="proof-chip hit" type="button" data-param="${param.id}">P${param.id} ${escapeHtml(param.name)} <small>${escapeHtml(result.value)}</small></button>`).join("") +
+    (tunnelHits.length
+      ? tunnelHits.map((result) => `<button class="proof-chip hit" type="button" data-param="${escapeHtml(result.id)}">${escapeHtml(result.id)} ${escapeHtml(result.name)} <small>${escapeHtml(result.value ?? "")}</small></button>`).join("")
+      : topHits.map(({ param, result }) => `<button class="proof-chip hit" type="button" data-param="${param.id}">P${param.id} ${escapeHtml(param.name)} <small>${escapeHtml(result.value)}</small></button>`).join("")) +
     `<h4>Removing or weak parameters</h4>` +
     (blockers.length ? blockers.map(({ param, result }) => `<button class="proof-chip blocked" type="button" data-param="${param.id}">P${param.id} ${escapeHtml(param.name)} <small>${escapeHtml(result.value)}</small></button>`).join("") : `<div class="empty-state">No hard removing parameter in current evaluated set.</div>`);
-  all("[data-param]", node).forEach((button) => button.addEventListener("click", () => openParameter(Number(button.dataset.param))));
+  all("[data-param]", node).forEach((button) => button.addEventListener("click", () => openParameter(button.dataset.param)));
 }
 
 function renderPiano() {
   const stage = el("pianoStage");
-  if (!stage) return;
-  const rows = sortedRows().slice(0, 12);
-  const ctx = buildContext(state.rows);
-  const total = parameterCatalog.length;
-  el("pianoCoverage").textContent = `${total} live keys`;
-  const stockStrings = rows.map((row) => {
-    const results = rowParameterResults(row, ctx);
-    const hit = results.filter((item) => item.result.state === "hit").length;
-    const bits = results.slice(0, 32).map((item) => `<span title="P${item.param.id} ${escapeHtml(item.param.name)}: ${escapeHtml(item.result.value)}" class="string-bit ${item.result.state}" data-param="${item.param.id}" data-symbol="${escapeHtml(row.symbol)}"></span>`).join("");
-    return `<button class="piano-stock" type="button" data-symbol="${escapeHtml(row.symbol)}">
-      <strong>${hit}/${total}</strong>
-      <span class="piano-string">${bits}</span>
-      <b>${escapeHtml(row.symbol)}</b>
-      <em>${decisionDisplay(row.decision)}</em>
-    </button>`;
-  }).join("");
-  const groups = [...new Set(parameterCatalog.map((param) => param.group))];
-  const keys = groups.map((group) => {
-    const params = parameterCatalog.filter((param) => param.group === group);
-    return `<section class="piano-key-group"><span>${escapeHtml(group)}</span>${params.map((param) => `<button class="param-key ${state.activeParameter?.id === param.id ? "active" : ""}" type="button" data-param="${param.id}">P${param.id}</button>`).join("")}</section>`;
-  }).join("");
-  stage.innerHTML = `<div class="piano-strings">${stockStrings}</div><div class="piano-keys">${keys}</div>`;
-  all(".piano-stock", stage).forEach((button) => button.addEventListener("click", () => selectSymbol(button.dataset.symbol)));
-  all("[data-param]", stage).forEach((button) => button.addEventListener("click", (event) => {
-    event.stopPropagation();
-    openParameter(Number(button.dataset.param), button.dataset.symbol);
-  }));
+  if (stage) {
+    const rows = sortedRows().slice(0, 12);
+    const ctx = buildContext(state.rows);
+    const total = parameterCatalog.length;
+    el("pianoCoverage").textContent = `${total} live keys`;
+    const stockStrings = rows.map((row) => {
+      const results = rowParameterResults(row, ctx);
+      const hit = results.filter((item) => item.result.state === "hit").length;
+      const bits = results.slice(0, 32).map((item) => `<span title="P${item.param.id} ${escapeHtml(item.param.name)}: ${escapeHtml(item.result.value)}" class="string-bit ${item.result.state}" data-param="${item.param.id}" data-symbol="${escapeHtml(row.symbol)}"></span>`).join("");
+      return `<button class="piano-stock" type="button" data-symbol="${escapeHtml(row.symbol)}">
+        <strong>${hit}/${total}</strong>
+        <span class="piano-string">${bits}</span>
+        <b>${escapeHtml(row.symbol)}</b>
+        <em>${decisionDisplay(row.decision)}</em>
+      </button>`;
+    }).join("");
+    const groups = [...new Set(parameterCatalog.map((param) => param.group))];
+    const keys = groups.map((group) => {
+      const params = parameterCatalog.filter((param) => param.group === group);
+      return `<section class="piano-key-group"><span>${escapeHtml(group)}</span>${params.map((param) => `<button class="param-key ${state.activeParameter?.id === param.id ? "active" : ""}" type="button" data-param="${param.id}">P${param.id}</button>`).join("")}</section>`;
+    }).join("");
+    stage.innerHTML = `<div class="piano-strings">${stockStrings}</div><div class="piano-keys">${keys}</div>`;
+    all(".piano-stock", stage).forEach((button) => button.addEventListener("click", () => selectSymbol(button.dataset.symbol)));
+    all("[data-param]", stage).forEach((button) => button.addEventListener("click", (event) => {
+      event.stopPropagation();
+      openParameter(Number(button.dataset.param), button.dataset.symbol);
+    }));
+  }
+  renderParameterTunnel();
 }
 
 function openParameter(id, symbol = "") {
-  const param = parameterCatalog.find((item) => item.id === id);
+  const param = state.parameterCatalog.find((item) => String(item.id) === String(id))
+    || parameterCatalog.find((item) => String(item.id) === String(id));
   if (!param) return;
   state.activeParameter = param;
   state.activeSection = "piano";
@@ -831,6 +875,10 @@ function openParameter(id, symbol = "") {
 }
 
 function renderParameterProof(param, focusSymbol = "") {
+  if (state.parameterCatalog.some((item) => String(item.id) === String(param.id))) {
+    renderTunnelInspector(param, focusSymbol);
+    return;
+  }
   el("parameterTitle").textContent = `P${param.id} - ${param.name}`;
   const node = el("parameterProof");
   const ctx = buildContext(state.rows);
@@ -860,6 +908,201 @@ function renderParameterProof(param, focusSymbol = "") {
         <thead><tr><th>Symbol</th><th>Effect</th><th>Computed value</th><th>Decision</th><th>Reason</th></tr></thead>
         <tbody>${tableRows}</tbody>
       </table>
+    </div>`;
+  all("[data-symbol]", node).forEach((button) => button.addEventListener("click", () => selectSymbol(button.dataset.symbol)));
+}
+
+function tunnelRows() {
+  return sortedRows().filter((row) => row.parameter_tunnel?.results?.length);
+}
+
+function selectedTunnelRows() {
+  const rows = tunnelRows();
+  const available = new Set(rows.map((row) => row.symbol));
+  state.tunnelSelectedSymbols = state.tunnelSelectedSymbols.filter((symbol) => available.has(symbol));
+  if (!state.tunnelSelectedSymbols.length) {
+    const initial = state.selected?.symbol && available.has(state.selected.symbol)
+      ? state.selected.symbol
+      : rows[0]?.symbol;
+    if (initial) state.tunnelSelectedSymbols = [initial];
+  }
+  const selected = new Set(state.tunnelSelectedSymbols);
+  return rows.filter((row) => selected.has(row.symbol));
+}
+
+function parameterResultFor(row, parameterId) {
+  return row.parameter_tunnel?.results?.find((result) => String(result.id) === String(parameterId)) || null;
+}
+
+function tunnelAggregate(parameter, rows) {
+  const results = rows.map((row) => ({ row, result: parameterResultFor(row, parameter.id) })).filter((item) => item.result);
+  const counts = { HIT: 0, CLEAR: 0, MISS: 0, RISK: 0, SOURCE_REQUIRED: 0 };
+  results.forEach(({ result }) => { counts[result.state] = (counts[result.state] || 0) + 1; });
+  const evaluated = results.length - counts.SOURCE_REQUIRED;
+  const supportive = counts.HIT + counts.CLEAR;
+  let stateName = "SOURCE_REQUIRED";
+  if (counts.RISK) stateName = "RISK";
+  else if (counts.HIT || counts.CLEAR) stateName = "HIT";
+  else if (counts.MISS) stateName = "MISS";
+  return {
+    results,
+    counts,
+    evaluated,
+    supportive,
+    hitRate: evaluated ? supportive / evaluated : 0,
+    state: stateName
+  };
+}
+
+function tunnelStateClass(value) {
+  return {
+    HIT: "hit",
+    CLEAR: "clear",
+    MISS: "miss",
+    RISK: "risk",
+    SOURCE_REQUIRED: "source"
+  }[value] || "source";
+}
+
+function renderParameterTunnel() {
+  const svg = el("parameterTunnelSvg");
+  const stockList = el("tunnelStockList");
+  const segments = el("tunnelSegments");
+  if (!svg || !stockList || !segments) return;
+
+  const catalog = state.parameterCatalog;
+  const rows = tunnelRows();
+  const selectedRows = selectedTunnelRows();
+  const selectedSymbols = new Set(state.tunnelSelectedSymbols);
+  const stockQuery = state.tunnelStockQuery.toUpperCase();
+  const visibleStocks = rows.filter((row) => !stockQuery || `${row.symbol} ${row.name || ""}`.toUpperCase().includes(stockQuery)).slice(0, 60);
+  const nodeQuery = state.tunnelParameterQuery.toLowerCase();
+  const visibleParameters = catalog.filter((parameter) => {
+    if (state.tunnelStage !== "ALL" && parameter.stage !== state.tunnelStage) return false;
+    if (!nodeQuery) return true;
+    return `${parameter.id} ${parameter.name} ${parameter.family} ${parameter.formula} ${parameter.source}`.toLowerCase().includes(nodeQuery);
+  });
+
+  el("tunnelCatalogCount").textContent = `${catalog.length || 0} nodes`;
+  const evaluatedCounts = selectedRows.map((row) => row.parameter_tunnel?.summary?.evaluated || 0);
+  const hitCounts = selectedRows.map((row) => row.parameter_tunnel?.summary?.positive_hits || 0);
+  el("tunnelVisibleCount").textContent = selectedRows.length
+    ? `${selectedRows.length} stock${selectedRows.length === 1 ? "" : "s"} | avg ${fmtNumber(average(evaluatedCounts), 0)} evaluated | avg ${fmtNumber(average(hitCounts), 0)} hits`
+    : "Run the Upstox scan to calculate stock evidence";
+
+  segments.innerHTML = [
+    `<button type="button" class="${state.tunnelStage === "ALL" ? "active" : ""}" data-tunnel-stage="ALL">All 175</button>`,
+    ...state.parameterStages.map((stage) => `<button type="button" class="${state.tunnelStage === stage.id ? "active" : ""}" data-tunnel-stage="${escapeHtml(stage.id)}"><i style="background:${escapeHtml(stage.color)}"></i>${escapeHtml(stage.label)}</button>`)
+  ].join("");
+  all("[data-tunnel-stage]", segments).forEach((button) => button.addEventListener("click", () => {
+    state.tunnelStage = button.dataset.tunnelStage;
+    renderParameterTunnel();
+  }));
+
+  stockList.innerHTML = visibleStocks.length ? visibleStocks.map((row) => {
+    const summary = row.parameter_tunnel.summary || {};
+    const checked = selectedSymbols.has(row.symbol);
+    return `<button class="tunnel-stock-row ${checked ? "active" : ""}" type="button" data-tunnel-symbol="${escapeHtml(row.symbol)}">
+      <span class="tunnel-stock-check"><i data-lucide="${checked ? "check" : "plus"}"></i></span>
+      <span><strong>${escapeHtml(row.symbol)}</strong><small>${escapeHtml(row.name || "NSE equity")}</small></span>
+      <span class="tunnel-stock-score"><b>${fmtNumber(summary.evidence_score || 0, 1)}</b><small>${summary.positive_hits || 0}/${summary.evaluated || 0}</small></span>
+    </button>`;
+  }).join("") : `<div class="tunnel-empty">No real scan row matches this stock search.</div>`;
+  all("[data-tunnel-symbol]", stockList).forEach((button) => button.addEventListener("click", () => {
+    const symbol = button.dataset.tunnelSymbol;
+    const selected = new Set(state.tunnelSelectedSymbols);
+    if (selected.has(symbol) && selected.size > 1) selected.delete(symbol);
+    else selected.add(symbol);
+    state.tunnelSelectedSymbols = [...selected];
+    renderParameterTunnel();
+  }));
+
+  if (!catalog.length) {
+    svg.innerHTML = `<text x="710" y="330" text-anchor="middle" class="tunnel-empty-svg">Parameter catalog was not returned by the server.</text>`;
+    el("tunnelStageFooter").textContent = "Server catalog unavailable";
+    return;
+  }
+  if (!rows.length) {
+    svg.innerHTML = `<text x="710" y="330" text-anchor="middle" class="tunnel-empty-svg">Run the real Upstox scan to illuminate the 175 nodes.</text>`;
+    el("tunnelStageFooter").textContent = "No scan evidence returned";
+    return;
+  }
+
+  const activeStages = state.parameterStages.filter((stage) => visibleParameters.some((parameter) => parameter.stage === stage.id));
+  const stageCount = Math.max(1, activeStages.length);
+  const stageWidth = stageCount === 1 ? 0 : 1240 / (stageCount - 1);
+  const axis = `<path class="tunnel-axis" d="M70 330 C380 195 1040 195 1350 330 C1040 465 380 465 70 330Z"></path>`;
+  const rings = activeStages.map((stage, stageIndex) => {
+    const x = stageCount === 1 ? 710 : 90 + stageIndex * stageWidth;
+    const distance = Math.abs(stageIndex - (stageCount - 1) / 2) / Math.max(1, (stageCount - 1) / 2);
+    const rx = 22 + distance * 28;
+    const ry = 205 + distance * 68;
+    const parameters = visibleParameters.filter((parameter) => parameter.stage === stage.id);
+    const nodes = parameters.map((parameter, index) => {
+      const y = parameters.length === 1 ? 330 : 108 + index * (444 / Math.max(1, parameters.length - 1));
+      const aggregate = tunnelAggregate(parameter, selectedRows);
+      const nodeClass = tunnelStateClass(aggregate.state);
+      const active = String(state.activeParameter?.id || "") === String(parameter.id) ? " active" : "";
+      const radius = 4.5 + Math.min(5, aggregate.hitRate * 5);
+      const title = `${parameter.id} ${parameter.name} | ${aggregate.counts.HIT} hit, ${aggregate.counts.RISK} risk, ${aggregate.counts.MISS} miss`;
+      return `<g class="tunnel-node-group" data-tunnel-node="${escapeHtml(parameter.id)}">
+        <circle class="tunnel-node ${nodeClass}${active}" cx="${x}" cy="${y}" r="${radius}"></circle>
+        <title>${escapeHtml(title)}</title>
+      </g>`;
+    }).join("");
+    return `<g class="tunnel-stage-ring">
+      <ellipse cx="${x}" cy="330" rx="${rx}" ry="${ry}" style="--stage-color:${escapeHtml(stage.color)}"></ellipse>
+      <text x="${x}" y="54" text-anchor="middle">${escapeHtml(stage.label)}</text>
+      <text x="${x}" y="82" text-anchor="middle" class="tunnel-stage-count">${parameters.length}</text>
+      ${nodes}
+    </g>`;
+  }).join("");
+  svg.innerHTML = `<defs>
+      <radialGradient id="tunnelGlow"><stop offset="0%" stop-color="#17d7c1" stop-opacity=".16"></stop><stop offset="100%" stop-color="#17d7c1" stop-opacity="0"></stop></radialGradient>
+    </defs>
+    <ellipse cx="710" cy="330" rx="560" ry="265" fill="url(#tunnelGlow)"></ellipse>
+    ${axis}${rings}`;
+  all("[data-tunnel-node]", svg).forEach((node) => node.addEventListener("click", () => openParameter(node.dataset.tunnelNode)));
+  el("tunnelStageFooter").textContent = `${visibleParameters.length} visible nodes across ${activeStages.length} stages | click any node for its formula and stock evidence`;
+
+  const activeCatalogParameter = catalog.find((item) => String(item.id) === String(state.activeParameter?.id));
+  const inspectorParameter = activeCatalogParameter || visibleParameters[0] || catalog[0];
+  if (inspectorParameter) {
+    state.activeParameter = inspectorParameter;
+    renderTunnelInspector(inspectorParameter);
+  }
+  window.lucide?.createIcons?.();
+}
+
+function renderTunnelInspector(param, focusSymbol = "") {
+  const node = el("parameterProof");
+  if (!node || !param) return;
+  const rows = selectedTunnelRows();
+  const focusRows = focusSymbol ? tunnelRows().filter((row) => row.symbol === focusSymbol) : rows;
+  const proofRows = focusRows.map((row) => ({ row, result: parameterResultFor(row, param.id) })).filter((item) => item.result);
+  const aggregate = tunnelAggregate(param, focusRows);
+  el("parameterTitle").textContent = param.name;
+  el("tunnelNodeId").textContent = `${param.id} | ${param.family}`;
+  node.innerHTML = `<div class="tunnel-node-status ${tunnelStateClass(aggregate.state)}">
+      <strong>${aggregate.counts.HIT + aggregate.counts.CLEAR}/${aggregate.evaluated || 0}</strong>
+      <span>supportive real evaluations</span>
+    </div>
+    <dl class="tunnel-definition">
+      <div><dt>Formula</dt><dd>${escapeHtml(param.formula)}</dd></div>
+      <div><dt>Threshold</dt><dd>${escapeHtml(param.threshold)}</dd></div>
+      <div><dt>Required data</dt><dd>${escapeHtml(param.required)}</dd></div>
+      <div><dt>Lookback</dt><dd>${escapeHtml(param.lookback)}</dd></div>
+      <div><dt>Source</dt><dd>${escapeHtml(param.source)}</dd></div>
+      <div><dt>Why it matters</dt><dd>${escapeHtml(param.reason)}</dd></div>
+      <div><dt>Worked example</dt><dd>${escapeHtml(param.example)}</dd></div>
+    </dl>
+    <div class="tunnel-proof-list">
+      ${proofRows.length ? proofRows.map(({ row, result }) => `<article class="${tunnelStateClass(result.state)}">
+        <header><button type="button" data-symbol="${escapeHtml(row.symbol)}">${escapeHtml(row.symbol)}</button><span>${escapeHtml(result.state.replaceAll("_", " "))}</span></header>
+        <strong>${escapeHtml(result.value ?? "Not counted")}</strong>
+        <p>${escapeHtml(result.evidence)}</p>
+        <small>${escapeHtml(result.effect)}</small>
+      </article>`).join("") : `<div class="tunnel-empty">This node has no selected stock evidence yet.</div>`}
     </div>`;
   all("[data-symbol]", node).forEach((button) => button.addEventListener("click", () => selectSymbol(button.dataset.symbol)));
 }
@@ -956,11 +1199,11 @@ function renderOrders() {
       <article><span>Realized P&L</span><strong>${fmtPrice(funds.realized_pnl || 0)}</strong></article>
     </div>
     <table>
-      <thead><tr><th>Type</th><th>Symbol</th><th>Side</th><th>Qty</th><th>Price</th><th>Status</th><th>Time</th></tr></thead>
+      <thead><tr><th>Type</th><th>Symbol</th><th>Side</th><th>Qty</th><th>Price</th><th>Parameter proof</th><th>Status</th><th>Real quote time</th></tr></thead>
       <tbody>
-        ${positions.map((position) => `<tr><td>Position</td><td>${escapeHtml(position.symbol)}</td><td>LONG</td><td>${fmtInt(position.qty)}</td><td>${fmtPrice(position.current_price || position.entry_price)}</td><td>${escapeHtml(position.status || "OPEN")}</td><td>${escapeHtml(isoDate(position.checked_at || position.entry_date))}</td></tr>`).join("")}
-        ${orders.slice(0, 20).map((order) => `<tr><td>Order</td><td>${escapeHtml(order.symbol)}</td><td>${escapeHtml(order.side)}</td><td>${fmtInt(order.qty)}</td><td>${fmtPrice(order.price)}</td><td>${escapeHtml(order.status)}</td><td>${escapeHtml(isoDate(order.updated_at || order.created_at))}</td></tr>`).join("")}
-        ${!positions.length && !orders.length ? `<tr><td colspan="7">No paper orders have been placed in Mongo/file ledger yet.</td></tr>` : ""}
+        ${positions.map((position) => `<tr><td>Position</td><td>${escapeHtml(position.symbol)}</td><td>LONG</td><td>${fmtInt(position.qty)}</td><td>${fmtPrice(position.current_price || position.entry_price)}</td><td>${position.parameter_evidence?.evaluated ? `${fmtNumber(position.parameter_evidence.evidence_score)} | ${position.parameter_evidence.positive_hits}/${position.parameter_evidence.evaluated}` : "Manual order"}</td><td>${escapeHtml(position.status || "OPEN")}</td><td>${escapeHtml(isoDate(position.quote_timestamp || position.checked_at || position.entry_date))}</td></tr>`).join("")}
+        ${orders.slice(0, 20).map((order) => `<tr><td>Order</td><td>${escapeHtml(order.symbol)}</td><td>${escapeHtml(order.side)}</td><td>${fmtInt(order.qty)}</td><td>${fmtPrice(order.price)}</td><td>${order.parameter_evidence?.evaluated ? `${fmtNumber(order.parameter_evidence.evidence_score)} | ${order.parameter_evidence.positive_hits}/${order.parameter_evidence.evaluated}` : "Manual order"}</td><td>${escapeHtml(order.status)}</td><td>${escapeHtml(isoDate(order.quote_timestamp || order.updated_at || order.created_at))}</td></tr>`).join("")}
+        ${!positions.length && !orders.length ? `<tr><td colspan="8">No real-quote paper fill has been written to Mongo yet.</td></tr>` : ""}
       </tbody>
     </table>
     ${state.orders?.error ? `<p class="error-text">${escapeHtml(state.orders.error)}</p>` : ""}`;
@@ -1008,6 +1251,7 @@ async function refreshScan() {
     renderAll();
     if (state.selected) await selectSymbol(state.selected.symbol);
     await loadOrders();
+    await maybeAutoStartPaperPortfolio();
   } catch (error) {
     state.lastError = error.message;
     setNotice(`Upstox scan failed: ${error.message}`, "error");
@@ -1064,22 +1308,31 @@ async function submitPaperOrder(event) {
   const scanPrice = numberValue(row.close);
   const orderType = el("ticketOrderType").value;
   const typedPrice = numberValue(el("ticketPrice").value);
-  const executionPrice = orderType === "MARKET" ? (quotePrice ?? scanPrice) : typedPrice;
+  const executionPrice = orderType === "MARKET" ? quotePrice : typedPrice;
   if (!executionPrice) {
-    setNotice("Paper order blocked: no real Upstox quote or scan close price available", "error");
+    setNotice("Paper order blocked: a current real Upstox quote is required", "error");
     return;
   }
   const body = {
     symbol: row.symbol,
+    instrument_key: row.instrument_key,
     name: row.name,
     side: el("ticketSide").value,
     order_type: orderType,
     qty: Math.max(1, Math.floor(numberValue(el("ticketQty").value) || 1)),
     price: executionPrice,
+    decision_price: scanPrice,
+    quote_timestamp: state.selectedQuote?.timestamp || "",
     stop_price: numberValue(el("ticketStop").value),
     target_price: numberValue(el("ticketTarget").value),
     product: el("ticketProduct").value,
     source: "ash-stock-dashboard",
+    parameter_evidence: {
+      ...(row.parameter_tunnel?.summary || {}),
+      version: row.parameter_tunnel?.version || "",
+      top_hits: (row.parameter_tunnel?.results || []).filter((item) => item.state === "HIT").slice(0, 12).map((item) => item.id),
+      risk_hits: (row.parameter_tunnel?.results || []).filter((item) => item.state === "RISK").slice(0, 12).map((item) => item.id)
+    },
     thesis: `${decisionDisplay(row.decision)} | score ${fmtNumber(row.score)} | ${row.reason || "scanner row"}`
   };
   try {
@@ -1150,6 +1403,24 @@ function bindUi() {
   el("decisionFilter")?.addEventListener("change", () => { renderCandidates(); renderScreener(); });
   el("exportBtn")?.addEventListener("click", exportCsv);
   el("paperTicket")?.addEventListener("submit", submitPaperOrder);
+  el("tunnelParameterSearch")?.addEventListener("input", (event) => {
+    state.tunnelParameterQuery = event.target.value;
+    renderParameterTunnel();
+  });
+  el("tunnelStockSearch")?.addEventListener("input", (event) => {
+    state.tunnelStockQuery = event.target.value;
+    renderParameterTunnel();
+  });
+  el("tunnelToggleAll")?.addEventListener("click", () => {
+    const query = state.tunnelStockQuery.toUpperCase();
+    const visible = tunnelRows()
+      .filter((row) => !query || `${row.symbol} ${row.name || ""}`.toUpperCase().includes(query))
+      .slice(0, 60)
+      .map((row) => row.symbol);
+    const selected = new Set(state.tunnelSelectedSymbols);
+    state.tunnelSelectedSymbols = visible.length && visible.every((symbol) => selected.has(symbol)) ? [visible[0]] : visible;
+    renderParameterTunnel();
+  });
   window.addEventListener("resize", () => drawChart(state.selected));
 }
 
@@ -1160,4 +1431,5 @@ document.addEventListener("DOMContentLoaded", async () => {
   renderAll();
   window.lucide?.createIcons?.();
   await refreshScan();
+  window.setInterval(maybeAutoStartPaperPortfolio, 60_000);
 });

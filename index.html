@@ -280,14 +280,69 @@
         </section>
 
         <section class="section" id="pianoSection" data-panel="piano">
-          <div class="panel">
-            <div class="panel-head">
+          <div class="parameter-tunnel-shell">
+            <header class="parameter-tunnel-head">
               <div>
-                <span class="mini-label">Clickable Parameter Proof</span>
-                <h3 id="parameterTitle">Select a parameter</h3>
+                <span class="mini-label">Real Upstox Evidence</span>
+                <h2>175-Node Signal Tunnel</h2>
+                <p>Choose one stock or compare several. Every lit node is tied to the selected scan rows.</p>
               </div>
+              <div class="tunnel-head-metrics">
+                <strong id="tunnelCatalogCount">175 nodes</strong>
+                <span id="tunnelVisibleCount">Evidence linked to the latest real scan</span>
+              </div>
+            </header>
+
+            <div class="tunnel-toolbar">
+              <label class="tunnel-search">
+                <i data-lucide="search"></i>
+                <input id="tunnelParameterSearch" type="search" autocomplete="off" placeholder="Search node, formula, source" />
+              </label>
+              <div class="tunnel-segments" id="tunnelSegments" aria-label="Parameter stages"></div>
             </div>
-            <div class="parameter-proof" id="parameterProof"></div>
+
+            <div class="parameter-tunnel-layout">
+              <aside class="tunnel-stock-panel" aria-label="Scanned stock selector">
+                <div class="tunnel-column-head">
+                  <div>
+                    <span class="mini-label">Scan Pool</span>
+                    <h3>Stocks</h3>
+                  </div>
+                  <button class="icon-button" type="button" id="tunnelToggleAll" title="Select all visible stocks">
+                    <i data-lucide="list-checks"></i>
+                  </button>
+                </div>
+                <label class="tunnel-search compact">
+                  <i data-lucide="search"></i>
+                  <input id="tunnelStockSearch" type="search" autocomplete="off" placeholder="Find NSE symbol" />
+                </label>
+                <div class="tunnel-stock-list" id="tunnelStockList"></div>
+              </aside>
+
+              <section class="tunnel-canvas-panel" aria-label="Interactive parameter tunnel">
+                <div class="tunnel-legend">
+                  <span><i class="tunnel-dot hit"></i>Hit</span>
+                  <span><i class="tunnel-dot clear"></i>Risk clear</span>
+                  <span><i class="tunnel-dot miss"></i>Miss</span>
+                  <span><i class="tunnel-dot risk"></i>Risk</span>
+                  <span><i class="tunnel-dot source"></i>Source required</span>
+                </div>
+                <div class="parameter-tunnel-viewport">
+                  <svg id="parameterTunnelSvg" class="parameter-tunnel-svg" viewBox="0 0 1420 660" role="img" aria-label="ASH Stock parameter evidence tunnel"></svg>
+                </div>
+                <div class="tunnel-stage-footer" id="tunnelStageFooter"></div>
+              </section>
+
+              <aside class="tunnel-inspector" aria-live="polite">
+                <div class="tunnel-column-head">
+                  <div>
+                    <span class="mini-label" id="tunnelNodeId">Node Inspector</span>
+                    <h3 id="parameterTitle">Select a parameter node</h3>
+                  </div>
+                </div>
+                <div class="parameter-proof" id="parameterProof"></div>
+              </aside>
+            </div>
           </div>
         </section>
 

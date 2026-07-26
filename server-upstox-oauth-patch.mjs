@@ -197,7 +197,7 @@ function upstoxCallbackPage(result, error = "") {
     "<body><main class=\"server-required-screen\"><section class=\"server-required-panel login-panel\">" +
     "<div class=\"brand-mark\">AS</div><span class=\"eyebrow\">Upstox Token Renewal</span>" +
     "<h1>" + (ok ? "Token saved" : "Token failed") + "</h1>" +
-    "<p>" + (ok ? "ASH Stock can now use the renewed Upstox market-data token from MongoDB." : escapeHtml(error)) + "</p>" +
+    "<p>" + (ok ? "ASH Stock saved the renewed Upstox market-data token in MongoDB and queued the real-quote paper engine." : escapeHtml(error)) + "</p>" +
     (ok ? "<p class=\"positive\">Source: " + escapeHtml(result.token_source || "oauth") + "</p>" : "") +
     "<a class=\"primary-button\" href=\"/\">Return To ASH Stock</a>" +
     "</section></main></body></html>";
@@ -208,6 +208,10 @@ const UPSTOX_PUBLIC_CALLBACK_ROUTE = String.raw`
       if (url.pathname === "/api/upstox/callback" && req.method === "GET") {
         try {
           const result = await exchangeUpstoxOAuthCode(req, url);
+          const timer = setTimeout(() => runPaperEngineOnce("upstox-oauth").catch((error) => {
+            console.error("Upstox OAuth paper-engine run failed:", error.message);
+          }), 750);
+          timer.unref?.();
           html(res, 200, upstoxCallbackPage(result));
         } catch (error) {
           html(res, 400, upstoxCallbackPage(null, error.message));
@@ -241,6 +245,10 @@ const UPSTOX_AUTH_ROUTES = String.raw`
         }
         try {
           const status = await handleUpstoxTokenPaste(req);
+          const timer = setTimeout(() => runPaperEngineOnce("upstox-token-paste").catch((error) => {
+            console.error("Upstox token paper-engine run failed:", error.message);
+          }), 750);
+          timer.unref?.();
           json(res, 200, { ok: true, status, token_printed: false });
         } catch (error) {
           json(res, 400, { ok: false, error: error.message, token_printed: false });

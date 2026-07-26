@@ -123,6 +123,100 @@ console.log(JSON.stringify(result));
   assert(result.code === 0, result.stderr || result.stdout || "production Mongo fallback failed");
 }
 
+async function runRealQuotePaperFillGuard() {
+  const script = `
+const NativeDate = Date;
+const fixedNow = NativeDate.parse("2026-07-27T04:30:00.000Z");
+globalThis.Date = class extends NativeDate {
+  constructor(...args) { super(...(args.length ? args : [fixedNow])); }
+  static now() { return fixedNow; }
+};
+globalThis.__ASH_STOCK_ENV = {
+  ...process.env,
+  NODE_ENV: "test",
+  REQUIRE_AUTH: "false",
+  REQUIRE_DB: "false",
+  UPSTOX_API_KEY: "smoke-key",
+  UPSTOX_API_SECRET: "smoke-secret",
+  UPSTOX_ACCESS_TOKEN: "smoke-token",
+  DISABLE_PAPER_ENGINE_AUTOBUY: "false",
+  PAPER_ENGINE_MAX_BUYS_PER_RUN: "1"
+};
+const nativeFetch = globalThis.fetch;
+const { createServer } = await import("./server.js");
+const server = createServer();
+await new Promise((resolve, reject) => {
+  server.once("error", reject);
+  server.listen(0, "127.0.0.1", resolve);
+});
+const base = "http://127.0.0.1:" + server.address().port;
+const candles = [];
+for (let index = 0; index < 253; index += 1) {
+  const date = new NativeDate(fixedNow - (252 - index) * 86400000);
+  const close = 100 + index;
+  candles.push({ date: date.toISOString().slice(0, 10), open: close * 0.99, high: close * 1.01, low: close * 0.98, close, volume: 800000 });
+}
+try {
+  let response = await nativeFetch(base + "/api/scanner/run", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ universe: [{ symbol: "REALQUOTE", name: "Real Quote Test", sector: "Test", exchange: "NSE", instrument_key: "NSE_EQ|INETEST00001", candles }] })
+  });
+  const scan = await response.json();
+  const scanRow = scan.rows?.[0];
+  if (scanRow?.decision !== "SELECT") throw new Error("real-quote candidate should be SELECT");
+  if (scanRow?.parameter_tunnel?.summary?.evaluated < 80) throw new Error("real-quote candidate should execute the wired tunnel");
+
+  globalThis.fetch = async (url) => {
+    const target = String(url);
+    if (!target.startsWith("https://api.upstox.com/v2/market-quote/quotes")) throw new Error("unexpected network request " + target);
+    return new Response(JSON.stringify({
+      status: "success",
+      data: {
+        "NSE_EQ:INETEST00001": {
+          instrument_key: "NSE_EQ|INETEST00001",
+          trading_symbol: "REALQUOTE",
+          last_price: 352,
+          timestamp: new NativeDate(fixedNow).toISOString(),
+          lower_circuit_limit: 250,
+          upper_circuit_limit: 450,
+          depth: {
+            buy: [{ price: 351.95, quantity: 50000, orders: 20 }],
+            sell: [{ price: 352.05, quantity: 50000, orders: 20 }]
+          }
+        }
+      }
+    }), { status: 200, headers: { "content-type": "application/json" } });
+  };
+
+  response = await nativeFetch(base + "/api/paper-engine/run", { method: "POST" });
+  const result = await response.json();
+  response = await nativeFetch(base + "/api/paper-trader/orders");
+  const ledger = await response.json();
+  const order = result.auto_buy?.orders?.[0];
+  const position = ledger.positions?.[0];
+  if (order?.price !== 352 || order?.quote_timestamp !== "2026-07-27T04:30:00.000Z") throw new Error("paper fill must use the real Upstox quote");
+  if (position?.entry_price !== 352 || position?.instrument_key !== "NSE_EQ|INETEST00001") throw new Error("real-quote position must persist in the paper ledger");
+  if (position?.parameter_evidence?.evaluated < 80) throw new Error("paper position must retain parameter evidence");
+  console.log(JSON.stringify({ ok: true, price: order.price, symbol: position.symbol, evaluated: position.parameter_evidence.evaluated }));
+} finally {
+  globalThis.fetch = nativeFetch;
+  await new Promise((resolve) => server.close(resolve));
+  const fs = await import("node:fs/promises");
+  for (const file of ["data/app_state.json", "data/scan_ledger.jsonl", "data/upstox_auth.json"]) await fs.unlink(file).catch(() => {});
+}
+`;
+  const result = await new Promise((resolve) => {
+    const child = spawn(process.execPath, ["--input-type=module", "-e", script], { cwd: ROOT, windowsHide: true });
+    let stdout = "";
+    let stderr = "";
+    child.stdout.on("data", (chunk) => { stdout += chunk.toString(); });
+    child.stderr.on("data", (chunk) => { stderr += chunk.toString(); });
+    child.on("close", (code) => resolve({ code, stdout, stderr }));
+  });
+  assert(result.code === 0, result.stderr || result.stdout || "real-quote paper fill guard failed");
+}
+
 async function main() {
   globalThis.__ASH_STOCK_ENV = {
     ...process.env,
@@ -150,6 +244,7 @@ async function main() {
     "multi-host seed lists must use the standard mongodb scheme"
   );
   await runProductionMongoHealthGuard();
+  await runRealQuotePaperFillGuard();
 
   const directScan = runScanner([
     {
@@ -173,6 +268,10 @@ async function main() {
   assert(directScan.rows[0].paper_order.status === "READY", "selectable row should create a paper-only order intent");
   assert(directScan.rows[0].paper_order.broker_write_enabled === false, "scanner must not enable broker writes");
   assert(directScan.rows[0].proof.formula.includes("momentum_score"), "proof row should expose scoring formula");
+  assert(directScan.parameter_tunnel_version === "ashstocks-parameter-tunnel-v1.0-175", "scanner should expose the reviewed 175-node tunnel version");
+  assert(directScan.rows[0].parameter_tunnel.total === 175, "every scanner row should carry all 175 parameter nodes");
+  assert(directScan.rows[0].parameter_tunnel.summary.evaluated === 0, "metric-only rows must not invent candle-derived parameter evidence");
+  assert(directScan.rows[0].score === directScan.rows[0].base_score, "missing candle evidence must not dilute the existing scanner score");
 
   const correlationScan = runScanner(
     [{ symbol: "CORRCAND", name: "Correlation Candidate", sector: "Test", candles: proofCandles(0) }],
@@ -180,6 +279,7 @@ async function main() {
   );
   assert(correlationScan.rows[0].decision === "BLOCKED", "over-correlated candidate should be blocked");
   assert(correlationScan.rows[0].gates.correlation === false, "correlation gate should fail for identical return series");
+  assert(correlationScan.rows[0].parameter_tunnel.summary.evaluated >= 80, "full candles should execute the wired tunnel parameters");
 
   const server = createServer();
   await new Promise((resolve, reject) => {
@@ -211,6 +311,8 @@ async function main() {
     assert(parameters.response.status === 200, "scanner parameters should be readable");
     assert(parameters.body.parameters.length >= 8, "scanner should expose parameter bank");
     assert(parameters.body.universe.some((row) => row.symbol === "RELIANCE"), "default pool should include Indian stocks");
+    assert(parameters.body.parameter_tunnel.total === 175, "parameter API should publish all 175 reviewed nodes");
+    assert(new Set(parameters.body.parameter_tunnel.parameters.map((row) => row.id)).size === 175, "parameter IDs should be unique");
 
     const defaultScan = await request("/api/scanner/run", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({}) });
     assert(defaultScan.response.status === 200, "default scanner run should work");
@@ -326,7 +428,7 @@ async function main() {
     assert(upstoxStatusAfter.body.status.token_visible === true, "Upstox status should detect saved token");
     assert(upstoxStatusAfter.body.status.token_source === "manual_paste", "Upstox status should read token from store");
 
-    console.log(JSON.stringify({ ok: true, checks: ["mongo-file-fallback", "data-bank-status", "scan-ledger", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "upstox-guard", "paper-engine-status", "paper-engine-guard", "q1-status", "q1-upload", "q1-render-guard", "upstox-oauth-start", "upstox-token-paste"] }));
+    console.log(JSON.stringify({ ok: true, checks: ["mongo-file-fallback", "data-bank-status", "scan-ledger", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "parameter-tunnel-175", "paper-engine-real-quote-fill", "upstox-guard", "paper-engine-status", "paper-engine-guard", "q1-status", "q1-upload", "q1-render-guard", "upstox-oauth-start", "upstox-token-paste"] }));
   } finally {
     await Promise.all([...Q1_INPUTS, STATE_FILE, SCAN_LEDGER_FILE, UPSTOX_AUTH_FILE].map((file) => fs.unlink(file).catch((error) => {
       if (error.code !== "ENOENT") throw error;

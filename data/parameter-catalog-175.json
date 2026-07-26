@@ -1,0 +1,3619 @@
+{
+  "version": "ashstocks-parameter-tunnel-v1.0-175",
+  "generatedAt": "2026-07-26T19:08:37.650Z",
+  "total": 175,
+  "parameters": [
+    {
+      "id": "B22_P001",
+      "stage": "LEGACY",
+      "family": "Price Trend",
+      "name": "Close above 20 DMA",
+      "formula": "close > SMA(close, 20)",
+      "threshold": "Latest close must be greater than 20-session simple moving average.",
+      "source": "ARD B22 and Upstox daily candles",
+      "reason": "Confirms that short-term price is trading above its recent mean.",
+      "example": "Formula example: close 525 and SMA20 510 gives 525 > 510, so HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "trend"
+      ],
+      "required": "20 daily closes",
+      "lookback": "20 sessions"
+    },
+    {
+      "id": "B22_P002",
+      "stage": "LEGACY",
+      "family": "Price Trend",
+      "name": "Close above 50 DMA",
+      "formula": "close > SMA(close, 50)",
+      "threshold": "Latest close must be greater than 50-session simple moving average.",
+      "source": "ARD B22 and Upstox daily candles",
+      "reason": "Confirms intermediate trend support.",
+      "example": "Formula example: close 525 and SMA50 492 gives 525 > 492, so HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "trend"
+      ],
+      "required": "50 daily closes",
+      "lookback": "50 sessions"
+    },
+    {
+      "id": "B22_P003",
+      "stage": "LEGACY",
+      "family": "Price Trend",
+      "name": "Close above 200 DMA",
+      "formula": "close > SMA(close, 200)",
+      "threshold": "Latest close must be greater than 200-session simple moving average.",
+      "source": "ARD B22 and Upstox daily candles",
+      "reason": "Separates long-term uptrends from structurally weak price regimes.",
+      "example": "Formula example: close 525 and SMA200 430 gives 525 > 430, so HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "trend"
+      ],
+      "required": "200 daily closes",
+      "lookback": "200 sessions"
+    },
+    {
+      "id": "B22_P004",
+      "stage": "LEGACY",
+      "family": "Price Trend",
+      "name": "20 DMA above 50 DMA",
+      "formula": "SMA(close, 20) > SMA(close, 50)",
+      "threshold": "20-session average must be above 50-session average.",
+      "source": "ARD B22 and Upstox daily candles",
+      "reason": "Tests whether short-term trend leads intermediate trend.",
+      "example": "Formula example: SMA20 510 and SMA50 492 gives 510 > 492, so HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "trend"
+      ],
+      "required": "50 daily closes",
+      "lookback": "50 sessions"
+    },
+    {
+      "id": "B22_P005",
+      "stage": "LEGACY",
+      "family": "Price Trend",
+      "name": "50 DMA above 200 DMA",
+      "formula": "SMA(close, 50) > SMA(close, 200)",
+      "threshold": "50-session average must be above 200-session average.",
+      "source": "ARD B22 and Upstox daily candles",
+      "reason": "Confirms long-cycle trend alignment.",
+      "example": "Formula example: SMA50 492 and SMA200 430 gives 492 > 430, so HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "trend"
+      ],
+      "required": "200 daily closes",
+      "lookback": "200 sessions"
+    },
+    {
+      "id": "B02_P006",
+      "stage": "LEGACY",
+      "family": "Momentum",
+      "name": "1M return positive",
+      "formula": "return(close, 21) > 0",
+      "threshold": "21-session price return must be positive.",
+      "source": "Chitty parameters B02 and Upstox daily candles",
+      "reason": "Detects current positive price impulse.",
+      "example": "Formula example: close moves from 500 to 525, return 5%, so HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "momentum"
+      ],
+      "required": "22 daily closes",
+      "lookback": "21 sessions"
+    },
+    {
+      "id": "B02_P007",
+      "stage": "LEGACY",
+      "family": "Momentum",
+      "name": "3M return positive",
+      "formula": "return(close, 63) > 0",
+      "threshold": "63-session price return must be positive.",
+      "source": "Chitty parameters B02 and Upstox daily candles",
+      "reason": "Checks that momentum persists beyond a short bounce.",
+      "example": "Formula example: close moves from 470 to 525, return 11.7%, so HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "momentum"
+      ],
+      "required": "64 daily closes",
+      "lookback": "63 sessions"
+    },
+    {
+      "id": "B02_P008",
+      "stage": "LEGACY",
+      "family": "Momentum",
+      "name": "6M return above 8%",
+      "formula": "return(close, 126) >= 8%",
+      "threshold": "126-session return must be at least 8%.",
+      "source": "Chitty parameters B02 and Upstox daily candles",
+      "reason": "Requires meaningful medium-term outperformance.",
+      "example": "Formula example: close moves from 470 to 525, return 11.7%, so HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "momentum"
+      ],
+      "required": "127 daily closes",
+      "lookback": "126 sessions"
+    },
+    {
+      "id": "B02_P009",
+      "stage": "LEGACY",
+      "family": "Momentum",
+      "name": "12M return above 12%",
+      "formula": "return(close, 252) >= 12%",
+      "threshold": "252-session return must be at least 12%.",
+      "source": "Chitty parameters B02 and Upstox daily candles",
+      "reason": "Confirms durable annual momentum.",
+      "example": "Formula example: close moves from 450 to 525, return 16.7%, so HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "momentum"
+      ],
+      "required": "253 daily closes",
+      "lookback": "252 sessions"
+    },
+    {
+      "id": "B22_P010",
+      "stage": "LEGACY",
+      "family": "Breakout",
+      "name": "20D high breakout",
+      "formula": "close > max(high, prior 20 sessions)",
+      "threshold": "Latest close must exceed the prior 20-session high.",
+      "source": "Chitty pre-rise trigger layer and Upstox candles",
+      "reason": "Confirms price has cleared recent supply.",
+      "example": "Formula example: close 525 and prior 20D high 518 gives a breakout HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "breakout",
+        "event"
+      ],
+      "required": "21 OHLC sessions",
+      "lookback": "20 prior sessions"
+    },
+    {
+      "id": "B22_P011",
+      "stage": "LEGACY",
+      "family": "Candle",
+      "name": "Bullish engulfing",
+      "formula": "green real body engulfs prior red real body",
+      "threshold": "Current open below prior close and current close above prior open.",
+      "source": "Chitty pre-rise trigger layer and Upstox candles",
+      "reason": "Captures a two-session reversal where buyers absorb the prior decline.",
+      "example": "Formula example: prior open/close 510/500; current open/close 498/514, so HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "candle",
+        "reversal"
+      ],
+      "required": "Two OHLC candles",
+      "lookback": "2 sessions"
+    },
+    {
+      "id": "B22_P012",
+      "stage": "LEGACY",
+      "family": "Candle",
+      "name": "Hammer reclaim",
+      "formula": "lower wick > 2 * real body and close > open",
+      "threshold": "Lower wick must exceed twice the body with a green close.",
+      "source": "Chitty pre-rise trigger layer and Upstox candles",
+      "reason": "Identifies rejection of lower prices.",
+      "example": "Formula example: lower wick 12, body 4 and green close gives 12 > 8, so HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "candle",
+        "reversal"
+      ],
+      "required": "One OHLC candle",
+      "lookback": "1 session"
+    },
+    {
+      "id": "B22_P013",
+      "stage": "LEGACY",
+      "family": "Candle",
+      "name": "Inside bar compression",
+      "formula": "high < prior high and low > prior low",
+      "threshold": "Current full range must sit inside the prior full range.",
+      "source": "Chitty pre-rise trigger layer and Upstox candles",
+      "reason": "Marks short-range compression before potential expansion.",
+      "example": "Formula example: current 102/96 inside prior 105/94, so HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "candle",
+        "compression"
+      ],
+      "required": "Two OHLC candles",
+      "lookback": "2 sessions"
+    },
+    {
+      "id": "B22_P014",
+      "stage": "LEGACY",
+      "family": "Candle",
+      "name": "NR7 range compression",
+      "formula": "range(today) = min(range, last 7 sessions)",
+      "threshold": "Today's high-low range must be the narrowest of seven sessions.",
+      "source": "Chitty pre-rise trigger layer and Upstox candles",
+      "reason": "Detects volatility contraction that can precede a directional move.",
+      "example": "Formula example: current range 3.2 versus prior minimum 4.1, so HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "candle",
+        "compression"
+      ],
+      "required": "Seven OHLC candles",
+      "lookback": "7 sessions"
+    },
+    {
+      "id": "B15_P015",
+      "stage": "LEGACY",
+      "family": "Volume",
+      "name": "Volume above 20D average",
+      "formula": "volume > SMA(volume, 20)",
+      "threshold": "Latest volume must exceed its 20-session average.",
+      "source": "ARD B22 and Upstox candles",
+      "reason": "Requires participation behind the price move.",
+      "example": "Formula example: volume 2.4m versus average 1.6m, ratio 1.5, so HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "volume",
+        "liquidity"
+      ],
+      "required": "20 volume observations",
+      "lookback": "20 sessions"
+    },
+    {
+      "id": "B15_P016",
+      "stage": "LEGACY",
+      "family": "Volume",
+      "name": "Up-volume beats down-volume",
+      "formula": "sum(up-day volume, 20) > sum(down-day volume, 20)",
+      "threshold": "Twenty-session up-day volume must exceed down-day volume.",
+      "source": "Chitty volume-delivery batch and Upstox candles",
+      "reason": "Tests whether accumulation dominates distribution.",
+      "example": "Formula example: up-volume 28m versus down-volume 19m, so HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "volume",
+        "accumulation"
+      ],
+      "required": "20 close and volume observations",
+      "lookback": "20 sessions"
+    },
+    {
+      "id": "B15_P017",
+      "stage": "LEGACY",
+      "family": "Liquidity",
+      "name": "Rupee turnover above 5cr",
+      "formula": "close * volume / 10,000,000 >= 5",
+      "threshold": "Latest estimated cash turnover must be at least Rs 5 crore.",
+      "source": "ARD B22 and Upstox candles",
+      "reason": "Removes instruments with inadequate tradable liquidity.",
+      "example": "Formula example: price 500 and volume 200,000 gives Rs 10cr, so HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "liquidity",
+        "risk"
+      ],
+      "required": "Latest close and volume",
+      "lookback": "1 session"
+    },
+    {
+      "id": "B19_P018",
+      "stage": "LEGACY",
+      "family": "Risk",
+      "name": "No 10D distribution spike",
+      "formula": "no down day in 10D has volume > 2 * SMA(volume, 20)",
+      "threshold": "No qualifying high-volume down session may exist in the last 10 sessions.",
+      "source": "AshStocks risk governor and Upstox candles",
+      "reason": "Blocks names showing recent heavy institutional-style selling.",
+      "example": "Formula example: largest down-day ratio 1.6x is below 2x, so HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "risk",
+        "distribution"
+      ],
+      "required": "20 close and volume observations",
+      "lookback": "20 sessions"
+    },
+    {
+      "id": "B19_P019",
+      "stage": "LEGACY",
+      "family": "Risk",
+      "name": "Drawdown under 25%",
+      "formula": "(high252 - close) / high252 < 25%",
+      "threshold": "Latest close must be less than 25% below the 252-session high.",
+      "source": "AshStocks risk governor and Upstox candles",
+      "reason": "Avoids structurally damaged trends.",
+      "example": "Formula example: high 600 and close 510 gives 15% drawdown, so HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "risk",
+        "trend"
+      ],
+      "required": "252 highs and latest close",
+      "lookback": "252 sessions"
+    },
+    {
+      "id": "B19_P020",
+      "stage": "LEGACY",
+      "family": "Risk",
+      "name": "Above 52W midpoint",
+      "formula": "(close - low252) / (high252 - low252) > 50%",
+      "threshold": "Close must be in the upper half of its 252-session range.",
+      "source": "AshStocks risk governor and Upstox candles",
+      "reason": "Requires the stock to retain constructive range position.",
+      "example": "Formula example: low 300, high 600 and close 510 gives 70%, so HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "risk",
+        "trend"
+      ],
+      "required": "252 highs, lows and latest close",
+      "lookback": "252 sessions"
+    },
+    {
+      "id": "B22_P021",
+      "stage": "LEGACY",
+      "family": "Volatility",
+      "name": "ATR above 1%",
+      "formula": "ATR(14) / close > 1%",
+      "threshold": "Fourteen-session ATR must exceed 1% of price.",
+      "source": "ARD B22 and Upstox candles",
+      "reason": "Requires enough movement to justify a trade setup.",
+      "example": "Formula example: ATR 8 and close 500 gives 1.6%, so HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "volatility",
+        "risk"
+      ],
+      "required": "15 OHLC candles",
+      "lookback": "14 sessions"
+    },
+    {
+      "id": "B22_P022",
+      "stage": "LEGACY",
+      "family": "Volatility",
+      "name": "20D volatility below 4%",
+      "formula": "mean(abs(daily return), 20) < 4%",
+      "threshold": "Average absolute daily move must remain below 4%.",
+      "source": "ARD B22 and Upstox candles",
+      "reason": "Excludes unstable price behavior from the base selection.",
+      "example": "Formula example: 20D average absolute move 2.1%, so HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "volatility",
+        "risk"
+      ],
+      "required": "21 daily closes",
+      "lookback": "20 sessions"
+    },
+    {
+      "id": "B22_P023",
+      "stage": "LEGACY",
+      "family": "Volatility",
+      "name": "Bollinger width contracting",
+      "formula": "4 * stdev(close, 20) / SMA(close, 20) < 12%",
+      "threshold": "Approximate two-standard-deviation band width must be below 12%.",
+      "source": "Chitty pre-rise trigger layer and Upstox candles",
+      "reason": "Finds controlled compression instead of late-stage expansion.",
+      "example": "Formula example: width 8.4% is below 12%, so HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "volatility",
+        "compression"
+      ],
+      "required": "20 daily closes",
+      "lookback": "20 sessions"
+    },
+    {
+      "id": "T12W_0001",
+      "stage": "RISE",
+      "family": "Compression / Base Before Move",
+      "name": "NR7 Day Inside 10D Base",
+      "formula": "range_today = high-low; flag if range_today <= MIN(range[-7:]) and close within 10D range midpoint band",
+      "threshold": "Daily range is the narrowest of last 7 sessions inside a 10-day base.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Daily range is the narrowest of last 7 sessions inside a 10-day base.",
+      "example": "Formula example, not a live stock value: evaluate \"range_today = high-low; flag if range_today <= MIN(range[-7:]) and close within 10D range midpoint band\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "compression"
+      ],
+      "required": "date,open,high,low,close,volume",
+      "lookback": "1W"
+    },
+    {
+      "id": "T12W_0002",
+      "stage": "RISE",
+      "family": "Compression / Base Before Move",
+      "name": "NR14 Compression Before Break",
+      "formula": "flag if today's high-low <= MIN(high-low over 14 sessions)",
+      "threshold": "14-day narrow-range pressure before expansion.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "14-day narrow-range pressure before expansion.",
+      "example": "Formula example, not a live stock value: evaluate \"flag if today's high-low <= MIN(high-low over 14 sessions)\" on a complete 2W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "compression"
+      ],
+      "required": "date,high,low,close,volume",
+      "lookback": "2W"
+    },
+    {
+      "id": "T12W_0003",
+      "stage": "RISE",
+      "family": "Compression / Base Before Move",
+      "name": "Bollinger Bandwidth 10D Squeeze",
+      "formula": "bandwidth=(upper20-lower20)/ma20; flag if bandwidth percentile <= 15 over 6M",
+      "threshold": "Volatility squeeze; expansion often appears after very low bandwidth.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Volatility squeeze; expansion often appears after very low bandwidth.",
+      "example": "Formula example, not a live stock value: evaluate \"bandwidth=(upper20-lower20)/ma20; flag if bandwidth percentile <= 15 over 6M\" on a complete 1-2W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "compression"
+      ],
+      "required": "date,close,volume",
+      "lookback": "1-2W"
+    },
+    {
+      "id": "T12W_0004",
+      "stage": "RISE",
+      "family": "Compression / Base Before Move",
+      "name": "ATR Percentile Bottom 20",
+      "formula": "ATR14 percentile over 252 days <= 20 and price above 20D low",
+      "threshold": "ATR regime compresses before directional expansion.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "ATR regime compresses before directional expansion.",
+      "example": "Formula example, not a live stock value: evaluate \"ATR14 percentile over 252 days <= 20 and price above 20D low\" on a complete 1-2W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "compression"
+      ],
+      "required": "date,high,low,close",
+      "lookback": "1-2W"
+    },
+    {
+      "id": "T12W_0005",
+      "stage": "RISE",
+      "family": "Compression / Base Before Move",
+      "name": "Inside Bar Cluster 5 of 10",
+      "formula": "count inside bars in last 10 >= 5",
+      "threshold": "Multiple inside/contained bars show compression.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Multiple inside/contained bars show compression.",
+      "example": "Formula example, not a live stock value: evaluate \"count inside bars in last 10 >= 5\" on a complete 1-2W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "compression"
+      ],
+      "required": "date,high,low,close",
+      "lookback": "1-2W"
+    },
+    {
+      "id": "T12W_0006",
+      "stage": "RISE",
+      "family": "Compression / Base Before Move",
+      "name": "Base Width Under 8 Percent",
+      "formula": "(max_high_10d-min_low_10d)/close <= 0.08",
+      "threshold": "Tight base without breaking down.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Tight base without breaking down.",
+      "example": "Formula example, not a live stock value: evaluate \"(max_high_10d-min_low_10d)/close <= 0.08\" on a complete 2W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "compression"
+      ],
+      "required": "date,high,low,close",
+      "lookback": "2W"
+    },
+    {
+      "id": "T12W_0007",
+      "stage": "RISE",
+      "family": "Compression / Base Before Move",
+      "name": "Close Above Base Midline",
+      "formula": "close > (highest_high_10+lowest_low_10)/2 for 3 of last 5 days",
+      "threshold": "Price holds upper half of compression base before breakout.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Price holds upper half of compression base before breakout.",
+      "example": "Formula example, not a live stock value: evaluate \"close > (highest_high_10+lowest_low_10)/2 for 3 of last 5 days\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "compression",
+        "breakout"
+      ],
+      "required": "date,high,low,close",
+      "lookback": "1W"
+    },
+    {
+      "id": "T12W_0008",
+      "stage": "RISE",
+      "family": "Compression / Base Before Move",
+      "name": "Low Volatility Higher Lows",
+      "formula": "ATR14 down 3 sessions and low_5d_slope > 0",
+      "threshold": "Volatility compresses while lows rise.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Volatility compresses while lows rise.",
+      "example": "Formula example, not a live stock value: evaluate \"ATR14 down 3 sessions and low_5d_slope > 0\" on a complete 1-2W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "compression"
+      ],
+      "required": "date,high,low,close",
+      "lookback": "1-2W"
+    },
+    {
+      "id": "T12W_0009",
+      "stage": "RISE",
+      "family": "Compression / Base Before Move",
+      "name": "Squeeze Plus Volume Dry Up",
+      "formula": "bandwidth low + volume_5d_avg < volume_20d_avg*0.75",
+      "threshold": "Base tightens while volume drops before institutional move.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Base tightens while volume drops before institutional move.",
+      "example": "Formula example, not a live stock value: evaluate \"bandwidth low + volume_5d_avg < volume_20d_avg*0.75\" on a complete 1-2W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "compression",
+        "volume"
+      ],
+      "required": "date,high,low,close,volume",
+      "lookback": "1-2W"
+    },
+    {
+      "id": "T12W_0010",
+      "stage": "RISE",
+      "family": "Compression / Base Before Move",
+      "name": "Range Contraction 3-Step",
+      "formula": "range_t < range_t-1 < range_t-2 and close not breaking 10D low",
+      "threshold": "Three consecutive lower ranges before expansion.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Three consecutive lower ranges before expansion.",
+      "example": "Formula example, not a live stock value: evaluate \"range_t < range_t-1 < range_t-2 and close not breaking 10D low\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "compression"
+      ],
+      "required": "date,high,low,close",
+      "lookback": "1W"
+    },
+    {
+      "id": "T12W_0011",
+      "stage": "RISE",
+      "family": "Compression / Base Before Move",
+      "name": "Tight Close Cluster",
+      "formula": "stdev(close[-5:])/avg(close[-5:]) <= 1.5%",
+      "threshold": "Closing prices cluster tightly before move.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Closing prices cluster tightly before move.",
+      "example": "Formula example, not a live stock value: evaluate \"stdev(close[-5:])/avg(close[-5:]) <= 1.5%\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "compression"
+      ],
+      "required": "date,close",
+      "lookback": "1W"
+    },
+    {
+      "id": "T12W_0012",
+      "stage": "RISE",
+      "family": "Compression / Base Before Move",
+      "name": "Compression With Positive Drift",
+      "formula": "bandwidth percentile <=25 and linear_slope(close,10)>0",
+      "threshold": "Tightness with slow upward close slope.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Tightness with slow upward close slope.",
+      "example": "Formula example, not a live stock value: evaluate \"bandwidth percentile <=25 and linear_slope(close,10)>0\" on a complete 2W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "compression"
+      ],
+      "required": "date,close,high,low",
+      "lookback": "2W"
+    },
+    {
+      "id": "T12W_0013",
+      "stage": "RISE",
+      "family": "Compression / Base Before Move",
+      "name": "Pre-Break 20D High Proximity",
+      "formula": "close >= 0.97*max(high[-20:]) and volume not panic",
+      "threshold": "Price sits near 20D high without breakout yet.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Price sits near 20D high without breakout yet.",
+      "example": "Formula example, not a live stock value: evaluate \"close >= 0.97*max(high[-20:]) and volume not panic\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "compression",
+        "breakout"
+      ],
+      "required": "date,high,close,volume",
+      "lookback": "1W"
+    },
+    {
+      "id": "T12W_0014",
+      "stage": "RISE",
+      "family": "Compression / Base Before Move",
+      "name": "Volatility Shelf Build",
+      "formula": "abs(slope(ATR14,5)) small and ATR14 percentile <=30",
+      "threshold": "ATR flattening near low after falling volatility.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "ATR flattening near low after falling volatility.",
+      "example": "Formula example, not a live stock value: evaluate \"abs(slope(ATR14,5)) small and ATR14 percentile <=30\" on a complete 2W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "compression"
+      ],
+      "required": "date,high,low,close",
+      "lookback": "2W"
+    },
+    {
+      "id": "T12W_0015",
+      "stage": "RISE",
+      "family": "Compression / Base Before Move",
+      "name": "Micro Pullback In Base",
+      "formula": "drawdown from 10D high between -2% and -6%, no 10D low break",
+      "threshold": "Small controlled pullback inside base after momentum.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Small controlled pullback inside base after momentum.",
+      "example": "Formula example, not a live stock value: evaluate \"drawdown from 10D high between -2% and -6%, no 10D low break\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "compression",
+        "momentum"
+      ],
+      "required": "date,high,low,close",
+      "lookback": "1W"
+    },
+    {
+      "id": "T12W_0016",
+      "stage": "RISE",
+      "family": "Compression / Base Before Move",
+      "name": "Breakout Pressure Ratio",
+      "formula": "avg(CLV last5) > avg(CLV prior5) and CLV=(close-low)/(high-low)",
+      "threshold": "Upper wicks shrink and close position strengthens.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Upper wicks shrink and close position strengthens.",
+      "example": "Formula example, not a live stock value: evaluate \"avg(CLV last5) > avg(CLV prior5) and CLV=(close-low)/(high-low)\" on a complete 1-2W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "compression",
+        "breakout"
+      ],
+      "required": "date,high,low,close",
+      "lookback": "1-2W"
+    },
+    {
+      "id": "T12W_0017",
+      "stage": "RISE",
+      "family": "Stealth Accumulation / Absorption",
+      "name": "Stealth Accumulation Flat Price Rising OBV",
+      "formula": "slope(OBV,10)>0 and abs(return_10d)<=3%",
+      "threshold": "OBV rises while price remains flat, suggesting hidden buying.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "OBV rises while price remains flat, suggesting hidden buying.",
+      "example": "Formula example, not a live stock value: evaluate \"slope(OBV,10)>0 and abs(return_10d)<=3%\" on a complete 1-2W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "accumulation"
+      ],
+      "required": "date,close,volume",
+      "lookback": "1-2W"
+    },
+    {
+      "id": "T12W_0018",
+      "stage": "RISE",
+      "family": "Stealth Accumulation / Absorption",
+      "name": "Up Volume Dominance 7D",
+      "formula": "sum(volume where close>prior_close last7) / total_volume_7d >= 0.62",
+      "threshold": "More volume on up-close days than down-close days.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "More volume on up-close days than down-close days.",
+      "example": "Formula example, not a live stock value: evaluate \"sum(volume where close>prior_close last7) / total_volume_7d >= 0.62\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "volume",
+        "accumulation"
+      ],
+      "required": "date,close,volume",
+      "lookback": "1W"
+    },
+    {
+      "id": "T12W_0019",
+      "stage": "RISE",
+      "family": "Stealth Accumulation / Absorption",
+      "name": "Positive CLV Accumulation",
+      "formula": "avg((close-low)/(high-low),7) >= 0.65",
+      "threshold": "Closes near highs repeatedly before price move.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Closes near highs repeatedly before price move.",
+      "example": "Formula example, not a live stock value: evaluate \"avg((close-low)/(high-low),7) >= 0.65\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "accumulation"
+      ],
+      "required": "date,high,low,close",
+      "lookback": "1W"
+    },
+    {
+      "id": "T12W_0020",
+      "stage": "RISE",
+      "family": "Stealth Accumulation / Absorption",
+      "name": "Absorption At Resistance",
+      "formula": "close within 2% of 20D high and volume>1.3*vol20 and no close below mid",
+      "threshold": "High volume near resistance without rejection means supply absorbed.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "High volume near resistance without rejection means supply absorbed.",
+      "example": "Formula example, not a live stock value: evaluate \"close within 2% of 20D high and volume>1.3*vol20 and no close below mid\" on a complete 1-2W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "volume",
+        "accumulation"
+      ],
+      "required": "date,high,low,close,volume",
+      "lookback": "1-2W"
+    },
+    {
+      "id": "T12W_0021",
+      "stage": "RISE",
+      "family": "Stealth Accumulation / Absorption",
+      "name": "Volume Up Price Flat",
+      "formula": "vol5>1.25*vol20 and abs(return_10d)<3%",
+      "threshold": "Volume increases while price stays within narrow range.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Volume increases while price stays within narrow range.",
+      "example": "Formula example, not a live stock value: evaluate \"vol5>1.25*vol20 and abs(return_10d)<3%\" on a complete 1-2W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "volume",
+        "accumulation"
+      ],
+      "required": "date,close,volume",
+      "lookback": "1-2W"
+    },
+    {
+      "id": "T12W_0022",
+      "stage": "RISE",
+      "family": "Stealth Accumulation / Absorption",
+      "name": "Higher Low With Volume Support",
+      "formula": "latest_swing_low > prior_swing_low and pullback volume <= avg volume",
+      "threshold": "Pullbacks are bought before breakout.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Pullbacks are bought before breakout.",
+      "example": "Formula example, not a live stock value: evaluate \"latest_swing_low > prior_swing_low and pullback volume <= avg volume\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "volume",
+        "accumulation",
+        "breakout"
+      ],
+      "required": "date,high,low,close,volume",
+      "lookback": "1W"
+    },
+    {
+      "id": "T12W_0023",
+      "stage": "RISE",
+      "family": "Stealth Accumulation / Absorption",
+      "name": "Demand Wick Repetition",
+      "formula": "count(lower_wick_ratio>0.45 last7)>=3",
+      "threshold": "Lower wick rejections show demand absorption.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Lower wick rejections show demand absorption.",
+      "example": "Formula example, not a live stock value: evaluate \"count(lower_wick_ratio>0.45 last7)>=3\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "accumulation"
+      ],
+      "required": "date,open,high,low,close",
+      "lookback": "1W"
+    },
+    {
+      "id": "T12W_0024",
+      "stage": "RISE",
+      "family": "Stealth Accumulation / Absorption",
+      "name": "Close Recovery Same Day",
+      "formula": "day_low_breaks_prior_low and close>open or close>midrange, count>=2 last7",
+      "threshold": "Intraday weakness gets recovered repeatedly.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Intraday weakness gets recovered repeatedly.",
+      "example": "Formula example, not a live stock value: evaluate \"day_low_breaks_prior_low and close>open or close>midrange, count>=2 last7\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "accumulation"
+      ],
+      "required": "date,open,high,low,close",
+      "lookback": "1W"
+    },
+    {
+      "id": "T12W_0025",
+      "stage": "RISE",
+      "family": "Stealth Accumulation / Absorption",
+      "name": "Quiet Accumulation Score",
+      "formula": "zscore(OBV_slope)+zscore(CLV_avg)-abs(return_10d)",
+      "threshold": "Composite: flat price + rising OBV + positive CLV.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Composite: flat price + rising OBV + positive CLV.",
+      "example": "Formula example, not a live stock value: evaluate \"zscore(OBV_slope)+zscore(CLV_avg)-abs(return_10d)\" on a complete 2W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "accumulation"
+      ],
+      "required": "date,high,low,close,volume",
+      "lookback": "2W"
+    },
+    {
+      "id": "T12W_0026",
+      "stage": "RISE",
+      "family": "Stealth Accumulation / Absorption",
+      "name": "Base Break Volume Preview",
+      "formula": "vol3/vol20 between 1.15 and 1.6 while price below breakout",
+      "threshold": "Small volume expansion happens before actual breakout.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Small volume expansion happens before actual breakout.",
+      "example": "Formula example, not a live stock value: evaluate \"vol3/vol20 between 1.15 and 1.6 while price below breakout\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "volume",
+        "accumulation",
+        "breakout"
+      ],
+      "required": "date,close,volume",
+      "lookback": "1W"
+    },
+    {
+      "id": "T12W_0027",
+      "stage": "RISE",
+      "family": "Stealth Accumulation / Absorption",
+      "name": "Accumulation Without Gap",
+      "formula": "positive CLV + rising OBV + no gap >3% last10",
+      "threshold": "Orderly accumulation without news gap risk.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Orderly accumulation without news gap risk.",
+      "example": "Formula example, not a live stock value: evaluate \"positive CLV + rising OBV + no gap >3% last10\" on a complete 1-2W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "accumulation",
+        "risk"
+      ],
+      "required": "date,open,high,low,close,volume",
+      "lookback": "1-2W"
+    },
+    {
+      "id": "T12W_0028",
+      "stage": "RISE",
+      "family": "Stealth Accumulation / Absorption",
+      "name": "Last Red Day Volume Shrink",
+      "formula": "volume on down days last5 < avg volume down days prior20",
+      "threshold": "Selling pressure fades before rise.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Selling pressure fades before rise.",
+      "example": "Formula example, not a live stock value: evaluate \"volume on down days last5 < avg volume down days prior20\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "volume",
+        "accumulation"
+      ],
+      "required": "date,close,volume",
+      "lookback": "1W"
+    },
+    {
+      "id": "T12W_0029",
+      "stage": "RISE",
+      "family": "Stealth Accumulation / Absorption",
+      "name": "Two Green High-CLV Days In Base",
+      "formula": "count(close>open and CLV>0.7 last5)>=2 and no breakout close yet",
+      "threshold": "Two strong closes while still inside base.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Two strong closes while still inside base.",
+      "example": "Formula example, not a live stock value: evaluate \"count(close>open and CLV>0.7 last5)>=2 and no breakout close yet\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "accumulation"
+      ],
+      "required": "date,open,high,low,close",
+      "lookback": "1W"
+    },
+    {
+      "id": "T12W_0030",
+      "stage": "RISE",
+      "family": "Stealth Accumulation / Absorption",
+      "name": "Support Touch Volume Dry",
+      "formula": "low near 20D support and volume < 0.8*vol20",
+      "threshold": "Tests support on lower volume, showing sellers exhausted.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Tests support on lower volume, showing sellers exhausted.",
+      "example": "Formula example, not a live stock value: evaluate \"low near 20D support and volume < 0.8*vol20\" on a complete 1-2W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "volume",
+        "accumulation"
+      ],
+      "required": "date,low,close,volume",
+      "lookback": "1-2W"
+    },
+    {
+      "id": "T12W_0031",
+      "stage": "RISE",
+      "family": "Stealth Accumulation / Absorption",
+      "name": "Hidden Demand Delta Proxy",
+      "formula": "(CLV*volume) 5D sum rising while close flat",
+      "threshold": "Proxy for demand when price response is muted but close recovers.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Proxy for demand when price response is muted but close recovers.",
+      "example": "Formula example, not a live stock value: evaluate \"(CLV*volume) 5D sum rising while close flat\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "accumulation"
+      ],
+      "required": "date,high,low,close,volume",
+      "lookback": "1W"
+    },
+    {
+      "id": "T12W_0032",
+      "stage": "RISE",
+      "family": "Stealth Accumulation / Absorption",
+      "name": "Accumulation Cluster Count",
+      "formula": "sum of accumulation flags last10 >= threshold",
+      "threshold": "Counts multiple accumulation signals inside short window.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Counts multiple accumulation signals inside short window.",
+      "example": "Formula example, not a live stock value: evaluate \"sum of accumulation flags last10 >= threshold\" on a complete 1-2W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "accumulation"
+      ],
+      "required": "date,open,high,low,close,volume",
+      "lookback": "1-2W"
+    },
+    {
+      "id": "T12W_0051",
+      "stage": "FALL",
+      "family": "Relative Strength / Sector Lead",
+      "name": "Weak RS Before Fall",
+      "formula": "stock_return_10d - sector_return_10d < -threshold",
+      "threshold": "Stock underperforms before price breaks.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Stock underperforms before price breaks.",
+      "example": "Formula example, not a live stock value: evaluate \"stock_return_10d - sector_return_10d < -threshold\" on a complete 1-2W window. A true result records HIT and stores the dated input evidence.",
+      "status": "DEFINED",
+      "readiness": "EXTERNAL_FEED_REQUIRED",
+      "tags": [
+        "all",
+        "sector"
+      ],
+      "required": "date,close,sector_close",
+      "lookback": "1-2W"
+    },
+    {
+      "id": "T12W_0052",
+      "stage": "FALL",
+      "family": "Relative Strength / Sector Lead",
+      "name": "Peer Breakdown Lead",
+      "formula": ">=3 peers break 20D low before target breaks",
+      "threshold": "Peers fall before target stock confirms.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Peers fall before target stock confirms.",
+      "example": "Formula example, not a live stock value: evaluate \">=3 peers break 20D low before target breaks\" on a complete 1-2W window. A true result records HIT and stores the dated input evidence.",
+      "status": "DEFINED",
+      "readiness": "EXTERNAL_FEED_REQUIRED",
+      "tags": [
+        "all",
+        "sector"
+      ],
+      "required": "peer OHLCV",
+      "lookback": "1-2W"
+    },
+    {
+      "id": "T12W_0053",
+      "stage": "FALL",
+      "family": "Relative Strength / Sector Lead",
+      "name": "Sector Divergence Warning",
+      "formula": "sector breadth declining and target near support",
+      "threshold": "Sector weakens while stock tries to hold.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Sector weakens while stock tries to hold.",
+      "example": "Formula example, not a live stock value: evaluate \"sector breadth declining and target near support\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "DEFINED",
+      "readiness": "EXTERNAL_FEED_REQUIRED",
+      "tags": [
+        "all",
+        "sector"
+      ],
+      "required": "date,close,sector/peer OHLCV",
+      "lookback": "1W"
+    },
+    {
+      "id": "T12W_0054",
+      "stage": "FALL",
+      "family": "Relative Strength / Sector Lead",
+      "name": "RS Failure At New High",
+      "formula": "price makes 20D high but RS line below prior high",
+      "threshold": "Price near high but RS fails to confirm.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Price near high but RS fails to confirm.",
+      "example": "Formula example, not a live stock value: evaluate \"price makes 20D high but RS line below prior high\" on a complete 1-2W window. A true result records HIT and stores the dated input evidence.",
+      "status": "DEFINED",
+      "readiness": "EXTERNAL_FEED_REQUIRED",
+      "tags": [
+        "all",
+        "sector"
+      ],
+      "required": "date,close,sector_close",
+      "lookback": "1-2W"
+    },
+    {
+      "id": "T12W_0055",
+      "stage": "FALL",
+      "family": "Relative Strength / Sector Lead",
+      "name": "Industry Rotation Exit",
+      "formula": "industry_rank worsens by >=20 percentile points in 10D",
+      "threshold": "Industry drops in relative rank before stock fall.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Industry drops in relative rank before stock fall.",
+      "example": "Formula example, not a live stock value: evaluate \"industry_rank worsens by >=20 percentile points in 10D\" on a complete 2W window. A true result records HIT and stores the dated input evidence.",
+      "status": "DEFINED",
+      "readiness": "EXTERNAL_FEED_REQUIRED",
+      "tags": [
+        "all",
+        "sector"
+      ],
+      "required": "industry returns",
+      "lookback": "2W"
+    },
+    {
+      "id": "T12W_0056",
+      "stage": "FALL",
+      "family": "Relative Strength / Sector Lead",
+      "name": "Crowded Leader Fatigue",
+      "formula": "stock 20D high + peer breadth down + RS slope flatten",
+      "threshold": "Leader momentum becomes extended while peer breadth deteriorates.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Leader momentum becomes extended while peer breadth deteriorates.",
+      "example": "Formula example, not a live stock value: evaluate \"stock 20D high + peer breadth down + RS slope flatten\" on a complete 1-2W window. A true result records HIT and stores the dated input evidence.",
+      "status": "DEFINED",
+      "readiness": "EXTERNAL_FEED_REQUIRED",
+      "tags": [
+        "all",
+        "momentum",
+        "sector"
+      ],
+      "required": "date,close,peer OHLCV",
+      "lookback": "1-2W"
+    },
+    {
+      "id": "T12W_0063",
+      "stage": "FALL",
+      "family": "Liquidity / Volume Transition",
+      "name": "Liquidity Fade Before Fall",
+      "formula": "vol5/vol20<0.7 while price near 20D high",
+      "threshold": "Volume interest fades near highs.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Volume interest fades near highs.",
+      "example": "Formula example, not a live stock value: evaluate \"vol5/vol20<0.7 while price near 20D high\" on a complete 1-2W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "volume",
+        "liquidity"
+      ],
+      "required": "date,high,close,volume",
+      "lookback": "1-2W"
+    },
+    {
+      "id": "T12W_0064",
+      "stage": "FALL",
+      "family": "Liquidity / Volume Transition",
+      "name": "Distribution Volume Spike",
+      "formula": "sum(vol on down days last7)/sum(vol last7)>0.58 and vol7>vol20",
+      "threshold": "Down days get unusually high volume.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Down days get unusually high volume.",
+      "example": "Formula example, not a live stock value: evaluate \"sum(vol on down days last7)/sum(vol last7)>0.58 and vol7>vol20\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "volume",
+        "liquidity",
+        "distribution"
+      ],
+      "required": "date,close,volume",
+      "lookback": "1W"
+    },
+    {
+      "id": "T12W_0065",
+      "stage": "FALL",
+      "family": "Liquidity / Volume Transition",
+      "name": "High Volume No Progress",
+      "formula": "vol_today>1.8*vol20 and close<=prior_close or CLV<0.35",
+      "threshold": "Heavy volume but price cannot advance.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Heavy volume but price cannot advance.",
+      "example": "Formula example, not a live stock value: evaluate \"vol_today>1.8*vol20 and close<=prior_close or CLV<0.35\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "volume",
+        "liquidity"
+      ],
+      "required": "date,high,low,close,volume",
+      "lookback": "1W"
+    },
+    {
+      "id": "T12W_0066",
+      "stage": "FALL",
+      "family": "Liquidity / Volume Transition",
+      "name": "Gap Up Volume Rejection",
+      "formula": "open>prior_high and close<open and volume>1.5*vol20",
+      "threshold": "Gap up sells off on volume.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Gap up sells off on volume.",
+      "example": "Formula example, not a live stock value: evaluate \"open>prior_high and close<open and volume>1.5*vol20\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "volume",
+        "liquidity"
+      ],
+      "required": "date,open,high,low,close,volume",
+      "lookback": "1W"
+    },
+    {
+      "id": "T12W_0069",
+      "stage": "FALL",
+      "family": "Distribution / Pre-Fall",
+      "name": "Upthrust Above Resistance",
+      "formula": "high>resistance and close<resistance and CLV<0.4",
+      "threshold": "Breaks above resistance then closes back below.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Breaks above resistance then closes back below.",
+      "example": "Formula example, not a live stock value: evaluate \"high>resistance and close<resistance and CLV<0.4\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "distribution"
+      ],
+      "required": "date,high,low,close,volume",
+      "lookback": "1W"
+    },
+    {
+      "id": "T12W_0070",
+      "stage": "FALL",
+      "family": "Distribution / Pre-Fall",
+      "name": "Failed Breakout Within 5D",
+      "formula": "breakout close above resistance then close below resistance within 5 days",
+      "threshold": "Breakout closes back inside base quickly.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Breakout closes back inside base quickly.",
+      "example": "Formula example, not a live stock value: evaluate \"breakout close above resistance then close below resistance within 5 days\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "distribution",
+        "breakout"
+      ],
+      "required": "date,high,low,close,volume",
+      "lookback": "1W"
+    },
+    {
+      "id": "T12W_0071",
+      "stage": "FALL",
+      "family": "Distribution / Pre-Fall",
+      "name": "New High Negative CLV",
+      "formula": "high>=20D high and CLV<0.45",
+      "threshold": "New high but close in lower half; supply appears.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "New high but close in lower half; supply appears.",
+      "example": "Formula example, not a live stock value: evaluate \"high>=20D high and CLV<0.45\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "distribution"
+      ],
+      "required": "date,high,low,close",
+      "lookback": "1W"
+    },
+    {
+      "id": "T12W_0072",
+      "stage": "FALL",
+      "family": "Distribution / Pre-Fall",
+      "name": "Bearish Wide Range Close",
+      "formula": "range>1.5*ATR14 and close<open and CLV<0.3",
+      "threshold": "Wide range red day appears near highs.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Wide range red day appears near highs.",
+      "example": "Formula example, not a live stock value: evaluate \"range>1.5*ATR14 and close<open and CLV<0.3\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "distribution"
+      ],
+      "required": "date,open,high,low,close",
+      "lookback": "1W"
+    },
+    {
+      "id": "T12W_0073",
+      "stage": "FALL",
+      "family": "Distribution / Pre-Fall",
+      "name": "Lower High On Higher Volume",
+      "formula": "swing_high lower than prior swing_high and volume higher",
+      "threshold": "Failed rally with higher volume.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Failed rally with higher volume.",
+      "example": "Formula example, not a live stock value: evaluate \"swing_high lower than prior swing_high and volume higher\" on a complete 1-2W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "volume",
+        "distribution"
+      ],
+      "required": "date,high,close,volume",
+      "lookback": "1-2W"
+    },
+    {
+      "id": "T12W_0074",
+      "stage": "FALL",
+      "family": "Distribution / Pre-Fall",
+      "name": "Support Test Count Overload",
+      "formula": "touches of support in last15 >=3 and rebounds shrinking",
+      "threshold": "Support tested too many times in short window.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Support tested too many times in short window.",
+      "example": "Formula example, not a live stock value: evaluate \"touches of support in last15 >=3 and rebounds shrinking\" on a complete 1-2W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "distribution"
+      ],
+      "required": "date,high,low,close",
+      "lookback": "1-2W"
+    },
+    {
+      "id": "T12W_0075",
+      "stage": "FALL",
+      "family": "Distribution / Pre-Fall",
+      "name": "Breakdown Pressure Ratio",
+      "formula": "count(CLV<0.35 last7)>=4",
+      "threshold": "Lower closes dominate before support break.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Lower closes dominate before support break.",
+      "example": "Formula example, not a live stock value: evaluate \"count(CLV<0.35 last7)>=4\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "distribution"
+      ],
+      "required": "date,high,low,close",
+      "lookback": "1W"
+    },
+    {
+      "id": "T12W_0076",
+      "stage": "FALL",
+      "family": "Distribution / Pre-Fall",
+      "name": "Momentum Divergence 14D",
+      "formula": "price makes higher high while RSI/MACD histogram lower high",
+      "threshold": "Price higher but momentum lower.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Price higher but momentum lower.",
+      "example": "Formula example, not a live stock value: evaluate \"price makes higher high while RSI/MACD histogram lower high\" on a complete 1-2W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "distribution",
+        "momentum"
+      ],
+      "required": "date,close",
+      "lookback": "1-2W"
+    },
+    {
+      "id": "T12W_0077",
+      "stage": "FALL",
+      "family": "Distribution / Pre-Fall",
+      "name": "FiftyDMA Rejection",
+      "formula": "high crosses 50DMA but close below 50DMA twice in 10 days",
+      "threshold": "Price rejects key moving average before fall.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Price rejects key moving average before fall.",
+      "example": "Formula example, not a live stock value: evaluate \"high crosses 50DMA but close below 50DMA twice in 10 days\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "distribution"
+      ],
+      "required": "date,high,close",
+      "lookback": "1W"
+    },
+    {
+      "id": "T12W_0078",
+      "stage": "FALL",
+      "family": "Distribution / Pre-Fall",
+      "name": "Gap Fill Failure",
+      "formula": "close below gap_fill_level after touching it",
+      "threshold": "Price fails after filling previous gap/resistance.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Price fails after filling previous gap/resistance.",
+      "example": "Formula example, not a live stock value: evaluate \"close below gap_fill_level after touching it\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "distribution"
+      ],
+      "required": "date,high,low,close",
+      "lookback": "1W"
+    },
+    {
+      "id": "T12W_0079",
+      "stage": "FALL",
+      "family": "Distribution / Pre-Fall",
+      "name": "Exhaustion Move 3 Green Days",
+      "formula": "3 consecutive up closes with total gain > 8% then CLV weak",
+      "threshold": "Fast vertical move then failure risk.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Fast vertical move then failure risk.",
+      "example": "Formula example, not a live stock value: evaluate \"3 consecutive up closes with total gain > 8% then CLV weak\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "distribution",
+        "risk"
+      ],
+      "required": "date,high,low,close,volume",
+      "lookback": "1W"
+    },
+    {
+      "id": "T12W_0080",
+      "stage": "FALL",
+      "family": "Distribution / Pre-Fall",
+      "name": "Extended From Mean Warning",
+      "formula": "close/ma20>1.12 and CLV<0.4",
+      "threshold": "Overextended price plus weak close.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Overextended price plus weak close.",
+      "example": "Formula example, not a live stock value: evaluate \"close/ma20>1.12 and CLV<0.4\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "distribution"
+      ],
+      "required": "date,high,low,close",
+      "lookback": "1W"
+    },
+    {
+      "id": "T12W_0081",
+      "stage": "FALL",
+      "family": "Distribution / Pre-Fall",
+      "name": "Distribution Cluster Count",
+      "formula": "sum distribution flags last10 >= threshold",
+      "threshold": "Multiple pre-fall warnings appear together.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Multiple pre-fall warnings appear together.",
+      "example": "Formula example, not a live stock value: evaluate \"sum distribution flags last10 >= threshold\" on a complete 1-2W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "distribution"
+      ],
+      "required": "date,open,high,low,close,volume",
+      "lookback": "1-2W"
+    },
+    {
+      "id": "T12W_0082",
+      "stage": "FALL",
+      "family": "Distribution / Pre-Fall",
+      "name": "Bearish OBV Divergence",
+      "formula": "price 20D high proximity and slope(OBV,10)<0",
+      "threshold": "Price near highs while OBV rolls over.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Price near highs while OBV rolls over.",
+      "example": "Formula example, not a live stock value: evaluate \"price 20D high proximity and slope(OBV,10)<0\" on a complete 1-2W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "distribution"
+      ],
+      "required": "date,close,volume",
+      "lookback": "1-2W"
+    },
+    {
+      "id": "T12W_0083",
+      "stage": "FALL",
+      "family": "Distribution / Pre-Fall",
+      "name": "Down Volume Ratio Spike",
+      "formula": "down_volume_5d/total_volume_5d>=0.65",
+      "threshold": "Down volume dominates abruptly.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Down volume dominates abruptly.",
+      "example": "Formula example, not a live stock value: evaluate \"down_volume_5d/total_volume_5d>=0.65\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "volume",
+        "distribution"
+      ],
+      "required": "date,close,volume",
+      "lookback": "1W"
+    },
+    {
+      "id": "T12W_0084",
+      "stage": "FALL",
+      "family": "Distribution / Pre-Fall",
+      "name": "Volatility Expansion Downside",
+      "formula": "ATR14 rising 3 days and close below 10DMA",
+      "threshold": "ATR rises while price weakens.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "ATR rises while price weakens.",
+      "example": "Formula example, not a live stock value: evaluate \"ATR14 rising 3 days and close below 10DMA\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "distribution"
+      ],
+      "required": "date,high,low,close",
+      "lookback": "1W"
+    },
+    {
+      "id": "T12W_0085",
+      "stage": "FALL",
+      "family": "Distribution / Pre-Fall",
+      "name": "High Tight Flag Failure",
+      "formula": "prior strong gain + tight flag + close below flag low",
+      "threshold": "Strong momentum flag breaks downward instead of continuing.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Strong momentum flag breaks downward instead of continuing.",
+      "example": "Formula example, not a live stock value: evaluate \"prior strong gain + tight flag + close below flag low\" on a complete 1-2W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "distribution",
+        "momentum"
+      ],
+      "required": "date,high,low,close,volume",
+      "lookback": "1-2W"
+    },
+    {
+      "id": "T12W_0086",
+      "stage": "FALL",
+      "family": "Distribution / Pre-Fall",
+      "name": "False Reclaim Trap",
+      "formula": "close above support then close below within 3D",
+      "threshold": "Reclaim above support fails again quickly.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Reclaim above support fails again quickly.",
+      "example": "Formula example, not a live stock value: evaluate \"close above support then close below within 3D\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "distribution"
+      ],
+      "required": "date,high,low,close",
+      "lookback": "1W"
+    },
+    {
+      "id": "T12W_0087",
+      "stage": "FALL",
+      "family": "Distribution / Pre-Fall",
+      "name": "Opening Strength Closing Weakness",
+      "formula": "count(open>prior_close and close<open last7)>=3",
+      "threshold": "Sellers dominate after strong open repeatedly.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Sellers dominate after strong open repeatedly.",
+      "example": "Formula example, not a live stock value: evaluate \"count(open>prior_close and close<open last7)>=3\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "distribution"
+      ],
+      "required": "date,open,close",
+      "lookback": "1W"
+    },
+    {
+      "id": "T12W_0088",
+      "stage": "FALL",
+      "family": "Distribution / Pre-Fall",
+      "name": "Supply Wick Cluster Near High",
+      "formula": "count(upper_wick_ratio>0.45 near resistance last10)>=3",
+      "threshold": "Repeated upper wicks near resistance.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Repeated upper wicks near resistance.",
+      "example": "Formula example, not a live stock value: evaluate \"count(upper_wick_ratio>0.45 near resistance last10)>=3\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "distribution"
+      ],
+      "required": "date,open,high,low,close",
+      "lookback": "1W"
+    },
+    {
+      "id": "T12W_0100",
+      "stage": "FALL",
+      "family": "Collapse / Risk Tripwire",
+      "name": "F&O OI Short Build",
+      "formula": "price down + OI up over 5D",
+      "threshold": "Open interest increases while price falls.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "Open interest increases while price falls.",
+      "example": "Formula example, not a live stock value: evaluate \"price down + OI up over 5D\" on a complete 1-2W window. A true result records HIT and stores the dated input evidence.",
+      "status": "DEFINED",
+      "readiness": "EXTERNAL_FEED_REQUIRED",
+      "tags": [
+        "all",
+        "risk"
+      ],
+      "required": "F&O OI data",
+      "lookback": "1-2W"
+    },
+    {
+      "id": "T12W_0101",
+      "stage": "FALL",
+      "family": "Collapse / Risk Tripwire",
+      "name": "Long Unwinding OI",
+      "formula": "price down + OI down after uptrend",
+      "threshold": "OI falls with price after prior rise.",
+      "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
+      "reason": "OI falls with price after prior rise.",
+      "example": "Formula example, not a live stock value: evaluate \"price down + OI down after uptrend\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "status": "DEFINED",
+      "readiness": "EXTERNAL_FEED_REQUIRED",
+      "tags": [
+        "all",
+        "risk"
+      ],
+      "required": "F&O OI data",
+      "lookback": "1W"
+    },
+    {
+      "id": "NQ01",
+      "stage": "QUALITY",
+      "family": "Fundamental Quality",
+      "name": "Return on Equity TTM",
+      "formula": "PAT_TTM / average_equity",
+      "threshold": "ROE >= 15%",
+      "source": "Upstox fundamentals: income statement and balance sheet",
+      "reason": "Measures profit generated for each unit of shareholder capital.",
+      "example": "Formula example: PAT 150 and average equity 750 gives ROE 20%, so HIT.",
+      "status": "DEFINED",
+      "readiness": "FUNDAMENTAL_FEED_REQUIRED",
+      "tags": [
+        "quality",
+        "banking",
+        "it",
+        "telecom",
+        "financial"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NQ02",
+      "stage": "QUALITY",
+      "family": "Fundamental Quality",
+      "name": "Return on Capital Employed TTM",
+      "formula": "EBIT_TTM / average_capital_employed",
+      "threshold": "ROCE >= 15%",
+      "source": "Upstox fundamentals: income statement and balance sheet",
+      "reason": "Tests operating efficiency across debt and equity capital.",
+      "example": "Formula example: EBIT 240 and capital employed 1,200 gives ROCE 20%, so HIT.",
+      "status": "DEFINED",
+      "readiness": "FUNDAMENTAL_FEED_REQUIRED",
+      "tags": [
+        "quality",
+        "industrial",
+        "infra",
+        "telecom",
+        "it"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NQ03",
+      "stage": "QUALITY",
+      "family": "Fundamental Quality",
+      "name": "Return on Invested Capital Spread",
+      "formula": "NOPAT / invested_capital - WACC",
+      "threshold": "ROIC spread >= 3 percentage points",
+      "source": "Upstox fundamentals plus configured cost of capital",
+      "reason": "Requires the business to create value above its funding cost.",
+      "example": "Formula example: ROIC 16% and WACC 11% gives a 5-point spread, so HIT.",
+      "status": "DEFINED",
+      "readiness": "FUNDAMENTAL_AND_MACRO_FEEDS",
+      "tags": [
+        "quality",
+        "industrial",
+        "infra",
+        "telecom",
+        "it"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NQ04",
+      "stage": "QUALITY",
+      "family": "Fundamental Quality",
+      "name": "Cash Conversion CFO to PAT",
+      "formula": "CFO_TTM / PAT_TTM",
+      "threshold": "CFO/PAT >= 0.90",
+      "source": "Upstox cash-flow and income statements",
+      "reason": "Checks whether reported profit converts into operating cash.",
+      "example": "Formula example: CFO 135 and PAT 140 gives 0.96, so HIT.",
+      "status": "DEFINED",
+      "readiness": "FUNDAMENTAL_FEED_REQUIRED",
+      "tags": [
+        "quality",
+        "cashflow",
+        "industrial",
+        "it",
+        "telecom"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NQ05",
+      "stage": "QUALITY",
+      "family": "Fundamental Quality",
+      "name": "Free Cash Flow Margin",
+      "formula": "(CFO_TTM - capex_TTM) / revenue_TTM",
+      "threshold": "FCF margin >= 8%",
+      "source": "Upstox cash-flow and income statements",
+      "reason": "Rewards businesses retaining cash after required investment.",
+      "example": "Formula example: CFO 180, capex 60 and revenue 1,000 gives 12%, so HIT.",
+      "status": "DEFINED",
+      "readiness": "FUNDAMENTAL_FEED_REQUIRED",
+      "tags": [
+        "quality",
+        "cashflow",
+        "telecom",
+        "it"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NQ06",
+      "stage": "QUALITY",
+      "family": "Balance Sheet",
+      "name": "Net Debt to EBITDA",
+      "formula": "(total_debt - cash) / EBITDA_TTM",
+      "threshold": "Net debt/EBITDA <= 2.0",
+      "source": "Upstox balance sheet and income statement",
+      "reason": "Limits financial leverage before a stock can pass quality.",
+      "example": "Formula example: net debt 600 and EBITDA 400 gives 1.5, so HIT.",
+      "status": "DEFINED",
+      "readiness": "FUNDAMENTAL_FEED_REQUIRED",
+      "tags": [
+        "quality",
+        "leverage",
+        "industrial",
+        "infra",
+        "telecom",
+        "utility"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NQ07",
+      "stage": "QUALITY",
+      "family": "Balance Sheet",
+      "name": "Interest Coverage",
+      "formula": "EBIT_TTM / interest_expense_TTM",
+      "threshold": "Interest coverage >= 4.0",
+      "source": "Upstox income statement",
+      "reason": "Checks the operating buffer available to service debt.",
+      "example": "Formula example: EBIT 240 and interest 40 gives 6.0, so HIT.",
+      "status": "DEFINED",
+      "readiness": "FUNDAMENTAL_FEED_REQUIRED",
+      "tags": [
+        "quality",
+        "leverage",
+        "industrial",
+        "infra",
+        "utility"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NQ08",
+      "stage": "QUALITY",
+      "family": "Margin Quality",
+      "name": "Operating Margin Stability",
+      "formula": "stdev(quarterly OPM, last 8 quarters)",
+      "threshold": "Standard deviation <= 3 percentage points",
+      "source": "Upstox quarterly financial statements",
+      "reason": "Separates repeatable operating economics from erratic profitability.",
+      "example": "Formula example: eight-quarter OPM deviation 2.1 points, so HIT.",
+      "status": "DEFINED",
+      "readiness": "FUNDAMENTAL_FEED_REQUIRED",
+      "tags": [
+        "quality",
+        "margin",
+        "it",
+        "telecom",
+        "consumer"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NQ09",
+      "stage": "QUALITY",
+      "family": "Margin Quality",
+      "name": "Gross Margin Direction",
+      "formula": "gross_margin_TTM - gross_margin_prior_TTM",
+      "threshold": "Improvement >= 1 percentage point",
+      "source": "Upstox quarterly financial statements",
+      "reason": "Detects improving pricing power or input-cost control.",
+      "example": "Formula example: margin rises from 36% to 38%, a 2-point improvement, so HIT.",
+      "status": "DEFINED",
+      "readiness": "FUNDAMENTAL_FEED_REQUIRED",
+      "tags": [
+        "quality",
+        "margin",
+        "consumer",
+        "industrial",
+        "it"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NQ10",
+      "stage": "QUALITY",
+      "family": "Operating Efficiency",
+      "name": "Asset Turnover vs Sector",
+      "formula": "revenue_TTM / average_assets compared with sector median",
+      "threshold": "Asset turnover >= sector median",
+      "source": "Upstox fundamentals plus NSE sector map",
+      "reason": "Compares operating productivity with relevant peers.",
+      "example": "Formula example: stock 1.35x versus sector 1.10x, so HIT.",
+      "status": "DEFINED",
+      "readiness": "FUNDAMENTAL_AND_SECTOR_FEEDS",
+      "tags": [
+        "quality",
+        "sector",
+        "industrial",
+        "consumer"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NQ11",
+      "stage": "QUALITY",
+      "family": "Composite Quality",
+      "name": "Piotroski F-Score",
+      "formula": "sum(9 profitability, leverage, liquidity and efficiency tests)",
+      "threshold": "F-Score >= 7 of 9",
+      "source": "Upstox annual and quarterly financial statements",
+      "reason": "Combines nine accounting signals into an auditable quality score.",
+      "example": "Formula example: seven tests pass and two fail, score 7, so HIT.",
+      "status": "DEFINED",
+      "readiness": "FUNDAMENTAL_FEED_REQUIRED",
+      "tags": [
+        "quality",
+        "composite",
+        "industrial",
+        "consumer"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NQ12",
+      "stage": "QUALITY",
+      "family": "Balance Sheet",
+      "name": "Altman Z-Score",
+      "formula": "1.2*WC/A + 1.4*RE/A + 3.3*EBIT/A + 0.6*MVE/L + sales/A",
+      "threshold": "Z >= 3.0 for applicable non-financial companies",
+      "source": "Upstox statements and market capitalization",
+      "reason": "Adds an explicit financial-distress screen for non-financial companies.",
+      "example": "Formula example: calculated Z 3.6 is above 3.0, so HIT.",
+      "status": "DEFINED",
+      "readiness": "FUNDAMENTAL_FEED_REQUIRED",
+      "tags": [
+        "quality",
+        "leverage",
+        "industrial",
+        "utility"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NG01",
+      "stage": "GROWTH",
+      "family": "Earnings Growth",
+      "name": "Quarterly Revenue Growth YoY",
+      "formula": "(revenue_q - revenue_q_4) / abs(revenue_q_4)",
+      "threshold": "Revenue growth >= 12%",
+      "source": "Upstox quarterly income statements",
+      "reason": "Requires current top-line expansion.",
+      "example": "Formula example: revenue rises from 1,000 to 1,150, growth 15%, so HIT.",
+      "status": "DEFINED",
+      "readiness": "FUNDAMENTAL_FEED_REQUIRED",
+      "tags": [
+        "growth",
+        "industrial",
+        "it",
+        "telecom",
+        "financial"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NG02",
+      "stage": "GROWTH",
+      "family": "Earnings Growth",
+      "name": "Revenue Growth Acceleration",
+      "formula": "current_revenue_yoy - prior_quarter_revenue_yoy",
+      "threshold": "Acceleration >= 5 percentage points",
+      "source": "Upstox quarterly income statements",
+      "reason": "Finds growth that is strengthening rather than merely remaining positive.",
+      "example": "Formula example: YoY growth rises from 9% to 16%, acceleration 7 points, so HIT.",
+      "status": "DEFINED",
+      "readiness": "FUNDAMENTAL_FEED_REQUIRED",
+      "tags": [
+        "growth",
+        "acceleration",
+        "industrial",
+        "it",
+        "telecom"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NG03",
+      "stage": "GROWTH",
+      "family": "Earnings Growth",
+      "name": "Quarterly EPS Growth YoY",
+      "formula": "(EPS_q - EPS_q_4) / abs(EPS_q_4)",
+      "threshold": "EPS growth >= 15%",
+      "source": "Upstox quarterly income statements",
+      "reason": "Requires profit per share to expand faster than the minimum earnings hurdle.",
+      "example": "Formula example: EPS rises from 10 to 12, growth 20%, so HIT.",
+      "status": "DEFINED",
+      "readiness": "FUNDAMENTAL_FEED_REQUIRED",
+      "tags": [
+        "growth",
+        "earnings",
+        "it",
+        "financial",
+        "industrial"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NG04",
+      "stage": "GROWTH",
+      "family": "Earnings Growth",
+      "name": "EPS Growth Acceleration",
+      "formula": "current_EPS_yoy - prior_quarter_EPS_yoy",
+      "threshold": "Acceleration >= 5 percentage points",
+      "source": "Upstox quarterly income statements",
+      "reason": "Detects an inflection in earnings momentum.",
+      "example": "Formula example: EPS growth rises from 12% to 22%, acceleration 10 points, so HIT.",
+      "status": "DEFINED",
+      "readiness": "FUNDAMENTAL_FEED_REQUIRED",
+      "tags": [
+        "growth",
+        "acceleration",
+        "earnings"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NG05",
+      "stage": "GROWTH",
+      "family": "Long-Cycle Growth",
+      "name": "Three-Year Revenue CAGR",
+      "formula": "(revenue_TTM / revenue_3Y_ago)^(1/3) - 1",
+      "threshold": "Three-year CAGR >= 12%",
+      "source": "Upstox annual financial statements",
+      "reason": "Confirms that current growth sits on a durable base.",
+      "example": "Formula example: revenue grows from 1,000 to 1,500 in three years, CAGR 14.5%, so HIT.",
+      "status": "DEFINED",
+      "readiness": "FUNDAMENTAL_FEED_REQUIRED",
+      "tags": [
+        "growth",
+        "long-cycle",
+        "industrial",
+        "it",
+        "telecom"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NG06",
+      "stage": "GROWTH",
+      "family": "Long-Cycle Growth",
+      "name": "Three-Year PAT CAGR",
+      "formula": "(PAT_TTM / PAT_3Y_ago)^(1/3) - 1",
+      "threshold": "Three-year PAT CAGR >= 15%",
+      "source": "Upstox annual financial statements",
+      "reason": "Requires profits to compound, not only revenue.",
+      "example": "Formula example: PAT grows from 100 to 160 in three years, CAGR 17%, so HIT.",
+      "status": "DEFINED",
+      "readiness": "FUNDAMENTAL_FEED_REQUIRED",
+      "tags": [
+        "growth",
+        "earnings",
+        "long-cycle"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NG07",
+      "stage": "GROWTH",
+      "family": "Margin Growth",
+      "name": "Operating Margin Expansion",
+      "formula": "OPM_TTM - OPM_prior_TTM",
+      "threshold": "Expansion >= 1 percentage point",
+      "source": "Upstox quarterly income statements",
+      "reason": "Tests whether growth is becoming more profitable.",
+      "example": "Formula example: OPM rises from 18% to 20%, expansion 2 points, so HIT.",
+      "status": "DEFINED",
+      "readiness": "FUNDAMENTAL_FEED_REQUIRED",
+      "tags": [
+        "growth",
+        "margin",
+        "it",
+        "telecom",
+        "industrial"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NG08",
+      "stage": "GROWTH",
+      "family": "Cash Growth",
+      "name": "Operating Cash Flow Growth YoY",
+      "formula": "(CFO_TTM - CFO_prior_TTM) / abs(CFO_prior_TTM)",
+      "threshold": "CFO growth >= 12%",
+      "source": "Upstox cash-flow statements",
+      "reason": "Requires growth to appear in cash generation.",
+      "example": "Formula example: CFO rises from 200 to 232, growth 16%, so HIT.",
+      "status": "DEFINED",
+      "readiness": "FUNDAMENTAL_FEED_REQUIRED",
+      "tags": [
+        "growth",
+        "cashflow",
+        "quality"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NG09",
+      "stage": "GROWTH",
+      "family": "Earnings Quality",
+      "name": "Earnings Stability Eight Quarters",
+      "formula": "positive_EPS_count_8Q = 8 and coefficient_variation(EPS_8Q) <= 0.35",
+      "threshold": "All eight quarters positive and variation <= 0.35",
+      "source": "Upstox quarterly financial statements",
+      "reason": "Rejects unstable earnings paths that can inflate a single growth rate.",
+      "example": "Formula example: 8 positive quarters and EPS variation 0.24, so HIT.",
+      "status": "DEFINED",
+      "readiness": "FUNDAMENTAL_FEED_REQUIRED",
+      "tags": [
+        "growth",
+        "quality",
+        "earnings"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NG10",
+      "stage": "GROWTH",
+      "family": "Result Reaction",
+      "name": "Result Follow-Through",
+      "formula": "stock_return_5D - Nifty_return_5D > 0 and volume_ratio >= 1.3",
+      "threshold": "Positive five-day excess return with volume at least 1.3x average",
+      "source": "Company result calendar plus Upstox stock and index candles",
+      "reason": "Validates that the market accepts reported results.",
+      "example": "Formula example: stock +6%, Nifty +1%, volume 1.5x, so HIT.",
+      "status": "DEFINED",
+      "readiness": "EVENT_DATE_AND_UPSTOX_FEEDS",
+      "tags": [
+        "growth",
+        "event",
+        "volume",
+        "all"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NV01",
+      "stage": "VALUATION",
+      "family": "Valuation",
+      "name": "PE Own-History Percentile",
+      "formula": "percentile_rank(current_PE, own_PE_history_5Y)",
+      "threshold": "Percentile <= 40",
+      "source": "Upstox fundamentals and five-year valuation history",
+      "reason": "Compares valuation with the company's own cycle rather than a fixed market multiple.",
+      "example": "Formula example: current PE sits at the 32nd percentile, so HIT.",
+      "status": "DEFINED",
+      "readiness": "VALUATION_HISTORY_REQUIRED",
+      "tags": [
+        "valuation",
+        "quality",
+        "it",
+        "financial",
+        "telecom"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NV02",
+      "stage": "VALUATION",
+      "family": "Valuation",
+      "name": "PB Own-History Percentile",
+      "formula": "percentile_rank(current_PB, own_PB_history_5Y)",
+      "threshold": "Percentile <= 40",
+      "source": "Upstox fundamentals and five-year valuation history",
+      "reason": "Finds balance-sheet valuation below the normal company range.",
+      "example": "Formula example: current PB sits at the 28th percentile, so HIT.",
+      "status": "DEFINED",
+      "readiness": "VALUATION_HISTORY_REQUIRED",
+      "tags": [
+        "valuation",
+        "banking",
+        "financial"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NV03",
+      "stage": "VALUATION",
+      "family": "Valuation",
+      "name": "EV to EBITDA Sector Percentile",
+      "formula": "percentile_rank(EV/EBITDA, current sector)",
+      "threshold": "Sector percentile <= 40",
+      "source": "Upstox fundamentals plus NSE sector map",
+      "reason": "Compares enterprise valuation against relevant operating peers.",
+      "example": "Formula example: multiple 8.2x at sector percentile 35, so HIT.",
+      "status": "DEFINED",
+      "readiness": "FUNDAMENTAL_AND_SECTOR_FEEDS",
+      "tags": [
+        "valuation",
+        "sector",
+        "industrial",
+        "telecom"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NV04",
+      "stage": "VALUATION",
+      "family": "Valuation",
+      "name": "PEG Ratio",
+      "formula": "PE / expected_or_trailing_EPS_growth_percent",
+      "threshold": "PEG <= 1.5 and EPS growth > 0",
+      "source": "Upstox fundamentals and earnings-growth engine",
+      "reason": "Relates price multiple to the demonstrated earnings-growth rate.",
+      "example": "Formula example: PE 24 and EPS growth 20% gives PEG 1.2, so HIT.",
+      "status": "DEFINED",
+      "readiness": "FUNDAMENTAL_FEED_REQUIRED",
+      "tags": [
+        "valuation",
+        "growth",
+        "it",
+        "consumer"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NV05",
+      "stage": "VALUATION",
+      "family": "Valuation",
+      "name": "Free Cash Flow Yield",
+      "formula": "FCF_TTM / market_cap",
+      "threshold": "FCF yield >= 4%",
+      "source": "Upstox cash-flow statements and market capitalization",
+      "reason": "Measures cash return available at the current equity value.",
+      "example": "Formula example: FCF 400 and market cap 8,000 gives 5%, so HIT.",
+      "status": "DEFINED",
+      "readiness": "FUNDAMENTAL_FEED_REQUIRED",
+      "tags": [
+        "valuation",
+        "cashflow",
+        "quality"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NV06",
+      "stage": "VALUATION",
+      "family": "Valuation",
+      "name": "Earnings Yield Spread",
+      "formula": "1/PE - India_10Y_yield",
+      "threshold": "Spread >= 2 percentage points",
+      "source": "Upstox fundamentals plus RBI/market 10-year yield",
+      "reason": "Requires an equity earnings premium over the sovereign yield.",
+      "example": "Formula example: earnings yield 7% and 10Y yield 4.5% gives 2.5 points, so HIT.",
+      "status": "DEFINED",
+      "readiness": "FUNDAMENTAL_AND_MACRO_FEEDS",
+      "tags": [
+        "valuation",
+        "macro",
+        "quality"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NV07",
+      "stage": "VALUATION",
+      "family": "Valuation",
+      "name": "EV to Sales Sector Percentile",
+      "formula": "percentile_rank(EV/sales, current sector)",
+      "threshold": "Sector percentile <= 40",
+      "source": "Upstox fundamentals plus NSE sector map",
+      "reason": "Adds a revenue-based valuation lens where current profit is distorted.",
+      "example": "Formula example: EV/sales 2.1x at sector percentile 37, so HIT.",
+      "status": "DEFINED",
+      "readiness": "FUNDAMENTAL_AND_SECTOR_FEEDS",
+      "tags": [
+        "valuation",
+        "sector",
+        "growth"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NV08",
+      "stage": "VALUATION",
+      "family": "Valuation",
+      "name": "Quality-Adjusted Valuation",
+      "formula": "zscore(ROIC sector) - zscore(EV/EBITDA sector)",
+      "threshold": "Composite score >= 0.75",
+      "source": "Upstox fundamentals plus NSE sector map",
+      "reason": "Rewards high return on capital without paying an equally extreme multiple.",
+      "example": "Formula example: ROIC z 1.4 minus valuation z 0.4 gives 1.0, so HIT.",
+      "status": "DEFINED",
+      "readiness": "FUNDAMENTAL_AND_SECTOR_FEEDS",
+      "tags": [
+        "valuation",
+        "quality",
+        "sector"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NO01",
+      "stage": "OWNERSHIP",
+      "family": "Ownership and Flow",
+      "name": "Promoter Holding Change QoQ",
+      "formula": "promoter_holding_q - promoter_holding_q_1",
+      "threshold": "Change > 0 percentage points",
+      "source": "Exchange shareholding pattern",
+      "reason": "Detects fresh promoter accumulation.",
+      "example": "Formula example: promoter holding rises from 51.0% to 51.4%, so HIT.",
+      "status": "DEFINED",
+      "readiness": "SHAREHOLDING_FEED_REQUIRED",
+      "tags": [
+        "ownership",
+        "promoter",
+        "industrial",
+        "infra"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NO02",
+      "stage": "OWNERSHIP",
+      "family": "Ownership and Flow",
+      "name": "Promoter Pledge Control",
+      "formula": "pledge_change_qoq <= 0 and pledged_percent <= 5%",
+      "threshold": "No pledge increase and total pledge <= 5%",
+      "source": "Exchange shareholding and pledge disclosures",
+      "reason": "Blocks rising promoter financing stress.",
+      "example": "Formula example: pledge falls from 4% to 3%, so HIT.",
+      "status": "DEFINED",
+      "readiness": "SHAREHOLDING_FEED_REQUIRED",
+      "tags": [
+        "ownership",
+        "promoter",
+        "risk",
+        "leverage"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NO03",
+      "stage": "OWNERSHIP",
+      "family": "Ownership and Flow",
+      "name": "FII Holding Change QoQ",
+      "formula": "FII_holding_q - FII_holding_q_1",
+      "threshold": "Change > 0 percentage points",
+      "source": "Exchange shareholding pattern",
+      "reason": "Detects increasing foreign institutional ownership.",
+      "example": "Formula example: FII holding rises from 18.2% to 19.0%, so HIT.",
+      "status": "DEFINED",
+      "readiness": "SHAREHOLDING_FEED_REQUIRED",
+      "tags": [
+        "ownership",
+        "fii",
+        "institutional",
+        "largecap"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NO04",
+      "stage": "OWNERSHIP",
+      "family": "Ownership and Flow",
+      "name": "MF or DII Holding Change QoQ",
+      "formula": "domestic_institution_holding_q - prior_q",
+      "threshold": "Change > 0 percentage points",
+      "source": "Exchange shareholding pattern",
+      "reason": "Detects increasing domestic institutional sponsorship.",
+      "example": "Formula example: domestic institutions rise from 11.1% to 11.8%, so HIT.",
+      "status": "DEFINED",
+      "readiness": "SHAREHOLDING_FEED_REQUIRED",
+      "tags": [
+        "ownership",
+        "dii",
+        "institutional",
+        "largecap"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NO05",
+      "stage": "OWNERSHIP",
+      "family": "Ownership and Flow",
+      "name": "Institutional Breadth",
+      "formula": "count(FII_up, MF_up, DII_up)",
+      "threshold": "At least two of three institutional groups increasing",
+      "source": "Exchange shareholding pattern",
+      "reason": "Requires sponsorship breadth rather than one isolated buyer class.",
+      "example": "Formula example: FII and MF rise while DII is flat, count 2, so HIT.",
+      "status": "DEFINED",
+      "readiness": "SHAREHOLDING_FEED_REQUIRED",
+      "tags": [
+        "ownership",
+        "institutional",
+        "largecap"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NO06",
+      "stage": "OWNERSHIP",
+      "family": "Ownership and Flow",
+      "name": "Bulk or Block Buy Follow-Through",
+      "formula": "qualifying_net_buy and stock_return_10D > Nifty_return_10D",
+      "threshold": "Documented net buy plus positive 10D excess return",
+      "source": "NSE bulk/block deals plus Upstox stock and index candles",
+      "reason": "Validates that disclosed institutional demand produces price follow-through.",
+      "example": "Formula example: net bulk buy followed by stock +8% versus Nifty +2%, so HIT.",
+      "status": "DEFINED",
+      "readiness": "DEAL_AND_UPSTOX_FEEDS",
+      "tags": [
+        "ownership",
+        "institutional",
+        "event",
+        "all"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NO07",
+      "stage": "OWNERSHIP",
+      "family": "Ownership and Flow",
+      "name": "Delivery Percentage Spike",
+      "formula": "delivery_percent > percentile80(own 60D) and CLV > 0",
+      "threshold": "Delivery above own 80th percentile with positive close location",
+      "source": "NSE bhavcopy delivery data and Upstox candles",
+      "reason": "Approximates high-conviction accumulation using delivery participation.",
+      "example": "Formula example: delivery 68% versus p80 57%, CLV 0.7, so HIT.",
+      "status": "DEFINED",
+      "readiness": "NSE_DELIVERY_FEED_REQUIRED",
+      "tags": [
+        "ownership",
+        "delivery",
+        "volume",
+        "accumulation"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NO08",
+      "stage": "OWNERSHIP",
+      "family": "Institutional Regime",
+      "name": "FII Cash Regime Five-Day",
+      "formula": "sum(FII_cash_net, 5 sessions)",
+      "threshold": "Five-session cumulative net flow > 0",
+      "source": "NSE FII/DII cash activity",
+      "reason": "Adds market-level institutional risk appetite to stock selection.",
+      "example": "Formula example: five-day FII net cash is +Rs 3,200cr, so HIT.",
+      "status": "DEFINED",
+      "readiness": "FII_DII_FEED_REQUIRED",
+      "tags": [
+        "ownership",
+        "fii",
+        "macro",
+        "all"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NO09",
+      "stage": "OWNERSHIP",
+      "family": "Institutional Regime",
+      "name": "FII Futures Position Shift",
+      "formula": "zscore(change in FII net index futures, 60D)",
+      "threshold": "Z-score > 1.0",
+      "source": "NSE participant open-interest data",
+      "reason": "Detects a material positive shift in foreign index positioning.",
+      "example": "Formula example: shift z-score 1.4 exceeds 1.0, so HIT.",
+      "status": "DEFINED",
+      "readiness": "PARTICIPANT_OI_FEED_REQUIRED",
+      "tags": [
+        "ownership",
+        "fii",
+        "derivatives",
+        "all"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NO10",
+      "stage": "OWNERSHIP",
+      "family": "Derivatives Confirmation",
+      "name": "PCR and Open-Interest Confirmation",
+      "formula": "price_up and OI_up and 0.8 <= PCR <= 1.3",
+      "threshold": "Long buildup with PCR inside configured supportive band",
+      "source": "NSE futures/options bhavcopy plus Upstox prices",
+      "reason": "Confirms price strength with derivatives participation without an extreme put-call state.",
+      "example": "Formula example: price +2%, OI +9% and PCR 1.05, so HIT.",
+      "status": "DEFINED",
+      "readiness": "FNO_FEED_REQUIRED",
+      "tags": [
+        "ownership",
+        "derivatives",
+        "momentum",
+        "largecap"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NL01",
+      "stage": "LIFECYCLE",
+      "family": "Advisor Lifecycle",
+      "name": "Entry Zone Quality",
+      "formula": "abs(price - entry_midpoint) / ATR14",
+      "threshold": "Distance <= 0.50 ATR",
+      "source": "AshStocks thesis plus Upstox quote and candles",
+      "reason": "Prevents chasing a valid thesis too far from its planned entry.",
+      "example": "Formula example: price 502, entry midpoint 500 and ATR 8 gives 0.25 ATR, so HIT.",
+      "status": "DEFINED",
+      "readiness": "THESIS_AND_UPSTOX_FEEDS",
+      "tags": [
+        "lifecycle",
+        "risk",
+        "all"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NL02",
+      "stage": "LIFECYCLE",
+      "family": "Advisor Lifecycle",
+      "name": "Stop Distance Quality",
+      "formula": "(entry - stop) / ATR14",
+      "threshold": "Between 1.0 and 2.5 ATR",
+      "source": "AshStocks thesis plus Upstox candles",
+      "reason": "Rejects stops that are either noise-tight or risk-wide.",
+      "example": "Formula example: entry 500, stop 488 and ATR 8 gives 1.5 ATR, so HIT.",
+      "status": "DEFINED",
+      "readiness": "THESIS_AND_UPSTOX_FEEDS",
+      "tags": [
+        "lifecycle",
+        "risk",
+        "all"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NL03",
+      "stage": "LIFECYCLE",
+      "family": "Advisor Lifecycle",
+      "name": "Target Room",
+      "formula": "(target - current_price) / current_price",
+      "threshold": "At least 15% for positional review; horizon can override",
+      "source": "AshStocks thesis plus Upstox quote",
+      "reason": "Requires sufficient remaining upside before entry or continued holding.",
+      "example": "Formula example: current 500 and target 600 gives 20% room, so HIT.",
+      "status": "DEFINED",
+      "readiness": "THESIS_AND_UPSTOX_FEEDS",
+      "tags": [
+        "lifecycle",
+        "target",
+        "all"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NL04",
+      "stage": "LIFECYCLE",
+      "family": "Advisor Lifecycle",
+      "name": "Reward to Risk",
+      "formula": "(target - entry) / (entry - stop)",
+      "threshold": "Reward/risk >= 2.0",
+      "source": "AshStocks paper-order thesis",
+      "reason": "Requires asymmetric payoff before simulated capital is committed.",
+      "example": "Formula example: entry 500, target 560, stop 475 gives 60/25 = 2.4, so HIT.",
+      "status": "DEFINED",
+      "readiness": "THESIS_READY",
+      "tags": [
+        "lifecycle",
+        "risk",
+        "target",
+        "all"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NL05",
+      "stage": "LIFECYCLE",
+      "family": "Advisor Lifecycle",
+      "name": "Signal Freshness",
+      "formula": "trading_sessions(current_time - signal_time)",
+      "threshold": "No more than 5 sessions for the default positional review",
+      "source": "AshStocks signal ledger and exchange calendar",
+      "reason": "Stops an old signal from being treated as a new opportunity.",
+      "example": "Formula example: signal age 2 trading sessions, so HIT.",
+      "status": "DEFINED",
+      "readiness": "SIGNAL_LEDGER_REQUIRED",
+      "tags": [
+        "lifecycle",
+        "freshness",
+        "all"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NL06",
+      "stage": "LIFECYCLE",
+      "family": "Advisor Lifecycle",
+      "name": "Thesis Invalidation",
+      "formula": "hard_fail_count >= 2 or last_price <= stop",
+      "threshold": "Invalidate on two hard failures or stop breach",
+      "source": "AshStocks parameter ledger and Upstox quote",
+      "reason": "Converts changing evidence into an explicit exit state.",
+      "example": "Formula example: one hard failure and price above stop means not invalidated; two failures means EXIT.",
+      "status": "DEFINED",
+      "readiness": "ENGINE_AND_UPSTOX_FEEDS",
+      "tags": [
+        "lifecycle",
+        "exit",
+        "risk",
+        "all"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NL07",
+      "stage": "LIFECYCLE",
+      "family": "Advisor Lifecycle",
+      "name": "Hold or Exit State",
+      "formula": "HOLD if score >= 70 and not invalidated; otherwise EXIT",
+      "threshold": "Score floor 70 with no thesis invalidation",
+      "source": "AshStocks score, paper ledger and Upstox quote",
+      "reason": "Makes the continuing-position decision deterministic and auditable.",
+      "example": "Formula example: score 76 and no invalidation gives HOLD; score 64 gives EXIT.",
+      "status": "DEFINED",
+      "readiness": "ENGINE_AND_UPSTOX_FEEDS",
+      "tags": [
+        "lifecycle",
+        "exit",
+        "portfolio",
+        "all"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NL08",
+      "stage": "LIFECYCLE",
+      "family": "Advisor Lifecycle",
+      "name": "Replacement Edge",
+      "formula": "candidate_score - holding_score >= 10 and candidate_RR >= 2",
+      "threshold": "Candidate must lead by 10 points and pass reward/risk",
+      "source": "AshStocks ranked universe and paper portfolio",
+      "reason": "Controls sell-and-replace decisions instead of rotating on small score noise.",
+      "example": "Formula example: candidate 84 versus holding 71 gives +13 and RR 2.3, so HIT.",
+      "status": "DEFINED",
+      "readiness": "ENGINE_AND_PORTFOLIO_FEEDS",
+      "tags": [
+        "lifecycle",
+        "portfolio",
+        "rotation",
+        "all"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NT01",
+      "stage": "TECHNICAL",
+      "family": "Technical Expansion",
+      "name": "Ichimoku Cloud State",
+      "formula": "close > max(SenkouA, SenkouB)",
+      "threshold": "Price above the projected cloud",
+      "source": "Upstox OHLC candles",
+      "reason": "Adds a multi-period trend and support structure not covered by simple averages.",
+      "example": "Formula example: close 525, Span A 510 and Span B 506, so HIT.",
+      "status": "DEFINED",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "technical",
+        "trend",
+        "all"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NT02",
+      "stage": "TECHNICAL",
+      "family": "Technical Expansion",
+      "name": "Tenkan Kijun Bullish Cross",
+      "formula": "Tenkan crosses above Kijun while close is above cloud",
+      "threshold": "Fresh bullish cross with cloud confirmation",
+      "source": "Upstox OHLC candles",
+      "reason": "Requires short-cycle momentum to align with Ichimoku trend context.",
+      "example": "Formula example: Tenkan moves 508 to 514 above Kijun 512 with close above cloud, so HIT.",
+      "status": "DEFINED",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "technical",
+        "trend",
+        "momentum",
+        "all"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NT03",
+      "stage": "TECHNICAL",
+      "family": "Technical Expansion",
+      "name": "Stochastic RSI Reclaim",
+      "formula": "StochRSI_K crosses above StochRSI_D from below 20",
+      "threshold": "Bullish cross after an oversold reading",
+      "source": "Upstox close candles",
+      "reason": "Detects momentum recovery earlier than absolute return filters.",
+      "example": "Formula example: K rises from 14 to 26 above D 21 after both were below 20, so HIT.",
+      "status": "DEFINED",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "technical",
+        "momentum",
+        "reversal",
+        "all"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NT04",
+      "stage": "TECHNICAL",
+      "family": "Technical Expansion",
+      "name": "Money Flow Index",
+      "formula": "MFI14 using typical price and volume",
+      "threshold": "MFI between 50 and 80 and rising",
+      "source": "Upstox OHLCV candles",
+      "reason": "Combines price and volume into a bounded accumulation signal.",
+      "example": "Formula example: MFI rises from 55 to 63 and remains below 80, so HIT.",
+      "status": "DEFINED",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "technical",
+        "volume",
+        "accumulation",
+        "all"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NT05",
+      "stage": "TECHNICAL",
+      "family": "Technical Expansion",
+      "name": "Chaikin Money Flow",
+      "formula": "CMF20 = sum(money_flow_volume,20) / sum(volume,20)",
+      "threshold": "CMF20 > 0.10",
+      "source": "Upstox OHLCV candles",
+      "reason": "Tests whether closes and volume indicate sustained buying pressure.",
+      "example": "Formula example: CMF20 is 0.16, above 0.10, so HIT.",
+      "status": "DEFINED",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "technical",
+        "volume",
+        "accumulation",
+        "all"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NT06",
+      "stage": "TECHNICAL",
+      "family": "Technical Expansion",
+      "name": "Keltner Bollinger Squeeze Release",
+      "formula": "BB inside Keltner, then close > upper_BB and volume_ratio > 1.5",
+      "threshold": "Confirmed upper release after squeeze",
+      "source": "Upstox OHLCV candles",
+      "reason": "Combines compression, directional break and participation in one auditable trigger.",
+      "example": "Formula example: prior BB inside KC, close breaks upper BB and volume is 1.8x, so HIT.",
+      "status": "DEFINED",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "technical",
+        "compression",
+        "breakout",
+        "volume",
+        "all"
+      ],
+      "required": "Defined by formula",
+      "lookback": "As specified"
+    },
+    {
+      "id": "NU01",
+      "stage": "ADVISOR",
+      "family": "Entry Discipline",
+      "name": "Entry overrun versus planned zone",
+      "formula": "(last_price - entry_high) / ATR14 <= 0.50",
+      "threshold": "Do not chase more than 0.5 ATR above the approved entry zone.",
+      "source": "Upstox market quote + ASH entry zone + ATR14",
+      "reason": "Prevents a valid idea becoming a poor trade because price has already run away.",
+      "example": "Entry high Rs 500, ATR Rs 20, last Rs 507: overrun 0.35 ATR, so HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "ENGINE_QUOTE_REQUIRED",
+      "tags": [
+        "all",
+        "entry",
+        "risk"
+      ],
+      "required": "entry zone, ATR14, current quote",
+      "lookback": "current quote"
+    },
+    {
+      "id": "NU02",
+      "stage": "ADVISOR",
+      "family": "Holding Lifecycle",
+      "name": "Holding-period expiry",
+      "formula": "trading_sessions_since_entry <= horizon_max_sessions",
+      "threshold": "Position remains valid only inside the maximum sessions for its declared horizon.",
+      "source": "Mongo paper position ledger + NSE trading calendar",
+      "reason": "Stops a tactical trade from silently becoming a permanent holding.",
+      "example": "Swing horizon 40 sessions and age 31: HIT; age 41: EXIT review.",
+      "status": "EXECUTABLE",
+      "readiness": "PORTFOLIO_READY",
+      "tags": [
+        "all",
+        "lifecycle",
+        "exit"
+      ],
+      "required": "entry timestamp and horizon",
+      "lookback": "position life"
+    },
+    {
+      "id": "NU03",
+      "stage": "ADVISOR",
+      "family": "Profit Lifecycle",
+      "name": "Target 1 partial-booking trigger",
+      "formula": "last_price >= target1 and booked_ratio < 0.50",
+      "threshold": "Book the configured first tranche when real price reaches T1.",
+      "source": "Upstox quote + Mongo paper order/position ledger",
+      "reason": "Turns target progress into a persisted paper lifecycle event.",
+      "example": "T1 Rs 620, last Rs 624, nothing booked: trigger 50% paper exit.",
+      "status": "EXECUTABLE",
+      "readiness": "POSITION_QUOTE_REQUIRED",
+      "tags": [
+        "all",
+        "target",
+        "exit"
+      ],
+      "required": "position, T1, live quote",
+      "lookback": "current position"
+    },
+    {
+      "id": "NU04",
+      "stage": "ADVISOR",
+      "family": "Profit Lifecycle",
+      "name": "Post-T1 ATR trailing stop",
+      "formula": "trail_stop = max(existing_stop, highest_close_since_T1 - 2 * ATR14)",
+      "threshold": "After T1, the stop may only rise and trails the highest close by two ATR.",
+      "source": "Upstox candles + Mongo paper position ledger",
+      "reason": "Protects gains while leaving room for a larger trend.",
+      "example": "Highest close Rs 700 and ATR Rs 24 gives trail Rs 652; existing Rs 640 becomes Rs 652.",
+      "status": "EXECUTABLE",
+      "readiness": "POSITION_CANDLES_REQUIRED",
+      "tags": [
+        "all",
+        "target",
+        "exit",
+        "risk"
+      ],
+      "required": "position history, ATR14, T1 state",
+      "lookback": "since T1"
+    },
+    {
+      "id": "NU05",
+      "stage": "ADVISOR",
+      "family": "Market Alignment",
+      "name": "Market-direction alignment",
+      "formula": "stock_trend > 0 and NIFTY50_trend > 0",
+      "threshold": "Long candidates must align with a positive NIFTY trend unless tagged contrarian.",
+      "source": "Upstox stock candles + Upstox NIFTY 50 candles",
+      "reason": "Reduces long entries fighting the broad market.",
+      "example": "Stock above SMA50 and NIFTY above SMA50: HIT.",
+      "status": "DEFINED",
+      "readiness": "INDEX_CANDLES_REQUIRED",
+      "tags": [
+        "all",
+        "market",
+        "trend"
+      ],
+      "required": "stock and NIFTY candles",
+      "lookback": "50 sessions"
+    },
+    {
+      "id": "NU06",
+      "stage": "ADVISOR",
+      "family": "Event Exit",
+      "name": "News or regime early-exit trigger",
+      "formula": "material_negative_event or regime_risk >= exit_line",
+      "threshold": "Exit review fires on a verified adverse event or a validated high-risk market regime.",
+      "source": "NSE corporate announcements + verified news/event feed + ASH regime engine",
+      "reason": "Protects the paper portfolio from thesis-breaking information.",
+      "example": "Credit downgrade plus gap below stop support: early-exit node fires.",
+      "status": "DEFINED",
+      "readiness": "VERIFIED_EVENT_FEED_REQUIRED",
+      "tags": [
+        "all",
+        "event",
+        "exit",
+        "risk"
+      ],
+      "required": "timestamped verified event and regime state",
+      "lookback": "event window"
+    },
+    {
+      "id": "NU07",
+      "stage": "ADVISOR",
+      "family": "Portfolio Risk",
+      "name": "Portfolio beta after proposed trade",
+      "formula": "weighted_portfolio_beta_after <= 1.20",
+      "threshold": "The proposed position must keep weighted portfolio beta at or below the configured cap.",
+      "source": "Upstox daily candles + Mongo paper portfolio",
+      "reason": "Controls total portfolio sensitivity, not only single-stock volatility.",
+      "example": "Portfolio beta moves from 1.05 to 1.14: HIT; to 1.28: BLOCK.",
+      "status": "EXECUTABLE",
+      "readiness": "PORTFOLIO_CANDLES_REQUIRED",
+      "tags": [
+        "all",
+        "portfolio",
+        "risk"
+      ],
+      "required": "candidate and portfolio return series",
+      "lookback": "252 sessions"
+    },
+    {
+      "id": "NU08",
+      "stage": "ADVISOR",
+      "family": "Portfolio Risk",
+      "name": "Sector concentration after proposed trade",
+      "formula": "sector_value_after / portfolio_value_after <= 0.25",
+      "threshold": "No sector may exceed 25% after adding the candidate.",
+      "source": "Mongo paper portfolio + NSE sector mapping",
+      "reason": "Prevents several individually good stocks creating one concentrated bet.",
+      "example": "Banking would become 29% after order: BLOCK.",
+      "status": "EXECUTABLE",
+      "readiness": "PORTFOLIO_READY",
+      "tags": [
+        "all",
+        "portfolio",
+        "sector",
+        "risk"
+      ],
+      "required": "position values and sector map",
+      "lookback": "current portfolio"
+    },
+    {
+      "id": "NU09",
+      "stage": "ADVISOR",
+      "family": "Position Sizing",
+      "name": "Position risk contribution",
+      "formula": "position_ATR_risk / total_portfolio_ATR_risk <= 0.20",
+      "threshold": "A new position may contribute at most 20% of aggregate ATR risk.",
+      "source": "Upstox ATR14 + Mongo paper portfolio",
+      "reason": "Sizes by risk contribution instead of equal rupee value alone.",
+      "example": "Candidate contributes 14% of portfolio ATR risk: HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "PORTFOLIO_CANDLES_REQUIRED",
+      "tags": [
+        "all",
+        "portfolio",
+        "risk",
+        "sizing"
+      ],
+      "required": "qty, price, ATR14 for all positions",
+      "lookback": "current portfolio"
+    },
+    {
+      "id": "NMS01",
+      "stage": "LEADERSHIP",
+      "family": "Relative Strength",
+      "name": "Cross-sectional relative-strength rank",
+      "formula": "percentile_rank(return_12m, current_scan_pool) >= 70",
+      "threshold": "Candidate must rank in the top 30% of the real scanned NSE pool by 12-month return.",
+      "source": "Upstox daily candles across current scan pool",
+      "reason": "Measures leadership against alternatives available at the same time.",
+      "example": "12M return ranks at the 84th percentile: HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "SCAN_POOL_READY",
+      "tags": [
+        "all",
+        "momentum",
+        "leadership"
+      ],
+      "required": "12M returns for scan pool",
+      "lookback": "252 sessions"
+    },
+    {
+      "id": "NMS02",
+      "stage": "LEADERSHIP",
+      "family": "Earnings Strength",
+      "name": "EPS rank",
+      "formula": "percentile_rank(weighted_EPS_growth_and_stability, NSE_pool) >= 70",
+      "threshold": "Composite EPS strength must rank in the top 30% of the covered NSE pool.",
+      "source": "Quarterly company results from NSE filings",
+      "reason": "Combines earnings growth, acceleration and stability into comparable leadership.",
+      "example": "EPS composite at 78th percentile: HIT.",
+      "status": "DEFINED",
+      "readiness": "FUNDAMENTAL_FEED_REQUIRED",
+      "tags": [
+        "all",
+        "growth",
+        "quality"
+      ],
+      "required": "quarterly EPS history across pool",
+      "lookback": "8 quarters"
+    },
+    {
+      "id": "NMS03",
+      "stage": "LEADERSHIP",
+      "family": "Accumulation",
+      "name": "Thirteen-week accumulation/distribution grade",
+      "formula": "AD_ratio_13w = up_volume_13w / max(down_volume_13w,1)",
+      "threshold": "Grade A/B when 13-week up-volume materially exceeds down-volume.",
+      "source": "Upstox daily OHLCV",
+      "reason": "Shows whether price strength is supported by persistent demand.",
+      "example": "Up volume 84m and down volume 55m gives 1.53 ratio: grade A, HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "volume",
+        "accumulation"
+      ],
+      "required": "13 weeks daily OHLCV",
+      "lookback": "65 sessions"
+    },
+    {
+      "id": "NMS04",
+      "stage": "LEADERSHIP",
+      "family": "Industry Leadership",
+      "name": "Industry-group rank",
+      "formula": "percentile_rank(median_group_RS, all_mapped_groups) >= 60",
+      "threshold": "Candidate industry group must rank above the 60th percentile.",
+      "source": "Upstox returns + verified NSE industry mapping",
+      "reason": "A strong stock in a strengthening group has broader confirmation.",
+      "example": "Defence group median RS is 82nd percentile: HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "SECTOR_MAP_REQUIRED",
+      "tags": [
+        "all",
+        "sector",
+        "leadership"
+      ],
+      "required": "stock returns and industry map",
+      "lookback": "126 sessions"
+    },
+    {
+      "id": "NMS05",
+      "stage": "LEADERSHIP",
+      "family": "Score Trend",
+      "name": "Weekly composite-score improvement",
+      "formula": "mean(composite_score,last_5_weeks) > mean(composite_score,prior_5_weeks)",
+      "threshold": "The evidence score must improve across two consecutive five-week windows.",
+      "source": "ASH scanner ledger in MongoDB",
+      "reason": "Confirms improving evidence instead of a one-day score spike.",
+      "example": "Recent five-week average 74 versus prior 66: HIT.",
+      "status": "DEFINED",
+      "readiness": "SCAN_LEDGER_REQUIRED",
+      "tags": [
+        "all",
+        "score",
+        "momentum"
+      ],
+      "required": "weekly score snapshots",
+      "lookback": "10 weeks"
+    },
+    {
+      "id": "NMS06",
+      "stage": "LEADERSHIP",
+      "family": "Breakout",
+      "name": "Distance from pivot",
+      "formula": "abs(last_price - pivot_20d) / pivot_20d <= 0.05",
+      "threshold": "Entry must be within 5% of the prior 20-session pivot.",
+      "source": "Upstox daily candles + current quote",
+      "reason": "Avoids chasing breakouts far beyond their decision level.",
+      "example": "Pivot Rs 400 and last Rs 414 gives 3.5% distance: HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_QUOTE_READY",
+      "tags": [
+        "all",
+        "breakout",
+        "entry"
+      ],
+      "required": "20D high and current quote",
+      "lookback": "20 sessions"
+    },
+    {
+      "id": "NMS07",
+      "stage": "LEADERSHIP",
+      "family": "Volume",
+      "name": "Volume versus 50-day average",
+      "formula": "latest_volume / SMA(volume,50) >= 1.50",
+      "threshold": "Latest session volume must be at least 1.5 times its 50-day mean for confirmation.",
+      "source": "Upstox daily OHLCV",
+      "reason": "Separates real participation from thin price movement.",
+      "example": "Latest volume 3.2m versus 1.8m average gives 1.78x: HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_READY",
+      "tags": [
+        "all",
+        "volume",
+        "breakout"
+      ],
+      "required": "50 daily volumes",
+      "lookback": "50 sessions"
+    },
+    {
+      "id": "NTS01",
+      "stage": "SAFETY",
+      "family": "Cash Quality",
+      "name": "Price to operating cash flow",
+      "formula": "market_cap / CFO_TTM <= own_or_sector_limit",
+      "threshold": "P/CFO must not exceed the approved own-history or sector threshold.",
+      "source": "NSE financial statements + market capitalization",
+      "reason": "Checks valuation against cash generation rather than accounting profit alone.",
+      "example": "P/CFO 14 versus sector limit 18: HIT.",
+      "status": "DEFINED",
+      "readiness": "FUNDAMENTAL_FEED_REQUIRED",
+      "tags": [
+        "all",
+        "valuation",
+        "cash"
+      ],
+      "required": "market cap and TTM CFO",
+      "lookback": "TTM plus sector"
+    },
+    {
+      "id": "NTS02",
+      "stage": "SAFETY",
+      "family": "Surveillance",
+      "name": "ASM surveillance flag",
+      "formula": "ASM_flag = false",
+      "threshold": "Stocks currently under Additional Surveillance Measure are excluded from automatic paper entry.",
+      "source": "NSE surveillance circulars/list",
+      "reason": "Prevents automated entry when exchange surveillance conditions are elevated.",
+      "example": "Symbol absent from current ASM list: CLEAR.",
+      "status": "DEFINED",
+      "readiness": "NSE_SURVEILLANCE_FEED_REQUIRED",
+      "tags": [
+        "all",
+        "risk",
+        "surveillance"
+      ],
+      "required": "current NSE ASM list",
+      "lookback": "current session"
+    },
+    {
+      "id": "NTS03",
+      "stage": "SAFETY",
+      "family": "Surveillance",
+      "name": "GSM surveillance flag",
+      "formula": "GSM_flag = false",
+      "threshold": "Stocks currently under Graded Surveillance Measure are excluded from automatic paper entry.",
+      "source": "NSE surveillance circulars/list",
+      "reason": "Treats exchange surveillance as a hard execution constraint.",
+      "example": "Symbol appears in GSM stage 2: BLOCK.",
+      "status": "DEFINED",
+      "readiness": "NSE_SURVEILLANCE_FEED_REQUIRED",
+      "tags": [
+        "all",
+        "risk",
+        "surveillance"
+      ],
+      "required": "current NSE GSM list",
+      "lookback": "current session"
+    },
+    {
+      "id": "NTS04",
+      "stage": "SAFETY",
+      "family": "Market Integrity",
+      "name": "Unsolicited-message warning",
+      "formula": "unsolicited_message_warning = false",
+      "threshold": "A current exchange warning about unsolicited stock messages blocks automatic entry.",
+      "source": "NSE/BSE investor-alert lists",
+      "reason": "Reduces pump-and-dump and manipulation exposure.",
+      "example": "No current warning for symbol: CLEAR.",
+      "status": "DEFINED",
+      "readiness": "EXCHANGE_ALERT_FEED_REQUIRED",
+      "tags": [
+        "all",
+        "risk",
+        "surveillance"
+      ],
+      "required": "current exchange warning list",
+      "lookback": "current session"
+    },
+    {
+      "id": "NTS05",
+      "stage": "SAFETY",
+      "family": "Earnings Quality",
+      "name": "Dilution-adjusted EPS growth",
+      "formula": "(PAT_current / diluted_shares_current) / (PAT_prior / diluted_shares_prior) - 1 > 0",
+      "threshold": "EPS growth must remain positive after actual share-count dilution.",
+      "source": "Quarterly NSE results + share capital history",
+      "reason": "Stops headline PAT growth hiding per-share dilution.",
+      "example": "PAT +12% but diluted shares +3% gives adjusted EPS growth about 8.7%: HIT.",
+      "status": "DEFINED",
+      "readiness": "FUNDAMENTAL_FEED_REQUIRED",
+      "tags": [
+        "all",
+        "growth",
+        "quality"
+      ],
+      "required": "PAT and diluted share count",
+      "lookback": "year-on-year quarter"
+    },
+    {
+      "id": "NTS06",
+      "stage": "SAFETY",
+      "family": "Portfolio Construction",
+      "name": "Diversification delta",
+      "formula": "portfolio_correlation_after < portfolio_correlation_before",
+      "threshold": "Candidate must reduce or not materially worsen weighted portfolio correlation.",
+      "source": "Upstox daily returns + Mongo paper portfolio",
+      "reason": "Rewards candidates that improve portfolio structure, not only standalone score.",
+      "example": "Weighted correlation falls from 0.61 to 0.56: HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "PORTFOLIO_CANDLES_REQUIRED",
+      "tags": [
+        "all",
+        "portfolio",
+        "correlation"
+      ],
+      "required": "candidate and holdings return history",
+      "lookback": "60 sessions"
+    },
+    {
+      "id": "NTV01",
+      "stage": "INTRADAY",
+      "family": "Intraday Volume",
+      "name": "Relative volume at current time",
+      "formula": "volume_so_far / median_volume_same_time_20_sessions >= 1.50",
+      "threshold": "Intraday volume must be at least 1.5 times the normal volume at the same time of day.",
+      "source": "Upstox intraday candles",
+      "reason": "Avoids comparing morning partial volume with an entire prior day.",
+      "example": "11:00 volume is 2.1m versus same-time median 1.2m: 1.75x HIT.",
+      "status": "DEFINED",
+      "readiness": "UPSTOX_INTRADAY_HISTORY_REQUIRED",
+      "tags": [
+        "all",
+        "intraday",
+        "volume"
+      ],
+      "required": "same-time intraday volume history",
+      "lookback": "20 sessions"
+    },
+    {
+      "id": "NTV02",
+      "stage": "INTRADAY",
+      "family": "Event Calendar",
+      "name": "Earnings-date proximity",
+      "formula": "trading_days_to_results >= 2 or event_strategy = true",
+      "threshold": "Automatic momentum entry is blocked inside two trading days of results unless an event strategy is selected.",
+      "source": "NSE corporate-results calendar",
+      "reason": "Makes earnings-gap risk explicit before entry.",
+      "example": "Results tomorrow and normal momentum strategy: BLOCK.",
+      "status": "DEFINED",
+      "readiness": "NSE_EVENT_CALENDAR_REQUIRED",
+      "tags": [
+        "all",
+        "event",
+        "risk"
+      ],
+      "required": "verified result date",
+      "lookback": "forward calendar"
+    },
+    {
+      "id": "NTV03",
+      "stage": "DIVIDEND",
+      "family": "Dividend Quality",
+      "name": "Dividend payout sustainability",
+      "formula": "dividend_paid / CFO_TTM <= 0.70 and CFO_TTM / dividend_paid >= 1.20",
+      "threshold": "Payout must be covered by operating cash flow with a safety buffer.",
+      "source": "NSE cash-flow statement + dividend history",
+      "reason": "Distinguishes sustainable distributions from balance-sheet-funded payouts.",
+      "example": "Cash dividend Rs 700cr and CFO Rs 1,100cr gives 64% payout and 1.57x cover: HIT.",
+      "status": "DEFINED",
+      "readiness": "FUNDAMENTAL_FEED_REQUIRED",
+      "tags": [
+        "all",
+        "dividend",
+        "cash",
+        "quality"
+      ],
+      "required": "dividends and TTM CFO",
+      "lookback": "TTM"
+    },
+    {
+      "id": "NTV04",
+      "stage": "DIVIDEND",
+      "family": "Dividend Quality",
+      "name": "Dividend growth streak",
+      "formula": "consecutive_years(dividend_per_share_growth > 0) >= 3",
+      "threshold": "Dividend per share must grow for at least three consecutive financial years.",
+      "source": "NSE annual reports/dividend history",
+      "reason": "Identifies repeatable shareholder-return policy rather than a one-off payout.",
+      "example": "DPS rises 8, 9, 10.5, 12 across four years: three-year streak HIT.",
+      "status": "DEFINED",
+      "readiness": "DIVIDEND_HISTORY_REQUIRED",
+      "tags": [
+        "all",
+        "dividend",
+        "quality"
+      ],
+      "required": "annual dividend per share",
+      "lookback": "4 financial years"
+    },
+    {
+      "id": "NBX01",
+      "stage": "EXECUTION",
+      "family": "Quote Integrity",
+      "name": "Quote age",
+      "formula": "now - quote_timestamp <= 5 seconds during market hours",
+      "threshold": "A market fill requires an Upstox quote no older than five seconds while NSE is open.",
+      "source": "Upstox Market Quote API",
+      "reason": "Prevents paper fills on stale prices.",
+      "example": "Quote age 2.4 seconds: HIT; 18 seconds: BLOCK.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_QUOTE_READY",
+      "tags": [
+        "all",
+        "execution",
+        "quote"
+      ],
+      "required": "quote timestamp and server time",
+      "lookback": "current tick"
+    },
+    {
+      "id": "NBX02",
+      "stage": "EXECUTION",
+      "family": "Spread",
+      "name": "Bid-ask spread",
+      "formula": "(best_ask - best_bid) / mid_price * 10000 <= 25 bps",
+      "threshold": "The top-of-book spread must be at most 25 basis points for an automatic market entry.",
+      "source": "Upstox market depth",
+      "reason": "Makes paper fills respect executable liquidity.",
+      "example": "Bid 500.00 and ask 500.60 gives about 12 bps: HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_DEPTH_READY",
+      "tags": [
+        "all",
+        "execution",
+        "liquidity"
+      ],
+      "required": "best bid and ask",
+      "lookback": "current depth"
+    },
+    {
+      "id": "NBX03",
+      "stage": "EXECUTION",
+      "family": "Depth",
+      "name": "Depth imbalance",
+      "formula": "(buy_qty_5 - sell_qty_5) / (buy_qty_5 + sell_qty_5) >= -0.20",
+      "threshold": "Five-level depth must not show sell-side imbalance worse than -0.20.",
+      "source": "Upstox market depth",
+      "reason": "Blocks entries when visible supply heavily dominates demand.",
+      "example": "Buy 90k, sell 110k gives -0.10: HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_DEPTH_READY",
+      "tags": [
+        "all",
+        "execution",
+        "liquidity"
+      ],
+      "required": "five-level bid/ask quantity",
+      "lookback": "current depth"
+    },
+    {
+      "id": "NBX04",
+      "stage": "EXECUTION",
+      "family": "Market Impact",
+      "name": "Estimated market impact",
+      "formula": "weighted_fill_price(order_qty, asks) / mid_price - 1 <= 20 bps",
+      "threshold": "Estimated depth-walking impact must remain within 20 basis points.",
+      "source": "Upstox market depth + paper order quantity",
+      "reason": "Stops simulated fills from assuming unlimited liquidity at LTP.",
+      "example": "Weighted ask fill implies 14 bps impact: HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_DEPTH_READY",
+      "tags": [
+        "all",
+        "execution",
+        "liquidity",
+        "sizing"
+      ],
+      "required": "order quantity and ask depth",
+      "lookback": "current depth"
+    },
+    {
+      "id": "NBX05",
+      "stage": "EXECUTION",
+      "family": "Fill Quality",
+      "name": "Fill slippage",
+      "formula": "abs(paper_fill_price - decision_price) / decision_price * 10000 <= 25 bps",
+      "threshold": "Recorded paper fill slippage must be no more than 25 basis points.",
+      "source": "Paper order ledger + Upstox decision quote",
+      "reason": "Measures whether execution preserved the signal economics.",
+      "example": "Decision Rs 500, fill Rs 500.80 gives 16 bps: HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "PAPER_LEDGER_READY",
+      "tags": [
+        "all",
+        "execution",
+        "fill"
+      ],
+      "required": "decision quote and fill record",
+      "lookback": "per trade"
+    },
+    {
+      "id": "NBX06",
+      "stage": "EXECUTION",
+      "family": "Latency",
+      "name": "Trigger-to-fill latency",
+      "formula": "fill_timestamp - trigger_timestamp <= 5 seconds",
+      "threshold": "A market paper order should fill within five seconds of its valid trigger during market hours.",
+      "source": "Paper order ledger timestamps",
+      "reason": "Exposes delayed processing that can invalidate momentum fills.",
+      "example": "Trigger 10:01:05.100, fill 10:01:07.200 gives 2.1s: HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "PAPER_LEDGER_READY",
+      "tags": [
+        "all",
+        "execution",
+        "fill"
+      ],
+      "required": "trigger and fill timestamps",
+      "lookback": "per trade"
+    },
+    {
+      "id": "NBX07",
+      "stage": "EXECUTION",
+      "family": "Fill Quality",
+      "name": "Partial-fill ratio",
+      "formula": "filled_quantity / requested_quantity = 1.00",
+      "threshold": "Automatic paper entry is complete only when the requested quantity can be supported by depth.",
+      "source": "Paper order ledger + Upstox market depth",
+      "reason": "Prevents a partial fill being displayed as a full position.",
+      "example": "Requested 100, depth-supported fill 100: ratio 1.0 HIT.",
+      "status": "EXECUTABLE",
+      "readiness": "PAPER_LEDGER_READY",
+      "tags": [
+        "all",
+        "execution",
+        "fill"
+      ],
+      "required": "requested and filled quantity",
+      "lookback": "per order"
+    },
+    {
+      "id": "NBX08",
+      "stage": "EXECUTION",
+      "family": "Exchange State",
+      "name": "Circuit or rejection state",
+      "formula": "last_price inside circuit band and exchange_restriction = false",
+      "threshold": "Automatic entry is blocked at circuit limits or when exchange/broker market-data state marks the instrument restricted.",
+      "source": "Upstox quote circuit limits + NSE instrument status",
+      "reason": "Applies real exchange constraints to paper execution.",
+      "example": "LTP below upper circuit and symbol tradable: CLEAR.",
+      "status": "EXECUTABLE",
+      "readiness": "UPSTOX_QUOTE_READY",
+      "tags": [
+        "all",
+        "execution",
+        "risk",
+        "surveillance"
+      ],
+      "required": "LTP, circuit limits, instrument state",
+      "lookback": "current session"
+    }
+  ],
+  "stages": [
+    {
+      "id": "LEGACY",
+      "label": "Engine Core",
+      "color": "#36d6cc"
+    },
+    {
+      "id": "RISE",
+      "label": "Pre-Rise",
+      "color": "#19d98b"
+    },
+    {
+      "id": "FALL",
+      "label": "Pre-Fall",
+      "color": "#ff5d6c"
+    },
+    {
+      "id": "QUALITY",
+      "label": "Quality",
+      "color": "#2aa8ff"
+    },
+    {
+      "id": "GROWTH",
+      "label": "Growth",
+      "color": "#55c2ff"
+    },
+    {
+      "id": "VALUATION",
+      "label": "Valuation",
+      "color": "#f2c14e"
+    },
+    {
+      "id": "OWNERSHIP",
+      "label": "Ownership",
+      "color": "#b38cff"
+    },
+    {
+      "id": "LIFECYCLE",
+      "label": "Lifecycle",
+      "color": "#ff9f43"
+    },
+    {
+      "id": "TECHNICAL",
+      "label": "Technical",
+      "color": "#00c2a8"
+    },
+    {
+      "id": "ADVISOR",
+      "label": "Advisor",
+      "color": "#60d394"
+    },
+    {
+      "id": "LEADERSHIP",
+      "label": "Leadership",
+      "color": "#4dabf7"
+    },
+    {
+      "id": "SAFETY",
+      "label": "Safety",
+      "color": "#ff7b72"
+    },
+    {
+      "id": "INTRADAY",
+      "label": "Intraday",
+      "color": "#19c3ff"
+    },
+    {
+      "id": "DIVIDEND",
+      "label": "Dividend",
+      "color": "#f4d35e"
+    },
+    {
+      "id": "EXECUTION",
+      "label": "Execution",
+      "color": "#ef7cff"
+    }
+  ],
+  "freshnessGate": {
+    "id": "B24_P024",
+    "stage": "DATA_GATE",
+    "family": "Data Quality",
+    "name": "Fresh candle within five sessions",
+    "formula": "calendar_age(latest candle) <= 7 days",
+    "threshold": "Latest stored candle must be no more than seven calendar days old.",
+    "source": "AshStocks B24 realtime quality and Upstox candles",
+    "reason": "Prevents stale evidence from being presented as current selection evidence.",
+    "example": "Formula example: latest candle age 2 days is within 7 days, so the gate is open.",
+    "status": "ENGINE_EXECUTABLE",
+    "readiness": "UPSTOX_READY",
+    "tags": [
+      "all",
+      "data-quality"
+    ],
+    "required": "Latest candle timestamp",
+    "lookback": "Latest record"
+  }
+}

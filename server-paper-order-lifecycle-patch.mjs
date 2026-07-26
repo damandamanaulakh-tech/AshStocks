@@ -1,5 +1,38 @@
 const PAPER_ORDER_LIFECYCLE_FUNCTIONS = String.raw`
 const PAPER_ORDER_LIFECYCLE_VERSION = "ashstocks-paper-order-lifecycle-v0.2";
+function sanitizeParameterEvidence(input = {}) {
+  return {
+    version: String(input.version || "").slice(0, 80),
+    evaluated: Math.max(0, Math.floor(finiteOr(input.evaluated, 0))),
+    positive_hits: Math.max(0, Math.floor(finiteOr(input.positive_hits, 0))),
+    risk_clear: Math.max(0, Math.floor(finiteOr(input.risk_clear, 0))),
+    risk_hits: Array.isArray(input.risk_hits) ? input.risk_hits.map(String).slice(0, 20) : Math.max(0, Math.floor(finiteOr(input.risk_hits, 0))),
+    misses: Math.max(0, Math.floor(finiteOr(input.misses, 0))),
+    source_required: Math.max(0, Math.floor(finiteOr(input.source_required, 0))),
+    coverage_pct: round(finiteOr(input.coverage_pct, 0), 2),
+    evidence_score: round(finiteOr(input.evidence_score, 0), 2),
+    top_hits: Array.isArray(input.top_hits) ? input.top_hits.map(String).slice(0, 20) : []
+  };
+}
+function sanitizeExecutionEvidence(input = {}) {
+  return {
+    quote_timestamp: String(input.quote_timestamp || "").slice(0, 40),
+    quote_age_seconds: finiteOr(input.quote_age_seconds, null),
+    best_bid: finiteOr(input.best_bid, null),
+    best_ask: finiteOr(input.best_ask, null),
+    spread_bps: finiteOr(input.spread_bps, null),
+    depth_imbalance: finiteOr(input.depth_imbalance, null),
+    estimated_impact_bps: finiteOr(input.estimated_impact_bps, null),
+    circuit_clear: Boolean(input.circuit_clear),
+    all_clear: Boolean(input.all_clear),
+    nodes: Array.isArray(input.nodes) ? input.nodes.slice(0, 12).map((node) => ({
+      id: String(node.id || "").slice(0, 20),
+      state: String(node.state || "").slice(0, 20),
+      value: finiteOr(node.value, null),
+      evidence: String(node.evidence || "").slice(0, 180)
+    })) : []
+  };
+}
 function defaultPaperFunds() {
   return { currency: "INR", starting_capital: 2500000, realized_pnl: 0 };
 }
@@ -16,18 +49,23 @@ function sanitizePaperOrder(order = {}) {
   return {
     id: String(order.id || "").slice(0, 64),
     symbol,
+    instrument_key: String(order.instrument_key || "").slice(0, 100),
     name: String(order.name || symbol).slice(0, 120),
     side: String(order.side || "BUY").toUpperCase() === "SELL" ? "SELL" : "BUY",
     product: String(order.product || "Paper Swing").slice(0, 40),
     order_type: String(order.order_type || order.orderType || "MARKET").toUpperCase().slice(0, 20),
     qty: Math.max(0, Math.floor(finiteOr(order.qty, 0))),
     price: finiteOr(order.price ?? order.entry_price, null),
+    decision_price: finiteOr(order.decision_price, null),
+    quote_timestamp: String(order.quote_timestamp || "").slice(0, 40),
     target_price: finiteOr(order.target_price ?? order.targetPrice, null),
     stop_price: finiteOr(order.stop_price ?? order.stopPrice, null),
     status: String(order.status || "PAPER_CREATED").slice(0, 40),
     rejection_reason: String(order.rejection_reason || "").slice(0, 220),
     source: String(order.source || "ashstocks-paper-ticket").slice(0, 80),
     thesis: String(order.thesis || "").slice(0, 360),
+    parameter_evidence: sanitizeParameterEvidence(order.parameter_evidence || {}),
+    execution_evidence: sanitizeExecutionEvidence(order.execution_evidence || {}),
     created_at: String(order.created_at || "").slice(0, 40),
     updated_at: String(order.updated_at || order.created_at || "").slice(0, 40),
     paper_only: true,
@@ -40,9 +78,11 @@ function sanitizePaperTrade(trade = {}) {
     id: String(trade.id || "").slice(0, 64),
     order_id: String(trade.order_id || trade.orderId || "").slice(0, 64),
     symbol,
+    instrument_key: String(trade.instrument_key || "").slice(0, 100),
     side: String(trade.side || "BUY").toUpperCase() === "SELL" ? "SELL" : "BUY",
     qty: Math.max(0, Math.floor(finiteOr(trade.qty, 0))),
     price: finiteOr(trade.price, null),
+    quote_timestamp: String(trade.quote_timestamp || "").slice(0, 40),
     value: round(finiteOr(trade.value, 0), 2),
     realized_pnl: round(finiteOr(trade.realized_pnl ?? trade.realizedPnl, 0), 2),
     traded_at: String(trade.traded_at || "").slice(0, 40),
@@ -55,6 +95,7 @@ function sanitizePaperGtt(plan = {}) {
   return {
     id: String(plan.id || "").slice(0, 64),
     symbol,
+    instrument_key: String(plan.instrument_key || "").slice(0, 100),
     name: String(plan.name || symbol).slice(0, 120),
     side: String(plan.side || "BUY").toUpperCase() === "SELL" ? "SELL" : "BUY",
     qty: Math.max(0, Math.floor(finiteOr(plan.qty, 0))),
@@ -99,16 +140,22 @@ function paperOrderRequest(body = {}) {
   const price = finiteOr(body.price ?? body.entry_price ?? body.entryPrice ?? body.close, null);
   return {
     symbol,
+    instrument_key: String(body.instrument_key || "").slice(0, 100),
     name: String(body.name || symbol).slice(0, 120),
+    sector: String(body.sector || "Unmapped").slice(0, 80),
     side,
     product,
     order_type: orderType,
     qty,
     price,
+    decision_price: finiteOr(body.decision_price, null),
+    quote_timestamp: String(body.quote_timestamp || "").slice(0, 40),
     target_price: finiteOr(body.target_price ?? body.targetPrice ?? body.target, null),
     stop_price: finiteOr(body.stop_price ?? body.stopPrice ?? body.stop, null),
     source: String(body.source || "upstox-workspace-paper-ticket").slice(0, 80),
     thesis: String(body.thesis || body.reason || "AshStocks paper ticket").slice(0, 360),
+    parameter_evidence: sanitizeParameterEvidence(body.parameter_evidence || {}),
+    execution_evidence: sanitizeExecutionEvidence(body.execution_evidence || {}),
     gtt: Boolean(body.gtt || String(body.order_type || body.action || "").toUpperCase() === "GTT")
   };
 }
@@ -162,7 +209,7 @@ function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
   }
 
   const order = sanitizePaperOrder({ id: paperLedgerId("PAPER_ORDER"), ...request, status: "PAPER_FILLED", created_at: asOf, updated_at: asOf });
-  let trade = sanitizePaperTrade({ id: paperLedgerId("PAPER_TRADE"), order_id: order.id, symbol: request.symbol, side: request.side, qty: request.qty, price: request.price, value: request.qty * request.price, traded_at: asOf });
+  let trade = sanitizePaperTrade({ id: paperLedgerId("PAPER_TRADE"), order_id: order.id, symbol: request.symbol, instrument_key: request.instrument_key, side: request.side, qty: request.qty, price: request.price, quote_timestamp: request.quote_timestamp, value: request.qty * request.price, traded_at: asOf });
 
   if (request.side === "BUY") {
     const existingIndex = next.positions.findIndex((position) => position.symbol === request.symbol && position.status !== "CLOSED");
@@ -180,21 +227,32 @@ function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
         stop_price: request.stop_price || existing.stop_price,
         status: "OPEN",
         thesis: request.thesis,
+        instrument_key: request.instrument_key || existing.instrument_key,
+        decision_price: request.decision_price,
+        quote_timestamp: request.quote_timestamp,
+        parameter_evidence: request.parameter_evidence,
+        execution_evidence: request.execution_evidence,
         checked_at: asOf
       });
     } else {
       next.positions.unshift(sanitizePaperPosition({
         symbol: request.symbol,
+        instrument_key: request.instrument_key,
         name: request.name,
-        sector: body.sector || "Unmapped",
+        sector: request.sector,
         qty: request.qty,
         entry_price: request.price,
+        decision_price: request.decision_price,
+        quote_timestamp: request.quote_timestamp,
         current_price: request.price,
         target_price: request.target_price,
         stop_price: request.stop_price,
         entry_date: asOf,
         status: "OPEN",
-        thesis: request.thesis
+        thesis: request.thesis,
+        parameter_evidence: request.parameter_evidence,
+        execution_evidence: request.execution_evidence,
+        checked_at: asOf
       }));
     }
   } else {
@@ -400,6 +458,12 @@ const PAPER_ORDER_LIFECYCLE_ROUTES = String.raw`
 
 export function applyPaperOrderLifecyclePatches(source, mustReplace) {
   let output = source;
+  output = mustReplace(
+    output,
+    '  return { symbol, name: String(position.name || symbol).slice(0, 120), sector: String(position.sector || "Unmapped").slice(0, 80), qty: Math.max(0, Math.floor(finiteOr(position.qty, 0))), entry_price: finiteOr(position.entry_price, null), current_price: finiteOr(position.current_price, position.entry_price ?? null), target_price: finiteOr(position.target_price, null), stop_price: finiteOr(position.stop_price, null), entry_date: String(position.entry_date || "").slice(0, 32), status: String(position.status || "OPEN").slice(0, 30), thesis: String(position.thesis || "").slice(0, 240) };',
+    '  return { symbol, instrument_key: String(position.instrument_key || "").slice(0, 100), name: String(position.name || symbol).slice(0, 120), sector: String(position.sector || "Unmapped").slice(0, 80), qty: Math.max(0, Math.floor(finiteOr(position.qty, 0))), entry_price: finiteOr(position.entry_price, null), decision_price: finiteOr(position.decision_price, null), current_price: finiteOr(position.current_price, position.entry_price ?? null), target_price: finiteOr(position.target_price, null), stop_price: finiteOr(position.stop_price, null), quote_timestamp: String(position.quote_timestamp || "").slice(0, 40), entry_date: String(position.entry_date || "").slice(0, 32), checked_at: String(position.checked_at || position.quote_timestamp || position.entry_date || "").slice(0, 40), status: String(position.status || "OPEN").slice(0, 30), thesis: String(position.thesis || "").slice(0, 360), parameter_evidence: sanitizeParameterEvidence(position.parameter_evidence || {}), execution_evidence: sanitizeExecutionEvidence(position.execution_evidence || {}) };',
+    "persist parameter and quote evidence on paper positions"
+  );
   output = mustReplace(
     output,
     'function defaultPaperTraderState() {\n  return { version: PAPER_TRADER_VERSION, paper_only: true, live_orders: false, last_run: null, positions: [], history: [], last_plan: null };\n}',

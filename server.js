@@ -18,6 +18,7 @@ import { applyIntelligenceScorePatches } from "./server-intelligence-score-patch
 import { applyUpstoxQuotePatches } from "./server-upstox-quote-patch.mjs";
 import { applyUpstoxOAuthPatches } from "./server-upstox-oauth-patch.mjs";
 import { applySuspendedEmptyScanPatch } from "./server-suspended-empty-patch.mjs";
+import { applyParameterTunnelPatches } from "./server-parameter-tunnel-patch.mjs";
 
 const runtimeProcess = globalThis.process;
 const PORT = Number(runtimeProcess?.env?.PORT || 4173);
@@ -200,6 +201,7 @@ function startDataBankBootstrap() {
   output = applyUpstoxOAuthPatches(output, mustReplace);
   output = applyUpstoxQuotePatches(output, mustReplace);
   output = applySuspendedEmptyScanPatch(output, mustReplace);
+  output = applyParameterTunnelPatches(output, mustReplace);
   return output;
 }
 
