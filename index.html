@@ -31,6 +31,10 @@
           </button>
           <button class="rail-item" type="button" data-section="piano">
             <i data-lucide="activity" aria-hidden="true"></i>
+            <span>Node Tunnel</span>
+          </button>
+          <button class="rail-item" type="button" data-section="signal-piano">
+            <i data-lucide="audio-waveform" aria-hidden="true"></i>
             <span>Signal Piano</span>
           </button>
           <button class="rail-item" type="button" data-section="orders">
@@ -159,86 +163,26 @@
                 <div class="panel-head">
                   <div>
                     <span class="mini-label">Order Readiness</span>
-                    <h3>Paper Ticket</h3>
+                    <h3>Automatic Paper Setup</h3>
                   </div>
-                  <span class="status-pill good">Paper only</span>
+                  <span class="status-pill good">Engine controlled</span>
                 </div>
-
-                <form class="ticket-grid" id="paperTicket">
-                  <label>
-                    <span>Symbol</span>
-                    <input name="symbol" id="ticketSymbol" required />
-                  </label>
-                  <label>
-                    <span>Side</span>
-                    <select name="side" id="ticketSide">
-                      <option value="BUY">BUY</option>
-                      <option value="SELL">SELL</option>
-                    </select>
-                  </label>
-                  <label>
-                    <span>Order</span>
-                    <select name="order_type" id="ticketOrderType">
-                      <option value="MARKET">MARKET</option>
-                      <option value="LIMIT">LIMIT</option>
-                      <option value="GTT">GTT</option>
-                    </select>
-                  </label>
-                  <label>
-                    <span>Qty</span>
-                    <input name="qty" id="ticketQty" type="number" min="1" step="1" value="1" />
-                  </label>
-                  <label>
-                    <span>Limit</span>
-                    <input name="price" id="ticketPrice" type="number" min="0" step="0.05" />
-                  </label>
-                  <label>
-                    <span>Stop</span>
-                    <input name="stop_price" id="ticketStop" type="number" min="0" step="0.05" />
-                  </label>
-                  <label>
-                    <span>Target</span>
-                    <input name="target_price" id="ticketTarget" type="number" min="0" step="0.05" />
-                  </label>
-                  <label>
-                    <span>Product</span>
-                    <select name="product" id="ticketProduct">
-                      <option value="Paper Intraday">Intraday</option>
-                      <option value="Paper Swing">Swing</option>
-                      <option value="Paper Positional">Positional</option>
-                    </select>
-                  </label>
-                  <button class="submit-button" type="submit">
-                    <i data-lucide="send" aria-hidden="true"></i>
-                    <span>Place Paper Order</span>
-                  </button>
-                </form>
+                <div class="engine-order-readiness" id="autoOrderReadiness"></div>
               </section>
             </aside>
           </section>
+        </section>
 
-          <section class="cockpit-bottom">
-            <section class="panel piano-panel">
-              <div class="panel-head">
-                <div>
-                  <span class="mini-label">Parameter Hits</span>
-                  <h3>Signal Piano</h3>
-                </div>
-                <strong id="pianoCoverage">0 evaluated</strong>
+        <section class="section signal-piano-screen" id="signalPianoSection" data-panel="signal-piano">
+          <section class="panel piano-panel signal-piano-full">
+            <div class="panel-head">
+              <div>
+                <span class="mini-label">Parameter Hits Per Stock</span>
+                <h3>Signal Piano</h3>
               </div>
-              <div class="piano-stage" id="pianoStage"></div>
-            </section>
-
-            <section class="panel book-panel">
-              <div class="panel-head">
-                <div>
-                  <span class="mini-label">Paper Ledger</span>
-                  <h3>Orders And Positions</h3>
-                </div>
-                <button class="small-button" type="button" id="refreshOrdersBtn">Refresh</button>
-              </div>
-              <div class="book-table" id="paperBook"></div>
-            </section>
+              <strong id="pianoCoverage">0 evaluated</strong>
+            </div>
+            <div class="piano-stage" id="pianoStage"></div>
           </section>
         </section>
 
@@ -353,6 +297,7 @@
                 <span class="mini-label">Paper Execution</span>
                 <h3>Lifecycle Ledger</h3>
               </div>
+              <button class="small-button" type="button" id="refreshOrdersBtn">Refresh</button>
             </div>
             <div class="book-table" id="ordersLedger"></div>
           </div>

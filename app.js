@@ -586,8 +586,15 @@ function visibleRows() {
 function renderMarketStrip(status = "loading", quotes = []) {
   const node = el("marketStrip");
   if (!node) return;
+  node.classList.toggle("has-error", status === "error");
   if (status === "error") {
-    node.innerHTML = `<article class="market-card danger"><span class="mini-label">Upstox quotes</span><strong>Quote error</strong><p>${escapeHtml(state.lastError)}</p></article>`;
+    node.innerHTML = `
+      <article class="market-card danger market-error-card">
+        <span class="mini-label">Upstox quotes</span>
+        <strong>Quote unavailable</strong>
+        <p>${escapeHtml(state.lastError || "Upstox did not return the requested market quotes.")}</p>
+        <small>Renew the Upstox token in Settings, then refresh.</small>
+      </article>`;
     return;
   }
   const byKey = new Map((quotes || []).map((quote) => [quote.instrument_key, quote]));
@@ -713,13 +720,6 @@ async function selectSymbol(symbol) {
   const row = state.rows.find((item) => item.symbol === symbol) || state.rows[0] || null;
   if (!row) return;
   state.selected = row;
-  el("ticketSymbol").value = row.symbol;
-  const price = numberValue(row.close);
-  if (price) {
-    el("ticketPrice").value = round(price, 2);
-    el("ticketStop").value = round(price * 0.94, 2);
-    el("ticketTarget").value = round(price * 1.12, 2);
-  }
   renderCandidates();
   renderSymbol();
   await fetchSelectedQuote(row);
@@ -736,6 +736,7 @@ function renderSymbol() {
     drawChart(null);
     renderFactors(null, ctx);
     renderReason(null, ctx);
+    renderAutoOrderReadiness(null);
     renderPiano();
     return;
   }
@@ -757,7 +758,66 @@ function renderSymbol() {
   drawChart(row);
   renderFactors(row, ctx);
   renderReason(row, ctx);
+  renderAutoOrderReadiness(row);
   renderPiano();
+}
+
+function renderAutoOrderReadiness(row = state.selected) {
+  const node = el("autoOrderReadiness");
+  if (!node) return;
+  if (!row) {
+    node.innerHTML = `<div class="engine-order-state neutral">
+      <span>No selected NSE stock</span>
+      <strong>Scanner has not returned a candidate</strong>
+    </div>`;
+    return;
+  }
+
+  const quotePrice = numberValue(state.selectedQuote?.last_price);
+  const decisionPrice = numberValue(row.close);
+  const targetRoom = numberValue(row.target_potential?.potential_left_pct);
+  const targetPct = Math.max(12, Math.min(80, targetRoom !== null && targetRoom >= 8 ? targetRoom : 25));
+  const targetPrice = numberValue(row.paper_order?.target_price ?? row.target_price ?? row.advisor?.target2)
+    ?? (decisionPrice ? round(decisionPrice * (1 + targetPct / 100), 2) : null);
+  const stopPrice = numberValue(row.paper_order?.stop_price ?? row.stop_price ?? row.advisor?.stop)
+    ?? (decisionPrice ? round(decisionPrice * 0.90, 2) : null);
+  const qty = Math.max(1, Math.floor(numberValue(row.paper_order?.qty) || (decisionPrice ? 40000 / decisionPrice : 1)));
+  const tunnel = row.parameter_tunnel?.summary || {};
+  const evaluated = numberValue(tunnel.evaluated) || 0;
+  const evidenceScore = numberValue(tunnel.evidence_score) || 0;
+  const openPosition = (state.orders?.positions || []).find((item) => item.symbol === row.symbol);
+  const latestOrder = (state.orders?.orders || []).find((item) => item.symbol === row.symbol);
+  const executionReady = row.decision === "SELECT" && evaluated >= 35 && evidenceScore >= 48;
+  const status = openPosition
+    ? "POSITION OPEN"
+    : latestOrder?.status
+      ? latestOrder.status
+      : executionReady && quotePrice
+        ? "AUTO BUY READY"
+        : executionReady
+          ? "REAL QUOTE REQUIRED"
+          : decisionDisplay(row.decision);
+  const tone = openPosition || latestOrder?.status === "FILLED" || status === "AUTO BUY READY" ? "good" : executionReady ? "watch" : "neutral";
+  const entryText = openPosition
+    ? fmtPrice(openPosition.entry_price)
+    : quotePrice
+      ? fmtPrice(quotePrice)
+      : "Upstox quote required";
+  const proofText = evaluated ? `${fmtNumber(evidenceScore)} | ${fmtInt(tunnel.positive_hits || 0)}/${fmtInt(evaluated)}` : decisionDisplay(row.decision);
+
+  node.innerHTML = `
+    <div class="engine-order-state ${tone}">
+      <span>${escapeHtml(row.symbol)} · BUY MARKET · Paper Swing</span>
+      <strong>${escapeHtml(status)}</strong>
+    </div>
+    <div class="engine-order-grid">
+      <article><span>Entry</span><strong>${escapeHtml(entryText)}</strong><small>${quotePrice ? escapeHtml(isoDate(state.selectedQuote?.timestamp)) : "Real Upstox quote gate"}</small></article>
+      <article><span>Quantity</span><strong>${fmtInt(openPosition?.qty || latestOrder?.qty || qty)}</strong><small>4% paper capital sizing</small></article>
+      <article><span>Stop</span><strong>${fmtPrice(openPosition?.stop_price || latestOrder?.stop_price || stopPrice)}</strong><small>Engine risk rule</small></article>
+      <article><span>Target</span><strong>${fmtPrice(openPosition?.target_price || latestOrder?.target_price || targetPrice)}</strong><small>${fmtNumber(targetPct)}% target room</small></article>
+      <article><span>Parameter proof</span><strong>${escapeHtml(proofText)}</strong><small>Score | hits/evaluated</small></article>
+      <article><span>Execution</span><strong>${openPosition ? "BOUGHT" : executionReady ? "AUTOMATIC" : "FILTERED"}</strong><small>Fresh quote and market gates apply</small></article>
+    </div>`;
 }
 
 function factorScore(name, value, max = 10) {
@@ -1186,6 +1246,7 @@ async function loadOrders() {
     state.orders = { ok: false, error: error.message, orders: [], positions: [], trades: [] };
   }
   renderOrders();
+  renderAutoOrderReadiness();
 }
 
 function renderOrders() {
@@ -1275,7 +1336,7 @@ function switchSection(section) {
   state.activeSection = section;
   all(".rail-item[data-section]").forEach((button) => button.classList.toggle("active", button.dataset.section === section));
   all(".section").forEach((panel) => panel.classList.toggle("active", panel.dataset.panel === section));
-  const titleMap = { dashboard: "Dashboard", screener: "Screener", piano: "Signal Piano", orders: "Paper Orders", settings: "Settings" };
+  const titleMap = { dashboard: "Dashboard", screener: "Screener", piano: "Node Tunnel", "signal-piano": "Signal Piano", orders: "Paper Book", settings: "Settings" };
   el("sectionTitle").textContent = titleMap[section] || "Dashboard";
   window.lucide?.createIcons?.();
 }
@@ -1391,7 +1452,7 @@ function bindUi() {
   all(".tab-button").forEach((button) => button.addEventListener("click", () => {
     state.horizon = button.dataset.horizon;
     all(".tab-button").forEach((item) => item.classList.toggle("active", item === button));
-    el("ticketProduct").value = state.horizon === "intraday" ? "Paper Intraday" : state.horizon === "positional" || state.horizon === "portfolio" ? "Paper Positional" : "Paper Swing";
+    renderAutoOrderReadiness();
   }));
   el("refreshBtn")?.addEventListener("click", refreshScan);
   el("nseMasterBtn")?.addEventListener("click", loadNseMaster);

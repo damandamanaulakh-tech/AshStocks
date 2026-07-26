@@ -3222,3 +3222,461 @@ td small {
     white-space: nowrap;
   }
 }
+
+/* Desktop screen-fit: keep the signal tunnel and its inspector usable on
+   Windows-scaled displays without changing any engine or data behavior. */
+@media (min-width: 1200px) {
+  #pianoSection.section.active {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  #pianoSection .parameter-tunnel-shell {
+    display: grid;
+    grid-template-rows: auto auto minmax(0, 1fr);
+    height: 100%;
+    min-height: 0;
+    padding: 12px;
+    overflow: hidden;
+  }
+
+  #pianoSection .parameter-tunnel-head {
+    min-height: 62px;
+    padding: 0 4px 10px;
+  }
+
+  #pianoSection .parameter-tunnel-head h2 {
+    font-size: 23px;
+  }
+
+  #pianoSection .tunnel-toolbar {
+    display: grid;
+    grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
+    gap: 10px;
+    min-height: 50px;
+    padding: 7px 0;
+  }
+
+  #pianoSection .tunnel-search {
+    width: 100%;
+    min-width: 0;
+    height: 36px;
+  }
+
+  #pianoSection .tunnel-search input {
+    min-width: 0;
+    text-overflow: ellipsis;
+  }
+
+  #pianoSection .tunnel-segments {
+    min-width: 0;
+  }
+
+  #pianoSection .parameter-tunnel-layout {
+    grid-template-columns: minmax(190px, 0.65fr) minmax(0, 2.4fr) minmax(260px, 1fr);
+    height: auto;
+    min-height: 0;
+  }
+
+  #pianoSection .tunnel-stock-panel,
+  #pianoSection .tunnel-canvas-panel {
+    height: auto;
+    min-height: 0;
+  }
+
+  #pianoSection .tunnel-inspector {
+    grid-column: auto;
+    min-height: 0;
+    max-height: none;
+    overflow-y: auto;
+    border-top: 0;
+    border-left: 1px solid #1b3934;
+  }
+
+  #pianoSection .parameter-tunnel-viewport {
+    min-height: 0;
+  }
+
+  #pianoSection .parameter-tunnel-svg {
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  #pianoSection .tunnel-stock-row > span:nth-child(2),
+  #pianoSection .tunnel-stock-row strong {
+    min-width: 0;
+  }
+
+  #pianoSection .tunnel-stock-row strong {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #pianoSection .tunnel-stock-score {
+    flex: 0 0 48px;
+    min-width: 48px;
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1399px) {
+  #pianoSection .parameter-tunnel-head {
+    min-height: 56px;
+  }
+
+  #pianoSection .tunnel-toolbar {
+    grid-template-columns: 220px minmax(0, 1fr);
+    min-height: 76px;
+  }
+
+  #pianoSection .tunnel-segments {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 4px;
+    overflow: visible;
+  }
+
+  #pianoSection .tunnel-segments button {
+    min-width: 0;
+    height: 31px;
+    padding: 0 5px;
+    justify-content: center;
+    font-size: 9px;
+  }
+
+  #pianoSection .parameter-tunnel-layout {
+    grid-template-columns: 190px minmax(0, 1fr) 250px;
+  }
+
+  #pianoSection .parameter-tunnel-svg text {
+    font-size: 15px;
+  }
+
+  #pianoSection .parameter-tunnel-svg .tunnel-stage-count {
+    font-size: 12px;
+  }
+}
+
+.cockpit-market.has-error {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.cockpit-market.has-error .market-error-card {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  grid-template-areas:
+    "label title"
+    "label reason"
+    "label action";
+  column-gap: 16px;
+  align-content: center;
+}
+
+.market-error-card .mini-label {
+  grid-area: label;
+  align-self: center;
+}
+
+.market-error-card strong {
+  grid-area: title;
+}
+
+.market-error-card p {
+  grid-area: reason;
+  min-width: 0;
+  margin: 2px 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.market-error-card small {
+  grid-area: action;
+  color: var(--muted);
+}
+
+.engine-order-readiness {
+  min-height: 0;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.engine-order-state {
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 9px 10px;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--muted);
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.engine-order-state.good {
+  border-left-color: var(--green);
+}
+
+.engine-order-state.watch {
+  border-left-color: var(--amber);
+}
+
+.engine-order-state span {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.engine-order-state strong {
+  flex: 0 0 auto;
+  color: var(--green);
+  font-size: 12px;
+}
+
+.engine-order-grid {
+  min-height: 0;
+  display: grid;
+  flex: 1;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+  overflow: auto;
+}
+
+.engine-order-grid article {
+  min-width: 0;
+  min-height: 62px;
+  display: grid;
+  align-content: center;
+  gap: 3px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.engine-order-grid span,
+.engine-order-grid small {
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 9px;
+  line-height: 1.15;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.engine-order-grid strong {
+  overflow: hidden;
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.15;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.signal-piano-screen {
+  min-height: 0;
+}
+
+.signal-piano-full {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 1200px) {
+  #dashboardSection.broker-cockpit.section.active {
+    grid-template-rows: 64px minmax(0, 1fr);
+  }
+
+  .cockpit-top {
+    grid-template-columns: minmax(0, 1fr) 260px;
+  }
+
+  .cockpit-market {
+    gap: 6px;
+  }
+
+  .cockpit-market .market-card {
+    padding: 7px 8px;
+  }
+
+  .cockpit-market .market-card .mini-label {
+    font-size: 8px;
+  }
+
+  .cockpit-market .market-card strong {
+    margin: 3px 0 2px;
+    font-size: 16px;
+  }
+
+  .cockpit-market .market-card p {
+    overflow: hidden;
+    font-size: 9px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .cockpit-market .market-card::after {
+    right: 6px;
+    bottom: 4px;
+    width: 46px;
+    height: 10px;
+  }
+
+  .cockpit-score {
+    padding: 7px 10px;
+  }
+
+  .cockpit-score::before {
+    top: -5px;
+    right: 8px;
+    width: 72px;
+    height: 72px;
+    border-width: 7px;
+  }
+
+  .cockpit-score .score-dial {
+    width: 52px;
+    height: 52px;
+    flex-basis: 52px;
+  }
+
+  .cockpit-score .score-dial strong {
+    width: 40px;
+    height: 40px;
+    font-size: 10px;
+  }
+
+  .cockpit-main {
+    grid-template-columns: 300px minmax(0, 1fr) 360px;
+  }
+
+  .cockpit-side {
+    grid-template-rows: minmax(150px, 0.72fr) minmax(286px, 1.28fr);
+  }
+
+  .cockpit-watch {
+    height: 100%;
+  }
+
+  .cockpit-watch .watch-list {
+    max-height: none;
+  }
+
+  .cockpit-ticket {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .signal-piano-screen.section.active {
+    display: block;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .signal-piano-full {
+    height: 100%;
+    padding: 12px;
+  }
+
+  .signal-piano-full .piano-stage {
+    min-height: 0;
+    display: grid;
+    flex: 1;
+    grid-template-columns: minmax(0, 1.45fr) minmax(300px, 0.55fr);
+    gap: 10px;
+    overflow: hidden;
+  }
+
+  .signal-piano-full .piano-strings {
+    height: auto;
+    min-height: 0;
+    grid-template-columns: repeat(12, minmax(58px, 1fr));
+  }
+
+  .signal-piano-full .piano-stock {
+    min-width: 58px;
+    min-height: 0;
+  }
+
+  .signal-piano-full .piano-keys {
+    max-height: none;
+    overflow: auto;
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1399px) {
+  .cockpit-main {
+    grid-template-columns: 250px minmax(0, 1fr) 320px;
+  }
+
+  .cockpit-side {
+    grid-template-rows: minmax(135px, 0.65fr) minmax(270px, 1.35fr);
+  }
+
+  .engine-order-grid {
+    gap: 5px;
+  }
+
+  .engine-order-grid article {
+    min-height: 56px;
+    padding: 6px;
+  }
+
+  .signal-piano-full .piano-stage {
+    grid-template-columns: minmax(0, 1fr) 270px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .cockpit-score .panel-head {
+    min-height: 0;
+    height: 100%;
+    margin: 0;
+  }
+
+  .cockpit-score .panel-head h3 {
+    margin: 1px 0 0;
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  .cockpit-score .mini-label {
+    font-size: 8px;
+    line-height: 1;
+  }
+
+  .cockpit-score .score-dial {
+    width: 46px;
+    height: 46px;
+    flex-basis: 46px;
+  }
+
+  .cockpit-score .score-dial strong {
+    width: 36px;
+    height: 36px;
+    font-size: 9px;
+  }
+
+  .cockpit-score::before {
+    box-sizing: border-box;
+    top: 3px;
+    right: 4px;
+    width: 56px;
+    height: 56px;
+    border-width: 5px;
+  }
+}
