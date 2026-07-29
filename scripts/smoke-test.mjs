@@ -195,8 +195,10 @@ try {
   const ledger = await response.json();
   const order = result.auto_buy?.orders?.[0];
   const position = ledger.positions?.[0];
-  if (order?.price !== 352 || order?.quote_timestamp !== "2026-07-27T04:30:00.000Z") throw new Error("paper fill must use the real Upstox quote");
-  if (position?.entry_price !== 352 || position?.instrument_key !== "NSE_EQ|INETEST00001") throw new Error("real-quote position must persist in the paper ledger");
+  if (result.auto_buy?.selection_contract !== "SELECT_FINAL") throw new Error("SELECT must be the final paper-buy authorization");
+  if (result.auto_buy?.fill_method !== "UPSTOX_WEIGHTED_ASK_OR_LTP") throw new Error("paper engine must declare its real-price fill method");
+  if (order?.price !== 352.05 || order?.quote_timestamp !== "2026-07-27T04:30:00.000Z") throw new Error("paper market fill must use the real Upstox ask");
+  if (position?.entry_price !== 352.05 || position?.instrument_key !== "NSE_EQ|INETEST00001") throw new Error("real-quote position must persist in the paper ledger");
   if (position?.parameter_evidence?.evaluated < 80) throw new Error("paper position must retain parameter evidence");
   console.log(JSON.stringify({ ok: true, price: order.price, symbol: position.symbol, evaluated: position.parameter_evidence.evaluated }));
 } finally {
