@@ -16,7 +16,8 @@ function replaceNamedFunction(source, signature, replacement, label) {
 }
 
 const PAPER_ENGINE_AUTOBUY_FUNCTIONS = String.raw`
-const PAPER_ENGINE_AUTOBUY_VERSION = "ashstocks-paper-engine-autobuy-v0.4-select-market";
+const PAPER_ENGINE_AUTOBUY_VERSION = "ashstocks-paper-engine-autobuy-v0.5-continuous-market";
+const PAPER_ENGINE_AUTO_INTERVAL_MINUTES = Math.min(15, Math.max(1, Math.floor(finiteOr(ENV.PAPER_ENGINE_AUTO_INTERVAL_MINUTES, 2))));
 
 function paperEngineAutoBuySettings(input = {}) {
   return {
@@ -180,6 +181,52 @@ function paperEngineQuoteEvidence(quote = {}, ticket = {}, settings = paperEngin
   };
 }
 `;
+
+const PAPER_ENGINE_STATUS_REPLACEMENT = String.raw`function paperEngineStatus() {
+  const market = paperEngineMarketState();
+  return {
+    enabled: paperEngineSchedulerEnabled(),
+    running: paperEngineState.running,
+    startedAt: paperEngineState.startedAt,
+    lastCheckAt: paperEngineState.lastCheckAt,
+    lastRunAt: paperEngineState.lastRunAt,
+    lastSlotKey: paperEngineState.lastSlotKey,
+    schedule_mode: "continuous_market_hours",
+    auto_interval_minutes: PAPER_ENGINE_AUTO_INTERVAL_MINUTES,
+    market_hours_ist: { open: "09:15", close: "15:30" },
+    market,
+    poll_ms: PAPER_ENGINE_POLL_MS,
+    safety: {
+      paper_only: true,
+      live_orders: false,
+      broker_write_enabled: false,
+      historical_candles_for_selection: true,
+      upstox_market_quotes_for_fills: true
+    },
+    lastResult: paperEngineState.lastResult
+  };
+}`;
+
+const PAPER_ENGINE_DUE_REPLACEMENT = String.raw`function duePaperEngineSlot(date = new Date()) {
+  const market = paperEngineMarketState(date);
+  if (!market.open) return null;
+  const ist = istClockParts(date);
+  const [hour, minute] = ist.time.split(":").map(Number);
+  const minuteOfDay = hour * 60 + minute;
+  const bucketStart = Math.floor(minuteOfDay / PAPER_ENGINE_AUTO_INTERVAL_MINUTES) * PAPER_ENGINE_AUTO_INTERVAL_MINUTES;
+  const bucketHour = Math.floor(bucketStart / 60);
+  const bucketMinute = bucketStart % 60;
+  const time = String(bucketHour).padStart(2, "0") + ":" + String(bucketMinute).padStart(2, "0");
+  const key = ist.date + "T" + time + "+05:30-auto";
+  if (paperEngineState.runKeys[key]) return null;
+  return {
+    key,
+    date: ist.date,
+    time,
+    mode: "continuous_market_hours",
+    interval_minutes: PAPER_ENGINE_AUTO_INTERVAL_MINUTES
+  };
+}`;
 
 const PAPER_ENGINE_RUN_REPLACEMENT = String.raw`async function runPaperEngineOnce(trigger = "manual", slot = null) {
   const store = await getStore();
@@ -351,6 +398,18 @@ export function applyPaperEngineAutoBuyPatches(source) {
   output = output.replace(
     "\nasync function runPaperEngineOnce(trigger = \"manual\", slot = null) {",
     `\n${PAPER_ENGINE_AUTOBUY_FUNCTIONS}\nasync function runPaperEngineOnce(trigger = "manual", slot = null) {`
+  );
+  output = replaceNamedFunction(
+    output,
+    "function paperEngineStatus()",
+    PAPER_ENGINE_STATUS_REPLACEMENT,
+    "paper engine continuous status"
+  );
+  output = replaceNamedFunction(
+    output,
+    "function duePaperEngineSlot(date = new Date())",
+    PAPER_ENGINE_DUE_REPLACEMENT,
+    "paper engine continuous schedule"
   );
   return replaceNamedFunction(
     output,
