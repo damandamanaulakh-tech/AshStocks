@@ -383,7 +383,9 @@ async function main() {
     assert(paperStatus.response.status === 200, "paper-engine status should be readable");
     assert(paperStatus.body.status.safety.live_orders === false, "paper-engine must not expose live orders");
     assert(paperStatus.body.status.safety.paper_only === true, "paper-engine should be paper-only");
-    assert(paperStatus.body.status.slots_ist.includes("09:20"), "paper-engine should expose IST schedule");
+    assert(paperStatus.body.status.schedule_mode === "continuous_market_hours", "paper-engine should run continuously during NSE hours");
+    assert(paperStatus.body.status.auto_interval_minutes === 2, "paper-engine should expose the two-minute server cycle");
+    assert(paperStatus.body.status.market_hours_ist.open === "09:15" && paperStatus.body.status.market_hours_ist.close === "15:30", "paper-engine should expose NSE market hours");
 
     const paperRunGuard = await request("/api/paper-engine/run", { method: "POST" });
     assert(paperRunGuard.response.status === 409, "paper-engine manual run should be guarded without token");
