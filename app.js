@@ -176,10 +176,11 @@ async function runPaperEngineNow() {
     const ready = Number(autoBuy.candidates_ready || 0);
     const rejected = Number(autoBuy.rejected || 0);
     const positions = Array.isArray(result.positions) ? result.positions.length : 0;
+    const pending = Number(autoBuy.pending_after_run || 0);
     const rejectionReason = autoBuy.rejections?.[0]?.rejection_reason || "";
     const message = filled
-      ? `Paper engine filled ${filled} BUY order(s); open positions ${positions}`
-      : `Paper engine ran: ${ready} SELECT candidate(s), ${filled} fills, ${rejected} rejected${rejectionReason ? ` | ${rejectionReason}` : ""}`;
+      ? `Paper engine filled ${filled} BUY order(s); open positions ${positions}; pending SELECT ${pending}`
+      : `Paper engine ran: ${ready} SELECT candidate(s), ${filled} fills, ${rejected} rejected, pending SELECT ${pending}${rejectionReason ? ` | ${rejectionReason}` : ""}`;
     setNotice(message, filled ? "ok" : "warn");
     await loadOrders();
     return result;
@@ -208,8 +209,14 @@ function nseMarketOpenNow() {
 async function maybeAutoStartPaperPortfolio() {
   if (!nseMarketOpenNow()) return;
   if (!state.upstoxStatus?.token_visible) return;
-  if ((state.orders?.positions || []).length) return;
-  if (!state.rows.some((row) => row.decision === "SELECT")) return;
+  const openSymbols = new Set(
+    (state.orders?.positions || [])
+      .filter((position) => position.status !== "CLOSED" && numberValue(position.qty) > 0)
+      .map((position) => nseSymbol(position))
+      .filter(Boolean)
+  );
+  const pendingSelects = state.rows.filter((row) => row.decision === "SELECT" && !openSymbols.has(nseSymbol(row)));
+  if (!pendingSelects.length) return;
   if (Date.now() - state.lastAutoPortfolioAttemptAt < 2 * 60 * 1000) return;
   state.lastAutoPortfolioAttemptAt = Date.now();
   await runPaperEngineNow();
@@ -1264,7 +1271,7 @@ function renderOrders() {
       <thead><tr><th>Type</th><th>Symbol</th><th>Side</th><th>Qty</th><th>Price</th><th>Parameter proof</th><th>Status</th><th>Real quote time</th></tr></thead>
       <tbody>
         ${positions.map((position) => `<tr><td>Position</td><td>${escapeHtml(position.symbol)}</td><td>LONG</td><td>${fmtInt(position.qty)}</td><td>${fmtPrice(position.current_price || position.entry_price)}</td><td>${position.parameter_evidence?.evaluated ? `${fmtNumber(position.parameter_evidence.evidence_score)} | ${position.parameter_evidence.positive_hits}/${position.parameter_evidence.evaluated}` : "Manual order"}</td><td>${escapeHtml(position.status || "OPEN")}</td><td>${escapeHtml(isoDate(position.quote_timestamp || position.checked_at || position.entry_date))}</td></tr>`).join("")}
-        ${orders.slice(0, 20).map((order) => `<tr><td>Order</td><td>${escapeHtml(order.symbol)}</td><td>${escapeHtml(order.side)}</td><td>${fmtInt(order.qty)}</td><td>${fmtPrice(order.price)}</td><td>${order.parameter_evidence?.evaluated ? `${fmtNumber(order.parameter_evidence.evidence_score)} | ${order.parameter_evidence.positive_hits}/${order.parameter_evidence.evaluated}` : "Manual order"}</td><td>${escapeHtml(order.status)}</td><td>${escapeHtml(isoDate(order.quote_timestamp || order.updated_at || order.created_at))}</td></tr>`).join("")}
+        ${orders.slice(0, 20).map((order) => `<tr><td>Order</td><td>${escapeHtml(order.symbol)}</td><td>${escapeHtml(order.side)}</td><td>${fmtInt(order.qty)}</td><td>${fmtPrice(order.price)}</td><td>${order.parameter_evidence?.evaluated ? `${fmtNumber(order.parameter_evidence.evidence_score)} | ${order.parameter_evidence.positive_hits}/${order.parameter_evidence.evaluated}` : "Manual order"}</td><td><strong>${escapeHtml(order.status)}</strong>${order.rejection_reason ? `<small>${escapeHtml(order.rejection_reason)}</small>` : ""}</td><td>${escapeHtml(isoDate(order.quote_timestamp || order.updated_at || order.created_at))}</td></tr>`).join("")}
         ${!positions.length && !orders.length ? `<tr><td colspan="8">No real-quote paper fill has been written to Mongo yet.</td></tr>` : ""}
       </tbody>
     </table>
