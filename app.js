@@ -176,9 +176,10 @@ async function runPaperEngineNow() {
     const ready = Number(autoBuy.candidates_ready || 0);
     const rejected = Number(autoBuy.rejected || 0);
     const positions = Array.isArray(result.positions) ? result.positions.length : 0;
+    const rejectionReason = autoBuy.rejections?.[0]?.rejection_reason || "";
     const message = filled
       ? `Paper engine filled ${filled} BUY order(s); open positions ${positions}`
-      : `Paper engine ran: ${ready} SELECT candidate(s), ${filled} fills, ${rejected} rejected`;
+      : `Paper engine ran: ${ready} SELECT candidate(s), ${filled} fills, ${rejected} rejected${rejectionReason ? ` | ${rejectionReason}` : ""}`;
     setNotice(message, filled ? "ok" : "warn");
     await loadOrders();
     return result;
@@ -208,8 +209,8 @@ async function maybeAutoStartPaperPortfolio() {
   if (!nseMarketOpenNow()) return;
   if (!state.upstoxStatus?.token_visible) return;
   if ((state.orders?.positions || []).length) return;
-  if (!state.rows.some((row) => row.decision === "SELECT" && row.parameter_tunnel?.summary?.evaluated >= 35)) return;
-  if (Date.now() - state.lastAutoPortfolioAttemptAt < 15 * 60 * 1000) return;
+  if (!state.rows.some((row) => row.decision === "SELECT")) return;
+  if (Date.now() - state.lastAutoPortfolioAttemptAt < 2 * 60 * 1000) return;
   state.lastAutoPortfolioAttemptAt = Date.now();
   await runPaperEngineNow();
 }
