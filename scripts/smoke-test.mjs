@@ -157,50 +157,63 @@ for (let index = 0; index < 253; index += 1) {
   candles.push({ date: date.toISOString().slice(0, 10), open: close * 0.99, high: close * 1.01, low: close * 0.98, close, volume: 800000 });
 }
 try {
+  const symbols = ["REALQUOTE", "SELECTTWO", "SELECTTHREE", "SELECTFOUR"];
   let response = await nativeFetch(base + "/api/scanner/run", {
     method: "POST",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify({ universe: [{ symbol: "REALQUOTE", name: "Real Quote Test", sector: "Test", exchange: "NSE", instrument_key: "NSE_EQ|INETEST00001", candles }] })
+    body: JSON.stringify({ universe: symbols.map((symbol, index) => ({
+      symbol,
+      name: "Real Quote Test " + (index + 1),
+      sector: "Test",
+      exchange: "NSE",
+      instrument_key: "NSE_EQ|INETEST0000" + (index + 1),
+      candles
+    })) })
   });
   const scan = await response.json();
-  const scanRow = scan.rows?.[0];
-  if (scanRow?.decision !== "SELECT") throw new Error("real-quote candidate should be SELECT");
-  if (scanRow?.parameter_tunnel?.summary?.evaluated < 80) throw new Error("real-quote candidate should execute the wired tunnel");
+  if (scan.rows?.length !== symbols.length || !scan.rows.every((row) => row.decision === "SELECT")) throw new Error("all real-quote candidates should be SELECT");
+  if (!scan.rows.every((row) => row.parameter_tunnel?.summary?.evaluated >= 80)) throw new Error("every real-quote candidate should execute the wired tunnel");
 
+  const quoteData = Object.fromEntries(symbols.map((symbol, index) => [
+    "NSE_EQ:INETEST0000" + (index + 1),
+    {
+      instrument_key: "NSE_EQ|INETEST0000" + (index + 1),
+      trading_symbol: symbol,
+      last_price: 352 + index,
+      timestamp: new NativeDate(fixedNow).toISOString(),
+      lower_circuit_limit: 250,
+      upper_circuit_limit: 450,
+      depth: {
+        buy: [{ price: 351.95 + index, quantity: 50000, orders: 20 }],
+        sell: [{ price: 352.05 + index, quantity: 50000, orders: 20 }]
+      }
+    }
+  ]));
   globalThis.fetch = async (url) => {
     const target = String(url);
     if (!target.startsWith("https://api.upstox.com/v2/market-quote/quotes")) throw new Error("unexpected network request " + target);
-    return new Response(JSON.stringify({
-      status: "success",
-      data: {
-        "NSE_EQ:INETEST00001": {
-          instrument_key: "NSE_EQ|INETEST00001",
-          trading_symbol: "REALQUOTE",
-          last_price: 352,
-          timestamp: new NativeDate(fixedNow).toISOString(),
-          lower_circuit_limit: 250,
-          upper_circuit_limit: 450,
-          depth: {
-            buy: [{ price: 351.95, quantity: 50000, orders: 20 }],
-            sell: [{ price: 352.05, quantity: 50000, orders: 20 }]
-          }
-        }
-      }
-    }), { status: 200, headers: { "content-type": "application/json" } });
+    return new Response(JSON.stringify({ status: "success", data: quoteData }), { status: 200, headers: { "content-type": "application/json" } });
   };
 
+  response = await nativeFetch(base + "/api/paper-engine/run", { method: "POST" });
+  const firstResult = await response.json();
+  if (firstResult.auto_buy?.orders_filled !== 1 || firstResult.auto_buy?.pending_after_run !== 3) throw new Error("first capped cycle should leave three SELECT rows pending");
+  globalThis.__ASH_STOCK_ENV.PAPER_ENGINE_MAX_BUYS_PER_RUN = "25";
   response = await nativeFetch(base + "/api/paper-engine/run", { method: "POST" });
   const result = await response.json();
   response = await nativeFetch(base + "/api/paper-trader/orders");
   const ledger = await response.json();
-  const order = result.auto_buy?.orders?.[0];
-  const position = ledger.positions?.[0];
+  const firstOrder = firstResult.auto_buy?.orders?.[0];
+  const firstPosition = ledger.positions?.find((position) => position.symbol === "REALQUOTE");
   if (result.auto_buy?.selection_contract !== "SELECT_FINAL") throw new Error("SELECT must be the final paper-buy authorization");
   if (result.auto_buy?.fill_method !== "UPSTOX_WEIGHTED_ASK_OR_LTP") throw new Error("paper engine must declare its real-price fill method");
-  if (order?.price !== 352.05 || order?.quote_timestamp !== "2026-07-27T04:30:00.000Z") throw new Error("paper market fill must use the real Upstox ask");
-  if (position?.entry_price !== 352.05 || position?.instrument_key !== "NSE_EQ|INETEST00001") throw new Error("real-quote position must persist in the paper ledger");
-  if (position?.parameter_evidence?.evaluated < 80) throw new Error("paper position must retain parameter evidence");
-  console.log(JSON.stringify({ ok: true, price: order.price, symbol: position.symbol, evaluated: position.parameter_evidence.evaluated }));
+  if (result.auto_buy?.selected_in_scan !== 4 || result.auto_buy?.already_open_before !== 1) throw new Error("paper engine must reconcile existing positions against every SELECT");
+  if (result.auto_buy?.orders_filled !== 3 || result.auto_buy?.pending_after_run !== 0) throw new Error("second cycle must drain every remaining SELECT");
+  if (ledger.positions?.length !== 4) throw new Error("every SELECT must appear as an open paper position");
+  if (firstOrder?.price !== 352.05 || firstOrder?.quote_timestamp !== "2026-07-27T04:30:00.000Z") throw new Error("paper market fill must use the real Upstox ask");
+  if (firstPosition?.entry_price !== 352.05 || firstPosition?.instrument_key !== "NSE_EQ|INETEST00001") throw new Error("real-quote position must persist in the paper ledger");
+  if (!ledger.positions.every((position) => position.parameter_evidence?.evaluated >= 80)) throw new Error("every paper position must retain parameter evidence");
+  console.log(JSON.stringify({ ok: true, positions: ledger.positions.map((position) => position.symbol), pending: result.auto_buy.pending_after_run }));
 } finally {
   globalThis.fetch = nativeFetch;
   await new Promise((resolve) => server.close(resolve));
@@ -385,6 +398,7 @@ async function main() {
     assert(paperStatus.body.status.safety.paper_only === true, "paper-engine should be paper-only");
     assert(paperStatus.body.status.schedule_mode === "continuous_market_hours", "paper-engine should run continuously during NSE hours");
     assert(paperStatus.body.status.auto_interval_minutes === 2, "paper-engine should expose the two-minute server cycle");
+    assert(paperStatus.body.status.auto_buy.maxBuysPerRun === 25, "paper-engine should process the full SELECT batch in one cycle");
     assert(paperStatus.body.status.market_hours_ist.open === "09:15" && paperStatus.body.status.market_hours_ist.close === "15:30", "paper-engine should expose NSE market hours");
 
     const paperRunGuard = await request("/api/paper-engine/run", { method: "POST" });
