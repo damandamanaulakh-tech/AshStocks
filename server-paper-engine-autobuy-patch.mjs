@@ -16,13 +16,13 @@ function replaceNamedFunction(source, signature, replacement, label) {
 }
 
 const PAPER_ENGINE_AUTOBUY_FUNCTIONS = String.raw`
-const PAPER_ENGINE_AUTOBUY_VERSION = "ashstocks-paper-engine-autobuy-v0.5-continuous-market";
+const PAPER_ENGINE_AUTOBUY_VERSION = "ashstocks-paper-engine-autobuy-v0.6-select-drain";
 const PAPER_ENGINE_AUTO_INTERVAL_MINUTES = Math.min(15, Math.max(1, Math.floor(finiteOr(ENV.PAPER_ENGINE_AUTO_INTERVAL_MINUTES, 2))));
 
 function paperEngineAutoBuySettings(input = {}) {
   return {
     enabled: ENV.DISABLE_PAPER_ENGINE_AUTOBUY === "true" ? false : true,
-    maxBuysPerRun: Math.min(10, Math.max(1, Math.floor(finiteOr(input.maxBuysPerRun ?? input.max_buys_per_run ?? ENV.PAPER_ENGINE_MAX_BUYS_PER_RUN, 3)))),
+    maxBuysPerRun: Math.min(25, Math.max(1, Math.floor(finiteOr(input.maxBuysPerRun ?? input.max_buys_per_run ?? ENV.PAPER_ENGINE_MAX_BUYS_PER_RUN, 25)))),
     requireScannerDecision: String(input.requireScannerDecision || ENV.PAPER_ENGINE_REQUIRED_DECISION || "SELECT").toUpperCase(),
     product: String(input.product || ENV.PAPER_ENGINE_PRODUCT || "Paper Swing").slice(0, 40),
     maxQuoteAgeSeconds: Math.min(120, Math.max(10, finiteOr(input.maxQuoteAgeSeconds ?? ENV.PAPER_ENGINE_MAX_QUOTE_AGE_SECONDS, 60))),
@@ -64,8 +64,44 @@ function paperEngineCandidateTickets(plan = {}, state = defaultState(), settings
     })
     .filter((ticket) => ticket.symbol)
     .filter((ticket) => !openSymbols.has(ticket.symbol))
-    .filter((ticket) => finiteOr(ticket.close, null) && finiteOr(ticket.qty, 0) > 0)
     .slice(0, settings.maxBuysPerRun);
+}
+
+function paperEngineRecordRejection(state, ticket, scanRow, reason, executionEvidence = {}) {
+  const trader = sanitizePaperTraderState(state.paperTrader || {});
+  const parameterEvidence = {
+    ...(ticket.parameter_tunnel?.summary || {}),
+    top_hits: (ticket.parameter_tunnel?.results || []).filter((item) => item.state === "HIT").slice(0, 12).map((item) => item.id),
+    risk_hits: (ticket.parameter_tunnel?.results || []).filter((item) => item.state === "RISK").slice(0, 12).map((item) => item.id),
+    version: ticket.parameter_tunnel?.version || PARAMETER_TUNNEL_VERSION
+  };
+  const request = paperOrderRequest({
+    symbol: ticket.symbol,
+    name: ticket.name,
+    sector: ticket.sector,
+    instrument_key: scanRow.instrument_key || ticket.instrument_key,
+    side: "BUY",
+    order_type: "MARKET",
+    qty: Math.max(0, Math.floor(finiteOr(ticket.qty, 0))),
+    price: finiteOr(executionEvidence.fill_price, finiteOr(ticket.close, null)),
+    decision_price: finiteOr(ticket.close, null),
+    quote_timestamp: executionEvidence.quote_timestamp || "",
+    target_price: ticket.target_price,
+    stop_price: ticket.stop_price,
+    product: "Paper Swing",
+    source: "paper-engine-autobuy",
+    thesis: "SELECT not filled: " + reason,
+    parameter_evidence: parameterEvidence,
+    execution_evidence: executionEvidence
+  });
+  const order = rejectedPaperOrder(request, reason, new Date().toISOString());
+  const previous = trader.orders.filter((item) => !(
+    item.status === "REJECTED" &&
+    item.source === "paper-engine-autobuy" &&
+    normalizeSymbol(item.symbol) === normalizeSymbol(ticket.symbol)
+  ));
+  const saved = sanitizePaperTraderState({ ...trader, orders: [order, ...previous].slice(0, 200) });
+  return { order, nextState: { ...state, paperTrader: saved } };
 }
 
 function paperEngineIstParts(date = new Date()) {
@@ -111,7 +147,8 @@ function paperEngineQuoteKey(value) {
 
 function paperEngineQuoteMap(payload = {}) {
   const map = new Map();
-  for (const quote of Array.isArray(payload.quotes) ? payload.quotes : []) {
+  for (const sourceQuote of Array.isArray(payload.quotes) ? payload.quotes : []) {
+    const quote = { ...sourceQuote, snapshot_timestamp: payload.asOf || sourceQuote.snapshot_timestamp || null };
     const key = paperEngineQuoteKey(quote.instrument_key);
     if (key) map.set(key, quote);
     const symbol = normalizeSymbol(quote.trading_symbol);
@@ -122,7 +159,9 @@ function paperEngineQuoteMap(payload = {}) {
 
 function paperEngineQuoteEvidence(quote = {}, ticket = {}, settings = paperEngineAutoBuySettings()) {
   const timestampMs = paperEngineTimestampMs(quote.timestamp);
+  const snapshotMs = paperEngineTimestampMs(quote.snapshot_timestamp);
   const ageSeconds = timestampMs === null ? null : Math.max(0, (Date.now() - timestampMs) / 1000);
+  const snapshotAgeSeconds = snapshotMs === null ? null : Math.max(0, (Date.now() - snapshotMs) / 1000);
   const bids = Array.isArray(quote.depth?.bids) ? quote.depth.bids : [];
   const asks = Array.isArray(quote.depth?.asks) ? quote.depth.asks : [];
   const bestBid = finiteOr(bids[0]?.price, null);
@@ -150,14 +189,17 @@ function paperEngineQuoteEvidence(quote = {}, ticket = {}, settings = paperEngin
   const upper = finiteOr(quote.upper_circuit_limit, null);
   const last = finiteOr(quote.last_price, null);
   const circuitClear = last !== null && (lower === null || last > lower) && (upper === null || last < upper);
-  const quoteFresh = ageSeconds !== null && ageSeconds <= settings.maxQuoteAgeSeconds;
+  const liveAskAvailable = bestAsk !== null && finiteOr(asks[0]?.quantity, 0) > 0;
+  const tradeFresh = ageSeconds !== null && ageSeconds <= settings.maxQuoteAgeSeconds;
+  const snapshotFresh = snapshotAgeSeconds !== null && snapshotAgeSeconds <= 30;
+  const quoteFresh = tradeFresh || (snapshotFresh && liveAskAvailable);
   const marketPriceAvailable = fillPrice !== null && fillPrice > 0;
   const spreadClear = spreadBps === null ? false : spreadBps <= settings.maxSpreadBps;
   const depthClear = depthImbalance === null ? false : depthImbalance >= -0.20;
   const impactClear = impactBps === null ? false : impactBps <= 20;
   return {
-    quote_timestamp: quote.timestamp || null,
-    quote_age_seconds: ageSeconds === null ? null : round(ageSeconds, 3),
+    quote_timestamp: liveAskAvailable && snapshotFresh ? quote.snapshot_timestamp : (quote.timestamp || quote.snapshot_timestamp || null),
+    quote_age_seconds: quoteFresh && !tradeFresh ? round(snapshotAgeSeconds, 3) : (ageSeconds === null ? null : round(ageSeconds, 3)),
     quote_fresh: quoteFresh,
     fill_price: marketPriceAvailable ? round(fillPrice, 4) : null,
     market_price_available: marketPriceAvailable,
@@ -169,7 +211,7 @@ function paperEngineQuoteEvidence(quote = {}, ticket = {}, settings = paperEngin
     circuit_clear: circuitClear,
     all_clear: quoteFresh && marketPriceAvailable && circuitClear,
     nodes: [
-      { id: "NBX01", state: quoteFresh ? "HIT" : "MISS", value: ageSeconds === null ? null : round(ageSeconds, 3), evidence: quote.timestamp ? "Real Upstox quote timestamp" : "Quote timestamp absent" },
+      { id: "NBX01", state: quoteFresh ? "HIT" : "MISS", value: quoteFresh && !tradeFresh ? round(snapshotAgeSeconds, 3) : (ageSeconds === null ? null : round(ageSeconds, 3)), evidence: tradeFresh ? "Fresh Upstox last trade" : liveAskAvailable && snapshotFresh ? "Fresh executable Upstox ask snapshot" : "No fresh executable Upstox price" },
       { id: "NBX02", state: spreadClear ? "HIT" : "MISS", value: spreadBps === null ? null : round(spreadBps, 3), evidence: "Best Upstox bid and ask; recorded but non-blocking after SELECT" },
       { id: "NBX03", state: depthClear ? "HIT" : "MISS", value: depthImbalance === null ? null : round(depthImbalance, 4), evidence: "Top-five Upstox depth; recorded but non-blocking after SELECT" },
       { id: "NBX04", state: impactClear ? "HIT" : "MISS", value: impactBps === null ? null : round(impactBps, 3), evidence: "Requested paper quantity walked through real ask depth; recorded but non-blocking after SELECT" },
@@ -181,6 +223,12 @@ function paperEngineQuoteEvidence(quote = {}, ticket = {}, settings = paperEngin
   };
 }
 `;
+
+const PAPER_ENGINE_SCHEDULER_ENABLED_REPLACEMENT = String.raw`function paperEngineSchedulerEnabled() {
+  if (ENV.DISABLE_PAPER_ENGINE_SCHEDULER === "true") return false;
+  if (ENV.ENABLE_PAPER_ENGINE_SCHEDULER === "true") return true;
+  return Boolean(ENV.RENDER || ENV.RENDER_SERVICE_ID || ENV.RENDER_EXTERNAL_URL || ENV.RENDER_INSTANCE_ID || ENV.NODE_ENV === "production");
+}`;
 
 const PAPER_ENGINE_STATUS_REPLACEMENT = String.raw`function paperEngineStatus() {
   const market = paperEngineMarketState();
@@ -195,6 +243,7 @@ const PAPER_ENGINE_STATUS_REPLACEMENT = String.raw`function paperEngineStatus() 
     auto_interval_minutes: PAPER_ENGINE_AUTO_INTERVAL_MINUTES,
     market_hours_ist: { open: "09:15", close: "15:30" },
     market,
+    auto_buy: paperEngineAutoBuySettings(),
     poll_ms: PAPER_ENGINE_POLL_MS,
     safety: {
       paper_only: true,
@@ -258,6 +307,11 @@ const PAPER_ENGINE_RUN_REPLACEMENT = String.raw`async function runPaperEngineOnc
   const autoSettings = paperEngineAutoBuySettings();
   const plan = buildPaperTraderPlan(scan, state, { settings: state.scannerSettings || {} });
   let workingState = state;
+  const selectedSymbols = unique((scan.rows || [])
+    .filter((row) => String(row.decision || "").toUpperCase() === autoSettings.requireScannerDecision)
+    .map((row) => normalizeSymbol(row.symbol))
+    .filter(Boolean));
+  const openBefore = paperEngineOpenSymbols(workingState);
   const tickets = autoSettings.enabled ? paperEngineCandidateTickets(plan, workingState, autoSettings, scan) : [];
   const market = paperEngineMarketState();
   const scanBySymbol = new Map((scan.rows || []).map((row) => [normalizeSymbol(row.symbol), row]));
@@ -296,12 +350,29 @@ const PAPER_ENGINE_RUN_REPLACEMENT = String.raw`async function runPaperEngineOnc
   for (const ticket of tickets) {
     const scanRow = scanBySymbol.get(normalizeSymbol(ticket.symbol)) || {};
     const quote = quoteMap.get(paperEngineQuoteKey(scanRow.instrument_key)) || quoteMap.get(normalizeSymbol(ticket.symbol));
+    const rejectTicket = (reason, executionEvidence = {}) => {
+      const recorded = paperEngineRecordRejection(workingState, ticket, scanRow, reason, executionEvidence);
+      workingState = recorded.nextState;
+      rejected.push(recorded.order);
+    };
+    if (!scanRow.instrument_key) {
+      rejectTicket("SELECT blocked from fill: Upstox instrument key missing");
+      continue;
+    }
+    if (!finiteOr(ticket.close, null)) {
+      rejectTicket("SELECT blocked from fill: scanner close price missing");
+      continue;
+    }
+    if (finiteOr(ticket.qty, 0) <= 0) {
+      rejectTicket("SELECT blocked from fill: paper quantity could not be calculated");
+      continue;
+    }
     if (!market.open) {
-      rejected.push({ symbol: ticket.symbol, rejection_reason: "NSE is closed; automatic market fill waits for a real open-session quote", market });
+      rejectTicket("NSE is closed; automatic market fill waits for a real open-session quote");
       continue;
     }
     if (!quote || !finiteOr(quote.last_price, null)) {
-      rejected.push({ symbol: ticket.symbol, rejection_reason: quoteError || "real Upstox quote missing" });
+      rejectTicket(quoteError || "real Upstox quote missing");
       continue;
     }
     const executionEvidence = paperEngineQuoteEvidence(quote, ticket, autoSettings);
@@ -313,7 +384,7 @@ const PAPER_ENGINE_RUN_REPLACEMENT = String.raw`async function runPaperEngineOnc
           : !executionEvidence.circuit_clear
             ? "Stock is at an Upstox circuit limit"
             : "Real Upstox market-price gate failed";
-      rejected.push({ symbol: ticket.symbol, rejection_reason: rejectionReason, execution_evidence: executionEvidence });
+      rejectTicket(rejectionReason, executionEvidence);
       continue;
     }
     const parameterEvidence = {
@@ -332,7 +403,7 @@ const PAPER_ENGINE_RUN_REPLACEMENT = String.raw`async function runPaperEngineOnc
       qty: ticket.qty,
       price: executionEvidence.fill_price,
       decision_price: ticket.close,
-      quote_timestamp: quote.timestamp,
+      quote_timestamp: executionEvidence.quote_timestamp,
       target_price: ticket.target_price,
       stop_price: ticket.stop_price,
       product: autoSettings.product,
@@ -347,6 +418,8 @@ const PAPER_ENGINE_RUN_REPLACEMENT = String.raw`async function runPaperEngineOnc
     else rejected.push(orderResult.order || { symbol: ticket.symbol, rejection_reason: orderResult.error || "paper order rejected" });
   }
 
+  const openAfter = paperEngineOpenSymbols(workingState);
+  const pendingSymbols = selectedSymbols.filter((symbol) => !openAfter.has(symbol));
   const savedPaperTrader = sanitizePaperTraderState({
     ...(workingState.paperTrader || {}),
     last_run: scan.asOf || new Date().toISOString(),
@@ -370,8 +443,12 @@ const PAPER_ENGINE_RUN_REPLACEMENT = String.raw`async function runPaperEngineOnc
       fill_method: "UPSTOX_WEIGHTED_ASK_OR_LTP",
       required_decision: autoSettings.requireScannerDecision,
       max_buys_per_run: autoSettings.maxBuysPerRun,
+      selected_in_scan: selectedSymbols.length,
+      already_open_before: selectedSymbols.filter((symbol) => openBefore.has(symbol)).length,
       candidates_ready: tickets.length,
       orders_filled: orders.length,
+      pending_after_run: pendingSymbols.length,
+      pending_symbols: pendingSymbols.slice(0, 25),
       rejected: rejected.length,
       orders: orders.map((order) => ({ id: order.id, symbol: order.symbol, qty: order.qty, price: order.price, quote_timestamp: order.quote_timestamp, target_price: order.target_price, stop_price: order.stop_price, status: order.status, parameter_evidence: order.parameter_evidence })),
       rejections: rejected.slice(0, 20)
@@ -398,6 +475,12 @@ export function applyPaperEngineAutoBuyPatches(source) {
   output = output.replace(
     "\nasync function runPaperEngineOnce(trigger = \"manual\", slot = null) {",
     `\n${PAPER_ENGINE_AUTOBUY_FUNCTIONS}\nasync function runPaperEngineOnce(trigger = "manual", slot = null) {`
+  );
+  output = replaceNamedFunction(
+    output,
+    "function paperEngineSchedulerEnabled()",
+    PAPER_ENGINE_SCHEDULER_ENABLED_REPLACEMENT,
+    "paper engine Render scheduler activation"
   );
   output = replaceNamedFunction(
     output,
