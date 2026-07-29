@@ -16,7 +16,7 @@ function replaceNamedFunction(source, signature, replacement, label) {
 }
 
 const PAPER_ENGINE_AUTOBUY_FUNCTIONS = String.raw`
-const PAPER_ENGINE_AUTOBUY_VERSION = "ashstocks-paper-engine-autobuy-v0.3-real-quote";
+const PAPER_ENGINE_AUTOBUY_VERSION = "ashstocks-paper-engine-autobuy-v0.4-select-market";
 
 function paperEngineAutoBuySettings(input = {}) {
   return {
@@ -24,9 +24,7 @@ function paperEngineAutoBuySettings(input = {}) {
     maxBuysPerRun: Math.min(10, Math.max(1, Math.floor(finiteOr(input.maxBuysPerRun ?? input.max_buys_per_run ?? ENV.PAPER_ENGINE_MAX_BUYS_PER_RUN, 3)))),
     requireScannerDecision: String(input.requireScannerDecision || ENV.PAPER_ENGINE_REQUIRED_DECISION || "SELECT").toUpperCase(),
     product: String(input.product || ENV.PAPER_ENGINE_PRODUCT || "Paper Swing").slice(0, 40),
-    minTunnelEvaluated: Math.min(120, Math.max(20, Math.floor(finiteOr(input.minTunnelEvaluated ?? ENV.PAPER_ENGINE_MIN_TUNNEL_EVALUATED, 35)))),
-    minTunnelScore: Math.min(90, Math.max(35, finiteOr(input.minTunnelScore ?? ENV.PAPER_ENGINE_MIN_TUNNEL_SCORE, 48))),
-    maxQuoteAgeSeconds: Math.min(30, Math.max(3, finiteOr(input.maxQuoteAgeSeconds ?? ENV.PAPER_ENGINE_MAX_QUOTE_AGE_SECONDS, 5))),
+    maxQuoteAgeSeconds: Math.min(120, Math.max(10, finiteOr(input.maxQuoteAgeSeconds ?? ENV.PAPER_ENGINE_MAX_QUOTE_AGE_SECONDS, 60))),
     maxSpreadBps: Math.min(100, Math.max(5, finiteOr(input.maxSpreadBps ?? ENV.PAPER_ENGINE_MAX_SPREAD_BPS, 25)))
   };
 }
@@ -42,26 +40,30 @@ function paperEngineOpenSymbols(state = defaultState()) {
 
 function paperEngineCandidateTickets(plan = {}, state = defaultState(), settings = paperEngineAutoBuySettings(), scan = {}) {
   const openSymbols = paperEngineOpenSymbols(state);
-  const scanBySymbol = new Map((Array.isArray(scan.rows) ? scan.rows : []).map((row) => [normalizeSymbol(row.symbol), row]));
-  return (Array.isArray(plan.buy_queue) ? plan.buy_queue : [])
-    .map((ticket) => {
-      const scanRow = scanBySymbol.get(normalizeSymbol(ticket.symbol)) || {};
+  const plannedBySymbol = new Map((Array.isArray(plan.buy_queue) ? plan.buy_queue : []).map((ticket) => [normalizeSymbol(ticket.symbol), ticket]));
+  const traderSettings = paperTraderSettings(plan.settings || {});
+  const asOf = scan.asOf || new Date().toISOString();
+  return (Array.isArray(scan.rows) ? scan.rows : [])
+    .filter((scanRow) => String(scanRow.decision || "").toUpperCase() === settings.requireScannerDecision)
+    .map((scanRow, index) => {
+      const symbol = normalizeSymbol(scanRow.symbol);
+      const ticket = plannedBySymbol.get(symbol) || paperBuyTicket(enrichPaperCandidate(scanRow, traderSettings), index, traderSettings, asOf);
       return {
         ...ticket,
+        symbol,
+        name: scanRow.name || ticket.name,
+        sector: scanRow.sector || ticket.sector,
         instrument_key: scanRow.instrument_key || ticket.instrument_key,
-        scanner_decision: scanRow.decision || ticket.scanner_decision,
+        scanner_decision: scanRow.decision,
+        selection_contract: "SELECT_FINAL",
         close: finiteOr(scanRow.close, ticket.close),
         parameter_tunnel: scanRow.parameter_tunnel || ticket.parameter_tunnel,
         parameter_selection_effect: scanRow.parameter_selection_effect || ticket.parameter_selection_effect
       };
     })
-    .filter((ticket) => normalizeSymbol(ticket.symbol))
-    .filter((ticket) => !openSymbols.has(normalizeSymbol(ticket.symbol)))
-    .filter((ticket) => ticket.readiness === "READY")
-    .filter((ticket) => String(ticket.scanner_decision || "").toUpperCase() === settings.requireScannerDecision)
+    .filter((ticket) => ticket.symbol)
+    .filter((ticket) => !openSymbols.has(ticket.symbol))
     .filter((ticket) => finiteOr(ticket.close, null) && finiteOr(ticket.qty, 0) > 0)
-    .filter((ticket) => finiteOr(ticket.parameter_tunnel?.summary?.evaluated, 0) >= settings.minTunnelEvaluated)
-    .filter((ticket) => finiteOr(ticket.parameter_tunnel?.summary?.evidence_score, 0) >= settings.minTunnelScore)
     .slice(0, settings.maxBuysPerRun);
 }
 
@@ -140,34 +142,39 @@ function paperEngineQuoteEvidence(quote = {}, ticket = {}, settings = paperEngin
     filled += take;
     remaining -= take;
   }
-  const weightedFill = filled ? cost / filled : finiteOr(quote.last_price, null);
-  const impactBps = midpoint && weightedFill ? (weightedFill / midpoint - 1) * 10000 : null;
+  const weightedFill = filled ? cost / filled : null;
+  const fillPrice = finiteOr(weightedFill, finiteOr(bestAsk, finiteOr(quote.last_price, null)));
+  const impactBps = midpoint && fillPrice ? (fillPrice / midpoint - 1) * 10000 : null;
   const lower = finiteOr(quote.lower_circuit_limit, null);
   const upper = finiteOr(quote.upper_circuit_limit, null);
   const last = finiteOr(quote.last_price, null);
   const circuitClear = last !== null && (lower === null || last > lower) && (upper === null || last < upper);
   const quoteFresh = ageSeconds !== null && ageSeconds <= settings.maxQuoteAgeSeconds;
+  const marketPriceAvailable = fillPrice !== null && fillPrice > 0;
   const spreadClear = spreadBps === null ? false : spreadBps <= settings.maxSpreadBps;
   const depthClear = depthImbalance === null ? false : depthImbalance >= -0.20;
   const impactClear = impactBps === null ? false : impactBps <= 20;
   return {
     quote_timestamp: quote.timestamp || null,
     quote_age_seconds: ageSeconds === null ? null : round(ageSeconds, 3),
+    quote_fresh: quoteFresh,
+    fill_price: marketPriceAvailable ? round(fillPrice, 4) : null,
+    market_price_available: marketPriceAvailable,
     best_bid: bestBid,
     best_ask: bestAsk,
     spread_bps: spreadBps === null ? null : round(spreadBps, 3),
     depth_imbalance: depthImbalance === null ? null : round(depthImbalance, 4),
     estimated_impact_bps: impactBps === null ? null : round(impactBps, 3),
     circuit_clear: circuitClear,
-    all_clear: quoteFresh && spreadClear && depthClear && impactClear && circuitClear,
+    all_clear: quoteFresh && marketPriceAvailable && circuitClear,
     nodes: [
       { id: "NBX01", state: quoteFresh ? "HIT" : "MISS", value: ageSeconds === null ? null : round(ageSeconds, 3), evidence: quote.timestamp ? "Real Upstox quote timestamp" : "Quote timestamp absent" },
-      { id: "NBX02", state: spreadClear ? "HIT" : "MISS", value: spreadBps === null ? null : round(spreadBps, 3), evidence: "Best Upstox bid and ask" },
-      { id: "NBX03", state: depthClear ? "HIT" : "MISS", value: depthImbalance === null ? null : round(depthImbalance, 4), evidence: "Top-five Upstox depth" },
-      { id: "NBX04", state: impactClear ? "HIT" : "MISS", value: impactBps === null ? null : round(impactBps, 3), evidence: "Requested paper quantity walked through real ask depth" },
+      { id: "NBX02", state: spreadClear ? "HIT" : "MISS", value: spreadBps === null ? null : round(spreadBps, 3), evidence: "Best Upstox bid and ask; recorded but non-blocking after SELECT" },
+      { id: "NBX03", state: depthClear ? "HIT" : "MISS", value: depthImbalance === null ? null : round(depthImbalance, 4), evidence: "Top-five Upstox depth; recorded but non-blocking after SELECT" },
+      { id: "NBX04", state: impactClear ? "HIT" : "MISS", value: impactBps === null ? null : round(impactBps, 3), evidence: "Requested paper quantity walked through real ask depth; recorded but non-blocking after SELECT" },
       { id: "NBX05", state: "HIT", value: round(Math.abs(finiteOr(quote.last_price, 0) - finiteOr(ticket.close, 0)) / Math.max(0.01, finiteOr(ticket.close, 0)) * 10000, 3), evidence: "Real quote versus scanner decision close" },
       { id: "NBX06", state: quoteFresh ? "HIT" : "MISS", value: ageSeconds === null ? null : round(ageSeconds, 3), evidence: "Trigger evaluated against quote timestamp" },
-      { id: "NBX07", state: remaining === 0 ? "HIT" : "MISS", value: remaining === 0 ? 1 : round(filled / Math.max(1, finiteOr(ticket.qty, 1)), 3), evidence: "Paper fill quantity versus requested quantity" },
+      { id: "NBX07", state: remaining === 0 || !asks.length ? "HIT" : "MISS", value: remaining === 0 ? 1 : round(filled / Math.max(1, finiteOr(ticket.qty, 1)), 3), evidence: "Paper market price uses weighted ask depth, then best ask/LTP fallback" },
       { id: "NBX08", state: circuitClear ? "HIT" : "MISS", value: last, evidence: "LTP checked against Upstox circuit limits" }
     ]
   };
@@ -252,7 +259,14 @@ const PAPER_ENGINE_RUN_REPLACEMENT = String.raw`async function runPaperEngineOnc
     }
     const executionEvidence = paperEngineQuoteEvidence(quote, ticket, autoSettings);
     if (!executionEvidence.all_clear) {
-      rejected.push({ symbol: ticket.symbol, rejection_reason: "real quote execution gates failed", execution_evidence: executionEvidence });
+      const rejectionReason = !executionEvidence.quote_fresh
+        ? "Upstox market quote is stale"
+        : !executionEvidence.market_price_available
+          ? "Upstox market price is unavailable"
+          : !executionEvidence.circuit_clear
+            ? "Stock is at an Upstox circuit limit"
+            : "Real Upstox market-price gate failed";
+      rejected.push({ symbol: ticket.symbol, rejection_reason: rejectionReason, execution_evidence: executionEvidence });
       continue;
     }
     const parameterEvidence = {
@@ -269,7 +283,7 @@ const PAPER_ENGINE_RUN_REPLACEMENT = String.raw`async function runPaperEngineOnc
       side: "BUY",
       order_type: "MARKET",
       qty: ticket.qty,
-      price: quote.last_price,
+      price: executionEvidence.fill_price,
       decision_price: ticket.close,
       quote_timestamp: quote.timestamp,
       target_price: ticket.target_price,
@@ -305,10 +319,10 @@ const PAPER_ENGINE_RUN_REPLACEMENT = String.raw`async function runPaperEngineOnc
     plan_summary: plan.summary,
     auto_buy: {
       enabled: autoSettings.enabled,
+      selection_contract: "SELECT_FINAL",
+      fill_method: "UPSTOX_WEIGHTED_ASK_OR_LTP",
       required_decision: autoSettings.requireScannerDecision,
       max_buys_per_run: autoSettings.maxBuysPerRun,
-      min_tunnel_evaluated: autoSettings.minTunnelEvaluated,
-      min_tunnel_score: autoSettings.minTunnelScore,
       candidates_ready: tickets.length,
       orders_filled: orders.length,
       rejected: rejected.length,
