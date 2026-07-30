@@ -1262,19 +1262,56 @@ function renderOrders() {
   const orders = state.orders?.orders || [];
   const positions = state.orders?.positions || [];
   const funds = state.orders?.funds || {};
+  const pnlClass = (value) => numberValue(value) > 0 ? "pnl-positive" : numberValue(value) < 0 ? "pnl-negative" : "pnl-flat";
+  const mark = state.orders?.mark_to_market || {};
+  const quoteNote = mark.quote_error
+    ? `<p class="mark-warning">Upstox mark-to-market error: ${escapeHtml(mark.quote_error)}. Last persisted real quote remains visible.</p>`
+    : mark.as_of
+      ? `<p class="mark-time">Marked from Upstox quotes at ${escapeHtml(isoDate(mark.as_of))}</p>`
+      : "";
+  const positionRows = positions.map((position) => `<tr>
+      <td><strong>${escapeHtml(position.symbol)}</strong><small>${escapeHtml(position.status || "OPEN")}</small></td>
+      <td>${fmtInt(position.qty)}</td>
+      <td>${fmtPrice(position.entry_price)}</td>
+      <td>${fmtPrice(position.current_price)}</td>
+      <td>${fmtPrice(position.market_value)}</td>
+      <td class="${pnlClass(position.unrealized_pnl)}"><strong>${fmtPrice(position.unrealized_pnl)}</strong></td>
+      <td class="${pnlClass(position.unrealized_pnl_pct)}">${fmtNumber(position.unrealized_pnl_pct)}%</td>
+      <td>${position.parameter_evidence?.evaluated ? `${fmtNumber(position.parameter_evidence.evidence_score)} | ${position.parameter_evidence.positive_hits}/${position.parameter_evidence.evaluated}` : "Manual order"}</td>
+      <td>${escapeHtml(isoDate(position.quote_timestamp || position.checked_at || position.entry_date))}</td>
+    </tr>`).join("");
+  const orderRows = orders.slice(0, 50).map((order) => `<tr>
+      <td>${escapeHtml(order.symbol)}</td>
+      <td>${escapeHtml(order.side)}</td>
+      <td>${fmtInt(order.qty)}</td>
+      <td>${fmtPrice(order.price)}</td>
+      <td><strong>${escapeHtml(order.status)}</strong>${order.rejection_reason ? `<small>${escapeHtml(order.rejection_reason)}</small>` : ""}</td>
+      <td>${escapeHtml(isoDate(order.quote_timestamp || order.updated_at || order.created_at))}</td>
+    </tr>`).join("");
   const html = `<div class="book-summary">
       <article><span>Open positions</span><strong>${positions.length}</strong></article>
-      <article><span>Orders</span><strong>${orders.length}</strong></article>
-      <article><span>Realized P&L</span><strong>${fmtPrice(funds.realized_pnl || 0)}</strong></article>
+      <article><span>Unrealized P&L</span><strong class="${pnlClass(funds.unrealized_pnl)}">${fmtPrice(funds.unrealized_pnl || 0)}</strong></article>
+      <article><span>Realized P&L</span><strong class="${pnlClass(funds.realized_pnl)}">${fmtPrice(funds.realized_pnl || 0)}</strong></article>
+      <article><span>Total P&L</span><strong class="${pnlClass(funds.total_pnl)}">${fmtPrice(funds.total_pnl || 0)}</strong></article>
     </div>
-    <table>
-      <thead><tr><th>Type</th><th>Symbol</th><th>Side</th><th>Qty</th><th>Price</th><th>Parameter proof</th><th>Status</th><th>Real quote time</th></tr></thead>
-      <tbody>
-        ${positions.map((position) => `<tr><td>Position</td><td>${escapeHtml(position.symbol)}</td><td>LONG</td><td>${fmtInt(position.qty)}</td><td>${fmtPrice(position.current_price || position.entry_price)}</td><td>${position.parameter_evidence?.evaluated ? `${fmtNumber(position.parameter_evidence.evidence_score)} | ${position.parameter_evidence.positive_hits}/${position.parameter_evidence.evaluated}` : "Manual order"}</td><td>${escapeHtml(position.status || "OPEN")}</td><td>${escapeHtml(isoDate(position.quote_timestamp || position.checked_at || position.entry_date))}</td></tr>`).join("")}
-        ${orders.slice(0, 20).map((order) => `<tr><td>Order</td><td>${escapeHtml(order.symbol)}</td><td>${escapeHtml(order.side)}</td><td>${fmtInt(order.qty)}</td><td>${fmtPrice(order.price)}</td><td>${order.parameter_evidence?.evaluated ? `${fmtNumber(order.parameter_evidence.evidence_score)} | ${order.parameter_evidence.positive_hits}/${order.parameter_evidence.evaluated}` : "Manual order"}</td><td><strong>${escapeHtml(order.status)}</strong>${order.rejection_reason ? `<small>${escapeHtml(order.rejection_reason)}</small>` : ""}</td><td>${escapeHtml(isoDate(order.quote_timestamp || order.updated_at || order.created_at))}</td></tr>`).join("")}
-        ${!positions.length && !orders.length ? `<tr><td colspan="8">No real-quote paper fill has been written to Mongo yet.</td></tr>` : ""}
-      </tbody>
-    </table>
+    ${quoteNote}
+    <div class="position-ledger">
+      <h4>Open Positions</h4>
+      <table>
+        <thead><tr><th>Symbol</th><th>Qty</th><th>Entry</th><th>LTP</th><th>Market value</th><th>Unrealized P&L</th><th>Return</th><th>Parameter proof</th><th>Quote time</th></tr></thead>
+        <tbody>
+          ${positionRows}
+          ${!positions.length ? `<tr><td colspan="9">No open paper position.</td></tr>` : ""}
+        </tbody>
+      </table>
+    </div>
+    <details class="order-history">
+      <summary>Order history (${orders.length})</summary>
+      <table>
+        <thead><tr><th>Symbol</th><th>Side</th><th>Qty</th><th>Fill price</th><th>Status</th><th>Real quote time</th></tr></thead>
+        <tbody>${orderRows || `<tr><td colspan="6">No paper order history.</td></tr>`}</tbody>
+      </table>
+    </details>
     ${state.orders?.error ? `<p class="error-text">${escapeHtml(state.orders.error)}</p>` : ""}`;
   targets.forEach((node) => { node.innerHTML = html; });
 }
