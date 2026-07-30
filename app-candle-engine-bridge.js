@@ -40,7 +40,7 @@
   function renderServerCandle(forceDetail = false, param = "681") {
     const row = selectedRow();
     if (!row?.symbol) return;
-    const hasServerCandle = row.candle_engine || row.candle_status || row.candle_patterns || row.candle_score !== undefined;
+    const hasServerCandle = row.candle_engine || row.candle_status || row.candle_patterns || row.candle_score !== undefined || row.pre_rise_model;
     if (!hasServerCandle) return;
 
     const state = document.querySelector("#uwCandleState");
@@ -48,10 +48,15 @@
     if (state) state.textContent = row.candle_status || "DATA_NEEDED";
     if (box) {
       const patterns = Array.isArray(row.candle_patterns) && row.candle_patterns.length ? row.candle_patterns.join(", ") : row.candle_reason || "No candle pattern hit";
+      const preRise = row.pre_rise_status
+        ? `<p><strong>Pre-rise tracker: ${escapeHtml(row.pre_rise_status)}</strong> — ${escapeHtml(row.pre_rise_pattern_name || row.pre_rise_reason || "No lead pattern hit")}</p>
+           <span>${escapeHtml(row.pre_rise_evidence || "No pre-rise evidence available")} | observational only | edge confirmed: NO</span>`
+        : "";
       box.innerHTML = `
         <strong>${escapeHtml(row.symbol)} | ${escapeHtml(patterns)}</strong>
         <p>${escapeHtml(row.candle_evidence || row.fetch_error || "No server candle evidence available")}</p>
         <span>Server candle engine: ${escapeHtml(row.candle_engine || "not reported")} | score ${number(row.candle_score)} | status ${escapeHtml(row.candle_status || "not reported")}</span>
+        ${preRise}
       `;
     }
 
@@ -62,6 +67,7 @@
         <span>Source: server scanner candle engine, using Upstox/manual OHLC candle bodies when attached.</span>
         <span>Evidence: ${escapeHtml(row.candle_evidence || row.candle_reason || "DATA_NEEDED")}</span>
         <span>Impact: ${escapeHtml(row.candle_status || "DATA_NEEDED")} with score ${number(row.candle_score)}; visible in scanner row, dashboard, and piano.</span>
+        <span>Pre-rise tracker: ${escapeHtml(row.pre_rise_status || "DATA_NEEDED")} | ${escapeHtml(row.pre_rise_evidence || "No lead-pattern evidence")}. It does not change ranking, sizing, or order permission.</span>
       `;
     }
 
@@ -71,6 +77,12 @@
     } else if (facts) {
       const fact = facts.querySelector("[data-candle-engine-fact] strong");
       if (fact) fact.textContent = `${row.candle_status || "DATA_NEEDED"} / ${number(row.candle_score)}`;
+    }
+    if (facts && !facts.querySelector("[data-pre-rise-engine-fact]")) {
+      facts.insertAdjacentHTML("beforeend", `<article data-pre-rise-engine-fact><span>Pre-Rise Pattern</span><strong>${escapeHtml(row.pre_rise_status || "DATA_NEEDED")} / ${number(row.pre_rise_score)}</strong></article>`);
+    } else if (facts) {
+      const preRiseFact = facts.querySelector("[data-pre-rise-engine-fact] strong");
+      if (preRiseFact) preRiseFact.textContent = `${row.pre_rise_status || "DATA_NEEDED"} / ${number(row.pre_rise_score)}`;
     }
   }
 

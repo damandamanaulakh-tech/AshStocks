@@ -6,6 +6,7 @@ import { pathToFileURL } from "node:url";
 import { applyAdvancedScannerPatches } from "./server-quality-patch.mjs";
 import { applySelectionFlowPatches } from "./server-selection-patch.mjs";
 import { applyCandlePatternPatches } from "./server-candle-pattern-patch.mjs";
+import { applyPreRisePatternPatches } from "./server-pre-rise-pattern-patch.mjs";
 import { applyFrameworkPatches } from "./server-framework-patch.mjs";
 import { applyPaperTraderPatches } from "./server-paper-trader-patch.mjs";
 import { applyPaperOrderLifecyclePatches } from "./server-paper-order-lifecycle-patch.mjs";
@@ -190,6 +191,7 @@ function startDataBankBootstrap() {
   output = applyAdvancedScannerPatches(output, mustReplace);
   output = applySelectionFlowPatches(output, mustReplace);
   output = applyCandlePatternPatches(output, mustReplace);
+  output = applyPreRisePatternPatches(output, mustReplace);
   output = applyFrameworkPatches(output, mustReplace);
   output = applyPaperTraderPatches(output, mustReplace);
   output = applyPaperOrderLifecyclePatches(output, mustReplace);

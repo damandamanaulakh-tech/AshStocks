@@ -1,0 +1,122 @@
+{
+  "schemaVersion": "0.1",
+  "modelVersion": "ashstocks-pre-rise-pattern-v0.1",
+  "asOf": "2026-07-31",
+  "mode": "observe_and_paper_only",
+  "edgeConfirmed": false,
+  "liveReady": false,
+  "status": "experimental_evidence_backed",
+  "purpose": "Track repeated structures visible before a future stock rise without changing trade execution.",
+  "riseDefinition": {
+    "thresholdPct": 8,
+    "forwardTradingSessions": 10,
+    "priceField": "close",
+    "labelUse": "historical_validation_only"
+  },
+  "minimumData": {
+    "dailyCandles": 50,
+    "volumeLookbackSessions": 20,
+    "compressionLookbackSessions": 10
+  },
+  "patterns": {
+    "watch": {
+      "id": "PRE_RISE_COMPRESSION_VOLUME_WATCH",
+      "name": "Compression to positive-volume ignition watch",
+      "minimumInsideBarsIn10": 2,
+      "minimumPositiveVolumeMultipleVs20d": 1.5,
+      "requiresPositiveClose": true,
+      "status": "active_observation"
+    },
+    "strong": {
+      "id": "PRE_RISE_COMPRESSION_VOLUME_STRONG",
+      "name": "Compression to positive-volume ignition strong",
+      "minimumInsideBarsIn10": 3,
+      "minimumPositiveVolumeMultipleVs20d": 1.5,
+      "requiresPositiveClose": true,
+      "status": "active_observation"
+    }
+  },
+  "evidence": {
+    "sourceRows": 32201,
+    "symbols": 16,
+    "dateStart": "2016-02-02",
+    "dateEnd": "2026-06-08",
+    "coverageWarning": "Uneven symbol coverage; BAJAJFINSV, M&M, and TCS end on 2021-02-01.",
+    "watch": {
+      "full": {
+        "fires": 841,
+        "baseRate": 0.1042006591,
+        "precision": 0.1379310345,
+        "lift": 1.3237059702,
+        "zScore": 3.2456461304,
+        "medianLeadTradingDays": 7
+      },
+      "train2016To2020": {
+        "fires": 458,
+        "baseRate": 0.1298076923,
+        "precision": 0.1615720524,
+        "lift": 1.2447032185,
+        "zScore": 2.0538357761,
+        "medianLeadTradingDays": 7
+      },
+      "test2021To2026": {
+        "fires": 383,
+        "baseRate": 0.0800099546,
+        "precision": 0.1096605744,
+        "lift": 1.3705866349,
+        "zScore": 2.1647442164,
+        "medianLeadTradingDays": 6.5
+      },
+      "positiveTimeBlocks": 4,
+      "timeBlocksTested": 4,
+      "symbolsWithLiftAboveOne": 10,
+      "symbolsEligible": 16
+    },
+    "strong": {
+      "full": {
+        "fires": 221,
+        "baseRate": 0.1042006591,
+        "precision": 0.1628959276,
+        "lift": 1.5632907611,
+        "zScore": 2.8661532202,
+        "medianLeadTradingDays": 7
+      },
+      "train2016To2020": {
+        "fires": 112,
+        "baseRate": 0.1298076923,
+        "precision": 0.1696428571,
+        "lift": 1.3068783069,
+        "zScore": 1.2589991885,
+        "medianLeadTradingDays": 6
+      },
+      "test2021To2026": {
+        "fires": 109,
+        "baseRate": 0.0800099546,
+        "precision": 0.1559633028,
+        "lift": 1.9492987287,
+        "zScore": 2.9327443643,
+        "medianLeadTradingDays": 8
+      },
+      "positiveTimeBlocks": 4,
+      "timeBlocksTested": 4,
+      "symbolsWithLiftAboveOne": 8,
+      "symbolsEligible": 11
+    }
+  },
+  "contextFindings": {
+    "fiiAggregate5dPositive": "Small in-sample lift only; no post-2020 coverage in the supplied aggregate file.",
+    "stockFii5dPositive": "No positive aggregate lift in the available 2009-2020 symbol-level data.",
+    "fiiIndexFuturesNetPositive": "Negative training lift and positive 2021-2023 test lift; regime-dependent context only.",
+    "indiaVixFalling5d": "Did not improve the main 8%-within-10-sessions outcome.",
+    "deliveryPctAbove20d": "Near-neutral alone; retain as supporting evidence, never as a standalone trigger."
+  },
+  "governance": {
+    "changesScannerRanking": false,
+    "changesPositionSizing": false,
+    "changesKellySizing": false,
+    "allowsLiveOrder": false,
+    "paperTradePermission": false,
+    "displayOnly": true,
+    "reason": "The pattern raises conditional odds but has low recall and is not universal."
+  }
+}

@@ -59,6 +59,43 @@ function proofCandles(offset = 0) {
   return candles;
 }
 
+function preRiseProofCandles() {
+  const candles = proofCandles(0);
+  const start = candles.length - 11;
+  for (let index = start + 1; index <= start + 3; index += 1) {
+    const previous = candles[index - 1];
+    candles[index] = {
+      ...candles[index],
+      open: previous.low + 0.4,
+      high: previous.high - 0.1,
+      low: previous.low + 0.1,
+      close: previous.low + 0.8,
+      volume: 500000,
+    };
+  }
+  for (let index = start + 4; index < candles.length - 1; index += 1) {
+    const previous = candles[index - 1];
+    candles[index] = {
+      ...candles[index],
+      open: previous.close,
+      high: previous.high + 1,
+      low: previous.low - 0.2,
+      close: previous.close + 0.2,
+      volume: 500000,
+    };
+  }
+  const previous = candles.at(-2);
+  candles[candles.length - 1] = {
+    ...candles.at(-1),
+    open: previous.close,
+    high: previous.high + 1,
+    low: previous.low - 0.1,
+    close: previous.close + 1,
+    volume: 2000000,
+  };
+  return candles;
+}
+
 function kellyClosedTrades(wins, losses, winPnl = 100, lossPnl = -50) {
   return Array.from({ length: wins + losses }, (_, index) => {
     const realizedPnl = index < wins ? winPnl : lossPnl;
@@ -310,6 +347,8 @@ async function main() {
   assert(directScan.rows[0].parameter_tunnel.total === 175, "every scanner row should carry all 175 parameter nodes");
   assert(directScan.rows[0].parameter_tunnel.summary.evaluated === 0, "metric-only rows must not invent candle-derived parameter evidence");
   assert(directScan.rows[0].score === directScan.rows[0].base_score, "missing candle evidence must not dilute the existing scanner score");
+  assert(directScan.rows[0].pre_rise_status === "DATA_NEEDED", "metric-only rows should report missing pre-rise candle evidence");
+  assert(directScan.rows[0].pre_rise_edge_confirmed === false, "pre-rise evidence must never confirm live edge");
 
   const correlationScan = runScanner(
     [{ symbol: "CORRCAND", name: "Correlation Candidate", sector: "Test", candles: proofCandles(0) }],
@@ -318,6 +357,20 @@ async function main() {
   assert(correlationScan.rows[0].decision === "BLOCKED", "over-correlated candidate should be blocked");
   assert(correlationScan.rows[0].gates.correlation === false, "correlation gate should fail for identical return series");
   assert(correlationScan.rows[0].parameter_tunnel.summary.evaluated >= 80, "full candles should execute the wired tunnel parameters");
+  assert(correlationScan.rows[0].pre_rise_model === "ashstocks-pre-rise-pattern-v0.1", "full candles should execute the pre-rise tracker");
+
+  const preRiseScan = runScanner([
+    {
+      symbol: "PRERISE",
+      name: "Pre-Rise Proof",
+      sector: "Test",
+      candles: preRiseProofCandles(),
+    },
+  ]);
+  assert(preRiseScan.rows[0].pre_rise_status === "STRONG", "compression plus positive volume ignition should create a strong tracker hit");
+  assert(preRiseScan.rows[0].pre_rise_inside_bars_10d >= 3, "strong tracker hit should expose its compression count");
+  assert(preRiseScan.rows[0].pre_rise_volume_multiple_20d >= 1.5, "strong tracker hit should expose its volume ignition");
+  assert(preRiseScan.rows[0].pre_rise_edge_confirmed === false, "strong tracker hits remain observational");
 
   const server = createServer();
   await new Promise((resolve, reject) => {
@@ -597,7 +650,7 @@ async function main() {
     assert(upstoxStatusAfter.body.status.token_visible === true, "Upstox status should detect saved token");
     assert(upstoxStatusAfter.body.status.token_source === "manual_paste", "Upstox status should read token from store");
 
-    console.log(JSON.stringify({ ok: true, checks: ["mongo-file-fallback", "data-bank-status", "scan-ledger", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "parameter-tunnel-175", "kelly-parameters", "kelly-persisted-ledger", "kelly-active-sizing", "kelly-lifecycle-cap", "kelly-no-edge-block", "paper-engine-real-quote-fill", "upstox-guard", "paper-engine-status", "paper-engine-guard", "q1-status", "q1-upload", "q1-render-guard", "upstox-oauth-start", "upstox-token-paste"] }));
+    console.log(JSON.stringify({ ok: true, checks: ["mongo-file-fallback", "data-bank-status", "scan-ledger", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "pre-rise-pattern-tracker", "parameter-tunnel-175", "kelly-parameters", "kelly-persisted-ledger", "kelly-active-sizing", "kelly-lifecycle-cap", "kelly-no-edge-block", "paper-engine-real-quote-fill", "upstox-guard", "paper-engine-status", "paper-engine-guard", "q1-status", "q1-upload", "q1-render-guard", "upstox-oauth-start", "upstox-token-paste"] }));
   } finally {
     await Promise.all([...Q1_INPUTS, STATE_FILE, SCAN_LEDGER_FILE, UPSTOX_AUTH_FILE].map((file) => fs.unlink(file).catch((error) => {
       if (error.code !== "ENOENT") throw error;
