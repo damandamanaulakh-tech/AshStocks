@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "2.1",
+  "asOf": "2026-07-30",
+  "mode": {"liveTrade": false, "paperEngine": true, "edgeConfirmed": false, "paperTradeOnly": true, "liveReady": false},
+  "paperCapital": {"initialCapitalInr": 1000000, "maxPositionPct": 2.5, "maxOpenPositions": 20, "maxPortfolioHeatPct": 25},
+  "exposureGovernor": {"normalPct": 100, "watchPct": 70, "watchHighPct": 50, "riskOnPct": 25, "minimumPct": 25},
+  "signals": {
+    "damageCluster5In10": {"tailDown3Threshold": 0.213, "minimumFireDays": 5, "lookbackSessions": 10, "status": "conditional_risk_throttle"},
+    "fiiCashStressQ10": {"quantile": 0.1, "windowSessions": 5, "status": "confirmation_only"},
+    "fiiSellCluster7In10": {"minimumSellDays": 7, "lookbackSessions": 10, "status": "confirmation_only"},
+    "fiiDiiDivergence5D": {"windowSessions": 5, "status": "watch_only"},
+    "volumeVs20dAverage": {"minimumMultiple": 1.5, "lookbackSessions": 20, "status": "experimental"},
+    "rsi14": {"minimum": 45, "maximum": 70, "lookbackSessions": 14, "status": "experimental"}
+  },
+  "unresolved": {
+    "boredomGuard": "no_settled_numeric_rule",
+    "stopLossEngine": "not_verified_in_current_runtime",
+    "fiiDerivativesHistory": "available_in_drive_not_runtime_integrated",
+    "volumeDeliveryMarketWide": "available_in_drive_not_runtime_integrated",
+    "post2022Holdout": "missing",
+    "costed200StockExecutionTest": "missing"
+  },
+  "validation": {"evidenceFile": "config/validation-evidence.v2.1.json", "lastRun": "2026-07-30", "result": "not_confirmed", "reason": "chronological_signal_reversal"}
+}
