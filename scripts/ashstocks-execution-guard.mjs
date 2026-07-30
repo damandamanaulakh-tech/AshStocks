@@ -34,7 +34,7 @@ for (const [file, checks] of Object.entries({
   "ASHSTOCKS_EXECUTION_GUARD.md": ["AshStocks is a broker-grade Indian market product", "A vs X Check", "Merge Check", "Candle Parameter Family"],
   "README.md": ["Indian/NSE", "Upstox historical daily candle fetch only", "No live orders"],
   "server.js": ["applyCandlePatternPatches", "applyPaperOrderLifecyclePatches", "applyUpstoxQuotePatches"],
-  "server-upstox-quote-patch.mjs": ["UPSTOX_QUOTE_VERSION", "/api/upstox/quote", "/api/upstox/quote-stream", "text/event-stream", "server_sent_events_polling_backed", "UPSTOX_FULL_MARKET_QUOTE_URL", "Upstox Market Quote API", "authorization: \"Bearer \" + ENV.UPSTOX_ACCESS_TOKEN", "paper_only: true", "live_orders: false", "broker_write_enabled: false", "token_printed: false", "fetchUpstoxMarketQuotes", "normalizeUpstoxQuoteRow", "streamUpstoxQuotes", "writeSseEvent"],
+  "server-upstox-quote-patch.mjs": ["UPSTOX_QUOTE_VERSION", "/api/upstox/quote", "/api/upstox/quote-stream", "text/event-stream", "server_sent_events_polling_backed", "UPSTOX_FULL_MARKET_QUOTE_URL", "Upstox Market Quote API", "authorization: \"Bearer \" + accessToken", "paper_only: true", "live_orders: false", "broker_write_enabled: false", "token_printed: false", "fetchUpstoxMarketQuotes", "normalizeUpstoxQuoteRow", "streamUpstoxQuotes", "writeSseEvent"],
   "server-paper-order-lifecycle-patch.mjs": ["PAPER_ORDER_LIFECYCLE_VERSION", "/api/paper-trader/order", "/api/paper-trader/orders", "broker_write_enabled: false"],
   "server-candle-pattern-patch.mjs": ["CANDLE_PATTERN_VERSION", "candlePatternAnalysis", "candle_patterns", "candle_score", "candle_status", "bullish_engulfing", "hammer_rejection", "near_252d_breakout", "volume_confirmation"],
   "app-ashstocks-broker-terminal.js": ["#ashBrokerTerminal", "AshStocks Terminal", "Market Watch", "Order Ticket", "Parameter Proof", "Candle Trigger", "Order Book", "Positions / GTT", "/api/scanner/run", "/api/upstox/quote", "/api/paper-trader/orders", "/api/paper-trader/order", "P681", "P683", "P686", "P688", "submitTerminalOrder", "source: \"ashstocks-broker-terminal\"", "broker_write_enabled: false", "paper_only: true"],
@@ -119,11 +119,11 @@ mustMatch("server-upstox-quote-patch.mjs", /writeSseEvent[\s\S]*event: [\s\S]*da
 mustMatch("server-upstox-quote-patch.mjs", /\/api\/upstox\/quote[\s\S]*GET[\s\S]*POST/, "Upstox quote GET/POST route");
 mustMatch("server-upstox-quote-patch.mjs", /paper_only: true[\s\S]*live_orders: false[\s\S]*broker_write_enabled: false/, "Upstox quote safety lock");
 mustMatch("app-upstox-market-watch-pulse.js", /fetch\("\/api\/upstox\/quote"[\s\S]*method: "POST"[\s\S]*instrument_keys/, "market watch batched Upstox quote POST");
-mustMatch("app-upstox-market-watch-pulse.js", /publishQuote[\s\S]*ashstocks:upstox-quote[\s\S]*window\.__ashstocksUpstoxQuoteCache/, "market watch quote event bridge");
+mustMatch("app-upstox-market-watch-pulse.js", /publishQuote[\s\S]*window\.__ashstocksUpstoxQuoteCache[\s\S]*ashstocks:upstox-quote/, "market watch quote event bridge");
 mustMatch("app-upstox-market-watch-pulse.js", /429\|rate limit\|1015[\s\S]*RATE_LIMIT_BACKOFF_MS/, "market watch Upstox rate-limit backoff");
 mustMatch("server-paper-order-lifecycle-patch.mjs", /orders.*trades.*gtt|gtt.*trades.*orders/s, "orders/trades/GTT ledger fields");
 mustMatch("server-paper-order-lifecycle-patch.mjs", /PAPER_BUY_FILLED|PAPER_SELL_FILLED|PAPER_GTT_CREATED/, "paper order lifecycle actions");
-mustMatch("app-ashstocks-broker-terminal.js", /submitTerminalOrder[\s\S]*fetch\("\/api\/paper-trader\/order"[\s\S]*broker_write_enabled: false[\s\S]*paper_only: true/, "terminal paper-only order payload");
+mustMatch("app-ashstocks-broker-terminal.js", /submitTerminalOrder[\s\S]*broker_write_enabled: false[\s\S]*paper_only: true[\s\S]*fetch\("\/api\/paper-trader\/order"/, "terminal paper-only order payload");
 mustMatch("app-ashstocks-broker-terminal.js", /parameterProof[\s\S]*P681[\s\S]*P683[\s\S]*P686[\s\S]*P688[\s\S]*P1701/, "terminal parameter proof includes candle and quote parameters");
 mustMatch("app-ashstocks-broker-terminal.js", /terminalChart[\s\S]*DATA_NEEDED: candle chart[\s\S]*svg/, "terminal chart uses candle data and no fake chart");
 mustMatch("app-ashstocks-broker-terminal.js", /requestSelectedQuote[\s\S]*\/api\/upstox\/quote[\s\S]*instrument_keys/, "terminal selected Upstox quote fetch");
@@ -135,26 +135,26 @@ mustMatch("app-upstox-stream-client.js", /new EventSource[\s\S]*\/api\/upstox\/q
 mustMatch("app-upstox-stream-client.js", /publishQuotes[\s\S]*ashstocks:upstox-quote[\s\S]*ashstocks:upstox-realtime-tick/, "stream client publishes quote and tick events");
 mustMatch("app-paper-risk-console.js", /renderSummary[\s\S]*Buying Power[\s\S]*Exposure[\s\S]*Realized P&L/, "risk console funds/exposure summary");
 mustMatch("app-paper-risk-console.js", /renderPositions[\s\S]*EXIT_POSITION[\s\S]*PROTECT_POSITION/, "risk console position exit/protect actions");
-mustMatch("app-paper-risk-console.js", /submitRiskAction[\s\S]*fetch\("\/api\/paper-trader\/order"[\s\S]*paper_only: true[\s\S]*broker_write_enabled: false/, "risk console paper-only order payload");
-mustMatch("app-broker-equivalence-audit.js", /auditItems[\s\S]*Unified broker terminal[\s\S]*Realtime quote polling[\s\S]*SSE quote stream[\s\S]*NSE universe and scanner[\s\S]*2000 parameter piano[\s\S]*Candle parameters 681-800[\s\S]*Broker websocket ticks/, "broker equivalence audit workflow requirements");
+mustMatch("app-paper-risk-console.js", /submitRiskAction[\s\S]*paper_only: true[\s\S]*broker_write_enabled: false[\s\S]*fetch\("\/api\/paper-trader\/order"/, "risk console paper-only order payload");
+mustMatch("app-broker-equivalence-audit.js", /auditItems(?=[\s\S]*Unified broker terminal)(?=[\s\S]*Realtime quote polling)(?=[\s\S]*SSE quote stream)(?=[\s\S]*NSE universe and scanner)(?=[\s\S]*2000 parameter piano)(?=[\s\S]*Candle parameters 681-800)(?=[\s\S]*Broker websocket ticks)/, "broker equivalence audit workflow requirements");
 mustMatch("app-broker-equivalence-audit.js", /NOT_UPSTOX_EQUIVALENT_YET[\s\S]*BROKER_WORKFLOW_READY_PAPER_ONLY|BROKER_WORKFLOW_READY_PAPER_ONLY[\s\S]*NOT_UPSTOX_EQUIVALENT_YET/, "broker equivalence verdict labels");
 mustMatch("app-broker-equivalence-audit.js", /SSE quote stream exists; true Upstox websocket SDK\/socket is still not implemented/, "websocket gap remains explicit");
 mustMatch("app-broker-equivalence-audit.js", /LOCKED_BY_RULE[\s\S]*Intentionally disabled[\s\S]*paper execution only|paper execution only[\s\S]*LOCKED_BY_RULE/, "live money locked by product rule");
 mustMatch("app-upstox-symbol-workspace.js", /normalizeCandles[\s\S]*candleSvg[\s\S]*svg/, "symbol candle chart from scanner candles");
 mustMatch("app-upstox-symbol-workspace.js", /\/api\/upstox\/quote[\s\S]*fetch\(url\)/, "symbol workspace Upstox quote fetch");
-mustMatch("app-upstox-symbol-workspace.js", /fetch\("\/api\/paper-trader\/order"[\s\S]*source: "upstox-symbol-workspace"/, "symbol workspace paper order post");
+mustMatch("app-upstox-symbol-workspace.js", /submitPaperAction[\s\S]*source: "upstox-symbol-workspace"[\s\S]*fetch\("\/api\/paper-trader\/order"/, "symbol workspace paper order post");
 mustMatch("app-upstox-symbol-workspace.js", /order_type[\s\S]*validity[\s\S]*risk_pct[\s\S]*capital/, "broker ticket fields in paper payload");
 mustMatch("app-upstox-trade-queue-bridge.js", /window\.fetch[\s\S]*\/api\/scanner\/run[\s\S]*\/api\/paper-trader\/orders/, "trade queue captures scanner and paper ledger");
-mustMatch("app-upstox-trade-queue-bridge.js", /submitQueuePaperAction[\s\S]*fetch\("\/api\/paper-trader\/order"[\s\S]*order_type[\s\S]*validity[\s\S]*risk_pct[\s\S]*capital/, "trade queue submits broker-style paper order payload");
+mustMatch("app-upstox-trade-queue-bridge.js", /submitQueuePaperAction[\s\S]*order_type[\s\S]*validity[\s\S]*risk_pct[\s\S]*capital[\s\S]*fetch\("\/api\/paper-trader\/order"/, "trade queue submits broker-style paper order payload");
 mustMatch("app-upstox-trade-queue-bridge.js", /parameterHits[\s\S]*Momentum[\s\S]*Candle[\s\S]*Liquidity[\s\S]*Target[\s\S]*Risk[\s\S]*Quote/, "trade queue parameter chips include quote and candle readiness");
 mustMatch("app-upstox-trade-queue-bridge.js", /quote_source[\s\S]*Upstox Market Quote API[\s\S]*scanner-fallback/, "trade queue quote source is explicit");
 mustMatch("app-broker-scanner-hub.js", /window\.fetch[\s\S]*\/api\/scanner\/run[\s\S]*\/api\/paper-trader\/orders/, "broker hub captures scanner and paper ledger");
 mustMatch("app-broker-scanner-hub.js", /renderBuckets[\s\S]*Candle Ready[\s\S]*Target Room[\s\S]*Quote Ready[\s\S]*DATA_NEEDED/, "broker hub renders real scanner buckets");
-mustMatch("app-broker-scanner-hub.js", /submitBrokerHubAction[\s\S]*fetch\("\/api\/paper-trader\/order"[\s\S]*broker_write_enabled: false[\s\S]*paper_only: true/, "broker hub paper order safety payload");
+mustMatch("app-broker-scanner-hub.js", /submitBrokerHubAction[\s\S]*broker_write_enabled: false[\s\S]*paper_only: true[\s\S]*fetch\("\/api\/paper-trader\/order"/, "broker hub paper order safety payload");
 mustMatch("app-broker-scanner-hub.js", /renderParamProof[\s\S]*Momentum[\s\S]*Candle[\s\S]*Liquidity[\s\S]*Target[\s\S]*Risk[\s\S]*Quote/, "broker hub parameter proof chips");
 mustMatch("app-candle-trigger-tape.js", /PATTERN_PARAMS[\s\S]*bullish_engulfing: 681[\s\S]*volume_confirmation: 688/, "candle parameter number map");
 mustMatch("app-candle-trigger-tape.js", /renderSelected[\s\S]*Active Parameter[\s\S]*Evidence/, "selected candle proof panel");
-mustMatch("app-candle-trigger-tape.js", /submitCandlePaperAction[\s\S]*fetch\("\/api\/paper-trader\/order"[\s\S]*candle_status[\s\S]*candle_patterns[\s\S]*paper_only: true/, "candle paper action payload");
+mustMatch("app-candle-trigger-tape.js", /submitCandlePaperAction[\s\S]*candle_status[\s\S]*candle_patterns[\s\S]*paper_only: true[\s\S]*fetch\("\/api\/paper-trader\/order"/, "candle paper action payload");
 mustMatch("app-upstox-reasoning-dock.js", /Quote proof[\s\S]*quoteStatus[\s\S]*Depth/, "quote proof and depth gate in reasoning dock");
 mustMatch("app-upstox-parameter-exact-sync.js", /setTimeout\(\(\) => syncExactParameter\(parameterNumber\), 0\)/, "post-click exact parameter sync");
 
