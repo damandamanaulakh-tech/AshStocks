@@ -1,6 +1,7 @@
 {
   "schemaVersion": "2.2",
-  "asOf": "2026-07-30",
+  "parameterRevision": "2.2.1",
+  "asOf": "2026-07-31",
   "governance": {
     "userApproved": true,
     "approvalScope": "all_parameters_from_am07_grok_workbooks",
@@ -18,7 +19,18 @@
     "maxPositionPct": 10,
     "cashBufferPct": 5,
     "maxOpenPositions": 20,
-    "maxPortfolioHeatPct": 25
+    "maxPortfolioHeatPct": 25,
+    "kellySizing": {
+      "parameterSource": "config/stock-selection-parameters.v0.1.json#positionSizing.kelly",
+      "enabled": true,
+      "mode": "paper_only",
+      "fractionOfKelly": 0.25,
+      "minimumClosedTrades": 100,
+      "minimumDistinctSymbols": 20,
+      "fullConfidenceClosedTrades": 300,
+      "maximumKellyPositionPct": 10,
+      "status": "active_paper_calibration"
+    }
   },
   "execution": {
     "returnCleaningClipPct": 12,
@@ -78,15 +90,15 @@
       "lowSizeMultiplier": 1,
       "elevatedLowerInclusive": 16,
       "elevatedUpperExclusive": 20,
-      "elevatedSizeMultiplier": 0.75,
+      "elevatedSizeMultiplier": 0.8,
       "highLowerInclusive": 20,
       "highUpperExclusive": 25,
-      "highSizeMultiplier": 0.45,
-      "highBlockNewEntries": true,
+      "highSizeMultiplier": 0.65,
+      "highBlockNewEntries": false,
       "extremeLowerInclusive": 25,
-      "extremeSizeMultiplier": 0.1,
-      "extremeBlockNewEntries": true,
-      "status": "active_user_approved_paper"
+      "extremeSizeMultiplier": 0.5,
+      "extremeBlockNewEntries": false,
+      "status": "active_paper_release_validated"
     },
     "foOiLabels": {
       "acceptedLabels": [

@@ -63,6 +63,19 @@ Trend, volume, delivery, stock-FII, and OI are tie-breakers or annotations. They
 - `AM07_Backtest_with_India_VIX.xlsx`: records the approved ±12% cleaning, 10% maximum position, 5% cash buffer, 0.08% one-way cost, and −18% drawdown governor.
 - Its reported 52.9% maximum drawdown exceeded the stated governor, so its 1.68 Sharpe and 441.8% total return are not treated as independent edge confirmation.
 
+## Fractional Kelly Paper Governor
+
+- Parameter: `RISK_KELLY_QUARTER_PAPER`.
+- Source: persisted completed paper `SELL` trades only. Request bodies cannot inject replacement trade statistics.
+- Net return reconstruction: gross realized P&L minus the approved 0.08% cost on both reconstructed entry notional and exit value, clipped to ±12%.
+- Enforcement requires at least 100 valid closes, 20 distinct symbols, 20 wins, and 20 losses.
+- Win probability uses a 50-trade Beta prior centered at 50%; confidence scales linearly to 100% at 300 valid closes.
+- Applied fraction: `max(0, p - (1-p)/b) × 0.25 × confidence`.
+- During `CALIBRATING`, Kelly is reported but does not stop base-sized paper trades from creating the sample.
+- Once active, Kelly can only reduce the existing position cap. A non-positive post-cost Kelly estimate blocks new paper entries.
+- The paper-order lifecycle independently rejects manual, GTT, and automatic BUY entries above the effective Kelly/base cap.
+- Kelly remains paper-only and does not set `EDGE_CONFIRMED` or `liveReady` to true.
+
 ## Executable Output
 
 - Parameters: `config/stock-selection-parameters.v0.1.json`

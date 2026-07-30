@@ -231,6 +231,24 @@ function rejectedPaperOrder(request, reason, asOf) {
     updated_at: asOf
   });
 }
+function paperKellySizing(paperTrader = {}) {
+  if (
+    typeof evaluateKellySizing !== "function"
+    || typeof STOCK_SELECTION_PARAMETERS === "undefined"
+  ) {
+    return {
+      status: "DATA_INCOMPLETE",
+      applied: true,
+      blockNewEntries: true,
+      maximumPositionPct: 0,
+      reason: "Kelly parameters or evaluator are unavailable."
+    };
+  }
+  return evaluateKellySizing(
+    Array.isArray(paperTrader.trades) ? paperTrader.trades : [],
+    STOCK_SELECTION_PARAMETERS
+  );
+}
 function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
   const asOf = paperLifecycleNow();
   const request = paperOrderRequest(body);
@@ -263,11 +281,41 @@ function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
     return { ok: false, status: 422, order, paperTrader: saved, nextState: { ...state, paperTrader: saved } };
   }
 
+  const kelly = paperKellySizing(next);
+  if (request.side === "BUY") {
+    if (kelly.blockNewEntries) {
+      const rejected = rejectedPaperOrder(request, "Kelly governor blocked new paper entries: " + kelly.status, asOf);
+      next.orders = [rejected, ...next.orders].slice(0, 200);
+      const saved = sanitizePaperTraderState(next);
+      return { ok: false, status: 409, order: rejected, kelly, paperTrader: saved, nextState: { ...state, paperTrader: saved } };
+    }
+    const baseCapPct = STOCK_SELECTION_PARAMETERS.positionSizing.maximumPositionPct;
+    const positionCapPct = kelly.applied
+      ? Math.min(baseCapPct, finiteOr(kelly.maximumPositionPct, 0))
+      : baseCapPct;
+    const existing = next.positions.find((position) => position.symbol === request.symbol && position.status !== "CLOSED");
+    const existingValue = existing
+      ? finiteOr(existing.qty, 0) * finiteOr(existing.entry_price, request.price)
+      : 0;
+    const proposedValue = existingValue + request.qty * request.price;
+    const maximumValue = finiteOr(next.funds.starting_capital, 0) * positionCapPct / 100;
+    if (proposedValue > maximumValue + 0.01) {
+      const rejected = rejectedPaperOrder(
+        request,
+        "Paper position exceeds effective Kelly/base cap of " + round(positionCapPct, 4) + "%",
+        asOf
+      );
+      next.orders = [rejected, ...next.orders].slice(0, 200);
+      const saved = sanitizePaperTraderState(next);
+      return { ok: false, status: 409, order: rejected, kelly, position_cap_pct: positionCapPct, paperTrader: saved, nextState: { ...state, paperTrader: saved } };
+    }
+  }
+
   if (request.gtt || request.order_type === "GTT") {
     const plan = sanitizePaperGtt({ id: paperLedgerId("PAPER_GTT"), ...request, entry_price: request.price, status: "ACTIVE", created_at: asOf });
     next.gtt = [plan, ...next.gtt].slice(0, 200);
     const saved = sanitizePaperTraderState(next);
-    return { ok: true, status: 200, action: "PAPER_GTT_CREATED", gtt: plan, funds: paperLifecycleFunds(saved), paperTrader: saved, nextState: { ...state, paperTrader: saved } };
+    return { ok: true, status: 200, action: "PAPER_GTT_CREATED", gtt: plan, kelly, funds: paperLifecycleFunds(saved), paperTrader: saved, nextState: { ...state, paperTrader: saved } };
   }
 
   const order = sanitizePaperOrder({ id: paperLedgerId("PAPER_ORDER"), ...request, status: "PAPER_FILLED", created_at: asOf, updated_at: asOf });
@@ -340,7 +388,7 @@ function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
   next.last_order_at = asOf;
   next.last_run = next.last_run || asOf;
   const saved = sanitizePaperTraderState(next);
-  return { ok: true, status: 200, action: order.side === "BUY" ? "PAPER_BUY_FILLED" : "PAPER_SELL_FILLED", order, trade, funds: paperLifecycleFunds(saved), paperTrader: saved, nextState: { ...state, paperTrader: saved } };
+  return { ok: true, status: 200, action: order.side === "BUY" ? "PAPER_BUY_FILLED" : "PAPER_SELL_FILLED", order, trade, kelly, funds: paperLifecycleFunds(saved), paperTrader: saved, nextState: { ...state, paperTrader: saved } };
 }
 function paperPriceMap(rows = []) {
   const map = new Map();

@@ -33,6 +33,10 @@ for (const text of [
   "latest price missing for target/stop monitor",
   "latest price missing for GTT trigger monitor",
   "PAPER_LIFECYCLE_MONITORED",
+  "paperKellySizing",
+  "Kelly governor blocked new paper entries",
+  "effective Kelly/base cap",
+  "position_cap_pct",
   "paper_only: true",
   "live_orders: false",
   "broker_write_enabled: false"
@@ -54,6 +58,11 @@ mustMatch(
   "server-paper-order-lifecycle-patch.mjs",
   /plan\.side === "BUY" \? found\.price >= trigger : found\.price <= trigger[\s\S]*openPaperPositionFromGtt/,
   "monitor should trigger paper GTT plans from latest price"
+);
+mustMatch(
+  "server-paper-order-lifecycle-patch.mjs",
+  /request\.side === "BUY"[\s\S]*kelly\.blockNewEntries[\s\S]*proposedValue > maximumValue/,
+  "paper BUY and GTT entries should pass the Kelly/base position cap"
 );
 
 for (const text of [
