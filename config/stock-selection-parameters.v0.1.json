@@ -1,0 +1,138 @@
+{
+  "schemaVersion": "0.1",
+  "asOf": "2026-07-30",
+  "mode": {
+    "paperTradeOnly": true,
+    "liveReady": false,
+    "edgeConfirmed": false
+  },
+  "releaseSource": {
+    "tag": "Backenddata",
+    "manifest": "config/release-data-manifest.Backenddata.json",
+    "assetsReviewed": 171,
+    "checksumFailures": 0,
+    "invalidArchives": [
+      "2021_06.zip"
+    ],
+    "vixAssetPresent": false
+  },
+  "universe": {
+    "source": "Back.Test.Claude.zip",
+    "symbols": 191,
+    "minimumHistorySessions": 252,
+    "maximumDataAgeSessions": 1,
+    "selectionCount": 10
+  },
+  "primaryRank": {
+    "id": "SEL_MOMENTUM_20_TOP10",
+    "field": "momentum20Percentile",
+    "lookbackSessions": 20,
+    "weightPct": 100,
+    "minimumPercentile": 0,
+    "status": "active_paper_primary_rank"
+  },
+  "confirmations": {
+    "trend50": {
+      "field": "closeAboveMa50",
+      "lookbackSessions": 50,
+      "scoreWeightPct": 0,
+      "use": "tie_break_only",
+      "status": "active_confirmation"
+    },
+    "volume20": {
+      "field": "volumeRatio20",
+      "minimumMultiple": 1.5,
+      "lookbackSessions": 20,
+      "scoreWeightPct": 0,
+      "use": "tie_break_and_participation_flag",
+      "status": "active_confirmation_not_entry_requirement"
+    },
+    "delivery20": {
+      "field": "deliveryPercentile20",
+      "minimumPercentile": 0.75,
+      "requiresPositiveReturn1d": true,
+      "scoreWeightPct": 0,
+      "use": "optional_tie_break_when_covered",
+      "coverageSymbols": 16,
+      "status": "coverage_limited_confirmation"
+    },
+    "fiiStock20": {
+      "fields": [
+        "fii20dNetCr",
+        "fii20dPercentile"
+      ],
+      "minimumNetCr": 0,
+      "minimumPercentile": 0.9,
+      "scoreWeightPct": 0,
+      "use": "historical_research_tie_break_only",
+      "coverageEnd": "2020-12-31",
+      "status": "stale_not_runtime_eligible"
+    },
+    "foOi": {
+      "field": "oiRegime",
+      "acceptedBullishLabels": [
+        "Long_Buildup",
+        "Short_Covering",
+        "Strong_Long_Buildup"
+      ],
+      "scoreWeightPct": 0,
+      "use": "current_snapshot_annotation_only",
+      "status": "snapshot_only_confirmation"
+    }
+  },
+  "marketOverlays": {
+    "fiiLessThanDii5d": {
+      "formula": "fii5dNetCr < dii5dNetCr",
+      "positionMultiplier": 0.75,
+      "blockNewEntries": false,
+      "status": "active_paper_caution"
+    },
+    "fiiNegativeDiiPositive5d": {
+      "formula": "fii5dNetCr < 0 && dii5dNetCr > 0",
+      "route": "DII_CUSHIONED_FOREIGN_SELLING",
+      "status": "active_paper_caution"
+    },
+    "indiaVix": {
+      "source": "external_runtime_feed_required",
+      "releaseDataReady": false,
+      "veryLowUpperExclusive": 12,
+      "veryLowMultiplier": 1.15,
+      "lowUpperExclusive": 16,
+      "lowMultiplier": 1,
+      "elevatedUpperExclusive": 20,
+      "elevatedMultiplier": 0.75,
+      "highUpperExclusive": 25,
+      "highMultiplier": 0.45,
+      "highBlockNewEntries": true,
+      "extremeMultiplier": 0.1,
+      "extremeBlockNewEntries": true,
+      "status": "approved_external_overlay_unverified_by_release"
+    }
+  },
+  "positionSizing": {
+    "maximumPositionPct": 10,
+    "cashBufferPct": 5,
+    "maximumPortfolioHeatPct": 25,
+    "transactionCostOneWayPct": 0.08
+  },
+  "validation": {
+    "method": "20-session rebalance; feature day t; return close[t+20]/close[t+1]-1",
+    "survivorshipBiasPresent": true,
+    "momentumTop10Excess": {
+      "train2015To2018": -0.000605905,
+      "validation2019To2022": 0.001714386,
+      "holdout2023To2026": 0.007424983
+    },
+    "rejectedBroadScore": {
+      "formula": "60% momentum percentile + 25% trend50 + 15% volume percentile",
+      "reason": "underperformed universe by 0.011693770 in validation"
+    },
+    "rejectedVolumeEntryRequirement": {
+      "minimumMultiple": 1.5,
+      "reason": "underperformed universe by 0.024991252 in validation"
+    },
+    "fiiLessThanDii20dMarketDelta": -0.005368887,
+    "fiiLessThanDiiNegativeRate": 0.356238698,
+    "fiiGreaterOrEqualDiiNegativeRate": 0.300304878
+  }
+}
