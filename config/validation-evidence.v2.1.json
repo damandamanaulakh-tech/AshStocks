@@ -1,0 +1,14 @@
+{
+  "asOf": "2026-07-30",
+  "dataset": {"name": "daily_joined_ifr_fii_cash_signals.csv", "rows": 3315, "start": "2007-01-08", "end": "2022-12-08", "sourceDriveFileId": "1RIKfVZJV2ZQpUAYfNqhcRDdEYa0lBUBp"},
+  "chronologicalSplits": [
+    {"name": "TRAIN", "window": "2007-01-01/2014-12-31", "rows": 1666, "damageCluster15dMeanDelta": -0.035347, "strictStack15dMeanDelta": -0.042072},
+    {"name": "VALIDATION", "window": "2015-01-01/2018-12-31", "rows": 856, "damageCluster15dMeanDelta": -0.004226, "strictStack15dMeanDelta": -0.002399},
+    {"name": "HOLDOUT", "window": "2019-01-01/2022-12-31", "rows": 793, "damageCluster15dMeanDelta": 0.011288, "strictStack15dMeanDelta": 0.034025}
+  ],
+  "decision": {
+    "edgeConfirmed": false,
+    "reasonCodes": ["SIGN_REVERSAL_ACROSS_TIME_SPLITS", "REACTIVE_RISK_SIGNAL_NOT_ENTRY_EDGE", "SIGNAL_CLUSTER_DUPLICATION", "NO_POST_2022_HOLDOUT", "NO_COSTED_200_STOCK_EXECUTION_TEST"],
+    "permittedUse": "paper_only_conditional_risk_throttle"
+  }
+}

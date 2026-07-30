@@ -1,0 +1,121 @@
+{
+  "schemaVersion": "2.2",
+  "asOf": "2026-07-30",
+  "governance": {
+    "userApproved": true,
+    "approvalScope": "all_parameters_from_am07_grok_workbooks",
+    "approvedFor": "paper_engine"
+  },
+  "mode": {
+    "liveTrade": false,
+    "paperEngine": true,
+    "edgeConfirmed": false,
+    "paperTradeOnly": true,
+    "liveReady": false
+  },
+  "paperCapital": {
+    "initialCapitalInr": 1000000,
+    "maxPositionPct": 10,
+    "cashBufferPct": 5,
+    "maxOpenPositions": 20,
+    "maxPortfolioHeatPct": 25
+  },
+  "execution": {
+    "returnCleaningClipPct": 12,
+    "transactionCostOneWayPct": 0.08,
+    "status": "active_user_approved_paper"
+  },
+  "selection": {
+    "momentumLookbackSessions": 20,
+    "momentumSelectionCount": 10,
+    "status": "active_user_approved_paper"
+  },
+  "exposureGovernor": {
+    "normalPct": 100,
+    "watchPct": 70,
+    "watchHighPct": 50,
+    "defensivePct": 25,
+    "minimumPct": 25,
+    "drawdownTriggerPct": -18
+  },
+  "signals": {
+    "damageCluster5In10": {
+      "tailDown3Threshold": 0.213,
+      "minimumFireDays": 5,
+      "lookbackSessions": 10,
+      "status": "active_user_approved_paper_risk_throttle"
+    },
+    "fiiCashStressQ10": {
+      "quantile": 0.1,
+      "windowSessions": 5,
+      "status": "active_user_approved_paper_confirmation"
+    },
+    "fiiSellCluster7In10": {
+      "minimumSellDays": 7,
+      "lookbackSessions": 10,
+      "status": "active_user_approved_paper_confirmation"
+    },
+    "fiiDiiDivergence5D": {
+      "windowSessions": 5,
+      "status": "active_user_approved_paper_watch"
+    },
+    "volumeVs20dAverage": {
+      "minimumMultiple": 1.5,
+      "lookbackSessions": 20,
+      "status": "active_user_approved_paper"
+    },
+    "rsi14": {
+      "minimum": 45,
+      "maximum": 70,
+      "lookbackSessions": 14,
+      "status": "active_user_approved_paper"
+    },
+    "indiaVixRegime": {
+      "veryLowUpperExclusive": 12,
+      "veryLowSizeMultiplier": 1.15,
+      "lowLowerInclusive": 12,
+      "lowUpperExclusive": 16,
+      "lowSizeMultiplier": 1,
+      "elevatedLowerInclusive": 16,
+      "elevatedUpperExclusive": 20,
+      "elevatedSizeMultiplier": 0.75,
+      "highLowerInclusive": 20,
+      "highUpperExclusive": 25,
+      "highSizeMultiplier": 0.45,
+      "highBlockNewEntries": true,
+      "extremeLowerInclusive": 25,
+      "extremeSizeMultiplier": 0.1,
+      "extremeBlockNewEntries": true,
+      "status": "active_user_approved_paper"
+    },
+    "foOiLabels": {
+      "acceptedLabels": [
+        "Heavy_Buildup",
+        "Strong_Long_Buildup",
+        "Strong_Long_Unwinding"
+      ],
+      "status": "active_user_approved_external_label_input"
+    },
+    "fpiCategoryMwplProxy": {
+      "categoryIPctOfMwpl": 30,
+      "categoryIIPctOfMwpl": 20,
+      "categoryIIOthersPctOfMwpl": 10,
+      "status": "active_user_approved_derived_proxy",
+      "provenance": "mechanically_derived_not_observed_positions"
+    }
+  },
+  "unresolved": {
+    "boredomGuard": "no_settled_numeric_rule",
+    "stopLossEngine": "not_verified_in_current_runtime",
+    "post2022Holdout": "missing",
+    "costed200StockExecutionTest": "missing",
+    "oiClassificationFormula": "missing_use_external_labels_only"
+  },
+  "validation": {
+    "evidenceFile": "config/validation-evidence.v2.1.json",
+    "additionalEvidenceFile": "docs/evidence/AM07_GROK_WORKBOOK_AUDIT_2026-07-30.md",
+    "lastRun": "2026-07-30",
+    "result": "parameters_user_approved_edge_not_confirmed",
+    "reason": "approval_activates_paper_rules_not_statistical_edge"
+  }
+}
