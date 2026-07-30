@@ -52,3 +52,7 @@ The signals may be useful as reactive risk controls, but this evidence does not 
 5. Explicit review and versioned registry update.
 
 Missing required risk inputs fail closed to 25% exposure.
+
+## Additional audited evidence
+
+- `docs/evidence/AM07_GROK_WORKBOOK_AUDIT_2026-07-30.md` — extracted F&O/OI and India VIX parameters, recalculation checks, provenance findings, and acceptance decisions.
