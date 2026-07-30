@@ -192,20 +192,6 @@ async function refreshPaperTraderMarks(state = defaultState(), store = null) {
   } catch (error) {
     return { paperTrader, quote_error: error.message, quote_as_of: null, marked_positions: 0, unpriced_symbols: paperTrader.positions.map((position) => position.symbol) };
   }
-}) {
-  const funds = sanitizePaperFunds(paperTrader.funds || {});
-  const positions = Array.isArray(paperTrader.positions) ? paperTrader.positions.map(sanitizePaperPosition) : [];
-  const invested = positions.reduce((sum, position) => sum + finiteOr(position.qty, 0) * finiteOr(position.current_price ?? position.entry_price, 0), 0);
-  return {
-    ...funds,
-    invested_value: round(invested, 2),
-    buying_power: round(funds.starting_capital + funds.realized_pnl - invested, 2),
-    open_positions: positions.filter((position) => position.qty > 0).length,
-    open_orders: Array.isArray(paperTrader.orders) ? paperTrader.orders.filter((order) => !["REJECTED", "CANCELLED"].includes(order.status)).length : 0,
-    active_gtt: Array.isArray(paperTrader.gtt) ? paperTrader.gtt.filter((plan) => plan.status === "ACTIVE").length : 0,
-    paper_only: true,
-    broker_write_enabled: false
-  };
 }
 function paperOrderRequest(body = {}) {
   const symbol = normalizeSymbol(body.symbol || body.trading_symbol || body.tradingSymbol);
