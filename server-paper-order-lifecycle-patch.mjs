@@ -1,5 +1,5 @@
 const PAPER_ORDER_LIFECYCLE_FUNCTIONS = String.raw`
-const PAPER_ORDER_LIFECYCLE_VERSION = "ashstocks-paper-order-lifecycle-v0.2";
+const PAPER_ORDER_LIFECYCLE_VERSION = "ashstocks-paper-order-lifecycle-v0.3-mark-to-market";
 function sanitizeParameterEvidence(input = {}) {
   return {
     version: String(input.version || "").slice(0, 80),
@@ -116,7 +116,83 @@ function paperLifecycleNow() {
 function paperLedgerId(prefix) {
   return prefix + "_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2, 8);
 }
+function paperPositionValuation(position = {}) {
+  const clean = sanitizePaperPosition(position);
+  const qty = Math.max(0, Math.floor(finiteOr(clean.qty, 0)));
+  const entry = finiteOr(clean.entry_price, null);
+  const current = finiteOr(clean.current_price, entry);
+  const investedValue = entry === null ? null : round(qty * entry, 2);
+  const marketValue = current === null ? null : round(qty * current, 2);
+  const unrealizedPnl = investedValue === null || marketValue === null ? null : round(marketValue - investedValue, 2);
+  const unrealizedPnlPct = investedValue ? round((unrealizedPnl / investedValue) * 100, 2) : null;
+  return {
+    ...clean,
+    invested_value: investedValue,
+    market_value: marketValue,
+    unrealized_pnl: unrealizedPnl,
+    unrealized_pnl_pct: unrealizedPnlPct
+  };
+}
 function paperLifecycleFunds(paperTrader = {}) {
+  const funds = sanitizePaperFunds(paperTrader.funds || {});
+  const positions = Array.isArray(paperTrader.positions) ? paperTrader.positions.map(paperPositionValuation) : [];
+  const invested = positions.reduce((sum, position) => sum + finiteOr(position.invested_value, 0), 0);
+  const marketValue = positions.reduce((sum, position) => sum + finiteOr(position.market_value, 0), 0);
+  const unrealizedPnl = positions.reduce((sum, position) => sum + finiteOr(position.unrealized_pnl, 0), 0);
+  const totalPnl = round(funds.realized_pnl + unrealizedPnl, 2);
+  return {
+    ...funds,
+    invested_value: round(invested, 2),
+    market_value: round(marketValue, 2),
+    unrealized_pnl: round(unrealizedPnl, 2),
+    total_pnl: totalPnl,
+    equity_value: round(funds.starting_capital + totalPnl, 2),
+    buying_power: round(funds.starting_capital + funds.realized_pnl - invested, 2),
+    open_positions: positions.filter((position) => position.qty > 0).length,
+    open_orders: Array.isArray(paperTrader.orders) ? paperTrader.orders.filter((order) => ["PAPER_CREATED", "PENDING", "OPEN", "TRIGGER_PENDING"].includes(order.status)).length : 0,
+    filled_orders: Array.isArray(paperTrader.orders) ? paperTrader.orders.filter((order) => ["PAPER_FILLED", "FILLED"].includes(order.status)).length : 0,
+    active_gtt: Array.isArray(paperTrader.gtt) ? paperTrader.gtt.filter((plan) => plan.status === "ACTIVE").length : 0,
+    paper_only: true,
+    broker_write_enabled: false
+  };
+}
+async function refreshPaperTraderMarks(state = defaultState(), store = null) {
+  const paperTrader = sanitizePaperTraderState(state.paperTrader || {});
+  const universeBySymbol = new Map(normalizeScannerUniverse(state.universe || []).map((row) => [normalizeSymbol(row.symbol), row]));
+  const keys = unique(paperTrader.positions.map((position) => position.instrument_key || universeBySymbol.get(normalizeSymbol(position.symbol))?.instrument_key).filter(Boolean));
+  if (!keys.length) {
+    return { paperTrader, quote_error: null, quote_as_of: null, marked_positions: 0, unpriced_symbols: paperTrader.positions.map((position) => position.symbol) };
+  }
+  try {
+    const quotePayload = await fetchUpstoxMarketQuotes(keys);
+    const quoteMap = paperEngineQuoteMap(quotePayload);
+    const quoteAsOf = quotePayload.asOf || new Date().toISOString();
+    let markedPositions = 0;
+    const unpricedSymbols = [];
+    const positions = paperTrader.positions.map((position) => {
+      const instrumentKey = position.instrument_key || universeBySymbol.get(normalizeSymbol(position.symbol))?.instrument_key || "";
+      const quote = quoteMap.get(paperEngineQuoteKey(instrumentKey)) || quoteMap.get(normalizeSymbol(position.symbol));
+      const price = finiteOr(quote?.last_price, null);
+      if (price === null) {
+        unpricedSymbols.push(position.symbol);
+        return position;
+      }
+      markedPositions += 1;
+      return sanitizePaperPosition({
+        ...position,
+        instrument_key: instrumentKey,
+        current_price: price,
+        quote_timestamp: quote.timestamp || position.quote_timestamp,
+        checked_at: quote.timestamp || quoteAsOf
+      });
+    });
+    const saved = sanitizePaperTraderState({ ...paperTrader, positions });
+    if (store && markedPositions) await store.saveState({ ...state, paperTrader: saved });
+    return { paperTrader: saved, quote_error: null, quote_as_of: quoteAsOf, marked_positions: markedPositions, unpriced_symbols: unpricedSymbols };
+  } catch (error) {
+    return { paperTrader, quote_error: error.message, quote_as_of: null, marked_positions: 0, unpriced_symbols: paperTrader.positions.map((position) => position.symbol) };
+  }
+}) {
   const funds = sanitizePaperFunds(paperTrader.funds || {});
   const positions = Array.isArray(paperTrader.positions) ? paperTrader.positions.map(sanitizePaperPosition) : [];
   const invested = positions.reduce((sum, position) => sum + finiteOr(position.qty, 0) * finiteOr(position.current_price ?? position.entry_price, 0), 0);
@@ -450,8 +526,28 @@ const PAPER_ORDER_LIFECYCLE_ROUTES = String.raw`
       if (url.pathname === "/api/paper-trader/orders") {
         const store = await getStore();
         const state = await store.getState();
-        const paperTrader = sanitizePaperTraderState(state.paperTrader || {});
-        json(res, 200, { ok: true, engine: PAPER_ORDER_LIFECYCLE_VERSION, paper_only: true, live_orders: false, orders: paperTrader.orders, trades: paperTrader.trades, gtt: paperTrader.gtt, positions: paperTrader.positions, funds: paperLifecycleFunds(paperTrader), last_monitor: paperTrader.last_monitor || null });
+        const marked = await refreshPaperTraderMarks(state, store);
+        const paperTrader = marked.paperTrader;
+        const positions = paperTrader.positions.map(paperPositionValuation);
+        json(res, 200, {
+          ok: true,
+          engine: PAPER_ORDER_LIFECYCLE_VERSION,
+          paper_only: true,
+          live_orders: false,
+          orders: paperTrader.orders,
+          trades: paperTrader.trades,
+          gtt: paperTrader.gtt,
+          positions,
+          funds: paperLifecycleFunds({ ...paperTrader, positions }),
+          mark_to_market: {
+            source: "Upstox Market Quote API",
+            as_of: marked.quote_as_of,
+            marked_positions: marked.marked_positions,
+            unpriced_symbols: marked.unpriced_symbols,
+            quote_error: marked.quote_error
+          },
+          last_monitor: paperTrader.last_monitor || null
+        });
         return;
       }
 `;
