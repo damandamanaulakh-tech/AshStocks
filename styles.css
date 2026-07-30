@@ -3680,3 +3680,57 @@ td small {
     border-width: 5px;
   }
 }
+
+
+/* Paper Book mark-to-market */
+.book-summary {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.pnl-positive {
+  color: var(--green) !important;
+}
+.pnl-negative {
+  color: #ff5d64 !important;
+}
+.pnl-flat {
+  color: var(--text) !important;
+}
+.mark-time,
+.mark-warning {
+  margin: 0 0 10px;
+  font-size: 12px;
+}
+.mark-time {
+  color: var(--muted);
+}
+.mark-warning {
+  color: var(--amber);
+}
+.position-ledger h4 {
+  margin: 0 0 8px;
+}
+.position-ledger td small,
+.order-history td small {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 10px;
+}
+.order-history {
+  margin-top: 14px;
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+}
+.order-history summary {
+  cursor: pointer;
+  color: var(--muted);
+  font-weight: 800;
+}
+.order-history[open] summary {
+  margin-bottom: 10px;
+}
+@media (max-width: 1100px) {
+  .book-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
