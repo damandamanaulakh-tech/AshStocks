@@ -1,4 +1,4 @@
-const DEFAULT_URL = "https://ashstocks-api.onrender.com";
+const DEFAULT_URL = "https://ashstocks.onrender.com";
 const LIVE_URL = String(process.env.LIVE_RENDER_URL || DEFAULT_URL).replace(/\/+$/, "");
 const RETRY_COUNT = Number(process.env.LIVE_RETRY_COUNT || 30);
 const RETRY_DELAY_MS = Number(process.env.LIVE_RETRY_DELAY_MS || 20_000);
