@@ -22,6 +22,7 @@ const STOCK_SELECTION_RELEASE_AUDIT = Object.freeze(${JSON.stringify({
   checksumFailures: releaseManifest.audit.checksumFailures,
   invalidArchives: releaseManifest.audit.invalidArchives,
   vixAssets: releaseManifest.audit.vixAssets,
+  indiaVixSeries: releaseManifest.audit.contentDiscoveredSeries.indiaVix,
 })});
 ${embeddedEngine}
 `;

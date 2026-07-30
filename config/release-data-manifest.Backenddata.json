@@ -16,6 +16,23 @@
       "2021_06.zip"
     ],
     "vixAssets": [],
+    "contentDiscoveredSeries": {
+      "indiaVix": {
+        "asset": "AM.07.Parameter.Files.zip",
+        "member": "AM 07 Parameter Files/Index_daily_15Y.csv",
+        "sourceRows": 3676,
+        "usableRows": 3659,
+        "startDate": "2011-06-08",
+        "endDate": "2026-06-05",
+        "fields": [
+          "india_vix_open",
+          "india_vix_high",
+          "india_vix_low",
+          "india_vix_close"
+        ],
+        "checksumCovered": true
+      }
+    },
     "duplicateChecksumGroups": [
       [
         "fii_stats_08-Jun-2026.1.xls",

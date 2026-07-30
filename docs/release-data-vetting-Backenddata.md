@@ -13,7 +13,7 @@ Repository: `damandamanaulakh-tech/AshStocks`
 - Valid ZIP containers: 115.
 - Invalid ZIP: `2021_06.zip` (valid `PK` prefix but corrupt/missing central directory).
 - Exact duplicate assets: `fii_stats_08-Jun-2026.1.xls` and `fii_stats_08-Jun-2026.xls`.
-- VIX-named assets: 0.
+- VIX-named assets: 0. Content-level scan found the VIX history inside `AM.07.Parameter.Files.zip`.
 - Machine-readable detail: `config/release-data-manifest.Backenddata.json`.
 
 ## Vetted Data Layers
@@ -27,7 +27,7 @@ Repository: `damandamanaulakh-tech/AshStocks`
 | Participant OI/volume | 2026-06-08 snapshot | Annotation only |
 | FII derivatives | 2026-06-05 and 2026-06-08 | Annotation only |
 | F&O bhavcopy/options | One-date/sample coverage | Parser/snapshot only |
-| India VIX | No release asset | External runtime feed required |
+| India VIX | 3,676 source rows; 3,659 usable; 2011-06-08 to 2026-06-05 | Ready for historical calibration; fresh runtime feed still required |
 
 ## Chronological Selection Test
 
@@ -43,11 +43,25 @@ Trend, volume, delivery, stock-FII, and OI are tie-breakers or annotations. They
 
 ## Market Overlays
 
+- The supplied backtest workbook's symmetric ±12% return cleaning and −18% drawdown governor are explicit active parameters.
+- `portfolioDrawdownPct` is now required at runtime; a missing/invalid value fails closed, and a drawdown at or below −18% blocks new entries.
 - `FII 5D < DII 5D` produced 0.5369 percentage points lower average next-20-day market return.
 - Negative rate was 35.62% when `FII < DII`, versus 30.03% otherwise.
 - It is therefore a 0.75 paper position multiplier, not a stock-ranking input.
 - `FII < 0` and `DII > 0` is routed as DII-cushioned foreign selling.
-- VIX uses the approved external ladder, but the release cannot validate it because no VIX series is present.
+- India VIX was discovered at `AM.07.Parameter.Files.zip::AM 07 Parameter Files/Index_daily_15Y.csv`.
+- High and extreme VIX did not justify entry blocking: full-sample mean next-20-session Nifty returns were +1.6659% and +3.9390%, respectively.
+- Forward annualized realized volatility increased from 12.1745% in LOW to 15.2766% / 18.7161% / 24.1982% in ELEVATED / HIGH / EXTREME.
+- The calibrated paper sizing ladder is therefore 1.15 / 1.00 / 0.80 / 0.65 / 0.50, with no VIX-only entry block.
+- The 2022–2026 extreme-VIX holdout has only 23 observations, so the 0.50 multiplier remains paper-only and conservative.
+
+## Supplied Workbook Cross-Check
+
+- `AM07_FO_OI_Signals_Report.xlsx`: 25 top-contract observations for 2026-06-08 plus 211 FPI and 211 MWPL rows.
+- OI labels are retained as zero-weight confirmation/annotation fields. `Heavy_Buildup` is participation-only and `Strong_Long_Unwinding` is bearish annotation.
+- FPI categories follow an almost exact 3:2:1 split and their total is 59.9875%–60.0000% of MWPL across all 211 rows. That deterministic relationship is not eligible for ranking.
+- `AM07_Backtest_with_India_VIX.xlsx`: records the approved ±12% cleaning, 10% maximum position, 5% cash buffer, 0.08% one-way cost, and −18% drawdown governor.
+- Its reported 52.9% maximum drawdown exceeded the stated governor, so its 1.68 Sharpe and 441.8% total return are not treated as independent edge confirmation.
 
 ## Executable Output
 

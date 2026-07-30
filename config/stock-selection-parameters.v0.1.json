@@ -1,5 +1,6 @@
 {
   "schemaVersion": "0.1",
+  "parameterRevision": "0.1.1",
   "asOf": "2026-07-30",
   "mode": {
     "paperTradeOnly": true,
@@ -14,7 +15,9 @@
     "invalidArchives": [
       "2021_06.zip"
     ],
-    "vixAssetPresent": false
+    "vixNamedAssetPresent": false,
+    "vixHistoricalSeriesPresent": true,
+    "vixHistoricalMember": "AM.07.Parameter.Files.zip::AM 07 Parameter Files/Index_daily_15Y.csv"
   },
   "universe": {
     "source": "Back.Test.Claude.zip",
@@ -22,6 +25,14 @@
     "minimumHistorySessions": 252,
     "maximumDataAgeSessions": 1,
     "selectionCount": 10
+  },
+  "dataPreparation": {
+    "returnCleaning": {
+      "method": "symmetric_clip",
+      "lowerPct": -12,
+      "upperPct": 12,
+      "status": "active_upstream_feature_control"
+    }
   },
   "primaryRank": {
     "id": "SEL_MOMENTUM_20_TOP10",
@@ -75,12 +86,40 @@
         "Short_Covering",
         "Strong_Long_Buildup"
       ],
+      "participationOnlyLabels": [
+        "Heavy_Buildup"
+      ],
+      "bearishLabels": [
+        "Strong_Long_Unwinding"
+      ],
       "scoreWeightPct": 0,
       "use": "current_snapshot_annotation_only",
       "status": "snapshot_only_confirmation"
+    },
+    "fpiMwpl": {
+      "field": "fpiCategoryTotalPctMwpl",
+      "coverageSymbols": 211,
+      "observedRange": [
+        0.599875255,
+        0.6
+      ],
+      "scoreWeightPct": 0,
+      "use": "audit_annotation_only",
+      "status": "deterministic_ratio_not_rank_eligible"
     }
   },
   "marketOverlays": {
+    "portfolioDrawdown": {
+      "field": "portfolioDrawdownPct",
+      "triggerPctInclusive": -18,
+      "allowedRangePct": [
+        -100,
+        0
+      ],
+      "blockNewEntries": true,
+      "positionMultiplier": 0,
+      "status": "active_paper_fail_closed_governor"
+    },
     "fiiLessThanDii5d": {
       "formula": "fii5dNetCr < dii5dNetCr",
       "positionMultiplier": 0.75,
@@ -93,20 +132,24 @@
       "status": "active_paper_caution"
     },
     "indiaVix": {
-      "source": "external_runtime_feed_required",
-      "releaseDataReady": false,
+      "historicalSource": "AM.07.Parameter.Files.zip::AM 07 Parameter Files/Index_daily_15Y.csv",
+      "runtimeSource": "fresh_external_feed_required",
+      "releaseHistoricalReady": true,
+      "runtimeFreshFeedRequired": true,
+      "maximumDataAgeSessions": 1,
       "veryLowUpperExclusive": 12,
       "veryLowMultiplier": 1.15,
       "lowUpperExclusive": 16,
       "lowMultiplier": 1,
       "elevatedUpperExclusive": 20,
-      "elevatedMultiplier": 0.75,
+      "elevatedMultiplier": 0.8,
       "highUpperExclusive": 25,
-      "highMultiplier": 0.45,
-      "highBlockNewEntries": true,
-      "extremeMultiplier": 0.1,
-      "extremeBlockNewEntries": true,
-      "status": "approved_external_overlay_unverified_by_release"
+      "highMultiplier": 0.65,
+      "highBlockNewEntries": false,
+      "extremeMultiplier": 0.5,
+      "extremeBlockNewEntries": false,
+      "calibration": "risk-normalized to LOW-regime forward realized volatility; upside capped at 1.15",
+      "status": "active_paper_release_validated"
     }
   },
   "positionSizing": {
@@ -133,6 +176,62 @@
     },
     "fiiLessThanDii20dMarketDelta": -0.005368887,
     "fiiLessThanDiiNegativeRate": 0.356238698,
-    "fiiGreaterOrEqualDiiNegativeRate": 0.300304878
+    "fiiGreaterOrEqualDiiNegativeRate": 0.300304878,
+    "indiaVix": {
+      "sourceRows": 3676,
+      "usableRows": 3659,
+      "coverageStart": "2011-06-08",
+      "coverageEnd": "2026-06-05",
+      "method": "regime at t; Nifty entry t+1; 20-session return, maximum adverse excursion, and annualized realized volatility",
+      "meanForward20Return": {
+        "veryLow": 0.008810698,
+        "low": 0.00353898,
+        "elevated": 0.002803815,
+        "high": 0.016658592,
+        "extreme": 0.039389962
+      },
+      "meanForwardRealizedVolatility": {
+        "veryLow": 0.091496143,
+        "low": 0.121745163,
+        "elevated": 0.15276595,
+        "high": 0.187161156,
+        "extreme": 0.241982163
+      },
+      "holdout2022To2026ExtremeObservations": 23,
+      "entryBlockDecision": "rejected_for_high_and_extreme_vix"
+    },
+    "suppliedWorkbookCrossCheck": {
+      "foOiReport": {
+        "source": "AM07_FO_OI_Signals_Report.xlsx",
+        "snapshotDate": "2026-06-08",
+        "topContracts": 25,
+        "fpiRows": 211,
+        "mwplRows": 211,
+        "fpiCategorySplitApprox": "3:2:1",
+        "fpiTotalPctMwplRange": [
+          0.599875255,
+          0.6
+        ],
+        "decision": "OI labels may annotate; FPI/MWPL ratios do not rank"
+      },
+      "legacyVixBacktest": {
+        "source": "AM07_Backtest_with_India_VIX.xlsx",
+        "periodStart": "2018-01-01",
+        "periodEnd": "2024-06-28",
+        "returnClipPct": 12,
+        "drawdownGovernorPct": -18,
+        "reportedMaxDrawdownPct": 52.9,
+        "reportedTrades": 4610,
+        "reportedSharpe": 1.68,
+        "legacyVixMultipliers": [
+          1.15,
+          1,
+          0.75,
+          0.45,
+          0.1
+        ],
+        "decision": "retain cleaning and drawdown controls; supersede VIX blocks and multipliers with release-series risk calibration"
+      }
+    }
   }
 }
