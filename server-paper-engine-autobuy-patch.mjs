@@ -42,13 +42,24 @@ function paperEngineOpenSymbols(state = defaultState()) {
 function paperEngineCandidateTickets(plan = {}, state = defaultState(), settings = paperEngineAutoBuySettings(), scan = {}) {
   const openSymbols = paperEngineOpenSymbols(state);
   const plannedBySymbol = new Map((Array.isArray(plan.buy_queue) ? plan.buy_queue : []).map((ticket) => [normalizeSymbol(ticket.symbol), ticket]));
-  const traderSettings = paperTraderSettings(plan.settings || {});
+  const baseTraderSettings = paperTraderSettings(plan.settings || {});
+  const kelly = paperKellySizing(sanitizePaperTraderState(state.paperTrader || {}));
+  if (kelly.blockNewEntries) return [];
+  const effectiveMaxPositionPct = kelly.applied
+    ? Math.min(baseTraderSettings.maxPositionPct, finiteOr(kelly.maximumPositionPct, 0) / 100)
+    : baseTraderSettings.maxPositionPct;
+  const traderSettings = { ...baseTraderSettings, maxPositionPct: effectiveMaxPositionPct };
   const asOf = scan.asOf || new Date().toISOString();
   return (Array.isArray(scan.rows) ? scan.rows : [])
     .filter((scanRow) => String(scanRow.decision || "").toUpperCase() === settings.requireScannerDecision)
     .map((scanRow, index) => {
       const symbol = normalizeSymbol(scanRow.symbol);
       const ticket = plannedBySymbol.get(symbol) || paperBuyTicket(enrichPaperCandidate(scanRow, traderSettings), index, traderSettings, asOf);
+      const price = finiteOr(ticket.close, finiteOr(scanRow.close, null));
+      const maximumQty = price > 0
+        ? Math.max(0, Math.floor(traderSettings.startingCapital * effectiveMaxPositionPct / price))
+        : 0;
+      const qty = Math.min(Math.max(0, Math.floor(finiteOr(ticket.qty, 0))), maximumQty);
       return {
         ...ticket,
         symbol,
@@ -58,6 +69,10 @@ function paperEngineCandidateTickets(plan = {}, state = defaultState(), settings
         scanner_decision: scanRow.decision,
         selection_contract: "SELECT_FINAL",
         close: finiteOr(scanRow.close, ticket.close),
+        qty,
+        estimated_value: round(qty * price, 2),
+        kelly_status: kelly.status,
+        effective_max_position_pct: round(effectiveMaxPositionPct * 100, 4),
         parameter_tunnel: scanRow.parameter_tunnel || ticket.parameter_tunnel,
         parameter_selection_effect: scanRow.parameter_selection_effect || ticket.parameter_selection_effect
       };
@@ -307,6 +322,7 @@ const PAPER_ENGINE_RUN_REPLACEMENT = String.raw`async function runPaperEngineOnc
   const autoSettings = paperEngineAutoBuySettings();
   const plan = buildPaperTraderPlan(scan, state, { settings: state.scannerSettings || {} });
   let workingState = state;
+  const kelly = paperKellySizing(sanitizePaperTraderState(workingState.paperTrader || {}));
   const selectedSymbols = unique((scan.rows || [])
     .filter((row) => String(row.decision || "").toUpperCase() === autoSettings.requireScannerDecision)
     .map((row) => normalizeSymbol(row.symbol))
@@ -443,6 +459,13 @@ const PAPER_ENGINE_RUN_REPLACEMENT = String.raw`async function runPaperEngineOnc
       fill_method: "UPSTOX_WEIGHTED_ASK_OR_LTP",
       required_decision: autoSettings.requireScannerDecision,
       max_buys_per_run: autoSettings.maxBuysPerRun,
+      kelly,
+      effective_max_position_pct: kelly.applied
+        ? Math.min(
+          paperTraderSettings(plan.settings || {}).maxPositionPct * 100,
+          finiteOr(kelly.maximumPositionPct, 0)
+        )
+        : paperTraderSettings(plan.settings || {}).maxPositionPct * 100,
       selected_in_scan: selectedSymbols.length,
       already_open_before: selectedSymbols.filter((symbol) => openBefore.has(symbol)).length,
       candidates_ready: tickets.length,

@@ -1,7 +1,7 @@
 {
   "schemaVersion": "0.1",
-  "parameterRevision": "0.1.1",
-  "asOf": "2026-07-30",
+  "parameterRevision": "0.2.0",
+  "asOf": "2026-07-31",
   "mode": {
     "paperTradeOnly": true,
     "liveReady": false,
@@ -156,7 +156,31 @@
     "maximumPositionPct": 10,
     "cashBufferPct": 5,
     "maximumPortfolioHeatPct": 25,
-    "transactionCostOneWayPct": 0.08
+    "transactionCostOneWayPct": 0.08,
+    "kelly": {
+      "id": "RISK_KELLY_QUARTER_PAPER",
+      "enabled": true,
+      "mode": "paper_only",
+      "inputSource": "persisted_paper_trader_sell_trades",
+      "minimumClosedTrades": 100,
+      "minimumDistinctSymbols": 20,
+      "minimumWins": 20,
+      "minimumLosses": 20,
+      "maximumClosedTradesLookback": 300,
+      "fullConfidenceClosedTrades": 300,
+      "priorEquivalentTrades": 50,
+      "priorWinRate": 0.5,
+      "fractionOfKelly": 0.25,
+      "maximumKellyPositionPct": 10,
+      "applyTransactionCosts": true,
+      "returnClipLowerPct": -12,
+      "returnClipUpperPct": 12,
+      "calibrationBehavior": "report_only_base_paper_sizing_continues",
+      "noPositiveEdgeBehavior": "block_new_entries",
+      "liveReady": false,
+      "edgeConfirmed": false,
+      "status": "active_paper_calibration"
+    }
   },
   "validation": {
     "method": "20-session rebalance; feature day t; return close[t+20]/close[t+1]-1",
@@ -177,6 +201,14 @@
     "fiiLessThanDii20dMarketDelta": -0.005368887,
     "fiiLessThanDiiNegativeRate": 0.356238698,
     "fiiGreaterOrEqualDiiNegativeRate": 0.300304878,
+    "kelly": {
+      "formula": "raw = p - (1-p)/b; applied = max(0, raw) * 0.25 * min(1, closedTrades/300)",
+      "winRateMethod": "Beta prior equivalent to 25 wins and 25 losses",
+      "payoffMethod": "mean positive net return / absolute mean negative net return",
+      "costMethod": "subtract 0.08% from reconstructed entry notional and exit value",
+      "enforcementGate": "100 valid closes, 20 symbols, 20 wins, and 20 losses",
+      "status": "paper_only_not_live_edge_confirmation"
+    },
     "indiaVix": {
       "sourceRows": 3676,
       "usableRows": 3659,

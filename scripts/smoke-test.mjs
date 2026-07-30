@@ -59,6 +59,26 @@ function proofCandles(offset = 0) {
   return candles;
 }
 
+function kellyClosedTrades(wins, losses, winPnl = 100, lossPnl = -50) {
+  return Array.from({ length: wins + losses }, (_, index) => {
+    const realizedPnl = index < wins ? winPnl : lossPnl;
+    const entryValue = 1000;
+    return {
+      id: `KELLY_TRADE_${index}`,
+      order_id: `KELLY_ORDER_${index}`,
+      symbol: `KELLY${String(index % 20).padStart(2, "0")}`,
+      side: "SELL",
+      qty: 10,
+      price: (entryValue + realizedPnl) / 10,
+      value: entryValue + realizedPnl,
+      realized_pnl: realizedPnl,
+      traded_at: `2026-07-${String((index % 28) + 1).padStart(2, "0")}`,
+      paper_only: true,
+      broker_write_enabled: false,
+    };
+  });
+}
+
 async function runProductionMongoHealthGuard() {
   const script = `
 process.env.NODE_ENV = "production";
@@ -332,6 +352,134 @@ async function main() {
     assert(parameters.body.parameter_tunnel.total === 175, "parameter API should publish all 175 reviewed nodes");
     assert(new Set(parameters.body.parameter_tunnel.parameters.map((row) => row.id)).size === 175, "parameter IDs should be unique");
 
+    const stockSelectionParameters = await request("/api/stock-selection/parameters");
+    assert(stockSelectionParameters.response.status === 200, "stock-selection parameters should be readable");
+    assert(stockSelectionParameters.body.parameters.parameterRevision === "0.2.0", "stock-selection parameters should expose Kelly revision 0.2.0");
+    assert(stockSelectionParameters.body.parameters.positionSizing.kelly.fractionOfKelly === 0.25, "stock-selection parameters should expose quarter-Kelly");
+
+    const stockSelectionStocks = Array.from({ length: 12 }, (_, index) => ({
+      symbol: `KS${index}`,
+      historySessions: 500,
+      dataAgeSessions: 0,
+      momentum20Percentile: (index + 1) / 12,
+      closeAboveMa50: true,
+      volumeRatio20: 2,
+      return1d: 0.01,
+    }));
+    const stockSelectionInput = {
+      market: {
+        indiaVix: 14,
+        fii5dNetCr: 100,
+        dii5dNetCr: 50,
+        portfolioDrawdownPct: -5,
+      },
+      stocks: stockSelectionStocks,
+    };
+    const stockSelection = await request("/api/stock-selection/evaluate", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        ...stockSelectionInput,
+        paperTrades: [{ id: "CLIENT_INJECTION", side: "SELL", value: 1100, realized_pnl: 100 }],
+      }),
+    });
+    assert(stockSelection.response.status === 200, "stock-selection evaluation should work");
+    assert(stockSelection.body.result.kelly.status === "CALIBRATING", "persisted empty ledger should keep Kelly calibrating");
+    assert(stockSelection.body.result.kelly.validClosedTrades === 0, "client-supplied trades must not override the persisted Kelly ledger");
+    assert(stockSelection.body.result.selected[0].maximumPositionPct === 10, "calibrating Kelly should not stop paper sample generation");
+
+    const positiveKellyState = await request("/api/state", {
+      method: "PUT",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        state: {
+          ...state.body.state,
+          paperTrader: {
+            ...(state.body.state.paperTrader || {}),
+            trades: kellyClosedTrades(60, 40),
+          },
+        },
+      }),
+    });
+    assert(positiveKellyState.response.status === 200, "positive Kelly paper ledger should persist");
+    const activeKellySelection = await request("/api/stock-selection/evaluate", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(stockSelectionInput),
+    });
+    assert(activeKellySelection.body.result.kelly.status === "ACTIVE_PAPER_ONLY", "persisted positive sample should activate Kelly");
+    assert(activeKellySelection.body.result.selected[0].maximumPositionPct > 2.8, "active quarter-Kelly cap should be calculated");
+    assert(activeKellySelection.body.result.selected[0].maximumPositionPct < 2.9, "active quarter-Kelly cap should remain conservative");
+
+    const activeKellyOversize = await request("/api/paper-trader/order", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        symbol: "KELLYACTIVE",
+        side: "BUY",
+        qty: 1000,
+        price: 100,
+        source: "smoke-active-kelly-cap",
+        paper_only: true,
+        broker_write_enabled: false,
+      }),
+    });
+    assert(activeKellyOversize.response.status === 409, "active Kelly should reject a position below the base cap but above the Kelly cap");
+    assert(activeKellyOversize.body.kelly?.status === "ACTIVE_PAPER_ONLY", "lifecycle rejection should expose active Kelly evidence");
+
+    const noEdgeKellyState = await request("/api/state", {
+      method: "PUT",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        state: {
+          ...state.body.state,
+          paperTrader: {
+            ...(state.body.state.paperTrader || {}),
+            trades: kellyClosedTrades(40, 60, 20, -50),
+          },
+        },
+      }),
+    });
+    assert(noEdgeKellyState.response.status === 200, "no-edge Kelly paper ledger should persist");
+    const noEdgeOrder = await request("/api/paper-trader/order", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        symbol: "KELLYNOEDGE",
+        side: "BUY",
+        qty: 1,
+        price: 100,
+        source: "smoke-no-edge-kelly",
+        paper_only: true,
+        broker_write_enabled: false,
+      }),
+    });
+    assert(noEdgeOrder.response.status === 409, "non-positive post-cost Kelly should block even a small new entry");
+    assert(noEdgeOrder.body.kelly?.status === "NO_POSITIVE_EDGE", "blocked lifecycle entry should expose no-positive-edge Kelly state");
+
+    const restoredState = await request("/api/state", {
+      method: "PUT",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ state: state.body.state }),
+    });
+    assert(restoredState.response.status === 200, "smoke state should reset after Kelly ledger tests");
+
+    const oversizedPaperOrder = await request("/api/paper-trader/order", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        symbol: "KELLYCAP",
+        side: "BUY",
+        qty: 2000,
+        price: 1000,
+        source: "smoke-kelly-cap",
+        paper_only: true,
+        broker_write_enabled: false,
+      }),
+    });
+    assert(oversizedPaperOrder.response.status === 409, "paper lifecycle should reject a position above the effective Kelly/base cap");
+    assert(String(oversizedPaperOrder.body.order?.rejection_reason || "").includes("effective Kelly/base cap"), "paper lifecycle rejection should name the Kelly/base cap");
+
     const defaultScan = await request("/api/scanner/run", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({}) });
     assert(defaultScan.response.status === 200, "default scanner run should work");
     assert(defaultScan.body.summary.DATA_NEEDED > 0, "default pool should honestly require candles before selection");
@@ -449,7 +597,7 @@ async function main() {
     assert(upstoxStatusAfter.body.status.token_visible === true, "Upstox status should detect saved token");
     assert(upstoxStatusAfter.body.status.token_source === "manual_paste", "Upstox status should read token from store");
 
-    console.log(JSON.stringify({ ok: true, checks: ["mongo-file-fallback", "data-bank-status", "scan-ledger", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "parameter-tunnel-175", "paper-engine-real-quote-fill", "upstox-guard", "paper-engine-status", "paper-engine-guard", "q1-status", "q1-upload", "q1-render-guard", "upstox-oauth-start", "upstox-token-paste"] }));
+    console.log(JSON.stringify({ ok: true, checks: ["mongo-file-fallback", "data-bank-status", "scan-ledger", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "parameter-tunnel-175", "kelly-parameters", "kelly-persisted-ledger", "kelly-active-sizing", "kelly-lifecycle-cap", "kelly-no-edge-block", "paper-engine-real-quote-fill", "upstox-guard", "paper-engine-status", "paper-engine-guard", "q1-status", "q1-upload", "q1-render-guard", "upstox-oauth-start", "upstox-token-paste"] }));
   } finally {
     await Promise.all([...Q1_INPUTS, STATE_FILE, SCAN_LEDGER_FILE, UPSTOX_AUTH_FILE].map((file) => fs.unlink(file).catch((error) => {
       if (error.code !== "ENOENT") throw error;

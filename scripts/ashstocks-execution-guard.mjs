@@ -157,6 +157,11 @@ mustMatch("app-candle-trigger-tape.js", /renderSelected[\s\S]*Active Parameter[\
 mustMatch("app-candle-trigger-tape.js", /submitCandlePaperAction[\s\S]*candle_status[\s\S]*candle_patterns[\s\S]*paper_only: true[\s\S]*fetch\("\/api\/paper-trader\/order"/, "candle paper action payload");
 mustMatch("app-upstox-reasoning-dock.js", /Quote proof[\s\S]*quoteStatus[\s\S]*Depth/, "quote proof and depth gate in reasoning dock");
 mustMatch("app-upstox-parameter-exact-sync.js", /setTimeout\(\(\) => syncExactParameter\(parameterNumber\), 0\)/, "post-click exact parameter sync");
+mustMatch(
+  "server-paper-engine-autobuy-patch.mjs",
+  /paperEngineCandidateTickets[\s\S]*paperKellySizing[\s\S]*effectiveMaxPositionPct[\s\S]*maximumQty/,
+  "automatic paper tickets use the Kelly position cap"
+);
 
 if (failures.length) {
   console.error("AshStocks execution guard failed:");

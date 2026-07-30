@@ -11,7 +11,7 @@ const embeddedEngine = readFileSync(
   "utf8",
 )
   .replaceAll("export function ", "function ")
-  .replace(/\nexport \{ evaluateSelectionMarketOverlay, evaluateSelectionStock \};\s*$/, "");
+  .replace(/\nexport \{[^}]+\};\s*$/, "");
 
 const STOCK_SELECTION_FUNCTIONS = String.raw`
 const STOCK_SELECTION_PARAMETERS = Object.freeze(${JSON.stringify(stockSelectionParameters)});
@@ -35,7 +35,10 @@ const STOCK_SELECTION_ROUTES = String.raw`
       if (url.pathname === "/api/stock-selection/evaluate") {
         if (req.method !== "POST") { json(res, 405, { ok: false, error: "Method not allowed" }); return; }
         const body = await readJsonBody(req);
-        json(res, 200, { ok: true, result: selectTradeInCandidates(body, STOCK_SELECTION_PARAMETERS) });
+        const store = await getStore();
+        const state = await store.getState();
+        const paperTrades = Array.isArray(state?.paperTrader?.trades) ? state.paperTrader.trades : [];
+        json(res, 200, { ok: true, result: selectTradeInCandidates({ ...body, paperTrades }, STOCK_SELECTION_PARAMETERS) });
         return;
       }
 `;
