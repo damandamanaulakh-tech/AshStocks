@@ -56,3 +56,7 @@ Missing required risk inputs fail closed to 25% exposure.
 ## Additional audited evidence
 
 - `docs/evidence/AM07_GROK_WORKBOOK_AUDIT_2026-07-30.md` — extracted F&O/OI and India VIX parameters, recalculation checks, provenance findings, and acceptance decisions.
+
+## User-approved paper parameter promotion — v2.2
+
+On 2026-07-30 the user approved all parameters extracted from the two GROK AM07 workbooks for use in the paper engine. The active executable registry is now `config/ash-stock-parameters.v2.2.json`. This approval activates the rules but does not change `EDGE_CONFIRMED`, which remains false pending the statistical promotion gates above.
