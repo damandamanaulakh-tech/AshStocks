@@ -29,7 +29,7 @@ for (const text of [
   assert(source.includes(text), `server-candle-pattern-patch.mjs missing ${text}`);
 }
 
-const match = source.match(/const CANDLE_PATTERN_FUNCTIONS = String\.raw`([\s\S]*?)`;\n\nexport function/);
+const match = source.match(/const CANDLE_PATTERN_FUNCTIONS = String\.raw`([\s\S]*?)`;\r?\n\r?\nexport function/);
 assert(match, "could not extract CANDLE_PATTERN_FUNCTIONS");
 
 if (match) {
