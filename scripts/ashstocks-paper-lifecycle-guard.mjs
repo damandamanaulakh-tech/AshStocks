@@ -22,7 +22,17 @@ function mustMatch(file, regex, reason) {
 }
 
 for (const text of [
-  "ashstocks-paper-order-lifecycle-v0.2",
+  "ashstocks-paper-order-lifecycle-v0.4-capital-closed-trades",
+  "PAPER_CAPITAL_POLICY",
+  "minimumEntryValue",
+  "maximumCandidateEntries",
+  "maximumOpenPositions",
+  "Insufficient paper buying power",
+  "Paper BUY must be at least Rs",
+  "paperClosedTradeSummary",
+  "closed_trades",
+  "return_pct",
+  "holding_days",
   "/api/paper-trader/monitor",
   "applyPaperLifecycleMonitor",
   "paperPriceMap",
@@ -64,6 +74,16 @@ mustMatch(
   /request\.side === "BUY"[\s\S]*kelly\.blockNewEntries[\s\S]*proposedValue > maximumValue/,
   "paper BUY and GTT entries should pass the Kelly/base position cap"
 );
+mustMatch(
+  "server-paper-order-lifecycle-patch.mjs",
+  /requestValue < PAPER_CAPITAL_POLICY\.minimumEntryValue[\s\S]*requestValue > finiteOr\(lifecycleFunds\.buying_power/,
+  "paper BUY should enforce the one-lakh minimum and real buying power"
+);
+mustMatch(
+  "server-paper-order-lifecycle-patch.mjs",
+  /entry_price: entryPrice[\s\S]*exit_price: request\.price[\s\S]*return_pct:[\s\S]*holding_days:/,
+  "manual SELL should persist complete closed-trade return evidence"
+);
 
 for (const text of [
   "/api/paper-trader/monitor",
@@ -76,6 +96,34 @@ for (const text of [
 ]) {
   mustInclude("app-paper-order-lifecycle.js", text);
 }
+
+for (const text of [
+  "Closed Trades",
+  "data-paper-ledger-tab=\"closed\"",
+  "closed_trades",
+  "realized return",
+  "Starting capital",
+  "Buying power",
+  "minimum entry"
+]) {
+  mustInclude("app.js", text);
+}
+
+for (const text of [
+  "#ordersSection.section.active",
+  "overflow-y: auto",
+  ".ledger-tabs",
+  ".ledger-scroll"
+]) {
+  mustInclude("styles.css", text);
+}
+
+const capitalPolicy = JSON.parse(read("config/paper-trader-capital.v0.4.json") || "{}");
+if (capitalPolicy.startingCapital !== 5000000) failures.push("capital policy: startingCapital must be 5000000");
+if (capitalPolicy.minimumEntryValue !== 100000) failures.push("capital policy: minimumEntryValue must be 100000");
+if (capitalPolicy.maximumCandidateEntries !== 80) failures.push("capital policy: maximumCandidateEntries must be 80");
+if (capitalPolicy.deploymentTargetPct !== 100) failures.push("capital policy: deploymentTargetPct must be 100");
+if (capitalPolicy.affordableOpenPositionsAtMinimum !== 50) failures.push("capital policy: ₹50 lakh / ₹1 lakh must equal 50 affordable positions");
 
 for (const text of [
   ".uw-paper-toolbar",

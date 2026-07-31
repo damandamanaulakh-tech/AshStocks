@@ -383,6 +383,16 @@ async function main() {
     assert(health.response.status === 200, "health should be 200 in local smoke");
     assert(health.body.provider === "AshStocks India Scanner", "health should expose scanner provider");
     assert(health.body.data_bank.requirements.daily_candles_required === 253, "health should expose data-bank candle requirement");
+    const servedApp = await request("/app.js");
+    const servedAppText = servedApp.body;
+    assert(servedApp.response.status === 200, "local server should serve app.js");
+    assert(servedAppText.includes("Closed Trades"), "served Paper Book UI should include the Closed Trades option");
+    assert(servedAppText.includes("data-paper-ledger-tab=\"closed\""), "served Paper Book UI should wire the closed-trade tab");
+    const servedStyles = await request("/styles.css");
+    const servedStylesText = servedStyles.body;
+    assert(servedStyles.response.status === 200, "local server should serve styles.css");
+    assert(servedStylesText.includes("#ordersSection.section.active"), "served Paper Book CSS should own desktop scrolling");
+    assert(servedStylesText.includes("overflow-y: auto"), "served Paper Book CSS should allow vertical scrolling");
 
     const ready = await request("/api/ready");
     assert(ready.response.status === 200, "ready should be 200 in local smoke");
@@ -392,6 +402,11 @@ async function main() {
     const state = await request("/api/state");
     assert(state.response.status === 200, "state should be readable");
     assert(Array.isArray(state.body.state.universe), "state should include Indian universe");
+    const initialPaperLedger = await request("/api/paper-trader/orders");
+    assert(initialPaperLedger.response.status === 200, "paper ledger should be readable");
+    assert(initialPaperLedger.body.funds.starting_capital === 5000000, "paper capital must be Rs 50 lakh");
+    assert(initialPaperLedger.body.capital_policy.minimumEntryValue === 100000, "paper lifecycle must expose the Rs 1 lakh entry minimum");
+    assert(initialPaperLedger.body.capital_policy.maximumCandidateEntries === 80, "paper lifecycle must expose up to 80 eligible entries");
 
     const dataBank = await request("/api/data-bank/status");
     assert(dataBank.response.status === 200, "data-bank status should be readable");
@@ -470,7 +485,7 @@ async function main() {
       body: JSON.stringify({
         symbol: "KELLYACTIVE",
         side: "BUY",
-        qty: 1000,
+        qty: 1500,
         price: 100,
         source: "smoke-active-kelly-cap",
         paper_only: true,
@@ -516,6 +531,66 @@ async function main() {
       body: JSON.stringify({ state: state.body.state }),
     });
     assert(restoredState.response.status === 200, "smoke state should reset after Kelly ledger tests");
+
+    const belowMinimumOrder = await request("/api/paper-trader/order", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        symbol: "MINENTRY",
+        side: "BUY",
+        qty: 999,
+        price: 100,
+        source: "smoke-minimum-entry",
+        paper_only: true,
+        broker_write_enabled: false,
+      }),
+    });
+    assert(belowMinimumOrder.response.status === 409, "paper BUY below Rs 1 lakh must be rejected");
+    assert(String(belowMinimumOrder.body.order?.rejection_reason || "").includes("at least Rs 100000"), "minimum-entry rejection should expose the exact threshold");
+
+    const lifecycleBuy = await request("/api/paper-trader/order", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        symbol: "CLOSEDPROOF",
+        side: "BUY",
+        qty: 1000,
+        price: 100,
+        source: "smoke-closed-trade-buy",
+        paper_only: true,
+        broker_write_enabled: false,
+      }),
+    });
+    assert(lifecycleBuy.response.status === 200, "Rs 1 lakh paper BUY should fill");
+    const lifecycleSell = await request("/api/paper-trader/order", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        symbol: "CLOSEDPROOF",
+        side: "SELL",
+        qty: 1000,
+        price: 110,
+        thesis: "smoke lifecycle close",
+        source: "smoke-closed-trade-sell",
+        paper_only: true,
+        broker_write_enabled: false,
+      }),
+    });
+    assert(lifecycleSell.response.status === 200, "paper SELL should close the proof position");
+    const closedLedger = await request("/api/paper-trader/orders");
+    const closedProof = closedLedger.body.closed_trades.find((trade) => trade.symbol === "CLOSEDPROOF");
+    assert(closedProof?.entry_value === 100000, "closed trade should retain entry value");
+    assert(closedProof?.exit_value === 110000, "closed trade should retain exit value");
+    assert(closedProof?.realized_pnl === 10000, "closed trade should retain realized P&L");
+    assert(closedProof?.return_pct === 10, "closed trade should expose the sold-stock return");
+    assert(closedProof?.close_reason === "smoke lifecycle close", "closed trade should retain its close reason");
+
+    const restoredAfterLifecycle = await request("/api/state", {
+      method: "PUT",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ state: state.body.state }),
+    });
+    assert(restoredAfterLifecycle.response.status === 200, "smoke state should reset after closed-trade proof");
 
     const oversizedPaperOrder = await request("/api/paper-trader/order", {
       method: "POST",
@@ -602,7 +677,8 @@ async function main() {
     assert(paperStatus.body.status.safety.paper_only === true, "paper-engine should be paper-only");
     assert(paperStatus.body.status.schedule_mode === "continuous_market_hours", "paper-engine should run continuously during NSE hours");
     assert(paperStatus.body.status.auto_interval_minutes === 2, "paper-engine should expose the two-minute server cycle");
-    assert(paperStatus.body.status.auto_buy.maxBuysPerRun === 25, "paper-engine should process the full SELECT batch in one cycle");
+    assert(paperStatus.body.status.auto_buy.maxBuysPerRun === 80, "paper-engine should accept up to 80 eligible entries per cycle");
+    assert(paperStatus.body.status.capital_policy.startingCapital === 5000000, "paper-engine status should expose Rs 50 lakh capital");
     assert(paperStatus.body.status.market_hours_ist.open === "09:15" && paperStatus.body.status.market_hours_ist.close === "15:30", "paper-engine should expose NSE market hours");
 
     const paperRunGuard = await request("/api/paper-engine/run", { method: "POST" });
@@ -650,7 +726,7 @@ async function main() {
     assert(upstoxStatusAfter.body.status.token_visible === true, "Upstox status should detect saved token");
     assert(upstoxStatusAfter.body.status.token_source === "manual_paste", "Upstox status should read token from store");
 
-    console.log(JSON.stringify({ ok: true, checks: ["mongo-file-fallback", "data-bank-status", "scan-ledger", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "pre-rise-pattern-tracker", "parameter-tunnel-175", "kelly-parameters", "kelly-persisted-ledger", "kelly-active-sizing", "kelly-lifecycle-cap", "kelly-no-edge-block", "paper-engine-real-quote-fill", "upstox-guard", "paper-engine-status", "paper-engine-guard", "q1-status", "q1-upload", "q1-render-guard", "upstox-oauth-start", "upstox-token-paste"] }));
+    console.log(JSON.stringify({ ok: true, checks: ["mongo-file-fallback", "data-bank-status", "scan-ledger", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "pre-rise-pattern-tracker", "parameter-tunnel-175", "kelly-parameters", "kelly-persisted-ledger", "kelly-active-sizing", "kelly-lifecycle-cap", "kelly-no-edge-block", "paper-capital-50-lakh", "paper-minimum-entry-1-lakh", "paper-closed-trade-returns", "paper-engine-real-quote-fill", "upstox-guard", "paper-engine-status", "paper-engine-guard", "q1-status", "q1-upload", "q1-render-guard", "upstox-oauth-start", "upstox-token-paste"] }));
   } finally {
     await Promise.all([...Q1_INPUTS, STATE_FILE, SCAN_LEDGER_FILE, UPSTOX_AUTH_FILE].map((file) => fs.unlink(file).catch((error) => {
       if (error.code !== "ENOENT") throw error;

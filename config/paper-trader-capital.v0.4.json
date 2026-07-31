@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "0.4",
+  "policyVersion": "ashstocks-paper-capital-v0.4",
+  "asOf": "2026-07-31",
+  "currency": "INR",
+  "startingCapital": 5000000,
+  "deploymentTargetPct": 100,
+  "minimumEntryValue": 100000,
+  "minimumEntryPct": 2,
+  "baseEntryPct": 2,
+  "maximumPositionPct": 10,
+  "maximumCandidateEntries": 80,
+  "maximumOpenPositions": 80,
+  "maximumBuysPerRun": 80,
+  "affordableOpenPositionsAtMinimum": 50,
+  "capitalMigration": {
+    "previousDefault": 2500000,
+    "newDefault": 5000000,
+    "preserveOrdersTradesAndPositions": true
+  },
+  "governance": {
+    "paperOnly": true,
+    "liveReady": false,
+    "brokerWriteEnabled": false,
+    "blockWhenBuyingPowerInsufficient": true,
+    "blockBuyBelowMinimumEntryValue": true,
+    "kellyNoPositiveEdgeStillBlocks": true,
+    "positiveKellySizingFloorValue": 100000
+  },
+  "arithmeticNote": "₹50 lakh funds at most 50 simultaneous ₹1 lakh positions. The 80-entry limit applies to eligible and lifecycle-tracked entries; concurrent positions remain bounded by buying power."
+}

@@ -20,7 +20,8 @@ const state = {
   tunnelStage: "ALL",
   tunnelParameterQuery: "",
   tunnelStockQuery: "",
-  lastAutoPortfolioAttemptAt: 0
+  lastAutoPortfolioAttemptAt: 0,
+  paperLedgerTab: "open"
 };
 
 const indexKeys = [
@@ -789,7 +790,9 @@ function renderAutoOrderReadiness(row = state.selected) {
     ?? (decisionPrice ? round(decisionPrice * (1 + targetPct / 100), 2) : null);
   const stopPrice = numberValue(row.paper_order?.stop_price ?? row.stop_price ?? row.advisor?.stop)
     ?? (decisionPrice ? round(decisionPrice * 0.90, 2) : null);
-  const qty = Math.max(1, Math.floor(numberValue(row.paper_order?.qty) || (decisionPrice ? 40000 / decisionPrice : 1)));
+  const minimumEntryValue = numberValue(state.orders?.capital_policy?.minimumEntryValue) || 100000;
+  const minimumQty = decisionPrice ? Math.max(1, Math.ceil(minimumEntryValue / decisionPrice)) : 1;
+  const qty = Math.max(minimumQty, Math.floor(numberValue(row.paper_order?.qty) || minimumQty));
   const tunnel = row.parameter_tunnel?.summary || {};
   const evaluated = numberValue(tunnel.evaluated) || 0;
   const evidenceScore = numberValue(tunnel.evidence_score) || 0;
@@ -820,7 +823,7 @@ function renderAutoOrderReadiness(row = state.selected) {
     </div>
     <div class="engine-order-grid">
       <article><span>Entry</span><strong>${escapeHtml(entryText)}</strong><small>${quotePrice ? escapeHtml(isoDate(state.selectedQuote?.timestamp)) : "Real Upstox quote gate"}</small></article>
-      <article><span>Quantity</span><strong>${fmtInt(openPosition?.qty || latestOrder?.qty || qty)}</strong><small>4% paper capital sizing</small></article>
+      <article><span>Quantity</span><strong>${fmtInt(openPosition?.qty || latestOrder?.qty || qty)}</strong><small>₹1 lakh minimum entry from ₹50 lakh paper capital</small></article>
       <article><span>Stop</span><strong>${fmtPrice(openPosition?.stop_price || latestOrder?.stop_price || stopPrice)}</strong><small>Engine risk rule</small></article>
       <article><span>Target</span><strong>${fmtPrice(openPosition?.target_price || latestOrder?.target_price || targetPrice)}</strong><small>${fmtNumber(targetPct)}% target room</small></article>
       <article><span>Parameter proof</span><strong>${escapeHtml(proofText)}</strong><small>Score | hits/evaluated</small></article>
@@ -1261,7 +1264,9 @@ function renderOrders() {
   const targets = [el("paperBook"), el("ordersLedger")].filter(Boolean);
   const orders = state.orders?.orders || [];
   const positions = state.orders?.positions || [];
+  const closedTrades = state.orders?.closed_trades || [];
   const funds = state.orders?.funds || {};
+  const capitalPolicy = state.orders?.capital_policy || {};
   const pnlClass = (value) => numberValue(value) > 0 ? "pnl-positive" : numberValue(value) < 0 ? "pnl-negative" : "pnl-flat";
   const mark = state.orders?.mark_to_market || {};
   const quoteNote = mark.quote_error
@@ -1280,6 +1285,19 @@ function renderOrders() {
       <td>${position.parameter_evidence?.evaluated ? `${fmtNumber(position.parameter_evidence.evidence_score)} | ${position.parameter_evidence.positive_hits}/${position.parameter_evidence.evaluated}` : "Manual order"}</td>
       <td>${escapeHtml(isoDate(position.quote_timestamp || position.checked_at || position.entry_date))}</td>
     </tr>`).join("");
+  const closedRows = closedTrades.map((trade) => `<tr>
+      <td><strong>${escapeHtml(trade.symbol)}</strong><small>${escapeHtml(trade.close_reason || "Paper SELL")}</small></td>
+      <td>${fmtInt(trade.qty)}</td>
+      <td>${fmtPrice(trade.entry_price)}</td>
+      <td>${fmtPrice(trade.exit_price)}</td>
+      <td>${fmtPrice(trade.entry_value)}</td>
+      <td>${fmtPrice(trade.exit_value)}</td>
+      <td class="${pnlClass(trade.realized_pnl)}"><strong>${fmtPrice(trade.realized_pnl)}</strong></td>
+      <td class="${pnlClass(trade.return_pct)}"><strong>${fmtPct(trade.return_pct)}</strong></td>
+      <td>${escapeHtml(isoDate(trade.entry_at))}</td>
+      <td>${escapeHtml(isoDate(trade.exit_at))}</td>
+      <td>${numberValue(trade.holding_days) === null ? "NA" : `${fmtNumber(trade.holding_days)} days`}</td>
+    </tr>`).join("");
   const orderRows = orders.slice(0, 50).map((order) => `<tr>
       <td>${escapeHtml(order.symbol)}</td>
       <td>${escapeHtml(order.side)}</td>
@@ -1288,32 +1306,65 @@ function renderOrders() {
       <td><strong>${escapeHtml(order.status)}</strong>${order.rejection_reason ? `<small>${escapeHtml(order.rejection_reason)}</small>` : ""}</td>
       <td>${escapeHtml(isoDate(order.quote_timestamp || order.updated_at || order.created_at))}</td>
     </tr>`).join("");
+  const deployment = numberValue(funds.deployment_pct) || 0;
+  const affordableAtMinimum = numberValue(
+    capitalPolicy.affordableOpenPositionsAtMinimum
+      ?? funds.affordable_open_positions_at_minimum
+  );
+  const policyText = `${fmtPrice(funds.starting_capital || capitalPolicy.startingCapital)} capital | ${fmtPrice(funds.minimum_entry_value || capitalPolicy.minimumEntryValue)} minimum entry | ${fmtInt(capitalPolicy.maximumCandidateEntries || funds.maximum_candidate_entries || 80)} lifecycle entries | ${fmtInt(affordableAtMinimum || 50)} simultaneously affordable at the minimum`;
   const html = `<div class="book-summary">
+      <article><span>Starting capital</span><strong>${fmtPrice(funds.starting_capital || capitalPolicy.startingCapital)}</strong></article>
+      <article><span>Invested</span><strong>${fmtPrice(funds.invested_value || 0)}</strong></article>
+      <article><span>Buying power</span><strong>${fmtPrice(funds.buying_power || 0)}</strong></article>
+      <article><span>Deployment</span><strong>${fmtNumber(deployment)}%</strong></article>
       <article><span>Open positions</span><strong>${positions.length}</strong></article>
+      <article><span>Closed trades</span><strong>${closedTrades.length}</strong></article>
       <article><span>Unrealized P&L</span><strong class="${pnlClass(funds.unrealized_pnl)}">${fmtPrice(funds.unrealized_pnl || 0)}</strong></article>
       <article><span>Realized P&L</span><strong class="${pnlClass(funds.realized_pnl)}">${fmtPrice(funds.realized_pnl || 0)}</strong></article>
       <article><span>Total P&L</span><strong class="${pnlClass(funds.total_pnl)}">${fmtPrice(funds.total_pnl || 0)}</strong></article>
     </div>
+    <p class="capital-policy-note">${escapeHtml(policyText)}</p>
     ${quoteNote}
-    <div class="position-ledger">
-      <h4>Open Positions</h4>
-      <table>
-        <thead><tr><th>Symbol</th><th>Qty</th><th>Entry</th><th>LTP</th><th>Market value</th><th>Unrealized P&L</th><th>Return</th><th>Parameter proof</th><th>Quote time</th></tr></thead>
-        <tbody>
-          ${positionRows}
-          ${!positions.length ? `<tr><td colspan="9">No open paper position.</td></tr>` : ""}
-        </tbody>
-      </table>
+    <div class="ledger-tabs" role="tablist" aria-label="Paper trade lifecycle">
+      <button type="button" role="tab" data-paper-ledger-tab="open" aria-selected="${state.paperLedgerTab === "open"}" class="${state.paperLedgerTab === "open" ? "active" : ""}">Open Positions <strong>${positions.length}</strong></button>
+      <button type="button" role="tab" data-paper-ledger-tab="closed" aria-selected="${state.paperLedgerTab === "closed"}" class="${state.paperLedgerTab === "closed" ? "active" : ""}">Closed Trades <strong>${closedTrades.length}</strong></button>
+      <button type="button" role="tab" data-paper-ledger-tab="orders" aria-selected="${state.paperLedgerTab === "orders"}" class="${state.paperLedgerTab === "orders" ? "active" : ""}">Order History <strong>${orders.length}</strong></button>
     </div>
-    <details class="order-history">
-      <summary>Order history (${orders.length})</summary>
-      <table>
-        <thead><tr><th>Symbol</th><th>Side</th><th>Qty</th><th>Fill price</th><th>Status</th><th>Real quote time</th></tr></thead>
-        <tbody>${orderRows || `<tr><td colspan="6">No paper order history.</td></tr>`}</tbody>
-      </table>
-    </details>
+    <section class="ledger-panel" data-paper-ledger-panel="open" ${state.paperLedgerTab === "open" ? "" : "hidden"}>
+      <div class="ledger-panel-head"><h4>Open Positions</h4><span>Live mark-to-market return</span></div>
+      <div class="ledger-scroll">
+        <table>
+          <thead><tr><th>Symbol</th><th>Qty</th><th>Entry</th><th>LTP</th><th>Market value</th><th>Unrealized P&L</th><th>Return</th><th>Parameter proof</th><th>Quote time</th></tr></thead>
+          <tbody>${positionRows || `<tr><td colspan="9">No open paper position.</td></tr>`}</tbody>
+        </table>
+      </div>
+    </section>
+    <section class="ledger-panel" data-paper-ledger-panel="closed" ${state.paperLedgerTab === "closed" ? "" : "hidden"}>
+      <div class="ledger-panel-head"><h4>Closed Trades</h4><span>Every sold stock with realized return</span></div>
+      <div class="ledger-scroll">
+        <table>
+          <thead><tr><th>Symbol</th><th>Qty</th><th>Entry</th><th>Exit</th><th>Invested</th><th>Exit value</th><th>Realized P&L</th><th>Return</th><th>Entry time</th><th>Exit time</th><th>Held</th></tr></thead>
+          <tbody>${closedRows || `<tr><td colspan="11">No closed paper trades yet. Sold positions will appear here with their realized return.</td></tr>`}</tbody>
+        </table>
+      </div>
+    </section>
+    <section class="ledger-panel" data-paper-ledger-panel="orders" ${state.paperLedgerTab === "orders" ? "" : "hidden"}>
+      <div class="ledger-panel-head"><h4>Order History</h4><span>Filled and rejected lifecycle events</span></div>
+      <div class="ledger-scroll">
+        <table>
+          <thead><tr><th>Symbol</th><th>Side</th><th>Qty</th><th>Fill price</th><th>Status</th><th>Real quote time</th></tr></thead>
+          <tbody>${orderRows || `<tr><td colspan="6">No paper order history.</td></tr>`}</tbody>
+        </table>
+      </div>
+    </section>
     ${state.orders?.error ? `<p class="error-text">${escapeHtml(state.orders.error)}</p>` : ""}`;
-  targets.forEach((node) => { node.innerHTML = html; });
+  targets.forEach((node) => {
+    node.innerHTML = html;
+    all("[data-paper-ledger-tab]", node).forEach((button) => button.addEventListener("click", () => {
+      state.paperLedgerTab = button.dataset.paperLedgerTab;
+      renderOrders();
+    }));
+  });
 }
 
 async function refreshMarketStrip() {

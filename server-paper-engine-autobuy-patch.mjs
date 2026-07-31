@@ -22,7 +22,7 @@ const PAPER_ENGINE_AUTO_INTERVAL_MINUTES = Math.min(15, Math.max(1, Math.floor(f
 function paperEngineAutoBuySettings(input = {}) {
   return {
     enabled: ENV.DISABLE_PAPER_ENGINE_AUTOBUY === "true" ? false : true,
-    maxBuysPerRun: Math.min(25, Math.max(1, Math.floor(finiteOr(input.maxBuysPerRun ?? input.max_buys_per_run ?? ENV.PAPER_ENGINE_MAX_BUYS_PER_RUN, 25)))),
+    maxBuysPerRun: Math.min(PAPER_CAPITAL_POLICY.maximumBuysPerRun, Math.max(1, Math.floor(finiteOr(input.maxBuysPerRun ?? input.max_buys_per_run ?? ENV.PAPER_ENGINE_MAX_BUYS_PER_RUN, PAPER_CAPITAL_POLICY.maximumBuysPerRun)))),
     requireScannerDecision: String(input.requireScannerDecision || ENV.PAPER_ENGINE_REQUIRED_DECISION || "SELECT").toUpperCase(),
     product: String(input.product || ENV.PAPER_ENGINE_PRODUCT || "Paper Swing").slice(0, 40),
     maxQuoteAgeSeconds: Math.min(120, Math.max(10, finiteOr(input.maxQuoteAgeSeconds ?? ENV.PAPER_ENGINE_MAX_QUOTE_AGE_SECONDS, 60))),
@@ -41,13 +41,23 @@ function paperEngineOpenSymbols(state = defaultState()) {
 
 function paperEngineCandidateTickets(plan = {}, state = defaultState(), settings = paperEngineAutoBuySettings(), scan = {}) {
   const openSymbols = paperEngineOpenSymbols(state);
+  const paperTrader = sanitizePaperTraderState(state.paperTrader || {});
+  const lifecycleFunds = paperLifecycleFunds(paperTrader);
+  const activeBuyGtt = paperTrader.gtt.filter((plan) => plan.status === "ACTIVE" && plan.side === "BUY").length;
+  const affordableEntrySlots = Math.max(
+    0,
+    Math.min(
+      PAPER_CAPITAL_POLICY.maximumOpenPositions - openSymbols.size - activeBuyGtt,
+      Math.floor(Math.max(0, finiteOr(lifecycleFunds.buying_power, 0)) / PAPER_CAPITAL_POLICY.minimumEntryValue)
+    )
+  );
   const plannedBySymbol = new Map((Array.isArray(plan.buy_queue) ? plan.buy_queue : []).map((ticket) => [normalizeSymbol(ticket.symbol), ticket]));
   const baseTraderSettings = paperTraderSettings(plan.settings || {});
-  const kelly = paperKellySizing(sanitizePaperTraderState(state.paperTrader || {}));
+  const kelly = paperKellySizing(paperTrader);
   if (kelly.blockNewEntries) return [];
   const effectiveMaxPositionPct = kelly.applied
-    ? Math.min(baseTraderSettings.maxPositionPct, finiteOr(kelly.maximumPositionPct, 0) / 100)
-    : baseTraderSettings.maxPositionPct;
+    ? Math.max(PAPER_CAPITAL_POLICY.minimumEntryPct / 100, Math.min(baseTraderSettings.maxPositionPct, finiteOr(kelly.maximumPositionPct, 0) / 100))
+    : Math.max(PAPER_CAPITAL_POLICY.minimumEntryPct / 100, baseTraderSettings.maxPositionPct);
   const traderSettings = { ...baseTraderSettings, maxPositionPct: effectiveMaxPositionPct };
   const asOf = scan.asOf || new Date().toISOString();
   return (Array.isArray(scan.rows) ? scan.rows : [])
@@ -56,10 +66,20 @@ function paperEngineCandidateTickets(plan = {}, state = defaultState(), settings
       const symbol = normalizeSymbol(scanRow.symbol);
       const ticket = plannedBySymbol.get(symbol) || paperBuyTicket(enrichPaperCandidate(scanRow, traderSettings), index, traderSettings, asOf);
       const price = finiteOr(ticket.close, finiteOr(scanRow.close, null));
-      const maximumQty = price > 0
-        ? Math.max(0, Math.floor(traderSettings.startingCapital * effectiveMaxPositionPct / price))
+      const targetEntryValue = Math.max(
+        PAPER_CAPITAL_POLICY.minimumEntryValue,
+        traderSettings.startingCapital * effectiveMaxPositionPct
+      );
+      const minimumQty = price > 0
+        ? Math.max(1, Math.ceil(PAPER_CAPITAL_POLICY.minimumEntryValue / price))
         : 0;
-      const qty = Math.min(Math.max(0, Math.floor(finiteOr(ticket.qty, 0))), maximumQty);
+      const maximumQty = price > 0
+        ? Math.max(minimumQty, Math.floor(targetEntryValue / price))
+        : 0;
+      const qty = Math.max(
+        minimumQty,
+        Math.min(Math.max(minimumQty, Math.floor(finiteOr(ticket.qty, 0))), maximumQty)
+      );
       return {
         ...ticket,
         symbol,
@@ -79,7 +99,7 @@ function paperEngineCandidateTickets(plan = {}, state = defaultState(), settings
     })
     .filter((ticket) => ticket.symbol)
     .filter((ticket) => !openSymbols.has(ticket.symbol))
-    .slice(0, settings.maxBuysPerRun);
+    .slice(0, Math.min(settings.maxBuysPerRun, affordableEntrySlots));
 }
 
 function paperEngineRecordRejection(state, ticket, scanRow, reason, executionEvidence = {}) {
@@ -259,6 +279,7 @@ const PAPER_ENGINE_STATUS_REPLACEMENT = String.raw`function paperEngineStatus() 
     market_hours_ist: { open: "09:15", close: "15:30" },
     market,
     auto_buy: paperEngineAutoBuySettings(),
+    capital_policy: PAPER_CAPITAL_POLICY,
     poll_ms: PAPER_ENGINE_POLL_MS,
     safety: {
       paper_only: true,
@@ -461,17 +482,26 @@ const PAPER_ENGINE_RUN_REPLACEMENT = String.raw`async function runPaperEngineOnc
       max_buys_per_run: autoSettings.maxBuysPerRun,
       kelly,
       effective_max_position_pct: kelly.applied
-        ? Math.min(
-          paperTraderSettings(plan.settings || {}).maxPositionPct * 100,
-          finiteOr(kelly.maximumPositionPct, 0)
+        ? Math.max(
+          PAPER_CAPITAL_POLICY.minimumEntryPct,
+          Math.min(
+            paperTraderSettings(plan.settings || {}).maxPositionPct * 100,
+            finiteOr(kelly.maximumPositionPct, 0)
+          )
         )
-        : paperTraderSettings(plan.settings || {}).maxPositionPct * 100,
+        : Math.max(
+          PAPER_CAPITAL_POLICY.minimumEntryPct,
+          paperTraderSettings(plan.settings || {}).maxPositionPct * 100
+        ),
+      minimum_entry_value: PAPER_CAPITAL_POLICY.minimumEntryValue,
+      maximum_candidate_entries: PAPER_CAPITAL_POLICY.maximumCandidateEntries,
+      maximum_open_positions: PAPER_CAPITAL_POLICY.maximumOpenPositions,
       selected_in_scan: selectedSymbols.length,
       already_open_before: selectedSymbols.filter((symbol) => openBefore.has(symbol)).length,
       candidates_ready: tickets.length,
       orders_filled: orders.length,
       pending_after_run: pendingSymbols.length,
-      pending_symbols: pendingSymbols.slice(0, 25),
+      pending_symbols: pendingSymbols.slice(0, PAPER_CAPITAL_POLICY.maximumCandidateEntries),
       rejected: rejected.length,
       orders: orders.map((order) => ({ id: order.id, symbol: order.symbol, qty: order.qty, price: order.price, quote_timestamp: order.quote_timestamp, target_price: order.target_price, stop_price: order.stop_price, status: order.status, parameter_evidence: order.parameter_evidence })),
       rejections: rejected.slice(0, 20)
@@ -481,7 +511,7 @@ const PAPER_ENGINE_RUN_REPLACEMENT = String.raw`async function runPaperEngineOnc
       data_needed: monitor.data_needed || []
     } : null,
     funds: paperLifecycleFunds(savedPaperTrader),
-    positions: savedPaperTrader.positions.slice(0, 20),
+    positions: savedPaperTrader.positions.slice(0, PAPER_CAPITAL_POLICY.maximumOpenPositions),
     market,
     quote_error: quoteError || null,
     scan_cache_used: Boolean(cachedScan),
