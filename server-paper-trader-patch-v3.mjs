@@ -90,8 +90,8 @@ function paperReason(row, themes, targetLeft, paperScore) {
   return parts.join("; ");
 }
 function paperBuyTicket(row, index, settings, asOf) {
-  const capital = settings.startingCapital * settings.maxPositionPct;
-  const qty = row.close ? Math.max(1, Math.floor(capital / row.close)) : 0;
+  const capital = Math.max(PAPER_CAPITAL_POLICY.minimumEntryValue, settings.startingCapital * settings.maxPositionPct);
+  const qty = row.close ? Math.max(1, Math.ceil(capital / row.close)) : 0;
   return { rank: index + 1, symbol: row.symbol, name: row.name, sector: row.sector || "Unmapped", action: "PAPER_BUY", readiness: ["SELECT", "WATCH"].includes(row.decision) ? "READY" : "REVIEW", scanner_decision: row.decision, paper_score: row.paper_score, close: row.close, qty, estimated_value: round(qty * row.close, 2), target_price: row.target_price, stop_price: row.stop_price, target_pct: row.target_pct, stop_loss_pct: row.stop_loss_pct, themes: row.themes, thesis: row.paper_reason, created_at: asOf, paper_only: true, broker_write_enabled: false };
 }
 function evaluatePaperPosition(position, rows, settings, asOf) {
