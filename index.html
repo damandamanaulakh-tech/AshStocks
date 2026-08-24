@@ -30,6 +30,10 @@
             <i data-lucide="layout-dashboard" aria-hidden="true"></i>
             <span>Dashboard</span>
           </button>
+          <button class="rail-item" type="button" data-section="control">
+            <i data-lucide="sliders-horizontal" aria-hidden="true"></i>
+            <span>Control</span>
+          </button>
           <button class="rail-item" type="button" data-section="screener">
             <i data-lucide="radar" aria-hidden="true"></i>
             <span>Screener</span>
@@ -105,7 +109,25 @@
           ASH Stock engine booting
         </section>
 
-        <section class="section active broker-cockpit" id="dashboardSection" data-panel="dashboard">
+        <section class="section active portfolio-dashboard" id="dashboardSection" data-panel="dashboard">
+          <header class="portfolio-dashboard-head">
+            <div>
+              <span class="mini-label">Paper Portfolio Overview</span>
+              <h3>Capital, positions and risk</h3>
+              <p id="portfolioDashboardStamp">Loading the durable paper ledger and live Upstox marks.</p>
+            </div>
+            <div class="portfolio-dashboard-actions">
+              <span class="status-pill good">Paper only</span>
+              <button class="small-button" type="button" id="dashboardRefreshBtn">
+                <i data-lucide="refresh-cw" aria-hidden="true"></i>
+                <span>Refresh portfolio</span>
+              </button>
+            </div>
+          </header>
+          <div id="portfolioDashboard" class="portfolio-dashboard-body" aria-live="polite"></div>
+        </section>
+
+        <section class="section broker-cockpit" id="controlSection" data-panel="control">
           <section class="cockpit-top">
             <div class="market-strip cockpit-market" id="marketStrip"></div>
 

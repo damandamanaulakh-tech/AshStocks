@@ -1242,6 +1242,170 @@ function renderUpstoxSettings() {
   node.innerHTML = rows.map(([k, v]) => `<div class="detail-row"><span>${escapeHtml(k)}</span><strong>${escapeHtml(v)}</strong></div>`).join("");
 }
 
+function renderPortfolioDashboard() {
+  const node = el("portfolioDashboard");
+  if (!node) return;
+  const stamp = el("portfolioDashboardStamp");
+  if (!state.orders) {
+    node.innerHTML = `<section class="portfolio-loading panel"><strong>Loading portfolio</strong><span>Reading positions, closed trades and capital controls.</span></section>`;
+    return;
+  }
+
+  const orders = Array.isArray(state.orders.orders) ? state.orders.orders : [];
+  const positions = Array.isArray(state.orders.positions) ? state.orders.positions : [];
+  const closedTrades = Array.isArray(state.orders.closed_trades) ? state.orders.closed_trades : [];
+  const funds = state.orders.funds || {};
+  const policy = state.orders.capital_policy || {};
+  const mark = state.orders.mark_to_market || {};
+  const startingCapital = numberValue(funds.starting_capital ?? policy.startingCapital) || 0;
+  const investedValue = numberValue(funds.invested_value) || 0;
+  const buyingPower = numberValue(funds.buying_power) || 0;
+  const unrealizedPnl = numberValue(funds.unrealized_pnl) || 0;
+  const realizedPnl = numberValue(funds.realized_pnl) || 0;
+  const totalPnl = numberValue(funds.total_pnl) || 0;
+  const deploymentPct = Math.max(0, Math.min(100, numberValue(funds.deployment_pct) || 0));
+  const totalReturnPct = startingCapital ? (totalPnl / startingCapital) * 100 : 0;
+  const maximumOpenPositions = numberValue(policy.maximumOpenPositions ?? funds.maximum_open_positions);
+  const minimumEntryValue = numberValue(policy.minimumEntryValue ?? funds.minimum_entry_value);
+  const maximumPositionPct = numberValue(policy.maximumPositionPct);
+  const cashBufferPct = numberValue(policy.cashBufferPct);
+  const maximumPortfolioHeatPct = numberValue(policy.maximumPortfolioHeatPct);
+  const drawdownLimitPct = numberValue(policy.portfolioDrawdownTriggerPct);
+  const pnlClass = (value) => numberValue(value) > 0 ? "pnl-positive" : numberValue(value) < 0 ? "pnl-negative" : "pnl-flat";
+  const percentageOfCapital = (value) => startingCapital ? (numberValue(value) || 0) / startingCapital * 100 : 0;
+
+  const openRows = positions.slice(0, 8).map((position) => `<tr>
+    <td><strong>${escapeHtml(position.symbol)}</strong><small>${escapeHtml(position.sector || position.status || "OPEN")}</small></td>
+    <td>${fmtInt(position.qty)}</td>
+    <td>${fmtPrice(position.entry_price)}</td>
+    <td>${fmtPrice(position.current_price)}</td>
+    <td class="${pnlClass(position.unrealized_pnl)}"><strong>${fmtPrice(position.unrealized_pnl)}</strong></td>
+    <td class="${pnlClass(position.unrealized_pnl_pct)}">${fmtPct(position.unrealized_pnl_pct)}</td>
+    <td>${fmtPrice(position.target_price)}</td>
+    <td>${fmtPrice(position.stop_price)}</td>
+  </tr>`).join("");
+
+  const latestClosedTrades = [...closedTrades]
+    .sort((a, b) => Date.parse(b.exit_at || 0) - Date.parse(a.exit_at || 0))
+    .slice(0, 5);
+  const closedRows = latestClosedTrades.map((trade) => `<tr>
+    <td><strong>${escapeHtml(trade.symbol)}</strong></td>
+    <td>${fmtInt(trade.qty)}</td>
+    <td>${fmtPrice(trade.entry_price)}</td>
+    <td>${fmtPrice(trade.exit_price)}</td>
+    <td class="${pnlClass(trade.realized_pnl)}"><strong>${fmtPrice(trade.realized_pnl)}</strong></td>
+    <td class="${pnlClass(trade.return_pct)}">${fmtPct(trade.return_pct)}</td>
+    <td>${escapeHtml(isoDate(trade.exit_at))}</td>
+  </tr>`).join("");
+
+  const recentOrders = [...orders]
+    .sort((a, b) => Date.parse(b.updated_at || b.created_at || 0) - Date.parse(a.updated_at || a.created_at || 0))
+    .slice(0, 7);
+  const activityRows = recentOrders.map((order) => {
+    const side = String(order.side || "ORDER").toUpperCase();
+    const rejected = String(order.status || "").includes("REJECT");
+    const tone = rejected ? "rejected" : side === "BUY" ? "buy" : "sell";
+    const initial = rejected ? "!" : side.slice(0, 1);
+    return `<li>
+      <span class="activity-mark ${tone}">${escapeHtml(initial)}</span>
+      <span><strong>${escapeHtml(side)} ${escapeHtml(order.symbol)}</strong><small>${fmtInt(order.qty)} @ ${fmtPrice(order.price)} · ${escapeHtml(order.status || "RECORDED")}</small></span>
+      <time>${escapeHtml(isoDate(order.updated_at || order.created_at || order.quote_timestamp))}</time>
+    </li>`;
+  }).join("");
+
+  const sectorValues = new Map();
+  for (const position of positions) {
+    const sector = String(position.sector || "Unmapped");
+    const value = numberValue(position.market_value) || (numberValue(position.current_price) || 0) * (numberValue(position.qty) || 0);
+    sectorValues.set(sector, (sectorValues.get(sector) || 0) + value);
+  }
+  const totalSectorValue = [...sectorValues.values()].reduce((sum, value) => sum + value, 0);
+  const sectorRows = [...sectorValues.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 6)
+    .map(([sector, value]) => {
+      const pct = totalSectorValue ? value / totalSectorValue * 100 : 0;
+      return `<div class="risk-exposure-row"><span>${escapeHtml(sector)}</span><i><b style="width:${Math.min(100, pct).toFixed(2)}%"></b></i><strong>${fmtNumber(pct, 1)}%</strong></div>`;
+    }).join("");
+
+  const largestPositionValue = positions.reduce((largest, position) => Math.max(largest, numberValue(position.market_value) || 0), 0);
+  const largestPositionPct = percentageOfCapital(largestPositionValue);
+  const portfolioHeatValue = positions.reduce((sum, position) => {
+    const entry = numberValue(position.entry_price);
+    const stop = numberValue(position.stop_price);
+    const qty = numberValue(position.qty) || 0;
+    return sum + (entry !== null && stop !== null ? Math.max(0, entry - stop) * qty : 0);
+  }, 0);
+  const portfolioHeatPct = percentageOfCapital(portfolioHeatValue);
+  const cashPct = percentageOfCapital(buyingPower);
+  const drawdownPct = Math.min(0, totalReturnPct);
+  const capitalBlocked = (minimumEntryValue !== null && buyingPower < minimumEntryValue)
+    || (maximumOpenPositions !== null && positions.length >= maximumOpenPositions);
+  const governorLabel = capitalBlocked ? "ENTRY BLOCKED" : deploymentPct >= 95 ? "FULLY DEPLOYED" : deploymentPct >= 70 ? "WATCH" : "AVAILABLE";
+  const governorTone = capitalBlocked ? "blocked" : deploymentPct >= 70 ? "watch" : "good";
+  const riskCheck = (actual, limit, comparison = "max") => comparison === "min" ? actual >= limit : actual <= limit;
+  const riskRow = (label, value, passed) => `<div class="governor-rule"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong><i data-lucide="${passed ? "circle-check" : "triangle-alert"}" class="${passed ? "rule-pass" : "rule-warn"}" aria-hidden="true"></i></div>`;
+
+  if (stamp) {
+    stamp.textContent = mark.quote_error
+      ? `Portfolio loaded. Live marks unavailable: ${mark.quote_error}`
+      : mark.as_of
+        ? `Live mark-to-market from Upstox at ${isoDate(mark.as_of)}.`
+        : "Portfolio loaded from the durable paper ledger; no live mark timestamp is available.";
+  }
+
+  node.innerHTML = `
+    ${state.orders.error ? `<p class="portfolio-error">${escapeHtml(state.orders.error)}</p>` : ""}
+    <section class="portfolio-metric-grid" aria-label="Portfolio summary">
+      <article><span class="metric-icon"><i data-lucide="wallet-cards"></i></span><div><small>Starting capital</small><strong>${fmtPrice(startingCapital)}</strong><em>Approved paper capital</em></div></article>
+      <article><span class="metric-icon"><i data-lucide="pie-chart"></i></span><div><small>Invested</small><strong>${fmtPrice(investedValue)}</strong><em>${fmtNumber(deploymentPct)}% deployed</em></div></article>
+      <article><span class="metric-icon success"><i data-lucide="indian-rupee"></i></span><div><small>Buying power</small><strong>${fmtPrice(buyingPower)}</strong><em>${fmtNumber(cashPct)}% of capital</em></div></article>
+      <article><span class="metric-icon"><i data-lucide="trending-up"></i></span><div><small>Total P&amp;L</small><strong class="${pnlClass(totalPnl)}">${fmtPrice(totalPnl)}</strong><em class="${pnlClass(totalReturnPct)}">${fmtPct(totalReturnPct)}</em></div></article>
+      <article><span class="metric-icon"><i data-lucide="badge-indian-rupee"></i></span><div><small>Realized P&amp;L</small><strong class="${pnlClass(realizedPnl)}">${fmtPrice(realizedPnl)}</strong><em>Unrealized ${fmtPrice(unrealizedPnl)}</em></div></article>
+    </section>
+
+    <section class="portfolio-dashboard-grid">
+      <article class="portfolio-card portfolio-open-card">
+        <header><div><h4>Open Positions <span>${positions.length}</span></h4><p>Live mark-to-market, targets and stops</p></div><button type="button" data-dashboard-book="open">View all <i data-lucide="chevron-right"></i></button></header>
+        <div class="portfolio-table-scroll"><table><thead><tr><th>Symbol</th><th>Qty</th><th>Entry</th><th>LTP</th><th>P&amp;L</th><th>Return</th><th>Target</th><th>Stop</th></tr></thead><tbody>${openRows || `<tr><td colspan="8" class="empty-state">No open paper positions.</td></tr>`}</tbody></table></div>
+      </article>
+
+      <aside class="portfolio-card portfolio-risk-card">
+        <header><div><h4>Risk &amp; Capital Governor</h4><p>Current portfolio telemetry</p></div><span class="governor-state ${governorTone}">${governorLabel}</span></header>
+        <div class="deployment-block">
+          <div class="deployment-donut" style="--deployment:${deploymentPct.toFixed(2)}%"><span><strong>${fmtNumber(deploymentPct, 1)}%</strong>deployed</span></div>
+          <dl><div><dt>Invested</dt><dd>${fmtPrice(investedValue)}</dd></div><div><dt>Cash</dt><dd>${fmtPrice(buyingPower)}</dd></div></dl>
+        </div>
+        <section class="sector-exposure"><h5>Sector exposure</h5>${sectorRows || `<p class="empty-state compact">Exposure appears when positions are open.</p>`}</section>
+        <section class="governor-rules">
+          ${riskRow("Largest position", `${fmtNumber(largestPositionPct, 2)}% / ${fmtNumber(maximumPositionPct, 2)}%`, maximumPositionPct !== null && riskCheck(largestPositionPct, maximumPositionPct))}
+          ${riskRow("Open position slots", `${positions.length} / ${fmtInt(maximumOpenPositions)}`, maximumOpenPositions !== null && positions.length < maximumOpenPositions)}
+          ${riskRow("Minimum new entry", `${fmtPrice(minimumEntryValue)} · cash ${fmtPrice(buyingPower)}`, minimumEntryValue !== null && buyingPower >= minimumEntryValue)}
+          ${riskRow("Cash reserve", `${fmtNumber(cashPct, 2)}% / ${fmtNumber(cashBufferPct, 2)}%`, cashBufferPct !== null && riskCheck(cashPct, cashBufferPct, "min"))}
+          ${riskRow("Portfolio heat", `${fmtNumber(portfolioHeatPct, 2)}% / ${fmtNumber(maximumPortfolioHeatPct, 2)}%`, maximumPortfolioHeatPct !== null && riskCheck(portfolioHeatPct, maximumPortfolioHeatPct))}
+          ${riskRow("Drawdown governor", `${fmtNumber(drawdownPct, 2)}% / ${fmtNumber(drawdownLimitPct, 2)}%`, drawdownLimitPct !== null && drawdownPct > drawdownLimitPct)}
+        </section>
+      </aside>
+
+      <article class="portfolio-card portfolio-closed-card">
+        <header><div><h4>Closed Trades <span>${closedTrades.length}</span></h4><p>Sold stocks and realized returns</p></div><button type="button" data-dashboard-book="closed">View all <i data-lucide="chevron-right"></i></button></header>
+        <div class="portfolio-table-scroll"><table><thead><tr><th>Symbol</th><th>Qty</th><th>Entry</th><th>Exit</th><th>Net P&amp;L</th><th>Return</th><th>Exit time</th></tr></thead><tbody>${closedRows || `<tr><td colspan="7" class="empty-state">No closed paper trades yet.</td></tr>`}</tbody></table></div>
+      </article>
+
+      <article class="portfolio-card portfolio-activity-card">
+        <header><div><h4>Recent Activity</h4><p>Latest paper lifecycle events</p></div><button type="button" data-dashboard-book="orders">Order history <i data-lucide="chevron-right"></i></button></header>
+        <ul class="activity-list">${activityRows || `<li class="empty-state">No paper order activity yet.</li>`}</ul>
+      </article>
+    </section>`;
+
+  all("[data-dashboard-book]", node).forEach((button) => button.addEventListener("click", () => {
+    state.paperLedgerTab = button.dataset.dashboardBook;
+    renderOrders();
+    switchSection("orders");
+  }));
+  window.lucide?.createIcons?.();
+}
+
 async function refreshUpstoxStatus() {
   try {
     const payload = await api("/api/upstox/status");
@@ -1259,6 +1423,7 @@ async function loadOrders() {
     state.orders = { ok: false, error: error.message, orders: [], positions: [], trades: [] };
   }
   renderOrders();
+  renderPortfolioDashboard();
   renderAutoOrderReadiness();
 }
 
@@ -1429,6 +1594,7 @@ function renderAll() {
   renderRuntime();
   renderBasketMeta();
   renderOrders();
+  renderPortfolioDashboard();
   if (state.activeParameter) renderParameterProof(state.activeParameter);
   window.lucide?.createIcons?.();
 }
@@ -1437,7 +1603,7 @@ function switchSection(section) {
   state.activeSection = section;
   all(".rail-item[data-section]").forEach((button) => button.classList.toggle("active", button.dataset.section === section));
   all(".section").forEach((panel) => panel.classList.toggle("active", panel.dataset.panel === section));
-  const titleMap = { dashboard: "Dashboard", screener: "Screener", piano: "Node Tunnel", "signal-piano": "Signal Piano", orders: "Paper Book", settings: "Settings" };
+  const titleMap = { dashboard: "Dashboard", control: "Control", screener: "Screener", piano: "Node Tunnel", "signal-piano": "Signal Piano", orders: "Paper Book", settings: "Settings" };
   el("sectionTitle").textContent = titleMap[section] || "Dashboard";
   window.lucide?.createIcons?.();
 }
@@ -1558,6 +1724,7 @@ function bindUi() {
   el("refreshBtn")?.addEventListener("click", refreshScan);
   el("nseMasterBtn")?.addEventListener("click", loadNseMaster);
   el("paperEngineBtn")?.addEventListener("click", runPaperEngineNow);
+  el("dashboardRefreshBtn")?.addEventListener("click", loadOrders);
   el("refreshOrdersBtn")?.addEventListener("click", loadOrders);
   el("upstoxConnectBtn")?.addEventListener("click", startUpstoxOAuth);
   el("upstoxTokenForm")?.addEventListener("submit", submitUpstoxToken);
@@ -1592,6 +1759,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   renderMarketStrip();
   renderAll();
   window.lucide?.createIcons?.();
+  await loadOrders();
   await refreshScan();
   window.setInterval(maybeAutoStartPaperPortfolio, 60_000);
 });

@@ -2393,7 +2393,7 @@ td small {
     min-height: 0;
   }
 
-  #dashboardSection.section.active {
+  #controlSection.section.active {
     flex: 1;
     min-height: 0;
     display: grid;
@@ -2406,16 +2406,16 @@ td small {
     overflow: hidden;
   }
 
-  #dashboardSection > .market-strip {
+  #controlSection > .market-strip {
     grid-area: market;
     margin-bottom: 0;
   }
 
-  #dashboardSection > .cockpit-grid {
+  #controlSection > .cockpit-grid {
     grid-area: cockpit;
   }
 
-  #dashboardSection > .terminal-bottom-grid {
+  #controlSection > .terminal-bottom-grid {
     grid-area: bottom;
   }
 
@@ -2824,7 +2824,7 @@ td small {
     text-overflow: ellipsis;
   }
 
-  #dashboardSection.broker-cockpit.section.active {
+  #controlSection.broker-cockpit.section.active {
     flex: 1;
     min-height: 0;
     display: grid;
@@ -3119,7 +3119,7 @@ td small {
 }
 
 @media (min-width: 1200px) {
-  #dashboardSection.broker-cockpit.section.active {
+  #controlSection.broker-cockpit.section.active {
     grid-template-rows: 96px minmax(0, 1fr) 214px;
   }
 
@@ -3629,7 +3629,7 @@ td small {
 }
 
 @media (min-width: 1200px) {
-  #dashboardSection.broker-cockpit.section.active {
+  #controlSection.broker-cockpit.section.active {
     grid-template-rows: 64px minmax(0, 1fr);
   }
 
@@ -3865,5 +3865,625 @@ td small {
 @media (max-width: 1100px) {
   .book-summary {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Portfolio-first dashboard */
+#dashboardSection.portfolio-dashboard.section.active {
+  min-height: 0;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 12px;
+  padding-right: 4px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+
+.portfolio-dashboard-head,
+.portfolio-dashboard-actions,
+.portfolio-card > header,
+.deployment-block,
+.risk-exposure-row,
+.governor-rule,
+.activity-list li {
+  display: flex;
+  align-items: center;
+}
+
+.portfolio-dashboard-head {
+  justify-content: space-between;
+  gap: 18px;
+  padding: 2px 2px 0;
+}
+
+.portfolio-dashboard-head h3 {
+  margin: 3px 0 2px;
+  color: var(--ink);
+  font-size: clamp(18px, 1.5vw, 24px);
+}
+
+.portfolio-dashboard-head p,
+.portfolio-card header p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.portfolio-dashboard-actions {
+  flex: 0 0 auto;
+  gap: 8px;
+}
+
+.portfolio-dashboard-actions .small-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.portfolio-dashboard-actions svg {
+  width: 14px;
+  height: 14px;
+}
+
+.portfolio-dashboard-body {
+  min-width: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.portfolio-loading {
+  min-height: 180px;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 7px;
+  color: var(--muted);
+}
+
+.portfolio-loading strong {
+  color: var(--ink);
+  font-size: 18px;
+}
+
+.portfolio-error {
+  margin: 0;
+  padding: 10px 12px;
+  color: #ffd3d5;
+  background: rgba(239, 68, 68, .12);
+  border: 1px solid rgba(239, 68, 68, .4);
+  border-radius: 6px;
+}
+
+.portfolio-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.portfolio-metric-grid article {
+  min-width: 0;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  background: linear-gradient(145deg, rgba(17, 34, 53, .92), rgba(11, 24, 37, .96));
+  border: 1px solid #203750;
+  border-radius: 7px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, .13);
+}
+
+.portfolio-metric-grid article > div {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.portfolio-metric-grid small,
+.portfolio-metric-grid em {
+  overflow: hidden;
+  color: #91a5b8;
+  font-size: 10px;
+  font-style: normal;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.portfolio-metric-grid strong {
+  overflow: hidden;
+  color: #eef7ff;
+  font-size: clamp(15px, 1.35vw, 22px);
+  letter-spacing: -.02em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.metric-icon {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 42px;
+  color: #52a9f7;
+  background: rgba(45, 129, 211, .13);
+  border: 1px solid rgba(70, 151, 229, .22);
+  border-radius: 50%;
+}
+
+.metric-icon.success {
+  color: #67d24b;
+  background: rgba(85, 185, 56, .12);
+  border-color: rgba(85, 185, 56, .22);
+}
+
+.metric-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.portfolio-dashboard-grid {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(310px, .72fr);
+  grid-template-areas:
+    "open risk"
+    "closed risk"
+    "activity risk";
+  gap: 12px;
+  padding-bottom: 4px;
+}
+
+.portfolio-card {
+  min-width: 0;
+  overflow: hidden;
+  background: linear-gradient(145deg, rgba(14, 29, 44, .96), rgba(9, 21, 31, .98));
+  border: 1px solid #20374c;
+  border-radius: 7px;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, .14);
+}
+
+.portfolio-card > header {
+  min-height: 60px;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 13px;
+  border-bottom: 1px solid #20374c;
+}
+
+.portfolio-card header h4 {
+  margin: 0 0 3px;
+  color: #edf7ff;
+  font-size: 15px;
+}
+
+.portfolio-card header h4 span {
+  display: inline-grid;
+  min-width: 22px;
+  height: 22px;
+  place-items: center;
+  margin-left: 5px;
+  color: #55b9f5;
+  background: rgba(46, 145, 215, .14);
+  border-radius: 12px;
+  font-size: 11px;
+}
+
+.portfolio-card > header button {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 3px;
+  padding: 6px;
+  color: #4eb8f4;
+  background: transparent;
+  border: 0;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.portfolio-card > header button:hover {
+  color: #8bd6ff;
+}
+
+.portfolio-card > header button svg {
+  width: 14px;
+  height: 14px;
+}
+
+.portfolio-open-card {
+  grid-area: open;
+}
+
+.portfolio-closed-card {
+  grid-area: closed;
+}
+
+.portfolio-activity-card {
+  grid-area: activity;
+}
+
+.portfolio-risk-card {
+  grid-area: risk;
+  align-self: start;
+}
+
+.portfolio-table-scroll {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.portfolio-card table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+}
+
+.portfolio-closed-card table {
+  min-width: 700px;
+}
+
+.portfolio-card th,
+.portfolio-card td {
+  padding: 9px 12px;
+  text-align: right;
+  border-bottom: 1px solid rgba(37, 60, 78, .78);
+  white-space: nowrap;
+}
+
+.portfolio-card th:first-child,
+.portfolio-card td:first-child {
+  text-align: left;
+}
+
+.portfolio-card th {
+  color: #7f98ad;
+  background: rgba(4, 13, 20, .34);
+  font-size: 9px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.portfolio-card td {
+  color: #c9d8e4;
+  font-size: 11px;
+}
+
+.portfolio-card td strong {
+  color: #f2f8fb;
+}
+
+.portfolio-card td small {
+  display: block;
+  margin-top: 2px;
+  color: #66849a;
+  font-size: 8px;
+}
+
+.portfolio-card tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.portfolio-card tbody tr:hover td {
+  background: rgba(42, 111, 157, .08);
+}
+
+.empty-state {
+  color: var(--muted) !important;
+  text-align: center !important;
+}
+
+.empty-state.compact {
+  margin: 8px 0;
+  font-size: 11px;
+}
+
+.governor-state {
+  padding: 5px 8px;
+  color: #b8c8d4;
+  background: rgba(115, 140, 160, .12);
+  border: 1px solid rgba(115, 140, 160, .27);
+  border-radius: 4px;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .04em;
+}
+
+.governor-state.good {
+  color: #6ee7ad;
+  background: rgba(16, 185, 129, .1);
+  border-color: rgba(16, 185, 129, .3);
+}
+
+.governor-state.watch {
+  color: #fbbf24;
+  background: rgba(245, 158, 11, .11);
+  border-color: rgba(245, 158, 11, .3);
+}
+
+.governor-state.blocked {
+  color: #ff8188;
+  background: rgba(239, 68, 68, .1);
+  border-color: rgba(239, 68, 68, .3);
+}
+
+.deployment-block {
+  gap: 18px;
+  padding: 16px;
+}
+
+.deployment-donut {
+  width: 126px;
+  height: 126px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 126px;
+  background: conic-gradient(#63c044 0 var(--deployment), #2d91d5 var(--deployment) 100%);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .05);
+}
+
+.deployment-donut::before {
+  width: 84px;
+  height: 84px;
+  content: "";
+  grid-area: 1 / 1;
+  background: #0b1824;
+  border: 1px solid #20374c;
+  border-radius: 50%;
+}
+
+.deployment-donut span {
+  z-index: 1;
+  grid-area: 1 / 1;
+  display: grid;
+  justify-items: center;
+  color: #94aabd;
+  font-size: 9px;
+}
+
+.deployment-donut strong {
+  color: #eff8ff;
+  font-size: 21px;
+}
+
+.deployment-block dl {
+  min-width: 0;
+  display: grid;
+  flex: 1;
+  gap: 12px;
+  margin: 0;
+}
+
+.deployment-block dl div {
+  display: grid;
+  gap: 3px;
+}
+
+.deployment-block dt {
+  color: #7f98ad;
+  font-size: 10px;
+}
+
+.deployment-block dd {
+  margin: 0;
+  color: #e2edf5;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.sector-exposure,
+.governor-rules {
+  padding: 4px 16px 15px;
+}
+
+.sector-exposure h5 {
+  margin: 0 0 9px;
+  color: #dbe8f1;
+  font-size: 11px;
+}
+
+.risk-exposure-row {
+  min-height: 27px;
+  gap: 8px;
+  color: #a8bac8;
+  font-size: 9px;
+}
+
+.risk-exposure-row > span {
+  width: 92px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.risk-exposure-row > i {
+  height: 5px;
+  display: block;
+  flex: 1;
+  overflow: hidden;
+  background: #07121d;
+  border-radius: 5px;
+}
+
+.risk-exposure-row > i b {
+  height: 100%;
+  display: block;
+  background: linear-gradient(90deg, #268bd1, #52bcf5);
+  border-radius: inherit;
+}
+
+.risk-exposure-row > strong {
+  width: 40px;
+  color: #dce9f3;
+  text-align: right;
+}
+
+.governor-rules {
+  padding-top: 6px;
+  border-top: 1px solid #20374c;
+}
+
+.governor-rule {
+  min-height: 38px;
+  gap: 8px;
+  color: #a9bdcb;
+  border-bottom: 1px solid rgba(37, 60, 78, .72);
+  font-size: 9px;
+}
+
+.governor-rule:last-child {
+  border-bottom: 0;
+}
+
+.governor-rule span {
+  flex: 1;
+}
+
+.governor-rule strong {
+  color: #dce8f0;
+  text-align: right;
+}
+
+.governor-rule svg {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 14px;
+}
+
+.rule-pass {
+  color: #48d17d;
+}
+
+.rule-warn {
+  color: #f5b83d;
+}
+
+.activity-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.activity-list li {
+  min-height: 48px;
+  gap: 9px;
+  padding: 7px 12px;
+  border-bottom: 1px solid rgba(37, 60, 78, .72);
+}
+
+.activity-list li:last-child {
+  border-bottom: 0;
+}
+
+.activity-list li > span:nth-child(2) {
+  min-width: 0;
+  display: grid;
+  flex: 1;
+  gap: 2px;
+}
+
+.activity-list li strong,
+.activity-list li small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.activity-list li strong {
+  color: #dce8f0;
+  font-size: 10px;
+}
+
+.activity-list li small,
+.activity-list time {
+  color: #7991a4;
+  font-size: 9px;
+}
+
+.activity-list time {
+  flex: 0 0 auto;
+}
+
+.activity-mark {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 22px;
+  color: white;
+  background: #66798a;
+  border-radius: 50%;
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.activity-mark.buy {
+  background: #4c9d3b;
+}
+
+.activity-mark.sell,
+.activity-mark.rejected {
+  background: #cc4248;
+}
+
+@media (max-width: 1380px) {
+  .portfolio-metric-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .portfolio-dashboard-grid {
+    grid-template-columns: minmax(0, 1.45fr) minmax(290px, .7fr);
+  }
+}
+
+@media (max-width: 980px) {
+  .portfolio-metric-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .portfolio-dashboard-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "open" "risk" "closed" "activity";
+  }
+
+  .portfolio-risk-card {
+    align-self: stretch;
+  }
+}
+
+@media (max-width: 620px) {
+  .portfolio-dashboard-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .portfolio-dashboard-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .portfolio-metric-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .portfolio-metric-grid article {
+    min-height: 82px;
+  }
+
+  .deployment-block {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .deployment-donut {
+    align-self: center;
+  }
+
+  .activity-list time {
+    display: none;
   }
 }

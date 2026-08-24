@@ -35,6 +35,46 @@ mustInclude("app-broker-nav-guard.js", "[data-ash-terminal-panel]", "Terminal pa
 mustInclude("app-broker-nav-guard.js", "[data-ash-terminal-nav]", "Terminal nav close handling");
 
 for (const text of [
+  'data-section="control"',
+  'id="portfolioDashboard"',
+  'id="controlSection" data-panel="control"'
+]) {
+  mustInclude("index.html", text, "portfolio dashboard and Control separation");
+}
+
+for (const text of [
+  "Open Positions",
+  "Closed Trades",
+  "Recent Activity",
+  "Risk &amp; Capital Governor"
+]) {
+  mustInclude("app.js", text, "portfolio dashboard and Control separation");
+}
+
+for (const text of [
+  "function renderPortfolioDashboard()",
+  'state.orders.positions',
+  'state.orders.closed_trades',
+  'data-dashboard-book="open"',
+  'data-dashboard-book="closed"',
+  'data-dashboard-book="orders"',
+  'switchSection("orders")',
+  'renderPortfolioDashboard();'
+]) {
+  mustInclude("app.js", text, "live portfolio dashboard binding");
+}
+
+for (const text of [
+  "#dashboardSection.portfolio-dashboard.section.active",
+  "overflow-y: auto",
+  ".portfolio-dashboard-grid",
+  ".portfolio-risk-card",
+  ".portfolio-activity-card"
+]) {
+  mustInclude("styles.css", text, "scrollable responsive portfolio dashboard");
+}
+
+for (const text of [
   "#ashTradingTerminalView",
   "data-ash-terminal-nav",
   "Broker-Grade Paper Terminal",
