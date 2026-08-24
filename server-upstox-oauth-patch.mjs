@@ -11,6 +11,12 @@ function upstoxClientSecret() {
   return String(ENV.UPSTOX_API_SECRET || ENV.UPSTOX_CLIENT_SECRET || "").trim();
 }
 
+function upstoxClientIdFingerprint() {
+  const clientId = upstoxClientId();
+  if (!clientId) return null;
+  return crypto.createHash("sha256").update(clientId).digest("hex").slice(0, 12);
+}
+
 function requestOrigin(req) {
   const forwardedProto = String(req.headers["x-forwarded-proto"] || "").split(",")[0].trim();
   const proto = forwardedProto || (ENV.NODE_ENV === "production" ? "https" : "http");
@@ -121,26 +127,64 @@ async function upstoxRuntimeStatus(req = null) {
     oauth_configured: Boolean(upstoxClientId() && upstoxClientSecret()),
     api_key_visible: Boolean(upstoxClientId()),
     api_secret_visible: Boolean(upstoxClientSecret()),
+    client_id_fingerprint: upstoxClientIdFingerprint(),
     authorization_endpoint: UPSTOX_AUTHORIZATION_URL,
     token_endpoint: UPSTOX_TOKEN_URL,
     callback_path: "/api/upstox/callback",
     callback_url: req ? upstoxRedirectUri(req) : (ENV.UPSTOX_REDIRECT_URI || null),
+    callback_exact_match_required: true,
     paper_only: true,
     live_orders: false
   };
 }
 
-function buildUpstoxAuthorizeUrl(req) {
+function buildUpstoxAuthorizeUrl(req, options = {}) {
   const clientId = upstoxClientId();
   if (!clientId) throw new Error("upstox_api_key_missing");
   const url = new URL(UPSTOX_AUTHORIZATION_URL);
   url.searchParams.set("response_type", "code");
   url.searchParams.set("client_id", clientId);
   url.searchParams.set("redirect_uri", upstoxRedirectUri(req));
-  url.searchParams.set("state", createUpstoxOAuthState(req));
+  if (options.includeState !== false) url.searchParams.set("state", createUpstoxOAuthState(req));
   const scope = String(ENV.UPSTOX_SCOPE || "").trim();
   if (scope) url.searchParams.set("scope", scope);
   return url.toString();
+}
+
+async function preflightUpstoxOAuthConfiguration(req) {
+  if (ENV.UPSTOX_OAUTH_PREFLIGHT === "false") return { ok: true, skipped: true, reason: "disabled" };
+  if (ENV.NODE_ENV === "test" && ENV.UPSTOX_OAUTH_PREFLIGHT !== "true") {
+    return { ok: true, skipped: true, reason: "test" };
+  }
+  const callbackUrl = upstoxRedirectUri(req);
+  try {
+    const response = await fetch(buildUpstoxAuthorizeUrl(req, { includeState: false }), {
+      method: "GET",
+      redirect: "manual",
+      headers: { accept: "text/html,application/json" }
+    });
+    const text = await response.text();
+    let payload = {};
+    try { payload = text ? JSON.parse(text) : {}; } catch { payload = {}; }
+    const upstream = payload?.errors?.[0] || {};
+    const errorCode = String(upstream.errorCode || payload?.errorCode || "").trim();
+    const message = String(upstream.message || payload?.message || "").trim();
+    const configurationRejected = errorCode === "UDAPI100068"
+      || (response.status === 401 && /client_id|redirect_uri/i.test(message));
+    if (configurationRejected) {
+      return {
+        ok: false,
+        status: response.status,
+        error_code: errorCode || "UPSTOX_OAUTH_CONFIGURATION_REJECTED",
+        message: message || "Upstox rejected the configured client_id and redirect_uri.",
+        callback_url: callbackUrl,
+        client_id_fingerprint: upstoxClientIdFingerprint()
+      };
+    }
+    return { ok: true, status: response.status };
+  } catch (error) {
+    return { ok: true, warning: "preflight_unavailable", detail: String(error?.message || error).slice(0, 160) };
+  }
 }
 
 async function exchangeUpstoxOAuthCode(req, url) {
@@ -227,11 +271,27 @@ const UPSTOX_AUTH_ROUTES = String.raw`
           json(res, 405, { ok: false, error: "method_not_allowed", allowed: ["GET"] });
           return;
         }
+        const callbackUrl = upstoxRedirectUri(req);
+        const preflight = await preflightUpstoxOAuthConfiguration(req);
+        if (!preflight.ok) {
+          json(res, 409, {
+            ok: false,
+            error: "Upstox rejected the API key and callback pair (" + preflight.error_code + "). In Upstox Developer Apps, set the Redirect URI exactly to: " + callbackUrl,
+            code: "upstox_oauth_configuration_rejected",
+            upstream_error_code: preflight.error_code,
+            upstream_message: preflight.message,
+            callback_url: callbackUrl,
+            client_id_fingerprint: preflight.client_id_fingerprint,
+            token_printed: false
+          });
+          return;
+        }
         const authorizeUrl = buildUpstoxAuthorizeUrl(req);
         json(res, 200, {
           ok: true,
           authorize_url: authorizeUrl,
-          callback_url: upstoxRedirectUri(req),
+          callback_url: callbackUrl,
+          oauth_preflight: preflight,
           status: await upstoxRuntimeStatus(req),
           token_printed: false
         });

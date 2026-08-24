@@ -896,6 +896,29 @@ async function main() {
     assert(upstoxOAuthStart.body.authorize_url.startsWith("https://api.upstox.com/v2/login/authorization/dialog?"), "Upstox OAuth start should use the official dialog endpoint");
     assert(upstoxOAuthStart.body.authorize_url.includes(encodeURIComponent(`${BASE}/api/upstox/callback`)), "Upstox OAuth start should include the callback URL");
 
+    const nativeFetch = globalThis.fetch;
+    globalThis.__ASH_STOCK_ENV.UPSTOX_OAUTH_PREFLIGHT = "true";
+    globalThis.fetch = async (input, init) => {
+      if (String(input).startsWith("https://api.upstox.com/v2/login/authorization/dialog?")) {
+        return new Response(JSON.stringify({
+          status: "error",
+          errors: [{ errorCode: "UDAPI100068", message: "Check your 'client_id' and 'redirect_uri'; one or both are incorrect." }]
+        }), { status: 401, headers: { "content-type": "application/json" } });
+      }
+      return nativeFetch(input, init);
+    };
+    try {
+      const rejectedOAuthStart = await request("/api/upstox/oauth/start");
+      assert(rejectedOAuthStart.response.status === 409, "Upstox OAuth start should block a rejected API key/callback pair");
+      assert(rejectedOAuthStart.body.code === "upstox_oauth_configuration_rejected", "Upstox OAuth rejection should be actionable");
+      assert(rejectedOAuthStart.body.upstream_error_code === "UDAPI100068", "Upstox OAuth rejection should preserve the upstream error code");
+      assert(rejectedOAuthStart.body.callback_url === `${BASE}/api/upstox/callback`, "Upstox OAuth rejection should show the exact callback URL");
+      assert(!JSON.stringify(rejectedOAuthStart.body).includes("smoke-secret"), "Upstox OAuth rejection must not expose the API secret");
+    } finally {
+      globalThis.fetch = nativeFetch;
+      globalThis.__ASH_STOCK_ENV.UPSTOX_OAUTH_PREFLIGHT = "false";
+    }
+
     const tokenSave = await request("/api/upstox/token", {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -910,7 +933,7 @@ async function main() {
     assert(upstoxStatusAfter.body.status.token_visible === true, "Upstox status should detect saved token");
     assert(upstoxStatusAfter.body.status.token_source === "manual_paste", "Upstox status should read token from store");
 
-    console.log(JSON.stringify({ ok: true, checks: ["mongo-production-fail-closed", "data-bank-status", "scan-ledger", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "pre-rise-pattern-tracker", "parameter-tunnel-175", "kelly-parameters", "kelly-persisted-ledger", "kelly-active-sizing", "kelly-lifecycle-cap", "kelly-no-edge-block", "paper-capital-50-lakh", "paper-minimum-entry-1-lakh", "paper-order-idempotency", "paper-oversell-rejection", "paper-net-cost-accounting", "paper-closed-trade-returns", "paper-engine-real-quote-fill", "server-verified-manual-market-fill", "server-verified-monitor-gtt-sell", "serialized-concurrent-paper-fills", "upstox-guard", "paper-engine-status", "paper-engine-guard", "q1-status", "q1-upload", "q1-render-guard", "upstox-oauth-start", "upstox-token-paste"] }));
+    console.log(JSON.stringify({ ok: true, checks: ["mongo-production-fail-closed", "data-bank-status", "scan-ledger", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "pre-rise-pattern-tracker", "parameter-tunnel-175", "kelly-parameters", "kelly-persisted-ledger", "kelly-active-sizing", "kelly-lifecycle-cap", "kelly-no-edge-block", "paper-capital-50-lakh", "paper-minimum-entry-1-lakh", "paper-order-idempotency", "paper-oversell-rejection", "paper-net-cost-accounting", "paper-closed-trade-returns", "paper-engine-real-quote-fill", "server-verified-manual-market-fill", "server-verified-monitor-gtt-sell", "serialized-concurrent-paper-fills", "upstox-guard", "paper-engine-status", "paper-engine-guard", "q1-status", "q1-upload", "q1-render-guard", "upstox-oauth-start", "upstox-oauth-rejection", "upstox-token-paste"] }));
   } finally {
     await Promise.all([...Q1_INPUTS, STATE_FILE, SCAN_LEDGER_FILE, UPSTOX_AUTH_FILE].map((file) => fs.unlink(file).catch((error) => {
       if (error.code !== "ENOENT") throw error;

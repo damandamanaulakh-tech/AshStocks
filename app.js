@@ -1234,7 +1234,9 @@ function renderUpstoxSettings() {
     ["Saved at", status.token_saved_at ? isoDate(status.token_saved_at) : "env token or no stored token"],
     ["Expires at", status.token_expires_at ? isoDate(status.token_expires_at) : "not supplied by token response"],
     ["OAuth configured", status.oauth_configured ? "client key and secret active" : "client key/secret missing"],
-    ["Callback URL", callbackUrl],
+    ["Required Upstox Redirect URI", callbackUrl],
+    ["Redirect matching", "Must match the Upstox Developer App exactly"],
+    ["Client key fingerprint", status.client_id_fingerprint || "client key missing"],
     ["Secret display", status.token_printed === false ? "token never printed" : "token hidden"]
   ];
   node.innerHTML = rows.map(([k, v]) => `<div class="detail-row"><span>${escapeHtml(k)}</span><strong>${escapeHtml(v)}</strong></div>`).join("");

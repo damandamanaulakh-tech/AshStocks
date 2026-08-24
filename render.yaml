@@ -28,5 +28,9 @@ services:
         value: "8000"
       - key: UPSTOX_API_KEY
         sync: false
+      - key: UPSTOX_API_SECRET
+        sync: false
+      - key: UPSTOX_REDIRECT_URI
+        value: https://ashstocks.onrender.com/api/upstox/callback
       - key: UPSTOX_ACCESS_TOKEN
         sync: false
