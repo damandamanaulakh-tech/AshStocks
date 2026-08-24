@@ -10,7 +10,7 @@ This directory is the permanent repository source for the audited ASH Stock para
 
 ## Canonical files
 
-- `config/ash-stock-parameters.v2.1.json` — executable parameter values and unresolved gates.
+- `config/ash-stock-parameters.v2.2.json` — executable parameter values, paper-capital policy, Kelly linkage, and unresolved gates.
 - `config/validation-evidence.v2.1.json` — dated dataset and chronological holdout evidence.
 - `lib/parameter-registry.mjs` — registry loader and invariants.
 - `lib/risk-governor.mjs` — fail-closed paper exposure governor.

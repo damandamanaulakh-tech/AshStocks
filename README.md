@@ -6,6 +6,8 @@ AshStocks is a private, server-backed Indian/NSE stock selection engine. The bro
 
 The deployed server is self-contained: the base server pinned at revision `37a9e9ceacabd33bc5a2085ad621e368f8fc0cd8` is committed under `vendor/`, its SHA-256 is verified at startup, and the scanner, Upstox, and paper-trading patches are applied locally. Startup does not fetch application code from `raw.githubusercontent.com`.
 
+The executable capital source is `config/ash-stock-parameters.v2.2.json#paperCapital`: ₹50 lakh starting capital, ₹1 lakh minimum BUY, 80 lifecycle candidates, and at most 50 simultaneous minimum-size positions. Quarter-Kelly remains paper-only and can reduce the base cap after its evidence gates pass.
+
 ## Current Product Shape
 
 - Private Render app with login gate

@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
+import { loadPaperCapitalPolicy } from "../lib/paper-capital-policy.mjs";
 import {
   evaluateKellySizing,
   selectTradeInCandidates,
@@ -14,6 +15,7 @@ const manifest = JSON.parse(
 const registry = JSON.parse(
   fs.readFileSync(new URL("../config/ash-stock-parameters.v2.2.json", import.meta.url), "utf8"),
 );
+const capitalPolicy = loadPaperCapitalPolicy();
 
 assert.equal(manifest.release.assetCount, 171);
 assert.equal(manifest.audit.fullContentReviewCount, 171);
@@ -40,6 +42,10 @@ assert.equal(parameters.positionSizing.kelly.minimumWins, 20);
 assert.equal(parameters.positionSizing.kelly.minimumLosses, 20);
 assert.equal(parameters.positionSizing.kelly.fullConfidenceClosedTrades, 300);
 assert.equal(parameters.positionSizing.kelly.maximumKellyPositionPct, 10);
+assert.equal(capitalPolicy.startingCapital, 5_000_000);
+assert.equal(capitalPolicy.minimumEntryValue, 100_000);
+assert.equal(capitalPolicy.maximumCandidateEntries, 80);
+assert.equal(capitalPolicy.maximumOpenPositions, 50);
 assert.equal(
   registry.paperCapital.kellySizing.parameterSource,
   "config/stock-selection-parameters.v0.1.json#positionSizing.kelly",

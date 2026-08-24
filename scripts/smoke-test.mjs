@@ -424,6 +424,10 @@ async function main() {
     assert(stockSelectionParameters.response.status === 200, "stock-selection parameters should be readable");
     assert(stockSelectionParameters.body.parameters.parameterRevision === "0.2.0", "stock-selection parameters should expose Kelly revision 0.2.0");
     assert(stockSelectionParameters.body.parameters.positionSizing.kelly.fractionOfKelly === 0.25, "stock-selection parameters should expose quarter-Kelly");
+    assert(stockSelectionParameters.body.parameters.paperCapital.startingCapital === 5000000, "stock-selection parameters should expose Rs 50 lakh capital");
+    assert(stockSelectionParameters.body.parameters.paperCapital.minimumEntryValue === 100000, "stock-selection parameters should expose Rs 1 lakh minimum entry");
+    assert(stockSelectionParameters.body.parameters.paperCapital.maximumCandidateEntries === 80, "stock-selection parameters should expose the 80-entry lifecycle target");
+    assert(stockSelectionParameters.body.parameters.paperCapital.maximumOpenPositions === 50, "stock-selection parameters should cap simultaneous positions at the affordable 50");
 
     const stockSelectionStocks = Array.from({ length: 12 }, (_, index) => ({
       symbol: `KS${index}`,

@@ -1,7 +1,7 @@
 {
   "schemaVersion": "2.2",
-  "parameterRevision": "2.2.1",
-  "asOf": "2026-07-31",
+  "parameterRevision": "2.2.2",
+  "asOf": "2026-08-24",
   "governance": {
     "userApproved": true,
     "approvalScope": "all_parameters_from_am07_grok_workbooks",
@@ -15,10 +15,18 @@
     "liveReady": false
   },
   "paperCapital": {
-    "initialCapitalInr": 1000000,
+    "policySource": "config/ash-stock-parameters.v2.2.json#paperCapital",
+    "initialCapitalInr": 5000000,
+    "deploymentTargetPct": 100,
+    "minimumEntryValue": 100000,
+    "minimumEntryPct": 2,
+    "baseEntryPct": 2,
     "maxPositionPct": 10,
     "cashBufferPct": 5,
-    "maxOpenPositions": 20,
+    "maxCandidateEntries": 80,
+    "maxOpenPositions": 50,
+    "maxBuysPerRun": 80,
+    "affordableOpenPositionsAtMinimum": 50,
     "maxPortfolioHeatPct": 25,
     "kellySizing": {
       "parameterSource": "config/stock-selection-parameters.v0.1.json#positionSizing.kelly",

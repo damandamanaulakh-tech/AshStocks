@@ -10,7 +10,7 @@
   "baseEntryPct": 2,
   "maximumPositionPct": 10,
   "maximumCandidateEntries": 80,
-  "maximumOpenPositions": 80,
+  "maximumOpenPositions": 50,
   "maximumBuysPerRun": 80,
   "affordableOpenPositionsAtMinimum": 50,
   "capitalMigration": {

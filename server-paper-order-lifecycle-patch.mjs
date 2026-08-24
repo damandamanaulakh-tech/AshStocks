@@ -1,11 +1,6 @@
-import { readFileSync } from "node:fs";
+import { loadPaperCapitalPolicy } from "./lib/paper-capital-policy.mjs";
 
-const paperCapitalPolicy = JSON.parse(
-  readFileSync(
-    new URL("./config/paper-trader-capital.v0.4.json", import.meta.url),
-    "utf8",
-  ),
-);
+const paperCapitalPolicy = loadPaperCapitalPolicy();
 
 const PAPER_ORDER_LIFECYCLE_FUNCTIONS = String.raw`
 const PAPER_ORDER_LIFECYCLE_VERSION = "ashstocks-paper-order-lifecycle-v0.4-capital-closed-trades";
@@ -413,7 +408,7 @@ function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
     if (!existing && openPositions.length + activeBuyGtt.length >= PAPER_CAPITAL_POLICY.maximumOpenPositions) {
       const rejected = rejectedPaperOrder(
         request,
-        "Paper portfolio reached the configured 80-entry lifecycle limit",
+        "Paper portfolio reached the configured simultaneous-position limit of " + PAPER_CAPITAL_POLICY.maximumOpenPositions,
         asOf
       );
       next.orders = [rejected, ...next.orders].slice(0, 200);

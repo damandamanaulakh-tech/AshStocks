@@ -1,8 +1,12 @@
 import { readFileSync } from "node:fs";
+import { loadPaperCapitalPolicy } from "./lib/paper-capital-policy.mjs";
 
 const stockSelectionParameters = JSON.parse(
   readFileSync(new URL("./config/stock-selection-parameters.v0.1.json", import.meta.url), "utf8"),
 );
+const paperCapitalPolicy = loadPaperCapitalPolicy();
+stockSelectionParameters.paperCapital = paperCapitalPolicy;
+stockSelectionParameters.positionSizing.maximumPositionPct = paperCapitalPolicy.maximumPositionPct;
 const releaseManifest = JSON.parse(
   readFileSync(new URL("./config/release-data-manifest.Backenddata.json", import.meta.url), "utf8"),
 );
