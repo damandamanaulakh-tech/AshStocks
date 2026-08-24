@@ -3869,7 +3869,8 @@ td small {
 }
 
 /* Portfolio-first dashboard */
-#portfolioSection.portfolio-dashboard.section.active {
+#portfolioSection.portfolio-dashboard.section.active,
+#ordersSection.paper-trade-dashboard.section.active {
   min-height: 0;
   display: flex;
   flex: 1;
@@ -3880,6 +3881,80 @@ td small {
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-gutter: stable;
+}
+
+.paper-trade-dashboard-head .status-pill {
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding-inline: 10px;
+}
+
+.paper-trade-dashboard-head .status-pill svg {
+  width: 14px;
+  height: 14px;
+}
+
+.paper-trade-ledger-detail {
+  flex: 0 0 auto;
+  overflow: hidden;
+  background: linear-gradient(145deg, rgba(14, 29, 44, .96), rgba(9, 21, 31, .98));
+  border: 1px solid #20374c;
+  border-radius: 7px;
+}
+
+.paper-trade-ledger-detail > summary {
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 11px 14px;
+  color: #edf7ff;
+  cursor: pointer;
+  list-style: none;
+}
+
+.paper-trade-ledger-detail > summary::-webkit-details-marker {
+  display: none;
+}
+
+.paper-trade-ledger-detail > summary span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.paper-trade-ledger-detail > summary span::after {
+  content: "+";
+  color: #51b8ef;
+  font-size: 18px;
+}
+
+.paper-trade-ledger-detail[open] > summary span::after {
+  content: "−";
+}
+
+.paper-trade-ledger-detail > summary svg {
+  width: 16px;
+  height: 16px;
+  color: #51b8ef;
+}
+
+.paper-trade-ledger-detail > summary small {
+  color: #8299ab;
+  font-size: 10px;
+}
+
+.paper-trade-ledger-detail[open] > summary {
+  border-bottom: 1px solid #20374c;
+}
+
+.paper-trade-ledger-detail .book-table {
+  padding: 12px;
 }
 
 .portfolio-dashboard-head,
@@ -4464,6 +4539,11 @@ td small {
   .portfolio-dashboard-actions {
     width: 100%;
     justify-content: space-between;
+  }
+
+  .paper-trade-ledger-detail > summary {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .portfolio-metric-grid {

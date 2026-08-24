@@ -1392,11 +1392,13 @@ function renderUpstoxSettings() {
 }
 
 function renderPortfolioDashboard() {
-  const node = el("portfolioDashboard");
-  if (!node) return;
-  const stamp = el("portfolioDashboardStamp");
+  const targets = [el("portfolioDashboard"), el("paperTradeDashboard")].filter(Boolean);
+  if (!targets.length) return;
+  const stamps = [el("portfolioDashboardStamp"), el("paperTradeDashboardStamp")].filter(Boolean);
   if (!state.orders) {
-    node.innerHTML = `<section class="portfolio-loading panel"><strong>Loading portfolio</strong><span>Reading positions, closed trades and capital controls.</span></section>`;
+    targets.forEach((node) => {
+      node.innerHTML = `<section class="portfolio-loading panel"><strong>Loading paper portfolio</strong><span>Reading positions, closed trades and capital controls.</span></section>`;
+    });
     return;
   }
 
@@ -1412,6 +1414,14 @@ function renderPortfolioDashboard() {
   const unrealizedPnl = numberValue(funds.unrealized_pnl) || 0;
   const realizedPnl = numberValue(funds.realized_pnl) || 0;
   const totalPnl = numberValue(funds.total_pnl) || 0;
+  const todayKey = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" });
+  const todayRealizedPnl = closedTrades.reduce((sum, trade) => {
+    const exitAt = Date.parse(trade.exit_at || "");
+    if (!Number.isFinite(exitAt)) return sum;
+    const exitKey = new Date(exitAt).toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" });
+    return exitKey === todayKey ? sum + (numberValue(trade.realized_pnl) || 0) : sum;
+  }, 0);
+  const todayRealizedReturnPct = startingCapital ? todayRealizedPnl / startingCapital * 100 : 0;
   const deploymentPct = Math.max(0, Math.min(100, numberValue(funds.deployment_pct) || 0));
   const totalReturnPct = startingCapital ? (totalPnl / startingCapital) * 100 : 0;
   const maximumOpenPositions = numberValue(policy.maximumOpenPositions ?? funds.maximum_open_positions);
@@ -1495,22 +1505,22 @@ function renderPortfolioDashboard() {
   const riskCheck = (actual, limit, comparison = "max") => comparison === "min" ? actual >= limit : actual <= limit;
   const riskRow = (label, value, passed) => `<div class="governor-rule"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong><i data-lucide="${passed ? "circle-check" : "triangle-alert"}" class="${passed ? "rule-pass" : "rule-warn"}" aria-hidden="true"></i></div>`;
 
-  if (stamp) {
+  stamps.forEach((stamp) => {
     stamp.textContent = mark.quote_error
       ? `Portfolio loaded. Live marks unavailable: ${mark.quote_error}`
       : mark.as_of
         ? `Live mark-to-market from Upstox at ${isoDate(mark.as_of)}.`
         : "Portfolio loaded from the durable paper ledger; no live mark timestamp is available.";
-  }
+  });
 
-  node.innerHTML = `
+  const dashboardHtml = `
     ${state.orders.error ? `<p class="portfolio-error">${escapeHtml(state.orders.error)}</p>` : ""}
     <section class="portfolio-metric-grid" aria-label="Portfolio summary">
       <article><span class="metric-icon"><i data-lucide="wallet-cards"></i></span><div><small>Starting capital</small><strong>${fmtPrice(startingCapital)}</strong><em>Approved paper capital</em></div></article>
       <article><span class="metric-icon"><i data-lucide="pie-chart"></i></span><div><small>Invested</small><strong>${fmtPrice(investedValue)}</strong><em>${fmtNumber(deploymentPct)}% deployed</em></div></article>
       <article><span class="metric-icon success"><i data-lucide="indian-rupee"></i></span><div><small>Buying power</small><strong>${fmtPrice(buyingPower)}</strong><em>${fmtNumber(cashPct)}% of capital</em></div></article>
       <article><span class="metric-icon"><i data-lucide="trending-up"></i></span><div><small>Total P&amp;L</small><strong class="${pnlClass(totalPnl)}">${fmtPrice(totalPnl)}</strong><em class="${pnlClass(totalReturnPct)}">${fmtPct(totalReturnPct)}</em></div></article>
-      <article><span class="metric-icon"><i data-lucide="badge-indian-rupee"></i></span><div><small>Realized P&amp;L</small><strong class="${pnlClass(realizedPnl)}">${fmtPrice(realizedPnl)}</strong><em>Unrealized ${fmtPrice(unrealizedPnl)}</em></div></article>
+      <article><span class="metric-icon"><i data-lucide="badge-indian-rupee"></i></span><div><small>Today's realized P&amp;L</small><strong class="${pnlClass(todayRealizedPnl)}">${fmtPrice(todayRealizedPnl)}</strong><em class="${pnlClass(todayRealizedReturnPct)}">${fmtPct(todayRealizedReturnPct)} · total ${fmtPrice(realizedPnl)}</em></div></article>
     </section>
 
     <section class="portfolio-dashboard-grid">
@@ -1547,11 +1557,19 @@ function renderPortfolioDashboard() {
       </article>
     </section>`;
 
-  all("[data-dashboard-book]", node).forEach((button) => button.addEventListener("click", () => {
-    state.paperLedgerTab = button.dataset.dashboardBook;
-    renderOrders();
-    switchSection("orders");
-  }));
+  targets.forEach((node) => {
+    node.innerHTML = dashboardHtml;
+    all("[data-dashboard-book]", node).forEach((button) => button.addEventListener("click", () => {
+      state.paperLedgerTab = button.dataset.dashboardBook;
+      renderOrders();
+      switchSection("orders");
+      const detail = el("paperTradeLedgerDetail");
+      if (detail) {
+        detail.open = true;
+        window.requestAnimationFrame(() => detail.scrollIntoView({ behavior: "smooth", block: "start" }));
+      }
+    }));
+  });
   window.lucide?.createIcons?.();
 }
 
@@ -1877,6 +1895,7 @@ function bindUi() {
   el("signalPaperEngineAction")?.addEventListener("click", runPaperEngineNow);
   el("signalRadarRefresh")?.addEventListener("click", refreshScan);
   el("dashboardRefreshBtn")?.addEventListener("click", loadOrders);
+  el("paperTradeRefreshBtn")?.addEventListener("click", loadOrders);
   el("refreshOrdersBtn")?.addEventListener("click", loadOrders);
   el("upstoxConnectBtn")?.addEventListener("click", startUpstoxOAuth);
   el("upstoxTokenForm")?.addEventListener("submit", submitUpstoxToken);

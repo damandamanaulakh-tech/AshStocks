@@ -42,7 +42,12 @@ for (const text of [
   'id="signalRadarBody"',
   'id="signalMarketRegime"',
   'id="signalEvidence"',
-  'id="signalPaperEngineAction"'
+  'id="signalPaperEngineAction"',
+  'id="ordersSection" data-panel="orders"',
+  'id="paperTradeDashboard"',
+  'id="paperTradeDashboardStamp"',
+  'id="paperTradeLedgerDetail"',
+  'id="paperTradeRefreshBtn"'
 ]) {
   mustInclude("index.html", text, "signal dashboard and Portfolio separation");
 }
@@ -64,6 +69,10 @@ for (const text of [
   'data-dashboard-book="closed"',
   'data-dashboard-book="orders"',
   'switchSection("orders")',
+  'el("paperTradeDashboard")',
+  'el("paperTradeLedgerDetail")',
+  'el("paperTradeRefreshBtn")',
+  "Today's realized P&amp;L",
   'renderPortfolioDashboard();'
 ]) {
   mustInclude("app.js", text, "live portfolio dashboard binding");
@@ -71,10 +80,12 @@ for (const text of [
 
 for (const text of [
   "#portfolioSection.portfolio-dashboard.section.active",
+  "#ordersSection.paper-trade-dashboard.section.active",
   "overflow-y: auto",
   ".portfolio-dashboard-grid",
   ".portfolio-risk-card",
-  ".portfolio-activity-card"
+  ".portfolio-activity-card",
+  ".paper-trade-ledger-detail"
 ]) {
   mustInclude("styles.css", text, "scrollable responsive portfolio dashboard");
 }

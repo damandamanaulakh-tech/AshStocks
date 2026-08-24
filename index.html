@@ -299,17 +299,23 @@
           </div>
         </section>
 
-        <section class="section" id="ordersSection" data-panel="orders">
-          <div class="panel">
-            <div class="panel-head">
-              <div>
-                <span class="mini-label">Paper Execution</span>
-                <h3>Lifecycle Ledger</h3>
-              </div>
-              <button class="small-button" type="button" id="refreshOrdersBtn">Refresh</button>
+        <section class="section portfolio-dashboard paper-trade-dashboard" id="ordersSection" data-panel="orders">
+          <header class="portfolio-dashboard-head paper-trade-dashboard-head">
+            <div>
+              <span class="mini-label">Paper Execution</span>
+              <h3>Paper Trade Dashboard</h3>
+              <p id="paperTradeDashboardStamp">Loading capital, positions, closed trades and risk controls.</p>
             </div>
+            <div class="portfolio-dashboard-actions">
+              <span class="status-pill good"><i data-lucide="file-lock-2"></i> Paper only</span>
+              <button class="small-button" type="button" id="paperTradeRefreshBtn"><i data-lucide="refresh-cw"></i> Refresh</button>
+            </div>
+          </header>
+          <div id="paperTradeDashboard" class="portfolio-dashboard-body" aria-live="polite"></div>
+          <details class="paper-trade-ledger-detail" id="paperTradeLedgerDetail">
+            <summary><span><i data-lucide="book-open-check"></i> Full Lifecycle Ledger</span><small>Open positions, every closed trade, and complete order history</small></summary>
             <div class="book-table" id="ordersLedger"></div>
-          </div>
+          </details>
         </section>
 
         <section class="section" id="settingsSection" data-panel="settings">
