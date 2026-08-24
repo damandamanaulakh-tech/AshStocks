@@ -3,7 +3,7 @@ import { loadPaperCapitalPolicy } from "./lib/paper-capital-policy.mjs";
 const paperCapitalPolicy = loadPaperCapitalPolicy();
 
 const PAPER_ORDER_LIFECYCLE_FUNCTIONS = String.raw`
-const PAPER_ORDER_LIFECYCLE_VERSION = "ashstocks-paper-order-lifecycle-v0.4-capital-closed-trades";
+const PAPER_ORDER_LIFECYCLE_VERSION = "ashstocks-paper-order-lifecycle-v0.5-idempotent-orders";
 const PAPER_CAPITAL_POLICY = Object.freeze(${JSON.stringify(paperCapitalPolicy)});
 function sanitizeParameterEvidence(input = {}) {
   return {
@@ -64,6 +64,8 @@ function sanitizePaperOrder(order = {}) {
   const symbol = normalizeSymbol(order.symbol);
   return {
     id: String(order.id || "").slice(0, 64),
+    idempotency_key: String(order.idempotency_key || order.idempotencyKey || "").trim().slice(0, 128),
+    request_fingerprint: String(order.request_fingerprint || "").slice(0, 500),
     symbol,
     instrument_key: String(order.instrument_key || "").slice(0, 100),
     name: String(order.name || symbol).slice(0, 120),
@@ -166,6 +168,8 @@ function sanitizePaperGtt(plan = {}) {
   const symbol = normalizeSymbol(plan.symbol);
   return {
     id: String(plan.id || "").slice(0, 64),
+    idempotency_key: String(plan.idempotency_key || plan.idempotencyKey || "").trim().slice(0, 128),
+    request_fingerprint: String(plan.request_fingerprint || "").slice(0, 500),
     symbol,
     instrument_key: String(plan.instrument_key || "").slice(0, 100),
     name: String(plan.name || symbol).slice(0, 120),
@@ -300,6 +304,7 @@ function paperOrderRequest(body = {}) {
   const price = finiteOr(body.price ?? body.entry_price ?? body.entryPrice ?? body.close, null);
   return {
     symbol,
+    idempotency_key: String(body.idempotency_key || body.idempotencyKey || "").trim().slice(0, 128),
     instrument_key: String(body.instrument_key || "").slice(0, 100),
     name: String(body.name || symbol).slice(0, 120),
     sector: String(body.sector || "Unmapped").slice(0, 80),
@@ -318,6 +323,20 @@ function paperOrderRequest(body = {}) {
     execution_evidence: sanitizeExecutionEvidence(body.execution_evidence || {}),
     gtt: Boolean(body.gtt || String(body.order_type || body.action || "").toUpperCase() === "GTT")
   };
+}
+function paperOrderRequestFingerprint(request = {}) {
+  return JSON.stringify([
+    request.symbol,
+    request.instrument_key,
+    request.side,
+    request.order_type,
+    request.qty,
+    request.price,
+    request.target_price,
+    request.stop_price,
+    request.source,
+    request.gtt
+  ]).slice(0, 500);
 }
 function rejectedPaperOrder(request, reason, asOf) {
   return sanitizePaperOrder({
@@ -350,6 +369,7 @@ function paperKellySizing(paperTrader = {}) {
 function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
   const asOf = paperLifecycleNow();
   const request = paperOrderRequest(body);
+  request.request_fingerprint = paperOrderRequestFingerprint(request);
   const paperTrader = sanitizePaperTraderState(state.paperTrader || {});
   const next = {
     ...paperTrader,
@@ -359,6 +379,77 @@ function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
     trades: paperTrader.trades.slice(),
     gtt: paperTrader.gtt.slice()
   };
+
+  {
+    const replayCutoff = Date.parse(asOf) - 60_000;
+    const priorOrder = next.orders.find((order) => (
+      request.idempotency_key
+        ? order.idempotency_key === request.idempotency_key
+        : order.request_fingerprint === request.request_fingerprint
+          && Date.parse(order.created_at || order.updated_at || "") >= replayCutoff
+    ));
+    if (priorOrder) {
+      const saved = sanitizePaperTraderState(next);
+      if (request.idempotency_key && priorOrder.request_fingerprint && priorOrder.request_fingerprint !== request.request_fingerprint) {
+        return {
+          ok: false,
+          status: 409,
+          error: "idempotency_key_reused_with_different_request",
+          replayed: false,
+          order: priorOrder,
+          funds: paperLifecycleFunds(saved),
+          paperTrader: saved,
+          nextState: { ...state, paperTrader: saved }
+        };
+      }
+      const trade = next.trades.find((item) => item.order_id === priorOrder.id) || null;
+      const rejected = priorOrder.status === "REJECTED";
+      return {
+        ok: !rejected,
+        status: rejected ? 409 : 200,
+        action: rejected ? "PAPER_ORDER_REJECTED" : priorOrder.side === "BUY" ? "PAPER_BUY_FILLED" : "PAPER_SELL_FILLED",
+        replayed: true,
+        replay_mode: request.idempotency_key ? "explicit_key" : "legacy_60_second_fingerprint",
+        order: priorOrder,
+        trade,
+        funds: paperLifecycleFunds(saved),
+        paperTrader: saved,
+        nextState: { ...state, paperTrader: saved }
+      };
+    }
+    const priorGtt = next.gtt.find((plan) => (
+      request.idempotency_key
+        ? plan.idempotency_key === request.idempotency_key
+        : plan.request_fingerprint === request.request_fingerprint
+          && Date.parse(plan.created_at || "") >= replayCutoff
+    ));
+    if (priorGtt) {
+      const saved = sanitizePaperTraderState(next);
+      if (request.idempotency_key && priorGtt.request_fingerprint && priorGtt.request_fingerprint !== request.request_fingerprint) {
+        return {
+          ok: false,
+          status: 409,
+          error: "idempotency_key_reused_with_different_request",
+          replayed: false,
+          gtt: priorGtt,
+          funds: paperLifecycleFunds(saved),
+          paperTrader: saved,
+          nextState: { ...state, paperTrader: saved }
+        };
+      }
+      return {
+        ok: true,
+        status: 200,
+        action: "PAPER_GTT_CREATED",
+        replayed: true,
+        replay_mode: request.idempotency_key ? "explicit_key" : "legacy_60_second_fingerprint",
+        gtt: priorGtt,
+        funds: paperLifecycleFunds(saved),
+        paperTrader: saved,
+        nextState: { ...state, paperTrader: saved }
+      };
+    }
+  }
 
   if (!request.symbol) {
     const order = rejectedPaperOrder(request, "symbol missing", asOf);
@@ -515,7 +606,18 @@ function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
       return { ok: false, status: 409, order: rejected, paperTrader: saved, nextState: { ...state, paperTrader: saved } };
     }
     const existing = next.positions[existingIndex];
-    const sellQty = Math.min(request.qty, Math.max(0, finiteOr(existing.qty, 0)));
+    const heldQty = Math.max(0, Math.floor(finiteOr(existing.qty, 0)));
+    if (request.qty > heldQty) {
+      const rejected = rejectedPaperOrder(
+        request,
+        "paper SELL quantity " + request.qty + " exceeds held quantity " + heldQty,
+        asOf
+      );
+      next.orders = [rejected, ...next.orders].slice(0, 200);
+      const saved = sanitizePaperTraderState(next);
+      return { ok: false, status: 409, order: rejected, paperTrader: saved, nextState: { ...state, paperTrader: saved } };
+    }
+    const sellQty = request.qty;
     const remaining = Math.max(0, finiteOr(existing.qty, 0) - sellQty);
     const entryPrice = finiteOr(existing.entry_price, request.price);
     const entryValue = round(entryPrice * sellQty, 2);

@@ -552,24 +552,84 @@ async function main() {
     assert(belowMinimumOrder.response.status === 409, "paper BUY below Rs 1 lakh must be rejected");
     assert(String(belowMinimumOrder.body.order?.rejection_reason || "").includes("at least Rs 100000"), "minimum-entry rejection should expose the exact threshold");
 
+    const lifecycleBuyBody = {
+      idempotency_key: "smoke-closed-trade-buy-1",
+      symbol: "CLOSEDPROOF",
+      side: "BUY",
+      qty: 1000,
+      price: 100,
+      source: "smoke-closed-trade-buy",
+      paper_only: true,
+      broker_write_enabled: false,
+    };
     const lifecycleBuy = await request("/api/paper-trader/order", {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        symbol: "CLOSEDPROOF",
-        side: "BUY",
-        qty: 1000,
-        price: 100,
-        source: "smoke-closed-trade-buy",
-        paper_only: true,
-        broker_write_enabled: false,
-      }),
+      body: JSON.stringify(lifecycleBuyBody),
     });
     assert(lifecycleBuy.response.status === 200, "Rs 1 lakh paper BUY should fill");
+    const lifecycleBuyReplay = await request("/api/paper-trader/order", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(lifecycleBuyBody),
+    });
+    assert(lifecycleBuyReplay.response.status === 200, "idempotent paper BUY replay should return the original fill");
+    assert(lifecycleBuyReplay.body.replayed === true, "paper BUY replay should be identified as a replay");
+    assert(lifecycleBuyReplay.body.order.id === lifecycleBuy.body.order.id, "paper BUY replay should retain the original order id");
+    assert(lifecycleBuyReplay.body.paperTrader.positions.find((position) => position.symbol === "CLOSEDPROOF")?.qty === 1000, "paper BUY replay must not double the position");
+
+    const mismatchedIdempotencyReplay = await request("/api/paper-trader/order", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ ...lifecycleBuyBody, qty: 1001 }),
+    });
+    assert(mismatchedIdempotencyReplay.response.status === 409, "reusing an idempotency key for a different order should be rejected");
+    assert(mismatchedIdempotencyReplay.body.error === "idempotency_key_reused_with_different_request", "idempotency conflict should be explicit");
+    assert(mismatchedIdempotencyReplay.body.paperTrader.positions.find((position) => position.symbol === "CLOSEDPROOF")?.qty === 1000, "idempotency conflict must not mutate the holding");
+
+    const legacyReplayBody = {
+      symbol: "LEGACYREPLAY",
+      side: "BUY",
+      qty: 1000,
+      price: 100,
+      source: "smoke-legacy-replay",
+    };
+    const legacyReplayFirst = await request("/api/paper-trader/order", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(legacyReplayBody),
+    });
+    const legacyReplaySecond = await request("/api/paper-trader/order", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(legacyReplayBody),
+    });
+    assert(legacyReplayFirst.response.status === 200 && legacyReplaySecond.response.status === 200, "legacy keyless paper BUY and retry should succeed once");
+    assert(legacyReplaySecond.body.replayed === true, "keyless immediate paper BUY retry should be deduplicated");
+    assert(legacyReplaySecond.body.replay_mode === "legacy_60_second_fingerprint", "keyless retry should report the bounded compatibility mode");
+    assert(legacyReplaySecond.body.paperTrader.positions.find((position) => position.symbol === "LEGACYREPLAY")?.qty === 1000, "keyless retry must not double the position");
+
+    const oversizedSell = await request("/api/paper-trader/order", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        idempotency_key: "smoke-closed-trade-oversell-1",
+        symbol: "CLOSEDPROOF",
+        side: "SELL",
+        qty: 1001,
+        price: 110,
+        source: "smoke-oversell-rejection",
+      }),
+    });
+    assert(oversizedSell.response.status === 409, "paper SELL above held quantity should be rejected");
+    assert(String(oversizedSell.body.order?.rejection_reason || "").includes("exceeds held quantity 1000"), "oversized SELL rejection should expose the held quantity");
+    assert(oversizedSell.body.paperTrader.positions.find((position) => position.symbol === "CLOSEDPROOF")?.qty === 1000, "oversized SELL must not mutate the holding");
+
     const lifecycleSell = await request("/api/paper-trader/order", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
+        idempotency_key: "smoke-closed-trade-sell-1",
         symbol: "CLOSEDPROOF",
         side: "SELL",
         qty: 1000,
@@ -581,6 +641,7 @@ async function main() {
       }),
     });
     assert(lifecycleSell.response.status === 200, "paper SELL should close the proof position");
+    assert(lifecycleSell.body.order.qty === lifecycleSell.body.trade.qty, "filled SELL order and trade quantities must match");
     const closedLedger = await request("/api/paper-trader/orders");
     const closedProof = closedLedger.body.closed_trades.find((trade) => trade.symbol === "CLOSEDPROOF");
     assert(closedProof?.entry_value === 100000, "closed trade should retain entry value");
@@ -730,7 +791,7 @@ async function main() {
     assert(upstoxStatusAfter.body.status.token_visible === true, "Upstox status should detect saved token");
     assert(upstoxStatusAfter.body.status.token_source === "manual_paste", "Upstox status should read token from store");
 
-    console.log(JSON.stringify({ ok: true, checks: ["mongo-file-fallback", "data-bank-status", "scan-ledger", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "pre-rise-pattern-tracker", "parameter-tunnel-175", "kelly-parameters", "kelly-persisted-ledger", "kelly-active-sizing", "kelly-lifecycle-cap", "kelly-no-edge-block", "paper-capital-50-lakh", "paper-minimum-entry-1-lakh", "paper-closed-trade-returns", "paper-engine-real-quote-fill", "upstox-guard", "paper-engine-status", "paper-engine-guard", "q1-status", "q1-upload", "q1-render-guard", "upstox-oauth-start", "upstox-token-paste"] }));
+    console.log(JSON.stringify({ ok: true, checks: ["mongo-file-fallback", "data-bank-status", "scan-ledger", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "pre-rise-pattern-tracker", "parameter-tunnel-175", "kelly-parameters", "kelly-persisted-ledger", "kelly-active-sizing", "kelly-lifecycle-cap", "kelly-no-edge-block", "paper-capital-50-lakh", "paper-minimum-entry-1-lakh", "paper-order-idempotency", "paper-oversell-rejection", "paper-closed-trade-returns", "paper-engine-real-quote-fill", "upstox-guard", "paper-engine-status", "paper-engine-guard", "q1-status", "q1-upload", "q1-render-guard", "upstox-oauth-start", "upstox-token-paste"] }));
   } finally {
     await Promise.all([...Q1_INPUTS, STATE_FILE, SCAN_LEDGER_FILE, UPSTOX_AUTH_FILE].map((file) => fs.unlink(file).catch((error) => {
       if (error.code !== "ENOENT") throw error;

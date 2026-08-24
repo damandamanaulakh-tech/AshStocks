@@ -23,7 +23,12 @@ function mustMatch(file, regex, reason) {
 }
 
 for (const text of [
-  "ashstocks-paper-order-lifecycle-v0.4-capital-closed-trades",
+  "ashstocks-paper-order-lifecycle-v0.5-idempotent-orders",
+  "idempotency_key",
+  "legacy_60_second_fingerprint",
+  "idempotency_key_reused_with_different_request",
+  "replayed: true",
+  "exceeds held quantity",
   "PAPER_CAPITAL_POLICY",
   "minimumEntryValue",
   "maximumCandidateEntries",
@@ -85,6 +90,17 @@ mustMatch(
   /entry_price: entryPrice[\s\S]*exit_price: request\.price[\s\S]*return_pct:[\s\S]*holding_days:/,
   "manual SELL should persist complete closed-trade return evidence"
 );
+mustMatch(
+  "server-paper-order-lifecycle-patch.mjs",
+  /replayCutoff[\s\S]*request_fingerprint[\s\S]*priorOrder[\s\S]*idempotency_key[\s\S]*replayed: true/,
+  "paper-order retries should return the original ledger result by explicit key or short legacy fingerprint"
+);
+mustMatch(
+  "server-paper-order-lifecycle-patch.mjs",
+  /request\.qty > heldQty[\s\S]*exceeds held quantity[\s\S]*const sellQty = request\.qty/,
+  "oversized paper SELL requests should fail instead of being silently clamped"
+);
+mustInclude("server-paper-engine-autobuy-patch.mjs", "idempotency_key", "automatic paper BUYs should carry a stable quote-scoped idempotency key");
 
 for (const text of [
   "/api/paper-trader/monitor",

@@ -431,6 +431,11 @@ const PAPER_ENGINE_RUN_REPLACEMENT = String.raw`async function runPaperEngineOnc
       version: ticket.parameter_tunnel?.version || PARAMETER_TUNNEL_VERSION
     };
     const orderBody = {
+      idempotency_key: [
+        "paper-engine-autobuy",
+        scanRow.instrument_key || ticket.symbol,
+        executionEvidence.quote_timestamp || scan.asOf || slot?.key || "unknown-quote"
+      ].join(":"),
       symbol: ticket.symbol,
       name: ticket.name,
       sector: ticket.sector,
