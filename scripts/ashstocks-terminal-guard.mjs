@@ -41,7 +41,7 @@ for (const text of [
   "Market Watch",
   "Paper Order Ticket",
   "Parameter Proof",
-  "Orders / Trades / GTT",
+  "Portfolio / Closed / Orders / GTT",
   "/api/ready",
   "/api/market-context",
   "/api/scanner/run",
@@ -206,6 +206,7 @@ for (const text of [
 }
 
 mustMatch("app-ashstocks-trading-terminal.js", /submitPaperAction[\s\S]*fetch|submitPaperAction[\s\S]*api\("\/api\/paper-trader\/order"/, "paper order submission path");
+mustMatch("app-ashstocks-trading-terminal.js", /const positions = \(ledger\.positions[\s\S]*const rows = \[\.\.\.positions, \.\.\.history\]/, "terminal ledger should show every open position before historical rows instead of filtering them by selected symbol");
 mustMatch("app-ashstocks-trading-terminal.js", /parameterGates[\s\S]*P681[\s\S]*P683[\s\S]*P686[\s\S]*P688[\s\S]*P1701/, "candle and quote parameter gates");
 mustMatch("app-ashstocks-trading-terminal.js", /candleChart[\s\S]*normalizeCandles[\s\S]*DATA_NEEDED: Upstox daily candles/, "real candle chart or explicit data-needed state");
 mustMatch("app-ashstocks-trading-terminal.js", /requestSelectedQuote[\s\S]*\/api\/upstox\/quote[\s\S]*instrument_keys/, "selected stock Upstox quote fetch");

@@ -219,18 +219,22 @@ try {
   let response = await nativeFetch(base + "/api/scanner/run", {
     method: "POST",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify({ universe: symbols.map((symbol, index) => ({
-      symbol,
-      name: "Real Quote Test " + (index + 1),
-      sector: "Test",
-      exchange: "NSE",
-      instrument_key: "NSE_EQ|INETEST0000" + (index + 1),
-      candles
-    })) })
+    body: JSON.stringify({ universe: [
+      ...symbols.map((symbol, index) => ({
+        symbol,
+        name: "Real Quote Test " + (index + 1),
+        sector: "Test",
+        exchange: "NSE",
+        instrument_key: "NSE_EQ|INETEST0000" + (index + 1),
+        candles
+      })),
+      { symbol: "MANUALQUOTE", name: "Manual Quote Test", sector: "Test", exchange: "NSE", instrument_key: "NSE_EQ|INETEST00005", candles: [] }
+    ] })
   });
   const scan = await response.json();
-  if (scan.rows?.length !== symbols.length || !scan.rows.every((row) => row.decision === "SELECT")) throw new Error("all real-quote candidates should be SELECT");
-  if (!scan.rows.every((row) => row.parameter_tunnel?.summary?.evaluated >= 80)) throw new Error("every real-quote candidate should execute the wired tunnel");
+  const selectRows = scan.rows?.filter((row) => symbols.includes(row.symbol)) || [];
+  if (scan.rows?.length !== symbols.length + 1 || selectRows.length !== symbols.length || !selectRows.every((row) => row.decision === "SELECT")) throw new Error("all real-quote candidates should be SELECT while the manual symbol remains resolvable");
+  if (!selectRows.every((row) => row.parameter_tunnel?.summary?.evaluated >= 80)) throw new Error("every real-quote candidate should execute the wired tunnel");
 
   const quoteSymbols = [...symbols, "MANUALQUOTE", "GTTQUOTE", "CONCURRENTONE", "CONCURRENTTWO"];
   const quoteData = Object.fromEntries(quoteSymbols.map((symbol, index) => [
@@ -275,13 +279,26 @@ try {
   if (!ledger.positions.every((position) => Number.isFinite(position.unrealized_pnl) && Number.isFinite(position.unrealized_pnl_pct))) throw new Error("every open position must expose mark-to-market P&L");
   if (!Number.isFinite(ledger.funds?.unrealized_pnl) || !Number.isFinite(ledger.funds?.total_pnl)) throw new Error("paper funds must expose unrealized and total P&L");
   if (ledger.mark_to_market?.source !== "Upstox Market Quote API" || ledger.mark_to_market?.marked_positions !== 4) throw new Error("paper ledger must revalue every position from Upstox quotes");
+  response = await nativeFetch(base + "/api/state");
+  const stateBeforeManualOrder = await response.json();
+  response = await nativeFetch(base + "/api/state", {
+    method: "PUT",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ state: {
+      ...stateBeforeManualOrder.state,
+      universe: [
+        ...(stateBeforeManualOrder.state?.universe || []),
+        { symbol: "MANUALQUOTE", name: "Manual Quote Test", sector: "Test", exchange: "NSE", instrument_key: "NSE_EQ|INETEST00005", candles: [] }
+      ]
+    } })
+  });
+  if (response.status !== 200) throw new Error("manual-order instrument should be saved in the server universe");
   response = await nativeFetch(base + "/api/paper-trader/order", {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify({
       idempotency_key: "smoke-server-quote-authority-1",
       symbol: "MANUALQUOTE",
-      instrument_key: "NSE_EQ|INETEST00005",
       side: "BUY",
       order_type: "MARKET",
       qty: 281,
@@ -291,6 +308,7 @@ try {
   });
   const manualOrder = await response.json();
   if (response.status !== 200) throw new Error("server-verified manual MARKET order should fill: " + JSON.stringify(manualOrder));
+  if (manualOrder.order?.instrument_key !== "NSE_EQ|INETEST00005") throw new Error("manual order should resolve its NSE instrument key from the stored universe");
   if (manualOrder.order?.price !== 356.05 || manualOrder.order?.price_source !== "server_upstox_weighted_ask") throw new Error("manual MARKET fill must replace the client price with the Upstox ask");
   if (manualOrder.order?.decision_price !== 1) throw new Error("manual MARKET fill should retain the client price only as decision evidence");
   if (manualOrder.order?.execution_evidence?.server_verified !== true || manualOrder.order?.execution_evidence?.all_clear !== true) throw new Error("manual MARKET fill must persist server quote verification");

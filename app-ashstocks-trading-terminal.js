@@ -139,7 +139,7 @@
           </section>
         </div>
         <div class="terminal-bottom-grid">
-          <section class="panel"><div class="panel-header"><h3>Orders / Trades / GTT</h3><span id="terminalLedgerCount">0</span></div><div id="terminalLedger" class="terminal-ledger"></div></section>
+          <section class="panel"><div class="panel-header"><h3>Portfolio / Closed / Orders / GTT</h3><span id="terminalLedgerCount">0</span></div><div id="terminalLedger" class="terminal-ledger"></div></section>
           <section class="panel"><div class="panel-header"><h3>Parameter Proof</h3><span id="terminalProofState">Waiting</span></div><div id="terminalProof" class="terminal-proof"></div></section>
         </div>
       </section>
@@ -197,6 +197,7 @@
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
         symbol: row.symbol,
+        instrument_key: instrumentKey(row),
         name: row.name,
         side,
         qty,
@@ -341,14 +342,23 @@
     if (!host) return;
     const symbol = selectedRow().symbol;
     const ledger = state.ledger || {};
-    const rows = [
+    const positions = (ledger.positions || []).map((item) => ({ kind: "Open Position", ...item }));
+    const history = [
+      ...(ledger.closed_trades || ledger.trades || []).map((item) => ({ kind: "Closed Trade", ...item })),
       ...(ledger.orders || []).map((item) => ({ kind: "Order", ...item })),
-      ...(ledger.trades || []).map((item) => ({ kind: "Trade", ...item })),
-      ...(ledger.gtt || []).map((item) => ({ kind: "GTT", ...item })),
-      ...(ledger.positions || []).map((item) => ({ kind: "Position", ...item }))
-    ].filter((item) => !symbol || String(item.symbol || "").toUpperCase() === symbol.toUpperCase());
-    if (count) count.textContent = String(rows.length);
-    host.innerHTML = rows.length ? rows.slice(-12).reverse().map((item) => `<article><strong>${escapeHtml(item.kind)} ${escapeHtml(item.symbol || "")}</strong><span>${escapeHtml(item.side || item.status || "")}</span><b>${escapeHtml(`${item.qty || ""} @ ${money(item.price || item.entry_price || item.avg_price)}`)}</b></article>`).join("") : `<div class="terminal-empty">No paper ledger rows for selected stock yet.</div>`;
+      ...(ledger.gtt || []).map((item) => ({ kind: "GTT", ...item }))
+    ].sort((left, right) => ledgerTimestamp(right) - ledgerTimestamp(left));
+    const rows = [...positions, ...history];
+    const selectedCount = symbol
+      ? rows.filter((item) => String(item.symbol || "").toUpperCase() === symbol.toUpperCase()).length
+      : 0;
+    if (count) count.textContent = symbol ? `${rows.length} total | ${selectedCount} ${symbol}` : `${rows.length} total`;
+    host.innerHTML = rows.length ? rows.slice(0, 50).map((item) => `<article><strong>${escapeHtml(item.kind)} ${escapeHtml(item.symbol || "")}</strong><span>${escapeHtml(item.side || item.status || "")}</span><b>${escapeHtml(`${item.qty || ""} @ ${money(item.price || item.entry_price || item.avg_price)}`)}</b></article>`).join("") : `<div class="terminal-empty">No saved paper positions, closed trades, orders, or GTT records.</div>`;
+  }
+
+  function ledgerTimestamp(item = {}) {
+    const parsed = Date.parse(item.updated_at || item.exit_at || item.traded_at || item.created_at || item.entry_date || "");
+    return Number.isFinite(parsed) ? parsed : 0;
   }
 
   function renderProof() {

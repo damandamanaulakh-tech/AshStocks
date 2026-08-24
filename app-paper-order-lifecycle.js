@@ -64,6 +64,7 @@
     const entry = numberFrom(ticketValue(ticket, "Entry")) || Number(row.close || row.paper_order?.entry_price || 0);
     const payload = {
       symbol,
+      instrument_key: row.instrument_key || "",
       name: row.name || symbol,
       sector: row.sector || "Unmapped",
       side: action === "SELL" ? "SELL" : "BUY",

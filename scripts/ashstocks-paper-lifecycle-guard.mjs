@@ -160,7 +160,7 @@ mustMatch(
 );
 mustMatch(
   "server-paper-order-lifecycle-patch.mjs",
-  /paperRouteOrderReplay\(state, body\)[\s\S]*await preparePaperMarketOrder\(body\)[\s\S]*applyPaperOrderLifecycle\(state, prepared\.body\)/,
+  /resolvePaperOrderInstrumentKey\(state, body\)[\s\S]*paperRouteOrderReplay\(state, resolvedBody\)[\s\S]*await preparePaperMarketOrder\(resolvedBody\)[\s\S]*applyPaperOrderLifecycle\(state, prepared\.body\)/,
   "manual paper MARKET routes should resolve idempotency before fetching and authorizing a server quote"
 );
 mustMatch(
@@ -180,6 +180,8 @@ for (const text of [
 ]) {
   mustInclude("app-paper-order-lifecycle.js", text);
 }
+mustInclude("app-paper-order-lifecycle.js", 'instrument_key: row.instrument_key || ""', "workspace paper ticket should send the selected NSE instrument key");
+mustInclude("app-ashstocks-trading-terminal.js", "instrument_key: instrumentKey(row)", "trading terminal paper ticket should send the selected NSE instrument key");
 
 for (const text of [
   "Closed Trades",

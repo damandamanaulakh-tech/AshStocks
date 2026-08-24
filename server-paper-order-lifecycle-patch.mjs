@@ -396,6 +396,14 @@ function paperOrderLogicalFingerprint(request = {}) {
     request.gtt
   ]).slice(0, 500);
 }
+function resolvePaperOrderInstrumentKey(state = defaultState(), body = {}) {
+  const request = paperOrderRequest(body);
+  if (/^NSE_EQ\|INE[A-Z0-9]{9}$/.test(request.instrument_key)) return body;
+  const universeRow = normalizeScannerUniverse(state.universe || [])
+    .find((row) => normalizeSymbol(row.symbol) === request.symbol);
+  const instrumentKey = String(universeRow?.instrument_key || "").trim();
+  return instrumentKey ? { ...body, instrument_key: instrumentKey } : body;
+}
 function paperRouteOrderReplay(state = defaultState(), body = {}) {
   const incoming = paperOrderRequest(body);
   incoming.logical_fingerprint = paperOrderLogicalFingerprint(incoming);
@@ -1161,11 +1169,12 @@ const PAPER_ORDER_LIFECYCLE_ROUTES = String.raw`
         const store = await getStore();
         const result = await withStateMutation(async () => {
           const state = await store.getState();
-          const replay = paperRouteOrderReplay(state, body);
-          const prepared = replay ? null : await preparePaperMarketOrder(body);
+          const resolvedBody = resolvePaperOrderInstrumentKey(state, body);
+          const replay = paperRouteOrderReplay(state, resolvedBody);
+          const prepared = replay ? null : await preparePaperMarketOrder(resolvedBody);
           const applied = replay || (prepared.ok
             ? applyPaperOrderLifecycle(state, prepared.body)
-            : rejectedPaperOrderPreparation(state, body, prepared.error));
+            : rejectedPaperOrderPreparation(state, resolvedBody, prepared.error));
           await store.saveState(applied.nextState);
           return applied;
         });
