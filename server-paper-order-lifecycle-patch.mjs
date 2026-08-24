@@ -3,7 +3,7 @@ import { loadPaperCapitalPolicy } from "./lib/paper-capital-policy.mjs";
 const paperCapitalPolicy = loadPaperCapitalPolicy();
 
 const PAPER_ORDER_LIFECYCLE_FUNCTIONS = String.raw`
-const PAPER_ORDER_LIFECYCLE_VERSION = "ashstocks-paper-order-lifecycle-v0.6-net-cost-accounting";
+const PAPER_ORDER_LIFECYCLE_VERSION = "ashstocks-paper-order-lifecycle-v0.7-server-quote-authority";
 const PAPER_CAPITAL_POLICY = Object.freeze(${JSON.stringify(paperCapitalPolicy)});
 function sanitizeParameterEvidence(input = {}) {
   return {
@@ -21,8 +21,12 @@ function sanitizeParameterEvidence(input = {}) {
 }
 function sanitizeExecutionEvidence(input = {}) {
   return {
+    price_source: String(input.price_source || "").slice(0, 80),
+    server_verified: Boolean(input.server_verified),
     quote_timestamp: String(input.quote_timestamp || "").slice(0, 40),
     quote_age_seconds: finiteOr(input.quote_age_seconds, null),
+    quote_fresh: Boolean(input.quote_fresh),
+    market_price_available: Boolean(input.market_price_available),
     best_bid: finiteOr(input.best_bid, null),
     best_ask: finiteOr(input.best_ask, null),
     spread_bps: finiteOr(input.spread_bps, null),
@@ -69,6 +73,7 @@ function sanitizePaperOrder(order = {}) {
     id: String(order.id || "").slice(0, 64),
     idempotency_key: String(order.idempotency_key || order.idempotencyKey || "").trim().slice(0, 128),
     request_fingerprint: String(order.request_fingerprint || "").slice(0, 500),
+    logical_fingerprint: String(order.logical_fingerprint || "").slice(0, 500),
     symbol,
     instrument_key: String(order.instrument_key || "").slice(0, 100),
     name: String(order.name || symbol).slice(0, 120),
@@ -77,6 +82,7 @@ function sanitizePaperOrder(order = {}) {
     order_type: String(order.order_type || order.orderType || "MARKET").toUpperCase().slice(0, 20),
     qty: Math.max(0, Math.floor(finiteOr(order.qty, 0))),
     price: finiteOr(order.price ?? order.entry_price, null),
+    price_source: String(order.price_source || "").slice(0, 80),
     transaction_cost: round(finiteOr(order.transaction_cost ?? order.transactionCost, 0), 2),
     decision_price: finiteOr(order.decision_price, null),
     quote_timestamp: String(order.quote_timestamp || "").slice(0, 40),
@@ -132,6 +138,7 @@ function sanitizePaperTrade(trade = {}) {
     side,
     qty,
     price,
+    price_source: String(trade.price_source || "").slice(0, 80),
     quote_timestamp: String(trade.quote_timestamp || "").slice(0, 40),
     value,
     entry_price: entryPrice,
@@ -195,6 +202,7 @@ function sanitizePaperGtt(plan = {}) {
     id: String(plan.id || "").slice(0, 64),
     idempotency_key: String(plan.idempotency_key || plan.idempotencyKey || "").trim().slice(0, 128),
     request_fingerprint: String(plan.request_fingerprint || "").slice(0, 500),
+    logical_fingerprint: String(plan.logical_fingerprint || "").slice(0, 500),
     symbol,
     instrument_key: String(plan.instrument_key || "").slice(0, 100),
     name: String(plan.name || symbol).slice(0, 120),
@@ -348,6 +356,7 @@ function paperOrderRequest(body = {}) {
     order_type: orderType,
     qty,
     price,
+    price_source: String(body.price_source || "").slice(0, 80),
     decision_price: finiteOr(body.decision_price, null),
     quote_timestamp: String(body.quote_timestamp || "").slice(0, 40),
     target_price: finiteOr(body.target_price ?? body.targetPrice ?? body.target, null),
@@ -372,6 +381,151 @@ function paperOrderRequestFingerprint(request = {}) {
     request.source,
     request.gtt
   ]).slice(0, 500);
+}
+function paperOrderLogicalFingerprint(request = {}) {
+  return JSON.stringify([
+    request.symbol,
+    request.instrument_key,
+    request.side,
+    request.order_type,
+    request.qty,
+    request.target_price,
+    request.stop_price,
+    request.source,
+    request.gtt
+  ]).slice(0, 500);
+}
+function paperRouteOrderReplay(state = defaultState(), body = {}) {
+  const incoming = paperOrderRequest(body);
+  incoming.logical_fingerprint = paperOrderLogicalFingerprint(incoming);
+  const paperTrader = sanitizePaperTraderState(state.paperTrader || {});
+  const cutoff = Date.now() - 60_000;
+  const priorOrder = paperTrader.orders.find((order) => (
+    incoming.idempotency_key
+      ? order.idempotency_key === incoming.idempotency_key
+      : order.logical_fingerprint === incoming.logical_fingerprint
+        && Date.parse(order.created_at || order.updated_at || "") >= cutoff
+  ));
+  if (priorOrder) {
+    if (incoming.idempotency_key && priorOrder.logical_fingerprint && priorOrder.logical_fingerprint !== incoming.logical_fingerprint) {
+      return { ok: false, status: 409, error: "idempotency_key_reused_with_different_request", replayed: false, order: priorOrder, funds: paperLifecycleFunds(paperTrader), paperTrader, nextState: { ...state, paperTrader } };
+    }
+    const trade = paperTrader.trades.find((item) => item.order_id === priorOrder.id) || null;
+    const rejected = priorOrder.status === "REJECTED";
+    return { ok: !rejected, status: rejected ? 409 : 200, action: rejected ? "PAPER_ORDER_REJECTED" : priorOrder.side === "BUY" ? "PAPER_BUY_FILLED" : "PAPER_SELL_FILLED", replayed: true, replay_mode: incoming.idempotency_key ? "explicit_key" : "legacy_60_second_logical_fingerprint", order: priorOrder, trade, funds: paperLifecycleFunds(paperTrader), paperTrader, nextState: { ...state, paperTrader } };
+  }
+  const priorGtt = paperTrader.gtt.find((plan) => (
+    incoming.idempotency_key
+      ? plan.idempotency_key === incoming.idempotency_key
+      : plan.logical_fingerprint === incoming.logical_fingerprint
+        && Date.parse(plan.created_at || "") >= cutoff
+  ));
+  if (!priorGtt) return null;
+  if (incoming.idempotency_key && priorGtt.logical_fingerprint && priorGtt.logical_fingerprint !== incoming.logical_fingerprint) {
+    return { ok: false, status: 409, error: "idempotency_key_reused_with_different_request", replayed: false, gtt: priorGtt, funds: paperLifecycleFunds(paperTrader), paperTrader, nextState: { ...state, paperTrader } };
+  }
+  return { ok: true, status: 200, action: "PAPER_GTT_CREATED", replayed: true, replay_mode: incoming.idempotency_key ? "explicit_key" : "legacy_60_second_logical_fingerprint", gtt: priorGtt, funds: paperLifecycleFunds(paperTrader), paperTrader, nextState: { ...state, paperTrader } };
+}
+function rejectedPaperOrderPreparation(state = defaultState(), body = {}, reason = "paper order preparation failed") {
+  const asOf = paperLifecycleNow();
+  const request = paperOrderRequest(body);
+  request.request_fingerprint = paperOrderRequestFingerprint(request);
+  request.logical_fingerprint = paperOrderLogicalFingerprint(request);
+  const paperTrader = sanitizePaperTraderState(state.paperTrader || {});
+  const order = rejectedPaperOrder(request, reason, asOf);
+  const saved = sanitizePaperTraderState({ ...paperTrader, orders: [order, ...paperTrader.orders].slice(0, 200) });
+  return { ok: false, status: 409, error: reason, order, funds: paperLifecycleFunds(saved), paperTrader: saved, nextState: { ...state, paperTrader: saved } };
+}
+async function preparePaperMarketOrder(body = {}) {
+  const request = paperOrderRequest(body);
+  if (request.gtt || request.order_type === "GTT") {
+    return { ok: true, body: { ...body, price_source: "client_trigger_not_fill" } };
+  }
+  if (request.order_type !== "MARKET") {
+    return { ok: false, error: "paper_market_or_gtt_order_required" };
+  }
+  if (ENV.NODE_ENV === "test" && body.test_fixture_price === true) {
+    return {
+      ok: true,
+      body: {
+        ...body,
+        price_source: "test_fixture_only",
+        execution_evidence: { ...(body.execution_evidence || {}), price_source: "test_fixture_only", server_verified: false, market_price_available: true, all_clear: true }
+      }
+    };
+  }
+  if (!/^NSE_EQ\|INE[A-Z0-9]{9}$/.test(request.instrument_key)) {
+    return { ok: false, error: "exact_nse_equity_instrument_key_required" };
+  }
+  if (!paperEngineMarketState().open) {
+    return { ok: false, error: "nse_market_closed_for_market_paper_fill" };
+  }
+  let payload;
+  try {
+    payload = await fetchUpstoxMarketQuotes([request.instrument_key]);
+  } catch (error) {
+    return { ok: false, error: "upstox_market_quote_failed: " + error.message };
+  }
+  const quote = paperEngineQuoteMap(payload).get(paperEngineQuoteKey(request.instrument_key));
+  if (!quote) return { ok: false, error: "upstox_market_quote_missing" };
+  const levels = request.side === "SELL"
+    ? (Array.isArray(quote.depth?.bids) ? quote.depth.bids : [])
+    : (Array.isArray(quote.depth?.asks) ? quote.depth.asks : []);
+  let remaining = request.qty;
+  let value = 0;
+  let filled = 0;
+  for (const level of levels.slice(0, 5)) {
+    if (!remaining) break;
+    const levelQty = Math.max(0, Math.floor(finiteOr(level.quantity, 0)));
+    const levelPrice = finiteOr(level.price, null);
+    if (!levelQty || !levelPrice) continue;
+    const take = Math.min(remaining, levelQty);
+    value += take * levelPrice;
+    filled += take;
+    remaining -= take;
+  }
+  if (!filled || remaining > 0) return { ok: false, error: "insufficient_upstox_depth_for_full_paper_fill" };
+  const fillPrice = round(value / filled, 4);
+  const timestampMs = paperEngineTimestampMs(quote.timestamp);
+  const snapshotMs = paperEngineTimestampMs(quote.snapshot_timestamp);
+  const tradeAgeSeconds = timestampMs === null ? null : Math.max(0, (Date.now() - timestampMs) / 1000);
+  const snapshotAgeSeconds = snapshotMs === null ? null : Math.max(0, (Date.now() - snapshotMs) / 1000);
+  const quoteFresh = (tradeAgeSeconds !== null && tradeAgeSeconds <= 60) || (snapshotAgeSeconds !== null && snapshotAgeSeconds <= 30);
+  if (!quoteFresh) return { ok: false, error: "stale_upstox_market_quote" };
+  const last = finiteOr(quote.last_price, null);
+  const lower = finiteOr(quote.lower_circuit_limit, null);
+  const upper = finiteOr(quote.upper_circuit_limit, null);
+  const circuitClear = last !== null && (lower === null || last > lower) && (upper === null || last < upper);
+  if (!circuitClear) return { ok: false, error: "upstox_circuit_limit_block" };
+  const bestBid = finiteOr(quote.depth?.bids?.[0]?.price, null);
+  const bestAsk = finiteOr(quote.depth?.asks?.[0]?.price, null);
+  const midpoint = bestBid && bestAsk ? (bestBid + bestAsk) / 2 : null;
+  const spreadBps = midpoint ? round((bestAsk - bestBid) / midpoint * 10000, 3) : null;
+  const quoteTimestamp = snapshotAgeSeconds !== null && snapshotAgeSeconds <= 30 ? quote.snapshot_timestamp : quote.timestamp;
+  return {
+    ok: true,
+    body: {
+      ...body,
+      decision_price: finiteOr(body.decision_price, finiteOr(body.price, null)),
+      price: fillPrice,
+      price_source: request.side === "SELL" ? "server_upstox_weighted_bid" : "server_upstox_weighted_ask",
+      quote_timestamp: quoteTimestamp,
+      execution_evidence: {
+        price_source: request.side === "SELL" ? "server_upstox_weighted_bid" : "server_upstox_weighted_ask",
+        server_verified: true,
+        quote_timestamp: quoteTimestamp,
+        quote_age_seconds: snapshotAgeSeconds !== null && snapshotAgeSeconds <= 30 ? round(snapshotAgeSeconds, 3) : round(tradeAgeSeconds, 3),
+        quote_fresh: true,
+        market_price_available: true,
+        best_bid: bestBid,
+        best_ask: bestAsk,
+        spread_bps: spreadBps,
+        circuit_clear: true,
+        all_clear: true,
+        nodes: [{ id: "NBX09", state: "HIT", value: fillPrice, evidence: "Server fetched Upstox depth and replaced the client-submitted paper MARKET price" }]
+      }
+    }
+  };
 }
 function rejectedPaperOrder(request, reason, asOf) {
   return sanitizePaperOrder({
@@ -405,6 +559,7 @@ function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
   const asOf = paperLifecycleNow();
   const request = paperOrderRequest(body);
   request.request_fingerprint = paperOrderRequestFingerprint(request);
+  request.logical_fingerprint = paperOrderLogicalFingerprint(request);
   const paperTrader = sanitizePaperTraderState(state.paperTrader || {});
   const next = {
     ...paperTrader,
@@ -589,7 +744,7 @@ function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
   const fillValue = round(request.qty * request.price, 2);
   const fillTransactionCost = paperTransactionCost(fillValue);
   const order = sanitizePaperOrder({ id: paperLedgerId("PAPER_ORDER"), ...request, transaction_cost: fillTransactionCost, status: "PAPER_FILLED", created_at: asOf, updated_at: asOf });
-  let trade = sanitizePaperTrade({ id: paperLedgerId("PAPER_TRADE"), order_id: order.id, symbol: request.symbol, instrument_key: request.instrument_key, side: request.side, qty: request.qty, price: request.price, quote_timestamp: request.quote_timestamp, value: fillValue, entry_cost: request.side === "BUY" ? fillTransactionCost : 0, exit_cost: request.side === "SELL" ? fillTransactionCost : 0, transaction_cost: fillTransactionCost, traded_at: asOf });
+  let trade = sanitizePaperTrade({ id: paperLedgerId("PAPER_TRADE"), order_id: order.id, symbol: request.symbol, instrument_key: request.instrument_key, side: request.side, qty: request.qty, price: request.price, price_source: request.price_source, quote_timestamp: request.quote_timestamp, value: fillValue, entry_cost: request.side === "BUY" ? fillTransactionCost : 0, exit_cost: request.side === "SELL" ? fillTransactionCost : 0, transaction_cost: fillTransactionCost, traded_at: asOf });
 
   if (request.side === "BUY") {
     const existingIndex = next.positions.findIndex((position) => position.symbol === request.symbol && position.status !== "CLOSED");
@@ -603,6 +758,7 @@ function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
         qty: newQty,
         entry_price: round(weightedEntry, 2),
         entry_cost: round(finiteOr(existing.entry_cost, 0) + fillTransactionCost, 2),
+        price_source: request.price_source,
         current_price: request.price,
         target_price: request.target_price || existing.target_price,
         stop_price: request.stop_price || existing.stop_price,
@@ -624,6 +780,7 @@ function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
         qty: request.qty,
         entry_price: request.price,
         entry_cost: fillTransactionCost,
+        price_source: request.price_source,
         decision_price: request.decision_price,
         quote_timestamp: request.quote_timestamp,
         current_price: request.price,
@@ -884,7 +1041,11 @@ const PAPER_ORDER_LIFECYCLE_ROUTES = String.raw`
         const body = await readJsonBody(req);
         const store = await getStore();
         const state = await store.getState();
-        const result = applyPaperOrderLifecycle(state, body);
+        const replay = paperRouteOrderReplay(state, body);
+        const prepared = replay ? null : await preparePaperMarketOrder(body);
+        const result = replay || (prepared.ok
+          ? applyPaperOrderLifecycle(state, prepared.body)
+          : rejectedPaperOrderPreparation(state, body, prepared.error));
         await store.saveState(result.nextState);
         const { nextState, status, ...payload } = result;
         json(res, status || 200, { ...payload, engine: PAPER_ORDER_LIFECYCLE_VERSION, paper_only: true, live_orders: false, broker_write_enabled: false });
@@ -944,7 +1105,7 @@ export function applyPaperOrderLifecyclePatches(source, mustReplace) {
   output = mustReplace(
     output,
     '  return { symbol, name: String(position.name || symbol).slice(0, 120), sector: String(position.sector || "Unmapped").slice(0, 80), qty: Math.max(0, Math.floor(finiteOr(position.qty, 0))), entry_price: finiteOr(position.entry_price, null), current_price: finiteOr(position.current_price, position.entry_price ?? null), target_price: finiteOr(position.target_price, null), stop_price: finiteOr(position.stop_price, null), entry_date: String(position.entry_date || "").slice(0, 32), status: String(position.status || "OPEN").slice(0, 30), thesis: String(position.thesis || "").slice(0, 240) };',
-    '  return { symbol, instrument_key: String(position.instrument_key || "").slice(0, 100), name: String(position.name || symbol).slice(0, 120), sector: String(position.sector || "Unmapped").slice(0, 80), qty: Math.max(0, Math.floor(finiteOr(position.qty, 0))), entry_price: finiteOr(position.entry_price, null), entry_cost: round(finiteOr(position.entry_cost ?? position.entryCost, 0), 2), decision_price: finiteOr(position.decision_price, null), current_price: finiteOr(position.current_price, position.entry_price ?? null), target_price: finiteOr(position.target_price, null), stop_price: finiteOr(position.stop_price, null), quote_timestamp: String(position.quote_timestamp || "").slice(0, 40), entry_date: String(position.entry_date || "").slice(0, 32), checked_at: String(position.checked_at || position.quote_timestamp || position.entry_date || "").slice(0, 40), status: String(position.status || "OPEN").slice(0, 30), thesis: String(position.thesis || "").slice(0, 360), parameter_evidence: sanitizeParameterEvidence(position.parameter_evidence || {}), execution_evidence: sanitizeExecutionEvidence(position.execution_evidence || {}) };',
+    '  return { symbol, instrument_key: String(position.instrument_key || "").slice(0, 100), name: String(position.name || symbol).slice(0, 120), sector: String(position.sector || "Unmapped").slice(0, 80), qty: Math.max(0, Math.floor(finiteOr(position.qty, 0))), entry_price: finiteOr(position.entry_price, null), entry_cost: round(finiteOr(position.entry_cost ?? position.entryCost, 0), 2), price_source: String(position.price_source || "").slice(0, 80), decision_price: finiteOr(position.decision_price, null), current_price: finiteOr(position.current_price, position.entry_price ?? null), target_price: finiteOr(position.target_price, null), stop_price: finiteOr(position.stop_price, null), quote_timestamp: String(position.quote_timestamp || "").slice(0, 40), entry_date: String(position.entry_date || "").slice(0, 32), checked_at: String(position.checked_at || position.quote_timestamp || position.entry_date || "").slice(0, 40), status: String(position.status || "OPEN").slice(0, 30), thesis: String(position.thesis || "").slice(0, 360), parameter_evidence: sanitizeParameterEvidence(position.parameter_evidence || {}), execution_evidence: sanitizeExecutionEvidence(position.execution_evidence || {}) };',
     "persist parameter and quote evidence on paper positions"
   );
   output = mustReplace(

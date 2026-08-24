@@ -231,7 +231,8 @@ try {
   if (scan.rows?.length !== symbols.length || !scan.rows.every((row) => row.decision === "SELECT")) throw new Error("all real-quote candidates should be SELECT");
   if (!scan.rows.every((row) => row.parameter_tunnel?.summary?.evaluated >= 80)) throw new Error("every real-quote candidate should execute the wired tunnel");
 
-  const quoteData = Object.fromEntries(symbols.map((symbol, index) => [
+  const quoteSymbols = [...symbols, "MANUALQUOTE"];
+  const quoteData = Object.fromEntries(quoteSymbols.map((symbol, index) => [
     "NSE_EQ:INETEST0000" + (index + 1),
     {
       instrument_key: "NSE_EQ|INETEST0000" + (index + 1),
@@ -273,6 +274,43 @@ try {
   if (!ledger.positions.every((position) => Number.isFinite(position.unrealized_pnl) && Number.isFinite(position.unrealized_pnl_pct))) throw new Error("every open position must expose mark-to-market P&L");
   if (!Number.isFinite(ledger.funds?.unrealized_pnl) || !Number.isFinite(ledger.funds?.total_pnl)) throw new Error("paper funds must expose unrealized and total P&L");
   if (ledger.mark_to_market?.source !== "Upstox Market Quote API" || ledger.mark_to_market?.marked_positions !== 4) throw new Error("paper ledger must revalue every position from Upstox quotes");
+  response = await nativeFetch(base + "/api/paper-trader/order", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      idempotency_key: "smoke-server-quote-authority-1",
+      symbol: "MANUALQUOTE",
+      instrument_key: "NSE_EQ|INETEST00005",
+      side: "BUY",
+      order_type: "MARKET",
+      qty: 281,
+      price: 1,
+      source: "smoke-manual-market-order"
+    })
+  });
+  const manualOrder = await response.json();
+  if (response.status !== 200) throw new Error("server-verified manual MARKET order should fill: " + JSON.stringify(manualOrder));
+  if (manualOrder.order?.price !== 356.05 || manualOrder.order?.price_source !== "server_upstox_weighted_ask") throw new Error("manual MARKET fill must replace the client price with the Upstox ask");
+  if (manualOrder.order?.decision_price !== 1) throw new Error("manual MARKET fill should retain the client price only as decision evidence");
+  if (manualOrder.order?.execution_evidence?.server_verified !== true || manualOrder.order?.execution_evidence?.all_clear !== true) throw new Error("manual MARKET fill must persist server quote verification");
+  response = await nativeFetch(base + "/api/paper-trader/order", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      idempotency_key: "smoke-server-quote-authority-sell-1",
+      symbol: "MANUALQUOTE",
+      instrument_key: "NSE_EQ|INETEST00005",
+      side: "SELL",
+      order_type: "MARKET",
+      qty: 281,
+      price: 999,
+      source: "smoke-manual-market-order"
+    })
+  });
+  const manualSell = await response.json();
+  if (response.status !== 200) throw new Error("server-verified manual MARKET sell should fill: " + JSON.stringify(manualSell));
+  if (manualSell.order?.price !== 355.95 || manualSell.order?.price_source !== "server_upstox_weighted_bid") throw new Error("manual MARKET sell must replace the client price with the Upstox bid");
+  if (manualSell.order?.decision_price !== 999 || manualSell.order?.execution_evidence?.server_verified !== true) throw new Error("manual MARKET sell must separate decision price from server execution evidence");
   console.log(JSON.stringify({ ok: true, positions: ledger.positions.map((position) => position.symbol), pending: result.auto_buy.pending_after_run }));
 } finally {
   globalThis.fetch = nativeFetch;
@@ -492,6 +530,7 @@ async function main() {
         qty: 1500,
         price: 100,
         source: "smoke-active-kelly-cap",
+        test_fixture_price: true,
         paper_only: true,
         broker_write_enabled: false,
       }),
@@ -522,6 +561,7 @@ async function main() {
         qty: 1,
         price: 100,
         source: "smoke-no-edge-kelly",
+        test_fixture_price: true,
         paper_only: true,
         broker_write_enabled: false,
       }),
@@ -545,6 +585,7 @@ async function main() {
         qty: 999,
         price: 100,
         source: "smoke-minimum-entry",
+        test_fixture_price: true,
         paper_only: true,
         broker_write_enabled: false,
       }),
@@ -559,6 +600,7 @@ async function main() {
       qty: 1000,
       price: 100,
       source: "smoke-closed-trade-buy",
+      test_fixture_price: true,
       paper_only: true,
       broker_write_enabled: false,
     };
@@ -595,6 +637,7 @@ async function main() {
       qty: 1000,
       price: 100,
       source: "smoke-legacy-replay",
+      test_fixture_price: true,
     };
     const legacyReplayFirst = await request("/api/paper-trader/order", {
       method: "POST",
@@ -608,7 +651,7 @@ async function main() {
     });
     assert(legacyReplayFirst.response.status === 200 && legacyReplaySecond.response.status === 200, "legacy keyless paper BUY and retry should succeed once");
     assert(legacyReplaySecond.body.replayed === true, "keyless immediate paper BUY retry should be deduplicated");
-    assert(legacyReplaySecond.body.replay_mode === "legacy_60_second_fingerprint", "keyless retry should report the bounded compatibility mode");
+    assert(legacyReplaySecond.body.replay_mode === "legacy_60_second_logical_fingerprint", "keyless retry should report the bounded compatibility mode");
     assert(legacyReplaySecond.body.paperTrader.positions.find((position) => position.symbol === "LEGACYREPLAY")?.qty === 1000, "keyless retry must not double the position");
 
     const oversizedSell = await request("/api/paper-trader/order", {
@@ -621,6 +664,7 @@ async function main() {
         qty: 1001,
         price: 110,
         source: "smoke-oversell-rejection",
+        test_fixture_price: true,
       }),
     });
     assert(oversizedSell.response.status === 409, "paper SELL above held quantity should be rejected");
@@ -638,6 +682,7 @@ async function main() {
         price: 110,
         thesis: "smoke lifecycle close",
         source: "smoke-closed-trade-sell",
+        test_fixture_price: true,
         paper_only: true,
         broker_write_enabled: false,
       }),
@@ -675,6 +720,7 @@ async function main() {
         qty: 2000,
         price: 1000,
         source: "smoke-kelly-cap",
+        test_fixture_price: true,
         paper_only: true,
         broker_write_enabled: false,
       }),
@@ -800,7 +846,7 @@ async function main() {
     assert(upstoxStatusAfter.body.status.token_visible === true, "Upstox status should detect saved token");
     assert(upstoxStatusAfter.body.status.token_source === "manual_paste", "Upstox status should read token from store");
 
-    console.log(JSON.stringify({ ok: true, checks: ["mongo-file-fallback", "data-bank-status", "scan-ledger", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "pre-rise-pattern-tracker", "parameter-tunnel-175", "kelly-parameters", "kelly-persisted-ledger", "kelly-active-sizing", "kelly-lifecycle-cap", "kelly-no-edge-block", "paper-capital-50-lakh", "paper-minimum-entry-1-lakh", "paper-order-idempotency", "paper-oversell-rejection", "paper-net-cost-accounting", "paper-closed-trade-returns", "paper-engine-real-quote-fill", "upstox-guard", "paper-engine-status", "paper-engine-guard", "q1-status", "q1-upload", "q1-render-guard", "upstox-oauth-start", "upstox-token-paste"] }));
+    console.log(JSON.stringify({ ok: true, checks: ["mongo-file-fallback", "data-bank-status", "scan-ledger", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "pre-rise-pattern-tracker", "parameter-tunnel-175", "kelly-parameters", "kelly-persisted-ledger", "kelly-active-sizing", "kelly-lifecycle-cap", "kelly-no-edge-block", "paper-capital-50-lakh", "paper-minimum-entry-1-lakh", "paper-order-idempotency", "paper-oversell-rejection", "paper-net-cost-accounting", "paper-closed-trade-returns", "paper-engine-real-quote-fill", "server-verified-manual-market-fill", "upstox-guard", "paper-engine-status", "paper-engine-guard", "q1-status", "q1-upload", "q1-render-guard", "upstox-oauth-start", "upstox-token-paste"] }));
   } finally {
     await Promise.all([...Q1_INPUTS, STATE_FILE, SCAN_LEDGER_FILE, UPSTOX_AUTH_FILE].map((file) => fs.unlink(file).catch((error) => {
       if (error.code !== "ENOENT") throw error;

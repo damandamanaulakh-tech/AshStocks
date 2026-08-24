@@ -23,7 +23,7 @@ function mustMatch(file, regex, reason) {
 }
 
 for (const text of [
-  "ashstocks-paper-order-lifecycle-v0.6-net-cost-accounting",
+  "ashstocks-paper-order-lifecycle-v0.7-server-quote-authority",
   "idempotency_key",
   "legacy_60_second_fingerprint",
   "idempotency_key_reused_with_different_request",
@@ -35,6 +35,13 @@ for (const text of [
   "round_trip_cost",
   "net_entry_value",
   "net_exit_value",
+  "preparePaperMarketOrder",
+  "exact_nse_equity_instrument_key_required",
+  "server_upstox_weighted_ask",
+  "server_upstox_weighted_bid",
+  "insufficient_upstox_depth_for_full_paper_fill",
+  "nse_market_closed_for_market_paper_fill",
+  "test_fixture_only",
   "PAPER_CAPITAL_POLICY",
   "minimumEntryValue",
   "maximumCandidateEntries",
@@ -107,6 +114,16 @@ mustMatch(
   "oversized paper SELL requests should fail instead of being silently clamped"
 );
 mustInclude("server-paper-engine-autobuy-patch.mjs", "idempotency_key", "automatic paper BUYs should carry a stable quote-scoped idempotency key");
+mustMatch(
+  "server-paper-order-lifecycle-patch.mjs",
+  /paperRouteOrderReplay\(state, body\)[\s\S]*await preparePaperMarketOrder\(body\)[\s\S]*applyPaperOrderLifecycle\(state, prepared\.body\)/,
+  "manual paper MARKET routes should resolve idempotency before fetching and authorizing a server quote"
+);
+mustMatch(
+  "server-paper-order-lifecycle-patch.mjs",
+  /ENV\.NODE_ENV === "test" && body\.test_fixture_price === true/,
+  "fixture prices should only bypass quote authority in the test environment"
+);
 
 for (const text of [
   "/api/paper-trader/monitor",

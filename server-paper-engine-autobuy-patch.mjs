@@ -444,6 +444,7 @@ const PAPER_ENGINE_RUN_REPLACEMENT = String.raw`async function runPaperEngineOnc
       order_type: "MARKET",
       qty: ticket.qty,
       price: executionEvidence.fill_price,
+      price_source: "server_upstox_weighted_ask",
       decision_price: ticket.close,
       quote_timestamp: executionEvidence.quote_timestamp,
       target_price: ticket.target_price,
