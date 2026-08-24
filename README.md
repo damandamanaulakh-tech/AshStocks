@@ -104,7 +104,7 @@ REQUIRE_AUTH=true
 MONGODB_DB=ashstock
 ```
 
-If `APP_PASSWORD` is missing in production, `/api/ready` fails. If Mongo is missing or rejected, `/api/ready` reports `storage: "file"` with a warning. Fix `MONGODB_URI` to move persistence back to MongoDB.
+If `APP_PASSWORD` is missing, Mongo is unavailable, or the store is not durable, production `/api/ready` fails with HTTP 503. Render checks `/api/ready`, and production file fallback is disabled so a restart cannot silently erase the paper ledger.
 
 ## Scanner Endpoints
 
@@ -117,7 +117,7 @@ POST /api/scanner/run-upstox
 GET  /api/upstox/status
 ```
 
-Every successful scanner run appends a compact proof record to the scan ledger. Mongo deployments use the `scan_ledger` collection. Render file fallback uses `data/scan_ledger.jsonl`.
+Every successful scanner run appends a compact proof record to the scan ledger. Production uses MongoDB's `scan_ledger` collection. Local development can use `data/scan_ledger.jsonl`.
 
 Upstox historical candle URI:
 
@@ -182,7 +182,7 @@ This is now a real NSE scanner/proof engine, but it is not the full final resear
 - 15-year point-in-time OHLCV ingestion and yearly walk-forward proof
 - NSE equity bhavcopy, FII/DII, and PWOI parsers
 - IFR damage overlay from live cross-sectional data
-- Mongo is still allowed to fall back to Render file storage until credentials are proven live
+- Mongo credentials and the authenticated live paper ledger still require deployment-time verification
 
 ## Files
 

@@ -28,5 +28,5 @@ jobs:
           --max-time 90
           --retry 2
           --retry-delay 10
-          https://ashstocks.onrender.com/api/health
+          https://ashstocks.onrender.com/api/ready
           > /dev/null

@@ -40,7 +40,8 @@ async function tryCheck() {
   assert(health.provider === EXPECTED_PROVIDER, `health provider must be ${EXPECTED_PROVIDER}`);
   assert(health.release === EXPECTED_RELEASE, `health release must be ${EXPECTED_RELEASE}`);
   assert(health.engine === EXPECTED_ENGINE, `health engine must be ${EXPECTED_ENGINE}`);
-  assert(health.ready === true, "health ready must be true");
+  assert(health.ready === null, "liveness must not claim unchecked readiness");
+  assert(health.readiness_endpoint === "/api/ready", "health must direct readiness checks to /api/ready");
   assert(health.upstox?.historical_candles_only === true, "health must expose historical-candle-only Upstox mode");
   assert(health.upstox?.live_orders === false, "health must not expose live orders");
 
@@ -48,7 +49,7 @@ async function tryCheck() {
   assert(ready.ok === true, "ready ok must be true");
   assert(ready.provider === EXPECTED_PROVIDER, `ready provider must be ${EXPECTED_PROVIDER}`);
   assert(ready.engine === EXPECTED_ENGINE, `ready engine must be ${EXPECTED_ENGINE}`);
-  assert(["mongodb", "file"].includes(ready.storage), "ready storage must be mongodb or file fallback");
+  assert(ready.storage === "mongodb", "ready storage must be durable MongoDB");
   assert(ready.persistent === true, "ready storage must be persistent");
   assert(ready.auth?.configured === true, "Render APP_PASSWORD must be configured");
   assert(ready.upstox?.key_visible === true, "UPSTOX_API_KEY must be visible to Render");

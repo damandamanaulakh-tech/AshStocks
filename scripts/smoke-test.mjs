@@ -149,10 +149,11 @@ try {
 }
 if (result.healthStatus !== 200) throw new Error("production health should stay live");
 if (result.healthBody.ok !== true) throw new Error("production health should report ok=true");
-if (result.readyStatus !== 200) throw new Error("production fallback readiness should return 200");
-if (result.readyBody.ok !== true) throw new Error("production fallback readiness should report ok=true");
-if (result.readyBody.storage !== "file") throw new Error("production fallback readiness should use file storage");
-if (result.elapsedMs > 6000) throw new Error("production Mongo fallback took too long");
+if (result.healthBody.ready !== null || result.healthBody.readiness_endpoint !== "/api/ready") throw new Error("liveness must not claim unchecked readiness");
+if (result.readyStatus !== 503) throw new Error("production readiness must fail when MongoDB is unreachable");
+if (result.readyBody.ok !== false) throw new Error("failed production readiness should report ok=false");
+if (result.readyBody.storage !== "unconfigured") throw new Error("failed Mongo readiness must not claim file persistence");
+if (result.elapsedMs > 6000) throw new Error("production Mongo failure took too long");
 console.log(JSON.stringify(result));
 `;
 
@@ -177,7 +178,7 @@ console.log(JSON.stringify(result));
   });
 
   assert(!result.timedOut, "production Mongo fallback should not hang");
-  assert(result.code === 0, result.stderr || result.stdout || "production Mongo fallback failed");
+  assert(result.code === 0, result.stderr || result.stdout || "production Mongo fail-closed guard failed");
 }
 
 async function runRealQuotePaperFillGuard() {
@@ -909,7 +910,7 @@ async function main() {
     assert(upstoxStatusAfter.body.status.token_visible === true, "Upstox status should detect saved token");
     assert(upstoxStatusAfter.body.status.token_source === "manual_paste", "Upstox status should read token from store");
 
-    console.log(JSON.stringify({ ok: true, checks: ["mongo-file-fallback", "data-bank-status", "scan-ledger", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "pre-rise-pattern-tracker", "parameter-tunnel-175", "kelly-parameters", "kelly-persisted-ledger", "kelly-active-sizing", "kelly-lifecycle-cap", "kelly-no-edge-block", "paper-capital-50-lakh", "paper-minimum-entry-1-lakh", "paper-order-idempotency", "paper-oversell-rejection", "paper-net-cost-accounting", "paper-closed-trade-returns", "paper-engine-real-quote-fill", "server-verified-manual-market-fill", "server-verified-monitor-gtt-sell", "serialized-concurrent-paper-fills", "upstox-guard", "paper-engine-status", "paper-engine-guard", "q1-status", "q1-upload", "q1-render-guard", "upstox-oauth-start", "upstox-token-paste"] }));
+    console.log(JSON.stringify({ ok: true, checks: ["mongo-production-fail-closed", "data-bank-status", "scan-ledger", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "pre-rise-pattern-tracker", "parameter-tunnel-175", "kelly-parameters", "kelly-persisted-ledger", "kelly-active-sizing", "kelly-lifecycle-cap", "kelly-no-edge-block", "paper-capital-50-lakh", "paper-minimum-entry-1-lakh", "paper-order-idempotency", "paper-oversell-rejection", "paper-net-cost-accounting", "paper-closed-trade-returns", "paper-engine-real-quote-fill", "server-verified-manual-market-fill", "server-verified-monitor-gtt-sell", "serialized-concurrent-paper-fills", "upstox-guard", "paper-engine-status", "paper-engine-guard", "q1-status", "q1-upload", "q1-render-guard", "upstox-oauth-start", "upstox-token-paste"] }));
   } finally {
     await Promise.all([...Q1_INPUTS, STATE_FILE, SCAN_LEDGER_FILE, UPSTOX_AUTH_FILE].map((file) => fs.unlink(file).catch((error) => {
       if (error.code !== "ENOENT") throw error;

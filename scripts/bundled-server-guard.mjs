@@ -31,6 +31,21 @@ const serverSource = read("server.js");
 mustInclude(serverSource, relativeBaseFile.replaceAll("\\", "/"), "server.js: bundled base path is not wired");
 mustInclude(serverSource, expectedSha256, "server.js: bundled base sha256 is not wired");
 mustInclude(serverSource, 'readFile(BASE_SERVER_FILE, "utf8")', "server.js: bundled base is not read locally");
+mustInclude(serverSource, 'ENV.ALLOW_EPHEMERAL_FILE_STORE === "true"', "server.js: production file fallback is not explicitly gated");
+mustInclude(serverSource, 'persistent: ENV.NODE_ENV !== "production"', "server.js: production filesystem is still labeled durable");
+mustInclude(serverSource, 'error: "durable_mongodb_required"', "server.js: readiness does not require durable MongoDB");
+mustInclude(serverSource, 'readiness_endpoint: "/api/ready"', "server.js: liveness does not direct checked readiness");
+
+const renderSource = read("render.yaml");
+mustInclude(renderSource, "healthCheckPath: /api/ready", "render.yaml: health check must use /api/ready");
+mustInclude(renderSource, "DISABLE_FILE_STORE_FALLBACK", "render.yaml: production file fallback must be disabled");
+
+const wakeSource = read(".github/workflows/ashstocks-market-hours.yml");
+mustInclude(wakeSource, "https://ashstocks.onrender.com/api/ready", "market-hours workflow must probe durable readiness");
+
+const liveCheckSource = read("scripts/check-live-render.mjs");
+mustInclude(liveCheckSource, 'ready.storage === "mongodb"', "live verification must require MongoDB");
+mustInclude(liveCheckSource, 'health.ready === null', "live verification must reject unchecked liveness readiness");
 
 for (const forbidden of ["raw.githubusercontent.com", "BASE_SERVER_URL", "fetch(BASE_SERVER"]) {
   if (serverSource.includes(forbidden)) failures.push(`server.js: forbidden remote bootstrap remains: ${forbidden}`);

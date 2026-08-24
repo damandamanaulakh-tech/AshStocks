@@ -5,7 +5,7 @@ services:
     plan: free
     buildCommand: npm install
     startCommand: npm start
-    healthCheckPath: /api/health
+    healthCheckPath: /api/ready
     autoDeploy: true
     envVars:
       - key: NODE_ENV
@@ -13,6 +13,8 @@ services:
       - key: REQUIRE_DB
         value: "true"
       - key: REQUIRE_AUTH
+        value: "true"
+      - key: DISABLE_FILE_STORE_FALLBACK
         value: "true"
       - key: APP_PASSWORD
         sync: false

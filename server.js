@@ -41,6 +41,18 @@ function patchServerSource(source) {
   output = output
     .replaceAll('const MONGO_URI_KEYS = ["MONGODB_URI", "MONGO_URI", "DATABASE_URL"];', 'const MONGO_URI_KEYS = ["MONGODB_URI", "MONGO_URI", "MONGO_URL", "DATABASE_URL"];')
     .replaceAll("Set MONGODB_URI or MONGO_URI in Render.", "Set MONGODB_URI, MONGO_URI, or MONGO_URL in Render.");
+  output = mustReplace(
+    output,
+    'function allowFileStoreFallback() {\n  return ENV.DISABLE_FILE_STORE_FALLBACK !== "true" && ENV.FILE_STORE_FALLBACK !== "false";\n}',
+    'function allowFileStoreFallback() {\n  if (ENV.DISABLE_FILE_STORE_FALLBACK === "true" || ENV.FILE_STORE_FALLBACK === "false") return false;\n  if (ENV.NODE_ENV === "production" || requireDb()) return ENV.ALLOW_EPHEMERAL_FILE_STORE === "true";\n  return true;\n}',
+    'fail closed on ephemeral production storage'
+  );
+  output = mustReplace(
+    output,
+    '    mode: "file",\n    source: "render-filesystem",\n    persistent: true,',
+    '    mode: "file",\n    source: "filesystem",\n    persistent: ENV.NODE_ENV !== "production",',
+    'do not label production filesystem as durable'
+  );
   output = output
     .replaceAll("AshStocks Login", "ASH Stock Login")
     .replaceAll("Private India Scanner", "Private NSE Paper Trading")
@@ -76,6 +88,30 @@ function patchServerSource(source) {
     '          const state = await store.saveState(body.state || body);',
     '          const state = await withStateMutation(() => store.saveState(body.state || body));',
     'serialize direct state mutation'
+  );
+  output = mustReplace(
+    output,
+    '        const fallbackReady = allowFileStoreFallback();\n        json(res, 200, {',
+    '        const fallbackConfigured = allowFileStoreFallback();\n        json(res, 200, {',
+    'honest liveness storage configuration'
+  );
+  output = mustReplace(
+    output,
+    '          storage: hasMongoUri ? "mongodb" : fallbackReady ? "file" : "unconfigured",\n          persistent: hasMongoUri || fallbackReady,',
+    '          storage: hasMongoUri ? "mongodb-configured-unverified" : fallbackConfigured ? "file-ephemeral" : "unconfigured",\n          persistent: null,',
+    'health must not claim unverified persistence'
+  );
+  output = mustReplace(
+    output,
+    '          ready: auth.configured && (!requireDb() || hasMongoUri || fallbackReady),\n          time: Date.now()',
+    '          ready: null,\n          configuration_ready: auth.configured && (!requireDb() || hasMongoUri),\n          readiness_endpoint: "/api/ready",\n          time: Date.now()',
+    'health must defer readiness to checked endpoint'
+  );
+  output = mustReplace(
+    output,
+    '          const state = await store.getState();\n          json(res, 200, {\n            ok: true,',
+    '          const state = await store.getState();\n          if (requireDb() && (store.mode !== "mongodb" || store.persistent !== true)) {\n            json(res, 503, { ok: false, error: "durable_mongodb_required", storage: store.mode, persistent: store.persistent, warning: store.warning || null, auth });\n            return;\n          }\n          json(res, 200, {\n            ok: true,',
+    'readiness requires durable MongoDB'
   );
   output = mustReplace(
     output,
