@@ -30,9 +30,9 @@
             <i data-lucide="layout-dashboard" aria-hidden="true"></i>
             <span>Dashboard</span>
           </button>
-          <button class="rail-item" type="button" data-section="control">
-            <i data-lucide="sliders-horizontal" aria-hidden="true"></i>
-            <span>Control</span>
+          <button class="rail-item" type="button" data-section="portfolio">
+            <i data-lucide="chart-pie" aria-hidden="true"></i>
+            <span>Portfolio</span>
           </button>
           <button class="rail-item" type="button" data-section="screener">
             <i data-lucide="radar" aria-hidden="true"></i>
@@ -109,7 +109,62 @@
           ASH Stock engine booting
         </section>
 
-        <section class="section active portfolio-dashboard" id="dashboardSection" data-panel="dashboard">
+        <section class="section active signal-dashboard" id="dashboardSection" data-panel="dashboard">
+          <section class="signal-market-strip" aria-label="Live market strip">
+            <div class="market-strip" id="marketStrip"></div>
+          </section>
+
+          <section class="signal-dashboard-layout">
+            <article class="signal-surface signal-radar-card">
+              <header class="signal-surface-head">
+                <div>
+                  <span class="mini-label">Full NSE Evidence Ranking</span>
+                  <h3>Pre-Rise Radar <i data-lucide="info" aria-hidden="true"></i></h3>
+                </div>
+                <div class="radar-legend" id="signalRadarLegend"></div>
+              </header>
+              <div class="signal-table-scroll">
+                <table class="signal-radar-table">
+                  <thead>
+                    <tr><th>#</th><th>Stock (NSE)</th><th>Score</th><th>Trend (20D)</th><th>Vol vs 20D</th><th>FII Flow</th><th>Volume</th><th>Price</th><th>Proof</th><th>Action</th></tr>
+                  </thead>
+                  <tbody id="signalRadarBody"></tbody>
+                </table>
+              </div>
+              <footer><span id="signalRadarStamp">Waiting for the fresh Upstox scan.</span><button type="button" id="signalRadarRefresh"><i data-lucide="refresh-cw"></i> Refresh</button></footer>
+            </article>
+
+            <aside class="signal-dashboard-side">
+              <article class="signal-surface market-regime-card">
+                <header class="signal-surface-head"><div><span class="mini-label">Current Context</span><h3>Market Regime <i data-lucide="info" aria-hidden="true"></i></h3></div></header>
+                <div id="signalMarketRegime" class="signal-regime-body"></div>
+              </article>
+
+              <article class="signal-surface signal-evidence-card">
+                <header class="signal-surface-head"><div><span class="mini-label">Selected Stock</span><h3>Signal Evidence <small id="signalEvidenceSymbol">No symbol</small></h3></div></header>
+                <div id="signalEvidence" class="signal-evidence-body"></div>
+              </article>
+
+              <article class="signal-surface signal-order-card">
+                <header class="signal-surface-head"><div><span class="mini-label">Paper Execution</span><h3 id="signalPaperTitle">Paper BUY Readiness</h3></div><span class="status-pill good">Paper only</span></header>
+                <div class="engine-order-readiness" id="autoOrderReadiness"></div>
+                <button class="signal-paper-action" type="button" id="signalPaperEngineAction"><i data-lucide="shopping-cart"></i><span>Run Paper BUY Engine</span></button>
+                <p class="signal-order-footnote">Real Upstox quote and all engine gates remain mandatory.</p>
+              </article>
+            </aside>
+
+            <article class="signal-surface signal-chart-card">
+              <header class="signal-chart-head">
+                <div><span class="mini-label">NSE Daily Candles</span><h3 id="symbolTitle">Run scanner</h3></div>
+                <div class="price-stack"><strong id="symbolPrice">Scan required</strong><span id="symbolMeta">Upstox candles and quote evidence</span></div>
+              </header>
+              <canvas id="priceChart" width="980" height="420" aria-label="Selected stock candles"></canvas>
+              <div class="signal-chips" id="signalChips"></div>
+            </article>
+          </section>
+        </section>
+
+        <section class="section portfolio-dashboard" id="portfolioSection" data-panel="portfolio">
           <header class="portfolio-dashboard-head">
             <div>
               <span class="mini-label">Paper Portfolio Overview</span>
@@ -125,79 +180,6 @@
             </div>
           </header>
           <div id="portfolioDashboard" class="portfolio-dashboard-body" aria-live="polite"></div>
-        </section>
-
-        <section class="section broker-cockpit" id="controlSection" data-panel="control">
-          <section class="cockpit-top">
-            <div class="market-strip cockpit-market" id="marketStrip"></div>
-
-            <aside class="panel signal-card cockpit-score">
-              <div class="panel-head">
-                <div>
-                  <span class="mini-label">10-Factor Engine</span>
-                  <h3>ASH Score</h3>
-                </div>
-                <div class="score-dial"><strong id="factorTotal">0 / 100</strong></div>
-              </div>
-              <div class="factor-list" id="factorList"></div>
-            </aside>
-          </section>
-
-          <section class="cockpit-main">
-            <aside class="panel watch-panel cockpit-watch">
-              <div class="panel-head">
-                <div>
-                  <span class="mini-label">NSE Universe</span>
-                  <h3>Watchlist Tape</h3>
-                </div>
-                <strong id="selectionCount">0</strong>
-              </div>
-              <label class="search-box" for="symbolSearch">
-                <i data-lucide="search" aria-hidden="true"></i>
-                <input id="symbolSearch" type="search" autocomplete="off" aria-label="Search NSE symbol" />
-              </label>
-              <div class="basket-meta" id="basketMeta">Fresh NSE rotation</div>
-              <div class="watch-list" id="candidateList"></div>
-            </aside>
-
-            <section class="panel chart-panel cockpit-chart">
-              <div class="chart-toolbar">
-                <div>
-                  <span class="mini-label">Symbol Workspace</span>
-                  <h3 id="symbolTitle">Run scanner</h3>
-                </div>
-                <div class="price-stack">
-                  <strong id="symbolPrice">Scan required</strong>
-                  <span id="symbolMeta">Upstox candles and quote evidence</span>
-                </div>
-              </div>
-              <canvas id="priceChart" width="980" height="420" aria-label="Selected stock candles"></canvas>
-              <div class="signal-chips" id="signalChips"></div>
-            </section>
-
-            <aside class="cockpit-side">
-              <section class="panel thesis-card cockpit-thesis">
-                <div class="panel-head">
-                  <div>
-                    <span class="mini-label">Reason, Verify, Execute</span>
-                    <h3>Advisor Thesis</h3>
-                  </div>
-                </div>
-                <div class="detail-list" id="reasonList"></div>
-              </section>
-
-              <section class="panel ticket-panel cockpit-ticket">
-                <div class="panel-head">
-                  <div>
-                    <span class="mini-label">Order Readiness</span>
-                    <h3>Automatic Paper Setup</h3>
-                  </div>
-                  <span class="status-pill good">Engine controlled</span>
-                </div>
-                <div class="engine-order-readiness" id="autoOrderReadiness"></div>
-              </section>
-            </aside>
-          </section>
         </section>
 
         <section class="section signal-piano-screen" id="signalPianoSection" data-panel="signal-piano">

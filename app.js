@@ -7,6 +7,8 @@ const state = {
   selected: null,
   selectedQuote: null,
   orders: null,
+  marketContext: null,
+  marketQuotes: [],
   upstoxStatus: null,
   activeSection: "dashboard",
   horizon: "intraday",
@@ -595,6 +597,7 @@ function visibleRows() {
 function renderMarketStrip(status = "loading", quotes = []) {
   const node = el("marketStrip");
   if (!node) return;
+  if (status === "ready") state.marketQuotes = Array.isArray(quotes) ? quotes : [];
   node.classList.toggle("has-error", status === "error");
   if (status === "error") {
     node.innerHTML = `
@@ -619,6 +622,150 @@ function renderMarketStrip(status = "loading", quotes = []) {
       <p>${fmtPct(change)} | ${escapeHtml(isoDate(quote.timestamp || quote.asOf))}</p>
     </article>`;
   }).join("");
+}
+
+function tunnelEvidence(row, patterns = []) {
+  const results = Array.isArray(row?.parameter_tunnel?.results) ? row.parameter_tunnel.results : [];
+  return results.find((result) => patterns.some((pattern) => pattern.test(`${result.id || ""} ${result.name || ""} ${result.formula || ""}`))) || null;
+}
+
+function signalState(value) {
+  const normalized = String(value || "SOURCE_REQUIRED").toUpperCase();
+  if (["HIT", "CLEAR", "PASS", "SELECT"].includes(normalized)) return { className: "positive", label: normalized === "CLEAR" ? "CLEAR" : "BULLISH", icon: "circle-check" };
+  if (["RISK", "BLOCKED", "REJECT"].includes(normalized)) return { className: "negative", label: normalized, icon: "circle-x" };
+  if (["MISS", "WATCH", "WEAK"].includes(normalized)) return { className: "watch", label: normalized, icon: "circle-alert" };
+  return { className: "needed", label: "DATA NEEDED", icon: "circle-help" };
+}
+
+function renderSignalDashboard() {
+  const radarBody = el("signalRadarBody");
+  if (!radarBody) return;
+  const rows = sortedRows().slice(0, 8);
+  const counts = state.rows.reduce((summary, row) => {
+    const key = row.decision === "SELECT"
+      ? "SELECT"
+      : row.decision === "WATCH"
+        ? "WATCH"
+        : row.decision === DATA_GAP_DECISION
+          ? "DATA NEEDED"
+          : "BLOCKED";
+    summary[key] = (summary[key] || 0) + 1;
+    return summary;
+  }, {});
+  const legend = el("signalRadarLegend");
+  if (legend) legend.innerHTML = [
+    ["select", "SELECT", counts.SELECT || 0],
+    ["watch", "WATCH", counts.WATCH || 0],
+    ["blocked", "BLOCKED", counts.BLOCKED || 0],
+    ["needed", "DATA NEEDED", counts["DATA NEEDED"] || 0]
+  ].map(([tone, label, count]) => `<span class="${tone}"><i></i>${label} <b>${count}</b></span>`).join("");
+
+  if (!rows.length) {
+    radarBody.innerHTML = `<tr><td colspan="10" class="signal-empty">Run the scanner to populate the Pre-Rise Radar with real NSE evidence.</td></tr>`;
+  } else {
+    radarBody.innerHTML = rows.map((row, index) => {
+      const metrics = rowMetrics(row);
+      const trend20 = numberValue(metrics.return20);
+      const volumeMultiple = metrics.latest?.volume && metrics.avgVol20 ? metrics.latest.volume / metrics.avgVol20 : null;
+      const fiiFlow = numberValue(row.fii5dNetCr ?? row.fii20dNetCr ?? row.fii_flow_5d_cr);
+      const volumeEvidence = tunnelEvidence(row, [/volume.*20/i, /volume confirmation/i, /volume expansion/i]);
+      const priceEvidence = tunnelEvidence(row, [/price structure/i, /breakout/i, /above.*(?:ema|sma)/i, /new high/i]);
+      const proof = row.parameter_tunnel?.summary || {};
+      const volumeState = signalState(volumeEvidence?.state || "SOURCE_REQUIRED");
+      const priceState = signalState(priceEvidence?.state || (trend20 !== null ? (trend20 > 0 ? "HIT" : "WATCH") : "SOURCE_REQUIRED"));
+      const proofState = signalState(numberValue(proof.evaluated) > 0 ? (numberValue(proof.evidence_score) >= 48 ? "HIT" : "WATCH") : "SOURCE_REQUIRED");
+      const decision = decisionDisplay(row.decision);
+      return `<tr class="${state.selected?.symbol === row.symbol ? "active" : ""}" data-signal-symbol="${escapeHtml(row.symbol)}">
+        <td>${index + 1}</td>
+        <td><button type="button" data-signal-symbol="${escapeHtml(row.symbol)}"><strong>${escapeHtml(row.symbol)}</strong><small>${escapeHtml(row.sector || row.name || "NSE")}</small></button></td>
+        <td><b class="signal-score ${decisionClass(row.decision)}">${fmtNumber(row.score, 0)}</b></td>
+        <td><span class="signal-trend ${trend20 !== null && trend20 >= 0 ? "positive" : "negative"}">${fmtPct(trend20)}</span></td>
+        <td>${volumeMultiple === null ? `<span class="data-needed">DATA NEEDED</span>` : `<strong>${fmtNumber(volumeMultiple, 2)}x</strong>`}</td>
+        <td>${fiiFlow === null ? `<span class="data-needed">DATA NEEDED</span>` : `<span class="${fiiFlow >= 0 ? "positive" : "negative"}">${fiiFlow >= 0 ? "+" : ""}${fmtNumber(fiiFlow, 1)} Cr</span>`}</td>
+        <td><span class="evidence-icon ${volumeState.className}" title="${escapeHtml(volumeEvidence?.value || volumeState.label)}"><i data-lucide="${volumeState.icon}"></i></span></td>
+        <td><span class="evidence-icon ${priceState.className}" title="${escapeHtml(priceEvidence?.value || priceState.label)}"><i data-lucide="${priceState.icon}"></i></span></td>
+        <td><span class="evidence-icon ${proofState.className}" title="${escapeHtml(proof.evaluated ? `${proof.positive_hits || 0}/${proof.evaluated} conditions` : proofState.label)}"><i data-lucide="${proofState.icon}"></i></span></td>
+        <td><button class="radar-action ${decisionClass(row.decision)}" type="button" data-signal-symbol="${escapeHtml(row.symbol)}">${escapeHtml(decision)}</button></td>
+      </tr>`;
+    }).join("");
+  }
+
+  const stamp = el("signalRadarStamp");
+  if (stamp) {
+    const scanAsOf = state.scan?.asOf || state.scan?.as_of || state.scan?.generated_at || state.scan?.last_run;
+    stamp.textContent = scanAsOf ? `Scores updated ${isoDate(scanAsOf)}` : `${state.rows.length} stocks evaluated from the latest scan`;
+  }
+
+  all("[data-signal-symbol]", radarBody).forEach((target) => target.addEventListener("click", (event) => {
+    event.stopPropagation();
+    selectSymbol(target.dataset.signalSymbol);
+  }));
+
+  const context = state.marketContext || {};
+  const insight = context.insight || {};
+  const cards = Array.isArray(context.cards) ? context.cards : [];
+  const contextByKey = Object.fromEntries(cards.map((card) => [card.key, card]));
+  const breadth = context.breadth || {};
+  const breadthTotal = [breadth.advancing, breadth.declining, breadth.unchanged].map(numberValue).filter((value) => value !== null).reduce((sum, value) => sum + value, 0);
+  const breadthPct = breadthTotal ? (numberValue(breadth.advancing) || 0) / breadthTotal * 100 : null;
+  const confidence = Math.max(0, Math.min(100, numberValue(insight.confidence) || 0));
+  const topSectors = [...state.rows.reduce((map, row) => {
+    if (row.decision === "SELECT") map.set(row.sector || "Unmapped", (map.get(row.sector || "Unmapped") || 0) + 1);
+    return map;
+  }, new Map()).entries()].sort((a, b) => b[1] - a[1]).slice(0, 3).map(([sector]) => sector).join(", ");
+  const regimeNode = el("signalMarketRegime");
+  if (regimeNode) regimeNode.innerHTML = `
+    <div class="regime-summary">
+      <div class="regime-gauge" style="--regime-angle:${(-75 + confidence * 1.5).toFixed(2)}deg"><span><strong>${escapeHtml(insight.bias || "LOADING")}</strong><small>Strength ${fmtNumber(confidence, 0)} / 100</small></span></div>
+      <div class="regime-facts">
+        <div><span>Trend (NIFTY 50)</span><strong class="${numberValue(contextByKey.nifty50?.change_pct) >= 0 ? "positive" : "negative"}">${contextByKey.nifty50?.price === null || contextByKey.nifty50?.price === undefined ? "DATA NEEDED" : `${fmtNumber(contextByKey.nifty50.price)} · ${fmtPct(contextByKey.nifty50.change_pct)}`}</strong></div>
+        <div><span>Market breadth</span><strong>${breadthPct === null ? "DATA NEEDED" : `${fmtNumber(breadthPct, 1)}% advance`}</strong></div>
+        <div><span>FII flow (5D)</span><strong class="data-needed">DATA NEEDED</strong></div>
+        <div><span>Volatility (India VIX)</span><strong>${contextByKey.indiavix?.price === null || contextByKey.indiavix?.price === undefined ? "DATA NEEDED" : `${fmtNumber(contextByKey.indiavix.price)} · ${fmtPct(contextByKey.indiavix.change_pct)}`}</strong></div>
+        <div><span>SELECT sector strength</span><strong>${escapeHtml(topSectors || "No SELECT sectors")}</strong></div>
+      </div>
+    </div>
+    <footer><span>${escapeHtml((insight.notes || []).join(" · ") || "Fetching current market context")}</span><strong>${escapeHtml(context.asOf ? isoDate(context.asOf) : "Context loading")}</strong></footer>`;
+
+  const row = state.selected;
+  const evidenceSymbol = el("signalEvidenceSymbol");
+  if (evidenceSymbol) evidenceSymbol.textContent = row ? `(${row.symbol})` : "No symbol";
+  const evidenceNode = el("signalEvidence");
+  if (evidenceNode) {
+    if (!row) {
+      evidenceNode.innerHTML = `<p class="signal-empty">Select a radar row to inspect its evidence.</p>`;
+    } else {
+      const metrics = rowMetrics(row);
+      const volumeMultiple = metrics.latest?.volume && metrics.avgVol20 ? metrics.latest.volume / metrics.avgVol20 : null;
+      const proof = row.parameter_tunnel?.summary || {};
+      const selectedVolumeEvidence = tunnelEvidence(row, [/volume.*20/i, /volume confirmation/i, /volume expansion/i]);
+      const evidenceRows = [
+        ["FII Flow", numberValue(row.fii5dNetCr ?? row.fii20dNetCr) === null ? "SOURCE_REQUIRED" : numberValue(row.fii5dNetCr ?? row.fii20dNetCr) >= 0 ? "HIT" : "RISK", numberValue(row.fii5dNetCr ?? row.fii20dNetCr) === null ? "Runtime stock FII field absent" : `${fmtNumber(row.fii5dNetCr ?? row.fii20dNetCr)} Cr`],
+        ["Volume Expansion", selectedVolumeEvidence?.state || "SOURCE_REQUIRED", volumeMultiple === null ? "20D volume evidence absent" : `${fmtNumber(volumeMultiple, 2)}x of 20D average · ${selectedVolumeEvidence?.value || "threshold evidence absent"}`],
+        ["Price Structure", numberValue(metrics.return20) === null ? "SOURCE_REQUIRED" : metrics.return20 > 0 ? "HIT" : "WATCH", numberValue(metrics.return20) === null ? "20D trend unavailable" : `${fmtPct(metrics.return20)} over 20 sessions`],
+        ["Parameter Proof", numberValue(proof.evaluated) ? (numberValue(proof.evidence_score) >= 48 ? "HIT" : "WATCH") : "SOURCE_REQUIRED", numberValue(proof.evaluated) ? `${proof.positive_hits || 0}/${proof.evaluated} positive · score ${fmtNumber(proof.evidence_score)}` : "Tunnel proof not returned"]
+      ];
+      evidenceNode.innerHTML = `<div class="signal-evidence-head"><span>Factor</span><span>Status</span><span>Evidence</span><span></span></div>` + evidenceRows.map(([name, status, value]) => {
+        const stateInfo = signalState(status);
+        return `<div class="signal-evidence-row"><strong>${escapeHtml(name)}</strong><b class="${stateInfo.className}">${escapeHtml(stateInfo.label)}</b><span>${escapeHtml(value)}</span><i data-lucide="${stateInfo.icon}" class="${stateInfo.className}"></i></div>`;
+      }).join("") + `<footer><span>Overall evidence strength</span><strong>${numberValue(proof.evidence_score) === null ? "DATA NEEDED" : `${fmtNumber(proof.evidence_score)} / 100`}</strong></footer>`;
+    }
+  }
+
+  const paperTitle = el("signalPaperTitle");
+  if (paperTitle) paperTitle.textContent = row?.decision === "SELECT" ? `Paper BUY Ready · ${row.symbol}` : row ? `Paper ${decisionDisplay(row.decision)} · ${row.symbol}` : "Paper BUY Readiness";
+  const paperAction = el("signalPaperEngineAction");
+  if (paperAction) paperAction.disabled = !state.rows.length;
+  window.lucide?.createIcons?.();
+}
+
+async function loadSignalMarketContext() {
+  try {
+    state.marketContext = await api(`/api/market-context?ts=${Date.now()}`);
+  } catch (error) {
+    state.marketContext = { ok: false, error: error.message, insight: { bias: "DATA NEEDED", confidence: 0, notes: [error.message] }, cards: [], breadth: {} };
+  }
+  renderSignalDashboard();
 }
 
 function renderCandidates() {
@@ -746,6 +893,7 @@ function renderSymbol() {
     renderFactors(null, ctx);
     renderReason(null, ctx);
     renderAutoOrderReadiness(null);
+    renderSignalDashboard();
     renderPiano();
     return;
   }
@@ -768,6 +916,7 @@ function renderSymbol() {
   renderFactors(row, ctx);
   renderReason(row, ctx);
   renderAutoOrderReadiness(row);
+  renderSignalDashboard();
   renderPiano();
 }
 
@@ -1595,6 +1744,7 @@ function renderAll() {
   renderBasketMeta();
   renderOrders();
   renderPortfolioDashboard();
+  renderSignalDashboard();
   if (state.activeParameter) renderParameterProof(state.activeParameter);
   window.lucide?.createIcons?.();
 }
@@ -1603,7 +1753,7 @@ function switchSection(section) {
   state.activeSection = section;
   all(".rail-item[data-section]").forEach((button) => button.classList.toggle("active", button.dataset.section === section));
   all(".section").forEach((panel) => panel.classList.toggle("active", panel.dataset.panel === section));
-  const titleMap = { dashboard: "Dashboard", control: "Control", screener: "Screener", piano: "Node Tunnel", "signal-piano": "Signal Piano", orders: "Paper Book", settings: "Settings" };
+  const titleMap = { dashboard: "Signal Dashboard", portfolio: "Portfolio", screener: "Screener", piano: "Node Tunnel", "signal-piano": "Signal Piano", orders: "Paper Book", settings: "Settings" };
   el("sectionTitle").textContent = titleMap[section] || "Dashboard";
   window.lucide?.createIcons?.();
 }
@@ -1724,6 +1874,8 @@ function bindUi() {
   el("refreshBtn")?.addEventListener("click", refreshScan);
   el("nseMasterBtn")?.addEventListener("click", loadNseMaster);
   el("paperEngineBtn")?.addEventListener("click", runPaperEngineNow);
+  el("signalPaperEngineAction")?.addEventListener("click", runPaperEngineNow);
+  el("signalRadarRefresh")?.addEventListener("click", refreshScan);
   el("dashboardRefreshBtn")?.addEventListener("click", loadOrders);
   el("refreshOrdersBtn")?.addEventListener("click", loadOrders);
   el("upstoxConnectBtn")?.addEventListener("click", startUpstoxOAuth);
@@ -1760,6 +1912,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   renderAll();
   window.lucide?.createIcons?.();
   await loadOrders();
-  await refreshScan();
+  await Promise.all([refreshScan(), loadSignalMarketContext()]);
   window.setInterval(maybeAutoStartPaperPortfolio, 60_000);
 });

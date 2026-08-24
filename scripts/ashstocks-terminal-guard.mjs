@@ -35,11 +35,16 @@ mustInclude("app-broker-nav-guard.js", "[data-ash-terminal-panel]", "Terminal pa
 mustInclude("app-broker-nav-guard.js", "[data-ash-terminal-nav]", "Terminal nav close handling");
 
 for (const text of [
-  'data-section="control"',
+  'data-section="portfolio"',
   'id="portfolioDashboard"',
-  'id="controlSection" data-panel="control"'
+  'id="portfolioSection" data-panel="portfolio"',
+  'id="dashboardSection" data-panel="dashboard"',
+  'id="signalRadarBody"',
+  'id="signalMarketRegime"',
+  'id="signalEvidence"',
+  'id="signalPaperEngineAction"'
 ]) {
-  mustInclude("index.html", text, "portfolio dashboard and Control separation");
+  mustInclude("index.html", text, "signal dashboard and Portfolio separation");
 }
 
 for (const text of [
@@ -48,7 +53,7 @@ for (const text of [
   "Recent Activity",
   "Risk &amp; Capital Governor"
 ]) {
-  mustInclude("app.js", text, "portfolio dashboard and Control separation");
+  mustInclude("app.js", text, "portfolio dashboard retention");
 }
 
 for (const text of [
@@ -65,13 +70,36 @@ for (const text of [
 }
 
 for (const text of [
-  "#dashboardSection.portfolio-dashboard.section.active",
+  "#portfolioSection.portfolio-dashboard.section.active",
   "overflow-y: auto",
   ".portfolio-dashboard-grid",
   ".portfolio-risk-card",
   ".portfolio-activity-card"
 ]) {
   mustInclude("styles.css", text, "scrollable responsive portfolio dashboard");
+}
+
+for (const text of [
+  "function renderSignalDashboard()",
+  "function loadSignalMarketContext()",
+  'state.marketContext = await api(`/api/market-context',
+  "DATA NEEDED",
+  "tunnelEvidence(row",
+  "renderSignalDashboard();"
+]) {
+  mustInclude("app.js", text, "real-data signal dashboard binding");
+}
+
+for (const text of [
+  "#dashboardSection.signal-dashboard.section.active",
+  ".signal-dashboard-layout",
+  ".signal-radar-table",
+  ".market-regime-card",
+  ".signal-evidence-card",
+  ".signal-order-card",
+  ".signal-chart-card"
+]) {
+  mustInclude("styles.css", text, "signal-first dashboard layout");
 }
 
 for (const text of [
