@@ -353,9 +353,11 @@ const PAPER_ENGINE_RUN_REPLACEMENT = String.raw`async function runPaperEngineOnc
   const market = paperEngineMarketState();
   const scanBySymbol = new Map((scan.rows || []).map((row) => [normalizeSymbol(row.symbol), row]));
   const universeBySymbol = new Map(normalizeScannerUniverse(state.universe || []).map((row) => [normalizeSymbol(row.symbol), row]));
+  const monitorTrader = sanitizePaperTraderState(workingState.paperTrader || {});
   const quoteKeys = unique([
     ...tickets.map((ticket) => scanBySymbol.get(normalizeSymbol(ticket.symbol))?.instrument_key),
-    ...sanitizePaperTraderState(workingState.paperTrader || {}).positions.map((position) => position.instrument_key || universeBySymbol.get(normalizeSymbol(position.symbol))?.instrument_key)
+    ...monitorTrader.positions.map((position) => position.instrument_key || universeBySymbol.get(normalizeSymbol(position.symbol))?.instrument_key),
+    ...monitorTrader.gtt.filter((plan) => plan.status === "ACTIVE").map((plan) => plan.instrument_key || universeBySymbol.get(normalizeSymbol(plan.symbol))?.instrument_key)
   ].filter(Boolean));
   let quotePayload = { ok: true, quotes: [], asOf: new Date().toISOString() };
   let quoteError = "";
@@ -369,16 +371,36 @@ const PAPER_ENGINE_RUN_REPLACEMENT = String.raw`async function runPaperEngineOnc
   const quoteMap = paperEngineQuoteMap(quotePayload);
   let monitor = null;
   if (autoSettings.enabled && market.open) {
-    const monitorRows = sanitizePaperTraderState(workingState.paperTrader || {}).positions.flatMap((position) => {
-      const baseRow = scanBySymbol.get(normalizeSymbol(position.symbol)) || universeBySymbol.get(normalizeSymbol(position.symbol)) || { symbol: position.symbol, instrument_key: position.instrument_key };
-      const quote = quoteMap.get(paperEngineQuoteKey(baseRow.instrument_key)) || quoteMap.get(normalizeSymbol(position.symbol));
+    const monitorNeeds = new Map();
+    const includeMonitorNeed = (item, side, qty) => {
+      const symbol = normalizeSymbol(item.symbol);
+      if (!symbol) return;
+      const baseRow = scanBySymbol.get(symbol) || universeBySymbol.get(symbol) || { symbol, instrument_key: item.instrument_key };
+      const need = monitorNeeds.get(symbol) || { ...baseRow, symbol, buy_qty: 0, sell_qty: 0 };
+      need.instrument_key = item.instrument_key || need.instrument_key || baseRow.instrument_key || "";
+      if (side === "BUY") need.buy_qty = Math.max(need.buy_qty, Math.floor(finiteOr(qty, 0)));
+      else need.sell_qty = Math.max(need.sell_qty, Math.floor(finiteOr(qty, 0)));
+      monitorNeeds.set(symbol, need);
+    };
+    for (const position of monitorTrader.positions) includeMonitorNeed(position, "SELL", position.qty);
+    for (const plan of monitorTrader.gtt.filter((item) => item.status === "ACTIVE")) includeMonitorNeed(plan, plan.side, plan.qty);
+    const monitorDataNeeded = [];
+    const monitorRows = Array.from(monitorNeeds.values()).flatMap((need) => {
+      const quote = quoteMap.get(paperEngineQuoteKey(need.instrument_key)) || quoteMap.get(need.symbol);
       const timestampMs = paperEngineTimestampMs(quote?.timestamp);
-      const fresh = timestampMs !== null && Date.now() - timestampMs <= autoSettings.maxQuoteAgeSeconds * 1000;
-      return quote && fresh && finiteOr(quote.last_price, null)
-        ? [{ ...baseRow, symbol: position.symbol, close: quote.last_price, ltp: quote.last_price, last_price: quote.last_price, last_candle_date: quote.timestamp, data_source: "Upstox Market Quote API" }]
-        : [];
+      const snapshotMs = paperEngineTimestampMs(quote?.snapshot_timestamp);
+      const fresh = (timestampMs !== null && Date.now() - timestampMs <= autoSettings.maxQuoteAgeSeconds * 1000)
+        || (snapshotMs !== null && Date.now() - snapshotMs <= 30000);
+      const last = finiteOr(quote?.last_price, null);
+      const buyPrice = need.buy_qty ? paperMonitorDepthPrice(quote?.depth?.asks, need.buy_qty) : null;
+      const sellPrice = need.sell_qty ? paperMonitorDepthPrice(quote?.depth?.bids, need.sell_qty) : null;
+      if (!quote || !fresh || !last || (need.buy_qty && !buyPrice) || (need.sell_qty && !sellPrice)) {
+        monitorDataNeeded.push({ symbol: need.symbol, reason: !quote ? "Upstox quote missing" : !fresh ? "Upstox quote stale" : "full executable Upstox depth missing" });
+        return [];
+      }
+      return [{ ...need, close: last, ltp: last, last_price: last, paper_buy_price: buyPrice, paper_sell_price: sellPrice, quote_timestamp: quote.snapshot_timestamp || quote.timestamp, last_candle_date: quote.timestamp, data_source: "Upstox Market Quote API" }];
     });
-    monitor = applyPaperLifecycleMonitor(workingState, monitorRows, { source: "paper-engine-upstox-real-quote-monitor" });
+    monitor = applyPaperLifecycleMonitor(workingState, monitorRows, { source: "paper-engine-upstox-real-quote-monitor", data_needed: monitorDataNeeded });
     workingState = monitor.nextState;
   }
 

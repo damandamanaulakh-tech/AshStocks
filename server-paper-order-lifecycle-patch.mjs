@@ -3,7 +3,7 @@ import { loadPaperCapitalPolicy } from "./lib/paper-capital-policy.mjs";
 const paperCapitalPolicy = loadPaperCapitalPolicy();
 
 const PAPER_ORDER_LIFECYCLE_FUNCTIONS = String.raw`
-const PAPER_ORDER_LIFECYCLE_VERSION = "ashstocks-paper-order-lifecycle-v0.7-server-quote-authority";
+const PAPER_ORDER_LIFECYCLE_VERSION = "ashstocks-paper-order-lifecycle-v0.8-upstox-monitor-gtt-sells";
 const PAPER_CAPITAL_POLICY = Object.freeze(${JSON.stringify(paperCapitalPolicy)});
 function sanitizeParameterEvidence(input = {}) {
   return {
@@ -440,6 +440,9 @@ function rejectedPaperOrderPreparation(state = defaultState(), body = {}, reason
 async function preparePaperMarketOrder(body = {}) {
   const request = paperOrderRequest(body);
   if (request.gtt || request.order_type === "GTT") {
+    if (!/^NSE_EQ\|INE[A-Z0-9]{9}$/.test(request.instrument_key)) {
+      return { ok: false, error: "exact_nse_equity_instrument_key_required" };
+    }
     return { ok: true, body: { ...body, price_source: "client_trigger_not_fill" } };
   }
   if (request.order_type !== "MARKET") {
@@ -527,6 +530,73 @@ async function preparePaperMarketOrder(body = {}) {
       }
     }
   };
+}
+function paperMonitorDepthPrice(levels = [], qty = 0) {
+  let remaining = Math.max(0, Math.floor(finiteOr(qty, 0)));
+  let value = 0;
+  let filled = 0;
+  for (const level of Array.isArray(levels) ? levels.slice(0, 5) : []) {
+    if (!remaining) break;
+    const levelQty = Math.max(0, Math.floor(finiteOr(level.quantity, 0)));
+    const levelPrice = finiteOr(level.price, null);
+    if (!levelQty || !levelPrice) continue;
+    const take = Math.min(remaining, levelQty);
+    value += take * levelPrice;
+    filled += take;
+    remaining -= take;
+  }
+  return filled > 0 && remaining === 0 ? round(value / filled, 4) : null;
+}
+async function preparePaperLifecycleMonitor(state = defaultState()) {
+  const paperTrader = sanitizePaperTraderState(state.paperTrader || {});
+  const universeBySymbol = new Map(normalizeScannerUniverse(state.universe || []).map((row) => [normalizeSymbol(row.symbol), row]));
+  const needs = new Map();
+  const include = (row, side, qty) => {
+    const symbol = normalizeSymbol(row.symbol);
+    if (!symbol) return;
+    const current = needs.get(symbol) || { symbol, instrument_key: "", buy_qty: 0, sell_qty: 0 };
+    current.instrument_key = row.instrument_key || current.instrument_key || universeBySymbol.get(symbol)?.instrument_key || "";
+    if (side === "BUY") current.buy_qty = Math.max(current.buy_qty, Math.floor(finiteOr(qty, 0)));
+    else current.sell_qty = Math.max(current.sell_qty, Math.floor(finiteOr(qty, 0)));
+    needs.set(symbol, current);
+  };
+  for (const position of paperTrader.positions) include(position, "SELL", position.qty);
+  for (const plan of paperTrader.gtt.filter((item) => item.status === "ACTIVE")) include(plan, plan.side, plan.qty);
+  if (!needs.size) return { ok: true, rows: [], data_needed: [], source: "server-upstox-market-quote-monitor" };
+  if (!paperEngineMarketState().open) return { ok: false, error: "nse_market_closed_for_paper_monitor", rows: [], data_needed: [] };
+  const dataNeeded = [];
+  const validNeeds = [];
+  for (const need of needs.values()) {
+    if (!/^NSE_EQ\|INE[A-Z0-9]{9}$/.test(need.instrument_key)) {
+      dataNeeded.push({ symbol: need.symbol, reason: "exact NSE equity instrument key missing for server monitor" });
+    } else validNeeds.push(need);
+  }
+  if (!validNeeds.length) return { ok: true, rows: [], data_needed: dataNeeded, source: "server-upstox-market-quote-monitor" };
+  let payload;
+  try {
+    payload = await fetchUpstoxMarketQuotes(validNeeds.map((need) => need.instrument_key));
+  } catch (error) {
+    return { ok: false, error: "upstox_monitor_quote_failed: " + error.message, rows: [], data_needed: dataNeeded };
+  }
+  const quoteMap = paperEngineQuoteMap(payload);
+  const rows = [];
+  for (const need of validNeeds) {
+    const quote = quoteMap.get(paperEngineQuoteKey(need.instrument_key));
+    const timestampMs = paperEngineTimestampMs(quote?.timestamp);
+    const snapshotMs = paperEngineTimestampMs(quote?.snapshot_timestamp);
+    const tradeAgeSeconds = timestampMs === null ? null : Math.max(0, (Date.now() - timestampMs) / 1000);
+    const snapshotAgeSeconds = snapshotMs === null ? null : Math.max(0, (Date.now() - snapshotMs) / 1000);
+    const fresh = (tradeAgeSeconds !== null && tradeAgeSeconds <= 60) || (snapshotAgeSeconds !== null && snapshotAgeSeconds <= 30);
+    const last = finiteOr(quote?.last_price, null);
+    const buyPrice = need.buy_qty ? paperMonitorDepthPrice(quote?.depth?.asks, need.buy_qty) : null;
+    const sellPrice = need.sell_qty ? paperMonitorDepthPrice(quote?.depth?.bids, need.sell_qty) : null;
+    if (!quote || !fresh || !last || (need.buy_qty && !buyPrice) || (need.sell_qty && !sellPrice)) {
+      dataNeeded.push({ symbol: need.symbol, reason: !quote ? "Upstox quote missing" : !fresh ? "Upstox quote stale" : "full executable Upstox depth missing" });
+      continue;
+    }
+    rows.push({ symbol: need.symbol, instrument_key: need.instrument_key, close: last, last_price: last, paper_buy_price: buyPrice, paper_sell_price: sellPrice, quote_timestamp: snapshotAgeSeconds !== null && snapshotAgeSeconds <= 30 ? quote.snapshot_timestamp : quote.timestamp, data_source: "Upstox Market Quote API" });
+  }
+  return { ok: true, rows, data_needed: dataNeeded, source: "server-upstox-market-quote-monitor" };
 }
 function rejectedPaperOrder(request, reason, asOf) {
   return sanitizePaperOrder({
@@ -736,6 +806,16 @@ function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
   }
 
   if (request.gtt || request.order_type === "GTT") {
+    if (request.side === "SELL") {
+      const existing = next.positions.find((position) => position.symbol === request.symbol && position.status !== "CLOSED" && finiteOr(position.qty, 0) > 0);
+      const heldQty = Math.max(0, Math.floor(finiteOr(existing?.qty, 0)));
+      if (!existing || request.qty > heldQty) {
+        const rejected = rejectedPaperOrder(request, !existing ? "no open paper position for SELL GTT" : "paper SELL GTT quantity " + request.qty + " exceeds held quantity " + heldQty, asOf);
+        next.orders = [rejected, ...next.orders].slice(0, 200);
+        const saved = sanitizePaperTraderState(next);
+        return { ok: false, status: 409, order: rejected, paperTrader: saved, nextState: { ...state, paperTrader: saved } };
+      }
+    }
     const plan = sanitizePaperGtt({ id: paperLedgerId("PAPER_GTT"), ...request, entry_price: request.price, status: "ACTIVE", created_at: asOf });
     next.gtt = [plan, ...next.gtt].slice(0, 200);
     const saved = sanitizePaperTraderState(next);
@@ -864,16 +944,19 @@ function paperPriceMap(rows = []) {
   const map = new Map();
   for (const row of Array.isArray(rows) ? rows : []) {
     const symbol = normalizeSymbol(row.symbol);
-    const price = finiteOr(row.close ?? row.ltp ?? row.last_price, null);
-    if (symbol && price && price > 0) map.set(symbol, { price, row });
+    const price = finiteOr(row.last_price ?? row.ltp ?? row.close, null);
+    const buyPrice = finiteOr(row.paper_buy_price, price);
+    const sellPrice = finiteOr(row.paper_sell_price, price);
+    if (symbol && price && price > 0) map.set(symbol, { price, buy_price: buyPrice, sell_price: sellPrice, row });
   }
   return map;
 }
-function closePaperPosition(next, position, price, reason, asOf) {
+function closePaperPosition(next, position, price, reason, asOf, quoteRow = {}) {
   const qty = Math.max(0, Math.floor(finiteOr(position.qty, 0)));
   if (!qty || !price) return null;
   const order = sanitizePaperOrder({
     id: paperLedgerId("PAPER_MONITOR_SELL"),
+    instrument_key: position.instrument_key,
     symbol: position.symbol,
     name: position.name,
     side: "SELL",
@@ -881,6 +964,8 @@ function closePaperPosition(next, position, price, reason, asOf) {
     order_type: "MARKET",
     qty,
     price,
+    price_source: "server_upstox_weighted_bid",
+    quote_timestamp: quoteRow.quote_timestamp,
     target_price: position.target_price,
     stop_price: position.stop_price,
     status: "PAPER_FILLED",
@@ -900,10 +985,13 @@ function closePaperPosition(next, position, price, reason, asOf) {
   const trade = sanitizePaperTrade({
     id: paperLedgerId("PAPER_MONITOR_TRADE"),
     order_id: order.id,
+    instrument_key: position.instrument_key,
     symbol: position.symbol,
     side: "SELL",
     qty,
     price,
+    price_source: "server_upstox_weighted_bid",
+    quote_timestamp: quoteRow.quote_timestamp,
     value: exitValue,
     entry_price: entryPrice,
     exit_price: price,
@@ -928,7 +1016,33 @@ function closePaperPosition(next, position, price, reason, asOf) {
   next.funds = sanitizePaperFunds({ ...next.funds, realized_pnl: finiteOr(next.funds.realized_pnl, 0) + realized, transaction_costs_paid: finiteOr(next.funds.transaction_costs_paid, 0) + exitCost });
   return { type: reason.includes("STOP") ? "STOP_EXIT" : "TARGET_EXIT", symbol: position.symbol, qty, price, realized_pnl: realized, order_id: order.id, reason };
 }
-function openPaperPositionFromGtt(next, plan, price, asOf) {
+function openPaperPositionFromGtt(next, plan, price, asOf, quoteRow = {}) {
+  if (plan.side === "SELL") {
+    const existingIndex = next.positions.findIndex((position) => position.symbol === plan.symbol && position.status !== "CLOSED" && finiteOr(position.qty, 0) > 0);
+    const existing = existingIndex >= 0 ? next.positions[existingIndex] : null;
+    const heldQty = Math.max(0, Math.floor(finiteOr(existing?.qty, 0)));
+    if (!existing || plan.qty > heldQty) {
+      return { type: "GTT_REJECTED", symbol: plan.symbol, qty: plan.qty, price, reason: !existing ? "open position missing at SELL GTT trigger" : "SELL GTT quantity exceeds current holding" };
+    }
+    const fillValue = round(plan.qty * price, 2);
+    const exitCost = paperTransactionCost(fillValue);
+    const entryPrice = finiteOr(existing.entry_price, price);
+    const entryValue = round(entryPrice * plan.qty, 2);
+    const heldEntryCost = round(finiteOr(existing.entry_cost, 0), 2);
+    const allocatedEntryCost = round(heldQty ? heldEntryCost * plan.qty / heldQty : 0, 2);
+    const remaining = heldQty - plan.qty;
+    const remainingEntryCost = round(Math.max(0, heldEntryCost - allocatedEntryCost), 2);
+    const grossRealized = round(fillValue - entryValue, 2);
+    const realized = round(grossRealized - allocatedEntryCost - exitCost, 2);
+    const order = sanitizePaperOrder({ id: paperLedgerId("PAPER_GTT_SELL_FILL"), instrument_key: plan.instrument_key, symbol: plan.symbol, name: plan.name, side: "SELL", product: "Paper GTT", order_type: "GTT", qty: plan.qty, price, price_source: "server_upstox_weighted_bid", transaction_cost: exitCost, quote_timestamp: quoteRow.quote_timestamp, status: "PAPER_FILLED", thesis: plan.thesis || "Paper SELL GTT trigger touched by monitor", source: "paper-lifecycle-monitor", created_at: asOf, updated_at: asOf });
+    const trade = sanitizePaperTrade({ id: paperLedgerId("PAPER_GTT_SELL_TRADE"), order_id: order.id, instrument_key: plan.instrument_key, symbol: plan.symbol, side: "SELL", qty: plan.qty, price, price_source: "server_upstox_weighted_bid", quote_timestamp: quoteRow.quote_timestamp, value: fillValue, entry_price: entryPrice, exit_price: price, entry_value: entryValue, exit_value: fillValue, entry_cost: allocatedEntryCost, exit_cost: exitCost, transaction_cost: exitCost, net_entry_value: round(entryValue + allocatedEntryCost, 2), net_exit_value: round(fillValue - exitCost, 2), gross_realized_pnl: grossRealized, realized_pnl: realized, return_pct: entryValue + allocatedEntryCost ? realized / (entryValue + allocatedEntryCost) * 100 : null, entry_at: existing.entry_date, exit_at: asOf, holding_days: paperHoldingDays(existing.entry_date, asOf), close_reason: plan.thesis || "Paper SELL GTT trigger", traded_at: asOf });
+    next.orders.unshift(order);
+    next.trades.unshift(trade);
+    next.funds = sanitizePaperFunds({ ...next.funds, realized_pnl: finiteOr(next.funds.realized_pnl, 0) + realized, transaction_costs_paid: finiteOr(next.funds.transaction_costs_paid, 0) + exitCost });
+    if (remaining > 0) next.positions[existingIndex] = sanitizePaperPosition({ ...existing, qty: remaining, entry_cost: remainingEntryCost, current_price: price, checked_at: asOf });
+    else next.positions.splice(existingIndex, 1);
+    return { type: "GTT_SELL_TRIGGERED", symbol: plan.symbol, qty: plan.qty, price, realized_pnl: realized, order_id: order.id, reason: "paper SELL GTT trigger touched" };
+  }
   const fillValue = round(plan.qty * price, 2);
   const fillTransactionCost = paperTransactionCost(fillValue);
   const order = sanitizePaperOrder({
@@ -940,7 +1054,9 @@ function openPaperPositionFromGtt(next, plan, price, asOf) {
     order_type: "GTT",
     qty: plan.qty,
     price,
+    price_source: "server_upstox_weighted_ask",
     transaction_cost: fillTransactionCost,
+    quote_timestamp: quoteRow.quote_timestamp,
     target_price: plan.target_price,
     stop_price: plan.stop_price,
     status: "PAPER_FILLED",
@@ -949,7 +1065,7 @@ function openPaperPositionFromGtt(next, plan, price, asOf) {
     created_at: asOf,
     updated_at: asOf
   });
-  const trade = sanitizePaperTrade({ id: paperLedgerId("PAPER_GTT_TRADE"), order_id: order.id, symbol: plan.symbol, side: plan.side, qty: plan.qty, price, value: fillValue, entry_cost: plan.side === "BUY" ? fillTransactionCost : 0, exit_cost: plan.side === "SELL" ? fillTransactionCost : 0, transaction_cost: fillTransactionCost, traded_at: asOf });
+  const trade = sanitizePaperTrade({ id: paperLedgerId("PAPER_GTT_TRADE"), order_id: order.id, instrument_key: plan.instrument_key, symbol: plan.symbol, side: plan.side, qty: plan.qty, price, price_source: "server_upstox_weighted_ask", quote_timestamp: quoteRow.quote_timestamp, value: fillValue, entry_cost: plan.side === "BUY" ? fillTransactionCost : 0, exit_cost: plan.side === "SELL" ? fillTransactionCost : 0, transaction_cost: fillTransactionCost, traded_at: asOf });
   next.orders.unshift(order);
   next.trades.unshift(trade);
   if (plan.side === "BUY") {
@@ -959,9 +1075,9 @@ function openPaperPositionFromGtt(next, plan, price, asOf) {
       const oldQty = Math.max(0, finiteOr(existing.qty, 0));
       const newQty = oldQty + plan.qty;
       const weightedEntry = newQty ? ((oldQty * finiteOr(existing.entry_price, price)) + (plan.qty * price)) / newQty : price;
-      next.positions[existingIndex] = sanitizePaperPosition({ ...existing, qty: newQty, entry_price: round(weightedEntry, 2), entry_cost: round(finiteOr(existing.entry_cost, 0) + fillTransactionCost, 2), current_price: price, target_price: plan.target_price || existing.target_price, stop_price: plan.stop_price || existing.stop_price, status: "OPEN", checked_at: asOf });
+      next.positions[existingIndex] = sanitizePaperPosition({ ...existing, instrument_key: plan.instrument_key || existing.instrument_key, qty: newQty, entry_price: round(weightedEntry, 2), entry_cost: round(finiteOr(existing.entry_cost, 0) + fillTransactionCost, 2), price_source: "server_upstox_weighted_ask", quote_timestamp: quoteRow.quote_timestamp, current_price: price, target_price: plan.target_price || existing.target_price, stop_price: plan.stop_price || existing.stop_price, status: "OPEN", checked_at: asOf });
     } else {
-      next.positions.unshift(sanitizePaperPosition({ symbol: plan.symbol, name: plan.name, qty: plan.qty, entry_price: price, entry_cost: fillTransactionCost, current_price: price, target_price: plan.target_price, stop_price: plan.stop_price, entry_date: asOf, status: "OPEN", thesis: plan.thesis }));
+      next.positions.unshift(sanitizePaperPosition({ symbol: plan.symbol, instrument_key: plan.instrument_key, name: plan.name, qty: plan.qty, entry_price: price, entry_cost: fillTransactionCost, price_source: "server_upstox_weighted_ask", quote_timestamp: quoteRow.quote_timestamp, current_price: price, target_price: plan.target_price, stop_price: plan.stop_price, entry_date: asOf, status: "OPEN", thesis: plan.thesis }));
     }
     next.funds = sanitizePaperFunds({ ...next.funds, transaction_costs_paid: finiteOr(next.funds.transaction_costs_paid, 0) + fillTransactionCost });
   }
@@ -980,7 +1096,7 @@ function applyPaperLifecycleMonitor(state = defaultState(), rows = [], body = {}
   };
   const prices = paperPriceMap(rows);
   const events = [];
-  const dataNeeded = [];
+  const dataNeeded = Array.isArray(body.data_needed) ? body.data_needed.slice() : [];
 
   const remainingPositions = [];
   for (const position of next.positions) {
@@ -991,16 +1107,17 @@ function applyPaperLifecycleMonitor(state = defaultState(), rows = [], body = {}
       continue;
     }
     const price = found.price;
+    const exitPrice = found.sell_price;
     const target = finiteOr(position.target_price, null);
     const stop = finiteOr(position.stop_price, null);
     const updated = sanitizePaperPosition({ ...position, current_price: price, checked_at: asOf });
     if (target && price >= target) {
-      const event = closePaperPosition(next, updated, price, "TARGET_HIT: paper monitor closed at target", asOf);
+      const event = closePaperPosition(next, updated, exitPrice, "TARGET_HIT: paper monitor closed at target", asOf, found.row);
       if (event) events.push(event);
       continue;
     }
     if (stop && price <= stop) {
-      const event = closePaperPosition(next, updated, price, "STOP_HIT: paper monitor closed at stop", asOf);
+      const event = closePaperPosition(next, updated, exitPrice, "STOP_HIT: paper monitor closed at stop", asOf, found.row);
       if (event) events.push(event);
       continue;
     }
@@ -1022,9 +1139,10 @@ function applyPaperLifecycleMonitor(state = defaultState(), rows = [], body = {}
     }
     const touched = plan.side === "BUY" ? found.price >= trigger : found.price <= trigger;
     if (!touched) return plan;
-    const event = openPaperPositionFromGtt(next, plan, found.price, asOf);
+    const fillPrice = plan.side === "BUY" ? found.buy_price : found.sell_price;
+    const event = openPaperPositionFromGtt(next, plan, fillPrice, asOf, found.row);
     events.push(event);
-    return sanitizePaperGtt({ ...plan, status: "TRIGGERED", triggered_at: asOf });
+    return sanitizePaperGtt({ ...plan, status: event.type === "GTT_REJECTED" ? "REJECTED" : "TRIGGERED", triggered_at: asOf });
   });
 
   next.orders = next.orders.slice(0, 200);
@@ -1057,14 +1175,12 @@ const PAPER_ORDER_LIFECYCLE_ROUTES = String.raw`
         const body = await readJsonBody(req);
         const store = await getStore();
         const state = await store.getState();
-        const resolved = await resolveRequestUniverse(body);
-        let scan;
-        if (body.useUpstox !== false && ENV.UPSTOX_ACCESS_TOKEN) scan = await runUpstoxScanner(body, resolved.universe);
-        if (!scan || scan.ok === false) scan = runScanner(resolved.universe, { ...(body.settings || {}), source: resolved.source, holdings: state.paperTrader?.positions || [] });
-        const result = applyPaperLifecycleMonitor(state, scan.rows || [], { ...body, source: scan.source || resolved.source });
+        const prepared = await preparePaperLifecycleMonitor(state);
+        if (!prepared.ok) { json(res, 409, { ok: false, error: prepared.error, data_needed: prepared.data_needed || [], engine: PAPER_ORDER_LIFECYCLE_VERSION, paper_only: true, live_orders: false, broker_write_enabled: false }); return; }
+        const result = applyPaperLifecycleMonitor(state, prepared.rows || [], { ...body, source: prepared.source, data_needed: prepared.data_needed || [] });
         await store.saveState(result.nextState);
         const { nextState, status, ...payload } = result;
-        json(res, status || 200, { ...payload, engine: PAPER_ORDER_LIFECYCLE_VERSION, scan_summary: scan.summary || {}, scanned: Array.isArray(scan.rows) ? scan.rows.length : 0 });
+        json(res, status || 200, { ...payload, engine: PAPER_ORDER_LIFECYCLE_VERSION, quote_source: prepared.source, quoted: Array.isArray(prepared.rows) ? prepared.rows.length : 0 });
         return;
       }
       if (url.pathname === "/api/paper-trader/orders") {

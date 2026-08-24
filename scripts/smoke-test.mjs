@@ -231,7 +231,7 @@ try {
   if (scan.rows?.length !== symbols.length || !scan.rows.every((row) => row.decision === "SELECT")) throw new Error("all real-quote candidates should be SELECT");
   if (!scan.rows.every((row) => row.parameter_tunnel?.summary?.evaluated >= 80)) throw new Error("every real-quote candidate should execute the wired tunnel");
 
-  const quoteSymbols = [...symbols, "MANUALQUOTE"];
+  const quoteSymbols = [...symbols, "MANUALQUOTE", "GTTQUOTE"];
   const quoteData = Object.fromEntries(quoteSymbols.map((symbol, index) => [
     "NSE_EQ:INETEST0000" + (index + 1),
     {
@@ -311,6 +311,52 @@ try {
   if (response.status !== 200) throw new Error("server-verified manual MARKET sell should fill: " + JSON.stringify(manualSell));
   if (manualSell.order?.price !== 355.95 || manualSell.order?.price_source !== "server_upstox_weighted_bid") throw new Error("manual MARKET sell must replace the client price with the Upstox bid");
   if (manualSell.order?.decision_price !== 999 || manualSell.order?.execution_evidence?.server_verified !== true) throw new Error("manual MARKET sell must separate decision price from server execution evidence");
+  response = await nativeFetch(base + "/api/paper-trader/order", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      idempotency_key: "smoke-gtt-position-buy-1",
+      symbol: "GTTQUOTE",
+      instrument_key: "NSE_EQ|INETEST00006",
+      side: "BUY",
+      order_type: "MARKET",
+      qty: 281,
+      price: 1,
+      source: "smoke-gtt-position-buy"
+    })
+  });
+  const gttPositionBuy = await response.json();
+  if (response.status !== 200 || gttPositionBuy.order?.price !== 357.05) throw new Error("GTT proof position should fill from the server Upstox ask: " + JSON.stringify(gttPositionBuy));
+  response = await nativeFetch(base + "/api/paper-trader/order", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      idempotency_key: "smoke-gtt-sell-plan-1",
+      symbol: "GTTQUOTE",
+      instrument_key: "NSE_EQ|INETEST00006",
+      side: "SELL",
+      order_type: "GTT",
+      gtt: true,
+      qty: 281,
+      price: 357,
+      thesis: "smoke server-authoritative GTT exit",
+      source: "smoke-gtt-sell-plan"
+    })
+  });
+  const gttPlan = await response.json();
+  if (response.status !== 200 || gttPlan.gtt?.status !== "ACTIVE") throw new Error("SELL GTT should be registered against the held quantity: " + JSON.stringify(gttPlan));
+  response = await nativeFetch(base + "/api/paper-trader/monitor", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ useUpstox: false, universe: [{ symbol: "GTTQUOTE", close: 9999 }] })
+  });
+  const gttMonitor = await response.json();
+  const gttSellEvent = gttMonitor.events?.find((event) => event.symbol === "GTTQUOTE");
+  const gttSellTrade = gttMonitor.paperTrader?.trades?.find((trade) => trade.symbol === "GTTQUOTE" && trade.side === "SELL");
+  if (response.status !== 200 || gttMonitor.quote_source !== "server-upstox-market-quote-monitor") throw new Error("monitor must use server Upstox quotes even when the caller requests otherwise: " + JSON.stringify(gttMonitor));
+  if (gttSellEvent?.type !== "GTT_SELL_TRIGGERED" || gttSellEvent?.price !== 356.95) throw new Error("SELL GTT must execute at the full-depth Upstox bid");
+  if (gttSellTrade?.price_source !== "server_upstox_weighted_bid" || gttSellTrade?.qty !== 281) throw new Error("SELL GTT closed trade must retain bid-side execution evidence");
+  if (gttMonitor.paperTrader?.positions?.some((position) => position.symbol === "GTTQUOTE")) throw new Error("triggered SELL GTT must remove the fully sold holding");
   console.log(JSON.stringify({ ok: true, positions: ledger.positions.map((position) => position.symbol), pending: result.auto_buy.pending_after_run }));
 } finally {
   globalThis.fetch = nativeFetch;
@@ -848,7 +894,7 @@ async function main() {
     assert(upstoxStatusAfter.body.status.token_visible === true, "Upstox status should detect saved token");
     assert(upstoxStatusAfter.body.status.token_source === "manual_paste", "Upstox status should read token from store");
 
-    console.log(JSON.stringify({ ok: true, checks: ["mongo-file-fallback", "data-bank-status", "scan-ledger", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "pre-rise-pattern-tracker", "parameter-tunnel-175", "kelly-parameters", "kelly-persisted-ledger", "kelly-active-sizing", "kelly-lifecycle-cap", "kelly-no-edge-block", "paper-capital-50-lakh", "paper-minimum-entry-1-lakh", "paper-order-idempotency", "paper-oversell-rejection", "paper-net-cost-accounting", "paper-closed-trade-returns", "paper-engine-real-quote-fill", "server-verified-manual-market-fill", "upstox-guard", "paper-engine-status", "paper-engine-guard", "q1-status", "q1-upload", "q1-render-guard", "upstox-oauth-start", "upstox-token-paste"] }));
+    console.log(JSON.stringify({ ok: true, checks: ["mongo-file-fallback", "data-bank-status", "scan-ledger", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "pre-rise-pattern-tracker", "parameter-tunnel-175", "kelly-parameters", "kelly-persisted-ledger", "kelly-active-sizing", "kelly-lifecycle-cap", "kelly-no-edge-block", "paper-capital-50-lakh", "paper-minimum-entry-1-lakh", "paper-order-idempotency", "paper-oversell-rejection", "paper-net-cost-accounting", "paper-closed-trade-returns", "paper-engine-real-quote-fill", "server-verified-manual-market-fill", "server-verified-monitor-gtt-sell", "upstox-guard", "paper-engine-status", "paper-engine-guard", "q1-status", "q1-upload", "q1-render-guard", "upstox-oauth-start", "upstox-token-paste"] }));
   } finally {
     await Promise.all([...Q1_INPUTS, STATE_FILE, SCAN_LEDGER_FILE, UPSTOX_AUTH_FILE].map((file) => fs.unlink(file).catch((error) => {
       if (error.code !== "ENOENT") throw error;

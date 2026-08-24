@@ -22,8 +22,12 @@ function mustMatch(file, regex, reason) {
   if (!regex.test(read(file))) failures.push(`${file}: missing ${reason}`);
 }
 
+function mustNotMatch(file, regex, reason) {
+  if (regex.test(read(file))) failures.push(`${file}: ${reason}`);
+}
+
 for (const text of [
-  "ashstocks-paper-order-lifecycle-v0.7-server-quote-authority",
+  "ashstocks-paper-order-lifecycle-v0.8-upstox-monitor-gtt-sells",
   "idempotency_key",
   "legacy_60_second_fingerprint",
   "idempotency_key_reused_with_different_request",
@@ -54,6 +58,10 @@ for (const text of [
   "holding_days",
   "/api/paper-trader/monitor",
   "applyPaperLifecycleMonitor",
+  "preparePaperLifecycleMonitor",
+  "paperMonitorDepthPrice",
+  "server-upstox-market-quote-monitor",
+  "GTT_SELL_TRIGGERED",
   "paperPriceMap",
   "closePaperPosition",
   "openPaperPositionFromGtt",
@@ -75,8 +83,13 @@ for (const text of [
 
 mustMatch(
   "server-paper-order-lifecycle-patch.mjs",
-  /if \(body\.useUpstox !== false && ENV\.UPSTOX_ACCESS_TOKEN\) scan = await runUpstoxScanner[\s\S]*if \(!scan \|\| scan\.ok === false\) scan = runScanner/,
-  "monitor should prefer Upstox scan and fall back to scanner rows"
+  /const prepared = await preparePaperLifecycleMonitor\(state\)[\s\S]*applyPaperLifecycleMonitor\(state, prepared\.rows \|\| \[\]/,
+  "manual monitor route should use only server-prepared Upstox quote rows"
+);
+mustNotMatch(
+  "server-paper-order-lifecycle-patch.mjs",
+  /url\.pathname === "\/api\/paper-trader\/monitor"[\s\S]{0,900}runScanner/,
+  "manual monitor route must not fall back to caller or historical scanner rows"
 );
 mustMatch(
   "server-paper-order-lifecycle-patch.mjs",
@@ -87,6 +100,11 @@ mustMatch(
   "server-paper-order-lifecycle-patch.mjs",
   /plan\.side === "BUY" \? found\.price >= trigger : found\.price <= trigger[\s\S]*openPaperPositionFromGtt/,
   "monitor should trigger paper GTT plans from latest price"
+);
+mustMatch(
+  "server-paper-order-lifecycle-patch.mjs",
+  /plan\.side === "SELL"[\s\S]*next\.positions\.splice\(existingIndex, 1\)[\s\S]*GTT_SELL_TRIGGERED/,
+  "triggered SELL GTTs should create a closed trade and reduce or remove the holding"
 );
 mustMatch(
   "server-paper-order-lifecycle-patch.mjs",
@@ -114,6 +132,11 @@ mustMatch(
   "oversized paper SELL requests should fail instead of being silently clamped"
 );
 mustInclude("server-paper-engine-autobuy-patch.mjs", "idempotency_key", "automatic paper BUYs should carry a stable quote-scoped idempotency key");
+mustMatch(
+  "server-paper-engine-autobuy-patch.mjs",
+  /monitorTrader\.gtt\.filter[\s\S]*paperMonitorDepthPrice\(quote\?\.depth\?\.asks[\s\S]*paperMonitorDepthPrice\(quote\?\.depth\?\.bids/,
+  "automatic monitoring should quote active GTTs and require executable ask or bid depth"
+);
 mustMatch(
   "server-paper-order-lifecycle-patch.mjs",
   /paperRouteOrderReplay\(state, body\)[\s\S]*await preparePaperMarketOrder\(body\)[\s\S]*applyPaperOrderLifecycle\(state, prepared\.body\)/,
