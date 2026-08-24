@@ -23,12 +23,18 @@ function mustMatch(file, regex, reason) {
 }
 
 for (const text of [
-  "ashstocks-paper-order-lifecycle-v0.5-idempotent-orders",
+  "ashstocks-paper-order-lifecycle-v0.6-net-cost-accounting",
   "idempotency_key",
   "legacy_60_second_fingerprint",
   "idempotency_key_reused_with_different_request",
   "replayed: true",
   "exceeds held quantity",
+  "paperTransactionCost",
+  "transaction_costs_paid",
+  "gross_realized_pnl",
+  "round_trip_cost",
+  "net_entry_value",
+  "net_exit_value",
   "PAPER_CAPITAL_POLICY",
   "minimumEntryValue",
   "maximumCandidateEntries",
@@ -82,8 +88,8 @@ mustMatch(
 );
 mustMatch(
   "server-paper-order-lifecycle-patch.mjs",
-  /requestValue < PAPER_CAPITAL_POLICY\.minimumEntryValue[\s\S]*requestValue > finiteOr\(lifecycleFunds\.buying_power/,
-  "paper BUY should enforce the one-lakh minimum and real buying power"
+  /requestValue < PAPER_CAPITAL_POLICY\.minimumEntryValue[\s\S]*requestDebit > finiteOr\(lifecycleFunds\.buying_power/,
+  "paper BUY should enforce the one-lakh minimum and cost-inclusive buying power"
 );
 mustMatch(
   "server-paper-order-lifecycle-patch.mjs",
@@ -119,6 +125,9 @@ for (const text of [
   "data-paper-ledger-tab=\"closed\"",
   "closed_trades",
   "realized return",
+  "Transaction costs paid",
+  "Net realized P&L",
+  "Net return",
   "Starting capital",
   "Buying power",
   "minimum entry"
@@ -142,6 +151,7 @@ if (capitalPolicy.minimumEntryValue !== 100000) failures.push("capital policy: m
 if (capitalPolicy.maximumCandidateEntries !== 80) failures.push("capital policy: maximumCandidateEntries must be 80");
 if (capitalPolicy.maximumOpenPositions !== 50) failures.push("capital policy: maximumOpenPositions must be 50");
 if (capitalPolicy.deploymentTargetPct !== 100) failures.push("capital policy: deploymentTargetPct must be 100");
+if (capitalPolicy.transactionCostOneWayPct !== 0.08) failures.push("capital policy: transactionCostOneWayPct must be 0.08");
 if (capitalPolicy.affordableOpenPositionsAtMinimum !== 50) failures.push("capital policy: ₹50 lakh / ₹1 lakh must equal 50 affordable positions");
 for (const key of ["startingCapital", "minimumEntryValue", "maximumCandidateEntries", "maximumOpenPositions", "affordableOpenPositionsAtMinimum"]) {
   if (legacyCapitalPolicy[key] !== capitalPolicy[key]) failures.push(`legacy capital mirror: ${key} drifted from the runtime registry`);

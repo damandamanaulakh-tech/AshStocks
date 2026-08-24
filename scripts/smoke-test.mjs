@@ -568,6 +568,8 @@ async function main() {
       body: JSON.stringify(lifecycleBuyBody),
     });
     assert(lifecycleBuy.response.status === 200, "Rs 1 lakh paper BUY should fill");
+    assert(lifecycleBuy.body.order.transaction_cost === 80, "paper BUY should charge the approved 0.08% one-way cost");
+    assert(lifecycleBuy.body.paperTrader.positions.find((position) => position.symbol === "CLOSEDPROOF")?.entry_cost === 80, "paper position cost basis should retain the BUY cost");
     const lifecycleBuyReplay = await request("/api/paper-trader/order", {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -642,12 +644,19 @@ async function main() {
     });
     assert(lifecycleSell.response.status === 200, "paper SELL should close the proof position");
     assert(lifecycleSell.body.order.qty === lifecycleSell.body.trade.qty, "filled SELL order and trade quantities must match");
+    assert(lifecycleSell.body.trade.entry_cost === 80, "closed paper trade should allocate the BUY cost");
+    assert(lifecycleSell.body.trade.exit_cost === 88, "closed paper trade should charge the SELL cost");
+    assert(lifecycleSell.body.trade.round_trip_cost === 168, "closed paper trade should expose the full round-trip cost");
+    assert(lifecycleSell.body.trade.gross_realized_pnl === 10000, "closed paper trade should retain gross P&L separately");
+    assert(lifecycleSell.body.trade.realized_pnl === 9832, "closed paper trade realized P&L should be net of both costs");
     const closedLedger = await request("/api/paper-trader/orders");
     const closedProof = closedLedger.body.closed_trades.find((trade) => trade.symbol === "CLOSEDPROOF");
     assert(closedProof?.entry_value === 100000, "closed trade should retain entry value");
     assert(closedProof?.exit_value === 110000, "closed trade should retain exit value");
-    assert(closedProof?.realized_pnl === 10000, "closed trade should retain realized P&L");
-    assert(closedProof?.return_pct === 10, "closed trade should expose the sold-stock return");
+    assert(closedProof?.gross_realized_pnl === 10000, "closed trade should retain gross realized P&L");
+    assert(closedProof?.round_trip_cost === 168, "closed trade should expose round-trip costs");
+    assert(closedProof?.realized_pnl === 9832, "closed trade should retain net realized P&L");
+    assert(closedProof?.return_pct === 9.8241, "closed trade should expose the net sold-stock return");
     assert(closedProof?.close_reason === "smoke lifecycle close", "closed trade should retain its close reason");
 
     const restoredAfterLifecycle = await request("/api/state", {
@@ -791,7 +800,7 @@ async function main() {
     assert(upstoxStatusAfter.body.status.token_visible === true, "Upstox status should detect saved token");
     assert(upstoxStatusAfter.body.status.token_source === "manual_paste", "Upstox status should read token from store");
 
-    console.log(JSON.stringify({ ok: true, checks: ["mongo-file-fallback", "data-bank-status", "scan-ledger", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "pre-rise-pattern-tracker", "parameter-tunnel-175", "kelly-parameters", "kelly-persisted-ledger", "kelly-active-sizing", "kelly-lifecycle-cap", "kelly-no-edge-block", "paper-capital-50-lakh", "paper-minimum-entry-1-lakh", "paper-order-idempotency", "paper-oversell-rejection", "paper-closed-trade-returns", "paper-engine-real-quote-fill", "upstox-guard", "paper-engine-status", "paper-engine-guard", "q1-status", "q1-upload", "q1-render-guard", "upstox-oauth-start", "upstox-token-paste"] }));
+    console.log(JSON.stringify({ ok: true, checks: ["mongo-file-fallback", "data-bank-status", "scan-ledger", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "pre-rise-pattern-tracker", "parameter-tunnel-175", "kelly-parameters", "kelly-persisted-ledger", "kelly-active-sizing", "kelly-lifecycle-cap", "kelly-no-edge-block", "paper-capital-50-lakh", "paper-minimum-entry-1-lakh", "paper-order-idempotency", "paper-oversell-rejection", "paper-net-cost-accounting", "paper-closed-trade-returns", "paper-engine-real-quote-fill", "upstox-guard", "paper-engine-status", "paper-engine-guard", "q1-status", "q1-upload", "q1-render-guard", "upstox-oauth-start", "upstox-token-paste"] }));
   } finally {
     await Promise.all([...Q1_INPUTS, STATE_FILE, SCAN_LEDGER_FILE, UPSTOX_AUTH_FILE].map((file) => fs.unlink(file).catch((error) => {
       if (error.code !== "ENOENT") throw error;

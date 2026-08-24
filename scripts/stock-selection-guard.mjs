@@ -46,6 +46,7 @@ assert.equal(capitalPolicy.startingCapital, 5_000_000);
 assert.equal(capitalPolicy.minimumEntryValue, 100_000);
 assert.equal(capitalPolicy.maximumCandidateEntries, 80);
 assert.equal(capitalPolicy.maximumOpenPositions, 50);
+assert.equal(capitalPolicy.transactionCostOneWayPct, 0.08);
 assert.equal(
   registry.paperCapital.kellySizing.parameterSource,
   "config/stock-selection-parameters.v0.1.json#positionSizing.kelly",

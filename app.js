@@ -1292,6 +1292,8 @@ function renderOrders() {
       <td>${fmtPrice(trade.exit_price)}</td>
       <td>${fmtPrice(trade.entry_value)}</td>
       <td>${fmtPrice(trade.exit_value)}</td>
+      <td class="${pnlClass(trade.gross_realized_pnl)}">${fmtPrice(trade.gross_realized_pnl)}</td>
+      <td>${fmtPrice(trade.round_trip_cost)}</td>
       <td class="${pnlClass(trade.realized_pnl)}"><strong>${fmtPrice(trade.realized_pnl)}</strong></td>
       <td class="${pnlClass(trade.return_pct)}"><strong>${fmtPct(trade.return_pct)}</strong></td>
       <td>${escapeHtml(isoDate(trade.entry_at))}</td>
@@ -1319,9 +1321,10 @@ function renderOrders() {
       <article><span>Deployment</span><strong>${fmtNumber(deployment)}%</strong></article>
       <article><span>Open positions</span><strong>${positions.length}</strong></article>
       <article><span>Closed trades</span><strong>${closedTrades.length}</strong></article>
+      <article><span>Transaction costs paid</span><strong>${fmtPrice(funds.transaction_costs_paid || 0)}</strong></article>
       <article><span>Unrealized P&L</span><strong class="${pnlClass(funds.unrealized_pnl)}">${fmtPrice(funds.unrealized_pnl || 0)}</strong></article>
-      <article><span>Realized P&L</span><strong class="${pnlClass(funds.realized_pnl)}">${fmtPrice(funds.realized_pnl || 0)}</strong></article>
-      <article><span>Total P&L</span><strong class="${pnlClass(funds.total_pnl)}">${fmtPrice(funds.total_pnl || 0)}</strong></article>
+      <article><span>Net realized P&L</span><strong class="${pnlClass(funds.realized_pnl)}">${fmtPrice(funds.realized_pnl || 0)}</strong></article>
+      <article><span>Net total P&L</span><strong class="${pnlClass(funds.total_pnl)}">${fmtPrice(funds.total_pnl || 0)}</strong></article>
     </div>
     <p class="capital-policy-note">${escapeHtml(policyText)}</p>
     ${quoteNote}
@@ -1343,8 +1346,8 @@ function renderOrders() {
       <div class="ledger-panel-head"><h4>Closed Trades</h4><span>Every sold stock with realized return</span></div>
       <div class="ledger-scroll">
         <table>
-          <thead><tr><th>Symbol</th><th>Qty</th><th>Entry</th><th>Exit</th><th>Invested</th><th>Exit value</th><th>Realized P&L</th><th>Return</th><th>Entry time</th><th>Exit time</th><th>Held</th></tr></thead>
-          <tbody>${closedRows || `<tr><td colspan="11">No closed paper trades yet. Sold positions will appear here with their realized return.</td></tr>`}</tbody>
+          <thead><tr><th>Symbol</th><th>Qty</th><th>Entry</th><th>Exit</th><th>Invested</th><th>Exit value</th><th>Gross P&L</th><th>Costs</th><th>Net P&L</th><th>Net return</th><th>Entry time</th><th>Exit time</th><th>Held</th></tr></thead>
+          <tbody>${closedRows || `<tr><td colspan="13">No closed paper trades yet. Sold positions will appear here with their net realized return.</td></tr>`}</tbody>
         </table>
       </div>
     </section>

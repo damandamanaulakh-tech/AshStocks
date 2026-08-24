@@ -13,6 +13,7 @@ assert.equal(registry.paperCapital.maxCandidateEntries,80);
 assert.equal(registry.paperCapital.maxOpenPositions,50);
 assert.equal(registry.paperCapital.affordableOpenPositionsAtMinimum,50);
 assert.equal(registry.paperCapital.maxPortfolioHeatPct,25);
+assert.equal(registry.execution.transactionCostOneWayPct,0.08);
 assert.equal(registry.paperCapital.kellySizing.enabled,true);
 assert.equal(registry.paperCapital.kellySizing.mode,"paper_only");
 assert.equal(registry.paperCapital.kellySizing.fractionOfKelly,0.25);

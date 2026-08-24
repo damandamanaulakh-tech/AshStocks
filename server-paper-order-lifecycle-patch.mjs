@@ -3,7 +3,7 @@ import { loadPaperCapitalPolicy } from "./lib/paper-capital-policy.mjs";
 const paperCapitalPolicy = loadPaperCapitalPolicy();
 
 const PAPER_ORDER_LIFECYCLE_FUNCTIONS = String.raw`
-const PAPER_ORDER_LIFECYCLE_VERSION = "ashstocks-paper-order-lifecycle-v0.5-idempotent-orders";
+const PAPER_ORDER_LIFECYCLE_VERSION = "ashstocks-paper-order-lifecycle-v0.6-net-cost-accounting";
 const PAPER_CAPITAL_POLICY = Object.freeze(${JSON.stringify(paperCapitalPolicy)});
 function sanitizeParameterEvidence(input = {}) {
   return {
@@ -48,6 +48,8 @@ function defaultPaperFunds() {
     maximum_candidate_entries: PAPER_CAPITAL_POLICY.maximumCandidateEntries,
     maximum_open_positions: PAPER_CAPITAL_POLICY.maximumOpenPositions,
     affordable_open_positions_at_minimum: PAPER_CAPITAL_POLICY.affordableOpenPositionsAtMinimum,
+    transaction_cost_one_way_pct: PAPER_CAPITAL_POLICY.transactionCostOneWayPct,
+    transaction_costs_paid: 0,
     realized_pnl: 0
   };
 }
@@ -57,6 +59,7 @@ function sanitizePaperFunds(input = {}) {
     ...base,
     currency: PAPER_CAPITAL_POLICY.currency,
     starting_capital: PAPER_CAPITAL_POLICY.startingCapital,
+    transaction_costs_paid: round(finiteOr(input.transaction_costs_paid ?? input.transactionCostsPaid ?? base.transaction_costs_paid, base.transaction_costs_paid), 2),
     realized_pnl: round(finiteOr(input.realized_pnl ?? input.realizedPnl ?? base.realized_pnl, base.realized_pnl), 2)
   };
 }
@@ -74,6 +77,7 @@ function sanitizePaperOrder(order = {}) {
     order_type: String(order.order_type || order.orderType || "MARKET").toUpperCase().slice(0, 20),
     qty: Math.max(0, Math.floor(finiteOr(order.qty, 0))),
     price: finiteOr(order.price ?? order.entry_price, null),
+    transaction_cost: round(finiteOr(order.transaction_cost ?? order.transactionCost, 0), 2),
     decision_price: finiteOr(order.decision_price, null),
     quote_timestamp: String(order.quote_timestamp || "").slice(0, 40),
     target_price: finiteOr(order.target_price ?? order.targetPrice, null),
@@ -97,6 +101,7 @@ function sanitizePaperTrade(trade = {}) {
   const price = finiteOr(trade.price, null);
   const value = round(finiteOr(trade.value, qty && price ? qty * price : 0), 2);
   const realizedPnl = round(finiteOr(trade.realized_pnl ?? trade.realizedPnl, 0), 2);
+  const grossRealizedPnl = round(finiteOr(trade.gross_realized_pnl ?? trade.grossRealizedPnl, realizedPnl), 2);
   const derivedEntryValue = side === "SELL" ? round(value - realizedPnl, 2) : value;
   const entryValue = round(finiteOr(trade.entry_value ?? trade.entryValue, derivedEntryValue), 2);
   const exitValue = side === "SELL"
@@ -109,8 +114,15 @@ function sanitizePaperTrade(trade = {}) {
   const exitPrice = side === "SELL"
     ? finiteOr(trade.exit_price ?? trade.exitPrice, price)
     : null;
-  const returnPct = side === "SELL" && entryValue > 0
-    ? round(finiteOr(trade.return_pct ?? trade.returnPct, realizedPnl / entryValue * 100), 4)
+  const entryCost = round(finiteOr(trade.entry_cost ?? trade.entryCost, side === "BUY" ? trade.transaction_cost ?? trade.transactionCost : 0), 2);
+  const exitCost = round(finiteOr(trade.exit_cost ?? trade.exitCost, side === "SELL" ? trade.transaction_cost ?? trade.transactionCost : 0), 2);
+  const transactionCost = round(finiteOr(trade.transaction_cost ?? trade.transactionCost, side === "SELL" ? exitCost : entryCost), 2);
+  const netEntryValue = round(finiteOr(trade.net_entry_value ?? trade.netEntryValue, entryValue + entryCost), 2);
+  const netExitValue = side === "SELL"
+    ? round(finiteOr(trade.net_exit_value ?? trade.netExitValue, exitValue - exitCost), 2)
+    : null;
+  const returnPct = side === "SELL" && netEntryValue > 0
+    ? round(finiteOr(trade.return_pct ?? trade.returnPct, realizedPnl / netEntryValue * 100), 4)
     : null;
   return {
     id: String(trade.id || "").slice(0, 64),
@@ -126,6 +138,13 @@ function sanitizePaperTrade(trade = {}) {
     exit_price: exitPrice,
     entry_value: entryValue,
     exit_value: exitValue,
+    entry_cost: entryCost,
+    exit_cost: exitCost,
+    transaction_cost: transactionCost,
+    round_trip_cost: side === "SELL" ? round(entryCost + exitCost, 2) : null,
+    net_entry_value: netEntryValue,
+    net_exit_value: netExitValue,
+    gross_realized_pnl: grossRealizedPnl,
     realized_pnl: realizedPnl,
     return_pct: returnPct,
     entry_at: String(trade.entry_at || trade.entryAt || "").slice(0, 40),
@@ -155,6 +174,12 @@ function paperClosedTradeSummary(trade = {}) {
     exit_price: clean.exit_price,
     entry_value: clean.entry_value,
     exit_value: clean.exit_value,
+    entry_cost: clean.entry_cost,
+    exit_cost: clean.exit_cost,
+    round_trip_cost: clean.round_trip_cost,
+    net_entry_value: clean.net_entry_value,
+    net_exit_value: clean.net_exit_value,
+    gross_realized_pnl: clean.gross_realized_pnl,
     realized_pnl: clean.realized_pnl,
     return_pct: clean.return_pct,
     entry_at: clean.entry_at,
@@ -197,17 +222,24 @@ function paperPositionValuation(position = {}) {
   const qty = Math.max(0, Math.floor(finiteOr(clean.qty, 0)));
   const entry = finiteOr(clean.entry_price, null);
   const current = finiteOr(clean.current_price, entry);
-  const investedValue = entry === null ? null : round(qty * entry, 2);
+  const investedNotional = entry === null ? null : round(qty * entry, 2);
+  const entryCost = round(finiteOr(clean.entry_cost, 0), 2);
+  const investedValue = investedNotional === null ? null : round(investedNotional + entryCost, 2);
   const marketValue = current === null ? null : round(qty * current, 2);
   const unrealizedPnl = investedValue === null || marketValue === null ? null : round(marketValue - investedValue, 2);
   const unrealizedPnlPct = investedValue ? round((unrealizedPnl / investedValue) * 100, 2) : null;
   return {
     ...clean,
+    invested_notional: investedNotional,
+    entry_cost: entryCost,
     invested_value: investedValue,
     market_value: marketValue,
     unrealized_pnl: unrealizedPnl,
     unrealized_pnl_pct: unrealizedPnlPct
   };
+}
+function paperTransactionCost(value) {
+  return round(Math.max(0, finiteOr(value, 0)) * PAPER_CAPITAL_POLICY.transactionCostOneWayPct / 100, 2);
 }
 function paperLifecycleFunds(paperTrader = {}) {
   const funds = sanitizePaperFunds(paperTrader.funds || {});
@@ -219,7 +251,10 @@ function paperLifecycleFunds(paperTrader = {}) {
     ? paperTrader.gtt.filter((plan) => plan.status === "ACTIVE" && plan.side === "BUY")
     : [];
   const reservedGttValue = activeBuyGtt.reduce(
-    (sum, plan) => sum + finiteOr(plan.qty, 0) * finiteOr(plan.entry_price, 0),
+    (sum, plan) => {
+      const value = finiteOr(plan.qty, 0) * finiteOr(plan.entry_price, 0);
+      return sum + value + paperTransactionCost(value);
+    },
     0
   );
   const closedTrades = Array.isArray(paperTrader.trades)
@@ -507,10 +542,11 @@ function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
       return { ok: false, status: 409, order: rejected, kelly, maximum_open_positions: PAPER_CAPITAL_POLICY.maximumOpenPositions, paperTrader: saved, nextState: { ...state, paperTrader: saved } };
     }
     const lifecycleFunds = paperLifecycleFunds(next);
-    if (requestValue > finiteOr(lifecycleFunds.buying_power, 0) + 0.01) {
+    const requestDebit = round(requestValue + paperTransactionCost(requestValue), 2);
+    if (requestDebit > finiteOr(lifecycleFunds.buying_power, 0) + 0.01) {
       const rejected = rejectedPaperOrder(
         request,
-        "Insufficient paper buying power for Rs " + requestValue,
+        "Insufficient paper buying power for net debit Rs " + requestDebit,
         asOf
       );
       next.orders = [rejected, ...next.orders].slice(0, 200);
@@ -550,8 +586,10 @@ function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
     return { ok: true, status: 200, action: "PAPER_GTT_CREATED", gtt: plan, kelly, funds: paperLifecycleFunds(saved), paperTrader: saved, nextState: { ...state, paperTrader: saved } };
   }
 
-  const order = sanitizePaperOrder({ id: paperLedgerId("PAPER_ORDER"), ...request, status: "PAPER_FILLED", created_at: asOf, updated_at: asOf });
-  let trade = sanitizePaperTrade({ id: paperLedgerId("PAPER_TRADE"), order_id: order.id, symbol: request.symbol, instrument_key: request.instrument_key, side: request.side, qty: request.qty, price: request.price, quote_timestamp: request.quote_timestamp, value: request.qty * request.price, traded_at: asOf });
+  const fillValue = round(request.qty * request.price, 2);
+  const fillTransactionCost = paperTransactionCost(fillValue);
+  const order = sanitizePaperOrder({ id: paperLedgerId("PAPER_ORDER"), ...request, transaction_cost: fillTransactionCost, status: "PAPER_FILLED", created_at: asOf, updated_at: asOf });
+  let trade = sanitizePaperTrade({ id: paperLedgerId("PAPER_TRADE"), order_id: order.id, symbol: request.symbol, instrument_key: request.instrument_key, side: request.side, qty: request.qty, price: request.price, quote_timestamp: request.quote_timestamp, value: fillValue, entry_cost: request.side === "BUY" ? fillTransactionCost : 0, exit_cost: request.side === "SELL" ? fillTransactionCost : 0, transaction_cost: fillTransactionCost, traded_at: asOf });
 
   if (request.side === "BUY") {
     const existingIndex = next.positions.findIndex((position) => position.symbol === request.symbol && position.status !== "CLOSED");
@@ -564,6 +602,7 @@ function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
         ...existing,
         qty: newQty,
         entry_price: round(weightedEntry, 2),
+        entry_cost: round(finiteOr(existing.entry_cost, 0) + fillTransactionCost, 2),
         current_price: request.price,
         target_price: request.target_price || existing.target_price,
         stop_price: request.stop_price || existing.stop_price,
@@ -584,6 +623,7 @@ function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
         sector: request.sector,
         qty: request.qty,
         entry_price: request.price,
+        entry_cost: fillTransactionCost,
         decision_price: request.decision_price,
         quote_timestamp: request.quote_timestamp,
         current_price: request.price,
@@ -597,6 +637,7 @@ function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
         checked_at: asOf
       }));
     }
+    next.funds = sanitizePaperFunds({ ...next.funds, transaction_costs_paid: finiteOr(next.funds.transaction_costs_paid, 0) + fillTransactionCost });
   } else {
     const existingIndex = next.positions.findIndex((position) => position.symbol === request.symbol && position.status !== "CLOSED" && finiteOr(position.qty, 0) > 0);
     if (existingIndex < 0) {
@@ -622,7 +663,12 @@ function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
     const entryPrice = finiteOr(existing.entry_price, request.price);
     const entryValue = round(entryPrice * sellQty, 2);
     const exitValue = round(request.price * sellQty, 2);
-    const realized = round((request.price - entryPrice) * sellQty, 2);
+    const heldEntryCost = round(finiteOr(existing.entry_cost, 0), 2);
+    const allocatedEntryCost = round(heldQty ? heldEntryCost * sellQty / heldQty : 0, 2);
+    const remainingEntryCost = round(Math.max(0, heldEntryCost - allocatedEntryCost), 2);
+    const exitCost = paperTransactionCost(exitValue);
+    const grossRealized = round((request.price - entryPrice) * sellQty, 2);
+    const realized = round(grossRealized - allocatedEntryCost - exitCost, 2);
     trade = sanitizePaperTrade({
       ...trade,
       qty: sellQty,
@@ -631,15 +677,21 @@ function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
       exit_price: request.price,
       entry_value: entryValue,
       exit_value: exitValue,
+      entry_cost: allocatedEntryCost,
+      exit_cost: exitCost,
+      transaction_cost: exitCost,
+      net_entry_value: round(entryValue + allocatedEntryCost, 2),
+      net_exit_value: round(exitValue - exitCost, 2),
+      gross_realized_pnl: grossRealized,
       realized_pnl: realized,
-      return_pct: entryValue ? realized / entryValue * 100 : null,
+      return_pct: entryValue + allocatedEntryCost ? realized / (entryValue + allocatedEntryCost) * 100 : null,
       entry_at: existing.entry_date,
       exit_at: asOf,
       holding_days: paperHoldingDays(existing.entry_date, asOf),
       close_reason: request.thesis || "Manual paper SELL"
     });
-    next.funds = sanitizePaperFunds({ ...next.funds, realized_pnl: finiteOr(next.funds.realized_pnl, 0) + realized });
-    if (remaining > 0) next.positions[existingIndex] = sanitizePaperPosition({ ...existing, qty: remaining, current_price: request.price, checked_at: asOf });
+    next.funds = sanitizePaperFunds({ ...next.funds, realized_pnl: finiteOr(next.funds.realized_pnl, 0) + realized, transaction_costs_paid: finiteOr(next.funds.transaction_costs_paid, 0) + exitCost });
+    if (remaining > 0) next.positions[existingIndex] = sanitizePaperPosition({ ...existing, qty: remaining, entry_cost: remainingEntryCost, current_price: request.price, checked_at: asOf });
     else next.positions.splice(existingIndex, 1);
   }
 
@@ -682,7 +734,11 @@ function closePaperPosition(next, position, price, reason, asOf) {
   const entryPrice = finiteOr(position.entry_price, price);
   const entryValue = round(entryPrice * qty, 2);
   const exitValue = round(price * qty, 2);
-  const realized = round((price - entryPrice) * qty, 2);
+  const entryCost = round(finiteOr(position.entry_cost, 0), 2);
+  const exitCost = paperTransactionCost(exitValue);
+  const grossRealized = round((price - entryPrice) * qty, 2);
+  const realized = round(grossRealized - entryCost - exitCost, 2);
+  order.transaction_cost = exitCost;
   const trade = sanitizePaperTrade({
     id: paperLedgerId("PAPER_MONITOR_TRADE"),
     order_id: order.id,
@@ -695,8 +751,14 @@ function closePaperPosition(next, position, price, reason, asOf) {
     exit_price: price,
     entry_value: entryValue,
     exit_value: exitValue,
+    entry_cost: entryCost,
+    exit_cost: exitCost,
+    transaction_cost: exitCost,
+    net_entry_value: round(entryValue + entryCost, 2),
+    net_exit_value: round(exitValue - exitCost, 2),
+    gross_realized_pnl: grossRealized,
     realized_pnl: realized,
-    return_pct: entryValue ? realized / entryValue * 100 : null,
+    return_pct: entryValue + entryCost ? realized / (entryValue + entryCost) * 100 : null,
     entry_at: position.entry_date,
     exit_at: asOf,
     holding_days: paperHoldingDays(position.entry_date, asOf),
@@ -705,10 +767,12 @@ function closePaperPosition(next, position, price, reason, asOf) {
   });
   next.orders.unshift(order);
   next.trades.unshift(trade);
-  next.funds = sanitizePaperFunds({ ...next.funds, realized_pnl: finiteOr(next.funds.realized_pnl, 0) + realized });
+  next.funds = sanitizePaperFunds({ ...next.funds, realized_pnl: finiteOr(next.funds.realized_pnl, 0) + realized, transaction_costs_paid: finiteOr(next.funds.transaction_costs_paid, 0) + exitCost });
   return { type: reason.includes("STOP") ? "STOP_EXIT" : "TARGET_EXIT", symbol: position.symbol, qty, price, realized_pnl: realized, order_id: order.id, reason };
 }
 function openPaperPositionFromGtt(next, plan, price, asOf) {
+  const fillValue = round(plan.qty * price, 2);
+  const fillTransactionCost = paperTransactionCost(fillValue);
   const order = sanitizePaperOrder({
     id: paperLedgerId("PAPER_GTT_FILL"),
     symbol: plan.symbol,
@@ -718,6 +782,7 @@ function openPaperPositionFromGtt(next, plan, price, asOf) {
     order_type: "GTT",
     qty: plan.qty,
     price,
+    transaction_cost: fillTransactionCost,
     target_price: plan.target_price,
     stop_price: plan.stop_price,
     status: "PAPER_FILLED",
@@ -726,7 +791,7 @@ function openPaperPositionFromGtt(next, plan, price, asOf) {
     created_at: asOf,
     updated_at: asOf
   });
-  const trade = sanitizePaperTrade({ id: paperLedgerId("PAPER_GTT_TRADE"), order_id: order.id, symbol: plan.symbol, side: plan.side, qty: plan.qty, price, value: plan.qty * price, traded_at: asOf });
+  const trade = sanitizePaperTrade({ id: paperLedgerId("PAPER_GTT_TRADE"), order_id: order.id, symbol: plan.symbol, side: plan.side, qty: plan.qty, price, value: fillValue, entry_cost: plan.side === "BUY" ? fillTransactionCost : 0, exit_cost: plan.side === "SELL" ? fillTransactionCost : 0, transaction_cost: fillTransactionCost, traded_at: asOf });
   next.orders.unshift(order);
   next.trades.unshift(trade);
   if (plan.side === "BUY") {
@@ -736,10 +801,11 @@ function openPaperPositionFromGtt(next, plan, price, asOf) {
       const oldQty = Math.max(0, finiteOr(existing.qty, 0));
       const newQty = oldQty + plan.qty;
       const weightedEntry = newQty ? ((oldQty * finiteOr(existing.entry_price, price)) + (plan.qty * price)) / newQty : price;
-      next.positions[existingIndex] = sanitizePaperPosition({ ...existing, qty: newQty, entry_price: round(weightedEntry, 2), current_price: price, target_price: plan.target_price || existing.target_price, stop_price: plan.stop_price || existing.stop_price, status: "OPEN", checked_at: asOf });
+      next.positions[existingIndex] = sanitizePaperPosition({ ...existing, qty: newQty, entry_price: round(weightedEntry, 2), entry_cost: round(finiteOr(existing.entry_cost, 0) + fillTransactionCost, 2), current_price: price, target_price: plan.target_price || existing.target_price, stop_price: plan.stop_price || existing.stop_price, status: "OPEN", checked_at: asOf });
     } else {
-      next.positions.unshift(sanitizePaperPosition({ symbol: plan.symbol, name: plan.name, qty: plan.qty, entry_price: price, current_price: price, target_price: plan.target_price, stop_price: plan.stop_price, entry_date: asOf, status: "OPEN", thesis: plan.thesis }));
+      next.positions.unshift(sanitizePaperPosition({ symbol: plan.symbol, name: plan.name, qty: plan.qty, entry_price: price, entry_cost: fillTransactionCost, current_price: price, target_price: plan.target_price, stop_price: plan.stop_price, entry_date: asOf, status: "OPEN", thesis: plan.thesis }));
     }
+    next.funds = sanitizePaperFunds({ ...next.funds, transaction_costs_paid: finiteOr(next.funds.transaction_costs_paid, 0) + fillTransactionCost });
   }
   return { type: "GTT_TRIGGERED", symbol: plan.symbol, qty: plan.qty, price, order_id: order.id, reason: "paper GTT trigger touched" };
 }
@@ -878,7 +944,7 @@ export function applyPaperOrderLifecyclePatches(source, mustReplace) {
   output = mustReplace(
     output,
     '  return { symbol, name: String(position.name || symbol).slice(0, 120), sector: String(position.sector || "Unmapped").slice(0, 80), qty: Math.max(0, Math.floor(finiteOr(position.qty, 0))), entry_price: finiteOr(position.entry_price, null), current_price: finiteOr(position.current_price, position.entry_price ?? null), target_price: finiteOr(position.target_price, null), stop_price: finiteOr(position.stop_price, null), entry_date: String(position.entry_date || "").slice(0, 32), status: String(position.status || "OPEN").slice(0, 30), thesis: String(position.thesis || "").slice(0, 240) };',
-    '  return { symbol, instrument_key: String(position.instrument_key || "").slice(0, 100), name: String(position.name || symbol).slice(0, 120), sector: String(position.sector || "Unmapped").slice(0, 80), qty: Math.max(0, Math.floor(finiteOr(position.qty, 0))), entry_price: finiteOr(position.entry_price, null), decision_price: finiteOr(position.decision_price, null), current_price: finiteOr(position.current_price, position.entry_price ?? null), target_price: finiteOr(position.target_price, null), stop_price: finiteOr(position.stop_price, null), quote_timestamp: String(position.quote_timestamp || "").slice(0, 40), entry_date: String(position.entry_date || "").slice(0, 32), checked_at: String(position.checked_at || position.quote_timestamp || position.entry_date || "").slice(0, 40), status: String(position.status || "OPEN").slice(0, 30), thesis: String(position.thesis || "").slice(0, 360), parameter_evidence: sanitizeParameterEvidence(position.parameter_evidence || {}), execution_evidence: sanitizeExecutionEvidence(position.execution_evidence || {}) };',
+    '  return { symbol, instrument_key: String(position.instrument_key || "").slice(0, 100), name: String(position.name || symbol).slice(0, 120), sector: String(position.sector || "Unmapped").slice(0, 80), qty: Math.max(0, Math.floor(finiteOr(position.qty, 0))), entry_price: finiteOr(position.entry_price, null), entry_cost: round(finiteOr(position.entry_cost ?? position.entryCost, 0), 2), decision_price: finiteOr(position.decision_price, null), current_price: finiteOr(position.current_price, position.entry_price ?? null), target_price: finiteOr(position.target_price, null), stop_price: finiteOr(position.stop_price, null), quote_timestamp: String(position.quote_timestamp || "").slice(0, 40), entry_date: String(position.entry_date || "").slice(0, 32), checked_at: String(position.checked_at || position.quote_timestamp || position.entry_date || "").slice(0, 40), status: String(position.status || "OPEN").slice(0, 30), thesis: String(position.thesis || "").slice(0, 360), parameter_evidence: sanitizeParameterEvidence(position.parameter_evidence || {}), execution_evidence: sanitizeExecutionEvidence(position.execution_evidence || {}) };',
     "persist parameter and quote evidence on paper positions"
   );
   output = mustReplace(
