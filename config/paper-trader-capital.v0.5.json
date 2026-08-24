@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "0.5",
+  "policyVersion": "ashstocks-paper-capital-v0.5-cost-capacity",
+  "asOf": "2026-08-24",
+  "canonicalSource": "config/ash-stock-parameters.v2.2.json#paperCapital",
+  "currency": "INR",
+  "startingCapital": 5000000,
+  "deploymentTargetPct": 100,
+  "minimumEntryValue": 100000,
+  "minimumEntryPct": 2,
+  "baseEntryPct": 2,
+  "maximumPositionPct": 10,
+  "maximumCandidateEntries": 80,
+  "maximumOpenPositions": 50,
+  "maximumBuysPerRun": 80,
+  "affordableOpenPositionsAtMinimum": 50,
+  "initialAffordableOpenPositionsAfterEntryCost": 49,
+  "transactionCostOneWayPct": 0.08,
+  "governance": {
+    "paperOnly": true,
+    "liveReady": false,
+    "brokerWriteEnabled": false,
+    "blockWhenBuyingPowerInsufficient": true,
+    "blockBuyBelowMinimumEntryValue": true,
+    "kellyNoPositiveEdgeStillBlocks": true,
+    "positiveKellySizingFloorValue": 100000
+  },
+  "arithmeticNote": "₹50 lakh has 50 gross ₹1 lakh slots, but the approved 0.08% BUY cost makes 49 slots initially affordable. The 50th slot requires sufficient net gains. The 80-entry limit applies to eligible and lifecycle-tracked entries."
+}

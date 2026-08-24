@@ -1,6 +1,6 @@
 {
   "schemaVersion": "2.2",
-  "parameterRevision": "2.2.2",
+  "parameterRevision": "2.2.3",
   "asOf": "2026-08-24",
   "governance": {
     "userApproved": true,
@@ -27,6 +27,7 @@
     "maxOpenPositions": 50,
     "maxBuysPerRun": 80,
     "affordableOpenPositionsAtMinimum": 50,
+    "initialAffordableOpenPositionsAfterEntryCost": 49,
     "maxPortfolioHeatPct": 25,
     "kellySizing": {
       "parameterSource": "config/stock-selection-parameters.v0.1.json#positionSizing.kelly",

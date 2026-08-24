@@ -52,6 +52,7 @@ function defaultPaperFunds() {
     maximum_candidate_entries: PAPER_CAPITAL_POLICY.maximumCandidateEntries,
     maximum_open_positions: PAPER_CAPITAL_POLICY.maximumOpenPositions,
     affordable_open_positions_at_minimum: PAPER_CAPITAL_POLICY.affordableOpenPositionsAtMinimum,
+    initial_affordable_open_positions_after_entry_cost: PAPER_CAPITAL_POLICY.initialAffordableOpenPositionsAfterEntryCost,
     transaction_cost_one_way_pct: PAPER_CAPITAL_POLICY.transactionCostOneWayPct,
     transaction_costs_paid: 0,
     realized_pnl: 0
@@ -294,7 +295,7 @@ function paperLifecycleFunds(paperTrader = {}) {
       0,
       Math.min(
         PAPER_CAPITAL_POLICY.maximumOpenPositions - positions.filter((position) => position.qty > 0).length - activeBuyGtt.length,
-        Math.floor(Math.max(0, buyingPower) / PAPER_CAPITAL_POLICY.minimumEntryValue)
+        Math.floor(Math.max(0, buyingPower) / (PAPER_CAPITAL_POLICY.minimumEntryValue + paperTransactionCost(PAPER_CAPITAL_POLICY.minimumEntryValue)))
       )
     ),
     paper_only: true,

@@ -162,7 +162,7 @@ for (const text of [
 }
 
 const capitalPolicy = loadPaperCapitalPolicy();
-const legacyCapitalPolicy = JSON.parse(read("config/paper-trader-capital.v0.4.json") || "{}");
+const legacyCapitalPolicy = JSON.parse(read("config/paper-trader-capital.v0.5.json") || "{}");
 if (capitalPolicy.startingCapital !== 5000000) failures.push("capital policy: startingCapital must be 5000000");
 if (capitalPolicy.minimumEntryValue !== 100000) failures.push("capital policy: minimumEntryValue must be 100000");
 if (capitalPolicy.maximumCandidateEntries !== 80) failures.push("capital policy: maximumCandidateEntries must be 80");
@@ -170,7 +170,8 @@ if (capitalPolicy.maximumOpenPositions !== 50) failures.push("capital policy: ma
 if (capitalPolicy.deploymentTargetPct !== 100) failures.push("capital policy: deploymentTargetPct must be 100");
 if (capitalPolicy.transactionCostOneWayPct !== 0.08) failures.push("capital policy: transactionCostOneWayPct must be 0.08");
 if (capitalPolicy.affordableOpenPositionsAtMinimum !== 50) failures.push("capital policy: ₹50 lakh / ₹1 lakh must equal 50 affordable positions");
-for (const key of ["startingCapital", "minimumEntryValue", "maximumCandidateEntries", "maximumOpenPositions", "affordableOpenPositionsAtMinimum"]) {
+if (capitalPolicy.initialAffordableOpenPositionsAfterEntryCost !== 49) failures.push("capital policy: approved BUY cost must reduce initial affordable positions to 49");
+for (const key of ["startingCapital", "minimumEntryValue", "maximumCandidateEntries", "maximumOpenPositions", "affordableOpenPositionsAtMinimum", "initialAffordableOpenPositionsAfterEntryCost", "transactionCostOneWayPct"]) {
   if (legacyCapitalPolicy[key] !== capitalPolicy[key]) failures.push(`legacy capital mirror: ${key} drifted from the runtime registry`);
 }
 

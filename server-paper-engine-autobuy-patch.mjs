@@ -48,7 +48,7 @@ function paperEngineCandidateTickets(plan = {}, state = defaultState(), settings
     0,
     Math.min(
       PAPER_CAPITAL_POLICY.maximumOpenPositions - openSymbols.size - activeBuyGtt,
-      Math.floor(Math.max(0, finiteOr(lifecycleFunds.buying_power, 0)) / PAPER_CAPITAL_POLICY.minimumEntryValue)
+      Math.floor(Math.max(0, finiteOr(lifecycleFunds.buying_power, 0)) / (PAPER_CAPITAL_POLICY.minimumEntryValue + paperTransactionCost(PAPER_CAPITAL_POLICY.minimumEntryValue)))
     )
   );
   const plannedBySymbol = new Map((Array.isArray(plan.buy_queue) ? plan.buy_queue : []).map((ticket) => [normalizeSymbol(ticket.symbol), ticket]));

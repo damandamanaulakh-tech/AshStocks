@@ -444,6 +444,8 @@ async function main() {
     assert(initialPaperLedger.response.status === 200, "paper ledger should be readable");
     assert(initialPaperLedger.body.funds.starting_capital === 5000000, "paper capital must be Rs 50 lakh");
     assert(initialPaperLedger.body.capital_policy.minimumEntryValue === 100000, "paper lifecycle must expose the Rs 1 lakh entry minimum");
+    assert(initialPaperLedger.body.capital_policy.maximumOpenPositions === 50, "paper lifecycle must retain the 50-position hard ceiling");
+    assert(initialPaperLedger.body.capital_policy.initialAffordableOpenPositionsAfterEntryCost === 49, "paper lifecycle must expose 49 initially affordable minimum entries after BUY costs");
     assert(initialPaperLedger.body.capital_policy.maximumCandidateEntries === 80, "paper lifecycle must expose up to 80 eligible entries");
 
     const dataBank = await request("/api/data-bank/status");

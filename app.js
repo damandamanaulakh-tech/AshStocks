@@ -1310,10 +1310,10 @@ function renderOrders() {
     </tr>`).join("");
   const deployment = numberValue(funds.deployment_pct) || 0;
   const affordableAtMinimum = numberValue(
-    capitalPolicy.affordableOpenPositionsAtMinimum
-      ?? funds.affordable_open_positions_at_minimum
+    capitalPolicy.initialAffordableOpenPositionsAfterEntryCost
+      ?? funds.initial_affordable_open_positions_after_entry_cost
   );
-  const policyText = `${fmtPrice(funds.starting_capital || capitalPolicy.startingCapital)} capital | ${fmtPrice(funds.minimum_entry_value || capitalPolicy.minimumEntryValue)} minimum entry | ${fmtInt(capitalPolicy.maximumCandidateEntries || funds.maximum_candidate_entries || 80)} lifecycle entries | ${fmtInt(affordableAtMinimum || 50)} simultaneously affordable at the minimum`;
+  const policyText = `${fmtPrice(funds.starting_capital || capitalPolicy.startingCapital)} capital | ${fmtPrice(funds.minimum_entry_value || capitalPolicy.minimumEntryValue)} minimum entry | ${fmtInt(capitalPolicy.maximumCandidateEntries || funds.maximum_candidate_entries || 80)} lifecycle entries | ${fmtInt(capitalPolicy.maximumOpenPositions || funds.maximum_open_positions || 50)} position ceiling | ${fmtInt(affordableAtMinimum || 49)} initially affordable after costs`;
   const html = `<div class="book-summary">
       <article><span>Starting capital</span><strong>${fmtPrice(funds.starting_capital || capitalPolicy.startingCapital)}</strong></article>
       <article><span>Invested</span><strong>${fmtPrice(funds.invested_value || 0)}</strong></article>
