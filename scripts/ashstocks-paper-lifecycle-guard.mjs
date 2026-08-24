@@ -132,6 +132,27 @@ mustMatch(
   "oversized paper SELL requests should fail instead of being silently clamped"
 );
 mustInclude("server-paper-engine-autobuy-patch.mjs", "idempotency_key", "automatic paper BUYs should carry a stable quote-scoped idempotency key");
+for (const text of [
+  "ashstocks-state-mutation-v0.1",
+  "stateMutationTail",
+  "function withStateMutation(work)",
+  "serialize data-bank state mutation",
+  "serialize direct state mutation"
+]) {
+  mustInclude("server.js", text);
+}
+mustMatch(
+  "server-paper-order-lifecycle-patch.mjs",
+  /url\.pathname === "\/api\/paper-trader\/order"[\s\S]*withStateMutation[\s\S]*store\.saveState\(applied\.nextState\)/,
+  "manual paper orders should serialize read-apply-save mutations"
+);
+mustMatch(
+  "server-paper-order-lifecycle-patch.mjs",
+  /url\.pathname === "\/api\/paper-trader\/monitor"[\s\S]*withStateMutation[\s\S]*store\.saveState\(result\.nextState\)/,
+  "paper monitors should serialize read-apply-save mutations"
+);
+mustInclude("server-paper-engine-autobuy-patch.mjs", "return withStateMutation(async () =>", "automatic paper engine should serialize its ledger mutation");
+mustInclude("server-paper-trader-patch-v3.mjs", "withStateMutation(async () =>", "paper planning should serialize its ledger mutation");
 mustMatch(
   "server-paper-engine-autobuy-patch.mjs",
   /monitorTrader\.gtt\.filter[\s\S]*paperMonitorDepthPrice\(quote\?\.depth\?\.asks[\s\S]*paperMonitorDepthPrice\(quote\?\.depth\?\.bids/,

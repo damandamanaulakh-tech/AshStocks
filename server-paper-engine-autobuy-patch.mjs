@@ -314,6 +314,7 @@ const PAPER_ENGINE_DUE_REPLACEMENT = String.raw`function duePaperEngineSlot(date
 }`;
 
 const PAPER_ENGINE_RUN_REPLACEMENT = String.raw`async function runPaperEngineOnce(trigger = "manual", slot = null) {
+  return withStateMutation(async () => {
   const store = await getStore();
   let state = await store.getState();
   const accessToken = await currentUpstoxAccessToken();
@@ -549,6 +550,7 @@ const PAPER_ENGINE_RUN_REPLACEMENT = String.raw`async function runPaperEngineOnc
   paperEngineState.lastSlotKey = slot?.key || null;
   paperEngineState.lastResult = result;
   return result;
+  });
 }`;
 
 export function applyPaperEngineAutoBuyPatches(source) {

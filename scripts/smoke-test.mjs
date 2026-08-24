@@ -231,7 +231,7 @@ try {
   if (scan.rows?.length !== symbols.length || !scan.rows.every((row) => row.decision === "SELECT")) throw new Error("all real-quote candidates should be SELECT");
   if (!scan.rows.every((row) => row.parameter_tunnel?.summary?.evaluated >= 80)) throw new Error("every real-quote candidate should execute the wired tunnel");
 
-  const quoteSymbols = [...symbols, "MANUALQUOTE", "GTTQUOTE"];
+  const quoteSymbols = [...symbols, "MANUALQUOTE", "GTTQUOTE", "CONCURRENTONE", "CONCURRENTTWO"];
   const quoteData = Object.fromEntries(quoteSymbols.map((symbol, index) => [
     "NSE_EQ:INETEST0000" + (index + 1),
     {
@@ -357,6 +357,21 @@ try {
   if (gttSellEvent?.type !== "GTT_SELL_TRIGGERED" || gttSellEvent?.price !== 356.95) throw new Error("SELL GTT must execute at the full-depth Upstox bid");
   if (gttSellTrade?.price_source !== "server_upstox_weighted_bid" || gttSellTrade?.qty !== 281) throw new Error("SELL GTT closed trade must retain bid-side execution evidence");
   if (gttMonitor.paperTrader?.positions?.some((position) => position.symbol === "GTTQUOTE")) throw new Error("triggered SELL GTT must remove the fully sold holding");
+  const concurrentBodies = [
+    { idempotency_key: "smoke-concurrent-one-1", symbol: "CONCURRENTONE", instrument_key: "NSE_EQ|INETEST00007", side: "BUY", order_type: "MARKET", qty: 280, price: 1, source: "smoke-concurrent-order" },
+    { idempotency_key: "smoke-concurrent-two-1", symbol: "CONCURRENTTWO", instrument_key: "NSE_EQ|INETEST00008", side: "BUY", order_type: "MARKET", qty: 280, price: 1, source: "smoke-concurrent-order" }
+  ];
+  const concurrentResponses = await Promise.all(concurrentBodies.map((order) => nativeFetch(base + "/api/paper-trader/order", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(order)
+  })));
+  const concurrentResults = await Promise.all(concurrentResponses.map((item) => item.json()));
+  if (!concurrentResponses.every((item) => item.status === 200)) throw new Error("both concurrent paper orders should fill: " + JSON.stringify(concurrentResults));
+  response = await nativeFetch(base + "/api/paper-trader/orders");
+  const concurrentLedger = await response.json();
+  if (!concurrentLedger.positions?.some((position) => position.symbol === "CONCURRENTONE")) throw new Error("first concurrent paper fill was lost from the ledger");
+  if (!concurrentLedger.positions?.some((position) => position.symbol === "CONCURRENTTWO")) throw new Error("second concurrent paper fill was lost from the ledger");
   console.log(JSON.stringify({ ok: true, positions: ledger.positions.map((position) => position.symbol), pending: result.auto_buy.pending_after_run }));
 } finally {
   globalThis.fetch = nativeFetch;
@@ -894,7 +909,7 @@ async function main() {
     assert(upstoxStatusAfter.body.status.token_visible === true, "Upstox status should detect saved token");
     assert(upstoxStatusAfter.body.status.token_source === "manual_paste", "Upstox status should read token from store");
 
-    console.log(JSON.stringify({ ok: true, checks: ["mongo-file-fallback", "data-bank-status", "scan-ledger", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "pre-rise-pattern-tracker", "parameter-tunnel-175", "kelly-parameters", "kelly-persisted-ledger", "kelly-active-sizing", "kelly-lifecycle-cap", "kelly-no-edge-block", "paper-capital-50-lakh", "paper-minimum-entry-1-lakh", "paper-order-idempotency", "paper-oversell-rejection", "paper-net-cost-accounting", "paper-closed-trade-returns", "paper-engine-real-quote-fill", "server-verified-manual-market-fill", "server-verified-monitor-gtt-sell", "upstox-guard", "paper-engine-status", "paper-engine-guard", "q1-status", "q1-upload", "q1-render-guard", "upstox-oauth-start", "upstox-token-paste"] }));
+    console.log(JSON.stringify({ ok: true, checks: ["mongo-file-fallback", "data-bank-status", "scan-ledger", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "pre-rise-pattern-tracker", "parameter-tunnel-175", "kelly-parameters", "kelly-persisted-ledger", "kelly-active-sizing", "kelly-lifecycle-cap", "kelly-no-edge-block", "paper-capital-50-lakh", "paper-minimum-entry-1-lakh", "paper-order-idempotency", "paper-oversell-rejection", "paper-net-cost-accounting", "paper-closed-trade-returns", "paper-engine-real-quote-fill", "server-verified-manual-market-fill", "server-verified-monitor-gtt-sell", "serialized-concurrent-paper-fills", "upstox-guard", "paper-engine-status", "paper-engine-guard", "q1-status", "q1-upload", "q1-render-guard", "upstox-oauth-start", "upstox-token-paste"] }));
   } finally {
     await Promise.all([...Q1_INPUTS, STATE_FILE, SCAN_LEDGER_FILE, UPSTOX_AUTH_FILE].map((file) => fs.unlink(file).catch((error) => {
       if (error.code !== "ENOENT") throw error;

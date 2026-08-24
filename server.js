@@ -62,8 +62,20 @@ function patchServerSource(source) {
   output = mustReplace(
     output,
     'let storePromise;\nlet paperEngineScheduler;\nconst paperEngineState = {',
-    'let storePromise;\nlet paperEngineScheduler;\nlet dataBankBootstrapTimer;\nlet dataBankBootstrapPromise;\nconst dataBankBootstrapState = {\n  enabled: false,\n  running: false,\n  startedAt: null,\n  lastAttemptAt: null,\n  completedAt: null,\n  lastResult: null,\n  lastError: null\n};\nconst paperEngineState = {',
+    'let storePromise;\nlet paperEngineScheduler;\nlet dataBankBootstrapTimer;\nlet dataBankBootstrapPromise;\nlet stateMutationTail = Promise.resolve();\nconst STATE_MUTATION_SERIALIZER_VERSION = "ashstocks-state-mutation-v0.1";\nfunction withStateMutation(work) {\n  const run = stateMutationTail.then(work, work);\n  stateMutationTail = run.then(() => undefined, () => undefined);\n  return run;\n}\nconst dataBankBootstrapState = {\n  enabled: false,\n  running: false,\n  startedAt: null,\n  lastAttemptAt: null,\n  completedAt: null,\n  lastResult: null,\n  lastError: null\n};\nconst paperEngineState = {',
     'bootstrap state'
+  );
+  output = mustReplace(
+    output,
+    '  const previous = await store.getState();\n  const state = await store.saveState({ ...previous, universe });',
+    '  const state = await withStateMutation(async () => {\n    const previous = await store.getState();\n    return store.saveState({ ...previous, universe });\n  });',
+    'serialize data-bank state mutation'
+  );
+  output = mustReplace(
+    output,
+    '          const state = await store.saveState(body.state || body);',
+    '          const state = await withStateMutation(() => store.saveState(body.state || body));',
+    'serialize direct state mutation'
   );
   output = mustReplace(
     output,

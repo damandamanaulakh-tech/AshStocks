@@ -125,15 +125,18 @@ const PAPER_TRADER_ROUTES = String.raw`
         if (req.method !== "POST") { json(res, 405, { ok: false, error: "Method not allowed" }); return; }
         const body = await readJsonBody(req);
         const store = await getStore();
-        const state = await store.getState();
-        const resolved = await resolveRequestUniverse(body);
-        let scan;
-        if (body.useUpstox !== false && ENV.UPSTOX_ACCESS_TOKEN) scan = await runUpstoxScanner(body, resolved.universe);
-        if (!scan || scan.ok === false) scan = runScanner(resolved.universe, { ...(body.settings || {}), source: resolved.source, holdings: body.holdings || state.paperTrader?.positions || [] });
-        const ledger = await appendScanLedger(scan, { store, mode: "paper-trader-scan", source: scan.source || resolved.source });
-        const plan = buildPaperTraderPlan(scan, state, body);
-        const nextPaperTrader = sanitizePaperTraderState({ ...(state.paperTrader || {}), last_run: plan.asOf, last_plan: plan, history: plan.history });
-        await store.saveState({ ...state, paperTrader: nextPaperTrader });
+        const { plan, ledger } = await withStateMutation(async () => {
+          const state = await store.getState();
+          const resolved = await resolveRequestUniverse(body);
+          let scan;
+          if (body.useUpstox !== false && ENV.UPSTOX_ACCESS_TOKEN) scan = await runUpstoxScanner(body, resolved.universe);
+          if (!scan || scan.ok === false) scan = runScanner(resolved.universe, { ...(body.settings || {}), source: resolved.source, holdings: body.holdings || state.paperTrader?.positions || [] });
+          const ledger = await appendScanLedger(scan, { store, mode: "paper-trader-scan", source: scan.source || resolved.source });
+          const plan = buildPaperTraderPlan(scan, state, body);
+          const nextPaperTrader = sanitizePaperTraderState({ ...(state.paperTrader || {}), last_run: plan.asOf, last_plan: plan, history: plan.history });
+          await store.saveState({ ...state, paperTrader: nextPaperTrader });
+          return { plan, ledger };
+        });
         json(res, 200, { ...plan, ledger: scanLedgerMeta(ledger) });
         return;
       }

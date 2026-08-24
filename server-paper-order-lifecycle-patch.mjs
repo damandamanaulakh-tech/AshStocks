@@ -1159,13 +1159,16 @@ const PAPER_ORDER_LIFECYCLE_ROUTES = String.raw`
         if (req.method !== "POST") { json(res, 405, { ok: false, error: "Method not allowed" }); return; }
         const body = await readJsonBody(req);
         const store = await getStore();
-        const state = await store.getState();
-        const replay = paperRouteOrderReplay(state, body);
-        const prepared = replay ? null : await preparePaperMarketOrder(body);
-        const result = replay || (prepared.ok
-          ? applyPaperOrderLifecycle(state, prepared.body)
-          : rejectedPaperOrderPreparation(state, body, prepared.error));
-        await store.saveState(result.nextState);
+        const result = await withStateMutation(async () => {
+          const state = await store.getState();
+          const replay = paperRouteOrderReplay(state, body);
+          const prepared = replay ? null : await preparePaperMarketOrder(body);
+          const applied = replay || (prepared.ok
+            ? applyPaperOrderLifecycle(state, prepared.body)
+            : rejectedPaperOrderPreparation(state, body, prepared.error));
+          await store.saveState(applied.nextState);
+          return applied;
+        });
         const { nextState, status, ...payload } = result;
         json(res, status || 200, { ...payload, engine: PAPER_ORDER_LIFECYCLE_VERSION, paper_only: true, live_orders: false, broker_write_enabled: false });
         return;
@@ -1174,19 +1177,26 @@ const PAPER_ORDER_LIFECYCLE_ROUTES = String.raw`
         if (req.method !== "POST") { json(res, 405, { ok: false, error: "Method not allowed" }); return; }
         const body = await readJsonBody(req);
         const store = await getStore();
-        const state = await store.getState();
-        const prepared = await preparePaperLifecycleMonitor(state);
+        const transaction = await withStateMutation(async () => {
+          const state = await store.getState();
+          const prepared = await preparePaperLifecycleMonitor(state);
+          if (!prepared.ok) return { prepared, result: null };
+          const result = applyPaperLifecycleMonitor(state, prepared.rows || [], { ...body, source: prepared.source, data_needed: prepared.data_needed || [] });
+          await store.saveState(result.nextState);
+          return { prepared, result };
+        });
+        const { prepared, result } = transaction;
         if (!prepared.ok) { json(res, 409, { ok: false, error: prepared.error, data_needed: prepared.data_needed || [], engine: PAPER_ORDER_LIFECYCLE_VERSION, paper_only: true, live_orders: false, broker_write_enabled: false }); return; }
-        const result = applyPaperLifecycleMonitor(state, prepared.rows || [], { ...body, source: prepared.source, data_needed: prepared.data_needed || [] });
-        await store.saveState(result.nextState);
         const { nextState, status, ...payload } = result;
         json(res, status || 200, { ...payload, engine: PAPER_ORDER_LIFECYCLE_VERSION, quote_source: prepared.source, quoted: Array.isArray(prepared.rows) ? prepared.rows.length : 0 });
         return;
       }
       if (url.pathname === "/api/paper-trader/orders") {
         const store = await getStore();
-        const state = await store.getState();
-        const marked = await refreshPaperTraderMarks(state, store);
+        const marked = await withStateMutation(async () => {
+          const state = await store.getState();
+          return refreshPaperTraderMarks(state, store);
+        });
         const paperTrader = marked.paperTrader;
         const positions = paperTrader.positions.map(paperPositionValuation);
         const closedTrades = paperTrader.trades
