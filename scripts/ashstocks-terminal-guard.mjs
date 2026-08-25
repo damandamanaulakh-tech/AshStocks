@@ -67,8 +67,9 @@ for (const text of [
   'data-nav-title="Help"',
   'id="railBuild"',
   'id="helpSection" data-panel="help"',
-  'styles.css?v=20260825.5',
-  'app.js?v=20260825.5',
+  'styles.css?v=20260825.6',
+  'app.js?v=20260825.6',
+  'FII Holding / Δ',
   'Legacy broker workspace loaders remain'
 ]) {
   mustInclude("index.html", text, "signal dashboard and Portfolio separation");
@@ -108,6 +109,11 @@ for (const text of [
   "function routeRailNavigation(button)",
   "function openPaperLedgerTab(tab)",
   "function loadReleaseIdentity()",
+  "function renderFiiHoldingCell(row)",
+  "async function loadInstitutionalEvidence(rows = [])",
+  'api("/api/upstox/institutional-flow"',
+  "fii_cash_5d_net_cr",
+  "Upstox reported shareholding",
   'state.health = await api(`/api/health',
   'renderPortfolioDashboard();'
 ]) {

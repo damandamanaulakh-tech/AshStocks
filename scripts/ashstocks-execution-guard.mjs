@@ -39,6 +39,7 @@ for (const [file, checks] of Object.entries({
   "README.md": ["Indian/NSE", "Upstox historical daily candle fetch only", "No live orders"],
   "server.js": ["applyCandlePatternPatches", "applyPaperOrderLifecyclePatches", "applyUpstoxQuotePatches"],
   "server-upstox-quote-patch.mjs": ["UPSTOX_QUOTE_VERSION", "/api/upstox/quote", "/api/upstox/quote-stream", "text/event-stream", "server_sent_events_polling_backed", "UPSTOX_FULL_MARKET_QUOTE_URL", "Upstox Market Quote API", "authorization: \"Bearer \" + accessToken", "paper_only: true", "live_orders: false", "broker_write_enabled: false", "token_printed: false", "fetchUpstoxMarketQuotes", "normalizeUpstoxQuoteRow", "streamUpstoxQuotes", "writeSseEvent"],
+  "server-upstox-institutional-patch.mjs": ["UPSTOX_INSTITUTIONAL_VERSION", "/api/upstox/institutional-flow", "/v2/fundamentals/:isin/share-holdings", "/v2/market/fii", "/v2/market/dii", "fii_holding_pct", "fii_change_pp", "fii_cash_5d_net_cr", "latest_reported_quarter: true", "No stock-wise daily FII cash-flow attribution", "token_printed: false"],
   "server-paper-order-lifecycle-patch.mjs": ["PAPER_ORDER_LIFECYCLE_VERSION", "/api/paper-trader/order", "/api/paper-trader/orders", "broker_write_enabled: false"],
   "server-candle-pattern-patch.mjs": ["CANDLE_PATTERN_VERSION", "candlePatternAnalysis", "candle_patterns", "candle_score", "candle_status", "bullish_engulfing", "hammer_rejection", "near_252d_breakout", "volume_confirmation"],
   "app-ashstocks-broker-terminal.js": ["#ashBrokerTerminal", "AshStocks Terminal", "Market Watch", "Order Ticket", "Parameter Proof", "Candle Trigger", "Order Book", "Positions / GTT", "/api/scanner/run", "/api/upstox/quote", "/api/paper-trader/orders", "/api/paper-trader/order", "P681", "P683", "P686", "P688", "submitTerminalOrder", "source: \"ashstocks-broker-terminal\"", "broker_write_enabled: false", "paper_only: true"],
@@ -80,8 +81,8 @@ for (const asset of ["./broker-shell.css", "./app-broker-shell.js", "./app-broke
   mustNotLoad("index.html", asset);
 }
 
-mustLoad("index.html", "./styles.css?v=20260825.5");
-mustLoad("index.html", "./app.js?v=20260825.5");
+mustLoad("index.html", "./styles.css?v=20260825.6");
+mustLoad("index.html", "./app.js?v=20260825.6");
 mustInclude("index.html", "Legacy broker workspace loaders remain", "legacy-loader isolation explanation");
 
 for (const asset of [
@@ -126,6 +127,12 @@ mustMatch("server-upstox-quote-patch.mjs", /\/api\/upstox\/quote-stream[\s\S]*st
 mustMatch("server-upstox-quote-patch.mjs", /writeSseEvent[\s\S]*event: [\s\S]*data: /, "SSE event writer");
 mustMatch("server-upstox-quote-patch.mjs", /\/api\/upstox\/quote[\s\S]*GET[\s\S]*POST/, "Upstox quote GET/POST route");
 mustMatch("server-upstox-quote-patch.mjs", /paper_only: true[\s\S]*live_orders: false[\s\S]*broker_write_enabled: false/, "Upstox quote safety lock");
+mustMatch("server-upstox-institutional-patch.mjs", /fetchUpstoxShareHolding[\s\S]*UPSTOX_SHARE_HOLDINGS_URL[\s\S]*normalizeShareHoldings/, "stock-specific Upstox shareholding fetch");
+mustMatch("server-upstox-institutional-patch.mjs", /fetchUpstoxInstitutionalMarket[\s\S]*UPSTOX_FII_ACTIVITY_URL[\s\S]*UPSTOX_DII_ACTIVITY_URL[\s\S]*institutionalNetCr/, "market-wide Upstox FII and DII activity fetch");
+mustMatch("server-upstox-institutional-patch.mjs", /attachUpstoxInstitutionalEvidence[\s\S]*NO03[\s\S]*NO04[\s\S]*NO05[\s\S]*NO08[\s\S]*hard_gate_decision_preserved: true/, "Upstox FII and DII parameter overlay");
+mustMatch("server-upstox-institutional-patch.mjs", /attachUpstoxInstitutionalScan[\s\S]*upstoxInstitutionalResponse[\s\S]*scan\.institutional = institutional/, "scanner institutional evidence attachment");
+mustMatch("server.js", /applyUpstoxInstitutionalPatches[\s\S]*output = applyUpstoxInstitutionalPatches/, "Upstox institutional patch wiring");
+mustMatch("app.js", /loadInstitutionalEvidence[\s\S]*\/api\/upstox\/institutional-flow[\s\S]*renderFiiHoldingCell/, "dashboard Upstox institutional evidence wiring");
 mustMatch("app-upstox-market-watch-pulse.js", /fetch\("\/api\/upstox\/quote"[\s\S]*method: "POST"[\s\S]*instrument_keys/, "market watch batched Upstox quote POST");
 mustMatch("app-upstox-market-watch-pulse.js", /publishQuote[\s\S]*window\.__ashstocksUpstoxQuoteCache[\s\S]*ashstocks:upstox-quote/, "market watch quote event bridge");
 mustMatch("app-upstox-market-watch-pulse.js", /429\|rate limit\|1015[\s\S]*RATE_LIMIT_BACKOFF_MS/, "market watch Upstox rate-limit backoff");

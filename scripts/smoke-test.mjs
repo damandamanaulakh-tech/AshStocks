@@ -951,7 +951,64 @@ async function main() {
     assert(upstoxStatusAfter.body.status.token_visible === true, "Upstox status should detect saved token");
     assert(upstoxStatusAfter.body.status.token_source === "manual_paste", "Upstox status should read token from store");
 
-    console.log(JSON.stringify({ ok: true, checks: ["mongo-production-fail-closed", "data-bank-status", "scan-ledger", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "pre-rise-pattern-tracker", "parameter-tunnel-175", "kelly-parameters", "kelly-persisted-ledger", "kelly-active-sizing", "kelly-lifecycle-cap", "kelly-no-edge-block", "paper-capital-50-lakh", "paper-minimum-entry-1-lakh", "paper-order-idempotency", "paper-oversell-rejection", "paper-net-cost-accounting", "paper-closed-trade-returns", "paper-engine-real-quote-fill", "server-verified-manual-market-fill", "server-verified-monitor-gtt-sell", "serialized-concurrent-paper-fills", "upstox-guard", "paper-engine-status", "paper-engine-guard", "q1-status", "q1-upload", "q1-render-guard", "upstox-oauth-start", "upstox-oauth-rejection", "upstox-token-paste"] }));
+    const institutionalNativeFetch = globalThis.fetch;
+    globalThis.fetch = async (input, init) => {
+      const target = String(input);
+      if (target.includes("/v2/historical-candle/NSE_EQ%7CINE002A01018/")) {
+        const candles = proofCandles().map((candle) => [candle.date, candle.open, candle.high, candle.low, candle.close, candle.volume]);
+        return new Response(JSON.stringify({ status: "success", data: { candles } }), { status: 200, headers: { "content-type": "application/json" } });
+      }
+      if (target.includes("/v2/fundamentals/INE002A01018/share-holdings")) {
+        return new Response(JSON.stringify({ status: "success", data: [
+          { category: "fii", history: [{ period: "Mar 2026", value: 18.67 }, { period: "Dec 2025", value: 19.09 }] },
+          { category: "other_dii", history: [{ period: "Mar 2026", value: 10.77 }, { period: "Dec 2025", value: 10.66 }] },
+          { category: "mutual_funds", history: [{ period: "Mar 2026", value: 2.25 }, { period: "Dec 2025", value: 2.1 }] }
+        ] }), { status: 200, headers: { "content-type": "application/json" } });
+      }
+      if (target.includes("/v2/market/fii")) {
+        return new Response(JSON.stringify({ status: "success", data: { "NSE_EQ|CASH": [
+          { time_stamp: 1777500000000, buy_amount: 20000000000, sell_amount: 15000000000 },
+          { time_stamp: 1777413600000, buy_amount: 12000000000, sell_amount: 13000000000 }
+        ] } }), { status: 200, headers: { "content-type": "application/json" } });
+      }
+      if (target.includes("/v2/market/dii")) {
+        return new Response(JSON.stringify({ status: "success", data: { "NSE_EQ|CASH": [
+          { time_stamp: 1777500000000, buy_amount: 15000000000, sell_amount: 10000000000 },
+          { time_stamp: 1777413600000, buy_amount: 11000000000, sell_amount: 9000000000 }
+        ] } }), { status: 200, headers: { "content-type": "application/json" } });
+      }
+      return institutionalNativeFetch(input, init);
+    };
+    try {
+      const institutional = await request("/api/upstox/institutional-flow", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ instruments: [{ symbol: "RELIANCE", instrument_key: "NSE_EQ|INE002A01018" }] })
+      });
+      assert(institutional.response.status === 200 && institutional.body.ok === true, "Upstox institutional endpoint should return live evidence");
+      assert(institutional.body.stocks[0].fii_holding_pct === 18.67, "stock FII holding should come from Upstox share holdings");
+      assert(institutional.body.stocks[0].fii_change_pp === -0.42, "stock FII quarter change should retain exact percentage points");
+      assert(institutional.body.stocks[0].dii_holding_pct === 13.02, "stock DII holding should include other DII and mutual funds");
+      assert(institutional.body.market.fii_cash_5d_net_cr === 400, "market FII five-day cash flow should convert INR to crore");
+      assert(institutional.body.truth_labels.not_claimed === "No stock-wise daily FII cash-flow attribution", "institutional endpoint must preserve the stock-vs-market truth boundary");
+      assert(!JSON.stringify(institutional.body).includes("smoke-upstox-token"), "institutional response must never expose the Upstox token");
+      const institutionalScan = await request("/api/scanner/run-upstox", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ universe: [{ symbol: "RELIANCE", name: "Reliance Industries", sector: "Energy", exchange: "NSE", instrument_key: "NSE_EQ|INE002A01018" }] })
+      });
+      const institutionalRow = institutionalScan.body.rows?.[0];
+      const fiiHoldingNode = institutionalRow?.parameter_tunnel?.results?.find((item) => item.id === "NO03");
+      const fiiMarketNode = institutionalRow?.parameter_tunnel?.results?.find((item) => item.id === "NO08");
+      assert(institutionalScan.response.status === 200 && institutionalRow?.fii_holding_pct === 18.67, "Upstox scanner row should carry stock FII holding evidence");
+      assert(fiiHoldingNode?.state === "MISS" && fiiHoldingNode?.value === -0.42, "FII holding parameter should evaluate the live quarter change");
+      assert(fiiMarketNode?.state === "HIT" && fiiMarketNode?.value === 400, "FII market regime parameter should evaluate the live five-day flow");
+      assert(institutionalRow?.parameter_selection_effect?.institutional_overlay === "ashstocks-upstox-institutional-v0.1", "scanner score proof should identify the Upstox institutional overlay");
+    } finally {
+      globalThis.fetch = institutionalNativeFetch;
+    }
+
+    console.log(JSON.stringify({ ok: true, checks: ["mongo-production-fail-closed", "data-bank-status", "scan-ledger", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "pre-rise-pattern-tracker", "parameter-tunnel-175", "kelly-parameters", "kelly-persisted-ledger", "kelly-active-sizing", "kelly-lifecycle-cap", "kelly-no-edge-block", "paper-capital-50-lakh", "paper-minimum-entry-1-lakh", "paper-order-idempotency", "paper-oversell-rejection", "paper-net-cost-accounting", "paper-closed-trade-returns", "paper-engine-real-quote-fill", "server-verified-manual-market-fill", "server-verified-monitor-gtt-sell", "serialized-concurrent-paper-fills", "upstox-guard", "paper-engine-status", "paper-engine-guard", "q1-status", "q1-upload", "q1-render-guard", "upstox-oauth-start", "upstox-oauth-rejection", "upstox-token-paste", "upstox-stock-fii-holdings", "upstox-market-fii-dii-flow", "upstox-fii-parameter-overlay"] }));
   } finally {
     await Promise.all([...Q1_INPUTS, STATE_FILE, SCAN_LEDGER_FILE, UPSTOX_AUTH_FILE].map((file) => fs.unlink(file).catch((error) => {
       if (error.code !== "ENOENT") throw error;

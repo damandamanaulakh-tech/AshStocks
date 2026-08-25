@@ -4741,6 +4741,28 @@ td small {
   white-space: nowrap;
 }
 
+.fii-holding-cell {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+  white-space: nowrap;
+}
+
+.fii-holding-cell strong {
+  font-size: 12px;
+}
+
+.fii-holding-cell small {
+  color: currentColor;
+  font-size: 9px;
+  font-weight: 800;
+  opacity: .86;
+}
+
+.fii-loading {
+  white-space: nowrap;
+}
+
 .signal-radar-table th {
   color: #849caf;
   background: rgba(4, 13, 22, .45);

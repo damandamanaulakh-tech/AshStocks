@@ -10,6 +10,7 @@ const state = {
   health: null,
   marketContext: null,
   marketQuotes: [],
+  institutional: { status: "idle", market: null, stocks: {} },
   upstoxStatus: null,
   activeSection: "dashboard",
   horizon: "intraday",
@@ -26,6 +27,8 @@ const state = {
   lastAutoPortfolioAttemptAt: 0,
   paperLedgerTab: "open"
 };
+
+const institutionalPendingSymbols = new Set();
 
 const indexKeys = [
   { label: "NIFTY 50", key: "NSE_INDEX|Nifty 50" },
@@ -638,6 +641,63 @@ function signalState(value) {
   return { className: "needed", label: "DATA NEEDED", icon: "circle-help" };
 }
 
+function institutionalFor(row) {
+  return state.institutional.stocks[nseSymbol(row)] || null;
+}
+
+function renderFiiHoldingCell(row) {
+  const evidence = institutionalFor(row);
+  const symbol = nseSymbol(row);
+  if (evidence?.status === "LIVE" && numberValue(evidence.fii_holding_pct) !== null) {
+    const change = numberValue(evidence.fii_change_pp);
+    const tone = change === null || change === 0 ? "watch" : change > 0 ? "positive" : "negative";
+    const delta = change === null ? "first quarter" : `${change >= 0 ? "+" : ""}${fmtNumber(change, 2)} pp`;
+    const title = `${evidence.source} · ${evidence.fii_period} · previous ${evidence.fii_previous_period || "not returned"}`;
+    return `<span class="fii-holding-cell ${tone}" title="${escapeHtml(title)}"><strong>${fmtNumber(evidence.fii_holding_pct, 2)}%</strong><small>${escapeHtml(delta)}</small></span>`;
+  }
+  if (institutionalPendingSymbols.has(symbol)) return `<span class="data-needed fii-loading">UPSTOX…</span>`;
+  return `<span class="data-needed" title="${escapeHtml(evidence?.reason || "Upstox FII shareholding not loaded")}">DATA NEEDED</span>`;
+}
+
+async function loadInstitutionalEvidence(rows = []) {
+  const candidates = rows
+    .filter((row) => row?.instrument_key && !institutionalFor(row) && !institutionalPendingSymbols.has(nseSymbol(row)))
+    .slice(0, 12);
+  if (!candidates.length && state.institutional.market) return;
+  candidates.forEach((row) => institutionalPendingSymbols.add(nseSymbol(row)));
+  state.institutional.status = "loading";
+  renderSignalDashboard();
+  try {
+    const payload = await api("/api/upstox/institutional-flow", {
+      method: "POST",
+      body: {
+        instruments: candidates.map((row) => ({
+          symbol: nseSymbol(row),
+          instrument_key: row.instrument_key,
+          isin: row.isin || ""
+        }))
+      }
+    });
+    state.institutional.market = payload.market || state.institutional.market;
+    for (const stock of payload.stocks || []) {
+      const symbol = nseSymbol(stock) || candidates.find((row) => String(row.instrument_key) === String(stock.instrument_key))?.symbol;
+      if (symbol) state.institutional.stocks[symbol] = stock;
+    }
+    state.institutional.status = payload.ok ? "ready" : "data_needed";
+    state.institutional.asOf = payload.as_of || null;
+    state.institutional.version = payload.version || null;
+  } catch (error) {
+    state.institutional.status = "data_needed";
+    state.institutional.market = { status: "DATA_NEEDED", reason: error.message, source: "Upstox FII/DII Activity API" };
+    candidates.forEach((row) => {
+      state.institutional.stocks[nseSymbol(row)] = { status: "DATA_NEEDED", reason: error.message, source: "Upstox Share Holdings API" };
+    });
+  } finally {
+    candidates.forEach((row) => institutionalPendingSymbols.delete(nseSymbol(row)));
+    renderSignalDashboard();
+  }
+}
+
 function renderSignalDashboard() {
   const radarBody = el("signalRadarBody");
   if (!radarBody) return;
@@ -668,7 +728,6 @@ function renderSignalDashboard() {
       const metrics = rowMetrics(row);
       const trend20 = numberValue(metrics.return20);
       const volumeMultiple = metrics.latest?.volume && metrics.avgVol20 ? metrics.latest.volume / metrics.avgVol20 : null;
-      const fiiFlow = numberValue(row.fii5dNetCr ?? row.fii20dNetCr ?? row.fii_flow_5d_cr);
       const volumeEvidence = tunnelEvidence(row, [/volume.*20/i, /volume confirmation/i, /volume expansion/i]);
       const priceEvidence = tunnelEvidence(row, [/price structure/i, /breakout/i, /above.*(?:ema|sma)/i, /new high/i]);
       const proof = row.parameter_tunnel?.summary || {};
@@ -682,7 +741,7 @@ function renderSignalDashboard() {
         <td><b class="signal-score ${decisionClass(row.decision)}">${fmtNumber(row.score, 0)}</b></td>
         <td><span class="signal-trend ${trend20 !== null && trend20 >= 0 ? "positive" : "negative"}">${fmtPct(trend20)}</span></td>
         <td>${volumeMultiple === null ? `<span class="data-needed">DATA NEEDED</span>` : `<strong>${fmtNumber(volumeMultiple, 2)}x</strong>`}</td>
-        <td>${fiiFlow === null ? `<span class="data-needed">DATA NEEDED</span>` : `<span class="${fiiFlow >= 0 ? "positive" : "negative"}">${fiiFlow >= 0 ? "+" : ""}${fmtNumber(fiiFlow, 1)} Cr</span>`}</td>
+        <td>${renderFiiHoldingCell(row)}</td>
         <td><span class="evidence-icon ${volumeState.className}" title="${escapeHtml(volumeEvidence?.value || volumeState.label)}"><i data-lucide="${volumeState.icon}"></i></span></td>
         <td><span class="evidence-icon ${priceState.className}" title="${escapeHtml(priceEvidence?.value || priceState.label)}"><i data-lucide="${priceState.icon}"></i></span></td>
         <td><span class="evidence-icon ${proofState.className}" title="${escapeHtml(proof.evaluated ? `${proof.positive_hits || 0}/${proof.evaluated} conditions` : proofState.label)}"><i data-lucide="${proofState.icon}"></i></span></td>
@@ -710,6 +769,8 @@ function renderSignalDashboard() {
   const breadthTotal = [breadth.advancing, breadth.declining, breadth.unchanged].map(numberValue).filter((value) => value !== null).reduce((sum, value) => sum + value, 0);
   const breadthPct = breadthTotal ? (numberValue(breadth.advancing) || 0) / breadthTotal * 100 : null;
   const confidence = Math.max(0, Math.min(100, numberValue(insight.confidence) || 0));
+  const institutionalMarket = state.institutional.market || {};
+  const fiiCash5d = numberValue(institutionalMarket.fii_cash_5d_net_cr);
   const topSectors = [...state.rows.reduce((map, row) => {
     if (row.decision === "SELECT") map.set(row.sector || "Unmapped", (map.get(row.sector || "Unmapped") || 0) + 1);
     return map;
@@ -721,7 +782,7 @@ function renderSignalDashboard() {
       <div class="regime-facts">
         <div><span>Trend (NIFTY 50)</span><strong class="${numberValue(contextByKey.nifty50?.change_pct) >= 0 ? "positive" : "negative"}">${contextByKey.nifty50?.price === null || contextByKey.nifty50?.price === undefined ? "DATA NEEDED" : `${fmtNumber(contextByKey.nifty50.price)} · ${fmtPct(contextByKey.nifty50.change_pct)}`}</strong></div>
         <div><span>Market breadth</span><strong>${breadthPct === null ? "DATA NEEDED" : `${fmtNumber(breadthPct, 1)}% advance`}</strong></div>
-        <div><span>FII flow (5D)</span><strong class="data-needed">DATA NEEDED</strong></div>
+        <div><span>FII cash flow (5D)</span><strong class="${fiiCash5d === null ? "data-needed" : fiiCash5d >= 0 ? "positive" : "negative"}" title="${escapeHtml(institutionalMarket.source || institutionalMarket.reason || "Upstox FII Activity API")}">${fiiCash5d === null ? (state.institutional.status === "loading" ? "UPSTOX…" : "DATA NEEDED") : `${fiiCash5d >= 0 ? "+" : ""}${fmtNumber(fiiCash5d, 2)} Cr`}</strong></div>
         <div><span>Volatility (India VIX)</span><strong>${contextByKey.indiavix?.price === null || contextByKey.indiavix?.price === undefined ? "DATA NEEDED" : `${fmtNumber(contextByKey.indiavix.price)} · ${fmtPct(contextByKey.indiavix.change_pct)}`}</strong></div>
         <div><span>SELECT sector strength</span><strong>${escapeHtml(topSectors || "No SELECT sectors")}</strong></div>
       </div>
@@ -740,8 +801,14 @@ function renderSignalDashboard() {
       const volumeMultiple = metrics.latest?.volume && metrics.avgVol20 ? metrics.latest.volume / metrics.avgVol20 : null;
       const proof = row.parameter_tunnel?.summary || {};
       const selectedVolumeEvidence = tunnelEvidence(row, [/volume.*20/i, /volume confirmation/i, /volume expansion/i]);
+      const stockInstitutional = institutionalFor(row);
+      const stockFiiChange = numberValue(stockInstitutional?.fii_change_pp);
+      const stockFiiStatus = stockInstitutional?.status !== "LIVE" ? "SOURCE_REQUIRED" : stockFiiChange === null || stockFiiChange === 0 ? "WATCH" : stockFiiChange > 0 ? "HIT" : "RISK";
+      const stockFiiText = stockInstitutional?.status === "LIVE"
+        ? `${fmtNumber(stockInstitutional.fii_holding_pct, 2)}% in ${stockInstitutional.fii_period}${stockFiiChange === null ? "" : ` · ${stockFiiChange >= 0 ? "+" : ""}${fmtNumber(stockFiiChange, 2)} pp QoQ`} · Upstox reported shareholding`
+        : stockInstitutional?.reason || (institutionalPendingSymbols.has(nseSymbol(row)) ? "Loading Upstox shareholding" : "Upstox shareholding not returned");
       const evidenceRows = [
-        ["FII Flow", numberValue(row.fii5dNetCr ?? row.fii20dNetCr) === null ? "SOURCE_REQUIRED" : numberValue(row.fii5dNetCr ?? row.fii20dNetCr) >= 0 ? "HIT" : "RISK", numberValue(row.fii5dNetCr ?? row.fii20dNetCr) === null ? "Runtime stock FII field absent" : `${fmtNumber(row.fii5dNetCr ?? row.fii20dNetCr)} Cr`],
+        ["FII Holding", stockFiiStatus, stockFiiText],
         ["Volume Expansion", selectedVolumeEvidence?.state || "SOURCE_REQUIRED", volumeMultiple === null ? "20D volume evidence absent" : `${fmtNumber(volumeMultiple, 2)}x of 20D average · ${selectedVolumeEvidence?.value || "threshold evidence absent"}`],
         ["Price Structure", numberValue(metrics.return20) === null ? "SOURCE_REQUIRED" : metrics.return20 > 0 ? "HIT" : "WATCH", numberValue(metrics.return20) === null ? "20D trend unavailable" : `${fmtPct(metrics.return20)} over 20 sessions`],
         ["Parameter Proof", numberValue(proof.evaluated) ? (numberValue(proof.evidence_score) >= 48 ? "HIT" : "WATCH") : "SOURCE_REQUIRED", numberValue(proof.evaluated) ? `${proof.positive_hits || 0}/${proof.evaluated} positive · score ${fmtNumber(proof.evidence_score)}` : "Tunnel proof not returned"]
@@ -879,7 +946,7 @@ async function selectSymbol(symbol) {
   state.selected = row;
   renderCandidates();
   renderSymbol();
-  await fetchSelectedQuote(row);
+  await Promise.all([fetchSelectedQuote(row), loadInstitutionalEvidence([row])]);
   renderSymbol();
 }
 
@@ -1734,6 +1801,16 @@ async function refreshScan() {
     const scan = await api("/api/scanner/run-upstox", { method: "POST", body: { horizon: state.horizon, universe: state.scanBasket } });
     state.scan = scan;
     state.rows = Array.isArray(scan.rows) ? scan.rows : [];
+    if (scan.institutional?.market) state.institutional.market = scan.institutional.market;
+    for (const stock of scan.institutional?.stocks || []) {
+      const symbol = nseSymbol(stock);
+      if (symbol) state.institutional.stocks[symbol] = stock;
+    }
+    if (scan.institutional) {
+      state.institutional.status = scan.institutional.ok ? "ready" : "data_needed";
+      state.institutional.asOf = scan.institutional.as_of || null;
+      state.institutional.version = scan.institutional.version || null;
+    }
     const summary = scan.summary || {};
     const failures = Array.isArray(scan.failures) ? scan.failures.length : 0;
     setNotice(`Fresh NSE scan ${state.rows.length}/${state.universeRows.length || state.rows.length} rows | SELECT ${summary.SELECT || 0} | WATCH ${summary.WATCH || 0} | BLOCKED ${summary.BLOCKED || 0} | feed gaps ${failures}`, failures ? "warn" : "ok");
@@ -1744,7 +1821,8 @@ async function refreshScan() {
       state.selected = state.rows.find((row) => row.symbol === state.selected.symbol);
     }
     renderAll();
-    if (state.selected) await selectSymbol(state.selected.symbol);
+    const institutionalPromise = loadInstitutionalEvidence(sortedRows().slice(0, 8));
+    await Promise.all([state.selected ? selectSymbol(state.selected.symbol) : Promise.resolve(), institutionalPromise]);
     await loadOrders();
     await maybeAutoStartPaperPortfolio();
   } catch (error) {
