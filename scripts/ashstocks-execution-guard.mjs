@@ -30,6 +30,10 @@ function mustLoad(loader, asset) {
   mustInclude(loader, asset, `${asset} loader`);
 }
 
+function mustNotLoad(loader, asset) {
+  if (read(loader).includes(asset)) failures.push(`${loader}: obsolete ${asset} loader is still mounted`);
+}
+
 for (const [file, checks] of Object.entries({
   "ASHSTOCKS_EXECUTION_GUARD.md": ["AshStocks is a broker-grade Indian market product", "A vs X Check", "Merge Check", "Candle Parameter Family"],
   "README.md": ["Indian/NSE", "Upstox historical daily candle fetch only", "No live orders"],
@@ -73,8 +77,12 @@ for (const [file, checks] of Object.entries({
 }
 
 for (const asset of ["./broker-shell.css", "./app-broker-shell.js", "./app-broker-ledger-bridge.js", "./app-broker-nav-guard.js", "./app-parameter-piano.js"]) {
-  mustLoad("index.html", asset);
+  mustNotLoad("index.html", asset);
 }
+
+mustLoad("index.html", "./styles.css?v=20260825.5");
+mustLoad("index.html", "./app.js?v=20260825.5");
+mustInclude("index.html", "Legacy broker workspace loaders remain", "legacy-loader isolation explanation");
 
 for (const asset of [
   "./upstox-workspace.css",

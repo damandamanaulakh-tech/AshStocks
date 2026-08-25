@@ -5,14 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>ASH Stock</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="./styles.css" />
-    <link rel="stylesheet" href="./broker-shell.css" />
+    <link rel="stylesheet" href="./styles.css?v=20260825.5" />
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
-    <script src="./app.js" defer></script>
-    <script src="./app-broker-shell.js" defer></script>
-    <script src="./app-broker-ledger-bridge.js" defer></script>
-    <script src="./app-parameter-piano.js" defer></script>
-    <script src="./app-broker-nav-guard.js" defer></script>
+    <script src="./app.js?v=20260825.5" defer></script>
+    <!-- The current shell is owned by app.js. Legacy broker workspace loaders remain
+         available in the repository but are intentionally not mounted on this page. -->
   </head>
   <body>
     <div class="terminal-shell">
@@ -26,44 +23,69 @@
         </div>
 
         <nav class="rail-nav" aria-label="Primary">
-          <button class="rail-item active" type="button" data-section="dashboard">
-            <i data-lucide="layout-dashboard" aria-hidden="true"></i>
+          <button class="rail-item active" type="button" data-section="dashboard" data-nav-key="dashboard" data-nav-title="Dashboard">
+            <i data-lucide="house" aria-hidden="true"></i>
             <span>Dashboard</span>
           </button>
-          <button class="rail-item" type="button" data-section="portfolio">
-            <i data-lucide="chart-pie" aria-hidden="true"></i>
-            <span>Portfolio</span>
-          </button>
-          <button class="rail-item" type="button" data-section="screener">
+          <button class="rail-item" type="button" data-section="dashboard" data-nav-key="pre-rise-radar" data-nav-title="Pre-Rise Radar" data-route-anchor="signalRadarBody">
             <i data-lucide="radar" aria-hidden="true"></i>
-            <span>Screener</span>
+            <span>Pre-Rise Radar</span>
           </button>
-          <button class="rail-item" type="button" data-section="piano">
-            <i data-lucide="activity" aria-hidden="true"></i>
-            <span>Node Tunnel</span>
+          <button class="rail-item" type="button" data-section="screener" data-nav-key="watchlist" data-nav-title="Watchlist">
+            <i data-lucide="list-star" aria-hidden="true"></i>
+            <span>Watchlist</span>
           </button>
-          <button class="rail-item" type="button" data-section="signal-piano">
-            <i data-lucide="audio-waveform" aria-hidden="true"></i>
-            <span>Signal Piano</span>
+          <button class="rail-item" type="button" data-section="screener" data-nav-key="screener" data-nav-title="Scanner">
+            <i data-lucide="scan-search" aria-hidden="true"></i>
+            <span>Scanner</span>
           </button>
-          <button class="rail-item" type="button" data-section="orders">
+          <button class="rail-item" type="button" data-section="piano" data-nav-key="piano" data-nav-title="Trading">
+            <i data-lucide="candlestick-chart" aria-hidden="true"></i>
+            <span>Trading</span>
+          </button>
+          <button class="rail-item" type="button" data-section="orders" data-nav-key="positions" data-nav-title="Positions" data-route-ledger="open">
             <i data-lucide="briefcase-business" aria-hidden="true"></i>
+            <span>Positions</span>
+          </button>
+          <button class="rail-item" type="button" data-section="orders" data-nav-key="order-history" data-nav-title="Orders" data-route-ledger="orders">
+            <i data-lucide="receipt-text" aria-hidden="true"></i>
+            <span>Orders</span>
+          </button>
+          <button class="rail-item" type="button" data-section="signal-piano" data-nav-key="signal-piano" data-nav-title="Signals">
+            <i data-lucide="radio-tower" aria-hidden="true"></i>
+            <span>Signals</span>
+          </button>
+          <button class="rail-item" type="button" data-section="portfolio" data-nav-key="portfolio" data-nav-title="Holdings">
+            <i data-lucide="wallet-cards" aria-hidden="true"></i>
+            <span>Holdings</span>
+          </button>
+          <button class="rail-item" type="button" data-section="portfolio" data-nav-key="performance" data-nav-title="Performance">
+            <i data-lucide="chart-no-axes-combined" aria-hidden="true"></i>
+            <span>Performance</span>
+          </button>
+          <button class="rail-item" type="button" data-section="orders" data-nav-key="journal" data-nav-title="Journal" data-route-ledger="closed">
+            <i data-lucide="notebook-tabs" aria-hidden="true"></i>
+            <span>Journal</span>
+          </button>
+          <button class="rail-item" type="button" data-section="orders" data-nav-key="orders" data-nav-title="Paper Book">
+            <i data-lucide="book-open-check" aria-hidden="true"></i>
             <span>Paper Book</span>
           </button>
-          <button class="rail-item" type="button" data-section="settings">
+          <button class="rail-item" type="button" data-section="settings" data-nav-key="settings" data-nav-title="Settings">
             <i data-lucide="settings" aria-hidden="true"></i>
             <span>Settings</span>
           </button>
-          <a class="rail-item" href="/q1">
-            <i data-lucide="upload-cloud" aria-hidden="true"></i>
-            <span>Q1 Runner</span>
-          </a>
+          <button class="rail-item" type="button" data-section="help" data-nav-key="help" data-nav-title="Help">
+            <i data-lucide="circle-help" aria-hidden="true"></i>
+            <span>Help</span>
+          </button>
         </nav>
 
         <section class="rail-card">
           <span class="mini-label">Broker Guard</span>
           <strong>Paper execution</strong>
           <p>Quotes, candles and P&amp;L are real. Capital is simulated.</p>
+          <p class="rail-build" id="railBuild">UI build loading</p>
         </section>
       </aside>
 
@@ -237,8 +259,8 @@
             <header class="parameter-tunnel-head">
               <div>
                 <span class="mini-label">Real Upstox Evidence</span>
-                <h2>175-Node Signal Tunnel</h2>
-                <p>Choose one stock or compare several. Every lit node is tied to the selected scan rows.</p>
+                <h2>Trading &amp; 175-Node Signal Tunnel</h2>
+                <p>Validate stock evidence before a paper order. Every lit node is tied to the selected scan rows.</p>
               </div>
               <div class="tunnel-head-metrics">
                 <strong id="tunnelCatalogCount">175 nodes</strong>
@@ -365,6 +387,30 @@
                 </button>
               </form>
               <div class="token-result" id="upstoxTokenResult"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="section" id="helpSection" data-panel="help">
+          <div class="settings-grid help-grid">
+            <section class="panel">
+              <div class="panel-head"><div><span class="mini-label">Navigation Guide</span><h3>ASH Stock workspace</h3></div></div>
+              <div class="detail-list">
+                <div class="detail-row"><span>Dashboard</span><strong>Pre-rise ranking, regime, evidence and chart</strong></div>
+                <div class="detail-row"><span>Scanner / Watchlist</span><strong>Full NSE candidate table and filters</strong></div>
+                <div class="detail-row"><span>Trading / Signals</span><strong>Parameter tunnel and stock hit matrix</strong></div>
+                <div class="detail-row"><span>Positions / Orders / Journal</span><strong>Paper lifecycle ledgers with real marks</strong></div>
+                <div class="detail-row"><span>Paper Book</span><strong>Capital, closed trades, activity and risk governor</strong></div>
+              </div>
+            </section>
+            <section class="panel">
+              <div class="panel-head"><div><span class="mini-label">Execution Safety</span><h3>Paper only</h3></div></div>
+              <div class="detail-list">
+                <div class="detail-row"><span>Market data</span><strong>Upstox-backed when available</strong></div>
+                <div class="detail-row"><span>Capital</span><strong>Simulated ₹50 lakh ledger</strong></div>
+                <div class="detail-row"><span>Broker writes</span><strong>Locked</strong></div>
+                <div class="detail-row"><span>Missing evidence</span><strong>Shown as DATA NEEDED</strong></div>
+              </div>
             </section>
           </div>
         </section>

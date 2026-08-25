@@ -7,6 +7,7 @@ const state = {
   selected: null,
   selectedQuote: null,
   orders: null,
+  health: null,
   marketContext: null,
   marketQuotes: [],
   upstoxStatus: null,
@@ -1767,13 +1768,43 @@ function renderAll() {
   window.lucide?.createIcons?.();
 }
 
-function switchSection(section) {
+function switchSection(section, navKey = section, navTitle = "") {
   state.activeSection = section;
-  all(".rail-item[data-section]").forEach((button) => button.classList.toggle("active", button.dataset.section === section));
+  all(".rail-item[data-section]").forEach((button) => button.classList.toggle("active", (button.dataset.navKey || button.dataset.section) === navKey));
   all(".section").forEach((panel) => panel.classList.toggle("active", panel.dataset.panel === section));
-  const titleMap = { dashboard: "Signal Dashboard", portfolio: "Portfolio", screener: "Screener", piano: "Node Tunnel", "signal-piano": "Signal Piano", orders: "Paper Book", settings: "Settings" };
-  el("sectionTitle").textContent = titleMap[section] || "Dashboard";
+  const titleMap = { dashboard: "Dashboard", portfolio: "Holdings", screener: "Scanner", piano: "Trading", "signal-piano": "Signals", orders: "Paper Book", settings: "Settings", help: "Help" };
+  el("sectionTitle").textContent = navTitle || titleMap[section] || "Dashboard";
   window.lucide?.createIcons?.();
+}
+
+function openPaperLedgerTab(tab) {
+  if (!tab) return;
+  state.paperLedgerTab = tab;
+  renderOrders();
+  const detail = el("paperTradeLedgerDetail");
+  if (!detail) return;
+  detail.open = true;
+  window.requestAnimationFrame(() => detail.scrollIntoView({ behavior: "smooth", block: "start" }));
+}
+
+function routeRailNavigation(button) {
+  const section = button.dataset.section;
+  switchSection(section, button.dataset.navKey || section, button.dataset.navTitle || "");
+  if (button.dataset.routeLedger) openPaperLedgerTab(button.dataset.routeLedger);
+  if (button.dataset.routeAnchor) {
+    window.requestAnimationFrame(() => el(button.dataset.routeAnchor)?.scrollIntoView({ behavior: "smooth", block: "start" }));
+  }
+}
+
+async function loadReleaseIdentity() {
+  const build = el("railBuild");
+  try {
+    state.health = await api(`/api/health?ts=${Date.now()}`);
+    const commit = String(state.health.commit || "").slice(0, 7);
+    if (build) build.textContent = commit ? `UI build ${commit}` : "UI build verified";
+  } catch (error) {
+    if (build) build.textContent = `UI build check failed: ${error.message}`;
+  }
 }
 
 function exportCsv() {
@@ -1883,7 +1914,7 @@ async function submitUpstoxToken(event) {
 }
 
 function bindUi() {
-  all(".rail-item[data-section]").forEach((button) => button.addEventListener("click", () => switchSection(button.dataset.section)));
+  all(".rail-item[data-section]").forEach((button) => button.addEventListener("click", () => routeRailNavigation(button)));
   all(".tab-button").forEach((button) => button.addEventListener("click", () => {
     state.horizon = button.dataset.horizon;
     all(".tab-button").forEach((item) => item.classList.toggle("active", item === button));
@@ -1931,6 +1962,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   renderAll();
   window.lucide?.createIcons?.();
   await loadOrders();
-  await Promise.all([refreshScan(), loadSignalMarketContext()]);
+  await Promise.all([refreshScan(), loadSignalMarketContext(), loadReleaseIdentity()]);
   window.setInterval(maybeAutoStartPaperPortfolio, 60_000);
 });

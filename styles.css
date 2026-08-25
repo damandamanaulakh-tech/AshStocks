@@ -709,14 +709,22 @@ button {
 }
 
 .rail-nav {
+  min-height: 0;
   display: grid;
-  gap: 8px;
+  flex: 1;
+  align-content: start;
+  gap: 5px;
+  padding-right: 4px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
 }
 
 .rail-item {
   width: 100%;
-  min-height: 43px;
-  padding: 10px 12px;
+  min-height: 37px;
+  padding: 8px 11px;
   display: grid;
   grid-template-columns: 22px 1fr;
   align-items: center;
@@ -742,7 +750,8 @@ button {
 }
 
 .rail-card {
-  margin-top: auto;
+  flex: 0 0 auto;
+  margin-top: 0;
   padding: 14px;
   border-radius: 8px;
   background: rgba(255, 255, 255, .04);
@@ -752,6 +761,13 @@ button {
 .rail-card strong {
   display: block;
   margin-top: 8px;
+}
+
+.rail-card .rail-build {
+  color: var(--cyan);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .04em;
 }
 
 .workspace {
@@ -1769,8 +1785,10 @@ td small {
     display: flex;
     width: 100%;
     min-width: 0;
+    flex: 0 0 auto;
     gap: 6px;
     overflow-x: auto;
+    overflow-y: hidden;
     scrollbar-width: thin;
   }
 

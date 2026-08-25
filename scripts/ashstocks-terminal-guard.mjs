@@ -21,6 +21,10 @@ function mustMatch(file, regex, reason) {
   if (!regex.test(read(file))) failures.push(`${file}: missing ${reason}`);
 }
 
+function mustNotInclude(file, text, reason = text) {
+  if (read(file).includes(text)) failures.push(`${file}: obsolete ${reason} is still mounted`);
+}
+
 mustInclude("app-broker-nav-guard.js", "./ashstocks-trading-terminal.css", "Trading terminal stylesheet loader");
 mustInclude("app-broker-nav-guard.js", "./ashstocks-terminal-inspector.css", "Terminal inspector stylesheet loader");
 mustInclude("app-broker-nav-guard.js", "./ashstocks-terminal-reasoning.css", "Terminal reasoning stylesheet loader");
@@ -47,9 +51,37 @@ for (const text of [
   'id="paperTradeDashboard"',
   'id="paperTradeDashboardStamp"',
   'id="paperTradeLedgerDetail"',
-  'id="paperTradeRefreshBtn"'
+  'id="paperTradeRefreshBtn"',
+  'data-nav-title="Pre-Rise Radar"',
+  'data-nav-title="Watchlist"',
+  'data-nav-title="Scanner"',
+  'data-nav-title="Trading"',
+  'data-nav-title="Positions"',
+  'data-nav-title="Orders"',
+  'data-nav-title="Signals"',
+  'data-nav-title="Holdings"',
+  'data-nav-title="Performance"',
+  'data-nav-title="Journal"',
+  'data-nav-title="Paper Book"',
+  'data-nav-title="Settings"',
+  'data-nav-title="Help"',
+  'id="railBuild"',
+  'id="helpSection" data-panel="help"',
+  'styles.css?v=20260825.5',
+  'app.js?v=20260825.5',
+  'Legacy broker workspace loaders remain'
 ]) {
   mustInclude("index.html", text, "signal dashboard and Portfolio separation");
+}
+
+for (const asset of [
+  './broker-shell.css',
+  './app-broker-shell.js',
+  './app-broker-ledger-bridge.js',
+  './app-parameter-piano.js',
+  './app-broker-nav-guard.js'
+]) {
+  mustNotInclude("index.html", asset, `${asset} root-page loader`);
 }
 
 for (const text of [
@@ -73,6 +105,10 @@ for (const text of [
   'el("paperTradeLedgerDetail")',
   'el("paperTradeRefreshBtn")',
   "Today's realized P&amp;L",
+  "function routeRailNavigation(button)",
+  "function openPaperLedgerTab(tab)",
+  "function loadReleaseIdentity()",
+  'state.health = await api(`/api/health',
   'renderPortfolioDashboard();'
 ]) {
   mustInclude("app.js", text, "live portfolio dashboard binding");
@@ -85,7 +121,9 @@ for (const text of [
   ".portfolio-dashboard-grid",
   ".portfolio-risk-card",
   ".portfolio-activity-card",
-  ".paper-trade-ledger-detail"
+  ".paper-trade-ledger-detail",
+  ".rail-card .rail-build",
+  "overflow-y: auto"
 ]) {
   mustInclude("styles.css", text, "scrollable responsive portfolio dashboard");
 }
