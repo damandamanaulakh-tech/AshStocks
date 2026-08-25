@@ -321,6 +321,12 @@ export function applyUpstoxInstitutionalPatches(source, mustReplace) {
   let output = source;
   output = mustReplace(
     output,
+    '    historical_candles_only: true,\n    live_orders: false,\n    endpoint: "https://api.upstox.com/v2/historical-candle/{instrument_key}/day/{to_date}/{from_date}",',
+    '    historical_candles_only: false,\n    live_quotes_enabled: true,\n    institutional_analytics_enabled: true,\n    institutional_sources: ["share_holdings", "fii_activity", "dii_activity"],\n    live_orders: false,\n    endpoint: "https://api.upstox.com/v2/historical-candle/{instrument_key}/day/{to_date}/{from_date}",',
+    "Upstox runtime capability identity"
+  );
+  output = mustReplace(
+    output,
     "\nasync function dataBankStatus() {",
     `${UPSTOX_INSTITUTIONAL_FUNCTIONS}\nasync function dataBankStatus() {`,
     "Upstox institutional functions"

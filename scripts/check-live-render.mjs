@@ -42,7 +42,9 @@ async function tryCheck() {
   assert(health.engine === EXPECTED_ENGINE, `health engine must be ${EXPECTED_ENGINE}`);
   assert(health.ready === null, "liveness must not claim unchecked readiness");
   assert(health.readiness_endpoint === "/api/ready", "health must direct readiness checks to /api/ready");
-  assert(health.upstox?.historical_candles_only === true, "health must expose historical-candle-only Upstox mode");
+  assert(health.upstox?.historical_candles_only === false, "health must expose multi-feed Upstox mode");
+  assert(health.upstox?.live_quotes_enabled === true, "health must expose live Upstox quotes");
+  assert(health.upstox?.institutional_analytics_enabled === true, "health must expose Upstox institutional analytics");
   assert(health.upstox?.live_orders === false, "health must not expose live orders");
 
   const ready = await fetchJson("/api/ready");
