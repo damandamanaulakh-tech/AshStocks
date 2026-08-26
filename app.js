@@ -25,7 +25,9 @@ const state = {
   tunnelParameterQuery: "",
   tunnelStockQuery: "",
   lastAutoPortfolioAttemptAt: 0,
-  paperLedgerTab: "open"
+  paperLedgerTab: "open",
+  quickTrade: null,
+  quickTradeSubmitting: false
 };
 
 const institutionalPendingSymbols = new Set();
@@ -107,6 +109,34 @@ function isoDate(value) {
 
 function nseSymbol(row) {
   return String(row?.symbol || row?.trading_symbol || row?.tradingsymbol || "").trim().toUpperCase();
+}
+
+function openPaperPosition(symbol) {
+  const normalized = String(symbol || "").trim().toUpperCase();
+  return (state.orders?.positions || []).find((position) => nseSymbol(position) === normalized) || null;
+}
+
+function tradeSourceFor(symbol, source = null) {
+  const normalized = String(symbol || "").trim().toUpperCase();
+  return source
+    || state.rows.find((row) => nseSymbol(row) === normalized)
+    || openPaperPosition(normalized)
+    || (state.orders?.orders || []).find((order) => nseSymbol(order) === normalized)
+    || (state.orders?.closed_trades || []).find((trade) => nseSymbol(trade) === normalized)
+    || { symbol: normalized };
+}
+
+function renderTradeActions(item, { compact = false } = {}) {
+  const symbol = nseSymbol(item);
+  if (!symbol) return "";
+  const position = openPaperPosition(symbol);
+  const heldQty = Math.max(0, Math.floor(numberValue(position?.qty) || 0));
+  const buyLabel = heldQty ? "ADD" : "BUY";
+  const compactClass = compact ? " compact" : "";
+  return `<span class="inline-trade-actions${compactClass}" data-trade-actions-for="${escapeHtml(symbol)}">
+    <button class="trade-action buy" type="button" data-quick-trade="BUY" data-trade-symbol="${escapeHtml(symbol)}" aria-label="${buyLabel} ${escapeHtml(symbol)} paper position">${buyLabel}</button>
+    <button class="trade-action sell" type="button" data-quick-trade="SELL" data-trade-symbol="${escapeHtml(symbol)}" aria-label="Exit ${escapeHtml(symbol)} paper position" ${heldQty ? "" : `disabled title="No open paper position to exit"`}>EXIT</button>
+  </span>`;
 }
 
 function stableHash(value) {
@@ -745,7 +775,7 @@ function renderSignalDashboard() {
         <td><span class="evidence-icon ${volumeState.className}" title="${escapeHtml(volumeEvidence?.value || volumeState.label)}"><i data-lucide="${volumeState.icon}"></i></span></td>
         <td><span class="evidence-icon ${priceState.className}" title="${escapeHtml(priceEvidence?.value || priceState.label)}"><i data-lucide="${priceState.icon}"></i></span></td>
         <td><span class="evidence-icon ${proofState.className}" title="${escapeHtml(proof.evaluated ? `${proof.positive_hits || 0}/${proof.evaluated} conditions` : proofState.label)}"><i data-lucide="${proofState.icon}"></i></span></td>
-        <td><button class="radar-action ${decisionClass(row.decision)}" type="button" data-signal-symbol="${escapeHtml(row.symbol)}">${escapeHtml(decision)}</button></td>
+        <td><span class="radar-inline-actions"><button class="radar-action ${decisionClass(row.decision)}" type="button" data-signal-symbol="${escapeHtml(row.symbol)}">${escapeHtml(decision)}</button>${renderTradeActions(row, { compact: true })}</span></td>
       </tr>`;
     }).join("");
   }
@@ -756,7 +786,7 @@ function renderSignalDashboard() {
     stamp.textContent = scanAsOf ? `Scores updated ${isoDate(scanAsOf)}` : `${state.rows.length} stocks evaluated from the latest scan`;
   }
 
-  all("[data-signal-symbol]", radarBody).forEach((target) => target.addEventListener("click", (event) => {
+  all("button[data-signal-symbol]", radarBody).forEach((target) => target.addEventListener("click", (event) => {
     event.stopPropagation();
     selectSymbol(target.dataset.signalSymbol);
   }));
@@ -849,18 +879,15 @@ function renderCandidates() {
   }
   node.innerHTML = rows.map((row) => {
     const active = state.selected?.symbol === row.symbol ? " active" : "";
-    return `<button class="candidate-row${active}" type="button" data-symbol="${escapeHtml(row.symbol)}">
-      <span>
-        <strong>${escapeHtml(row.symbol)}</strong>
-        <small>${escapeHtml(row.name || row.sector || "NSE")}</small>
-      </span>
-      <span class="candidate-metrics">
-        <b>${fmtNumber(row.score)}</b>
-        <em class="status-pill ${decisionClass(row.decision)}">${decisionDisplay(row.decision)}</em>
-      </span>
-    </button>`;
+    return `<div class="candidate-row${active}" data-candidate-symbol="${escapeHtml(row.symbol)}">
+      <button class="candidate-select" type="button" data-symbol="${escapeHtml(row.symbol)}">
+        <span><strong>${escapeHtml(row.symbol)}</strong><small>${escapeHtml(row.name || row.sector || "NSE")}</small></span>
+        <span class="candidate-metrics"><b>${fmtNumber(row.score)}</b><em class="status-pill ${decisionClass(row.decision)}">${decisionDisplay(row.decision)}</em></span>
+      </button>
+      ${renderTradeActions(row, { compact: true })}
+    </div>`;
   }).join("");
-  all(".candidate-row", node).forEach((button) => {
+  all(".candidate-select", node).forEach((button) => {
     button.addEventListener("click", () => selectSymbol(button.dataset.symbol));
   });
 }
@@ -1045,7 +1072,8 @@ function renderAutoOrderReadiness(row = state.selected) {
       <article><span>Target</span><strong>${fmtPrice(openPosition?.target_price || latestOrder?.target_price || targetPrice)}</strong><small>${fmtNumber(targetPct)}% target room</small></article>
       <article><span>Parameter proof</span><strong>${escapeHtml(proofText)}</strong><small>Score | hits/evaluated</small></article>
       <article><span>Execution</span><strong>${openPosition ? "BOUGHT" : executionReady ? "AUTOMATIC" : "FILTERED"}</strong><small>Fresh quote and market gates apply</small></article>
-    </div>`;
+    </div>
+    <div class="engine-order-actions"><span>Manual paper control</span>${renderTradeActions(row)}</div>`;
 }
 
 function factorScore(name, value, max = 10) {
@@ -1129,12 +1157,12 @@ function renderPiano() {
       const results = rowParameterResults(row, ctx);
       const hit = results.filter((item) => item.result.state === "hit").length;
       const bits = results.slice(0, 32).map((item) => `<span title="P${item.param.id} ${escapeHtml(item.param.name)}: ${escapeHtml(item.result.value)}" class="string-bit ${item.result.state}" data-param="${item.param.id}" data-symbol="${escapeHtml(row.symbol)}"></span>`).join("");
-      return `<button class="piano-stock" type="button" data-symbol="${escapeHtml(row.symbol)}">
-        <strong>${hit}/${total}</strong>
-        <span class="piano-string">${bits}</span>
-        <b>${escapeHtml(row.symbol)}</b>
-        <em>${decisionDisplay(row.decision)}</em>
-      </button>`;
+      return `<div class="piano-stock-row">
+        <button class="piano-stock" type="button" data-symbol="${escapeHtml(row.symbol)}">
+          <strong>${hit}/${total}</strong><span class="piano-string">${bits}</span><b>${escapeHtml(row.symbol)}</b><em>${decisionDisplay(row.decision)}</em>
+        </button>
+        ${renderTradeActions(row, { compact: true })}
+      </div>`;
     }).join("");
     const groups = [...new Set(parameterCatalog.map((param) => param.group))];
     const keys = groups.map((group) => {
@@ -1182,6 +1210,7 @@ function renderParameterProof(param, focusSymbol = "") {
     <td>${escapeHtml(result.value)}</td>
     <td>${escapeHtml(decisionDisplay(row.decision))}</td>
     <td>${escapeHtml(row.reason || "")}</td>
+    <td>${renderTradeActions(row, { compact: true })}</td>
   </tr>`).join("");
   node.innerHTML = `<div class="proof-summary">
       <article><span class="mini-label">Requirement</span><strong>${escapeHtml(param.why)}</strong></article>
@@ -1193,7 +1222,7 @@ function renderParameterProof(param, focusSymbol = "") {
     ${focus ? `<div class="focus-proof"><strong>${escapeHtml(focus.row.symbol)}</strong><span class="status-pill ${focus.result.state}">${escapeHtml(focus.result.state.toUpperCase())}</span><p>${escapeHtml(focus.result.value)}</p></div>` : ""}
     <div class="table-wrap proof-table">
       <table>
-        <thead><tr><th>Symbol</th><th>Effect</th><th>Computed value</th><th>Decision</th><th>Reason</th></tr></thead>
+        <thead><tr><th>Symbol</th><th>Effect</th><th>Computed value</th><th>Decision</th><th>Reason</th><th>Action</th></tr></thead>
         <tbody>${tableRows}</tbody>
       </table>
     </div>`;
@@ -1290,11 +1319,14 @@ function renderParameterTunnel() {
   stockList.innerHTML = visibleStocks.length ? visibleStocks.map((row) => {
     const summary = row.parameter_tunnel.summary || {};
     const checked = selectedSymbols.has(row.symbol);
-    return `<button class="tunnel-stock-row ${checked ? "active" : ""}" type="button" data-tunnel-symbol="${escapeHtml(row.symbol)}">
-      <span class="tunnel-stock-check"><i data-lucide="${checked ? "check" : "plus"}"></i></span>
-      <span><strong>${escapeHtml(row.symbol)}</strong><small>${escapeHtml(row.name || "NSE equity")}</small></span>
-      <span class="tunnel-stock-score"><b>${fmtNumber(summary.evidence_score || 0, 1)}</b><small>${summary.positive_hits || 0}/${summary.evaluated || 0}</small></span>
-    </button>`;
+    return `<div class="tunnel-stock-row ${checked ? "active" : ""}">
+      <button class="tunnel-stock-select" type="button" data-tunnel-symbol="${escapeHtml(row.symbol)}">
+        <span class="tunnel-stock-check"><i data-lucide="${checked ? "check" : "plus"}"></i></span>
+        <span><strong>${escapeHtml(row.symbol)}</strong><small>${escapeHtml(row.name || "NSE equity")}</small></span>
+        <span class="tunnel-stock-score"><b>${fmtNumber(summary.evidence_score || 0, 1)}</b><small>${summary.positive_hits || 0}/${summary.evaluated || 0}</small></span>
+      </button>
+      ${renderTradeActions(row, { compact: true })}
+    </div>`;
   }).join("") : `<div class="tunnel-empty">No real scan row matches this stock search.</div>`;
   all("[data-tunnel-symbol]", stockList).forEach((button) => button.addEventListener("click", () => {
     const symbol = button.dataset.tunnelSymbol;
@@ -1389,7 +1421,7 @@ function renderTunnelInspector(param, focusSymbol = "") {
         <header><button type="button" data-symbol="${escapeHtml(row.symbol)}">${escapeHtml(row.symbol)}</button><span>${escapeHtml(result.state.replaceAll("_", " "))}</span></header>
         <strong>${escapeHtml(result.value ?? "Not counted")}</strong>
         <p>${escapeHtml(result.evidence)}</p>
-        <small>${escapeHtml(result.effect)}</small>
+        <small>${escapeHtml(result.effect)}</small>${renderTradeActions(row, { compact: true })}
       </article>`).join("") : `<div class="tunnel-empty">This node has no selected stock evidence yet.</div>`}
     </div>`;
   all("[data-symbol]", node).forEach((button) => button.addEventListener("click", () => selectSymbol(button.dataset.symbol)));
@@ -1400,7 +1432,7 @@ function renderScreener() {
   if (!body) return;
   const rows = visibleRows().slice(0, 250);
   if (!rows.length) {
-    body.innerHTML = `<tr><td colspan="7">No stock rows matched the current filter.</td></tr>`;
+    body.innerHTML = `<tr><td colspan="8">No stock rows matched the current filter.</td></tr>`;
     return;
   }
   body.innerHTML = rows.map((row) => `<tr>
@@ -1411,6 +1443,7 @@ function renderScreener() {
     <td>${fmtPct(row.return_6m_pct)} / ${fmtPct(row.return_12m_pct)}</td>
     <td>${fmtInt(row.adv20)} / ${fmtNumber(row.rupee_turnover_cr)} cr</td>
     <td>${escapeHtml(row.reason || "")}</td>
+    <td>${renderTradeActions(row, { compact: true })}</td>
   </tr>`).join("");
   all("[data-symbol]", body).forEach((button) => button.addEventListener("click", () => selectSymbol(button.dataset.symbol)));
 }
@@ -1510,6 +1543,7 @@ function renderPortfolioDashboard() {
     <td class="${pnlClass(position.unrealized_pnl_pct)}">${fmtPct(position.unrealized_pnl_pct)}</td>
     <td>${fmtPrice(position.target_price)}</td>
     <td>${fmtPrice(position.stop_price)}</td>
+    <td>${renderTradeActions(position, { compact: true })}</td>
   </tr>`).join("");
 
   const latestClosedTrades = [...closedTrades]
@@ -1523,6 +1557,7 @@ function renderPortfolioDashboard() {
     <td class="${pnlClass(trade.realized_pnl)}"><strong>${fmtPrice(trade.realized_pnl)}</strong></td>
     <td class="${pnlClass(trade.return_pct)}">${fmtPct(trade.return_pct)}</td>
     <td>${escapeHtml(isoDate(trade.exit_at))}</td>
+    <td>${renderTradeActions(trade, { compact: true })}</td>
   </tr>`).join("");
 
   const recentOrders = [...orders]
@@ -1537,6 +1572,7 @@ function renderPortfolioDashboard() {
       <span class="activity-mark ${tone}">${escapeHtml(initial)}</span>
       <span><strong>${escapeHtml(side)} ${escapeHtml(order.symbol)}</strong><small>${fmtInt(order.qty)} @ ${fmtPrice(order.price)} · ${escapeHtml(order.status || "RECORDED")}</small></span>
       <time>${escapeHtml(isoDate(order.updated_at || order.created_at || order.quote_timestamp))}</time>
+      ${renderTradeActions(order, { compact: true })}
     </li>`;
   }).join("");
 
@@ -1594,7 +1630,7 @@ function renderPortfolioDashboard() {
     <section class="portfolio-dashboard-grid">
       <article class="portfolio-card portfolio-open-card">
         <header><div><h4>Open Positions <span>${positions.length}</span></h4><p>Live mark-to-market, targets and stops</p></div><button type="button" data-dashboard-book="open">View all <i data-lucide="chevron-right"></i></button></header>
-        <div class="portfolio-table-scroll"><table><thead><tr><th>Symbol</th><th>Qty</th><th>Entry</th><th>LTP</th><th>P&amp;L</th><th>Return</th><th>Target</th><th>Stop</th></tr></thead><tbody>${openRows || `<tr><td colspan="8" class="empty-state">No open paper positions.</td></tr>`}</tbody></table></div>
+        <div class="portfolio-table-scroll"><table><thead><tr><th>Symbol</th><th>Qty</th><th>Entry</th><th>LTP</th><th>P&amp;L</th><th>Return</th><th>Target</th><th>Stop</th><th>Action</th></tr></thead><tbody>${openRows || `<tr><td colspan="9" class="empty-state">No open paper positions.</td></tr>`}</tbody></table></div>
       </article>
 
       <aside class="portfolio-card portfolio-risk-card">
@@ -1616,7 +1652,7 @@ function renderPortfolioDashboard() {
 
       <article class="portfolio-card portfolio-closed-card">
         <header><div><h4>Closed Trades <span>${closedTrades.length}</span></h4><p>Sold stocks and realized returns</p></div><button type="button" data-dashboard-book="closed">View all <i data-lucide="chevron-right"></i></button></header>
-        <div class="portfolio-table-scroll"><table><thead><tr><th>Symbol</th><th>Qty</th><th>Entry</th><th>Exit</th><th>Net P&amp;L</th><th>Return</th><th>Exit time</th></tr></thead><tbody>${closedRows || `<tr><td colspan="7" class="empty-state">No closed paper trades yet.</td></tr>`}</tbody></table></div>
+        <div class="portfolio-table-scroll"><table><thead><tr><th>Symbol</th><th>Qty</th><th>Entry</th><th>Exit</th><th>Net P&amp;L</th><th>Return</th><th>Exit time</th><th>Action</th></tr></thead><tbody>${closedRows || `<tr><td colspan="8" class="empty-state">No closed paper trades yet.</td></tr>`}</tbody></table></div>
       </article>
 
       <article class="portfolio-card portfolio-activity-card">
@@ -1657,9 +1693,7 @@ async function loadOrders() {
   } catch (error) {
     state.orders = { ok: false, error: error.message, orders: [], positions: [], trades: [] };
   }
-  renderOrders();
-  renderPortfolioDashboard();
-  renderAutoOrderReadiness();
+  renderAll();
 }
 
 function renderOrders() {
@@ -1686,6 +1720,7 @@ function renderOrders() {
       <td class="${pnlClass(position.unrealized_pnl_pct)}">${fmtNumber(position.unrealized_pnl_pct)}%</td>
       <td>${position.parameter_evidence?.evaluated ? `${fmtNumber(position.parameter_evidence.evidence_score)} | ${position.parameter_evidence.positive_hits}/${position.parameter_evidence.evaluated}` : "Manual order"}</td>
       <td>${escapeHtml(isoDate(position.quote_timestamp || position.checked_at || position.entry_date))}</td>
+      <td>${renderTradeActions(position, { compact: true })}</td>
     </tr>`).join("");
   const closedRows = closedTrades.map((trade) => `<tr>
       <td><strong>${escapeHtml(trade.symbol)}</strong><small>${escapeHtml(trade.close_reason || "Paper SELL")}</small></td>
@@ -1701,6 +1736,7 @@ function renderOrders() {
       <td>${escapeHtml(isoDate(trade.entry_at))}</td>
       <td>${escapeHtml(isoDate(trade.exit_at))}</td>
       <td>${numberValue(trade.holding_days) === null ? "NA" : `${fmtNumber(trade.holding_days)} days`}</td>
+      <td>${renderTradeActions(trade, { compact: true })}</td>
     </tr>`).join("");
   const orderRows = orders.slice(0, 50).map((order) => `<tr>
       <td>${escapeHtml(order.symbol)}</td>
@@ -1709,6 +1745,7 @@ function renderOrders() {
       <td>${fmtPrice(order.price)}</td>
       <td><strong>${escapeHtml(order.status)}</strong>${order.rejection_reason ? `<small>${escapeHtml(order.rejection_reason)}</small>` : ""}</td>
       <td>${escapeHtml(isoDate(order.quote_timestamp || order.updated_at || order.created_at))}</td>
+      <td>${renderTradeActions(order, { compact: true })}</td>
     </tr>`).join("");
   const deployment = numberValue(funds.deployment_pct) || 0;
   const affordableAtMinimum = numberValue(
@@ -1739,8 +1776,8 @@ function renderOrders() {
       <div class="ledger-panel-head"><h4>Open Positions</h4><span>Live mark-to-market return</span></div>
       <div class="ledger-scroll">
         <table>
-          <thead><tr><th>Symbol</th><th>Qty</th><th>Entry</th><th>LTP</th><th>Market value</th><th>Unrealized P&L</th><th>Return</th><th>Parameter proof</th><th>Quote time</th></tr></thead>
-          <tbody>${positionRows || `<tr><td colspan="9">No open paper position.</td></tr>`}</tbody>
+          <thead><tr><th>Symbol</th><th>Qty</th><th>Entry</th><th>LTP</th><th>Market value</th><th>Unrealized P&L</th><th>Return</th><th>Parameter proof</th><th>Quote time</th><th>Action</th></tr></thead>
+          <tbody>${positionRows || `<tr><td colspan="10">No open paper position.</td></tr>`}</tbody>
         </table>
       </div>
     </section>
@@ -1748,8 +1785,8 @@ function renderOrders() {
       <div class="ledger-panel-head"><h4>Closed Trades</h4><span>Every sold stock with realized return</span></div>
       <div class="ledger-scroll">
         <table>
-          <thead><tr><th>Symbol</th><th>Qty</th><th>Entry</th><th>Exit</th><th>Invested</th><th>Exit value</th><th>Gross P&L</th><th>Costs</th><th>Net P&L</th><th>Net return</th><th>Entry time</th><th>Exit time</th><th>Held</th></tr></thead>
-          <tbody>${closedRows || `<tr><td colspan="13">No closed paper trades yet. Sold positions will appear here with their net realized return.</td></tr>`}</tbody>
+          <thead><tr><th>Symbol</th><th>Qty</th><th>Entry</th><th>Exit</th><th>Invested</th><th>Exit value</th><th>Gross P&L</th><th>Costs</th><th>Net P&L</th><th>Net return</th><th>Entry time</th><th>Exit time</th><th>Held</th><th>Action</th></tr></thead>
+          <tbody>${closedRows || `<tr><td colspan="14">No closed paper trades yet. Sold positions will appear here with their net realized return.</td></tr>`}</tbody>
         </table>
       </div>
     </section>
@@ -1757,8 +1794,8 @@ function renderOrders() {
       <div class="ledger-panel-head"><h4>Order History</h4><span>Filled and rejected lifecycle events</span></div>
       <div class="ledger-scroll">
         <table>
-          <thead><tr><th>Symbol</th><th>Side</th><th>Qty</th><th>Fill price</th><th>Status</th><th>Real quote time</th></tr></thead>
-          <tbody>${orderRows || `<tr><td colspan="6">No paper order history.</td></tr>`}</tbody>
+          <thead><tr><th>Symbol</th><th>Side</th><th>Qty</th><th>Fill price</th><th>Status</th><th>Real quote time</th><th>Action</th></tr></thead>
+          <tbody>${orderRows || `<tr><td colspan="7">No paper order history.</td></tr>`}</tbody>
         </table>
       </div>
     </section>
@@ -1901,51 +1938,181 @@ function exportCsv() {
   URL.revokeObjectURL(url);
 }
 
-async function submitPaperOrder(event) {
+function quickTradeReferencePrice(source, position = null) {
+  return numberValue(
+    position?.current_price
+      ?? source?.last_price
+      ?? source?.current_price
+      ?? source?.close
+      ?? source?.exit_price
+      ?? source?.price
+      ?? source?.entry_price
+  );
+}
+
+function paperBuyQuantityForValue(value, price) {
+  const targetValue = Math.max(0, numberValue(value) || 0);
+  const referencePrice = numberValue(price);
+  if (!targetValue || !referencePrice) return 1;
+  return Math.max(1, Math.ceil((targetValue * 1.005) / referencePrice));
+}
+
+function updateQuickTradeEstimate() {
+  const trade = state.quickTrade;
+  if (!trade) return;
+  const qty = Math.max(0, Math.floor(numberValue(el("quickTradeQty")?.value) || 0));
+  const estimate = trade.referencePrice ? qty * trade.referencePrice : null;
+  if (el("quickTradeEstimate")) el("quickTradeEstimate").textContent = estimate === null ? "Waiting for Upstox quote" : fmtPrice(estimate);
+  if (el("quickTradeHolding")) {
+    el("quickTradeHolding").textContent = trade.position
+      ? `${fmtInt(trade.position.qty)} held · ${fmtPrice(trade.position.current_price || trade.position.entry_price)} current mark`
+      : "No open position";
+  }
+}
+
+function renderQuickTradeModal() {
+  const trade = state.quickTrade;
+  if (!trade) return;
+  const minimumEntryValue = numberValue(state.orders?.capital_policy?.minimumEntryValue) || 100000;
+  const heldQty = Math.max(0, Math.floor(numberValue(trade.position?.qty) || 0));
+  el("quickTradeTitle").textContent = `${trade.side === "BUY" && heldQty ? "Add to" : trade.side === "BUY" ? "Buy" : "Exit"} ${trade.symbol}`;
+  el("quickTradeMode").textContent = `${trade.side} · MARKET · PAPER ONLY`;
+  el("quickTradeMode").className = `quick-trade-mode ${trade.side.toLowerCase()}`;
+  el("quickTradeSymbol").textContent = trade.symbol;
+  el("quickTradeQuote").textContent = trade.referencePrice
+    ? `${fmtPrice(trade.referencePrice)} reference · server will verify ${trade.side === "BUY" ? "ask" : "bid"}`
+    : "Fetching live Upstox depth";
+  el("quickTradeSubmit").textContent = state.quickTradeSubmitting
+    ? "Submitting…"
+    : trade.side === "BUY"
+      ? heldQty ? "Confirm ADD" : "Confirm BUY"
+      : heldQty && Number(el("quickTradeQty")?.value) === heldQty ? "Confirm EXIT ALL" : "Confirm SELL";
+  el("quickTradeSubmit").className = `quick-trade-submit ${trade.side.toLowerCase()}`;
+  el("quickTradeSubmit").disabled = state.quickTradeSubmitting
+    || (trade.side === "SELL" && !heldQty)
+    || (trade.side === "BUY" && !trade.referencePrice);
+  el("quickTradePresets").innerHTML = trade.side === "BUY"
+    ? [minimumEntryValue, 200000, 500000].map((value) => `<button type="button" data-quick-buy-value="${value}">${value === minimumEntryValue ? "₹1L+ min" : value === 200000 ? "₹2L" : "₹5L"}</button>`).join("")
+    : `<button type="button" data-quick-sell-pct="25">25%</button><button type="button" data-quick-sell-pct="50">50%</button><button type="button" data-quick-sell-pct="100">EXIT ALL</button>`;
+  updateQuickTradeEstimate();
+}
+
+async function openQuickTrade(symbol, side) {
+  const normalized = String(symbol || "").trim().toUpperCase();
+  const normalizedSide = String(side || "BUY").toUpperCase();
+  const source = tradeSourceFor(normalized);
+  const position = openPaperPosition(normalized);
+  if (!normalized || !["BUY", "SELL"].includes(normalizedSide)) return;
+  if (normalizedSide === "SELL" && !position) {
+    setNotice(`EXIT blocked: ${normalized} has no open paper position`, "error");
+    return;
+  }
+  const referencePrice = quickTradeReferencePrice(source, position);
+  const minimumEntryValue = numberValue(state.orders?.capital_policy?.minimumEntryValue) || 100000;
+  const defaultQty = normalizedSide === "SELL"
+    ? Math.max(1, Math.floor(numberValue(position?.qty) || 1))
+    : referencePrice
+      ? paperBuyQuantityForValue(minimumEntryValue, referencePrice)
+      : 1;
+  state.quickTrade = {
+    symbol: normalized,
+    side: normalizedSide,
+    source,
+    position,
+    instrumentKey: String(source?.instrument_key || position?.instrument_key || ""),
+    referencePrice,
+    quantityTouched: false
+  };
+  el("quickTradeQty").value = defaultQty;
+  el("quickTradeError").textContent = "";
+  renderQuickTradeModal();
+  const dialog = el("quickTradeDialog");
+  if (dialog && !dialog.open) dialog.showModal();
+  try {
+    const instrumentQuery = state.quickTrade.instrumentKey ? `instrument_key=${encodeURIComponent(state.quickTrade.instrumentKey)}&` : "";
+    const payload = await api(`/api/upstox/quote?${instrumentQuery}symbol=${encodeURIComponent(normalized)}`);
+    if (!state.quickTrade || state.quickTrade.symbol !== normalized || state.quickTrade.side !== normalizedSide) return;
+    const quote = payload.quotes?.[0] || null;
+    const livePrice = numberValue(quote?.last_price);
+    if (livePrice) {
+      state.quickTrade.referencePrice = livePrice;
+      state.quickTrade.quoteTimestamp = quote?.timestamp || "";
+      if (normalizedSide === "BUY" && !state.quickTrade.quantityTouched) el("quickTradeQty").value = paperBuyQuantityForValue(minimumEntryValue, livePrice);
+    }
+    renderQuickTradeModal();
+  } catch (error) {
+    if (state.quickTrade?.symbol === normalized) {
+      el("quickTradeQuote").textContent = `Live preview unavailable · server quote gate still applies`;
+      el("quickTradeError").textContent = error.message;
+    }
+  }
+}
+
+function closeQuickTrade() {
+  if (state.quickTradeSubmitting) return;
+  const dialog = el("quickTradeDialog");
+  if (dialog?.open) dialog.close();
+  state.quickTrade = null;
+}
+
+async function submitQuickTrade(event) {
   event.preventDefault();
-  const row = state.selected || state.rows.find((item) => item.symbol === el("ticketSymbol").value.trim().toUpperCase());
-  if (!row) {
-    setNotice("Paper order blocked: select a scanned NSE symbol first", "error");
+  const trade = state.quickTrade;
+  if (!trade || state.quickTradeSubmitting) return;
+  const qty = Math.max(1, Math.floor(numberValue(el("quickTradeQty").value) || 1));
+  const heldQty = Math.max(0, Math.floor(numberValue(trade.position?.qty) || 0));
+  if (trade.side === "SELL" && qty > heldQty) {
+    el("quickTradeError").textContent = `Quantity ${qty} exceeds held quantity ${heldQty}.`;
     return;
   }
-  await fetchSelectedQuote(row);
-  const quotePrice = numberValue(state.selectedQuote?.last_price);
-  const scanPrice = numberValue(row.close);
-  const orderType = el("ticketOrderType").value;
-  const typedPrice = numberValue(el("ticketPrice").value);
-  const executionPrice = orderType === "MARKET" ? quotePrice : typedPrice;
-  if (!executionPrice) {
-    setNotice("Paper order blocked: a current real Upstox quote is required", "error");
-    return;
-  }
+  const row = tradeSourceFor(trade.symbol, trade.source);
+  const parameterResults = row.parameter_tunnel?.results || [];
   const body = {
-    symbol: row.symbol,
-    instrument_key: row.instrument_key,
-    name: row.name,
-    side: el("ticketSide").value,
-    order_type: orderType,
-    qty: Math.max(1, Math.floor(numberValue(el("ticketQty").value) || 1)),
-    price: executionPrice,
-    decision_price: scanPrice,
-    quote_timestamp: state.selectedQuote?.timestamp || "",
-    stop_price: numberValue(el("ticketStop").value),
-    target_price: numberValue(el("ticketTarget").value),
-    product: el("ticketProduct").value,
-    source: "ash-stock-dashboard",
+    idempotency_key: `inline-${trade.symbol}-${trade.side}-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`,
+    symbol: trade.symbol,
+    instrument_key: trade.instrumentKey,
+    name: row.name || trade.symbol,
+    sector: row.sector || trade.position?.sector || "Unmapped",
+    side: trade.side,
+    order_type: "MARKET",
+    product: "SWING",
+    qty,
+    price: trade.referencePrice,
+    decision_price: trade.referencePrice,
+    quote_timestamp: trade.quoteTimestamp || "",
+    stop_price: trade.side === "BUY" ? numberValue(row.paper_order?.stop_price ?? row.stop_price ?? row.advisor?.stop) : null,
+    target_price: trade.side === "BUY" ? numberValue(row.paper_order?.target_price ?? row.target_price ?? row.advisor?.target2) : null,
+    source: "ash-stock-inline-controls",
+    paper_only: true,
+    broker_write_enabled: false,
     parameter_evidence: {
       ...(row.parameter_tunnel?.summary || {}),
       version: row.parameter_tunnel?.version || "",
-      top_hits: (row.parameter_tunnel?.results || []).filter((item) => item.state === "HIT").slice(0, 12).map((item) => item.id),
-      risk_hits: (row.parameter_tunnel?.results || []).filter((item) => item.state === "RISK").slice(0, 12).map((item) => item.id)
+      top_hits: parameterResults.filter((item) => item.state === "HIT").slice(0, 12).map((item) => item.id),
+      risk_hits: parameterResults.filter((item) => item.state === "RISK").slice(0, 12).map((item) => item.id)
     },
-    thesis: `${decisionDisplay(row.decision)} | score ${fmtNumber(row.score)} | ${row.reason || "scanner row"}`
+    thesis: trade.side === "SELL"
+      ? `Manual paper ${qty === heldQty ? "full exit" : "partial exit"} from inline ledger control`
+      : `${decisionDisplay(row.decision)} | score ${fmtNumber(row.score)} | ${row.reason || "manual inline paper BUY"}`
   };
+  state.quickTradeSubmitting = true;
+  el("quickTradeError").textContent = "";
+  renderQuickTradeModal();
   try {
     const result = await api("/api/paper-trader/order", { method: "POST", body });
-    setNotice(`${result.action || "Paper order saved"}: ${row.symbol} ${body.side} ${body.qty} @ ${fmtPrice(body.price)}`, "ok");
+    const fill = result.order?.price;
+    const verb = trade.side === "BUY" ? heldQty ? "ADDED" : "BOUGHT" : qty === heldQty ? "EXITED" : "SOLD";
+    state.quickTradeSubmitting = false;
+    closeQuickTrade();
+    setNotice(`${trade.symbol} ${verb}: ${fmtInt(qty)} @ ${fmtPrice(fill)} · server-verified Upstox ${trade.side === "BUY" ? "ask" : "bid"}`, "ok");
     await loadOrders();
   } catch (error) {
-    setNotice(`Paper order failed: ${error.message}`, "error");
+    state.quickTradeSubmitting = false;
+    if (state.quickTrade) {
+      el("quickTradeError").textContent = error.message;
+      renderQuickTradeModal();
+    }
+    setNotice(`${trade.symbol} ${trade.side} failed: ${error.message}`, "error");
   }
 }
 
@@ -1992,6 +2159,13 @@ async function submitUpstoxToken(event) {
 }
 
 function bindUi() {
+  document.addEventListener("click", (event) => {
+    const action = event.target.closest("[data-quick-trade]");
+    if (!action || action.disabled) return;
+    event.preventDefault();
+    event.stopPropagation();
+    openQuickTrade(action.dataset.tradeSymbol, action.dataset.quickTrade);
+  });
   all(".rail-item[data-section]").forEach((button) => button.addEventListener("click", () => routeRailNavigation(button)));
   all(".tab-button").forEach((button) => button.addEventListener("click", () => {
     state.horizon = button.dataset.horizon;
@@ -2011,7 +2185,39 @@ function bindUi() {
   el("symbolSearch")?.addEventListener("input", () => { renderCandidates(); renderScreener(); });
   el("decisionFilter")?.addEventListener("change", () => { renderCandidates(); renderScreener(); });
   el("exportBtn")?.addEventListener("click", exportCsv);
-  el("paperTicket")?.addEventListener("submit", submitPaperOrder);
+  el("quickTradeForm")?.addEventListener("submit", submitQuickTrade);
+  el("quickTradeCancel")?.addEventListener("click", closeQuickTrade);
+  el("quickTradeQty")?.addEventListener("input", () => {
+    if (!state.quickTrade) return;
+    state.quickTrade.quantityTouched = true;
+    renderQuickTradeModal();
+  });
+  el("quickTradePresets")?.addEventListener("click", (event) => {
+    const buyPreset = event.target.closest("[data-quick-buy-value]");
+    const sellPreset = event.target.closest("[data-quick-sell-pct]");
+    if (!state.quickTrade || (!buyPreset && !sellPreset)) return;
+    event.preventDefault();
+    if (buyPreset) {
+      if (!state.quickTrade.referencePrice) {
+        el("quickTradeError").textContent = "A price reference is required before sizing by value.";
+        return;
+      }
+      el("quickTradeQty").value = paperBuyQuantityForValue(Number(buyPreset.dataset.quickBuyValue), state.quickTrade.referencePrice);
+    } else {
+      const heldQty = Math.max(1, Math.floor(numberValue(state.quickTrade.position?.qty) || 1));
+      const pct = Number(sellPreset.dataset.quickSellPct);
+      el("quickTradeQty").value = pct === 100 ? heldQty : Math.max(1, Math.floor(heldQty * pct / 100));
+    }
+    state.quickTrade.quantityTouched = true;
+    renderQuickTradeModal();
+  });
+  el("quickTradeDialog")?.addEventListener("cancel", (event) => {
+    event.preventDefault();
+    closeQuickTrade();
+  });
+  el("quickTradeDialog")?.addEventListener("click", (event) => {
+    if (event.target === el("quickTradeDialog")) closeQuickTrade();
+  });
   el("tunnelParameterSearch")?.addEventListener("input", (event) => {
     state.tunnelParameterQuery = event.target.value;
     renderParameterTunnel();

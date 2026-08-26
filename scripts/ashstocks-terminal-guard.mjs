@@ -67,8 +67,8 @@ for (const text of [
   'data-nav-title="Help"',
   'id="railBuild"',
   'id="helpSection" data-panel="help"',
-  'styles.css?v=20260825.6',
-  'app.js?v=20260825.6',
+  'styles.css?v=20260826.1',
+  'app.js?v=20260826.1',
   'FII Holding / Δ',
   'Legacy broker workspace loaders remain'
 ]) {

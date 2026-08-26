@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>ASH Stock</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="./styles.css?v=20260825.6" />
+    <link rel="stylesheet" href="./styles.css?v=20260826.1" />
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
-    <script src="./app.js?v=20260825.6" defer></script>
+    <script src="./app.js?v=20260826.1" defer></script>
     <!-- The current shell is owned by app.js. Legacy broker workspace loaders remain
          available in the repository but are intentionally not mounted on this page. -->
   </head>
@@ -246,6 +246,7 @@
                     <th>6M / 12M</th>
                     <th>Liquidity</th>
                     <th>Reason</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody id="screenerBody"></tbody>
@@ -416,5 +417,36 @@
         </section>
       </main>
     </div>
+
+    <dialog class="quick-trade-dialog" id="quickTradeDialog" aria-labelledby="quickTradeTitle">
+      <form id="quickTradeForm" method="dialog">
+        <header>
+          <div>
+            <span class="mini-label">Inline Paper Order</span>
+            <h3 id="quickTradeTitle">Paper trade</h3>
+          </div>
+          <span class="quick-trade-mode buy" id="quickTradeMode">BUY · MARKET · PAPER ONLY</span>
+        </header>
+        <section class="quick-trade-symbol-line">
+          <div><span>Stock</span><strong id="quickTradeSymbol">NSE</strong></div>
+          <div><span>Open holding</span><strong id="quickTradeHolding">No open position</strong></div>
+        </section>
+        <label class="quick-trade-field">
+          <span>Quantity</span>
+          <input id="quickTradeQty" name="qty" type="number" min="1" step="1" inputmode="numeric" required />
+        </label>
+        <div class="quick-trade-presets" id="quickTradePresets" aria-label="Quick quantity presets"></div>
+        <section class="quick-trade-value">
+          <div><span>Reference quote</span><strong id="quickTradeQuote">Fetching live Upstox depth</strong></div>
+          <div><span>Estimated value</span><strong id="quickTradeEstimate">Waiting for Upstox quote</strong></div>
+        </section>
+        <p class="quick-trade-safety"><i data-lucide="shield-check" aria-hidden="true"></i> The server verifies fresh Upstox depth, market hours, circuits and risk limits before any paper fill. Broker writes remain locked.</p>
+        <p class="quick-trade-error" id="quickTradeError" role="alert"></p>
+        <footer>
+          <button class="quick-trade-cancel" id="quickTradeCancel" type="button">Cancel</button>
+          <button class="quick-trade-submit buy" id="quickTradeSubmit" type="submit">Confirm BUY</button>
+        </footer>
+      </form>
+    </dialog>
   </body>
 </html>
