@@ -8,7 +8,7 @@ This file is the restart point for the current release. It records facts only; a
 - Worktree: `C:\Users\j005607\Documents\Ash Stock\.codex-work\dashboard-selection-20260829`
 - Branch: `codex/dashboard-selection-phases`
 - Starting `origin/main`: `067c4d6659620c3db9a08f012a99492ab1ca4ce8`
-- Snapshot commit: **PENDING — fill after the implementation snapshot is committed**
+- Snapshot commit: `afa171b` (`checkpoint-ashstock-portable-snapshot`)
 - Push: **PENDING**
 - Pull request / merge: **PENDING**
 - Render deployment verification: **PENDING**
