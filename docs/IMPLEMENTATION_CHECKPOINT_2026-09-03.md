@@ -9,7 +9,7 @@ This file is the restart point for the current release. It records facts only; a
 - Branch: `codex/dashboard-selection-phases`
 - Starting `origin/main`: `067c4d6659620c3db9a08f012a99492ab1ca4ce8`
 - Snapshot commit: `afa171b` (`checkpoint-ashstock-portable-snapshot`)
-- Push: **PENDING**
+- Push: **COMPLETE — `origin/codex/dashboard-selection-phases`**
 - Pull request / merge: **PENDING**
 - Render deployment verification: **PENDING**
 
@@ -101,7 +101,7 @@ Required before claiming completion:
 3. **PASS:** full `scripts/smoke-test.mjs`, including exit/capital/scroll assertions.
 4. **PASS:** Python compile and compatibility API smoke. Full pytest was not run because pytest is not installed in the bundled local runtime.
 5. **PENDING:** rerun `git diff --check` after the final checkpoint edit and inspect the complete diff/status.
-6. **PENDING:** fetch `origin/main`, resolve drift, commit, and push `codex/dashboard-selection-phases`.
+6. **PASS:** fetched `origin/main` at `067c4d6` with no drift; committed and pushed the portable snapshot to `codex/dashboard-selection-phases`.
 7. **BLOCKED FOR MERGE:** fix the three Phase 2 release blockers, rerun all verification, then create/merge the PR.
 8. **PENDING AFTER MERGE:** verify the deployed commit, the Watchlist interaction at 100% zoom, and a real paper EXIT separately; health alone is not proof of working behavior.
 
