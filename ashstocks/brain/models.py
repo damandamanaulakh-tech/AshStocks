@@ -68,7 +68,7 @@ class ScanConfig:
     min_select_score: float = 70.0
     min_watch_score: float = 55.0
     target_potential_pct: float = 15.0
-    max_position_pct: float = 0.025
+    max_position_pct: float = 0.002
     paper_only: bool = True
     broker_write_enabled: bool = False
     max_stale_days: int = 7

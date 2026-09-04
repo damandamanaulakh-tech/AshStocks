@@ -13,6 +13,7 @@ const state = {
   institutional: { status: "idle", market: null, stocks: {} },
   upstoxStatus: null,
   activeSection: "dashboard",
+  activeNavKey: "dashboard",
   horizon: "intraday",
   lastError: "",
   activeParameter: null,
@@ -26,6 +27,10 @@ const state = {
   tunnelStockQuery: "",
   lastAutoPortfolioAttemptAt: 0,
   paperLedgerTab: "open",
+  portfolioView: "holdings",
+  orderWorkspaceView: "book",
+  formulaSettings: null,
+  formulaSettingsSaving: false,
   quickTrade: null,
   quickTradeSubmitting: false
 };
@@ -731,7 +736,7 @@ async function loadInstitutionalEvidence(rows = []) {
 function renderSignalDashboard() {
   const radarBody = el("signalRadarBody");
   if (!radarBody) return;
-  const rows = sortedRows().slice(0, 8);
+  const rows = sortedRows();
   const counts = state.rows.reduce((summary, row) => {
     const key = row.decision === "SELECT"
       ? "SELECT"
@@ -1067,7 +1072,7 @@ function renderAutoOrderReadiness(row = state.selected) {
     </div>
     <div class="engine-order-grid">
       <article><span>Entry</span><strong>${escapeHtml(entryText)}</strong><small>${quotePrice ? escapeHtml(isoDate(state.selectedQuote?.timestamp)) : "Real Upstox quote gate"}</small></article>
-      <article><span>Quantity</span><strong>${fmtInt(openPosition?.qty || latestOrder?.qty || qty)}</strong><small>₹1 lakh minimum entry from ₹50 lakh paper capital</small></article>
+      <article><span>Quantity</span><strong>${fmtInt(openPosition?.qty || latestOrder?.qty || qty)}</strong><small>₹1 lakh minimum entry from ₹5 crore paper capital</small></article>
       <article><span>Stop</span><strong>${fmtPrice(openPosition?.stop_price || latestOrder?.stop_price || stopPrice)}</strong><small>Engine risk rule</small></article>
       <article><span>Target</span><strong>${fmtPrice(openPosition?.target_price || latestOrder?.target_price || targetPrice)}</strong><small>${fmtNumber(targetPct)}% target room</small></article>
       <article><span>Parameter proof</span><strong>${escapeHtml(proofText)}</strong><small>Score | hits/evaluated</small></article>
@@ -1430,7 +1435,7 @@ function renderTunnelInspector(param, focusSymbol = "") {
 function renderScreener() {
   const body = el("screenerBody");
   if (!body) return;
-  const rows = visibleRows().slice(0, 250);
+  const rows = visibleRows();
   if (!rows.length) {
     body.innerHTML = `<tr><td colspan="8">No stock rows matched the current filter.</td></tr>`;
     return;
@@ -1492,17 +1497,12 @@ function renderUpstoxSettings() {
   node.innerHTML = rows.map(([k, v]) => `<div class="detail-row"><span>${escapeHtml(k)}</span><strong>${escapeHtml(v)}</strong></div>`).join("");
 }
 
-function renderPortfolioDashboard() {
-  const targets = [el("portfolioDashboard"), el("paperTradeDashboard")].filter(Boolean);
-  if (!targets.length) return;
-  const stamps = [el("portfolioDashboardStamp"), el("paperTradeDashboardStamp")].filter(Boolean);
-  if (!state.orders) {
-    targets.forEach((node) => {
-      node.innerHTML = `<section class="portfolio-loading panel"><strong>Loading paper portfolio</strong><span>Reading positions, closed trades and capital controls.</span></section>`;
-    });
-    return;
-  }
+function portfolioPnlClass(value) {
+  return numberValue(value) > 0 ? "pnl-positive" : numberValue(value) < 0 ? "pnl-negative" : "pnl-flat";
+}
 
+function buildPortfolioViewModel() {
+  if (!state.orders) return null;
   const orders = Array.isArray(state.orders.orders) ? state.orders.orders : [];
   const positions = Array.isArray(state.orders.positions) ? state.orders.positions : [];
   const closedTrades = Array.isArray(state.orders.closed_trades) ? state.orders.closed_trades : [];
@@ -1515,6 +1515,9 @@ function renderPortfolioDashboard() {
   const unrealizedPnl = numberValue(funds.unrealized_pnl) || 0;
   const realizedPnl = numberValue(funds.realized_pnl) || 0;
   const totalPnl = numberValue(funds.total_pnl) || 0;
+  const deploymentPct = Math.max(0, Math.min(100, numberValue(funds.deployment_pct) || 0));
+  const totalReturnPct = startingCapital ? totalPnl / startingCapital * 100 : 0;
+  const percentageOfCapital = (value) => startingCapital ? (numberValue(value) || 0) / startingCapital * 100 : 0;
   const todayKey = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" });
   const todayRealizedPnl = closedTrades.reduce((sum, trade) => {
     const exitAt = Date.parse(trade.exit_at || "");
@@ -1522,60 +1525,16 @@ function renderPortfolioDashboard() {
     const exitKey = new Date(exitAt).toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" });
     return exitKey === todayKey ? sum + (numberValue(trade.realized_pnl) || 0) : sum;
   }, 0);
-  const todayRealizedReturnPct = startingCapital ? todayRealizedPnl / startingCapital * 100 : 0;
-  const deploymentPct = Math.max(0, Math.min(100, numberValue(funds.deployment_pct) || 0));
-  const totalReturnPct = startingCapital ? (totalPnl / startingCapital) * 100 : 0;
-  const maximumOpenPositions = numberValue(policy.maximumOpenPositions ?? funds.maximum_open_positions);
-  const minimumEntryValue = numberValue(policy.minimumEntryValue ?? funds.minimum_entry_value);
-  const maximumPositionPct = numberValue(policy.maximumPositionPct);
-  const cashBufferPct = numberValue(policy.cashBufferPct);
-  const maximumPortfolioHeatPct = numberValue(policy.maximumPortfolioHeatPct);
-  const drawdownLimitPct = numberValue(policy.portfolioDrawdownTriggerPct);
-  const pnlClass = (value) => numberValue(value) > 0 ? "pnl-positive" : numberValue(value) < 0 ? "pnl-negative" : "pnl-flat";
-  const percentageOfCapital = (value) => startingCapital ? (numberValue(value) || 0) / startingCapital * 100 : 0;
-
-  const openRows = positions.slice(0, 8).map((position) => `<tr>
-    <td><strong>${escapeHtml(position.symbol)}</strong><small>${escapeHtml(position.sector || position.status || "OPEN")}</small></td>
-    <td>${fmtInt(position.qty)}</td>
-    <td>${fmtPrice(position.entry_price)}</td>
-    <td>${fmtPrice(position.current_price)}</td>
-    <td class="${pnlClass(position.unrealized_pnl)}"><strong>${fmtPrice(position.unrealized_pnl)}</strong></td>
-    <td class="${pnlClass(position.unrealized_pnl_pct)}">${fmtPct(position.unrealized_pnl_pct)}</td>
-    <td>${fmtPrice(position.target_price)}</td>
-    <td>${fmtPrice(position.stop_price)}</td>
-    <td>${renderTradeActions(position, { compact: true })}</td>
-  </tr>`).join("");
-
-  const latestClosedTrades = [...closedTrades]
-    .sort((a, b) => Date.parse(b.exit_at || 0) - Date.parse(a.exit_at || 0))
-    .slice(0, 5);
-  const closedRows = latestClosedTrades.map((trade) => `<tr>
-    <td><strong>${escapeHtml(trade.symbol)}</strong></td>
-    <td>${fmtInt(trade.qty)}</td>
-    <td>${fmtPrice(trade.entry_price)}</td>
-    <td>${fmtPrice(trade.exit_price)}</td>
-    <td class="${pnlClass(trade.realized_pnl)}"><strong>${fmtPrice(trade.realized_pnl)}</strong></td>
-    <td class="${pnlClass(trade.return_pct)}">${fmtPct(trade.return_pct)}</td>
-    <td>${escapeHtml(isoDate(trade.exit_at))}</td>
-    <td>${renderTradeActions(trade, { compact: true })}</td>
-  </tr>`).join("");
-
-  const recentOrders = [...orders]
-    .sort((a, b) => Date.parse(b.updated_at || b.created_at || 0) - Date.parse(a.updated_at || a.created_at || 0))
-    .slice(0, 7);
-  const activityRows = recentOrders.map((order) => {
-    const side = String(order.side || "ORDER").toUpperCase();
-    const rejected = String(order.status || "").includes("REJECT");
-    const tone = rejected ? "rejected" : side === "BUY" ? "buy" : "sell";
-    const initial = rejected ? "!" : side.slice(0, 1);
-    return `<li>
-      <span class="activity-mark ${tone}">${escapeHtml(initial)}</span>
-      <span><strong>${escapeHtml(side)} ${escapeHtml(order.symbol)}</strong><small>${fmtInt(order.qty)} @ ${fmtPrice(order.price)} · ${escapeHtml(order.status || "RECORDED")}</small></span>
-      <time>${escapeHtml(isoDate(order.updated_at || order.created_at || order.quote_timestamp))}</time>
-      ${renderTradeActions(order, { compact: true })}
-    </li>`;
-  }).join("");
-
+  const sortedClosedTrades = [...closedTrades].sort((a, b) => Date.parse(b.exit_at || 0) - Date.parse(a.exit_at || 0));
+  const sortedOrders = [...orders].sort((a, b) => Date.parse(b.updated_at || b.created_at || 0) - Date.parse(a.updated_at || a.created_at || 0));
+  const wins = closedTrades.filter((trade) => (numberValue(trade.realized_pnl) || 0) > 0);
+  const losses = closedTrades.filter((trade) => (numberValue(trade.realized_pnl) || 0) < 0);
+  const grossProfit = wins.reduce((sum, trade) => sum + (numberValue(trade.realized_pnl) || 0), 0);
+  const grossLoss = Math.abs(losses.reduce((sum, trade) => sum + (numberValue(trade.realized_pnl) || 0), 0));
+  const returnValues = closedTrades.map((trade) => numberValue(trade.return_pct)).filter((value) => value !== null);
+  const holdingValues = closedTrades.map((trade) => numberValue(trade.holding_days)).filter((value) => value !== null);
+  const bestTrade = [...closedTrades].sort((a, b) => (numberValue(b.return_pct) || 0) - (numberValue(a.return_pct) || 0))[0] || null;
+  const worstTrade = [...closedTrades].sort((a, b) => (numberValue(a.return_pct) || 0) - (numberValue(b.return_pct) || 0))[0] || null;
   const sectorValues = new Map();
   for (const position of positions) {
     const sector = String(position.sector || "Unmapped");
@@ -1583,97 +1542,291 @@ function renderPortfolioDashboard() {
     sectorValues.set(sector, (sectorValues.get(sector) || 0) + value);
   }
   const totalSectorValue = [...sectorValues.values()].reduce((sum, value) => sum + value, 0);
-  const sectorRows = [...sectorValues.entries()]
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 6)
-    .map(([sector, value]) => {
-      const pct = totalSectorValue ? value / totalSectorValue * 100 : 0;
-      return `<div class="risk-exposure-row"><span>${escapeHtml(sector)}</span><i><b style="width:${Math.min(100, pct).toFixed(2)}%"></b></i><strong>${fmtNumber(pct, 1)}%</strong></div>`;
-    }).join("");
-
+  const sectorExposure = [...sectorValues.entries()].sort((a, b) => b[1] - a[1]).map(([sector, value]) => ({
+    sector,
+    value,
+    pct: totalSectorValue ? value / totalSectorValue * 100 : 0
+  }));
   const largestPositionValue = positions.reduce((largest, position) => Math.max(largest, numberValue(position.market_value) || 0), 0);
-  const largestPositionPct = percentageOfCapital(largestPositionValue);
   const portfolioHeatValue = positions.reduce((sum, position) => {
     const entry = numberValue(position.entry_price);
     const stop = numberValue(position.stop_price);
     const qty = numberValue(position.qty) || 0;
     return sum + (entry !== null && stop !== null ? Math.max(0, entry - stop) * qty : 0);
   }, 0);
-  const portfolioHeatPct = percentageOfCapital(portfolioHeatValue);
+  const statusCounts = orders.reduce((counts, order) => {
+    const status = String(order.status || "RECORDED").toUpperCase();
+    const side = String(order.side || "ORDER").toUpperCase();
+    if (status.includes("REJECT")) counts.rejected += 1;
+    if (status.includes("FILL") || status.includes("COMPLETE")) counts.filled += 1;
+    if (side === "BUY") counts.buy += 1;
+    if (side === "SELL") counts.sell += 1;
+    return counts;
+  }, { rejected: 0, filled: 0, buy: 0, sell: 0 });
+  const maximumOpenPositions = numberValue(policy.maximumOpenPositions ?? funds.maximum_open_positions);
+  const minimumEntryValue = numberValue(policy.minimumEntryValue ?? funds.minimum_entry_value);
   const cashPct = percentageOfCapital(buyingPower);
+  const largestPositionPct = percentageOfCapital(largestPositionValue);
+  const portfolioHeatPct = percentageOfCapital(portfolioHeatValue);
   const drawdownPct = Math.min(0, totalReturnPct);
   const capitalBlocked = (minimumEntryValue !== null && buyingPower < minimumEntryValue)
     || (maximumOpenPositions !== null && positions.length >= maximumOpenPositions);
-  const governorLabel = capitalBlocked ? "ENTRY BLOCKED" : deploymentPct >= 95 ? "FULLY DEPLOYED" : deploymentPct >= 70 ? "WATCH" : "AVAILABLE";
-  const governorTone = capitalBlocked ? "blocked" : deploymentPct >= 70 ? "watch" : "good";
+  return {
+    orders,
+    positions,
+    closedTrades,
+    sortedClosedTrades,
+    sortedOrders,
+    funds,
+    policy,
+    mark,
+    startingCapital,
+    investedValue,
+    buyingPower,
+    unrealizedPnl,
+    realizedPnl,
+    totalPnl,
+    deploymentPct,
+    totalReturnPct,
+    todayRealizedPnl,
+    todayRealizedReturnPct: startingCapital ? todayRealizedPnl / startingCapital * 100 : 0,
+    maximumOpenPositions,
+    minimumEntryValue,
+    maximumPositionPct: numberValue(policy.maximumPositionPct),
+    cashBufferPct: numberValue(policy.cashBufferPct),
+    maximumPortfolioHeatPct: numberValue(policy.maximumPortfolioHeatPct),
+    drawdownLimitPct: numberValue(policy.portfolioDrawdownTriggerPct),
+    cashPct,
+    largestPositionPct,
+    portfolioHeatPct,
+    drawdownPct,
+    capitalBlocked,
+    sectorExposure,
+    wins,
+    losses,
+    winRatePct: closedTrades.length ? wins.length / closedTrades.length * 100 : 0,
+    averageReturnPct: returnValues.length ? returnValues.reduce((sum, value) => sum + value, 0) / returnValues.length : 0,
+    averageHoldingDays: holdingValues.length ? holdingValues.reduce((sum, value) => sum + value, 0) / holdingValues.length : 0,
+    grossProfit,
+    grossLoss,
+    profitFactor: grossLoss ? grossProfit / grossLoss : grossProfit > 0 ? Infinity : 0,
+    bestTrade,
+    worstTrade,
+    statusCounts,
+    error: state.orders.error || ""
+  };
+}
+
+function portfolioMetricGrid(items, label) {
+  return `<section class="portfolio-metric-grid" aria-label="${escapeHtml(label)}">${items.map((item) => `<article>
+    <span class="metric-icon ${escapeHtml(item.iconTone || "")}"><i data-lucide="${escapeHtml(item.icon)}"></i></span>
+    <div><small>${escapeHtml(item.label)}</small><strong class="${escapeHtml(item.tone || "")}">${item.value}</strong><em class="${escapeHtml(item.detailTone || "")}">${item.detail}</em></div>
+  </article>`).join("")}</section>`;
+}
+
+function renderOpenPositionRows(model, limit = null) {
+  const rows = limit === null ? model.positions : model.positions.slice(0, limit);
+  return rows.map((position) => `<tr>
+    <td><strong>${escapeHtml(position.symbol)}</strong><small>${escapeHtml(position.sector || position.status || "OPEN")}</small></td>
+    <td>${fmtInt(position.qty)}</td>
+    <td>${fmtPrice(position.entry_price)}</td>
+    <td>${fmtPrice(position.current_price)}</td>
+    <td>${fmtPrice(position.market_value)}</td>
+    <td class="${portfolioPnlClass(position.unrealized_pnl)}"><strong>${fmtPrice(position.unrealized_pnl)}</strong></td>
+    <td class="${portfolioPnlClass(position.unrealized_pnl_pct)}">${fmtPct(position.unrealized_pnl_pct)}</td>
+    <td>${fmtPrice(position.target_price)}</td>
+    <td>${fmtPrice(position.stop_price)}</td>
+    <td>${renderTradeActions(position, { compact: true })}</td>
+  </tr>`).join("");
+}
+
+function renderClosedTradeRows(model, limit = null) {
+  const rows = limit === null ? model.sortedClosedTrades : model.sortedClosedTrades.slice(0, limit);
+  return rows.map((trade) => `<tr>
+    <td><strong>${escapeHtml(trade.symbol)}</strong><small>${escapeHtml(trade.close_reason || "Paper SELL")}</small></td>
+    <td>${fmtInt(trade.qty)}</td>
+    <td>${fmtPrice(trade.entry_price)}</td>
+    <td>${fmtPrice(trade.exit_price)}</td>
+    <td class="${portfolioPnlClass(trade.realized_pnl)}"><strong>${fmtPrice(trade.realized_pnl)}</strong></td>
+    <td class="${portfolioPnlClass(trade.return_pct)}">${fmtPct(trade.return_pct)}</td>
+    <td>${numberValue(trade.holding_days) === null ? "NA" : `${fmtNumber(trade.holding_days)} days`}</td>
+    <td>${escapeHtml(isoDate(trade.exit_at))}</td>
+    <td>${renderTradeActions(trade, { compact: true })}</td>
+  </tr>`).join("");
+}
+
+function renderOpenPositionsCard(model, { limit = null, action = true, subtitle = "Live mark-to-market, targets and stops" } = {}) {
+  const rows = renderOpenPositionRows(model, limit);
+  return `<article class="portfolio-card portfolio-open-card">
+    <header><div><h4>Open Positions <span>${model.positions.length}</span></h4><p>${escapeHtml(subtitle)}</p></div>${action ? `<button type="button" data-dashboard-book="open">Full ledger <i data-lucide="chevron-right"></i></button>` : ""}</header>
+    <div class="portfolio-table-scroll"><table><thead><tr><th>Symbol</th><th>Qty</th><th>Entry</th><th>LTP</th><th>Value</th><th>P&amp;L</th><th>Return</th><th>Target</th><th>Stop</th><th>Action</th></tr></thead><tbody>${rows || `<tr><td colspan="10" class="empty-state">No open paper positions.</td></tr>`}</tbody></table></div>
+  </article>`;
+}
+
+function renderClosedTradesCard(model, { limit = null, action = true, subtitle = "Sold stocks and realized returns" } = {}) {
+  const rows = renderClosedTradeRows(model, limit);
+  return `<article class="portfolio-card portfolio-closed-card">
+    <header><div><h4>Closed Trades <span>${model.closedTrades.length}</span></h4><p>${escapeHtml(subtitle)}</p></div>${action ? `<button type="button" data-dashboard-book="closed">Full ledger <i data-lucide="chevron-right"></i></button>` : ""}</header>
+    <div class="portfolio-table-scroll"><table><thead><tr><th>Symbol</th><th>Qty</th><th>Entry</th><th>Exit</th><th>Net P&amp;L</th><th>Return</th><th>Held</th><th>Exit time</th><th>Action</th></tr></thead><tbody>${rows || `<tr><td colspan="9" class="empty-state">No closed paper trades yet.</td></tr>`}</tbody></table></div>
+  </article>`;
+}
+
+function renderRiskGovernorCard(model) {
+  const governorLabel = model.capitalBlocked ? "ENTRY BLOCKED" : model.deploymentPct >= 95 ? "FULLY DEPLOYED" : model.deploymentPct >= 70 ? "WATCH" : "AVAILABLE";
+  const governorTone = model.capitalBlocked ? "blocked" : model.deploymentPct >= 70 ? "watch" : "good";
   const riskCheck = (actual, limit, comparison = "max") => comparison === "min" ? actual >= limit : actual <= limit;
   const riskRow = (label, value, passed) => `<div class="governor-rule"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong><i data-lucide="${passed ? "circle-check" : "triangle-alert"}" class="${passed ? "rule-pass" : "rule-warn"}" aria-hidden="true"></i></div>`;
-
-  stamps.forEach((stamp) => {
-    stamp.textContent = mark.quote_error
-      ? `Portfolio loaded. Live marks unavailable: ${mark.quote_error}`
-      : mark.as_of
-        ? `Live mark-to-market from Upstox at ${isoDate(mark.as_of)}.`
-        : "Portfolio loaded from the durable paper ledger; no live mark timestamp is available.";
-  });
-
-  const dashboardHtml = `
-    ${state.orders.error ? `<p class="portfolio-error">${escapeHtml(state.orders.error)}</p>` : ""}
-    <section class="portfolio-metric-grid" aria-label="Portfolio summary">
-      <article><span class="metric-icon"><i data-lucide="wallet-cards"></i></span><div><small>Starting capital</small><strong>${fmtPrice(startingCapital)}</strong><em>Approved paper capital</em></div></article>
-      <article><span class="metric-icon"><i data-lucide="pie-chart"></i></span><div><small>Invested</small><strong>${fmtPrice(investedValue)}</strong><em>${fmtNumber(deploymentPct)}% deployed</em></div></article>
-      <article><span class="metric-icon success"><i data-lucide="indian-rupee"></i></span><div><small>Buying power</small><strong>${fmtPrice(buyingPower)}</strong><em>${fmtNumber(cashPct)}% of capital</em></div></article>
-      <article><span class="metric-icon"><i data-lucide="trending-up"></i></span><div><small>Total P&amp;L</small><strong class="${pnlClass(totalPnl)}">${fmtPrice(totalPnl)}</strong><em class="${pnlClass(totalReturnPct)}">${fmtPct(totalReturnPct)}</em></div></article>
-      <article><span class="metric-icon"><i data-lucide="badge-indian-rupee"></i></span><div><small>Today's realized P&amp;L</small><strong class="${pnlClass(todayRealizedPnl)}">${fmtPrice(todayRealizedPnl)}</strong><em class="${pnlClass(todayRealizedReturnPct)}">${fmtPct(todayRealizedReturnPct)} · total ${fmtPrice(realizedPnl)}</em></div></article>
+  const sectorRows = model.sectorExposure.slice(0, 8).map((item) => `<div class="risk-exposure-row"><span>${escapeHtml(item.sector)}</span><i><b style="width:${Math.min(100, item.pct).toFixed(2)}%"></b></i><strong>${fmtNumber(item.pct, 1)}%</strong></div>`).join("");
+  return `<aside class="portfolio-card portfolio-risk-card">
+    <header><div><h4>Risk &amp; Capital Governor</h4><p>Current holdings exposure, not trade performance</p></div><span class="governor-state ${governorTone}">${governorLabel}</span></header>
+    <div class="deployment-block">
+      <div class="deployment-donut" style="--deployment:${model.deploymentPct.toFixed(2)}%"><span><strong>${fmtNumber(model.deploymentPct, 1)}%</strong>deployed</span></div>
+      <dl><div><dt>Invested</dt><dd>${fmtPrice(model.investedValue)}</dd></div><div><dt>Cash</dt><dd>${fmtPrice(model.buyingPower)}</dd></div></dl>
+    </div>
+    <section class="sector-exposure"><h5>Sector exposure</h5>${sectorRows || `<p class="empty-state compact">Exposure appears when positions are open.</p>`}</section>
+    <section class="governor-rules">
+      ${riskRow("Largest position", `${fmtNumber(model.largestPositionPct, 2)}% / ${fmtNumber(model.maximumPositionPct, 2)}%`, model.maximumPositionPct !== null && riskCheck(model.largestPositionPct, model.maximumPositionPct))}
+      ${riskRow("Open position slots", `${model.positions.length} / ${fmtInt(model.maximumOpenPositions)}`, model.maximumOpenPositions !== null && model.positions.length < model.maximumOpenPositions)}
+      ${riskRow("Minimum new entry", `${fmtPrice(model.minimumEntryValue)} · cash ${fmtPrice(model.buyingPower)}`, model.minimumEntryValue !== null && model.buyingPower >= model.minimumEntryValue)}
+      ${riskRow("Cash reserve", `${fmtNumber(model.cashPct, 2)}% / ${fmtNumber(model.cashBufferPct, 2)}%`, model.cashBufferPct !== null && riskCheck(model.cashPct, model.cashBufferPct, "min"))}
+      ${riskRow("Portfolio heat", `${fmtNumber(model.portfolioHeatPct, 2)}% / ${fmtNumber(model.maximumPortfolioHeatPct, 2)}%`, model.maximumPortfolioHeatPct !== null && riskCheck(model.portfolioHeatPct, model.maximumPortfolioHeatPct))}
+      ${riskRow("Drawdown governor", `${fmtNumber(model.drawdownPct, 2)}% / ${fmtNumber(model.drawdownLimitPct, 2)}%`, model.drawdownLimitPct !== null && model.drawdownPct > model.drawdownLimitPct)}
     </section>
+  </aside>`;
+}
 
-    <section class="portfolio-dashboard-grid">
-      <article class="portfolio-card portfolio-open-card">
-        <header><div><h4>Open Positions <span>${positions.length}</span></h4><p>Live mark-to-market, targets and stops</p></div><button type="button" data-dashboard-book="open">View all <i data-lucide="chevron-right"></i></button></header>
-        <div class="portfolio-table-scroll"><table><thead><tr><th>Symbol</th><th>Qty</th><th>Entry</th><th>LTP</th><th>P&amp;L</th><th>Return</th><th>Target</th><th>Stop</th><th>Action</th></tr></thead><tbody>${openRows || `<tr><td colspan="9" class="empty-state">No open paper positions.</td></tr>`}</tbody></table></div>
-      </article>
+function renderRecentActivityCard(model, limit = 7, action = true) {
+  const rows = (limit === null ? model.sortedOrders : model.sortedOrders.slice(0, limit)).map((order) => {
+    const side = String(order.side || "ORDER").toUpperCase();
+    const rejected = String(order.status || "").toUpperCase().includes("REJECT");
+    const tone = rejected ? "rejected" : side === "BUY" ? "buy" : "sell";
+    const initial = rejected ? "!" : side.slice(0, 1);
+    return `<li><span class="activity-mark ${tone}">${escapeHtml(initial)}</span><span><strong>${escapeHtml(side)} ${escapeHtml(order.symbol)}</strong><small>${fmtInt(order.qty)} @ ${fmtPrice(order.price ?? order.fill_price)} · ${escapeHtml(order.status || "RECORDED")}</small></span><time>${escapeHtml(isoDate(order.updated_at || order.created_at || order.quote_timestamp))}</time>${renderTradeActions(order, { compact: true })}</li>`;
+  }).join("");
+  return `<article class="portfolio-card portfolio-activity-card">
+    <header><div><h4>Recent Activity <span>${model.orders.length}</span></h4><p>Paper order events; this is not the holdings ledger</p></div>${action ? `<button type="button" data-dashboard-book="orders">Full history <i data-lucide="chevron-right"></i></button>` : ""}</header>
+    <ul class="activity-list">${rows || `<li class="empty-state">No paper order activity yet.</li>`}</ul>
+  </article>`;
+}
 
-      <aside class="portfolio-card portfolio-risk-card">
-        <header><div><h4>Risk &amp; Capital Governor</h4><p>Current portfolio telemetry</p></div><span class="governor-state ${governorTone}">${governorLabel}</span></header>
-        <div class="deployment-block">
-          <div class="deployment-donut" style="--deployment:${deploymentPct.toFixed(2)}%"><span><strong>${fmtNumber(deploymentPct, 1)}%</strong>deployed</span></div>
-          <dl><div><dt>Invested</dt><dd>${fmtPrice(investedValue)}</dd></div><div><dt>Cash</dt><dd>${fmtPrice(buyingPower)}</dd></div></dl>
-        </div>
-        <section class="sector-exposure"><h5>Sector exposure</h5>${sectorRows || `<p class="empty-state compact">Exposure appears when positions are open.</p>`}</section>
-        <section class="governor-rules">
-          ${riskRow("Largest position", `${fmtNumber(largestPositionPct, 2)}% / ${fmtNumber(maximumPositionPct, 2)}%`, maximumPositionPct !== null && riskCheck(largestPositionPct, maximumPositionPct))}
-          ${riskRow("Open position slots", `${positions.length} / ${fmtInt(maximumOpenPositions)}`, maximumOpenPositions !== null && positions.length < maximumOpenPositions)}
-          ${riskRow("Minimum new entry", `${fmtPrice(minimumEntryValue)} · cash ${fmtPrice(buyingPower)}`, minimumEntryValue !== null && buyingPower >= minimumEntryValue)}
-          ${riskRow("Cash reserve", `${fmtNumber(cashPct, 2)}% / ${fmtNumber(cashBufferPct, 2)}%`, cashBufferPct !== null && riskCheck(cashPct, cashBufferPct, "min"))}
-          ${riskRow("Portfolio heat", `${fmtNumber(portfolioHeatPct, 2)}% / ${fmtNumber(maximumPortfolioHeatPct, 2)}%`, maximumPortfolioHeatPct !== null && riskCheck(portfolioHeatPct, maximumPortfolioHeatPct))}
-          ${riskRow("Drawdown governor", `${fmtNumber(drawdownPct, 2)}% / ${fmtNumber(drawdownLimitPct, 2)}%`, drawdownLimitPct !== null && drawdownPct > drawdownLimitPct)}
-        </section>
-      </aside>
+function renderHoldingsDashboard(model) {
+  const metrics = portfolioMetricGrid([
+    { icon: "wallet-cards", label: "Starting capital", value: fmtPrice(model.startingCapital), detail: "Approved paper capital" },
+    { icon: "pie-chart", label: "Invested holdings", value: fmtPrice(model.investedValue), detail: `${fmtNumber(model.deploymentPct)}% deployed` },
+    { icon: "indian-rupee", iconTone: "success", label: "Buying power", value: fmtPrice(model.buyingPower), detail: `${fmtNumber(model.cashPct)}% cash` },
+    { icon: "activity", label: "Open holdings", value: fmtInt(model.positions.length), detail: `${fmtInt(model.maximumOpenPositions)} maximum positions` },
+    { icon: "trending-up", label: "Unrealized P&L", value: fmtPrice(model.unrealizedPnl), detail: "Live mark-to-market only", tone: portfolioPnlClass(model.unrealizedPnl), detailTone: portfolioPnlClass(model.unrealizedPnl) }
+  ], "Current holdings summary");
+  return `${metrics}<section class="portfolio-dashboard-grid">${renderOpenPositionsCard(model, { limit: null, action: false })}${renderRiskGovernorCard(model)}</section>`;
+}
 
-      <article class="portfolio-card portfolio-closed-card">
-        <header><div><h4>Closed Trades <span>${closedTrades.length}</span></h4><p>Sold stocks and realized returns</p></div><button type="button" data-dashboard-book="closed">View all <i data-lucide="chevron-right"></i></button></header>
-        <div class="portfolio-table-scroll"><table><thead><tr><th>Symbol</th><th>Qty</th><th>Entry</th><th>Exit</th><th>Net P&amp;L</th><th>Return</th><th>Exit time</th><th>Action</th></tr></thead><tbody>${closedRows || `<tr><td colspan="8" class="empty-state">No closed paper trades yet.</td></tr>`}</tbody></table></div>
-      </article>
+function renderPerformanceDashboard(model) {
+  const profitFactor = Number.isFinite(model.profitFactor) ? fmtNumber(model.profitFactor, 2) : "∞";
+  const metrics = portfolioMetricGrid([
+    { icon: "trending-up", label: "Total P&L", value: fmtPrice(model.totalPnl), detail: fmtPct(model.totalReturnPct), tone: portfolioPnlClass(model.totalPnl), detailTone: portfolioPnlClass(model.totalReturnPct) },
+    { icon: "badge-indian-rupee", label: "Realized P&L", value: fmtPrice(model.realizedPnl), detail: `${model.closedTrades.length} closed trades`, tone: portfolioPnlClass(model.realizedPnl) },
+    { icon: "line-chart", label: "Unrealized P&L", value: fmtPrice(model.unrealizedPnl), detail: `${model.positions.length} still open`, tone: portfolioPnlClass(model.unrealizedPnl) },
+    { icon: "calendar-days", label: "Today realized", value: fmtPrice(model.todayRealizedPnl), detail: fmtPct(model.todayRealizedReturnPct), tone: portfolioPnlClass(model.todayRealizedPnl) },
+    { icon: "trophy", label: "Win rate", value: fmtPct(model.winRatePct), detail: `${model.wins.length} wins / ${model.losses.length} losses` }
+  ], "Paper performance summary");
+  const stats = `<section class="performance-stat-grid" aria-label="Closed trade statistics">
+    <article><small>Average return</small><strong class="${portfolioPnlClass(model.averageReturnPct)}">${fmtPct(model.averageReturnPct)}</strong><em>Mean of closed-trade returns</em></article>
+    <article><small>Profit factor</small><strong>${profitFactor}</strong><em>Gross profit / gross loss</em></article>
+    <article><small>Average holding</small><strong>${fmtNumber(model.averageHoldingDays, 1)} days</strong><em>Closed positions only</em></article>
+    <article><small>Best trade</small><strong class="${portfolioPnlClass(model.bestTrade?.return_pct)}">${escapeHtml(model.bestTrade?.symbol || "NA")} ${model.bestTrade ? fmtPct(model.bestTrade.return_pct) : ""}</strong><em>Highest realized return</em></article>
+    <article><small>Worst trade</small><strong class="${portfolioPnlClass(model.worstTrade?.return_pct)}">${escapeHtml(model.worstTrade?.symbol || "NA")} ${model.worstTrade ? fmtPct(model.worstTrade.return_pct) : ""}</strong><em>Lowest realized return</em></article>
+    <article><small>Gross profit</small><strong class="pnl-positive">${fmtPrice(model.grossProfit)}</strong><em>Winning trades</em></article>
+    <article><small>Gross loss</small><strong class="pnl-negative">${fmtPrice(model.grossLoss)}</strong><em>Absolute losing amount</em></article>
+    <article><small>Closed trades</small><strong>${fmtInt(model.closedTrades.length)}</strong><em>Downloadable ledger below</em></article>
+  </section>`;
+  return `${metrics}${stats}<section class="portfolio-dashboard-grid">${renderClosedTradesCard(model, { limit: null, action: false, subtitle: "Every sold stock, exit reason and realized result" })}</section>`;
+}
 
-      <article class="portfolio-card portfolio-activity-card">
-        <header><div><h4>Recent Activity</h4><p>Latest paper lifecycle events</p></div><button type="button" data-dashboard-book="orders">Order history <i data-lucide="chevron-right"></i></button></header>
-        <ul class="activity-list">${activityRows || `<li class="empty-state">No paper order activity yet.</li>`}</ul>
-      </article>
-    </section>`;
+function renderPaperBookDashboard(model) {
+  if (state.orderWorkspaceView === "positions") {
+    return `${portfolioMetricGrid([
+      { icon: "briefcase-business", label: "Open positions", value: fmtInt(model.positions.length), detail: `${fmtInt(model.maximumOpenPositions)} maximum` },
+      { icon: "pie-chart", label: "Invested", value: fmtPrice(model.investedValue), detail: `${fmtNumber(model.deploymentPct)}% deployed` },
+      { icon: "trending-up", label: "Unrealized P&L", value: fmtPrice(model.unrealizedPnl), detail: "Live marks", tone: portfolioPnlClass(model.unrealizedPnl) },
+      { icon: "indian-rupee", label: "Buying power", value: fmtPrice(model.buyingPower), detail: `${fmtNumber(model.cashPct)}% cash` },
+      { icon: "shield-check", label: "Entry state", value: model.capitalBlocked ? "BLOCKED" : "AVAILABLE", detail: "Paper capital governor" }
+    ], "Open position ledger summary")}<section class="portfolio-dashboard-grid">${renderOpenPositionsCard(model, { limit: null, action: false, subtitle: "Every current position with BUY/SELL controls" })}${renderRiskGovernorCard(model)}</section>`;
+  }
+  if (state.orderWorkspaceView === "closed") return renderPerformanceDashboard(model);
+  if (state.orderWorkspaceView === "orders") {
+    return `${portfolioMetricGrid([
+      { icon: "receipt-text", label: "Recorded orders", value: fmtInt(model.orders.length), detail: "Complete paper lifecycle" },
+      { icon: "circle-check", label: "Filled", value: fmtInt(model.statusCounts.filled), detail: "Completed fills" },
+      { icon: "triangle-alert", label: "Rejected", value: fmtInt(model.statusCounts.rejected), detail: "Governor or quote rejects" },
+      { icon: "shopping-cart", label: "BUY events", value: fmtInt(model.statusCounts.buy), detail: "Paper buys and adds" },
+      { icon: "log-out", label: "SELL events", value: fmtInt(model.statusCounts.sell), detail: "Partial and full exits" }
+    ], "Paper order history summary")}<section class="portfolio-dashboard-grid">${renderRecentActivityCard(model, null, false)}</section>`;
+  }
+  const metrics = portfolioMetricGrid([
+    { icon: "wallet-cards", label: "Starting capital", value: fmtPrice(model.startingCapital), detail: "Approved paper capital" },
+    { icon: "pie-chart", label: "Invested", value: fmtPrice(model.investedValue), detail: `${fmtNumber(model.deploymentPct)}% deployed` },
+    { icon: "indian-rupee", iconTone: "success", label: "Buying power", value: fmtPrice(model.buyingPower), detail: `${fmtNumber(model.cashPct)}% of capital` },
+    { icon: "trending-up", label: "Total P&L", value: fmtPrice(model.totalPnl), detail: fmtPct(model.totalReturnPct), tone: portfolioPnlClass(model.totalPnl), detailTone: portfolioPnlClass(model.totalReturnPct) },
+    { icon: "badge-indian-rupee", label: "Today realized", value: fmtPrice(model.todayRealizedPnl), detail: `Total ${fmtPrice(model.realizedPnl)}`, tone: portfolioPnlClass(model.todayRealizedPnl) }
+  ], "Paper Book overview");
+  return `${metrics}<section class="portfolio-dashboard-grid">${renderOpenPositionsCard(model, { limit: 8 })}${renderRiskGovernorCard(model)}${renderClosedTradesCard(model, { limit: 5 })}${renderRecentActivityCard(model, 7)}</section>`;
+}
 
-  targets.forEach((node) => {
-    node.innerHTML = dashboardHtml;
-    all("[data-dashboard-book]", node).forEach((button) => button.addEventListener("click", () => {
-      state.paperLedgerTab = button.dataset.dashboardBook;
-      renderOrders();
-      switchSection("orders");
-      const detail = el("paperTradeLedgerDetail");
-      if (detail) {
-        detail.open = true;
-        window.requestAnimationFrame(() => detail.scrollIntoView({ behavior: "smooth", block: "start" }));
-      }
-    }));
-  });
+function bindDashboardBookActions(root) {
+  all("[data-dashboard-book]", root).forEach((button) => button.addEventListener("click", () => {
+    const tab = button.dataset.dashboardBook;
+    const navByTab = {
+      open: ["positions", "Positions", "positions"],
+      closed: ["closed-trades", "Closed Trades", "closed"],
+      orders: ["order-history", "Orders", "orders"]
+    };
+    const [navKey, title, workspaceView] = navByTab[tab] || ["orders", "Paper Book", "book"];
+    state.orderWorkspaceView = workspaceView;
+    switchSection("orders", navKey, title);
+    openPaperLedgerTab(tab, { scroll: true });
+    renderPortfolioDashboard();
+  }));
+}
+
+function renderPortfolioDashboard() {
+  const portfolioNode = el("portfolioDashboard");
+  const paperBookNode = el("paperTradeDashboard");
+  if (!portfolioNode && !paperBookNode) return;
+  const model = buildPortfolioViewModel();
+  if (!model) {
+    const loading = `<section class="portfolio-loading panel"><strong>Loading paper portfolio</strong><span>Reading positions, closed trades and capital controls.</span></section>`;
+    if (portfolioNode) portfolioNode.innerHTML = loading;
+    if (paperBookNode) paperBookNode.innerHTML = loading;
+    return;
+  }
+  const stampText = model.mark.quote_error
+    ? `Portfolio loaded. Live marks unavailable: ${model.mark.quote_error}`
+    : model.mark.as_of
+      ? `Live mark-to-market from Upstox at ${isoDate(model.mark.as_of)}.`
+      : "Portfolio loaded from the durable paper ledger; no live mark timestamp is available.";
+  if (el("portfolioDashboardStamp")) el("portfolioDashboardStamp").textContent = stampText;
+  if (el("paperTradeDashboardStamp")) el("paperTradeDashboardStamp").textContent = stampText;
+  const portfolioIsPerformance = state.portfolioView === "performance";
+  if (el("portfolioViewLabel")) el("portfolioViewLabel").textContent = portfolioIsPerformance ? "Paper Performance" : "Paper Holdings";
+  if (el("portfolioViewTitle")) el("portfolioViewTitle").textContent = portfolioIsPerformance ? "Realized results and trade quality" : "Open positions and allocation";
+  const paperHeadings = {
+    positions: ["Paper Positions", "Open position ledger"],
+    closed: ["Paper Exits", "Closed Trades"],
+    orders: ["Paper Lifecycle", "Order History"],
+    book: ["Paper Execution", "Paper Trade Dashboard"]
+  };
+  const [paperLabel, paperTitle] = paperHeadings[state.orderWorkspaceView] || paperHeadings.book;
+  if (el("paperTradeViewLabel")) el("paperTradeViewLabel").textContent = paperLabel;
+  if (el("paperTradeViewTitle")) el("paperTradeViewTitle").textContent = paperTitle;
+  const error = model.error ? `<p class="portfolio-error">${escapeHtml(model.error)}</p>` : "";
+  if (portfolioNode) {
+    portfolioNode.innerHTML = error + (portfolioIsPerformance ? renderPerformanceDashboard(model) : renderHoldingsDashboard(model));
+    bindDashboardBookActions(portfolioNode);
+  }
+  if (paperBookNode) {
+    paperBookNode.innerHTML = error + renderPaperBookDashboard(model);
+    bindDashboardBookActions(paperBookNode);
+  }
   window.lucide?.createIcons?.();
 }
 
@@ -1752,7 +1905,7 @@ function renderOrders() {
     capitalPolicy.initialAffordableOpenPositionsAfterEntryCost
       ?? funds.initial_affordable_open_positions_after_entry_cost
   );
-  const policyText = `${fmtPrice(funds.starting_capital || capitalPolicy.startingCapital)} capital | ${fmtPrice(funds.minimum_entry_value || capitalPolicy.minimumEntryValue)} minimum entry | ${fmtInt(capitalPolicy.maximumCandidateEntries || funds.maximum_candidate_entries || 80)} lifecycle entries | ${fmtInt(capitalPolicy.maximumOpenPositions || funds.maximum_open_positions || 50)} position ceiling | ${fmtInt(affordableAtMinimum || 49)} initially affordable after costs`;
+  const policyText = `${fmtPrice(funds.starting_capital || capitalPolicy.startingCapital)} capital | ${fmtPrice(funds.minimum_entry_value || capitalPolicy.minimumEntryValue)} minimum entry | ${fmtInt(capitalPolicy.maximumCandidateEntries || funds.maximum_candidate_entries || 80)} lifecycle entries | ${fmtInt(capitalPolicy.maximumOpenPositions || funds.maximum_open_positions || 500)} position ceiling | ${fmtInt(affordableAtMinimum || 499)} initially affordable after costs`;
   const html = `<div class="book-summary">
       <article><span>Starting capital</span><strong>${fmtPrice(funds.starting_capital || capitalPolicy.startingCapital)}</strong></article>
       <article><span>Invested</span><strong>${fmtPrice(funds.invested_value || 0)}</strong></article>
@@ -1858,7 +2011,7 @@ async function refreshScan() {
       state.selected = state.rows.find((row) => row.symbol === state.selected.symbol);
     }
     renderAll();
-    const institutionalPromise = loadInstitutionalEvidence(sortedRows().slice(0, 8));
+    const institutionalPromise = loadInstitutionalEvidence(sortedRows());
     await Promise.all([state.selected ? selectSymbol(state.selected.symbol) : Promise.resolve(), institutionalPromise]);
     await loadOrders();
     await maybeAutoStartPaperPortfolio();
@@ -1885,27 +2038,45 @@ function renderAll() {
 
 function switchSection(section, navKey = section, navTitle = "") {
   state.activeSection = section;
+  state.activeNavKey = navKey;
+  if (section === "portfolio") state.portfolioView = navKey === "performance" ? "performance" : "holdings";
   all(".rail-item[data-section]").forEach((button) => button.classList.toggle("active", (button.dataset.navKey || button.dataset.section) === navKey));
   all(".section").forEach((panel) => panel.classList.toggle("active", panel.dataset.panel === section));
   const titleMap = { dashboard: "Dashboard", portfolio: "Holdings", screener: "Scanner", piano: "Trading", "signal-piano": "Signals", orders: "Paper Book", settings: "Settings", help: "Help" };
   el("sectionTitle").textContent = navTitle || titleMap[section] || "Dashboard";
+  if (section === "portfolio" || section === "orders") renderPortfolioDashboard();
   window.lucide?.createIcons?.();
 }
 
-function openPaperLedgerTab(tab) {
+function openPaperLedgerTab(tab, { scroll = false } = {}) {
   if (!tab) return;
   state.paperLedgerTab = tab;
   renderOrders();
   const detail = el("paperTradeLedgerDetail");
   if (!detail) return;
   detail.open = true;
-  window.requestAnimationFrame(() => detail.scrollIntoView({ behavior: "smooth", block: "start" }));
+  if (scroll) window.requestAnimationFrame(() => detail.scrollIntoView({ behavior: "smooth", block: "start" }));
 }
 
 function routeRailNavigation(button) {
   const section = button.dataset.section;
-  switchSection(section, button.dataset.navKey || section, button.dataset.navTitle || "");
-  if (button.dataset.routeLedger) openPaperLedgerTab(button.dataset.routeLedger);
+  const navKey = button.dataset.navKey || section;
+  const ledgerTab = button.dataset.routeLedger || "";
+  const decision = button.dataset.routeDecision || "";
+  if (decision && el("decisionFilter")) {
+    el("decisionFilter").value = decision;
+    renderCandidates();
+    renderScreener();
+    const tableWrap = el("screenerSection")?.querySelector(".table-wrap");
+    if (tableWrap) tableWrap.scrollTop = 0;
+  }
+  if (section === "portfolio") state.portfolioView = navKey === "performance" ? "performance" : "holdings";
+  if (section === "orders") {
+    state.orderWorkspaceView = ledgerTab === "open" ? "positions" : ledgerTab === "closed" ? "closed" : ledgerTab === "orders" ? "orders" : "book";
+  }
+  switchSection(section, navKey, button.dataset.navTitle || "");
+  if (ledgerTab) openPaperLedgerTab(ledgerTab, { scroll: false });
+  renderPortfolioDashboard();
   if (button.dataset.routeAnchor) {
     window.requestAnimationFrame(() => el(button.dataset.routeAnchor)?.scrollIntoView({ behavior: "smooth", block: "start" }));
   }
@@ -1922,20 +2093,67 @@ async function loadReleaseIdentity() {
   }
 }
 
-function exportCsv() {
-  const rows = visibleRows();
-  const headers = ["symbol", "name", "sector", "decision", "score", "momentum_score", "quality_score", "return_6m_pct", "return_12m_pct", "close", "adv20", "rupee_turnover_cr", "reason"];
-  const lines = [headers.join(",")];
-  for (const row of rows) {
-    lines.push(headers.map((key) => `"${String(row[key] ?? "").replaceAll('"', '""')}"`).join(","));
-  }
-  const blob = new Blob([lines.join("\n")], { type: "text/csv;charset=utf-8" });
+function downloadCsv(filename, headers, rows) {
+  const columns = headers.map((header) => typeof header === "string" ? { key: header, label: header } : header);
+  const quote = (value) => `"${String(value ?? "").replaceAll('"', '""')}"`;
+  const lines = [columns.map((column) => quote(column.label)).join(",")];
+  for (const row of rows) lines.push(columns.map((column) => quote(column.value ? column.value(row) : row[column.key])).join(","));
+  const blob = new Blob(["\uFEFF", lines.join("\r\n")], { type: "text/csv;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = `ash-stock-scan-${new Date().toISOString().slice(0, 10)}.csv`;
+  link.download = filename;
+  document.body.appendChild(link);
   link.click();
-  URL.revokeObjectURL(url);
+  link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 0);
+}
+
+function exportCsv() {
+  const headers = ["symbol", "name", "sector", "decision", "score", "momentum_score", "quality_score", "return_6m_pct", "return_12m_pct", "close", "adv20", "rupee_turnover_cr", "reason"];
+  downloadCsv(`ash-stock-scan-${new Date().toISOString().slice(0, 10)}.csv`, headers, visibleRows());
+}
+
+async function fetchAllPaperHistory(kind) {
+  const rows = [];
+  const seenCursors = new Set();
+  let cursor = "";
+  do {
+    const query = new URLSearchParams({ kind, limit: "1000" });
+    if (cursor) query.set("cursor", cursor);
+    const page = await api(`/api/paper-trader/history?${query}`);
+    rows.push(...(Array.isArray(page.records) ? page.records : []));
+    const nextCursor = page.next_cursor || "";
+    if (nextCursor && seenCursors.has(nextCursor)) throw new Error("paper ledger returned a repeated pagination cursor");
+    if (nextCursor) seenCursors.add(nextCursor);
+    cursor = nextCursor;
+  } while (cursor);
+  return rows;
+}
+
+async function downloadTradeLedger(kind) {
+  const open = kind === "open";
+  let rows;
+  try {
+    rows = open ? state.orders?.positions : await fetchAllPaperHistory("closed");
+  } catch (error) {
+    setNotice(`Full closed-trade download failed: ${error.message}`, "error");
+    return;
+  }
+  if (!Array.isArray(rows)) {
+    setNotice("Trade download is not ready; refresh the paper ledger first.", "error");
+    return;
+  }
+  const headers = open ? [
+    "symbol", "name", "sector", "qty", "entry_price", "current_price", "market_value",
+    "unrealized_pnl", "unrealized_pnl_pct", "entry_date", "quote_timestamp", "target_price", "stop_price", "status"
+  ] : [
+    "symbol", "name", "sector", "qty", "entry_price", "exit_price", "entry_value", "exit_value",
+    "gross_realized_pnl", "round_trip_cost", "realized_pnl", "return_pct", "entry_at", "exit_at", "holding_days", "close_reason"
+  ];
+  const ledgerName = open ? "open-trades" : "closed-trades";
+  downloadCsv(`ash-stock-${ledgerName}-${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
+  setNotice(`${rows.length} ${open ? "open positions" : "closed trades"} downloaded as CSV.`, "ok");
 }
 
 function quickTradeReferencePrice(source, position = null) {
@@ -1980,7 +2198,7 @@ function renderQuickTradeModal() {
   el("quickTradeMode").className = `quick-trade-mode ${trade.side.toLowerCase()}`;
   el("quickTradeSymbol").textContent = trade.symbol;
   el("quickTradeQuote").textContent = trade.referencePrice
-    ? `${fmtPrice(trade.referencePrice)} reference · server will verify ${trade.side === "BUY" ? "ask" : "bid"}`
+    ? `${fmtPrice(trade.referencePrice)} reference · server will verify ${trade.side === "BUY" ? "full ask depth" : "visible bid quantity"}`
     : "Fetching live Upstox depth";
   el("quickTradeSubmit").textContent = state.quickTradeSubmitting
     ? "Submitting…"
@@ -2101,15 +2319,27 @@ async function submitQuickTrade(event) {
   try {
     const result = await api("/api/paper-trader/order", { method: "POST", body });
     const fill = result.order?.price;
-    const verb = trade.side === "BUY" ? heldQty ? "ADDED" : "BOUGHT" : qty === heldQty ? "EXITED" : "SOLD";
+    const filledQty = Math.max(0, Math.floor(numberValue(result.order?.filled_qty ?? result.order?.qty) || 0));
+    const unfilledQty = Math.max(0, Math.floor(numberValue(result.order?.unfilled_qty) || 0));
+    const partialFill = Boolean(result.order?.partial_fill || result.action === "PAPER_SELL_PARTIALLY_FILLED");
+    const verb = trade.side === "BUY"
+      ? heldQty ? "ADDED" : "BOUGHT"
+      : partialFill ? "PARTIALLY SOLD" : qty === heldQty ? "EXITED" : "SOLD";
     state.quickTradeSubmitting = false;
     closeQuickTrade();
-    setNotice(`${trade.symbol} ${verb}: ${fmtInt(qty)} @ ${fmtPrice(fill)} · server-verified Upstox ${trade.side === "BUY" ? "ask" : "bid"}`, "ok");
+    const remainder = partialFill
+      ? ` · ${fmtInt(unfilledQty)} requested shares unfilled; ${fmtInt(Math.max(0, heldQty - filledQty))} remain open`
+      : "";
+    setNotice(`${trade.symbol} ${verb}: ${fmtInt(filledQty)} @ ${fmtPrice(fill)} · server-verified Upstox ${trade.side === "BUY" ? "ask" : "bid"}${remainder}`, partialFill ? "warn" : "ok");
     await loadOrders();
   } catch (error) {
     state.quickTradeSubmitting = false;
     if (state.quickTrade) {
-      el("quickTradeError").textContent = error.message;
+      el("quickTradeError").textContent = error.message.includes("insufficient_upstox_ask_depth_for_full_paper_buy")
+        ? "BUY blocked: the visible Upstox asks cannot fill the full quantity. Reduce quantity and retry."
+        : error.message.includes("upstox_bid_depth_unavailable_for_paper_exit")
+          ? "EXIT paused: Upstox currently shows no executable bid quantity. Refresh the quote and retry."
+          : error.message;
       renderQuickTradeModal();
     }
     setNotice(`${trade.symbol} ${trade.side} failed: ${error.message}`, "error");
@@ -2158,8 +2388,143 @@ async function submitUpstoxToken(event) {
   }
 }
 
+function renderFormulaSettings() {
+  const grid = el("formulaSettingsGrid");
+  const mode = el("formulaSettingsMode");
+  const auditNode = el("formulaSettingsAudit");
+  if (!grid || !mode || !auditNode) return;
+  const payload = state.formulaSettings;
+  if (!payload) {
+    mode.textContent = "Loading";
+    mode.className = "status-pill watch";
+    grid.innerHTML = `<p class="empty-state">Loading validated paper-selection controls.</p>`;
+    auditNode.innerHTML = `<p class="empty-state compact">No formula history loaded.</p>`;
+    return;
+  }
+  const definitions = Array.isArray(payload.definitions) ? payload.definitions : Array.isArray(payload.editable) ? payload.editable : [];
+  const values = payload.settings || payload.values || {};
+  const paperOnly = payload.paper_only !== false && payload.broker_write_enabled !== true;
+  mode.textContent = paperOnly ? `PAPER ONLY · EDGE ${payload.edge_confirmed ? "CONFIRMED" : "NOT CONFIRMED"}` : "SAFETY ERROR";
+  mode.className = `status-pill ${paperOnly ? "watch" : "blocked"}`;
+  if (!definitions.length) {
+    grid.innerHTML = `<p class="empty-state">${escapeHtml(payload.error || "The server did not return editable formula definitions.")}</p>`;
+  } else {
+    const groups = definitions.reduce((map, definition) => {
+      const group = definition.group || "Selection";
+      if (!map.has(group)) map.set(group, []);
+      map.get(group).push(definition);
+      return map;
+    }, new Map());
+    grid.innerHTML = [...groups.entries()].map(([group, fields]) => `<section class="formula-settings-group">
+      <h4>${escapeHtml(group)}</h4>
+      <p>${escapeHtml(fields[0]?.group_description || fields[0]?.phase_description || "Validated operands; formula source code remains locked.")}</p>
+      ${fields.map((definition) => {
+        const value = values[definition.id] ?? definition.default;
+        const details = [definition.formula, definition.unit, definition.phase ? `Phase ${definition.phase}` : "", definition.range_note].filter(Boolean).join(" · ");
+        let control = "";
+        if (definition.type === "boolean") {
+          control = `<select name="${escapeHtml(definition.id)}" data-formula-id="${escapeHtml(definition.id)}" ${definition.editable === false ? "disabled" : ""}><option value="false" ${value === false ? "selected" : ""}>Off</option><option value="true" ${value === true ? "selected" : ""}>On</option></select>`;
+        } else if (definition.type === "enum") {
+          control = `<select name="${escapeHtml(definition.id)}" data-formula-id="${escapeHtml(definition.id)}" ${definition.editable === false ? "disabled" : ""}>${(definition.options || []).map((option) => `<option value="${escapeHtml(option)}" ${String(value) === String(option) ? "selected" : ""}>${escapeHtml(option)}</option>`).join("")}</select>`;
+        } else {
+          control = `<input name="${escapeHtml(definition.id)}" data-formula-id="${escapeHtml(definition.id)}" type="number" value="${escapeHtml(value)}" min="${escapeHtml(definition.min)}" max="${escapeHtml(definition.max)}" step="${escapeHtml(definition.step ?? "any")}" inputmode="decimal" ${definition.editable === false ? "disabled" : ""} />`;
+        }
+        return `<label class="formula-field"><span><span>${escapeHtml(definition.label || definition.id)}</span><small>${escapeHtml(details || definition.description || definition.id)}</small></span>${control}</label>`;
+      }).join("")}
+    </section>`).join("");
+  }
+  const audit = Array.isArray(payload.audit) ? payload.audit : Array.isArray(payload.history) ? payload.history : [];
+  auditNode.innerHTML = audit.length ? audit.slice(0, 20).map((entry) => {
+    const changes = Object.entries(entry.changes || {}).map(([key, value]) => {
+      const before = value && typeof value === "object" ? value.before : "";
+      const after = value && typeof value === "object" ? value.after : value;
+      return `${key}: ${before} → ${after}`;
+    }).join(" · ");
+    return `<div class="formula-audit-row"><strong>${escapeHtml(isoDate(entry.changed_at || entry.changedAt))}<br />Revision ${escapeHtml(entry.revision_after ?? entry.revisionAfter ?? entry.revision ?? "-")}</strong><span>${escapeHtml(entry.action || "UPDATE")} · ${escapeHtml(changes || entry.reason || "No value change")}</span></div>`;
+  }).join("") : `<p class="empty-state compact">No formula changes have been recorded.</p>`;
+  window.lucide?.createIcons?.();
+}
+
+async function loadFormulaSettings() {
+  try {
+    state.formulaSettings = await api(`/api/settings/formulas?ts=${Date.now()}`);
+  } catch (error) {
+    state.formulaSettings = { error: error.message, definitions: [], audit: [], paper_only: true, broker_write_enabled: false, edge_confirmed: false };
+  }
+  renderFormulaSettings();
+}
+
+function collectFormulaSettings() {
+  const payload = state.formulaSettings || {};
+  const definitions = Array.isArray(payload.definitions) ? payload.definitions : [];
+  const settings = {};
+  for (const definition of definitions.filter((item) => item.editable !== false)) {
+    const input = el("formulaSettingsForm")?.querySelector(`[data-formula-id="${CSS.escape(definition.id)}"]`);
+    if (!input) continue;
+    settings[definition.id] = definition.type === "boolean" ? input.value === "true" : definition.type === "enum" ? input.value : Number(input.value);
+  }
+  return settings;
+}
+
+async function submitFormulaSettings(event) {
+  event.preventDefault();
+  if (state.formulaSettingsSaving) return;
+  const result = el("formulaSettingsResult");
+  state.formulaSettingsSaving = true;
+  if (result) result.textContent = "Saving validated settings…";
+  try {
+    state.formulaSettings = await api("/api/settings/formulas", {
+      method: "POST",
+      body: {
+        expected_revision: state.formulaSettings?.revision ?? 0,
+        settings: collectFormulaSettings(),
+        reason: "ASH Stock Settings UI update"
+      }
+    });
+    if (result) result.textContent = `Saved revision ${state.formulaSettings.revision}. Applies to the next paper scan.`;
+    setNotice("Paper selection formulas saved. Live execution remains locked.", "ok");
+  } catch (error) {
+    if (result) result.textContent = `Save blocked: ${error.message}`;
+    setNotice(`Formula save blocked: ${error.message}`, "error");
+  } finally {
+    state.formulaSettingsSaving = false;
+    renderFormulaSettings();
+  }
+}
+
+async function resetFormulaSettings() {
+  if (state.formulaSettingsSaving || !window.confirm("Reset editable paper-selection formulas to the governed defaults?")) return;
+  const result = el("formulaSettingsResult");
+  state.formulaSettingsSaving = true;
+  if (result) result.textContent = "Resetting defaults…";
+  try {
+    state.formulaSettings = await api("/api/settings/formulas", {
+      method: "POST",
+      body: {
+        action: "reset",
+        expected_revision: state.formulaSettings?.revision ?? 0,
+        reason: "ASH Stock Settings UI reset"
+      }
+    });
+    if (result) result.textContent = `Defaults restored at revision ${state.formulaSettings.revision}.`;
+    setNotice("Paper selection formulas reset to governed defaults.", "ok");
+  } catch (error) {
+    if (result) result.textContent = `Reset blocked: ${error.message}`;
+    setNotice(`Formula reset blocked: ${error.message}`, "error");
+  } finally {
+    state.formulaSettingsSaving = false;
+    renderFormulaSettings();
+  }
+}
+
 function bindUi() {
   document.addEventListener("click", (event) => {
+    const download = event.target.closest("[data-download-trades]");
+    if (download) {
+      event.preventDefault();
+      downloadTradeLedger(download.dataset.downloadTrades);
+      return;
+    }
     const action = event.target.closest("[data-quick-trade]");
     if (!action || action.disabled) return;
     event.preventDefault();
@@ -2182,8 +2547,15 @@ function bindUi() {
   el("refreshOrdersBtn")?.addEventListener("click", loadOrders);
   el("upstoxConnectBtn")?.addEventListener("click", startUpstoxOAuth);
   el("upstoxTokenForm")?.addEventListener("submit", submitUpstoxToken);
+  el("formulaSettingsForm")?.addEventListener("submit", submitFormulaSettings);
+  el("formulaSettingsReset")?.addEventListener("click", resetFormulaSettings);
   el("symbolSearch")?.addEventListener("input", () => { renderCandidates(); renderScreener(); });
-  el("decisionFilter")?.addEventListener("change", () => { renderCandidates(); renderScreener(); });
+  el("decisionFilter")?.addEventListener("change", () => {
+    renderCandidates();
+    renderScreener();
+    const tableWrap = el("screenerSection")?.querySelector(".table-wrap");
+    if (tableWrap) tableWrap.scrollTop = 0;
+  });
   el("exportBtn")?.addEventListener("click", exportCsv);
   el("quickTradeForm")?.addEventListener("submit", submitQuickTrade);
   el("quickTradeCancel")?.addEventListener("click", closeQuickTrade);
@@ -2244,8 +2616,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   startClock();
   renderMarketStrip();
   renderAll();
+  renderFormulaSettings();
   window.lucide?.createIcons?.();
-  await loadOrders();
+  await Promise.all([loadOrders(), loadFormulaSettings()]);
   await Promise.all([refreshScan(), loadSignalMarketContext(), loadReleaseIdentity()]);
   window.setInterval(maybeAutoStartPaperPortfolio, 60_000);
 });

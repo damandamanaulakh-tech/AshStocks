@@ -135,7 +135,7 @@ function paperEngineRecordRejection(state, ticket, scanRow, reason, executionEvi
     item.source === "paper-engine-autobuy" &&
     normalizeSymbol(item.symbol) === normalizeSymbol(ticket.symbol)
   ));
-  const saved = sanitizePaperTraderState({ ...trader, orders: [order, ...previous].slice(0, 200) });
+  const saved = sanitizePaperTraderState({ ...trader, orders: [order, ...previous] });
   return { order, nextState: { ...state, paperTrader: saved } };
 }
 
@@ -393,13 +393,14 @@ const PAPER_ENGINE_RUN_REPLACEMENT = String.raw`async function runPaperEngineOnc
       const fresh = (timestampMs !== null && Date.now() - timestampMs <= autoSettings.maxQuoteAgeSeconds * 1000)
         || (snapshotMs !== null && Date.now() - snapshotMs <= 30000);
       const last = finiteOr(quote?.last_price, null);
-      const buyPrice = need.buy_qty ? paperMonitorDepthPrice(quote?.depth?.asks, need.buy_qty) : null;
-      const sellPrice = need.sell_qty ? paperMonitorDepthPrice(quote?.depth?.bids, need.sell_qty) : null;
-      if (!quote || !fresh || !last || (need.buy_qty && !buyPrice) || (need.sell_qty && !sellPrice)) {
+      const quoteTimestamp = quote?.snapshot_timestamp || quote?.timestamp;
+      const buyExecution = need.buy_qty ? paperMonitorDepthExecution(quote?.depth?.asks, need.buy_qty, "BUY", need.instrument_key, quoteTimestamp) : null;
+      const sellExecution = need.sell_qty ? paperMonitorDepthExecution(quote?.depth?.bids, need.sell_qty, "SELL", need.instrument_key, quoteTimestamp) : null;
+      if (!quote || !fresh || !last || (need.buy_qty && !buyExecution) || (need.sell_qty && !sellExecution)) {
         monitorDataNeeded.push({ symbol: need.symbol, reason: !quote ? "Upstox quote missing" : !fresh ? "Upstox quote stale" : "full executable Upstox depth missing" });
         return [];
       }
-      return [{ ...need, close: last, ltp: last, last_price: last, paper_buy_price: buyPrice, paper_sell_price: sellPrice, quote_timestamp: quote.snapshot_timestamp || quote.timestamp, last_candle_date: quote.timestamp, data_source: "Upstox Market Quote API" }];
+      return [{ ...need, close: last, ltp: last, last_price: last, paper_buy_price: buyExecution?.fill_price ?? null, paper_sell_price: sellExecution?.fill_price ?? null, paper_buy_execution: buyExecution, paper_sell_execution: sellExecution, quote_timestamp: quoteTimestamp, last_candle_date: quote.timestamp, data_source: "Upstox Market Quote API" }];
     });
     monitor = applyPaperLifecycleMonitor(workingState, monitorRows, { source: "paper-engine-upstox-real-quote-monitor", data_needed: monitorDataNeeded });
     workingState = monitor.nextState;

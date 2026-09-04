@@ -14,6 +14,7 @@ const Q1_INPUTS = [
 const STATE_FILE = path.join(ROOT, "data", "app_state.json");
 const SCAN_LEDGER_FILE = path.join(ROOT, "data", "scan_ledger.jsonl");
 const UPSTOX_AUTH_FILE = path.join(ROOT, "data", "upstox_auth.json");
+const PAPER_LEDGER_FILE = path.join(ROOT, "data", "paper_ledger.jsonl");
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -252,6 +253,11 @@ try {
       }
     }
   ]));
+  quoteData["NSE_EQ:INETEST00005"].depth.buy = [
+    { price: 355.95, quantity: 100, orders: 5 },
+    { price: 355.90, quantity: 80, orders: 4 }
+  ];
+  quoteData["NSE_EQ:INETEST00007"].depth.buy = [];
   globalThis.fetch = async (url) => {
     const target = String(url);
     if (!target.startsWith("https://api.upstox.com/v2/market-quote/quotes")) throw new Error("unexpected network request " + target);
@@ -312,24 +318,35 @@ try {
   if (manualOrder.order?.price !== 356.05 || manualOrder.order?.price_source !== "server_upstox_weighted_ask") throw new Error("manual MARKET fill must replace the client price with the Upstox ask");
   if (manualOrder.order?.decision_price !== 1) throw new Error("manual MARKET fill should retain the client price only as decision evidence");
   if (manualOrder.order?.execution_evidence?.server_verified !== true || manualOrder.order?.execution_evidence?.all_clear !== true) throw new Error("manual MARKET fill must persist server quote verification");
+  const manualSellBody = {
+    idempotency_key: "smoke-server-quote-authority-sell-1",
+    symbol: "MANUALQUOTE",
+    instrument_key: "NSE_EQ|INETEST00005",
+    side: "SELL",
+    order_type: "MARKET",
+    qty: 281,
+    price: 999,
+    source: "smoke-manual-market-order"
+  };
   response = await nativeFetch(base + "/api/paper-trader/order", {
     method: "POST",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify({
-      idempotency_key: "smoke-server-quote-authority-sell-1",
-      symbol: "MANUALQUOTE",
-      instrument_key: "NSE_EQ|INETEST00005",
-      side: "SELL",
-      order_type: "MARKET",
-      qty: 281,
-      price: 999,
-      source: "smoke-manual-market-order"
-    })
+    body: JSON.stringify(manualSellBody)
   });
   const manualSell = await response.json();
   if (response.status !== 200) throw new Error("server-verified manual MARKET sell should fill: " + JSON.stringify(manualSell));
-  if (manualSell.order?.price !== 355.95 || manualSell.order?.price_source !== "server_upstox_weighted_bid") throw new Error("manual MARKET sell must replace the client price with the Upstox bid");
-  if (manualSell.order?.decision_price !== 999 || manualSell.order?.execution_evidence?.server_verified !== true) throw new Error("manual MARKET sell must separate decision price from server execution evidence");
+  if (manualSell.action !== "PAPER_SELL_PARTIALLY_FILLED" || manualSell.order?.status !== "PAPER_PARTIALLY_FILLED") throw new Error("manual MARKET sell should report a partial paper fill");
+  if (manualSell.order?.price !== 355.9278 || manualSell.order?.price_source !== "server_upstox_partial_weighted_bid") throw new Error("manual MARKET sell must use weighted visible Upstox bids only");
+  if (manualSell.order?.qty !== 180 || manualSell.order?.requested_qty !== 281 || manualSell.order?.filled_qty !== 180 || manualSell.order?.unfilled_qty !== 101) throw new Error("manual partial SELL must retain requested, filled and unfilled quantities");
+  if (manualSell.order?.partial_fill !== true || manualSell.order?.time_in_force !== "IOC_SIMULATED" || manualSell.order?.unfilled_disposition !== "CANCELLED_REMAINDER") throw new Error("manual partial SELL must declare IOC remainder handling");
+  if (manualSell.order?.decision_price !== 999 || manualSell.order?.execution_evidence?.server_verified !== true || manualSell.order?.execution_evidence?.levels_used?.length !== 2) throw new Error("manual MARKET sell must separate decision price from complete server execution evidence");
+  if (manualSell.paperTrader?.positions?.find((position) => position.symbol === "MANUALQUOTE")?.qty !== 101) throw new Error("manual partial SELL must leave the unfilled holding open");
+  response = await nativeFetch(base + "/api/paper-trader/order", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(manualSellBody) });
+  const manualSellReplay = await response.json();
+  if (response.status !== 200 || manualSellReplay.replayed !== true || manualSellReplay.order?.id !== manualSell.order?.id) throw new Error("partial SELL replay must return the original fill without reducing the holding twice");
+  response = await nativeFetch(base + "/api/paper-trader/order", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ ...manualSellBody, idempotency_key: "smoke-server-quote-authority-sell-same-snapshot-2", qty: 101 }) });
+  const reusedSnapshotSell = await response.json();
+  if (response.status !== 409 || reusedSnapshotSell.error !== "upstox_quote_snapshot_already_consumed_for_paper_exit") throw new Error("a fresh idempotency key must not consume the same Upstox exit snapshot twice");
   response = await nativeFetch(base + "/api/paper-trader/order", {
     method: "POST",
     headers: { "content-type": "application/json" },
@@ -376,6 +393,13 @@ try {
   if (gttSellEvent?.type !== "GTT_SELL_TRIGGERED" || gttSellEvent?.price !== 356.95) throw new Error("SELL GTT must execute at the full-depth Upstox bid");
   if (gttSellTrade?.price_source !== "server_upstox_weighted_bid" || gttSellTrade?.qty !== 281) throw new Error("SELL GTT closed trade must retain bid-side execution evidence");
   if (gttMonitor.paperTrader?.positions?.some((position) => position.symbol === "GTTQUOTE")) throw new Error("triggered SELL GTT must remove the fully sold holding");
+  response = await nativeFetch(base + "/api/paper-trader/order", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ idempotency_key: "smoke-shallow-buy-depth-1", symbol: "CONCURRENTTWO", instrument_key: "NSE_EQ|INETEST00008", side: "BUY", order_type: "MARKET", qty: 60000, price: 1, source: "smoke-shallow-buy-depth" })
+  });
+  const shallowBuy = await response.json();
+  if (response.status !== 409 || shallowBuy.error !== "insufficient_upstox_ask_depth_for_full_paper_buy") throw new Error("BUY must remain blocked when visible asks cannot fill the entire quantity");
   const concurrentBodies = [
     { idempotency_key: "smoke-concurrent-one-1", symbol: "CONCURRENTONE", instrument_key: "NSE_EQ|INETEST00007", side: "BUY", order_type: "MARKET", qty: 280, price: 1, source: "smoke-concurrent-order" },
     { idempotency_key: "smoke-concurrent-two-1", symbol: "CONCURRENTTWO", instrument_key: "NSE_EQ|INETEST00008", side: "BUY", order_type: "MARKET", qty: 280, price: 1, source: "smoke-concurrent-order" }
@@ -391,12 +415,22 @@ try {
   const concurrentLedger = await response.json();
   if (!concurrentLedger.positions?.some((position) => position.symbol === "CONCURRENTONE")) throw new Error("first concurrent paper fill was lost from the ledger");
   if (!concurrentLedger.positions?.some((position) => position.symbol === "CONCURRENTTWO")) throw new Error("second concurrent paper fill was lost from the ledger");
+  const concurrentOneBeforeExit = concurrentLedger.positions?.find((position) => position.symbol === "CONCURRENTONE")?.qty;
+  response = await nativeFetch(base + "/api/paper-trader/order", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ idempotency_key: "smoke-no-bid-exit-1", symbol: "CONCURRENTONE", instrument_key: "NSE_EQ|INETEST00007", side: "SELL", order_type: "MARKET", qty: concurrentOneBeforeExit, price: 999, source: "smoke-no-bid-exit" })
+  });
+  const noBidExit = await response.json();
+  if (response.status !== 409 || noBidExit.error !== "upstox_bid_depth_unavailable_for_paper_exit") throw new Error("SELL with zero visible bids must remain unfilled instead of using LTP");
+  if (noBidExit.paperTrader?.positions?.find((position) => position.symbol === "CONCURRENTONE")?.qty !== concurrentOneBeforeExit) throw new Error("zero-bid SELL must not mutate the open holding");
+  if (noBidExit.paperTrader?.trades?.some((trade) => trade.symbol === "CONCURRENTONE" && trade.side === "SELL")) throw new Error("zero-bid SELL must not create a trade");
   console.log(JSON.stringify({ ok: true, positions: ledger.positions.map((position) => position.symbol), pending: result.auto_buy.pending_after_run }));
 } finally {
   globalThis.fetch = nativeFetch;
   await new Promise((resolve) => server.close(resolve));
   const fs = await import("node:fs/promises");
-  for (const file of ["data/app_state.json", "data/scan_ledger.jsonl", "data/upstox_auth.json"]) await fs.unlink(file).catch(() => {});
+  for (const file of ["data/app_state.json", "data/scan_ledger.jsonl", "data/upstox_auth.json", "data/paper_ledger.jsonl"]) await fs.unlink(file).catch(() => {});
 }
 `;
   const result = await new Promise((resolve) => {
@@ -511,6 +545,8 @@ async function main() {
     assert(servedStyles.response.status === 200, "local server should serve styles.css");
     assert(servedStylesText.includes("#ordersSection.section.active"), "served Paper Book CSS should own desktop scrolling");
     assert(servedStylesText.includes("overflow-y: auto"), "served Paper Book CSS should allow vertical scrolling");
+    assert(servedStylesText.includes("#screenerSection .watchlist-table-scroll"), "served Watchlist CSS should have an explicit table scroll owner");
+    assert(servedStylesText.includes("overscroll-behavior: contain"), "served Watchlist CSS should contain table scrolling inside the viewport");
 
     const ready = await request("/api/ready");
     assert(ready.response.status === 200, "ready should be 200 in local smoke");
@@ -522,10 +558,10 @@ async function main() {
     assert(Array.isArray(state.body.state.universe), "state should include Indian universe");
     const initialPaperLedger = await request("/api/paper-trader/orders");
     assert(initialPaperLedger.response.status === 200, "paper ledger should be readable");
-    assert(initialPaperLedger.body.funds.starting_capital === 5000000, "paper capital must be Rs 50 lakh");
+    assert(initialPaperLedger.body.funds.starting_capital === 50000000, "paper capital must be Rs 5 crore");
     assert(initialPaperLedger.body.capital_policy.minimumEntryValue === 100000, "paper lifecycle must expose the Rs 1 lakh entry minimum");
-    assert(initialPaperLedger.body.capital_policy.maximumOpenPositions === 50, "paper lifecycle must retain the 50-position hard ceiling");
-    assert(initialPaperLedger.body.capital_policy.initialAffordableOpenPositionsAfterEntryCost === 49, "paper lifecycle must expose 49 initially affordable minimum entries after BUY costs");
+    assert(initialPaperLedger.body.capital_policy.maximumOpenPositions === 500, "paper lifecycle must expose the 500-position hard ceiling");
+    assert(initialPaperLedger.body.capital_policy.initialAffordableOpenPositionsAfterEntryCost === 499, "paper lifecycle must expose 499 initially affordable minimum entries after BUY costs");
     assert(initialPaperLedger.body.capital_policy.maximumCandidateEntries === 80, "paper lifecycle must expose up to 80 eligible entries");
 
     const dataBank = await request("/api/data-bank/status");
@@ -544,10 +580,10 @@ async function main() {
     assert(stockSelectionParameters.response.status === 200, "stock-selection parameters should be readable");
     assert(stockSelectionParameters.body.parameters.parameterRevision === "0.2.0", "stock-selection parameters should expose Kelly revision 0.2.0");
     assert(stockSelectionParameters.body.parameters.positionSizing.kelly.fractionOfKelly === 0.25, "stock-selection parameters should expose quarter-Kelly");
-    assert(stockSelectionParameters.body.parameters.paperCapital.startingCapital === 5000000, "stock-selection parameters should expose Rs 50 lakh capital");
+    assert(stockSelectionParameters.body.parameters.paperCapital.startingCapital === 50000000, "stock-selection parameters should expose Rs 5 crore capital");
     assert(stockSelectionParameters.body.parameters.paperCapital.minimumEntryValue === 100000, "stock-selection parameters should expose Rs 1 lakh minimum entry");
     assert(stockSelectionParameters.body.parameters.paperCapital.maximumCandidateEntries === 80, "stock-selection parameters should expose the 80-entry lifecycle target");
-    assert(stockSelectionParameters.body.parameters.paperCapital.maximumOpenPositions === 50, "stock-selection parameters should cap simultaneous positions at the affordable 50");
+    assert(stockSelectionParameters.body.parameters.paperCapital.maximumOpenPositions === 500, "stock-selection parameters should cap simultaneous positions at 500");
 
     const stockSelectionStocks = Array.from({ length: 12 }, (_, index) => ({
       symbol: `KS${index}`,
@@ -609,7 +645,7 @@ async function main() {
       body: JSON.stringify({
         symbol: "KELLYACTIVE",
         side: "BUY",
-        qty: 1500,
+        qty: 150000,
         price: 100,
         source: "smoke-active-kelly-cap",
         test_fixture_price: true,
@@ -799,7 +835,7 @@ async function main() {
       body: JSON.stringify({
         symbol: "KELLYCAP",
         side: "BUY",
-        qty: 2000,
+        qty: 6000,
         price: 1000,
         source: "smoke-kelly-cap",
         test_fixture_price: true,
@@ -880,7 +916,7 @@ async function main() {
     assert(paperStatus.body.status.schedule_mode === "continuous_market_hours", "paper-engine should run continuously during NSE hours");
     assert(paperStatus.body.status.auto_interval_minutes === 2, "paper-engine should expose the two-minute server cycle");
     assert(paperStatus.body.status.auto_buy.maxBuysPerRun === 80, "paper-engine should accept up to 80 eligible entries per cycle");
-    assert(paperStatus.body.status.capital_policy.startingCapital === 5000000, "paper-engine status should expose Rs 50 lakh capital");
+    assert(paperStatus.body.status.capital_policy.startingCapital === 50000000, "paper-engine status should expose Rs 5 crore capital");
     assert(paperStatus.body.status.market_hours_ist.open === "09:15" && paperStatus.body.status.market_hours_ist.close === "15:30", "paper-engine should expose NSE market hours");
 
     const paperRunGuard = await request("/api/paper-engine/run", { method: "POST" });
@@ -1004,13 +1040,185 @@ async function main() {
       assert(fiiHoldingNode?.state === "MISS" && fiiHoldingNode?.value === -0.42, "FII holding parameter should evaluate the live quarter change");
       assert(fiiMarketNode?.state === "HIT" && fiiMarketNode?.value === 400, "FII market regime parameter should evaluate the live five-day flow");
       assert(institutionalRow?.parameter_selection_effect?.institutional_overlay === "ashstocks-upstox-institutional-v0.1", "scanner score proof should identify the Upstox institutional overlay");
+      assert(institutionalRow?.score === institutionalRow?.selection_score, "institutional evidence must preserve the primary scanner rank");
+      assert(institutionalRow?.parameter_selection_effect?.status === "ADVISORY_ONLY", "institutional score must remain an advisory challenger");
     } finally {
       globalThis.fetch = institutionalNativeFetch;
     }
 
-    console.log(JSON.stringify({ ok: true, checks: ["mongo-production-fail-closed", "data-bank-status", "scan-ledger", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "pre-rise-pattern-tracker", "parameter-tunnel-175", "kelly-parameters", "kelly-persisted-ledger", "kelly-active-sizing", "kelly-lifecycle-cap", "kelly-no-edge-block", "paper-capital-50-lakh", "paper-minimum-entry-1-lakh", "paper-order-idempotency", "paper-oversell-rejection", "paper-net-cost-accounting", "paper-closed-trade-returns", "paper-engine-real-quote-fill", "server-verified-manual-market-fill", "server-verified-monitor-gtt-sell", "serialized-concurrent-paper-fills", "upstox-guard", "paper-engine-status", "paper-engine-guard", "q1-status", "q1-upload", "q1-render-guard", "upstox-oauth-start", "upstox-oauth-rejection", "upstox-token-paste", "upstox-stock-fii-holdings", "upstox-market-fii-dii-flow", "upstox-fii-parameter-overlay"] }));
+    const formulaView = await request("/api/settings/formulas");
+    assert(formulaView.response.status === 200, "formula settings should be readable");
+    assert(formulaView.body.paper_only === true && formulaView.body.broker_write_enabled === false, "formula settings must preserve paper-only safety");
+    assert(formulaView.body.edge_confirmed === false, "formula settings must not claim a confirmed edge");
+    assert(formulaView.body.settings.minScoreSelect === 70 && formulaView.body.settings.minScoreWatch === 55, "formula settings should expose governed defaults");
+    const formulaUpdate = await request("/api/settings/formulas", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ expected_revision: formulaView.body.revision, settings: { minScoreSelect: 72.25, minScoreWatch: 56 }, reason: "smoke formula update" }),
+    });
+    assert(formulaUpdate.response.status === 200 && formulaUpdate.body.revision === formulaView.body.revision + 1, "valid formula update should persist with a new revision");
+    assert(formulaUpdate.body.settings.minScoreSelect === 72.25 && formulaUpdate.body.audit[0].changes.minScoreSelect.after === 72.25, "formula audit should retain exact before and after values");
+    const persistedFormula = await request("/api/settings/formulas");
+    assert(persistedFormula.body.settings.minScoreSelect === 72.25, "formula update should survive a subsequent GET");
+    const formulaScan = await request("/api/scanner/run", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ settings: { minScoreSelect: 1, minScoreWatch: 1 } }),
+    });
+    assert(formulaScan.response.status === 200, "scanner should run with persisted formulas");
+    assert(formulaScan.body.settings.minScoreSelect === 72.25 && formulaScan.body.settings.minScoreWatch === 56, "request settings must not override persisted scanner formulas");
+    assert(formulaScan.body.settingsRevision === formulaUpdate.body.revision && formulaScan.body.settingsSource === "persisted-paper-settings", "scanner result should stamp its settings revision and source");
+    assert(formulaScan.body.ledger.settingsRevision === formulaUpdate.body.revision && formulaScan.body.ledger.settingsSource === "persisted-paper-settings", "scan ledger metadata should retain the settings revision and source");
+    const governedPlan = await request("/api/paper-trader/run", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ useUpstox: false, settings: { maxPositionPct: 0.2, targetDefaultPct: 80, stopLossPct: 25 } }),
+    });
+    assert(governedPlan.response.status === 200, "paper trader plan should run with persisted settings");
+    assert(governedPlan.body.settings.maxPositionPct === 0.002, "request settings must not override the governed 0.2% automatic base allocation");
+    assert(governedPlan.body.settings.startingCapital === 50000000, "paper trader plan must retain the approved 5 crore capital");
+    assert(governedPlan.body.settings.maxPositions === 500, "paper trader plan must retain the approved 500-position capacity");
+    const invalidFormula = await request("/api/settings/formulas", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ expected_revision: formulaUpdate.body.revision, settings: { correlationThreshold: 1.01 }, reason: "smoke invalid range" }),
+    });
+    assert(invalidFormula.response.status === 422, "out-of-range formula should be rejected");
+    const conflictingFormula = await request("/api/settings/formulas", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ expected_revision: formulaUpdate.body.revision, settings: { minScoreWatch: 90 }, reason: "smoke invalid threshold order" }),
+    });
+    assert(conflictingFormula.response.status === 422, "WATCH above SELECT should be rejected");
+    const protectedFormula = await request("/api/settings/formulas", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ expected_revision: formulaUpdate.body.revision, settings: { brokerWriteEnabled: true }, reason: "smoke protected field" }),
+    });
+    assert(protectedFormula.response.status === 422, "broker-write setting must remain protected");
+    const currentState = await request("/api/state");
+    const bypassFormula = await request("/api/state", {
+      method: "PUT",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ state: { ...currentState.body.state, scannerSettings: { ...currentState.body.state.scannerSettings, minScoreSelect: 1 } } }),
+    });
+    assert(bypassFormula.response.status === 409 && bypassFormula.body.error === "use_selection_settings_endpoint", "generic state writes must not bypass formula validation");
+    const formulaReset = await request("/api/settings/formulas", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ action: "reset", expected_revision: formulaUpdate.body.revision, reason: "smoke formula reset" }),
+    });
+    assert(formulaReset.response.status === 200 && formulaReset.body.settings.minScoreSelect === 70, "formula reset should restore exact defaults");
+    assert(formulaReset.body.audit[0].action === "RESET", "formula reset should append an audit record");
+
+    const archiveBase = await request("/api/state");
+    const archiveOrders = Array.from({ length: 215 }, (_, index) => {
+      const occurredAt = new Date(Date.parse("2026-01-01T04:00:00.000Z") + index * 1000).toISOString();
+      return {
+        id: `ARCHIVE_ORDER_${index}`,
+        symbol: `ARORDER${index}`,
+        side: index % 2 ? "BUY" : "SELL",
+        qty: 1,
+        price: 100 + index,
+        status: "PAPER_FILLED",
+        source: "smoke-archive",
+        created_at: occurredAt,
+        updated_at: occurredAt,
+        paper_only: true,
+      };
+    });
+    const archiveTrades = Array.from({ length: 315 }, (_, index) => {
+      const entryAt = new Date(Date.parse("2026-01-01T04:00:00.000Z") + index * 1000).toISOString();
+      const exitAt = new Date(Date.parse(entryAt) + 60_000).toISOString();
+      return {
+        id: `ARCHIVE_TRADE_${index}`,
+        order_id: `ARCHIVE_ORDER_${index % archiveOrders.length}`,
+        symbol: `ARTRADE${index}`,
+        side: "SELL",
+        qty: 1,
+        price: 110,
+        entry_price: 100,
+        exit_price: 110,
+        entry_value: 100,
+        exit_value: 110,
+        gross_realized_pnl: 10,
+        realized_pnl: 10,
+        return_pct: 10,
+        entry_at: entryAt,
+        exit_at: exitAt,
+        traded_at: exitAt,
+        holding_days: 1,
+        close_reason: "smoke archive close",
+        paper_only: true,
+      };
+    });
+    const archiveSeedState = {
+      ...archiveBase.body.state,
+      paperTrader: { ...(archiveBase.body.state.paperTrader || {}), orders: archiveOrders, trades: archiveTrades },
+    };
+    const archiveSeed = await request("/api/state", {
+      method: "PUT",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ state: archiveSeedState }),
+    });
+    assert(archiveSeed.response.status === 200, "paper ledger archive seed should save in test mode");
+    assert(archiveSeed.body.state.paperTrader.orders.length === 200 && archiveSeed.body.state.paperTrader.trades.length === 300, "hot paper ledger snapshot must remain bounded");
+
+    const fetchHistory = async (kind, limit = 73) => {
+      const records = [];
+      const cursors = new Set();
+      let cursor = "";
+      do {
+        const suffix = cursor ? `&cursor=${encodeURIComponent(cursor)}` : "";
+        const page = await request(`/api/paper-trader/history?kind=${kind}&limit=${limit}${suffix}`);
+        assert(page.response.status === 200, `paper ${kind} history page should load`);
+        records.push(...page.body.records);
+        cursor = page.body.next_cursor || "";
+        assert(!cursor || !cursors.has(cursor), "paper ledger cursor must advance");
+        if (cursor) cursors.add(cursor);
+      } while (cursor);
+      return records;
+    };
+    const archivedOrderRows = (await fetchHistory("orders")).filter((record) => String(record.id).startsWith("ARCHIVE_ORDER_"));
+    const archivedClosedRows = (await fetchHistory("closed")).filter((record) => String(record.id).startsWith("ARCHIVE_TRADE_"));
+    const archivedOrderIds = new Set(archivedOrderRows.map((record) => record.id));
+    const duplicateArchiveOrderId = [...archivedOrderIds].find((id) => archivedOrderRows.filter((record) => record.id === id).length > 1);
+    const duplicateArchiveOrderSample = duplicateArchiveOrderId ? archivedOrderRows.filter((record) => record.id === duplicateArchiveOrderId).slice(0, 2) : [];
+    assert(archivedOrderRows.length === 215 && archivedOrderIds.size === 215, `archive must retain every unique order beyond the hot snapshot cap (got ${archivedOrderRows.length}; duplicate ${duplicateArchiveOrderId || "none"}: ${JSON.stringify(duplicateArchiveOrderSample)})`);
+    assert(archivedClosedRows.length === 315 && new Set(archivedClosedRows.map((record) => record.id)).size === 315, `archive must retain every closed trade beyond the hot snapshot cap (got ${archivedClosedRows.length})`);
+
+    const archiveRepeat = await request("/api/state", {
+      method: "PUT",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ state: archiveSeedState }),
+    });
+    assert(archiveRepeat.response.status === 200, "repeated archive seed should remain idempotent");
+    const repeatedOrders = (await fetchHistory("orders", 1000)).filter((record) => String(record.id).startsWith("ARCHIVE_ORDER_"));
+    assert(repeatedOrders.length === 215, "re-saving the same paper records must not duplicate archive events");
+
+    const changedOrderState = {
+      ...archiveSeedState,
+      paperTrader: {
+        ...archiveSeedState.paperTrader,
+        orders: [{ ...archiveOrders[0], status: "PAPER_REJECTED", rejection_reason: "smoke status transition" }, ...archiveOrders.slice(1)],
+      },
+    };
+    await request("/api/state", { method: "PUT", headers: { "content-type": "application/json" }, body: JSON.stringify({ state: changedOrderState }) });
+    const changedOrderEvents = (await fetchHistory("orders", 1000)).filter((record) => record.id === "ARCHIVE_ORDER_0");
+    assert(changedOrderEvents.length === 2, "a genuine order status transition should create a second immutable archive event");
+
+    const archiveReset = await request("/api/state", {
+      method: "PUT",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ state: { ...archiveBase.body.state, scannerSettings: formulaReset.body.settings, selectionSettingsControl: { revision: formulaReset.body.revision, updated_at: formulaReset.body.updated_at, audit: formulaReset.body.audit }, paperTrader: { ...(archiveBase.body.state.paperTrader || {}), orders: [], trades: [] } } }),
+    });
+    assert(archiveReset.response.status === 200, "hot paper ledger reset should remain available in test mode");
+    const survivingClosedRows = (await fetchHistory("closed", 1000)).filter((record) => String(record.id).startsWith("ARCHIVE_TRADE_"));
+    assert(survivingClosedRows.length === 315, "append-only closed-trade archive must survive hot-state replacement");
+
+    console.log(JSON.stringify({ ok: true, checks: ["mongo-production-fail-closed", "data-bank-status", "scan-ledger", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "pre-rise-pattern-tracker", "parameter-tunnel-175", "kelly-parameters", "kelly-persisted-ledger", "kelly-active-sizing", "kelly-lifecycle-cap", "kelly-no-edge-block", "paper-capital-5-crore", "paper-slots-500", "paper-minimum-entry-1-lakh", "paper-order-idempotency", "paper-oversell-rejection", "paper-net-cost-accounting", "paper-closed-trade-returns", "paper-engine-real-quote-fill", "server-verified-manual-market-fill", "paper-exit-partial-visible-depth", "paper-exit-snapshot-reuse-block", "paper-exit-zero-bid-block", "paper-buy-full-depth-required", "server-verified-monitor-gtt-sell", "serialized-concurrent-paper-fills", "upstox-quote-500-instruments", "watchlist-viewport-scroll", "upstox-guard", "paper-engine-status", "paper-engine-guard", "q1-status", "q1-upload", "q1-render-guard", "upstox-oauth-start", "upstox-oauth-rejection", "upstox-token-paste", "upstox-stock-fii-holdings", "upstox-market-fii-dii-flow", "upstox-fii-parameter-overlay", "formula-settings-persistence", "formula-settings-revision-audit", "formula-settings-bypass-lock", "persisted-settings-scanner-stamp", "paper-plan-settings-lock", "append-only-paper-ledger", "paper-ledger-pagination", "paper-ledger-idempotency", "paper-ledger-state-replacement-survival"] }));
   } finally {
-    await Promise.all([...Q1_INPUTS, STATE_FILE, SCAN_LEDGER_FILE, UPSTOX_AUTH_FILE].map((file) => fs.unlink(file).catch((error) => {
+    await Promise.all([...Q1_INPUTS, STATE_FILE, SCAN_LEDGER_FILE, UPSTOX_AUTH_FILE, PAPER_LEDGER_FILE].map((file) => fs.unlink(file).catch((error) => {
       if (error.code !== "ENOENT") throw error;
     })));
     await new Promise((resolve) => server.close(resolve));

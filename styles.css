@@ -4147,7 +4147,7 @@ td small {
   color: #ff5d64 !important;
 }
 .pnl-flat {
-  color: var(--text) !important;
+  color: var(--ink) !important;
 }
 .mark-time,
 .mark-warning {
@@ -5605,5 +5605,318 @@ td small {
   .signal-evidence-head,
   .signal-evidence-row {
     grid-template-columns: minmax(82px, 1fr) 70px minmax(100px, 1.3fr) 16px;
+  }
+}
+
+/* 2026-08-29 dashboard accessibility and complete-list ownership. */
+.signal-radar-card {
+  min-height: 0;
+  max-height: min(62vh, 680px);
+  display: flex;
+  flex-direction: column;
+}
+
+.signal-table-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  scrollbar-gutter: stable;
+}
+
+.signal-radar-table thead,
+#screenerSection thead {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: #071722;
+}
+
+/* Raise the compact dashboard copy by exactly two CSS pixels. */
+.signal-radar-table th,
+.signal-radar-table td small,
+.signal-radar-table .radar-action,
+.market-regime-card footer,
+.signal-evidence-head,
+.signal-order-footnote,
+.signal-chart-card .price-stack span,
+.portfolio-card td small {
+  font-size: 10px;
+}
+
+.regime-facts span,
+.regime-facts strong,
+.signal-evidence-row strong,
+.signal-evidence-row span,
+.signal-evidence-row b,
+.signal-radar-table td > button small {
+  font-size: 10px;
+}
+
+.radar-legend span,
+.signal-radar-table .fii-holding-cell small,
+.signal-trend,
+.data-needed,
+.signal-radar-card > footer,
+.signal-radar-card > footer button,
+.regime-gauge small,
+.signal-evidence-body > footer,
+.governor-state,
+.governor-rule,
+.risk-exposure-row,
+.activity-list time {
+  font-size: 11px;
+}
+
+.portfolio-card th {
+  font-size: 11px;
+}
+
+.portfolio-card header p {
+  font-size: 13px;
+}
+
+.signal-radar-table td,
+.signal-radar-table td > button strong,
+.signal-empty,
+.activity-list li strong {
+  font-size: 12px;
+}
+
+.activity-list li small,
+.activity-list time {
+  font-size: 11px;
+}
+
+.formula-settings-panel {
+  grid-column: 1 / -1;
+}
+
+.formula-settings-head {
+  align-items: flex-start;
+}
+
+.formula-settings-head p {
+  max-width: 760px;
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.formula-settings-form {
+  padding: 16px;
+}
+
+.formula-settings-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.formula-settings-group {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(4, 19, 25, .72);
+}
+
+.formula-settings-group h4 {
+  margin: 0 0 4px;
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.formula-settings-group > p {
+  min-height: 34px;
+  margin: 0 0 11px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.formula-field {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 112px;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 0;
+  border-top: 1px solid rgba(92, 125, 142, .2);
+}
+
+.formula-field:first-of-type {
+  border-top: 0;
+}
+
+.formula-field span,
+.formula-field small {
+  display: block;
+}
+
+.formula-field span {
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.formula-field small {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.35;
+}
+
+.formula-field input,
+.formula-field select {
+  width: 100%;
+  min-height: 36px;
+  border: 1px solid #29404b;
+  border-radius: 7px;
+  padding: 7px 9px;
+  background: #07151a;
+  color: var(--ink);
+  font: inherit;
+  font-size: 12px;
+}
+
+.formula-field input:focus,
+.formula-field select:focus {
+  outline: 2px solid rgba(0, 214, 171, .35);
+  border-color: var(--green);
+}
+
+.formula-settings-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.formula-settings-actions .token-result {
+  margin: 0;
+  min-height: auto;
+}
+
+.formula-audit-detail {
+  border-top: 1px solid var(--line);
+  padding: 12px 16px 16px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.formula-audit-detail summary {
+  cursor: pointer;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.formula-settings-audit {
+  display: grid;
+  gap: 7px;
+  margin-top: 10px;
+}
+
+.formula-audit-row {
+  display: grid;
+  grid-template-columns: minmax(130px, .55fr) minmax(0, 1.45fr);
+  gap: 12px;
+  padding: 8px 10px;
+  border: 1px solid rgba(92, 125, 142, .2);
+  border-radius: 7px;
+  background: rgba(7, 21, 26, .75);
+}
+
+.performance-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.performance-stat-grid article {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: rgba(7, 21, 26, .8);
+}
+
+.performance-stat-grid small,
+.performance-stat-grid strong,
+.performance-stat-grid em {
+  display: block;
+}
+
+.performance-stat-grid small {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.performance-stat-grid strong {
+  margin-top: 5px;
+  color: var(--ink);
+  font-size: 18px;
+}
+
+.performance-stat-grid em {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 10px;
+  font-style: normal;
+}
+
+@media (min-width: 1200px) {
+  #screenerSection.section.active {
+    display: grid;
+    flex: 1 1 auto;
+    grid-template-rows: minmax(0, 1fr);
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  #screenerSection > .panel {
+    display: grid;
+    flex: 1 1 auto;
+    grid-template-rows: auto minmax(0, 1fr);
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  #screenerSection .watchlist-table-scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+  }
+
+  #settingsSection.section.active,
+  #helpSection.section.active {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+    scrollbar-gutter: stable;
+  }
+}
+
+@media (max-width: 1080px) {
+  .formula-settings-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .performance-stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .formula-field,
+  .formula-audit-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .performance-stat-grid {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

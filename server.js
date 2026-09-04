@@ -22,6 +22,8 @@ import { applyUpstoxOAuthPatches } from "./server-upstox-oauth-patch.mjs";
 import { applySuspendedEmptyScanPatch } from "./server-suspended-empty-patch.mjs";
 import { applyParameterTunnelPatches } from "./server-parameter-tunnel-patch.mjs";
 import { applyStockSelectionPatches } from "./server-stock-selection-patch.mjs";
+import { applySelectionSettingsPatches } from "./server-selection-settings-patch.mjs";
+import { applyPaperLedgerRetentionPatches } from "./server-paper-ledger-retention-patch.mjs";
 
 const runtimeProcess = globalThis.process;
 const PORT = Number(runtimeProcess?.env?.PORT || 4173);
@@ -261,6 +263,8 @@ function startDataBankBootstrap() {
   output = applySuspendedEmptyScanPatch(output, mustReplace);
   output = applyParameterTunnelPatches(output, mustReplace);
   output = applyStockSelectionPatches(output, mustReplace);
+  output = applySelectionSettingsPatches(output, mustReplace);
+  output = applyPaperLedgerRetentionPatches(output, mustReplace);
   return output;
 }
 

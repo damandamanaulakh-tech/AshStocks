@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "0.6",
+  "policyVersion": "ashstocks-paper-capital-v0.6-5cr-500-slots",
+  "asOf": "2026-09-02",
+  "canonicalSource": "config/ash-stock-parameters.v2.2.json#paperCapital",
+  "currency": "INR",
+  "startingCapital": 50000000,
+  "deploymentTargetPct": 100,
+  "minimumEntryValue": 100000,
+  "minimumEntryPct": 0.2,
+  "baseEntryPct": 0.2,
+  "maximumPositionPct": 10,
+  "maximumCandidateEntries": 80,
+  "maximumOpenPositions": 500,
+  "maximumBuysPerRun": 80,
+  "affordableOpenPositionsAtMinimum": 500,
+  "initialAffordableOpenPositionsAfterEntryCost": 499,
+  "transactionCostOneWayPct": 0.08,
+  "capitalMigration": {
+    "previousDefault": 5000000,
+    "newDefault": 50000000,
+    "preserveOrdersTradesAndPositions": true
+  },
+  "governance": {
+    "paperOnly": true,
+    "liveReady": false,
+    "brokerWriteEnabled": false,
+    "blockWhenBuyingPowerInsufficient": true,
+    "blockBuyBelowMinimumEntryValue": true,
+    "kellyNoPositiveEdgeStillBlocks": true,
+    "positiveKellySizingFloorValue": 100000
+  },
+  "arithmeticNote": "₹5 crore has 500 gross ₹1 lakh slots, but the approved 0.08% BUY cost makes 499 slots initially affordable. The 500th slot requires sufficient net gains. The 80-entry limit remains a per-cycle candidate and fill ceiling."
+}

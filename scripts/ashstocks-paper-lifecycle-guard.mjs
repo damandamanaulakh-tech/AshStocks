@@ -27,7 +27,7 @@ function mustNotMatch(file, regex, reason) {
 }
 
 for (const text of [
-  "ashstocks-paper-order-lifecycle-v0.8-upstox-monitor-gtt-sells",
+  "ashstocks-paper-order-lifecycle-v0.9-partial-depth-exits",
   "idempotency_key",
   "legacy_60_second_fingerprint",
   "idempotency_key_reused_with_different_request",
@@ -43,7 +43,15 @@ for (const text of [
   "exact_nse_equity_instrument_key_required",
   "server_upstox_weighted_ask",
   "server_upstox_weighted_bid",
-  "insufficient_upstox_depth_for_full_paper_fill",
+  "insufficient_upstox_ask_depth_for_full_paper_buy",
+  "upstox_bid_depth_unavailable_for_paper_exit",
+  "server_upstox_partial_weighted_bid",
+  "PAPER_SELL_PARTIALLY_FILLED",
+  "PAPER_PARTIALLY_FILLED",
+  "IOC_SIMULATED",
+  "CANCELLED_REMAINDER",
+  "quote_snapshot_key",
+  "levels_used",
   "nse_market_closed_for_market_paper_fill",
   "test_fixture_only",
   "PAPER_CAPITAL_POLICY",
@@ -128,8 +136,23 @@ mustMatch(
 );
 mustMatch(
   "server-paper-order-lifecycle-patch.mjs",
-  /request\.qty > heldQty[\s\S]*exceeds held quantity[\s\S]*const sellQty = request\.qty/,
+  /request\.qty > heldQty[\s\S]*exceeds held quantity[\s\S]*const sellQty = executedQty/,
   "oversized paper SELL requests should fail instead of being silently clamped"
+);
+mustMatch(
+  "server-paper-order-lifecycle-patch.mjs",
+  /paperDepthExecution\(levels, request\.qty, request\.side === "SELL"\)[\s\S]*request\.side === "SELL"[\s\S]*server_upstox_partial_weighted_bid/,
+  "SELL should accept only proven visible bid quantity while BUY retains full-depth behavior"
+);
+mustMatch(
+  "server-paper-order-lifecycle-patch.mjs",
+  /trustedFilledQty[\s\S]*executedQty[\s\S]*requested_qty: request\.qty[\s\S]*partial_fill: partialFill/,
+  "paper accounting should preserve requested quantity and use only server-verified filled quantity"
+);
+mustNotMatch(
+  "server-paper-order-lifecycle-patch.mjs",
+  /request\.side === "SELL"[\s\S]{0,800}(?:last_price|midpoint)[\s\S]{0,800}(?:fallback|fill_price)/i,
+  "SELL execution must not invent undisplayed liquidity from LTP or midpoint"
 );
 mustInclude("server-paper-engine-autobuy-patch.mjs", "idempotency_key", "automatic paper BUYs should carry a stable quote-scoped idempotency key");
 for (const text of [
@@ -155,9 +178,10 @@ mustInclude("server-paper-engine-autobuy-patch.mjs", "return withStateMutation(a
 mustInclude("server-paper-trader-patch-v3.mjs", "withStateMutation(async () =>", "paper planning should serialize its ledger mutation");
 mustMatch(
   "server-paper-engine-autobuy-patch.mjs",
-  /monitorTrader\.gtt\.filter[\s\S]*paperMonitorDepthPrice\(quote\?\.depth\?\.asks[\s\S]*paperMonitorDepthPrice\(quote\?\.depth\?\.bids/,
-  "automatic monitoring should quote active GTTs and require executable ask or bid depth"
+  /monitorTrader\.gtt\.filter[\s\S]*paperMonitorDepthExecution\(quote\?\.depth\?\.asks[\s\S]*paperMonitorDepthExecution\(quote\?\.depth\?\.bids/,
+  "automatic monitoring should quote active GTTs with full BUY depth and partial visible SELL depth"
 );
+mustInclude("server-upstox-quote-patch.mjs", "UPSTOX_QUOTE_MAX_KEYS = 500", "Upstox marking and monitoring must support all 500 position slots");
 mustMatch(
   "server-paper-order-lifecycle-patch.mjs",
   /resolvePaperOrderInstrumentKey\(state, body\)[\s\S]*paperRouteOrderReplay\(state, resolvedBody\)[\s\S]*await preparePaperMarketOrder\(resolvedBody\)[\s\S]*applyPaperOrderLifecycle\(state, prepared\.body\)/,
@@ -208,17 +232,19 @@ for (const text of [
 }
 
 const capitalPolicy = loadPaperCapitalPolicy();
-const legacyCapitalPolicy = JSON.parse(read("config/paper-trader-capital.v0.5.json") || "{}");
-if (capitalPolicy.startingCapital !== 5000000) failures.push("capital policy: startingCapital must be 5000000");
+const currentCapitalPolicy = JSON.parse(read("config/paper-trader-capital.v0.6.json") || "{}");
+if (capitalPolicy.startingCapital !== 50000000) failures.push("capital policy: startingCapital must be 50000000");
 if (capitalPolicy.minimumEntryValue !== 100000) failures.push("capital policy: minimumEntryValue must be 100000");
 if (capitalPolicy.maximumCandidateEntries !== 80) failures.push("capital policy: maximumCandidateEntries must be 80");
-if (capitalPolicy.maximumOpenPositions !== 50) failures.push("capital policy: maximumOpenPositions must be 50");
+if (capitalPolicy.minimumEntryPct !== 0.2) failures.push("capital policy: minimumEntryPct must be 0.2");
+if (capitalPolicy.baseEntryPct !== 0.2) failures.push("capital policy: baseEntryPct must be 0.2");
+if (capitalPolicy.maximumOpenPositions !== 500) failures.push("capital policy: maximumOpenPositions must be 500");
 if (capitalPolicy.deploymentTargetPct !== 100) failures.push("capital policy: deploymentTargetPct must be 100");
 if (capitalPolicy.transactionCostOneWayPct !== 0.08) failures.push("capital policy: transactionCostOneWayPct must be 0.08");
-if (capitalPolicy.affordableOpenPositionsAtMinimum !== 50) failures.push("capital policy: ₹50 lakh / ₹1 lakh must equal 50 affordable positions");
-if (capitalPolicy.initialAffordableOpenPositionsAfterEntryCost !== 49) failures.push("capital policy: approved BUY cost must reduce initial affordable positions to 49");
+if (capitalPolicy.affordableOpenPositionsAtMinimum !== 500) failures.push("capital policy: ₹5 crore / ₹1 lakh must equal 500 affordable positions");
+if (capitalPolicy.initialAffordableOpenPositionsAfterEntryCost !== 499) failures.push("capital policy: approved BUY cost must reduce initial affordable positions to 499");
 for (const key of ["startingCapital", "minimumEntryValue", "maximumCandidateEntries", "maximumOpenPositions", "affordableOpenPositionsAtMinimum", "initialAffordableOpenPositionsAfterEntryCost", "transactionCostOneWayPct"]) {
-  if (legacyCapitalPolicy[key] !== capitalPolicy[key]) failures.push(`legacy capital mirror: ${key} drifted from the runtime registry`);
+  if (currentCapitalPolicy[key] !== capitalPolicy[key]) failures.push(`current capital mirror: ${key} drifted from the runtime registry`);
 }
 
 for (const text of [

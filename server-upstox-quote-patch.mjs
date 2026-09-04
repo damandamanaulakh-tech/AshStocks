@@ -1,6 +1,7 @@
 const UPSTOX_QUOTE_FUNCTIONS = String.raw`
-const UPSTOX_QUOTE_VERSION = "ashstocks-upstox-quote-v0.2-stream";
+const UPSTOX_QUOTE_VERSION = "ashstocks-upstox-quote-v0.3-500-instruments";
 const UPSTOX_FULL_MARKET_QUOTE_URL = "https://api.upstox.com/v2/market-quote/quotes";
+const UPSTOX_QUOTE_MAX_KEYS = 500;
 const UPSTOX_QUOTE_CACHE_MS = 15000;
 const UPSTOX_QUOTE_STREAM_MS = 15000;
 const UPSTOX_QUOTE_STREAM_MAX_KEYS = 12;
@@ -17,6 +18,7 @@ function upstoxQuotePublicStatus() {
     cache_ms: UPSTOX_QUOTE_CACHE_MS,
     stream_ms: UPSTOX_QUOTE_STREAM_MS,
     stream_max_keys: UPSTOX_QUOTE_STREAM_MAX_KEYS,
+    request_max_keys: UPSTOX_QUOTE_MAX_KEYS,
     stream_transport: "server_sent_events_polling_backed",
     paper_only: true,
     live_orders: false,
@@ -38,7 +40,7 @@ function normalizeQuoteKeys(input = []) {
       if (key && !keys.includes(key)) keys.push(key);
     }
   }
-  return keys.slice(0, 50);
+  return keys.slice(0, UPSTOX_QUOTE_MAX_KEYS);
 }
 
 function normalizeDepthRows(rows = []) {

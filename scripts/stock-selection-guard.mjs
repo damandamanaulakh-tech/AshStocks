@@ -42,11 +42,13 @@ assert.equal(parameters.positionSizing.kelly.minimumWins, 20);
 assert.equal(parameters.positionSizing.kelly.minimumLosses, 20);
 assert.equal(parameters.positionSizing.kelly.fullConfidenceClosedTrades, 300);
 assert.equal(parameters.positionSizing.kelly.maximumKellyPositionPct, 10);
-assert.equal(capitalPolicy.startingCapital, 5_000_000);
+assert.equal(capitalPolicy.startingCapital, 50_000_000);
 assert.equal(capitalPolicy.minimumEntryValue, 100_000);
 assert.equal(capitalPolicy.maximumCandidateEntries, 80);
-assert.equal(capitalPolicy.maximumOpenPositions, 50);
-assert.equal(capitalPolicy.initialAffordableOpenPositionsAfterEntryCost, 49);
+assert.equal(capitalPolicy.minimumEntryPct, 0.2);
+assert.equal(capitalPolicy.baseEntryPct, 0.2);
+assert.equal(capitalPolicy.maximumOpenPositions, 500);
+assert.equal(capitalPolicy.initialAffordableOpenPositionsAfterEntryCost, 499);
 assert.equal(capitalPolicy.transactionCostOneWayPct, 0.08);
 assert.equal(
   registry.paperCapital.kellySizing.parameterSource,
