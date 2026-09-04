@@ -1,7 +1,7 @@
 # ASH Stock Parameter Source of Truth
 
-Status date: 2026-07-30  
-Schema: 2.1  
+Status date: 2026-09-02
+Schema: 2.2 / parameter revision 2.2.4
 Operating mode: paper trading only  
 Live trading: disabled  
 EDGE_CONFIRMED: NO
@@ -11,7 +11,8 @@ This directory is the permanent repository source for the audited ASH Stock para
 ## Canonical files
 
 - `config/ash-stock-parameters.v2.2.json` — executable parameter values, paper-capital policy, Kelly linkage, and unresolved gates.
-- `config/paper-trader-capital.v0.5.json` — human-readable capital mirror with cost-inclusive affordability arithmetic; the v2.2 registry remains authoritative.
+- `config/paper-trader-capital.v0.6.json` — current human-readable ₹5 crore / 500-slot capital mirror with cost-inclusive affordability arithmetic; the v2.2 registry remains authoritative.
+- `config/paper-trader-capital.v0.5.json` — retained historical ₹50 lakh / 50-slot mirror; it is no longer executable.
 - `config/validation-evidence.v2.1.json` — dated dataset and chronological holdout evidence.
 - `lib/parameter-registry.mjs` — registry loader and invariants.
 - `lib/risk-governor.mjs` — fail-closed paper exposure governor.
@@ -19,9 +20,10 @@ This directory is the permanent repository source for the audited ASH Stock para
 
 ## Current clean state
 
-- Paper capital: INR 1,000,000.
-- Maximum position: 2.5%.
-- Maximum open positions: 20.
+- Paper capital: INR 50,000,000 (₹5 crore).
+- Minimum entry: INR 100,000 (0.2% of starting capital).
+- Base entry: 0.2%; maximum per-stock position remains 10% and Kelly may reduce it.
+- Maximum open positions: 500; approved transaction costs make 499 minimum-size positions initially affordable.
 - Maximum portfolio heat: 25%.
 - Exposure ladder: 100 / 70 / 50 / 25%.
 - Damage threshold: 0.213; fire rule: 5 sessions in 10.

@@ -3,8 +3,9 @@ import { loadPaperCapitalPolicy } from "./lib/paper-capital-policy.mjs";
 const paperCapitalPolicy = loadPaperCapitalPolicy();
 
 const PAPER_ORDER_LIFECYCLE_FUNCTIONS = String.raw`
-const PAPER_ORDER_LIFECYCLE_VERSION = "ashstocks-paper-order-lifecycle-v0.8-upstox-monitor-gtt-sells";
+const PAPER_ORDER_LIFECYCLE_VERSION = "ashstocks-paper-order-lifecycle-v0.10-safe-share-rounding";
 const PAPER_CAPITAL_POLICY = Object.freeze(${JSON.stringify(paperCapitalPolicy)});
+const PAPER_VISIBLE_DEPTH_LEVELS = 5;
 function sanitizeParameterEvidence(input = {}) {
   return {
     version: String(input.version || "").slice(0, 80),
@@ -32,6 +33,19 @@ function sanitizeExecutionEvidence(input = {}) {
     spread_bps: finiteOr(input.spread_bps, null),
     depth_imbalance: finiteOr(input.depth_imbalance, null),
     estimated_impact_bps: finiteOr(input.estimated_impact_bps, null),
+    requested_qty: Math.max(0, Math.floor(finiteOr(input.requested_qty, 0))),
+    filled_qty: Math.max(0, Math.floor(finiteOr(input.filled_qty, 0))),
+    unfilled_qty: Math.max(0, Math.floor(finiteOr(input.unfilled_qty, 0))),
+    partial_fill: Boolean(input.partial_fill),
+    time_in_force: String(input.time_in_force || "").slice(0, 30),
+    unfilled_disposition: String(input.unfilled_disposition || "").slice(0, 40),
+    full_visible_ask_depth: Boolean(input.full_visible_ask_depth),
+    quote_snapshot_key: String(input.quote_snapshot_key || "").slice(0, 240),
+    levels_used: Array.isArray(input.levels_used) ? input.levels_used.slice(0, PAPER_VISIBLE_DEPTH_LEVELS).map((level) => ({
+      price: finiteOr(level.price, null),
+      available_qty: Math.max(0, Math.floor(finiteOr(level.available_qty ?? level.quantity, 0))),
+      filled_qty: Math.max(0, Math.floor(finiteOr(level.filled_qty ?? level.take, 0)))
+    })) : [],
     circuit_clear: Boolean(input.circuit_clear),
     all_clear: Boolean(input.all_clear),
     nodes: Array.isArray(input.nodes) ? input.nodes.slice(0, 12).map((node) => ({
@@ -82,10 +96,17 @@ function sanitizePaperOrder(order = {}) {
     product: String(order.product || "Paper Swing").slice(0, 40),
     order_type: String(order.order_type || order.orderType || "MARKET").toUpperCase().slice(0, 20),
     qty: Math.max(0, Math.floor(finiteOr(order.qty, 0))),
+    requested_qty: Math.max(0, Math.floor(finiteOr(order.requested_qty, order.qty ?? 0))),
+    filled_qty: Math.max(0, Math.floor(finiteOr(order.filled_qty, order.qty ?? 0))),
+    unfilled_qty: Math.max(0, Math.floor(finiteOr(order.unfilled_qty, 0))),
+    partial_fill: Boolean(order.partial_fill),
+    time_in_force: String(order.time_in_force || "").slice(0, 30),
+    unfilled_disposition: String(order.unfilled_disposition || "").slice(0, 40),
     price: finiteOr(order.price ?? order.entry_price, null),
     price_source: String(order.price_source || "").slice(0, 80),
     transaction_cost: round(finiteOr(order.transaction_cost ?? order.transactionCost, 0), 2),
     decision_price: finiteOr(order.decision_price, null),
+    allocation_cap_value: finiteOr(order.allocation_cap_value, null),
     quote_timestamp: String(order.quote_timestamp || "").slice(0, 40),
     target_price: finiteOr(order.target_price ?? order.targetPrice, null),
     stop_price: finiteOr(order.stop_price ?? order.stopPrice, null),
@@ -141,6 +162,13 @@ function sanitizePaperTrade(trade = {}) {
     price,
     price_source: String(trade.price_source || "").slice(0, 80),
     quote_timestamp: String(trade.quote_timestamp || "").slice(0, 40),
+    requested_qty: Math.max(0, Math.floor(finiteOr(trade.requested_qty, qty))),
+    filled_qty: Math.max(0, Math.floor(finiteOr(trade.filled_qty, qty))),
+    unfilled_qty: Math.max(0, Math.floor(finiteOr(trade.unfilled_qty, 0))),
+    partial_fill: Boolean(trade.partial_fill),
+    time_in_force: String(trade.time_in_force || "").slice(0, 30),
+    unfilled_disposition: String(trade.unfilled_disposition || "").slice(0, 40),
+    execution_evidence: sanitizeExecutionEvidence(trade.execution_evidence || {}),
     value,
     entry_price: entryPrice,
     exit_price: exitPrice,
@@ -209,6 +237,11 @@ function sanitizePaperGtt(plan = {}) {
     name: String(plan.name || symbol).slice(0, 120),
     side: String(plan.side || "BUY").toUpperCase() === "SELL" ? "SELL" : "BUY",
     qty: Math.max(0, Math.floor(finiteOr(plan.qty, 0))),
+    original_qty: Math.max(0, Math.floor(finiteOr(plan.original_qty, plan.qty ?? 0))),
+    filled_qty: Math.max(0, Math.floor(finiteOr(plan.filled_qty, 0))),
+    last_fill_qty: Math.max(0, Math.floor(finiteOr(plan.last_fill_qty, 0))),
+    last_partial_fill_at: String(plan.last_partial_fill_at || "").slice(0, 40),
+    last_quote_snapshot_key: String(plan.last_quote_snapshot_key || "").slice(0, 240),
     entry_price: finiteOr(plan.entry_price ?? plan.price, null),
     target_price: finiteOr(plan.target_price ?? plan.targetPrice, null),
     stop_price: finiteOr(plan.stop_price ?? plan.stopPrice, null),
@@ -288,7 +321,7 @@ function paperLifecycleFunds(paperTrader = {}) {
       : 0,
     open_positions: positions.filter((position) => position.qty > 0).length,
     open_orders: Array.isArray(paperTrader.orders) ? paperTrader.orders.filter((order) => ["PAPER_CREATED", "PENDING", "OPEN", "TRIGGER_PENDING"].includes(order.status)).length : 0,
-    filled_orders: Array.isArray(paperTrader.orders) ? paperTrader.orders.filter((order) => ["PAPER_FILLED", "FILLED"].includes(order.status)).length : 0,
+    filled_orders: Array.isArray(paperTrader.orders) ? paperTrader.orders.filter((order) => ["PAPER_FILLED", "PAPER_PARTIALLY_FILLED", "FILLED"].includes(order.status)).length : 0,
     active_gtt: Array.isArray(paperTrader.gtt) ? paperTrader.gtt.filter((plan) => plan.status === "ACTIVE").length : 0,
     closed_trades: closedTrades.length,
     available_minimum_entry_slots: Math.max(
@@ -359,6 +392,7 @@ function paperOrderRequest(body = {}) {
     price,
     price_source: String(body.price_source || "").slice(0, 80),
     decision_price: finiteOr(body.decision_price, null),
+    allocation_cap_value: finiteOr(body.allocation_cap_value, null),
     quote_timestamp: String(body.quote_timestamp || "").slice(0, 40),
     target_price: finiteOr(body.target_price ?? body.targetPrice ?? body.target, null),
     stop_price: finiteOr(body.stop_price ?? body.stopPrice ?? body.stop, null),
@@ -377,6 +411,7 @@ function paperOrderRequestFingerprint(request = {}) {
     request.order_type,
     request.qty,
     request.price,
+    request.allocation_cap_value,
     request.target_price,
     request.stop_price,
     request.source,
@@ -421,7 +456,7 @@ function paperRouteOrderReplay(state = defaultState(), body = {}) {
     }
     const trade = paperTrader.trades.find((item) => item.order_id === priorOrder.id) || null;
     const rejected = priorOrder.status === "REJECTED";
-    return { ok: !rejected, status: rejected ? 409 : 200, action: rejected ? "PAPER_ORDER_REJECTED" : priorOrder.side === "BUY" ? "PAPER_BUY_FILLED" : "PAPER_SELL_FILLED", replayed: true, replay_mode: incoming.idempotency_key ? "explicit_key" : "legacy_60_second_logical_fingerprint", order: priorOrder, trade, funds: paperLifecycleFunds(paperTrader), paperTrader, nextState: { ...state, paperTrader } };
+    return { ok: !rejected, status: rejected ? 409 : 200, action: paperOrderReplayAction(priorOrder), replayed: true, replay_mode: incoming.idempotency_key ? "explicit_key" : "legacy_60_second_logical_fingerprint", order: priorOrder, trade, funds: paperLifecycleFunds(paperTrader), paperTrader, nextState: { ...state, paperTrader } };
   }
   const priorGtt = paperTrader.gtt.find((plan) => (
     incoming.idempotency_key
@@ -442,8 +477,54 @@ function rejectedPaperOrderPreparation(state = defaultState(), body = {}, reason
   request.logical_fingerprint = paperOrderLogicalFingerprint(request);
   const paperTrader = sanitizePaperTraderState(state.paperTrader || {});
   const order = rejectedPaperOrder(request, reason, asOf);
-  const saved = sanitizePaperTraderState({ ...paperTrader, orders: [order, ...paperTrader.orders].slice(0, 200) });
+  const saved = sanitizePaperTraderState({ ...paperTrader, orders: [order, ...paperTrader.orders] });
   return { ok: false, status: 409, error: reason, order, funds: paperLifecycleFunds(saved), paperTrader: saved, nextState: { ...state, paperTrader: saved } };
+}
+function paperDepthExecution(levels = [], qty = 0, allowPartial = false) {
+  const requestedQty = Math.max(0, Math.floor(finiteOr(qty, 0)));
+  let remaining = requestedQty;
+  let value = 0;
+  let filled = 0;
+  const levelsUsed = [];
+  for (const level of Array.isArray(levels) ? levels.slice(0, PAPER_VISIBLE_DEPTH_LEVELS) : []) {
+    if (!remaining) break;
+    const levelQty = Math.max(0, Math.floor(finiteOr(level.quantity, 0)));
+    const levelPrice = finiteOr(level.price, null);
+    if (!levelQty || !levelPrice || levelPrice <= 0) continue;
+    const take = Math.min(remaining, levelQty);
+    value += take * levelPrice;
+    filled += take;
+    remaining -= take;
+    levelsUsed.push({ price: levelPrice, available_qty: levelQty, filled_qty: take });
+  }
+  const partialFill = filled > 0 && remaining > 0;
+  return {
+    ok: filled > 0 && (allowPartial || remaining === 0),
+    requested_qty: requestedQty,
+    filled_qty: filled,
+    unfilled_qty: remaining,
+    partial_fill: partialFill,
+    fill_price: filled > 0 ? round(value / filled, 4) : null,
+    time_in_force: allowPartial ? "IOC_SIMULATED" : "FOK_SIMULATED",
+    unfilled_disposition: partialFill ? "CANCELLED_REMAINDER" : "NONE",
+    levels_used: levelsUsed
+  };
+}
+function paperWholeShareRoundedCapValue(baseValue = 0, price = 0) {
+  const safeBase = Math.max(0, finiteOr(baseValue, 0));
+  const safePrice = finiteOr(price, 0);
+  if (!safeBase || !safePrice || safePrice <= 0) return safeBase;
+  return round(Math.ceil(safeBase / safePrice) * safePrice, 2);
+}
+function paperExecutionSnapshotKey(instrumentKey, side, quoteTimestamp, execution = {}) {
+  return [String(instrumentKey || ""), String(side || ""), String(quoteTimestamp || "")].join(":").slice(0, 240);
+}
+function paperOrderReplayAction(order = {}) {
+  if (order.status === "REJECTED") return "PAPER_ORDER_REJECTED";
+  if (order.side === "BUY") return "PAPER_BUY_FILLED";
+  return order.partial_fill || order.status === "PAPER_PARTIALLY_FILLED"
+    ? "PAPER_SELL_PARTIALLY_FILLED"
+    : "PAPER_SELL_FILLED";
 }
 async function preparePaperMarketOrder(body = {}) {
   const request = paperOrderRequest(body);
@@ -480,24 +561,6 @@ async function preparePaperMarketOrder(body = {}) {
   }
   const quote = paperEngineQuoteMap(payload).get(paperEngineQuoteKey(request.instrument_key));
   if (!quote) return { ok: false, error: "upstox_market_quote_missing" };
-  const levels = request.side === "SELL"
-    ? (Array.isArray(quote.depth?.bids) ? quote.depth.bids : [])
-    : (Array.isArray(quote.depth?.asks) ? quote.depth.asks : []);
-  let remaining = request.qty;
-  let value = 0;
-  let filled = 0;
-  for (const level of levels.slice(0, 5)) {
-    if (!remaining) break;
-    const levelQty = Math.max(0, Math.floor(finiteOr(level.quantity, 0)));
-    const levelPrice = finiteOr(level.price, null);
-    if (!levelQty || !levelPrice) continue;
-    const take = Math.min(remaining, levelQty);
-    value += take * levelPrice;
-    filled += take;
-    remaining -= take;
-  }
-  if (!filled || remaining > 0) return { ok: false, error: "insufficient_upstox_depth_for_full_paper_fill" };
-  const fillPrice = round(value / filled, 4);
   const timestampMs = paperEngineTimestampMs(quote.timestamp);
   const snapshotMs = paperEngineTimestampMs(quote.snapshot_timestamp);
   const tradeAgeSeconds = timestampMs === null ? null : Math.max(0, (Date.now() - timestampMs) / 1000);
@@ -514,16 +577,33 @@ async function preparePaperMarketOrder(body = {}) {
   const midpoint = bestBid && bestAsk ? (bestBid + bestAsk) / 2 : null;
   const spreadBps = midpoint ? round((bestAsk - bestBid) / midpoint * 10000, 3) : null;
   const quoteTimestamp = snapshotAgeSeconds !== null && snapshotAgeSeconds <= 30 ? quote.snapshot_timestamp : quote.timestamp;
+  const levels = request.side === "SELL"
+    ? (Array.isArray(quote.depth?.bids) ? quote.depth.bids : [])
+    : (Array.isArray(quote.depth?.asks) ? quote.depth.asks : []);
+  const depthExecution = paperDepthExecution(levels, request.qty, request.side === "SELL");
+  if (!depthExecution.ok) {
+    return {
+      ok: false,
+      error: request.side === "SELL"
+        ? "upstox_bid_depth_unavailable_for_paper_exit"
+        : "insufficient_upstox_ask_depth_for_full_paper_buy"
+    };
+  }
+  const fillPrice = depthExecution.fill_price;
+  const priceSource = request.side === "SELL"
+    ? depthExecution.partial_fill ? "server_upstox_partial_weighted_bid" : "server_upstox_weighted_bid"
+    : "server_upstox_weighted_ask";
+  const quoteSnapshotKey = paperExecutionSnapshotKey(request.instrument_key, request.side, quoteTimestamp, depthExecution);
   return {
     ok: true,
     body: {
       ...body,
       decision_price: finiteOr(body.decision_price, finiteOr(body.price, null)),
       price: fillPrice,
-      price_source: request.side === "SELL" ? "server_upstox_weighted_bid" : "server_upstox_weighted_ask",
+      price_source: priceSource,
       quote_timestamp: quoteTimestamp,
       execution_evidence: {
-        price_source: request.side === "SELL" ? "server_upstox_weighted_bid" : "server_upstox_weighted_ask",
+        price_source: priceSource,
         server_verified: true,
         quote_timestamp: quoteTimestamp,
         quote_age_seconds: snapshotAgeSeconds !== null && snapshotAgeSeconds <= 30 ? round(snapshotAgeSeconds, 3) : round(tradeAgeSeconds, 3),
@@ -532,28 +612,37 @@ async function preparePaperMarketOrder(body = {}) {
         best_bid: bestBid,
         best_ask: bestAsk,
         spread_bps: spreadBps,
+        requested_qty: depthExecution.requested_qty,
+        filled_qty: depthExecution.filled_qty,
+        unfilled_qty: depthExecution.unfilled_qty,
+        partial_fill: depthExecution.partial_fill,
+        time_in_force: depthExecution.time_in_force,
+        unfilled_disposition: depthExecution.unfilled_disposition,
+        quote_snapshot_key: quoteSnapshotKey,
+        levels_used: depthExecution.levels_used,
         circuit_clear: true,
         all_clear: true,
-        nodes: [{ id: "NBX09", state: "HIT", value: fillPrice, evidence: "Server fetched Upstox depth and replaced the client-submitted paper MARKET price" }]
+        nodes: [{ id: "NBX09", state: depthExecution.partial_fill ? "WATCH" : "HIT", value: fillPrice, evidence: depthExecution.partial_fill ? "SELL partially filled only against visible Upstox bids; remainder cancelled" : "Server fetched Upstox depth and replaced the client-submitted paper MARKET price" }]
       }
     }
   };
 }
 function paperMonitorDepthPrice(levels = [], qty = 0) {
-  let remaining = Math.max(0, Math.floor(finiteOr(qty, 0)));
-  let value = 0;
-  let filled = 0;
-  for (const level of Array.isArray(levels) ? levels.slice(0, 5) : []) {
-    if (!remaining) break;
-    const levelQty = Math.max(0, Math.floor(finiteOr(level.quantity, 0)));
-    const levelPrice = finiteOr(level.price, null);
-    if (!levelQty || !levelPrice) continue;
-    const take = Math.min(remaining, levelQty);
-    value += take * levelPrice;
-    filled += take;
-    remaining -= take;
-  }
-  return filled > 0 && remaining === 0 ? round(value / filled, 4) : null;
+  const execution = paperDepthExecution(levels, qty, false);
+  return execution.ok ? execution.fill_price : null;
+}
+function paperMonitorDepthExecution(levels = [], qty = 0, side = "BUY", instrumentKey = "", quoteTimestamp = "") {
+  const normalizedSide = String(side || "BUY").toUpperCase() === "SELL" ? "SELL" : "BUY";
+  const execution = paperDepthExecution(levels, qty, normalizedSide === "SELL");
+  if (!execution.ok) return null;
+  const priceSource = normalizedSide === "SELL"
+    ? execution.partial_fill ? "server_upstox_partial_weighted_bid" : "server_upstox_weighted_bid"
+    : "server_upstox_weighted_ask";
+  return {
+    ...execution,
+    price_source: priceSource,
+    quote_snapshot_key: paperExecutionSnapshotKey(instrumentKey, normalizedSide, quoteTimestamp, execution)
+  };
 }
 async function preparePaperLifecycleMonitor(state = defaultState()) {
   const paperTrader = sanitizePaperTraderState(state.paperTrader || {});
@@ -596,13 +685,16 @@ async function preparePaperLifecycleMonitor(state = defaultState()) {
     const snapshotAgeSeconds = snapshotMs === null ? null : Math.max(0, (Date.now() - snapshotMs) / 1000);
     const fresh = (tradeAgeSeconds !== null && tradeAgeSeconds <= 60) || (snapshotAgeSeconds !== null && snapshotAgeSeconds <= 30);
     const last = finiteOr(quote?.last_price, null);
-    const buyPrice = need.buy_qty ? paperMonitorDepthPrice(quote?.depth?.asks, need.buy_qty) : null;
-    const sellPrice = need.sell_qty ? paperMonitorDepthPrice(quote?.depth?.bids, need.sell_qty) : null;
-    if (!quote || !fresh || !last || (need.buy_qty && !buyPrice) || (need.sell_qty && !sellPrice)) {
-      dataNeeded.push({ symbol: need.symbol, reason: !quote ? "Upstox quote missing" : !fresh ? "Upstox quote stale" : "full executable Upstox depth missing" });
+    const quoteTimestamp = snapshotAgeSeconds !== null && snapshotAgeSeconds <= 30 ? quote?.snapshot_timestamp : quote?.timestamp;
+    const buyExecution = need.buy_qty ? paperMonitorDepthExecution(quote?.depth?.asks, need.buy_qty, "BUY", need.instrument_key, quoteTimestamp) : null;
+    const sellExecution = need.sell_qty ? paperMonitorDepthExecution(quote?.depth?.bids, need.sell_qty, "SELL", need.instrument_key, quoteTimestamp) : null;
+    if (!quote || !fresh || !last) {
+      dataNeeded.push({ symbol: need.symbol, reason: !quote ? "Upstox quote missing" : !fresh ? "Upstox quote stale" : "Upstox last price missing" });
       continue;
     }
-    rows.push({ symbol: need.symbol, instrument_key: need.instrument_key, close: last, last_price: last, paper_buy_price: buyPrice, paper_sell_price: sellPrice, quote_timestamp: snapshotAgeSeconds !== null && snapshotAgeSeconds <= 30 ? quote.snapshot_timestamp : quote.timestamp, data_source: "Upstox Market Quote API" });
+    if (need.buy_qty && !buyExecution) dataNeeded.push({ symbol: need.symbol, side: "BUY", reason: "full executable Upstox ask depth missing" });
+    if (need.sell_qty && !sellExecution) dataNeeded.push({ symbol: need.symbol, side: "SELL", reason: "executable Upstox bid depth missing" });
+    rows.push({ symbol: need.symbol, instrument_key: need.instrument_key, close: last, last_price: last, paper_buy_price: buyExecution?.fill_price ?? null, paper_sell_price: sellExecution?.fill_price ?? null, paper_buy_execution: buyExecution, paper_sell_execution: sellExecution, quote_timestamp: quoteTimestamp, data_source: "Upstox Market Quote API" });
   }
   return { ok: true, rows, data_needed: dataNeeded, source: "server-upstox-market-quote-monitor" };
 }
@@ -676,7 +768,7 @@ function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
       return {
         ok: !rejected,
         status: rejected ? 409 : 200,
-        action: rejected ? "PAPER_ORDER_REJECTED" : priorOrder.side === "BUY" ? "PAPER_BUY_FILLED" : "PAPER_SELL_FILLED",
+        action: paperOrderReplayAction(priorOrder),
         replayed: true,
         replay_mode: request.idempotency_key ? "explicit_key" : "legacy_60_second_fingerprint",
         order: priorOrder,
@@ -722,19 +814,19 @@ function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
 
   if (!request.symbol) {
     const order = rejectedPaperOrder(request, "symbol missing", asOf);
-    next.orders = [order, ...next.orders].slice(0, 200);
+    next.orders = [order, ...next.orders];
     const saved = sanitizePaperTraderState(next);
     return { ok: false, status: 422, order, paperTrader: saved, nextState: { ...state, paperTrader: saved } };
   }
   if (!request.qty || request.qty <= 0) {
     const order = rejectedPaperOrder(request, "quantity missing", asOf);
-    next.orders = [order, ...next.orders].slice(0, 200);
+    next.orders = [order, ...next.orders];
     const saved = sanitizePaperTraderState(next);
     return { ok: false, status: 422, order, paperTrader: saved, nextState: { ...state, paperTrader: saved } };
   }
   if (!request.price || request.price <= 0) {
     const order = rejectedPaperOrder(request, "price missing: row needs live/historical price before paper execution", asOf);
-    next.orders = [order, ...next.orders].slice(0, 200);
+    next.orders = [order, ...next.orders];
     const saved = sanitizePaperTraderState(next);
     return { ok: false, status: 422, order, paperTrader: saved, nextState: { ...state, paperTrader: saved } };
   }
@@ -743,7 +835,7 @@ function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
   if (request.side === "BUY") {
     if (kelly.blockNewEntries) {
       const rejected = rejectedPaperOrder(request, "Kelly governor blocked new paper entries: " + kelly.status, asOf);
-      next.orders = [rejected, ...next.orders].slice(0, 200);
+      next.orders = [rejected, ...next.orders];
       const saved = sanitizePaperTraderState(next);
       return { ok: false, status: 409, order: rejected, kelly, paperTrader: saved, nextState: { ...state, paperTrader: saved } };
     }
@@ -755,7 +847,7 @@ function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
         "Paper BUY must be at least Rs " + PAPER_CAPITAL_POLICY.minimumEntryValue,
         asOf
       );
-      next.orders = [rejected, ...next.orders].slice(0, 200);
+      next.orders = [rejected, ...next.orders];
       const saved = sanitizePaperTraderState(next);
       return { ok: false, status: 409, order: rejected, kelly, minimum_entry_value: PAPER_CAPITAL_POLICY.minimumEntryValue, paperTrader: saved, nextState: { ...state, paperTrader: saved } };
     }
@@ -771,7 +863,7 @@ function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
         "Paper portfolio reached the configured simultaneous-position limit of " + PAPER_CAPITAL_POLICY.maximumOpenPositions,
         asOf
       );
-      next.orders = [rejected, ...next.orders].slice(0, 200);
+      next.orders = [rejected, ...next.orders];
       const saved = sanitizePaperTraderState(next);
       return { ok: false, status: 409, order: rejected, kelly, maximum_open_positions: PAPER_CAPITAL_POLICY.maximumOpenPositions, paperTrader: saved, nextState: { ...state, paperTrader: saved } };
     }
@@ -783,7 +875,7 @@ function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
         "Insufficient paper buying power for net debit Rs " + requestDebit,
         asOf
       );
-      next.orders = [rejected, ...next.orders].slice(0, 200);
+      next.orders = [rejected, ...next.orders];
       const saved = sanitizePaperTraderState(next);
       return { ok: false, status: 409, order: rejected, kelly, funds: lifecycleFunds, paperTrader: saved, nextState: { ...state, paperTrader: saved } };
     }
@@ -801,13 +893,19 @@ function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
       PAPER_CAPITAL_POLICY.minimumEntryValue,
       finiteOr(next.funds.starting_capital, 0) * positionCapPct / 100
     );
-    if (proposedValue > maximumValue + 0.01) {
+    const governedAllocationCap = request.allocation_cap_value === null
+      ? maximumValue
+      : Math.min(maximumValue, Math.max(PAPER_CAPITAL_POLICY.minimumEntryValue, request.allocation_cap_value));
+    const roundedMaximumValue = !existing
+      ? paperWholeShareRoundedCapValue(governedAllocationCap, request.price)
+      : governedAllocationCap;
+    if (proposedValue > roundedMaximumValue + 0.01) {
       const rejected = rejectedPaperOrder(
         request,
         "Paper position exceeds effective Kelly/base cap of " + round(positionCapPct, 4) + "%",
         asOf
       );
-      next.orders = [rejected, ...next.orders].slice(0, 200);
+      next.orders = [rejected, ...next.orders];
       const saved = sanitizePaperTraderState(next);
       return { ok: false, status: 409, order: rejected, kelly, position_cap_pct: positionCapPct, paperTrader: saved, nextState: { ...state, paperTrader: saved } };
     }
@@ -819,7 +917,7 @@ function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
       const heldQty = Math.max(0, Math.floor(finiteOr(existing?.qty, 0)));
       if (!existing || request.qty > heldQty) {
         const rejected = rejectedPaperOrder(request, !existing ? "no open paper position for SELL GTT" : "paper SELL GTT quantity " + request.qty + " exceeds held quantity " + heldQty, asOf);
-        next.orders = [rejected, ...next.orders].slice(0, 200);
+        next.orders = [rejected, ...next.orders];
         const saved = sanitizePaperTraderState(next);
         return { ok: false, status: 409, order: rejected, paperTrader: saved, nextState: { ...state, paperTrader: saved } };
       }
@@ -830,10 +928,35 @@ function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
     return { ok: true, status: 200, action: "PAPER_GTT_CREATED", gtt: plan, kelly, funds: paperLifecycleFunds(saved), paperTrader: saved, nextState: { ...state, paperTrader: saved } };
   }
 
-  const fillValue = round(request.qty * request.price, 2);
+  const trustedFilledQty = request.side === "SELL" && request.execution_evidence.server_verified
+    ? Math.max(0, Math.floor(finiteOr(request.execution_evidence.filled_qty, 0)))
+    : request.qty;
+  const executedQty = request.side === "SELL"
+    ? Math.min(request.qty, trustedFilledQty)
+    : request.qty;
+  const unfilledQty = Math.max(0, request.qty - executedQty);
+  const partialFill = request.side === "SELL" && executedQty > 0 && unfilledQty > 0;
+  const snapshotKey = String(request.execution_evidence.quote_snapshot_key || "");
+  if (!executedQty) {
+    const rejected = rejectedPaperOrder(request, "No executable Upstox quantity available for paper fill", asOf);
+    next.orders = [rejected, ...next.orders];
+    const saved = sanitizePaperTraderState(next);
+    return { ok: false, status: 409, error: "upstox_executable_quantity_unavailable", order: rejected, paperTrader: saved, nextState: { ...state, paperTrader: saved } };
+  }
+  if (request.side === "SELL" && snapshotKey && next.orders.some((item) => (
+    item.side === "SELL"
+      && item.status !== "REJECTED"
+      && item.execution_evidence?.quote_snapshot_key === snapshotKey
+  ))) {
+    const rejected = rejectedPaperOrder(request, "Upstox quote snapshot already consumed for a paper exit; refresh and retry", asOf);
+    next.orders = [rejected, ...next.orders];
+    const saved = sanitizePaperTraderState(next);
+    return { ok: false, status: 409, error: "upstox_quote_snapshot_already_consumed_for_paper_exit", order: rejected, paperTrader: saved, nextState: { ...state, paperTrader: saved } };
+  }
+  const fillValue = round(executedQty * request.price, 2);
   const fillTransactionCost = paperTransactionCost(fillValue);
-  const order = sanitizePaperOrder({ id: paperLedgerId("PAPER_ORDER"), ...request, transaction_cost: fillTransactionCost, status: "PAPER_FILLED", created_at: asOf, updated_at: asOf });
-  let trade = sanitizePaperTrade({ id: paperLedgerId("PAPER_TRADE"), order_id: order.id, symbol: request.symbol, instrument_key: request.instrument_key, side: request.side, qty: request.qty, price: request.price, price_source: request.price_source, quote_timestamp: request.quote_timestamp, value: fillValue, entry_cost: request.side === "BUY" ? fillTransactionCost : 0, exit_cost: request.side === "SELL" ? fillTransactionCost : 0, transaction_cost: fillTransactionCost, traded_at: asOf });
+  const order = sanitizePaperOrder({ id: paperLedgerId("PAPER_ORDER"), ...request, qty: executedQty, requested_qty: request.qty, filled_qty: executedQty, unfilled_qty: unfilledQty, partial_fill: partialFill, time_in_force: request.execution_evidence.time_in_force, unfilled_disposition: request.execution_evidence.unfilled_disposition, transaction_cost: fillTransactionCost, status: partialFill ? "PAPER_PARTIALLY_FILLED" : "PAPER_FILLED", created_at: asOf, updated_at: asOf });
+  let trade = sanitizePaperTrade({ id: paperLedgerId("PAPER_TRADE"), order_id: order.id, symbol: request.symbol, instrument_key: request.instrument_key, side: request.side, qty: executedQty, requested_qty: request.qty, filled_qty: executedQty, unfilled_qty: unfilledQty, partial_fill: partialFill, time_in_force: request.execution_evidence.time_in_force, unfilled_disposition: request.execution_evidence.unfilled_disposition, execution_evidence: request.execution_evidence, price: request.price, price_source: request.price_source, quote_timestamp: request.quote_timestamp, value: fillValue, entry_cost: request.side === "BUY" ? fillTransactionCost : 0, exit_cost: request.side === "SELL" ? fillTransactionCost : 0, transaction_cost: fillTransactionCost, traded_at: asOf });
 
   if (request.side === "BUY") {
     const existingIndex = next.positions.findIndex((position) => position.symbol === request.symbol && position.status !== "CLOSED");
@@ -888,7 +1011,7 @@ function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
     const existingIndex = next.positions.findIndex((position) => position.symbol === request.symbol && position.status !== "CLOSED" && finiteOr(position.qty, 0) > 0);
     if (existingIndex < 0) {
       const rejected = rejectedPaperOrder(request, "no open paper position to sell", asOf);
-      next.orders = [rejected, ...next.orders].slice(0, 200);
+      next.orders = [rejected, ...next.orders];
       const saved = sanitizePaperTraderState(next);
       return { ok: false, status: 409, order: rejected, paperTrader: saved, nextState: { ...state, paperTrader: saved } };
     }
@@ -900,11 +1023,11 @@ function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
         "paper SELL quantity " + request.qty + " exceeds held quantity " + heldQty,
         asOf
       );
-      next.orders = [rejected, ...next.orders].slice(0, 200);
+      next.orders = [rejected, ...next.orders];
       const saved = sanitizePaperTraderState(next);
       return { ok: false, status: 409, order: rejected, paperTrader: saved, nextState: { ...state, paperTrader: saved } };
     }
-    const sellQty = request.qty;
+    const sellQty = executedQty;
     const remaining = Math.max(0, finiteOr(existing.qty, 0) - sellQty);
     const entryPrice = finiteOr(existing.entry_price, request.price);
     const entryValue = round(entryPrice * sellQty, 2);
@@ -941,27 +1064,64 @@ function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
     else next.positions.splice(existingIndex, 1);
   }
 
-  next.orders = [order, ...next.orders].slice(0, 200);
-  next.trades = [trade, ...next.trades].slice(0, 300);
+  next.orders = [order, ...next.orders];
+  next.trades = [trade, ...next.trades];
   next.last_order_at = asOf;
   next.last_run = next.last_run || asOf;
   const saved = sanitizePaperTraderState(next);
-  return { ok: true, status: 200, action: order.side === "BUY" ? "PAPER_BUY_FILLED" : "PAPER_SELL_FILLED", order, trade, kelly, funds: paperLifecycleFunds(saved), paperTrader: saved, nextState: { ...state, paperTrader: saved } };
+  return { ok: true, status: 200, action: paperOrderReplayAction(order), order, trade, kelly, funds: paperLifecycleFunds(saved), paperTrader: saved, nextState: { ...state, paperTrader: saved } };
 }
 function paperPriceMap(rows = []) {
   const map = new Map();
   for (const row of Array.isArray(rows) ? rows : []) {
     const symbol = normalizeSymbol(row.symbol);
     const price = finiteOr(row.last_price ?? row.ltp ?? row.close, null);
-    const buyPrice = finiteOr(row.paper_buy_price, price);
-    const sellPrice = finiteOr(row.paper_sell_price, price);
+    const buyPrice = finiteOr(row.paper_buy_price, null);
+    const sellPrice = finiteOr(row.paper_sell_price, null);
     if (symbol && price && price > 0) map.set(symbol, { price, buy_price: buyPrice, sell_price: sellPrice, row });
   }
   return map;
 }
+function paperExitSnapshotConsumed(next = {}, snapshotKey = "") {
+  if (!snapshotKey) return false;
+  return (Array.isArray(next.orders) ? next.orders : []).some((order) => (
+    order.side === "SELL"
+      && order.status !== "REJECTED"
+      && order.execution_evidence?.quote_snapshot_key === snapshotKey
+  ));
+}
 function closePaperPosition(next, position, price, reason, asOf, quoteRow = {}) {
-  const qty = Math.max(0, Math.floor(finiteOr(position.qty, 0)));
-  if (!qty || !price) return null;
+  const requestedQty = Math.max(0, Math.floor(finiteOr(position.qty, 0)));
+  const execution = quoteRow.paper_sell_execution && typeof quoteRow.paper_sell_execution === "object"
+    ? quoteRow.paper_sell_execution
+    : null;
+  const qty = Math.min(requestedQty, Math.max(0, Math.floor(finiteOr(execution?.filled_qty, 0))));
+  const fillPrice = finiteOr(execution?.fill_price, price);
+  const snapshotKey = String(execution?.quote_snapshot_key || "");
+  if (!requestedQty || !qty || !fillPrice) return null;
+  if (paperExitSnapshotConsumed(next, snapshotKey)) {
+    return { type: "EXIT_DEFERRED", symbol: position.symbol, qty: 0, requested_qty: requestedQty, unfilled_qty: requestedQty, price: fillPrice, reason: "Upstox quote snapshot already consumed; waiting for a fresh exit quote" };
+  }
+  const unfilledQty = Math.max(0, requestedQty - qty);
+  const partialFill = unfilledQty > 0;
+  const priceSource = String(execution?.price_source || (partialFill ? "server_upstox_partial_weighted_bid" : "server_upstox_weighted_bid"));
+  const executionEvidence = sanitizeExecutionEvidence({
+    price_source: priceSource,
+    server_verified: true,
+    quote_timestamp: quoteRow.quote_timestamp,
+    quote_fresh: true,
+    market_price_available: true,
+    requested_qty: requestedQty,
+    filled_qty: qty,
+    unfilled_qty: unfilledQty,
+    partial_fill: partialFill,
+    time_in_force: "IOC_SIMULATED",
+    unfilled_disposition: partialFill ? "CANCELLED_REMAINDER" : "NONE",
+    quote_snapshot_key: snapshotKey,
+    levels_used: execution?.levels_used || [],
+    all_clear: true,
+    nodes: [{ id: "NBX09", state: partialFill ? "WATCH" : "HIT", value: fillPrice, evidence: partialFill ? "Automatic paper exit filled only against visible Upstox bids" : "Automatic paper exit fully covered by visible Upstox bids" }]
+  });
   const order = sanitizePaperOrder({
     id: paperLedgerId("PAPER_MONITOR_SELL"),
     instrument_key: position.instrument_key,
@@ -971,23 +1131,32 @@ function closePaperPosition(next, position, price, reason, asOf, quoteRow = {}) 
     product: "Paper Monitor",
     order_type: "MARKET",
     qty,
-    price,
-    price_source: "server_upstox_weighted_bid",
+    requested_qty: requestedQty,
+    filled_qty: qty,
+    unfilled_qty: unfilledQty,
+    partial_fill: partialFill,
+    time_in_force: "IOC_SIMULATED",
+    unfilled_disposition: partialFill ? "CANCELLED_REMAINDER" : "NONE",
+    price: fillPrice,
+    price_source: priceSource,
     quote_timestamp: quoteRow.quote_timestamp,
     target_price: position.target_price,
     stop_price: position.stop_price,
-    status: "PAPER_FILLED",
+    status: partialFill ? "PAPER_PARTIALLY_FILLED" : "PAPER_FILLED",
     thesis: reason,
     source: "paper-lifecycle-monitor",
+    execution_evidence: executionEvidence,
     created_at: asOf,
     updated_at: asOf
   });
-  const entryPrice = finiteOr(position.entry_price, price);
+  const entryPrice = finiteOr(position.entry_price, fillPrice);
   const entryValue = round(entryPrice * qty, 2);
-  const exitValue = round(price * qty, 2);
-  const entryCost = round(finiteOr(position.entry_cost, 0), 2);
+  const exitValue = round(fillPrice * qty, 2);
+  const heldEntryCost = round(finiteOr(position.entry_cost, 0), 2);
+  const entryCost = round(requestedQty ? heldEntryCost * qty / requestedQty : 0, 2);
+  const remainingEntryCost = round(Math.max(0, heldEntryCost - entryCost), 2);
   const exitCost = paperTransactionCost(exitValue);
-  const grossRealized = round((price - entryPrice) * qty, 2);
+  const grossRealized = round((fillPrice - entryPrice) * qty, 2);
   const realized = round(grossRealized - entryCost - exitCost, 2);
   order.transaction_cost = exitCost;
   const trade = sanitizePaperTrade({
@@ -997,12 +1166,19 @@ function closePaperPosition(next, position, price, reason, asOf, quoteRow = {}) 
     symbol: position.symbol,
     side: "SELL",
     qty,
-    price,
-    price_source: "server_upstox_weighted_bid",
+    requested_qty: requestedQty,
+    filled_qty: qty,
+    unfilled_qty: unfilledQty,
+    partial_fill: partialFill,
+    time_in_force: "IOC_SIMULATED",
+    unfilled_disposition: partialFill ? "CANCELLED_REMAINDER" : "NONE",
+    execution_evidence: executionEvidence,
+    price: fillPrice,
+    price_source: priceSource,
     quote_timestamp: quoteRow.quote_timestamp,
     value: exitValue,
     entry_price: entryPrice,
-    exit_price: price,
+    exit_price: fillPrice,
     entry_value: entryValue,
     exit_value: exitValue,
     entry_cost: entryCost,
@@ -1022,7 +1198,10 @@ function closePaperPosition(next, position, price, reason, asOf, quoteRow = {}) 
   next.orders.unshift(order);
   next.trades.unshift(trade);
   next.funds = sanitizePaperFunds({ ...next.funds, realized_pnl: finiteOr(next.funds.realized_pnl, 0) + realized, transaction_costs_paid: finiteOr(next.funds.transaction_costs_paid, 0) + exitCost });
-  return { type: reason.includes("STOP") ? "STOP_EXIT" : "TARGET_EXIT", symbol: position.symbol, qty, price, realized_pnl: realized, order_id: order.id, reason };
+  const remainingPosition = unfilledQty > 0
+    ? sanitizePaperPosition({ ...position, qty: unfilledQty, entry_cost: remainingEntryCost, current_price: fillPrice, checked_at: asOf })
+    : null;
+  return { type: reason.includes("STOP") ? partialFill ? "STOP_PARTIAL_EXIT" : "STOP_EXIT" : partialFill ? "TARGET_PARTIAL_EXIT" : "TARGET_EXIT", symbol: position.symbol, qty, requested_qty: requestedQty, unfilled_qty: unfilledQty, price: fillPrice, partial_fill: partialFill, remaining_position: remainingPosition, realized_pnl: realized, order_id: order.id, quote_snapshot_key: snapshotKey, reason };
 }
 function openPaperPositionFromGtt(next, plan, price, asOf, quoteRow = {}) {
   if (plan.side === "SELL") {
@@ -1032,24 +1211,37 @@ function openPaperPositionFromGtt(next, plan, price, asOf, quoteRow = {}) {
     if (!existing || plan.qty > heldQty) {
       return { type: "GTT_REJECTED", symbol: plan.symbol, qty: plan.qty, price, reason: !existing ? "open position missing at SELL GTT trigger" : "SELL GTT quantity exceeds current holding" };
     }
-    const fillValue = round(plan.qty * price, 2);
+    const requestedQty = Math.max(0, Math.floor(finiteOr(plan.qty, 0)));
+    const execution = quoteRow.paper_sell_execution && typeof quoteRow.paper_sell_execution === "object"
+      ? quoteRow.paper_sell_execution
+      : null;
+    const qty = Math.min(requestedQty, Math.max(0, Math.floor(finiteOr(execution?.filled_qty, 0))));
+    const fillPrice = finiteOr(execution?.fill_price, price);
+    const snapshotKey = String(execution?.quote_snapshot_key || "");
+    if (!qty || !fillPrice) return { type: "GTT_DEFERRED", symbol: plan.symbol, qty: 0, requested_qty: requestedQty, unfilled_qty: requestedQty, price: fillPrice, reason: "No executable Upstox bid quantity for SELL GTT" };
+    if (paperExitSnapshotConsumed(next, snapshotKey)) return { type: "GTT_DEFERRED", symbol: plan.symbol, qty: 0, requested_qty: requestedQty, unfilled_qty: requestedQty, price: fillPrice, reason: "Upstox quote snapshot already consumed; waiting for a fresh SELL GTT quote" };
+    const unfilledQty = Math.max(0, requestedQty - qty);
+    const partialFill = unfilledQty > 0;
+    const priceSource = String(execution?.price_source || (partialFill ? "server_upstox_partial_weighted_bid" : "server_upstox_weighted_bid"));
+    const executionEvidence = sanitizeExecutionEvidence({ price_source: priceSource, server_verified: true, quote_timestamp: quoteRow.quote_timestamp, quote_fresh: true, market_price_available: true, requested_qty: requestedQty, filled_qty: qty, unfilled_qty: unfilledQty, partial_fill: partialFill, time_in_force: "IOC_SIMULATED", unfilled_disposition: partialFill ? "CANCELLED_REMAINDER" : "NONE", quote_snapshot_key: snapshotKey, levels_used: execution?.levels_used || [], all_clear: true, nodes: [{ id: "NBX09", state: partialFill ? "WATCH" : "HIT", value: fillPrice, evidence: partialFill ? "SELL GTT filled only against visible Upstox bids" : "SELL GTT fully covered by visible Upstox bids" }] });
+    const fillValue = round(qty * fillPrice, 2);
     const exitCost = paperTransactionCost(fillValue);
-    const entryPrice = finiteOr(existing.entry_price, price);
-    const entryValue = round(entryPrice * plan.qty, 2);
+    const entryPrice = finiteOr(existing.entry_price, fillPrice);
+    const entryValue = round(entryPrice * qty, 2);
     const heldEntryCost = round(finiteOr(existing.entry_cost, 0), 2);
-    const allocatedEntryCost = round(heldQty ? heldEntryCost * plan.qty / heldQty : 0, 2);
-    const remaining = heldQty - plan.qty;
+    const allocatedEntryCost = round(heldQty ? heldEntryCost * qty / heldQty : 0, 2);
+    const remaining = heldQty - qty;
     const remainingEntryCost = round(Math.max(0, heldEntryCost - allocatedEntryCost), 2);
     const grossRealized = round(fillValue - entryValue, 2);
     const realized = round(grossRealized - allocatedEntryCost - exitCost, 2);
-    const order = sanitizePaperOrder({ id: paperLedgerId("PAPER_GTT_SELL_FILL"), instrument_key: plan.instrument_key, symbol: plan.symbol, name: plan.name, side: "SELL", product: "Paper GTT", order_type: "GTT", qty: plan.qty, price, price_source: "server_upstox_weighted_bid", transaction_cost: exitCost, quote_timestamp: quoteRow.quote_timestamp, status: "PAPER_FILLED", thesis: plan.thesis || "Paper SELL GTT trigger touched by monitor", source: "paper-lifecycle-monitor", created_at: asOf, updated_at: asOf });
-    const trade = sanitizePaperTrade({ id: paperLedgerId("PAPER_GTT_SELL_TRADE"), order_id: order.id, instrument_key: plan.instrument_key, symbol: plan.symbol, side: "SELL", qty: plan.qty, price, price_source: "server_upstox_weighted_bid", quote_timestamp: quoteRow.quote_timestamp, value: fillValue, entry_price: entryPrice, exit_price: price, entry_value: entryValue, exit_value: fillValue, entry_cost: allocatedEntryCost, exit_cost: exitCost, transaction_cost: exitCost, net_entry_value: round(entryValue + allocatedEntryCost, 2), net_exit_value: round(fillValue - exitCost, 2), gross_realized_pnl: grossRealized, realized_pnl: realized, return_pct: entryValue + allocatedEntryCost ? realized / (entryValue + allocatedEntryCost) * 100 : null, entry_at: existing.entry_date, exit_at: asOf, holding_days: paperHoldingDays(existing.entry_date, asOf), close_reason: plan.thesis || "Paper SELL GTT trigger", traded_at: asOf });
+    const order = sanitizePaperOrder({ id: paperLedgerId("PAPER_GTT_SELL_FILL"), instrument_key: plan.instrument_key, symbol: plan.symbol, name: plan.name, side: "SELL", product: "Paper GTT", order_type: "GTT", qty, requested_qty: requestedQty, filled_qty: qty, unfilled_qty: unfilledQty, partial_fill: partialFill, time_in_force: "IOC_SIMULATED", unfilled_disposition: partialFill ? "CANCELLED_REMAINDER" : "NONE", price: fillPrice, price_source: priceSource, transaction_cost: exitCost, quote_timestamp: quoteRow.quote_timestamp, status: partialFill ? "PAPER_PARTIALLY_FILLED" : "PAPER_FILLED", thesis: plan.thesis || "Paper SELL GTT trigger touched by monitor", source: "paper-lifecycle-monitor", execution_evidence: executionEvidence, created_at: asOf, updated_at: asOf });
+    const trade = sanitizePaperTrade({ id: paperLedgerId("PAPER_GTT_SELL_TRADE"), order_id: order.id, instrument_key: plan.instrument_key, symbol: plan.symbol, side: "SELL", qty, requested_qty: requestedQty, filled_qty: qty, unfilled_qty: unfilledQty, partial_fill: partialFill, time_in_force: "IOC_SIMULATED", unfilled_disposition: partialFill ? "CANCELLED_REMAINDER" : "NONE", execution_evidence: executionEvidence, price: fillPrice, price_source: priceSource, quote_timestamp: quoteRow.quote_timestamp, value: fillValue, entry_price: entryPrice, exit_price: fillPrice, entry_value: entryValue, exit_value: fillValue, entry_cost: allocatedEntryCost, exit_cost: exitCost, transaction_cost: exitCost, net_entry_value: round(entryValue + allocatedEntryCost, 2), net_exit_value: round(fillValue - exitCost, 2), gross_realized_pnl: grossRealized, realized_pnl: realized, return_pct: entryValue + allocatedEntryCost ? realized / (entryValue + allocatedEntryCost) * 100 : null, entry_at: existing.entry_date, exit_at: asOf, holding_days: paperHoldingDays(existing.entry_date, asOf), close_reason: plan.thesis || "Paper SELL GTT trigger", traded_at: asOf });
     next.orders.unshift(order);
     next.trades.unshift(trade);
     next.funds = sanitizePaperFunds({ ...next.funds, realized_pnl: finiteOr(next.funds.realized_pnl, 0) + realized, transaction_costs_paid: finiteOr(next.funds.transaction_costs_paid, 0) + exitCost });
-    if (remaining > 0) next.positions[existingIndex] = sanitizePaperPosition({ ...existing, qty: remaining, entry_cost: remainingEntryCost, current_price: price, checked_at: asOf });
+    if (remaining > 0) next.positions[existingIndex] = sanitizePaperPosition({ ...existing, qty: remaining, entry_cost: remainingEntryCost, current_price: fillPrice, checked_at: asOf });
     else next.positions.splice(existingIndex, 1);
-    return { type: "GTT_SELL_TRIGGERED", symbol: plan.symbol, qty: plan.qty, price, realized_pnl: realized, order_id: order.id, reason: "paper SELL GTT trigger touched" };
+    return { type: partialFill ? "GTT_SELL_PARTIALLY_FILLED" : "GTT_SELL_TRIGGERED", symbol: plan.symbol, qty, requested_qty: requestedQty, unfilled_qty: unfilledQty, price: fillPrice, partial_fill: partialFill, quote_snapshot_key: snapshotKey, realized_pnl: realized, order_id: order.id, reason: partialFill ? "paper SELL GTT partially filled against visible bids" : "paper SELL GTT trigger touched" };
   }
   const fillValue = round(plan.qty * price, 2);
   const fillTransactionCost = paperTransactionCost(fillValue);
@@ -1120,13 +1312,31 @@ function applyPaperLifecycleMonitor(state = defaultState(), rows = [], body = {}
     const stop = finiteOr(position.stop_price, null);
     const updated = sanitizePaperPosition({ ...position, current_price: price, checked_at: asOf });
     if (target && price >= target) {
+      if (!exitPrice || !found.row.paper_sell_execution) {
+        dataNeeded.push({ symbol: position.symbol, reason: "executable Upstox bid depth missing for target exit" });
+        remainingPositions.push(updated);
+        continue;
+      }
       const event = closePaperPosition(next, updated, exitPrice, "TARGET_HIT: paper monitor closed at target", asOf, found.row);
-      if (event) events.push(event);
+      if (event) {
+        events.push(event);
+        if (event.remaining_position) remainingPositions.push(event.remaining_position);
+        else if (event.type === "EXIT_DEFERRED") remainingPositions.push(updated);
+      } else remainingPositions.push(updated);
       continue;
     }
     if (stop && price <= stop) {
+      if (!exitPrice || !found.row.paper_sell_execution) {
+        dataNeeded.push({ symbol: position.symbol, reason: "executable Upstox bid depth missing for stop exit" });
+        remainingPositions.push(updated);
+        continue;
+      }
       const event = closePaperPosition(next, updated, exitPrice, "STOP_HIT: paper monitor closed at stop", asOf, found.row);
-      if (event) events.push(event);
+      if (event) {
+        events.push(event);
+        if (event.remaining_position) remainingPositions.push(event.remaining_position);
+        else if (event.type === "EXIT_DEFERRED") remainingPositions.push(updated);
+      } else remainingPositions.push(updated);
       continue;
     }
     remainingPositions.push(updated);
@@ -1148,13 +1358,20 @@ function applyPaperLifecycleMonitor(state = defaultState(), rows = [], body = {}
     const touched = plan.side === "BUY" ? found.price >= trigger : found.price <= trigger;
     if (!touched) return plan;
     const fillPrice = plan.side === "BUY" ? found.buy_price : found.sell_price;
+    const execution = plan.side === "BUY" ? found.row.paper_buy_execution : found.row.paper_sell_execution;
+    if (!fillPrice || !execution) {
+      dataNeeded.push({ symbol: plan.symbol, reason: "executable Upstox depth missing for GTT trigger" });
+      return plan;
+    }
     const event = openPaperPositionFromGtt(next, plan, fillPrice, asOf, found.row);
     events.push(event);
-    return sanitizePaperGtt({ ...plan, status: event.type === "GTT_REJECTED" ? "REJECTED" : "TRIGGERED", triggered_at: asOf });
+    if (event.type === "GTT_DEFERRED") return plan;
+    if (event.type === "GTT_SELL_PARTIALLY_FILLED") {
+      return sanitizePaperGtt({ ...plan, qty: event.unfilled_qty, original_qty: plan.original_qty || plan.qty, filled_qty: finiteOr(plan.filled_qty, 0) + event.qty, last_fill_qty: event.qty, last_partial_fill_at: asOf, last_quote_snapshot_key: event.quote_snapshot_key, status: "ACTIVE" });
+    }
+    return sanitizePaperGtt({ ...plan, qty: event.type === "GTT_REJECTED" ? plan.qty : 0, filled_qty: event.type === "GTT_REJECTED" ? plan.filled_qty : finiteOr(plan.filled_qty, 0) + finiteOr(event.qty, 0), status: event.type === "GTT_REJECTED" ? "REJECTED" : "TRIGGERED", triggered_at: asOf });
   });
 
-  next.orders = next.orders.slice(0, 200);
-  next.trades = next.trades.slice(0, 300);
   next.last_monitor_at = asOf;
   next.last_monitor = { at: asOf, events: events.length, data_needed: dataNeeded.length, source: body.source || "paper-lifecycle-monitor" };
   const saved = sanitizePaperTraderState(next);
@@ -1259,7 +1476,7 @@ export function applyPaperOrderLifecyclePatches(source, mustReplace) {
   output = mustReplace(
     output,
     '  return { maxCandidates: Math.min(100, Math.max(10, Math.floor(finiteOr(input.maxCandidates ?? input.max_candidates, 50)))), buyQueueSize: Math.min(60, Math.max(5, Math.floor(finiteOr(input.buyQueueSize ?? input.buy_queue_size, 30)))), startingCapital: Math.max(10000, finiteOr(input.startingCapital ?? input.starting_capital, 1000000)), maxPositionPct: Math.min(0.2, Math.max(0.01, finiteOr(input.maxPositionPct ?? input.max_position_pct, 0.04))), targetDefaultPct: Math.min(80, Math.max(8, finiteOr(input.targetDefaultPct ?? input.target_default_pct, 25))), stopLossPct: Math.min(25, Math.max(4, finiteOr(input.stopLossPct ?? input.stop_loss_pct, 10))), replaceBelowScore: Math.min(80, Math.max(5, finiteOr(input.replaceBelowScore ?? input.replace_below_score, 35))), targetHitPct: Math.min(100, Math.max(20, finiteOr(input.targetHitPct ?? input.target_hit_pct, 80))) };',
-    '  return { maxCandidates: Math.min(PAPER_CAPITAL_POLICY.maximumCandidateEntries, Math.max(10, Math.floor(finiteOr(input.maxCandidates ?? input.max_candidates, PAPER_CAPITAL_POLICY.maximumCandidateEntries)))), buyQueueSize: Math.min(PAPER_CAPITAL_POLICY.maximumCandidateEntries, Math.max(5, Math.floor(finiteOr(input.buyQueueSize ?? input.buy_queue_size, PAPER_CAPITAL_POLICY.maximumCandidateEntries)))), startingCapital: PAPER_CAPITAL_POLICY.startingCapital, maxPositionPct: Math.min(PAPER_CAPITAL_POLICY.maximumPositionPct / 100, Math.max(PAPER_CAPITAL_POLICY.minimumEntryPct / 100, finiteOr(input.maxPositionPct ?? input.max_position_pct, PAPER_CAPITAL_POLICY.baseEntryPct / 100))), targetDefaultPct: Math.min(80, Math.max(8, finiteOr(input.targetDefaultPct ?? input.target_default_pct, 25))), stopLossPct: Math.min(25, Math.max(4, finiteOr(input.stopLossPct ?? input.stop_loss_pct, 10))), replaceBelowScore: Math.min(80, Math.max(5, finiteOr(input.replaceBelowScore ?? input.replace_below_score, 35))), targetHitPct: Math.min(100, Math.max(20, finiteOr(input.targetHitPct ?? input.target_hit_pct, 80))) };',
+    '  return { maxCandidates: Math.min(PAPER_CAPITAL_POLICY.maximumCandidateEntries, Math.max(10, Math.floor(finiteOr(input.maxCandidates ?? input.max_candidates, PAPER_CAPITAL_POLICY.maximumCandidateEntries)))), buyQueueSize: Math.min(PAPER_CAPITAL_POLICY.maximumCandidateEntries, Math.max(5, Math.floor(finiteOr(input.buyQueueSize ?? input.buy_queue_size, PAPER_CAPITAL_POLICY.maximumCandidateEntries)))), startingCapital: PAPER_CAPITAL_POLICY.startingCapital, maxPositions: PAPER_CAPITAL_POLICY.maximumOpenPositions, maxPositionPct: Math.min(PAPER_CAPITAL_POLICY.maximumPositionPct / 100, Math.max(PAPER_CAPITAL_POLICY.minimumEntryPct / 100, finiteOr(input.maxPositionPct ?? input.max_position_pct, PAPER_CAPITAL_POLICY.baseEntryPct / 100))), targetDefaultPct: Math.min(80, Math.max(8, finiteOr(input.targetDefaultPct ?? input.target_default_pct, 25))), stopLossPct: Math.min(25, Math.max(4, finiteOr(input.stopLossPct ?? input.stop_loss_pct, 10))), replaceBelowScore: Math.min(80, Math.max(5, finiteOr(input.replaceBelowScore ?? input.replace_below_score, 35))), targetHitPct: Math.min(100, Math.max(20, finiteOr(input.targetHitPct ?? input.target_hit_pct, 80))) };',
     'paper trader capital and 80-entry settings'
   );
   output = mustReplace(output, '\nfunction paperTraderSettings(input = {}) {', `\n${PAPER_ORDER_LIFECYCLE_FUNCTIONS}\nfunction paperTraderSettings(input = {}) {`, 'insert paper order lifecycle functions');

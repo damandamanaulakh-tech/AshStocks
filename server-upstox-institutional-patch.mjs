@@ -270,20 +270,23 @@ function attachUpstoxInstitutionalEvidence(row, stock, market) {
   const summary = institutionalTunnelSummary(results);
   const baseScore = tunnelFinite(row.base_score, tunnelFinite(row.score, 0));
   const hasExecutableEvidence = summary.evaluated > 0;
-  const blendedScore = ["DATA_NEEDED", "BLOCKED"].includes(row.decision) || !hasExecutableEvidence
+  const advisoryScore = ["DATA_NEEDED", "BLOCKED"].includes(row.decision) || !hasExecutableEvidence
     ? baseScore
     : round(baseScore * 0.70 + summary.evidence_score * 0.30, 2);
   return {
     ...row,
-    score: blendedScore,
+    score: baseScore,
+    selection_score: baseScore,
+    institutional_advisory_score: advisoryScore,
     parameter_tunnel: { ...row.parameter_tunnel, summary, results },
     parameter_selection_effect: {
       ...(row.parameter_selection_effect || {}),
-      status: hasExecutableEvidence ? "RANKED" : "BASE_SCORE_PRESERVED",
+      status: hasExecutableEvidence ? "ADVISORY_ONLY" : "BASE_SCORE_PRESERVED",
       base_score: baseScore,
       tunnel_score: summary.evidence_score,
-      blended_score: blendedScore,
+      advisory_score: advisoryScore,
       hard_gate_decision_preserved: true,
+      primary_rank_preserved: true,
       institutional_overlay: UPSTOX_INSTITUTIONAL_VERSION
     },
     institutional_evidence: { stock, market },

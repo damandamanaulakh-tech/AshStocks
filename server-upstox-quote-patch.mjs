@@ -1,6 +1,7 @@
 const UPSTOX_QUOTE_FUNCTIONS = String.raw`
-const UPSTOX_QUOTE_VERSION = "ashstocks-upstox-quote-v0.2-stream";
+const UPSTOX_QUOTE_VERSION = "ashstocks-upstox-quote-v0.4-batched-500-instruments";
 const UPSTOX_FULL_MARKET_QUOTE_URL = "https://api.upstox.com/v2/market-quote/quotes";
+const UPSTOX_QUOTE_MAX_KEYS = 500;
 const UPSTOX_QUOTE_CACHE_MS = 15000;
 const UPSTOX_QUOTE_STREAM_MS = 15000;
 const UPSTOX_QUOTE_STREAM_MAX_KEYS = 12;
@@ -17,6 +18,7 @@ function upstoxQuotePublicStatus() {
     cache_ms: UPSTOX_QUOTE_CACHE_MS,
     stream_ms: UPSTOX_QUOTE_STREAM_MS,
     stream_max_keys: UPSTOX_QUOTE_STREAM_MAX_KEYS,
+    request_max_keys: UPSTOX_QUOTE_MAX_KEYS,
     stream_transport: "server_sent_events_polling_backed",
     paper_only: true,
     live_orders: false,
@@ -38,7 +40,11 @@ function normalizeQuoteKeys(input = []) {
       if (key && !keys.includes(key)) keys.push(key);
     }
   }
-  return keys.slice(0, 50);
+  return keys;
+}
+
+function upstoxQuoteKeyMatches(left, right) {
+  return String(left || "").replace(":", "|") === String(right || "").replace(":", "|");
 }
 
 function normalizeDepthRows(rows = []) {
@@ -111,33 +117,44 @@ async function fetchUpstoxMarketQuotes(keys = []) {
   if (upstoxQuoteCache.payload && upstoxQuoteCache.key === cacheKey && Date.now() - upstoxQuoteCache.at < UPSTOX_QUOTE_CACHE_MS) {
     return upstoxQuoteCache.payload;
   }
-  const query = instrumentKeys.map((key) => encodeURIComponent(key)).join(",");
-  const response = await fetch(UPSTOX_FULL_MARKET_QUOTE_URL + "?instrument_key=" + query, {
-    headers: {
-      accept: "application/json",
-      authorization: "Bearer " + accessToken
-    }
-  });
-  const text = await response.text();
-  let payload = null;
-  try { payload = JSON.parse(text); } catch (_) {}
-  if (!response.ok) {
-    const detail = payload?.errors?.[0]?.message || payload?.message || text.slice(0, 220);
-    throw new Error("Upstox quote " + response.status + ": " + detail);
+  const batches = [];
+  for (let index = 0; index < instrumentKeys.length; index += UPSTOX_QUOTE_MAX_KEYS) {
+    batches.push(instrumentKeys.slice(index, index + UPSTOX_QUOTE_MAX_KEYS));
   }
-  const data = payload?.data || {};
-  const values = Array.isArray(data) ? data : Object.entries(data).map(([key, value]) => ({ key, value }));
-  const quotes = values.map((entry, index) => {
-    const raw = entry?.value || entry || {};
-    return normalizeUpstoxQuoteRow(raw, raw.instrument_key || raw.instrument_token || entry?.key || instrumentKeys[index] || "");
-  });
+  const quotes = [];
+  for (const batch of batches) {
+    const query = batch.map((key) => encodeURIComponent(key)).join(",");
+    const response = await fetch(UPSTOX_FULL_MARKET_QUOTE_URL + "?instrument_key=" + query, {
+      headers: {
+        accept: "application/json",
+        authorization: "Bearer " + accessToken
+      }
+    });
+    const text = await response.text();
+    let payload = null;
+    try { payload = JSON.parse(text); } catch (_) {}
+    if (!response.ok) {
+      const detail = payload?.errors?.[0]?.message || payload?.message || text.slice(0, 220);
+      throw new Error("Upstox quote " + response.status + ": " + detail);
+    }
+    const data = payload?.data || {};
+    const values = Array.isArray(data) ? data : Object.entries(data).map(([key, value]) => ({ key, value }));
+    for (const [index, entry] of values.entries()) {
+      const raw = entry?.value || entry || {};
+      const quote = normalizeUpstoxQuoteRow(raw, raw.instrument_key || raw.instrument_token || entry?.key || batch[index] || "");
+      if (!quotes.some((existing) => upstoxQuoteKeyMatches(existing.instrument_key, quote.instrument_key))) quotes.push(quote);
+    }
+  }
   const result = {
     ok: true,
     version: UPSTOX_QUOTE_VERSION,
     provider: "Upstox Market Quote API",
     asOf: new Date().toISOString(),
     quotes,
-    failures: instrumentKeys.filter((key) => !quotes.some((quote) => quote.instrument_key === key || quote.instrument_key === key.replace("|", ":"))),
+    requested_key_count: instrumentKeys.length,
+    batch_count: batches.length,
+    batch_size: UPSTOX_QUOTE_MAX_KEYS,
+    failures: instrumentKeys.filter((key) => !quotes.some((quote) => upstoxQuoteKeyMatches(quote.instrument_key, key))),
     safety: { paper_only: true, live_orders: false, broker_write_enabled: false, token_printed: false },
     status: await upstoxRuntimeStatus()
   };

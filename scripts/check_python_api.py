@@ -43,6 +43,13 @@ async def main() -> None:
         assert payload["ok"] is True, (path, payload)
         assert payload["broker_write_enabled"] is False, (path, payload)
 
+    status, config = await request("/api/config")
+    assert status == 200, (status, config)
+    assert config["starting_capital"] == 50_000_000, config
+    assert config["max_positions"] == 500, config
+    assert config["minimum_entry_inr"] == 100_000, config
+    assert config["max_position_pct"] == 0.002, config
+
 
 if __name__ == "__main__":
     asyncio.run(main())

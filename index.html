@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>ASH Stock</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="./styles.css?v=20260826.1" />
+    <link rel="stylesheet" href="./styles.css?v=20260903.1" />
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
-    <script src="./app.js?v=20260826.1" defer></script>
+    <script src="./app.js?v=20260903.1" defer></script>
     <!-- The current shell is owned by app.js. Legacy broker workspace loaders remain
          available in the repository but are intentionally not mounted on this page. -->
   </head>
@@ -31,11 +31,11 @@
             <i data-lucide="radar" aria-hidden="true"></i>
             <span>Pre-Rise Radar</span>
           </button>
-          <button class="rail-item" type="button" data-section="screener" data-nav-key="watchlist" data-nav-title="Watchlist">
+          <button class="rail-item" type="button" data-section="screener" data-nav-key="watchlist" data-nav-title="Watchlist" data-route-decision="WATCH">
             <i data-lucide="list-star" aria-hidden="true"></i>
             <span>Watchlist</span>
           </button>
-          <button class="rail-item" type="button" data-section="screener" data-nav-key="screener" data-nav-title="Scanner">
+          <button class="rail-item" type="button" data-section="screener" data-nav-key="screener" data-nav-title="Scanner" data-route-decision="ALL">
             <i data-lucide="scan-search" aria-hidden="true"></i>
             <span>Scanner</span>
           </button>
@@ -63,9 +63,9 @@
             <i data-lucide="chart-no-axes-combined" aria-hidden="true"></i>
             <span>Performance</span>
           </button>
-          <button class="rail-item" type="button" data-section="orders" data-nav-key="journal" data-nav-title="Journal" data-route-ledger="closed">
-            <i data-lucide="notebook-tabs" aria-hidden="true"></i>
-            <span>Journal</span>
+          <button class="rail-item" type="button" data-section="orders" data-nav-key="closed-trades" data-nav-title="Closed Trades" data-route-ledger="closed">
+            <i data-lucide="history" aria-hidden="true"></i>
+            <span>Closed Trades</span>
           </button>
           <button class="rail-item" type="button" data-section="orders" data-nav-key="orders" data-nav-title="Paper Book">
             <i data-lucide="book-open-check" aria-hidden="true"></i>
@@ -189,12 +189,20 @@
         <section class="section portfolio-dashboard" id="portfolioSection" data-panel="portfolio">
           <header class="portfolio-dashboard-head">
             <div>
-              <span class="mini-label">Paper Portfolio Overview</span>
-              <h3>Capital, positions and risk</h3>
+              <span class="mini-label" id="portfolioViewLabel">Paper Holdings</span>
+              <h3 id="portfolioViewTitle">Open positions and allocation</h3>
               <p id="portfolioDashboardStamp">Loading the durable paper ledger and live Upstox marks.</p>
             </div>
             <div class="portfolio-dashboard-actions">
               <span class="status-pill good">Paper only</span>
+              <button class="small-button" type="button" data-download-trades="open">
+                <i data-lucide="download" aria-hidden="true"></i>
+                <span>Open CSV</span>
+              </button>
+              <button class="small-button" type="button" data-download-trades="closed">
+                <i data-lucide="download" aria-hidden="true"></i>
+                <span>Closed CSV</span>
+              </button>
               <button class="small-button" type="button" id="dashboardRefreshBtn">
                 <i data-lucide="refresh-cw" aria-hidden="true"></i>
                 <span>Refresh portfolio</span>
@@ -235,7 +243,7 @@
                 <button class="small-button" type="button" id="exportBtn">Export CSV</button>
               </div>
             </div>
-            <div class="table-wrap">
+            <div class="table-wrap watchlist-table-scroll" tabindex="0" aria-label="Watchlist stocks">
               <table>
                 <thead>
                   <tr>
@@ -325,12 +333,14 @@
         <section class="section portfolio-dashboard paper-trade-dashboard" id="ordersSection" data-panel="orders">
           <header class="portfolio-dashboard-head paper-trade-dashboard-head">
             <div>
-              <span class="mini-label">Paper Execution</span>
-              <h3>Paper Trade Dashboard</h3>
+              <span class="mini-label" id="paperTradeViewLabel">Paper Execution</span>
+              <h3 id="paperTradeViewTitle">Paper Trade Dashboard</h3>
               <p id="paperTradeDashboardStamp">Loading capital, positions, closed trades and risk controls.</p>
             </div>
             <div class="portfolio-dashboard-actions">
               <span class="status-pill good"><i data-lucide="file-lock-2"></i> Paper only</span>
+              <button class="small-button" type="button" data-download-trades="open"><i data-lucide="download"></i> Open CSV</button>
+              <button class="small-button" type="button" data-download-trades="closed"><i data-lucide="download"></i> Closed CSV</button>
               <button class="small-button" type="button" id="paperTradeRefreshBtn"><i data-lucide="refresh-cw"></i> Refresh</button>
             </div>
           </header>
@@ -389,6 +399,28 @@
               </form>
               <div class="token-result" id="upstoxTokenResult"></div>
             </section>
+            <section class="panel formula-settings-panel">
+              <div class="panel-head formula-settings-head">
+                <div>
+                  <span class="mini-label">Paper Selection Control</span>
+                  <h3>Editable formulas</h3>
+                  <p>Validated numeric controls are stored in Mongo and apply to the next paper scan. Live trading remains locked.</p>
+                </div>
+                <span class="status-pill watch" id="formulaSettingsMode">Loading</span>
+              </div>
+              <form id="formulaSettingsForm" class="formula-settings-form">
+                <div id="formulaSettingsGrid" class="formula-settings-grid" aria-live="polite"></div>
+                <div class="formula-settings-actions">
+                  <button class="submit-button" type="submit"><i data-lucide="save"></i> Save formulas</button>
+                  <button class="small-button" type="button" id="formulaSettingsReset"><i data-lucide="rotate-ccw"></i> Reset defaults</button>
+                  <span id="formulaSettingsResult" class="token-result"></span>
+                </div>
+              </form>
+              <details class="formula-audit-detail">
+                <summary>Recent formula changes</summary>
+                <div id="formulaSettingsAudit" class="formula-settings-audit"></div>
+              </details>
+            </section>
           </div>
         </section>
 
@@ -400,7 +432,8 @@
                 <div class="detail-row"><span>Dashboard</span><strong>Pre-rise ranking, regime, evidence and chart</strong></div>
                 <div class="detail-row"><span>Scanner / Watchlist</span><strong>Full NSE candidate table and filters</strong></div>
                 <div class="detail-row"><span>Trading / Signals</span><strong>Parameter tunnel and stock hit matrix</strong></div>
-                <div class="detail-row"><span>Positions / Orders / Journal</span><strong>Paper lifecycle ledgers with real marks</strong></div>
+                <div class="detail-row"><span>Holdings / Performance</span><strong>Separate open-position and realized-result views</strong></div>
+                <div class="detail-row"><span>Closed Trades</span><strong>Sold stocks, realized P&amp;L, return and exit reason</strong></div>
                 <div class="detail-row"><span>Paper Book</span><strong>Capital, closed trades, activity and risk governor</strong></div>
               </div>
             </section>
@@ -408,7 +441,7 @@
               <div class="panel-head"><div><span class="mini-label">Execution Safety</span><h3>Paper only</h3></div></div>
               <div class="detail-list">
                 <div class="detail-row"><span>Market data</span><strong>Upstox-backed when available</strong></div>
-                <div class="detail-row"><span>Capital</span><strong>Simulated ₹50 lakh ledger</strong></div>
+                <div class="detail-row"><span>Capital</span><strong>Simulated ₹5 crore ledger with 500 position slots</strong></div>
                 <div class="detail-row"><span>Broker writes</span><strong>Locked</strong></div>
                 <div class="detail-row"><span>Missing evidence</span><strong>Shown as DATA NEEDED</strong></div>
               </div>
