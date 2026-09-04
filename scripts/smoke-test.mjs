@@ -257,10 +257,19 @@ try {
     { price: 355.95, quantity: 100, orders: 5 },
     { price: 355.90, quantity: 80, orders: 4 }
   ];
+  quoteData["NSE_EQ:INETEST00006"].depth.buy = [
+    { price: 356.95, quantity: 100, orders: 5 },
+    { price: 356.90, quantity: 80, orders: 4 }
+  ];
+  quoteData["NSE_EQ:INETEST00002"].depth.sell = [
+    { price: 353.05, quantity: 100, orders: 2 }
+  ];
   quoteData["NSE_EQ:INETEST00007"].depth.buy = [];
+  const upstreamQuoteBatchSizes = [];
   globalThis.fetch = async (url) => {
     const target = String(url);
     if (!target.startsWith("https://api.upstox.com/v2/market-quote/quotes")) throw new Error("unexpected network request " + target);
+    upstreamQuoteBatchSizes.push(new URL(target).searchParams.get("instrument_key").split(",").filter(Boolean).length);
     return new Response(JSON.stringify({ status: "success", data: quoteData }), { status: 200, headers: { "content-type": "application/json" } });
   };
 
@@ -275,16 +284,30 @@ try {
   const firstOrder = firstResult.auto_buy?.orders?.[0];
   const firstPosition = ledger.positions?.find((position) => position.symbol === "REALQUOTE");
   if (result.auto_buy?.selection_contract !== "SELECT_FINAL") throw new Error("SELECT must be the final paper-buy authorization");
-  if (result.auto_buy?.fill_method !== "UPSTOX_WEIGHTED_ASK_OR_LTP") throw new Error("paper engine must declare its real-price fill method");
+  if (result.auto_buy?.fill_method !== "UPSTOX_FULL_VISIBLE_ASK_DEPTH_FOK") throw new Error("paper engine must declare full visible ask-depth FOK execution");
   if (result.auto_buy?.selected_in_scan !== 4 || result.auto_buy?.already_open_before !== 1) throw new Error("paper engine must reconcile existing positions against every SELECT");
-  if (result.auto_buy?.orders_filled !== 3 || result.auto_buy?.pending_after_run !== 0) throw new Error("second cycle must drain every remaining SELECT");
-  if (ledger.positions?.length !== 4) throw new Error("every SELECT must appear as an open paper position");
+  if (result.auto_buy?.orders_filled !== 2 || result.auto_buy?.pending_after_run !== 1) throw new Error("second cycle must keep the shallow-ask SELECT pending while filling fully covered tickets: " + JSON.stringify(result.auto_buy));
+  if (!result.auto_buy?.rejections?.some((order) => order.symbol === "SELECTTWO" && order.rejection_reason === "insufficient_upstox_ask_depth_for_full_paper_buy")) throw new Error("automatic BUY must reject incomplete visible ask depth explicitly");
+  if (ledger.positions?.length !== 3 || ledger.positions?.some((position) => position.symbol === "SELECTTWO")) throw new Error("partial visible asks must never create an automatic BUY position");
   if (firstOrder?.price !== 352.05 || firstOrder?.quote_timestamp !== "2026-07-27T04:30:00.000Z") throw new Error("paper market fill must use the real Upstox ask");
+  if (!(firstOrder.qty * firstOrder.price > 100000 && firstOrder.qty * firstOrder.price <= 100000 + firstOrder.price)) throw new Error("non-divisible automatic allocation should permit only the final whole-share rounding above Rs 1 lakh");
   if (firstPosition?.entry_price !== 352.05 || firstPosition?.instrument_key !== "NSE_EQ|INETEST00001") throw new Error("real-quote position must persist in the paper ledger");
   if (!ledger.positions.every((position) => position.parameter_evidence?.evaluated >= 80)) throw new Error("every paper position must retain parameter evidence");
   if (!ledger.positions.every((position) => Number.isFinite(position.unrealized_pnl) && Number.isFinite(position.unrealized_pnl_pct))) throw new Error("every open position must expose mark-to-market P&L");
   if (!Number.isFinite(ledger.funds?.unrealized_pnl) || !Number.isFinite(ledger.funds?.total_pnl)) throw new Error("paper funds must expose unrealized and total P&L");
-  if (ledger.mark_to_market?.source !== "Upstox Market Quote API" || ledger.mark_to_market?.marked_positions !== 4) throw new Error("paper ledger must revalue every position from Upstox quotes");
+  if (ledger.mark_to_market?.source !== "Upstox Market Quote API" || ledger.mark_to_market?.marked_positions !== 3) throw new Error("paper ledger must revalue every filled position from Upstox quotes");
+  const roundedAllocationOrder = ledger.orders?.find((order) => order.symbol === "REALQUOTE" && order.side === "BUY");
+  if (roundedAllocationOrder?.allocation_cap_value !== 100000 || roundedAllocationOrder?.execution_evidence?.full_visible_ask_depth !== true) throw new Error("automatic BUY must retain its exact base cap and complete visible-depth proof");
+
+  const batchedQuoteKeys = Array.from({ length: 501 }, (_, index) => "NSE_EQ|INEBATCH" + String(index).padStart(4, "0"));
+  response = await nativeFetch(base + "/api/upstox/quote", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ instrument_keys: batchedQuoteKeys })
+  });
+  const batchedQuotes = await response.json();
+  if (response.status !== 200 || batchedQuotes.requested_key_count !== 501 || batchedQuotes.batch_count !== 2) throw new Error("quote retrieval must batch all keys beyond the 500-key upstream ceiling");
+  if (upstreamQuoteBatchSizes.at(-2) !== 500 || upstreamQuoteBatchSizes.at(-1) !== 1) throw new Error("Upstox quote batches must be capped at 500 without dropping the 501st key");
   response = await nativeFetch(base + "/api/state");
   const stateBeforeManualOrder = await response.json();
   response = await nativeFetch(base + "/api/state", {
@@ -390,9 +413,32 @@ try {
   const gttSellEvent = gttMonitor.events?.find((event) => event.symbol === "GTTQUOTE");
   const gttSellTrade = gttMonitor.paperTrader?.trades?.find((trade) => trade.symbol === "GTTQUOTE" && trade.side === "SELL");
   if (response.status !== 200 || gttMonitor.quote_source !== "server-upstox-market-quote-monitor") throw new Error("monitor must use server Upstox quotes even when the caller requests otherwise: " + JSON.stringify(gttMonitor));
-  if (gttSellEvent?.type !== "GTT_SELL_TRIGGERED" || gttSellEvent?.price !== 356.95) throw new Error("SELL GTT must execute at the full-depth Upstox bid");
-  if (gttSellTrade?.price_source !== "server_upstox_weighted_bid" || gttSellTrade?.qty !== 281) throw new Error("SELL GTT closed trade must retain bid-side execution evidence");
-  if (gttMonitor.paperTrader?.positions?.some((position) => position.symbol === "GTTQUOTE")) throw new Error("triggered SELL GTT must remove the fully sold holding");
+  const remainingGttPosition = gttMonitor.paperTrader?.positions?.find((position) => position.symbol === "GTTQUOTE");
+  const remainingGttPlan = gttMonitor.paperTrader?.gtt?.find((plan) => plan.symbol === "GTTQUOTE");
+  if (gttSellEvent?.type !== "GTT_SELL_PARTIALLY_FILLED" || gttSellEvent?.price !== 356.9278) throw new Error("SELL GTT must partially execute at the weighted visible Upstox bids");
+  if (gttSellTrade?.price_source !== "server_upstox_partial_weighted_bid" || gttSellTrade?.qty !== 180 || gttSellTrade?.unfilled_qty !== 101) throw new Error("SELL GTT partial trade must retain bid-side quantity and execution evidence");
+  if (remainingGttPosition?.qty !== 101 || remainingGttPlan?.status !== "ACTIVE" || remainingGttPlan?.qty !== 101 || remainingGttPlan?.filled_qty !== 180) throw new Error("SELL GTT partial fill must keep both the unsold holding and GTT remainder active");
+
+  response = await nativeFetch(base + "/api/state");
+  const stateBeforeAutomaticExits = await response.json();
+  const exitProofPositions = (stateBeforeAutomaticExits.state?.paperTrader?.positions || []).map((position) => (
+    position.symbol === "SELECTTHREE"
+      ? { ...position, target_price: 300, stop_price: 200 }
+      : position.symbol === "SELECTFOUR"
+        ? { ...position, target_price: 500, stop_price: 400 }
+        : position
+  ));
+  response = await nativeFetch(base + "/api/state", {
+    method: "PUT",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ state: { ...stateBeforeAutomaticExits.state, paperTrader: { ...stateBeforeAutomaticExits.state.paperTrader, positions: exitProofPositions } } })
+  });
+  if (response.status !== 200) throw new Error("automatic target/stop proof state should save");
+  response = await nativeFetch(base + "/api/paper-trader/monitor", { method: "POST", headers: { "content-type": "application/json" }, body: "{}" });
+  const automaticExitMonitor = await response.json();
+  if (!automaticExitMonitor.events?.some((event) => event.symbol === "SELECTTHREE" && event.type === "TARGET_EXIT")) throw new Error("automatic monitor must execute a target exit from visible bids");
+  if (!automaticExitMonitor.events?.some((event) => event.symbol === "SELECTFOUR" && event.type === "STOP_EXIT")) throw new Error("automatic monitor must execute a stop exit from visible bids");
+  if (automaticExitMonitor.paperTrader?.positions?.some((position) => ["SELECTTHREE", "SELECTFOUR"].includes(position.symbol))) throw new Error("fully covered automatic target/stop exits must remove their positions");
   response = await nativeFetch(base + "/api/paper-trader/order", {
     method: "POST",
     headers: { "content-type": "application/json" },
@@ -1216,7 +1262,7 @@ async function main() {
     const survivingClosedRows = (await fetchHistory("closed", 1000)).filter((record) => String(record.id).startsWith("ARCHIVE_TRADE_"));
     assert(survivingClosedRows.length === 315, "append-only closed-trade archive must survive hot-state replacement");
 
-    console.log(JSON.stringify({ ok: true, checks: ["mongo-production-fail-closed", "data-bank-status", "scan-ledger", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "pre-rise-pattern-tracker", "parameter-tunnel-175", "kelly-parameters", "kelly-persisted-ledger", "kelly-active-sizing", "kelly-lifecycle-cap", "kelly-no-edge-block", "paper-capital-5-crore", "paper-slots-500", "paper-minimum-entry-1-lakh", "paper-order-idempotency", "paper-oversell-rejection", "paper-net-cost-accounting", "paper-closed-trade-returns", "paper-engine-real-quote-fill", "server-verified-manual-market-fill", "paper-exit-partial-visible-depth", "paper-exit-snapshot-reuse-block", "paper-exit-zero-bid-block", "paper-buy-full-depth-required", "server-verified-monitor-gtt-sell", "serialized-concurrent-paper-fills", "upstox-quote-500-instruments", "watchlist-viewport-scroll", "upstox-guard", "paper-engine-status", "paper-engine-guard", "q1-status", "q1-upload", "q1-render-guard", "upstox-oauth-start", "upstox-oauth-rejection", "upstox-token-paste", "upstox-stock-fii-holdings", "upstox-market-fii-dii-flow", "upstox-fii-parameter-overlay", "formula-settings-persistence", "formula-settings-revision-audit", "formula-settings-bypass-lock", "persisted-settings-scanner-stamp", "paper-plan-settings-lock", "append-only-paper-ledger", "paper-ledger-pagination", "paper-ledger-idempotency", "paper-ledger-state-replacement-survival"] }));
+    console.log(JSON.stringify({ ok: true, checks: ["mongo-production-fail-closed", "data-bank-status", "scan-ledger", "saved-universe-scanner", "scanner-parameters", "scanner-proof-row", "scanner-correlation-gate", "pre-rise-pattern-tracker", "parameter-tunnel-175", "kelly-parameters", "kelly-persisted-ledger", "kelly-active-sizing", "kelly-lifecycle-cap", "kelly-no-edge-block", "paper-capital-5-crore", "paper-slots-500", "paper-minimum-entry-1-lakh", "paper-minimum-entry-whole-share-rounding", "paper-order-idempotency", "paper-oversell-rejection", "paper-net-cost-accounting", "paper-closed-trade-returns", "paper-engine-real-quote-fill", "automatic-buy-full-visible-ask-depth", "server-verified-manual-market-fill", "paper-exit-partial-visible-depth", "paper-exit-snapshot-reuse-block", "paper-exit-zero-bid-block", "paper-buy-full-depth-required", "automatic-target-stop-exits", "paper-gtt-partial-visible-depth", "server-verified-monitor-gtt-sell", "serialized-concurrent-paper-fills", "upstox-quote-500-instruments", "upstox-quote-batching-beyond-500", "watchlist-viewport-scroll", "upstox-guard", "paper-engine-status", "paper-engine-guard", "q1-status", "q1-upload", "q1-render-guard", "upstox-oauth-start", "upstox-oauth-rejection", "upstox-token-paste", "upstox-stock-fii-holdings", "upstox-market-fii-dii-flow", "upstox-fii-parameter-overlay", "formula-settings-persistence", "formula-settings-revision-audit", "formula-settings-bypass-lock", "persisted-settings-scanner-stamp", "paper-plan-settings-lock", "append-only-paper-ledger", "paper-ledger-pagination", "paper-ledger-idempotency", "paper-ledger-state-replacement-survival"] }));
   } finally {
     await Promise.all([...Q1_INPUTS, STATE_FILE, SCAN_LEDGER_FILE, UPSTOX_AUTH_FILE, PAPER_LEDGER_FILE].map((file) => fs.unlink(file).catch((error) => {
       if (error.code !== "ENOENT") throw error;

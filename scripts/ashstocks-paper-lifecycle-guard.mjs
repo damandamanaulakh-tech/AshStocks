@@ -27,7 +27,7 @@ function mustNotMatch(file, regex, reason) {
 }
 
 for (const text of [
-  "ashstocks-paper-order-lifecycle-v0.9-partial-depth-exits",
+  "ashstocks-paper-order-lifecycle-v0.10-safe-share-rounding",
   "idempotency_key",
   "legacy_60_second_fingerprint",
   "idempotency_key_reused_with_different_request",
@@ -116,7 +116,7 @@ mustMatch(
 );
 mustMatch(
   "server-paper-order-lifecycle-patch.mjs",
-  /request\.side === "BUY"[\s\S]*kelly\.blockNewEntries[\s\S]*proposedValue > maximumValue/,
+  /request\.side === "BUY"[\s\S]*kelly\.blockNewEntries[\s\S]*proposedValue > roundedMaximumValue/,
   "paper BUY and GTT entries should pass the Kelly/base position cap"
 );
 mustMatch(
@@ -182,6 +182,12 @@ mustMatch(
   "automatic monitoring should quote active GTTs with full BUY depth and partial visible SELL depth"
 );
 mustInclude("server-upstox-quote-patch.mjs", "UPSTOX_QUOTE_MAX_KEYS = 500", "Upstox marking and monitoring must support all 500 position slots");
+mustMatch("server-upstox-quote-patch.mjs", /for \(let index = 0; index < instrumentKeys\.length; index \+= UPSTOX_QUOTE_MAX_KEYS\)[\s\S]*batch_count: batches\.length/, "quote retrieval must batch beyond 500 keys without truncation");
+mustMatch("server-paper-engine-autobuy-patch.mjs", /monitorTrader\.positions[\s\S]*side === "SELL"[\s\S]*tickets\.map/, "live positions and SELL GTT exits must precede new BUY candidates in quote priority");
+mustInclude("server-paper-engine-autobuy-patch.mjs", "UPSTOX_FULL_VISIBLE_ASK_DEPTH_FOK", "automatic BUY must declare full visible ask-depth FOK execution");
+mustInclude("server-paper-engine-autobuy-patch.mjs", "insufficient_upstox_ask_depth_for_full_paper_buy", "automatic BUY must reject partial visible ask depth explicitly");
+mustInclude("server-paper-order-lifecycle-patch.mjs", "paperWholeShareRoundedCapValue", "one whole-share rounding must be governed explicitly");
+mustMatch("server-paper-order-lifecycle-patch.mjs", /need\.buy_qty && !buyExecution[\s\S]*need\.sell_qty && !sellExecution[\s\S]*rows\.push/, "missing BUY depth must not suppress an independently executable live-position SELL monitor row");
 mustMatch(
   "server-paper-order-lifecycle-patch.mjs",
   /resolvePaperOrderInstrumentKey\(state, body\)[\s\S]*paperRouteOrderReplay\(state, resolvedBody\)[\s\S]*await preparePaperMarketOrder\(resolvedBody\)[\s\S]*applyPaperOrderLifecycle\(state, prepared\.body\)/,

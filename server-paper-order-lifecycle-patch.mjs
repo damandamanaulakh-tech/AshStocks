@@ -3,7 +3,7 @@ import { loadPaperCapitalPolicy } from "./lib/paper-capital-policy.mjs";
 const paperCapitalPolicy = loadPaperCapitalPolicy();
 
 const PAPER_ORDER_LIFECYCLE_FUNCTIONS = String.raw`
-const PAPER_ORDER_LIFECYCLE_VERSION = "ashstocks-paper-order-lifecycle-v0.9-partial-depth-exits";
+const PAPER_ORDER_LIFECYCLE_VERSION = "ashstocks-paper-order-lifecycle-v0.10-safe-share-rounding";
 const PAPER_CAPITAL_POLICY = Object.freeze(${JSON.stringify(paperCapitalPolicy)});
 const PAPER_VISIBLE_DEPTH_LEVELS = 5;
 function sanitizeParameterEvidence(input = {}) {
@@ -39,6 +39,7 @@ function sanitizeExecutionEvidence(input = {}) {
     partial_fill: Boolean(input.partial_fill),
     time_in_force: String(input.time_in_force || "").slice(0, 30),
     unfilled_disposition: String(input.unfilled_disposition || "").slice(0, 40),
+    full_visible_ask_depth: Boolean(input.full_visible_ask_depth),
     quote_snapshot_key: String(input.quote_snapshot_key || "").slice(0, 240),
     levels_used: Array.isArray(input.levels_used) ? input.levels_used.slice(0, PAPER_VISIBLE_DEPTH_LEVELS).map((level) => ({
       price: finiteOr(level.price, null),
@@ -105,6 +106,7 @@ function sanitizePaperOrder(order = {}) {
     price_source: String(order.price_source || "").slice(0, 80),
     transaction_cost: round(finiteOr(order.transaction_cost ?? order.transactionCost, 0), 2),
     decision_price: finiteOr(order.decision_price, null),
+    allocation_cap_value: finiteOr(order.allocation_cap_value, null),
     quote_timestamp: String(order.quote_timestamp || "").slice(0, 40),
     target_price: finiteOr(order.target_price ?? order.targetPrice, null),
     stop_price: finiteOr(order.stop_price ?? order.stopPrice, null),
@@ -390,6 +392,7 @@ function paperOrderRequest(body = {}) {
     price,
     price_source: String(body.price_source || "").slice(0, 80),
     decision_price: finiteOr(body.decision_price, null),
+    allocation_cap_value: finiteOr(body.allocation_cap_value, null),
     quote_timestamp: String(body.quote_timestamp || "").slice(0, 40),
     target_price: finiteOr(body.target_price ?? body.targetPrice ?? body.target, null),
     stop_price: finiteOr(body.stop_price ?? body.stopPrice ?? body.stop, null),
@@ -408,6 +411,7 @@ function paperOrderRequestFingerprint(request = {}) {
     request.order_type,
     request.qty,
     request.price,
+    request.allocation_cap_value,
     request.target_price,
     request.stop_price,
     request.source,
@@ -505,6 +509,12 @@ function paperDepthExecution(levels = [], qty = 0, allowPartial = false) {
     unfilled_disposition: partialFill ? "CANCELLED_REMAINDER" : "NONE",
     levels_used: levelsUsed
   };
+}
+function paperWholeShareRoundedCapValue(baseValue = 0, price = 0) {
+  const safeBase = Math.max(0, finiteOr(baseValue, 0));
+  const safePrice = finiteOr(price, 0);
+  if (!safeBase || !safePrice || safePrice <= 0) return safeBase;
+  return round(Math.ceil(safeBase / safePrice) * safePrice, 2);
 }
 function paperExecutionSnapshotKey(instrumentKey, side, quoteTimestamp, execution = {}) {
   return [String(instrumentKey || ""), String(side || ""), String(quoteTimestamp || "")].join(":").slice(0, 240);
@@ -678,10 +688,12 @@ async function preparePaperLifecycleMonitor(state = defaultState()) {
     const quoteTimestamp = snapshotAgeSeconds !== null && snapshotAgeSeconds <= 30 ? quote?.snapshot_timestamp : quote?.timestamp;
     const buyExecution = need.buy_qty ? paperMonitorDepthExecution(quote?.depth?.asks, need.buy_qty, "BUY", need.instrument_key, quoteTimestamp) : null;
     const sellExecution = need.sell_qty ? paperMonitorDepthExecution(quote?.depth?.bids, need.sell_qty, "SELL", need.instrument_key, quoteTimestamp) : null;
-    if (!quote || !fresh || !last || (need.buy_qty && !buyExecution) || (need.sell_qty && !sellExecution)) {
-      dataNeeded.push({ symbol: need.symbol, reason: !quote ? "Upstox quote missing" : !fresh ? "Upstox quote stale" : "full executable Upstox depth missing" });
+    if (!quote || !fresh || !last) {
+      dataNeeded.push({ symbol: need.symbol, reason: !quote ? "Upstox quote missing" : !fresh ? "Upstox quote stale" : "Upstox last price missing" });
       continue;
     }
+    if (need.buy_qty && !buyExecution) dataNeeded.push({ symbol: need.symbol, side: "BUY", reason: "full executable Upstox ask depth missing" });
+    if (need.sell_qty && !sellExecution) dataNeeded.push({ symbol: need.symbol, side: "SELL", reason: "executable Upstox bid depth missing" });
     rows.push({ symbol: need.symbol, instrument_key: need.instrument_key, close: last, last_price: last, paper_buy_price: buyExecution?.fill_price ?? null, paper_sell_price: sellExecution?.fill_price ?? null, paper_buy_execution: buyExecution, paper_sell_execution: sellExecution, quote_timestamp: quoteTimestamp, data_source: "Upstox Market Quote API" });
   }
   return { ok: true, rows, data_needed: dataNeeded, source: "server-upstox-market-quote-monitor" };
@@ -881,7 +893,13 @@ function applyPaperOrderLifecycle(state = defaultState(), body = {}) {
       PAPER_CAPITAL_POLICY.minimumEntryValue,
       finiteOr(next.funds.starting_capital, 0) * positionCapPct / 100
     );
-    if (proposedValue > maximumValue + 0.01) {
+    const governedAllocationCap = request.allocation_cap_value === null
+      ? maximumValue
+      : Math.min(maximumValue, Math.max(PAPER_CAPITAL_POLICY.minimumEntryValue, request.allocation_cap_value));
+    const roundedMaximumValue = !existing
+      ? paperWholeShareRoundedCapValue(governedAllocationCap, request.price)
+      : governedAllocationCap;
+    if (proposedValue > roundedMaximumValue + 0.01) {
       const rejected = rejectedPaperOrder(
         request,
         "Paper position exceeds effective Kelly/base cap of " + round(positionCapPct, 4) + "%",

@@ -16,7 +16,7 @@ function replaceNamedFunction(source, signature, replacement, label) {
 }
 
 const PAPER_ENGINE_AUTOBUY_FUNCTIONS = String.raw`
-const PAPER_ENGINE_AUTOBUY_VERSION = "ashstocks-paper-engine-autobuy-v0.6-select-drain";
+const PAPER_ENGINE_AUTOBUY_VERSION = "ashstocks-paper-engine-autobuy-v0.7-full-ask-depth";
 const PAPER_ENGINE_AUTO_INTERVAL_MINUTES = Math.min(15, Math.max(1, Math.floor(finiteOr(ENV.PAPER_ENGINE_AUTO_INTERVAL_MINUTES, 2))));
 
 function paperEngineAutoBuySettings(input = {}) {
@@ -91,6 +91,7 @@ function paperEngineCandidateTickets(plan = {}, state = defaultState(), settings
         close: finiteOr(scanRow.close, ticket.close),
         qty,
         estimated_value: round(qty * price, 2),
+        allocation_cap_value: round(targetEntryValue, 2),
         kelly_status: kelly.status,
         effective_max_position_pct: round(effectiveMaxPositionPct * 100, 4),
         parameter_tunnel: scanRow.parameter_tunnel || ticket.parameter_tunnel,
@@ -206,19 +207,25 @@ function paperEngineQuoteEvidence(quote = {}, ticket = {}, settings = paperEngin
   const buyQty = bids.slice(0, 5).reduce((sum, row) => sum + finiteOr(row.quantity, 0), 0);
   const sellQty = asks.slice(0, 5).reduce((sum, row) => sum + finiteOr(row.quantity, 0), 0);
   const depthImbalance = buyQty + sellQty ? (buyQty - sellQty) / (buyQty + sellQty) : null;
-  let remaining = Math.max(0, finiteOr(ticket.qty, 0));
-  let cost = 0;
-  let filled = 0;
-  for (const level of asks) {
-    if (!remaining) break;
-    const levelQty = Math.max(0, finiteOr(level.quantity, 0));
-    const take = Math.min(remaining, levelQty);
-    cost += take * finiteOr(level.price, 0);
-    filled += take;
-    remaining -= take;
+  const allocationTarget = Math.max(PAPER_CAPITAL_POLICY.minimumEntryValue, finiteOr(ticket.allocation_cap_value, PAPER_CAPITAL_POLICY.minimumEntryValue));
+  let allocationValue = 0;
+  let allocationQty = 0;
+  for (const level of asks.slice(0, PAPER_VISIBLE_DEPTH_LEVELS)) {
+    if (allocationValue >= allocationTarget) break;
+    const levelPrice = finiteOr(level.price, 0);
+    const levelQty = Math.max(0, Math.floor(finiteOr(level.quantity, 0)));
+    if (!levelPrice || !levelQty) continue;
+    const qtyNeededAtLevel = Math.ceil((allocationTarget - allocationValue) / levelPrice);
+    const take = Math.min(levelQty, qtyNeededAtLevel);
+    allocationQty += take;
+    allocationValue += take * levelPrice;
   }
-  const weightedFill = filled ? cost / filled : null;
-  const fillPrice = finiteOr(weightedFill, finiteOr(bestAsk, finiteOr(quote.last_price, null)));
+  const allocationDepthComplete = allocationValue >= allocationTarget;
+  const requestedQty = allocationDepthComplete
+    ? allocationQty
+    : Math.max(0, Math.floor(finiteOr(ticket.qty, 0)));
+  const depthExecution = paperDepthExecution(asks, requestedQty, false);
+  const fillPrice = depthExecution.ok ? depthExecution.fill_price : null;
   const impactBps = midpoint && fillPrice ? (fillPrice / midpoint - 1) * 10000 : null;
   const lower = finiteOr(quote.lower_circuit_limit, null);
   const upper = finiteOr(quote.upper_circuit_limit, null);
@@ -228,7 +235,7 @@ function paperEngineQuoteEvidence(quote = {}, ticket = {}, settings = paperEngin
   const tradeFresh = ageSeconds !== null && ageSeconds <= settings.maxQuoteAgeSeconds;
   const snapshotFresh = snapshotAgeSeconds !== null && snapshotAgeSeconds <= 30;
   const quoteFresh = tradeFresh || (snapshotFresh && liveAskAvailable);
-  const marketPriceAvailable = fillPrice !== null && fillPrice > 0;
+  const marketPriceAvailable = depthExecution.ok && fillPrice !== null && fillPrice > 0;
   const spreadClear = spreadBps === null ? false : spreadBps <= settings.maxSpreadBps;
   const depthClear = depthImbalance === null ? false : depthImbalance >= -0.20;
   const impactClear = impactBps === null ? false : impactBps <= 20;
@@ -244,7 +251,19 @@ function paperEngineQuoteEvidence(quote = {}, ticket = {}, settings = paperEngin
     depth_imbalance: depthImbalance === null ? null : round(depthImbalance, 4),
     estimated_impact_bps: impactBps === null ? null : round(impactBps, 3),
     circuit_clear: circuitClear,
-    all_clear: quoteFresh && marketPriceAvailable && circuitClear,
+    price_source: "server_upstox_weighted_ask",
+    server_verified: true,
+    requested_qty: depthExecution.requested_qty,
+    filled_qty: depthExecution.ok ? depthExecution.filled_qty : 0,
+    unfilled_qty: depthExecution.ok ? 0 : depthExecution.requested_qty,
+    partial_fill: false,
+    time_in_force: "FOK_SIMULATED",
+    unfilled_disposition: depthExecution.ok ? "NONE" : "REJECTED_NO_FILL",
+    levels_used: depthExecution.levels_used,
+    full_visible_ask_depth: depthExecution.ok,
+    allocation_target_value: round(allocationTarget, 2),
+    allocation_value: depthExecution.ok ? round(depthExecution.filled_qty * depthExecution.fill_price, 2) : 0,
+    all_clear: quoteFresh && marketPriceAvailable && circuitClear && allocationDepthComplete && depthExecution.ok,
     nodes: [
       { id: "NBX01", state: quoteFresh ? "HIT" : "MISS", value: quoteFresh && !tradeFresh ? round(snapshotAgeSeconds, 3) : (ageSeconds === null ? null : round(ageSeconds, 3)), evidence: tradeFresh ? "Fresh Upstox last trade" : liveAskAvailable && snapshotFresh ? "Fresh executable Upstox ask snapshot" : "No fresh executable Upstox price" },
       { id: "NBX02", state: spreadClear ? "HIT" : "MISS", value: spreadBps === null ? null : round(spreadBps, 3), evidence: "Best Upstox bid and ask; recorded but non-blocking after SELECT" },
@@ -252,7 +271,7 @@ function paperEngineQuoteEvidence(quote = {}, ticket = {}, settings = paperEngin
       { id: "NBX04", state: impactClear ? "HIT" : "MISS", value: impactBps === null ? null : round(impactBps, 3), evidence: "Requested paper quantity walked through real ask depth; recorded but non-blocking after SELECT" },
       { id: "NBX05", state: "HIT", value: round(Math.abs(finiteOr(quote.last_price, 0) - finiteOr(ticket.close, 0)) / Math.max(0.01, finiteOr(ticket.close, 0)) * 10000, 3), evidence: "Real quote versus scanner decision close" },
       { id: "NBX06", state: quoteFresh ? "HIT" : "MISS", value: ageSeconds === null ? null : round(ageSeconds, 3), evidence: "Trigger evaluated against quote timestamp" },
-      { id: "NBX07", state: remaining === 0 || !asks.length ? "HIT" : "MISS", value: remaining === 0 ? 1 : round(filled / Math.max(1, finiteOr(ticket.qty, 1)), 3), evidence: "Paper market price uses weighted ask depth, then best ask/LTP fallback" },
+      { id: "NBX07", state: depthExecution.ok ? "HIT" : "MISS", value: depthExecution.ok ? 1 : round(depthExecution.filled_qty / Math.max(1, requestedQty), 3), evidence: depthExecution.ok ? "Full automatic BUY quantity covered by visible Upstox asks" : "Automatic BUY rejected because visible Upstox asks do not cover the full ticket" },
       { id: "NBX08", state: circuitClear ? "HIT" : "MISS", value: last, evidence: "LTP checked against Upstox circuit limits" }
     ]
   };
@@ -356,9 +375,10 @@ const PAPER_ENGINE_RUN_REPLACEMENT = String.raw`async function runPaperEngineOnc
   const universeBySymbol = new Map(normalizeScannerUniverse(state.universe || []).map((row) => [normalizeSymbol(row.symbol), row]));
   const monitorTrader = sanitizePaperTraderState(workingState.paperTrader || {});
   const quoteKeys = unique([
-    ...tickets.map((ticket) => scanBySymbol.get(normalizeSymbol(ticket.symbol))?.instrument_key),
     ...monitorTrader.positions.map((position) => position.instrument_key || universeBySymbol.get(normalizeSymbol(position.symbol))?.instrument_key),
-    ...monitorTrader.gtt.filter((plan) => plan.status === "ACTIVE").map((plan) => plan.instrument_key || universeBySymbol.get(normalizeSymbol(plan.symbol))?.instrument_key)
+    ...monitorTrader.gtt.filter((plan) => plan.status === "ACTIVE" && plan.side === "SELL").map((plan) => plan.instrument_key || universeBySymbol.get(normalizeSymbol(plan.symbol))?.instrument_key),
+    ...monitorTrader.gtt.filter((plan) => plan.status === "ACTIVE" && plan.side === "BUY").map((plan) => plan.instrument_key || universeBySymbol.get(normalizeSymbol(plan.symbol))?.instrument_key),
+    ...tickets.map((ticket) => scanBySymbol.get(normalizeSymbol(ticket.symbol))?.instrument_key)
   ].filter(Boolean));
   let quotePayload = { ok: true, quotes: [], asOf: new Date().toISOString() };
   let quoteError = "";
@@ -396,10 +416,12 @@ const PAPER_ENGINE_RUN_REPLACEMENT = String.raw`async function runPaperEngineOnc
       const quoteTimestamp = quote?.snapshot_timestamp || quote?.timestamp;
       const buyExecution = need.buy_qty ? paperMonitorDepthExecution(quote?.depth?.asks, need.buy_qty, "BUY", need.instrument_key, quoteTimestamp) : null;
       const sellExecution = need.sell_qty ? paperMonitorDepthExecution(quote?.depth?.bids, need.sell_qty, "SELL", need.instrument_key, quoteTimestamp) : null;
-      if (!quote || !fresh || !last || (need.buy_qty && !buyExecution) || (need.sell_qty && !sellExecution)) {
-        monitorDataNeeded.push({ symbol: need.symbol, reason: !quote ? "Upstox quote missing" : !fresh ? "Upstox quote stale" : "full executable Upstox depth missing" });
+      if (!quote || !fresh || !last) {
+        monitorDataNeeded.push({ symbol: need.symbol, reason: !quote ? "Upstox quote missing" : !fresh ? "Upstox quote stale" : "Upstox last price missing" });
         return [];
       }
+      if (need.buy_qty && !buyExecution) monitorDataNeeded.push({ symbol: need.symbol, side: "BUY", reason: "full executable Upstox ask depth missing" });
+      if (need.sell_qty && !sellExecution) monitorDataNeeded.push({ symbol: need.symbol, side: "SELL", reason: "executable Upstox bid depth missing" });
       return [{ ...need, close: last, ltp: last, last_price: last, paper_buy_price: buyExecution?.fill_price ?? null, paper_sell_price: sellExecution?.fill_price ?? null, paper_buy_execution: buyExecution, paper_sell_execution: sellExecution, quote_timestamp: quoteTimestamp, last_candle_date: quote.timestamp, data_source: "Upstox Market Quote API" }];
     });
     monitor = applyPaperLifecycleMonitor(workingState, monitorRows, { source: "paper-engine-upstox-real-quote-monitor", data_needed: monitorDataNeeded });
@@ -440,11 +462,13 @@ const PAPER_ENGINE_RUN_REPLACEMENT = String.raw`async function runPaperEngineOnc
     if (!executionEvidence.all_clear) {
       const rejectionReason = !executionEvidence.quote_fresh
         ? "Upstox market quote is stale"
-        : !executionEvidence.market_price_available
-          ? "Upstox market price is unavailable"
-          : !executionEvidence.circuit_clear
+        : !executionEvidence.full_visible_ask_depth
+          ? "insufficient_upstox_ask_depth_for_full_paper_buy"
+          : !executionEvidence.market_price_available
+            ? "Upstox market price is unavailable"
+            : !executionEvidence.circuit_clear
             ? "Stock is at an Upstox circuit limit"
-            : "Real Upstox market-price gate failed";
+              : "Real Upstox market-price gate failed";
       rejectTicket(rejectionReason, executionEvidence);
       continue;
     }
@@ -466,10 +490,11 @@ const PAPER_ENGINE_RUN_REPLACEMENT = String.raw`async function runPaperEngineOnc
       instrument_key: scanRow.instrument_key,
       side: "BUY",
       order_type: "MARKET",
-      qty: ticket.qty,
+      qty: executionEvidence.requested_qty,
       price: executionEvidence.fill_price,
       price_source: "server_upstox_weighted_ask",
       decision_price: ticket.close,
+      allocation_cap_value: ticket.allocation_cap_value,
       quote_timestamp: executionEvidence.quote_timestamp,
       target_price: ticket.target_price,
       stop_price: ticket.stop_price,
@@ -507,7 +532,7 @@ const PAPER_ENGINE_RUN_REPLACEMENT = String.raw`async function runPaperEngineOnc
     auto_buy: {
       enabled: autoSettings.enabled,
       selection_contract: "SELECT_FINAL",
-      fill_method: "UPSTOX_WEIGHTED_ASK_OR_LTP",
+      fill_method: "UPSTOX_FULL_VISIBLE_ASK_DEPTH_FOK",
       required_decision: autoSettings.requireScannerDecision,
       max_buys_per_run: autoSettings.maxBuysPerRun,
       kelly,

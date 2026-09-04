@@ -26,7 +26,7 @@ Status: **IMPLEMENTED AND LOCALLY TESTED, NOT YET MERGED OR DEPLOYED**
 
 ## Phase 2 — capital and portfolio capacity
 
-Status: **IMPLEMENTED, WITH TWO RELEASE BLOCKERS RECORDED BELOW**
+Status: **IMPLEMENTED; ALL THREE RECORDED RELEASE BLOCKERS FIXED AND LOCALLY VERIFIED**
 
 Approved current policy:
 
@@ -42,18 +42,18 @@ Implemented:
 - Canonical parameter registry and capital policy mirror updated.
 - Server capital ledger and governed scanner locks updated to ₹5 crore / 500 positions.
 - UI/help/docs and major guard/smoke expectations updated.
-- Upstox quote request ceiling raised from 50 to the documented 500 instruments per call; multi-call batching is still required below.
+- Upstox quote request ceiling is 500 instruments per upstream call; larger monitor/candidate sets are retrieved in complete 500-key batches.
 - The Python compatibility API now reports the same ₹5 crore, 500-slot, ₹1 lakh, and 0.2% values.
 
-Release blockers found in final review:
+Release blockers found in final review and fixed on 2026-09-04:
 
-- Automatic BUY must reject incomplete visible ask depth. It currently can use partial ask depth or LTP and then fill the entire requested quantity.
-- One-share rounding must be handled explicitly: at non-divisible prices, `ceil(₹100000 / price)` can exceed the exact ₹100000 cap by less than one share and be rejected.
-- A single 500-key quote request is not sufficient when the run contains existing positions/GTT exits plus up to 80 new candidates. Requests must be batched or exit monitoring must be prioritized so no active position is silently omitted.
+- **FIXED:** Automatic BUY now requires complete visible ask depth, uses a simulated FOK contract, and cannot fall back to partial depth, best ask alone, or LTP.
+- **FIXED:** Automatic quantity is recalculated from the live visible ask book to reach the governed allocation with the smallest whole-share quantity; the lifecycle permits only that final-share rounding for a new position and does not repeat the allowance for additions.
+- **FIXED:** Quote retrieval preserves all keys and issues 500-key upstream batches. Open positions and active SELL GTTs are ordered before BUY GTTs and new candidates, and a missing BUY-side execution cannot suppress an independently executable position exit.
 
 ## Phase 3 — insufficient Upstox depth exit fix
 
-Status: **MANUAL EXIT IMPLEMENTED AND LOCALLY TESTED; AUTOMATIC PATH NEEDS FINAL REVIEW**
+Status: **MANUAL AND AUTOMATIC EXIT PATHS IMPLEMENTED, RE-REVIEWED, AND LOCALLY TESTED**
 
 Root cause:
 
@@ -79,7 +79,7 @@ Verified locally:
 
 - Partial visible-depth SELL, zero-bid rejection, replay protection, and quote-snapshot reuse blocking are covered by the smoke suite.
 - Full-depth BUY enforcement is covered for the manual lifecycle route.
-- Automatic target/stop and SELL-GTT code was implemented, but final independent review did not finish before the usage boundary. Re-review it before merge.
+- Automatic BUY full-visible-ask-depth rejection, automatic target/stop exits, and SELL-GTT partial-fill remainder retention are covered by the smoke suite.
 
 ## Phase 4 — Watchlist viewport scrolling
 
@@ -100,9 +100,9 @@ Required before claiming completion:
 2. **PASS:** all 14 guard scripts listed by `package.json`.
 3. **PASS:** full `scripts/smoke-test.mjs`, including exit/capital/scroll assertions.
 4. **PASS:** Python compile and compatibility API smoke. Full pytest was not run because pytest is not installed in the bundled local runtime.
-5. **PENDING:** rerun `git diff --check` after the final checkpoint edit and inspect the complete diff/status.
+5. **PASS:** reran `git diff --check` after the release fixes and inspected the complete diff/status.
 6. **PASS:** fetched `origin/main` at `067c4d6` with no drift; committed and pushed the portable snapshot to `codex/dashboard-selection-phases`.
-7. **BLOCKED FOR MERGE:** fix the three Phase 2 release blockers, rerun all verification, then create/merge the PR.
+7. **READY FOR DELIVERY:** the three Phase 2 release blockers are fixed and the complete local verification sequence passes; commit/push and PR/merge remain pending until the delivery steps complete.
 8. **PENDING AFTER MERGE:** verify the deployed commit, the Watchlist interaction at 100% zoom, and a real paper EXIT separately; health alone is not proof of working behavior.
 
 ## Resume command context
