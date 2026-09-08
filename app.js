@@ -19,6 +19,11 @@ const state = {
   activeParameter: null,
   universeRows: [],
   scanBasket: [],
+  rotation: null,
+  scanInFlight: false,
+  fullScanRunning: false,
+  scanPauseRequested: false,
+  masterLoading: false,
   parameterCatalog: [],
   parameterStages: [],
   tunnelSelectedSymbols: [],
@@ -44,16 +49,6 @@ const indexKeys = [
   { label: "MIDCAP 150", key: "NSE_INDEX|Nifty Midcap 150" },
   { label: "INDIA VIX", key: "NSE_INDEX|India VIX" }
 ];
-
-const DEFAULT_SCAN_LIMIT = 200;
-const FAMILIAR_DEFAULT_EXCLUDE = new Set([
-  "ADANIENT", "ADANIPORTS", "ASIANPAINT", "AXISBANK", "BAJAJFINSV", "BAJFINANCE",
-  "BHARTIARTL", "HCLTECH", "HDFC", "HDFCAMC", "HDFCBANK", "HDFCLIFE", "HINDUNILVR",
-  "ICICIBANK", "INFY", "ITC", "KOTAKBANK", "LT", "MARUTI", "NESTLEIND", "NTPC",
-  "POWERGRID", "RELIANCE", "SBIN", "SUNPHARMA", "TATACONSUM", "TATAMOTORS",
-  "TATAPOWER", "TATASTEEL", "TCS", "TECHM", "TITAN", "ULTRACEMCO"
-]);
-const NON_EQUITY_NAME_PATTERN = /\b(?:ETF|BEES|LIQUID|GILT|SDL|NIFTY|SENSEX|INDEX|GOLD|SILVER|NASDAQ|HANGSENG|MON100|BANKETF|PSUBANK|LOWVOL|MOMENTUM|VALUE|ALPHA)\b/i;
 
 const el = (id) => document.getElementById(id);
 const all = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -144,66 +139,81 @@ function renderTradeActions(item, { compact = false } = {}) {
   </span>`;
 }
 
-function stableHash(value) {
-  let hash = 2166136261;
-  for (let index = 0; index < value.length; index += 1) {
-    hash ^= value.charCodeAt(index);
-    hash = Math.imul(hash, 16777619);
-  }
-  return hash >>> 0;
-}
-
-function freshScanSeed() {
-  return `${new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" })}:${state.horizon}`;
-}
-
-function isFreshScanCandidate(row) {
-  const symbol = nseSymbol(row);
-  if (!symbol || !row?.instrument_key) return false;
-  if (FAMILIAR_DEFAULT_EXCLUDE.has(symbol)) return false;
-  const exchange = String(row.exchange || "NSE").toUpperCase();
-  if (exchange && exchange !== "NSE") return false;
-  const instrumentType = String(row.instrument_type || "EQ").toUpperCase();
-  if (instrumentType && instrumentType !== "EQ") return false;
-  const joined = `${symbol} ${row.name || ""} ${row.short_name || ""}`;
-  return !NON_EQUITY_NAME_PATTERN.test(joined);
-}
-
-function buildFreshScanBasket(universe = []) {
-  const rows = universe
-    .filter((row) => row && nseSymbol(row) && row.instrument_key)
-    .map((row) => ({ ...row, symbol: nseSymbol(row) }));
-  const freshRows = rows.filter(isFreshScanCandidate);
-  const sourceRows = freshRows.length >= 80 ? freshRows : rows.filter((row) => !FAMILIAR_DEFAULT_EXCLUDE.has(nseSymbol(row)));
-  const seed = freshScanSeed();
-  return [...sourceRows]
-    .sort((a, b) => stableHash(`${seed}:${nseSymbol(a)}`) - stableHash(`${seed}:${nseSymbol(b)}`))
-    .slice(0, DEFAULT_SCAN_LIMIT);
-}
-
 async function loadUniverseForFreshScan() {
   const meta = await api("/api/scanner/parameters");
   state.universeRows = Array.isArray(meta.universe) ? meta.universe : [];
   state.parameterCatalog = Array.isArray(meta.parameter_tunnel?.parameters) ? meta.parameter_tunnel.parameters : [];
   state.parameterStages = Array.isArray(meta.parameter_tunnel?.stages) ? meta.parameter_tunnel.stages : [];
-  state.scanBasket = buildFreshScanBasket(state.universeRows);
-  if (!state.scanBasket.length) throw new Error("Mongo NSE universe is empty; reload NSE Master first.");
+  if (!state.universeRows.length) throw new Error("Mongo NSE universe is empty; reload NSE Master first.");
 }
 
 async function loadNseMaster() {
-  const button = el("nseMasterBtn");
-  if (button) button.disabled = true;
+  if (state.scanInFlight || state.fullScanRunning || state.masterLoading) return;
+  state.masterLoading = true;
+  renderScanControls();
   setNotice("Loading fresh NSE Master from Upstox into Mongo", "info");
+  let loaded = false;
   try {
     const result = await api("/api/data-bank/load-upstox-nse", { method: "POST", body: { trigger: "dashboard" } });
     const saved = result.saved_universe || result.universe_count || result.rows_saved || result.count || "NSE";
     setNotice(`NSE Master loaded into Mongo: ${saved} instruments`, "ok");
-    await refreshScan();
+    state.rotation = null;
+    state.rows = [];
+    state.scan = null;
+    state.scanBasket = [];
+    loaded = true;
   } catch (error) {
     state.lastError = error.message;
     setNotice(`NSE Master load failed: ${error.message}`, "error");
   } finally {
-    if (button) button.disabled = false;
+    state.masterLoading = false;
+    renderScanControls();
+  }
+  if (loaded) await scanFullUniverse();
+}
+
+function renderScanControls() {
+  const busy = state.scanInFlight || state.fullScanRunning || state.masterLoading;
+  for (const id of ["refreshBtn", "signalRadarRefresh", "nseMasterBtn"]) {
+    const button = el(id);
+    if (button) button.disabled = busy;
+  }
+  all(".tab-button[data-horizon]").forEach((button) => { button.disabled = busy; });
+  const full = el("scanAllBtn");
+  if (full) {
+    full.disabled = state.masterLoading || (!state.fullScanRunning && state.scanInFlight) || state.scanPauseRequested;
+    full.textContent = state.fullScanRunning ? (state.scanPauseRequested ? "Pausing…" : "Pause after batch") : "Scan all / Resume";
+  }
+}
+
+async function scanFullUniverse() {
+  if (state.fullScanRunning) {
+    state.scanPauseRequested = true;
+    renderScanControls();
+    return;
+  }
+  if (state.scanInFlight || state.masterLoading) return;
+  state.fullScanRunning = true;
+  state.scanPauseRequested = false;
+  renderScanControls();
+  try {
+    let cycleIdentity = null;
+    do {
+      const scan = await refreshScan({ fullSweep: true });
+      if (!scan || scan.rotation?.complete) break;
+      if (!scan.rotation) throw new Error("Batch coverage metadata is missing; full scan stopped.");
+      const identity = `${scan.rotation.key}:${scan.rotation.cycle}`;
+      if (cycleIdentity && identity !== cycleIdentity) throw new Error("Universe, day, or cycle changed. Resume to continue the new cycle.");
+      cycleIdentity = identity;
+      // Sequential batches retain the server's existing per-symbol pacing/retries.
+    } while (!state.scanPauseRequested);
+    if (state.scanPauseRequested) setNotice(`Scan paused after ${state.rotation?.attempted || 0}/${state.rotation?.total || 0} symbols. Resume continues with the next batch.`, "warn");
+  } catch (error) {
+    setNotice(`Full-universe scan stopped: ${error.message}`, "error");
+  } finally {
+    state.fullScanRunning = false;
+    state.scanPauseRequested = false;
+    renderScanControls();
   }
 }
 
@@ -268,7 +278,9 @@ function renderBasketMeta() {
   const node = el("basketMeta");
   if (!node) return;
   const total = state.universeRows.length || state.scanBasket.length || state.rows.length;
-  node.textContent = `Fresh NSE rotation: ${state.scanBasket.length || state.rows.length}/${total || 0}`;
+  node.textContent = state.rotation
+    ? `Cycle ${state.rotation.cycle}: ${state.rotation.attempted}/${state.rotation.total} attempted | ${state.rotation.failed_count} fetch gaps | showing current ${state.rows.length}-stock batch`
+    : `NSE master: ${total || 0} stocks | next batch up to 200`;
 }
 
 function setNotice(message, tone = "info") {
@@ -1972,53 +1984,67 @@ async function refreshMarketStrip() {
   }
 }
 
-async function refreshScan() {
-  setNotice("Reading Render runtime, Mongo state, and Upstox candles", "info");
+async function refreshScan(options = {}) {
+  if (state.scanInFlight || state.masterLoading || (state.fullScanRunning && !options.fullSweep)) return null;
+  state.scanInFlight = true;
+  renderScanControls();
   try {
-    state.ready = await api("/api/ready");
-    await refreshUpstoxStatus();
-    await loadUniverseForFreshScan();
-    renderRuntime();
-    renderBasketMeta();
-  } catch (error) {
-    state.lastError = error.message;
-    setNotice(`Runtime check failed: ${error.message}`, "error");
-    renderMarketStrip("error");
-    return;
-  }
-  await refreshMarketStrip();
-  try {
-    const scan = await api("/api/scanner/run-upstox", { method: "POST", body: { horizon: state.horizon, universe: state.scanBasket } });
-    state.scan = scan;
-    state.rows = Array.isArray(scan.rows) ? scan.rows : [];
-    if (scan.institutional?.market) state.institutional.market = scan.institutional.market;
-    for (const stock of scan.institutional?.stocks || []) {
-      const symbol = nseSymbol(stock);
-      if (symbol) state.institutional.stocks[symbol] = stock;
+    setNotice("Reading Render runtime, Mongo state, and Upstox candles", "info");
+    try {
+      state.ready = await api("/api/ready");
+      await refreshUpstoxStatus();
+      await loadUniverseForFreshScan();
+      renderRuntime();
+      renderBasketMeta();
+    } catch (error) {
+      state.lastError = error.message;
+      setNotice(`Runtime check failed: ${error.message}`, "error");
+      renderMarketStrip("error");
+      return null;
     }
-    if (scan.institutional) {
-      state.institutional.status = scan.institutional.ok ? "ready" : "data_needed";
-      state.institutional.asOf = scan.institutional.as_of || null;
-      state.institutional.version = scan.institutional.version || null;
+    await refreshMarketStrip();
+    try {
+      const scan = await api("/api/scanner/next-batch", { method: "POST", body: { horizon: state.horizon } });
+      state.scan = scan;
+      state.rows = Array.isArray(scan.rows) ? scan.rows : [];
+      state.scanBasket = state.rows;
+      state.rotation = scan.rotation || null;
+      if (scan.institutional?.market) state.institutional.market = scan.institutional.market;
+      for (const stock of scan.institutional?.stocks || []) {
+        const symbol = nseSymbol(stock);
+        if (symbol) state.institutional.stocks[symbol] = stock;
+      }
+      if (scan.institutional) {
+        state.institutional.status = scan.institutional.ok ? "ready" : "data_needed";
+        state.institutional.asOf = scan.institutional.as_of || null;
+        state.institutional.version = scan.institutional.version || null;
+      }
+      const summary = scan.summary || {};
+      const failures = Array.isArray(scan.failures) ? scan.failures.length : 0;
+      const coverage = state.rotation;
+      const progress = coverage ? `Cycle ${coverage.cycle}: ${coverage.attempted}/${coverage.total} attempted${coverage.complete ? " — complete" : `, ${coverage.remaining} remaining`}` : "Coverage unavailable";
+      setNotice(`${progress} | current batch ${state.rows.length}: SELECT ${summary.SELECT || 0}, WATCH ${summary.WATCH || 0}, BLOCKED ${summary.BLOCKED || 0} | cycle fetch gaps ${coverage?.failed_count ?? failures}`, (coverage?.failed_count || failures) ? "warn" : "ok");
+      if (!state.selected || !state.rows.some((row) => row.symbol === state.selected.symbol)) {
+        const first = sortedRows().find((row) => ["SELECT", "WATCH"].includes(row.decision)) || sortedRows()[0] || null;
+        state.selected = first;
+      } else {
+        state.selected = state.rows.find((row) => row.symbol === state.selected.symbol);
+      }
+      renderAll();
+      const institutionalPromise = loadInstitutionalEvidence(sortedRows());
+      await Promise.all([state.selected ? selectSymbol(state.selected.symbol) : Promise.resolve(), institutionalPromise]);
+      await loadOrders();
+      await maybeAutoStartPaperPortfolio();
+      return scan;
+    } catch (error) {
+      state.lastError = error.message;
+      setNotice(`Upstox scan failed: ${error.message}`, "error");
+      renderAll();
+      return null;
     }
-    const summary = scan.summary || {};
-    const failures = Array.isArray(scan.failures) ? scan.failures.length : 0;
-    setNotice(`Fresh NSE scan ${state.rows.length}/${state.universeRows.length || state.rows.length} rows | SELECT ${summary.SELECT || 0} | WATCH ${summary.WATCH || 0} | BLOCKED ${summary.BLOCKED || 0} | feed gaps ${failures}`, failures ? "warn" : "ok");
-    if (!state.selected || !state.rows.some((row) => row.symbol === state.selected.symbol)) {
-      const first = sortedRows().find((row) => ["SELECT", "WATCH"].includes(row.decision)) || sortedRows()[0] || null;
-      state.selected = first;
-    } else {
-      state.selected = state.rows.find((row) => row.symbol === state.selected.symbol);
-    }
-    renderAll();
-    const institutionalPromise = loadInstitutionalEvidence(sortedRows());
-    await Promise.all([state.selected ? selectSymbol(state.selected.symbol) : Promise.resolve(), institutionalPromise]);
-    await loadOrders();
-    await maybeAutoStartPaperPortfolio();
-  } catch (error) {
-    state.lastError = error.message;
-    setNotice(`Upstox scan failed: ${error.message}`, "error");
-    renderAll();
+  } finally {
+    state.scanInFlight = false;
+    renderScanControls();
   }
 }
 
@@ -2533,12 +2559,15 @@ function bindUi() {
   });
   all(".rail-item[data-section]").forEach((button) => button.addEventListener("click", () => routeRailNavigation(button)));
   all(".tab-button").forEach((button) => button.addEventListener("click", () => {
+    if (state.scanInFlight || state.fullScanRunning || state.masterLoading) return;
     state.horizon = button.dataset.horizon;
+    state.rotation = null;
     all(".tab-button").forEach((item) => item.classList.toggle("active", item === button));
     renderAutoOrderReadiness();
   }));
   el("refreshBtn")?.addEventListener("click", refreshScan);
   el("nseMasterBtn")?.addEventListener("click", loadNseMaster);
+  el("scanAllBtn")?.addEventListener("click", scanFullUniverse);
   el("paperEngineBtn")?.addEventListener("click", runPaperEngineNow);
   el("signalPaperEngineAction")?.addEventListener("click", runPaperEngineNow);
   el("signalRadarRefresh")?.addEventListener("click", refreshScan);

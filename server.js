@@ -24,6 +24,7 @@ import { applyParameterTunnelPatches } from "./server-parameter-tunnel-patch.mjs
 import { applyStockSelectionPatches } from "./server-stock-selection-patch.mjs";
 import { applySelectionSettingsPatches } from "./server-selection-settings-patch.mjs";
 import { applyPaperLedgerRetentionPatches } from "./server-paper-ledger-retention-patch.mjs";
+import { applyUniverseRotationPatches } from "./server-universe-rotation-patch.mjs";
 
 const runtimeProcess = globalThis.process;
 const PORT = Number(runtimeProcess?.env?.PORT || 4173);
@@ -265,6 +266,7 @@ function startDataBankBootstrap() {
   output = applyStockSelectionPatches(output, mustReplace);
   output = applySelectionSettingsPatches(output, mustReplace);
   output = applyPaperLedgerRetentionPatches(output, mustReplace);
+  output = applyUniverseRotationPatches(output, mustReplace);
   return output;
 }
 

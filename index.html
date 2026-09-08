@@ -7,7 +7,7 @@
     <link rel="icon" href="data:," />
     <link rel="stylesheet" href="./styles.css?v=20260903.1" />
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
-    <script src="./app.js?v=20260903.1" defer></script>
+    <script src="./app.js?v=20260908.1" defer></script>
     <!-- The current shell is owned by app.js. Legacy broker workspace loaders remain
          available in the repository but are intentionally not mounted on this page. -->
   </head>
@@ -113,15 +113,16 @@
               <i data-lucide="lock" aria-hidden="true"></i>
               <span>Live locked</span>
             </button>
-            <button class="ghost-button" type="button" id="nseMasterBtn">
+            <button class="ghost-button" type="button" id="nseMasterBtn" title="Reload the official NSE master, then scan every eligible stock in paced batches. Existing paper automation remains active.">
               <i data-lucide="database-zap" aria-hidden="true"></i>
               <span>NSE Master</span>
             </button>
+            <button class="ghost-button" type="button" id="scanAllBtn" title="Resume the saved universe cycle; finish every batch before repeating stocks. Existing paper automation remains active.">Scan all / Resume</button>
             <button class="ghost-button action" type="button" id="paperEngineBtn">
               <i data-lucide="play-circle" aria-hidden="true"></i>
               <span>Paper Engine</span>
             </button>
-            <button class="icon-button" type="button" id="refreshBtn" aria-label="Refresh">
+            <button class="icon-button" type="button" id="refreshBtn" aria-label="Refresh" title="Scan the next unscanned batch of up to 200 NSE stocks">
               <i data-lucide="refresh-cw" aria-hidden="true"></i>
             </button>
           </div>
