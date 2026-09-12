@@ -26,6 +26,7 @@ import { applySelectionSettingsPatches } from "./server-selection-settings-patch
 import { applyPaperLedgerRetentionPatches } from "./server-paper-ledger-retention-patch.mjs";
 import { applyUniverseRotationPatches } from "./server-universe-rotation-patch.mjs";
 import { applyOfficialNseMasterPatches } from "./server-official-nse-master-patch.mjs";
+import { applyValuationTargetsPatches } from "./server-valuation-targets-patch.mjs";
 
 const runtimeProcess = globalThis.process;
 const PORT = Number(runtimeProcess?.env?.PORT || 4173);
@@ -269,6 +270,7 @@ function startDataBankBootstrap() {
   output = applyPaperLedgerRetentionPatches(output, mustReplace);
   output = applyUniverseRotationPatches(output, mustReplace);
   output = applyOfficialNseMasterPatches(output, mustReplace);
+  output = applyValuationTargetsPatches(output, mustReplace);
   return output;
 }
 

@@ -37,7 +37,14 @@ const state = {
   formulaSettings: null,
   formulaSettingsSaving: false,
   quickTrade: null,
-  quickTradeSubmitting: false
+  quickTradeSubmitting: false,
+  valuation: null,
+  valuationSymbol: "",
+  valuationLoading: false,
+  valuationSaving: false,
+  valuationRequest: 0,
+  valuationError: "",
+  marketImport: null
 };
 
 const institutionalPendingSymbols = new Set();
@@ -151,12 +158,16 @@ async function loadNseMaster() {
   if (state.scanInFlight || state.fullScanRunning || state.masterLoading) return;
   state.masterLoading = true;
   renderScanControls();
-  setNotice("Loading fresh NSE Master from Upstox into Mongo", "info");
+  setNotice("Fetching the current official Upstox NSE market master; checking new, changed and removed equities", "info");
   let loaded = false;
   try {
-    const result = await api("/api/data-bank/load-upstox-nse", { method: "POST", body: { trigger: "dashboard" } });
+    const result = await api("/api/data-bank/load-upstox-nse", { method: "POST", body: { trigger: "dashboard", requested_count: 2400 } });
     const saved = result.saved_universe || result.universe_count || result.rows_saved || result.count || "NSE";
-    setNotice(`NSE Master loaded into Mongo: ${saved} instruments`, "ok");
+    state.marketImport = result.import || null;
+    renderMarketImportStatus();
+    setNotice(state.marketImport
+      ? `Official NSE master refreshed: ${saved} eligible equities; ${state.marketImport.added_count ?? 0} added, ${state.marketImport.updated_count ?? 0} updated, ${state.marketImport.removed_count ?? 0} removed. The same listed stocks can remain after a fresh fetch.`
+      : `NSE master refreshed: ${saved} instruments. Source reconciliation detail is unavailable.`, "ok");
     state.rotation = null;
     state.rows = [];
     state.scan = null;
@@ -170,6 +181,257 @@ async function loadNseMaster() {
     renderScanControls();
   }
   if (loaded) await scanFullUniverse();
+}
+
+function renderMarketImportStatus() {
+  const node = el("marketImportStatus");
+  if (!node) return;
+  const item = state.marketImport;
+  if (!item) return;
+  node.textContent = `Official market-source fetch: ${isoDate(item.fetched_at) || "time unavailable"} · source modified ${isoDate(item.source_last_modified) || "not supplied"} · ${fmtInt(item.eligible_count)} eligible · ${fmtInt(item.added_count)} new to saved data / ${fmtInt(item.updated_count)} changed / ${fmtInt(item.removed_count)} removed / ${fmtInt(item.unchanged_count)} unchanged. ${Number(item.shortfall) > 0 ? `${fmtInt(item.shortfall)} below the requested ${fmtInt(item.requested_count || 2400)}; no invented stocks added.` : "A refresh does not guarantee newly listed stocks or portfolio eligibility."}`;
+}
+
+async function loadMarketImportStatus() {
+  try {
+    const result = await api("/api/data-bank/market-import-status");
+    state.marketImport = result.import || result.latest_import || null;
+    renderMarketImportStatus();
+  } catch (error) {
+    if (el("marketImportStatus")) el("marketImportStatus").textContent = `Market-master provenance unavailable: ${error.message}. Use NSE / Upstox to fetch the current official source.`;
+  }
+}
+
+// Valuation scenarios never enter the order flow without a separate confirmed activation.
+function valuationRecord(symbol = state.valuationSymbol) {
+  const selected = state.valuation?.selected;
+  return (nseSymbol(selected?.assumption || selected) === symbol ? selected : null)
+    || (state.valuation?.records || []).find((item) => nseSymbol(item.assumption || item) === symbol)
+    || null;
+}
+
+function valuationIdentity(symbol = state.valuationSymbol) {
+  const assumption = valuationRecord(symbol)?.assumption || {};
+  const market = state.universeRows.find((item) => nseSymbol(item) === symbol)
+    || state.rows.find((item) => nseSymbol(item) === symbol)
+    || openPaperPosition(symbol) || {};
+  const instrument_key = market.instrument_key || assumption.instrument_key || "";
+  return { symbol, instrument_key, isin: market.isin || assumption.isin || (instrument_key.startsWith("NSE_EQ|") ? instrument_key.slice(7) : "") };
+}
+
+function valuationSafeLinks(urls) {
+  return (Array.isArray(urls) ? urls : []).map((value) => {
+    try {
+      const url = new URL(String(value));
+      if (!["https:", "http:"].includes(url.protocol)) return escapeHtml(value);
+      return `<a href="${escapeHtml(url.href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(url.hostname)} ↗</a>`;
+    } catch (_) { return escapeHtml(value); }
+  }).join(" · ");
+}
+
+function valuationRange(target) {
+  if (!target || numberValue(target.low) === null || numberValue(target.high) === null) return "DATA NEEDED";
+  return `${fmtPrice(target.low)} – ${fmtPrice(target.high)}<small>Mid ${fmtPrice(target.mid)} · ${escapeHtml(target.due_date || "date missing")}</small>`;
+}
+
+function valuationTriggerPrice(value) {
+  const price = numberValue(value);
+  if (price === null || price <= 0) return null;
+  const units = price / 0.01;
+  if (!Number.isFinite(units) || units > Number.MAX_SAFE_INTEGER) return null;
+  const nearest = Math.round(units);
+  const noise = 4 * Number.EPSILON * Math.max(1, Math.abs(units));
+  return Number(((Math.abs(units - nearest) <= noise ? nearest : Math.ceil(units)) * 0.01).toFixed(8));
+}
+
+function effectivePositionTarget(position) {
+  // The server is authoritative. A present null effective value must not reveal an old target.
+  return position && Object.prototype.hasOwnProperty.call(position, "effective_target_price")
+    ? numberValue(position.effective_target_price) : numberValue(position?.target_price);
+}
+
+function effectivePositionTargetLabel(position) {
+  return position?.effective_target_source === "valuation_review_required" ? "Valuation review required — target blocked"
+    : String(position?.effective_target_source || "Technical target").replaceAll("_", " ");
+}
+
+function renderValuationTargets() {
+  const body = el("valuationSummaryBody");
+  if (!body) return;
+  const records = state.valuation?.records || [];
+  const formulaCatalog = el("valuationFormulaCatalog");
+  if (formulaCatalog && state.valuation?.formulas) formulaCatalog.innerHTML = Object.entries(state.valuation.formulas)
+    .map(([name, formula]) => `<p><strong>${escapeHtml(name.replaceAll("_", " "))}</strong><br><code>${escapeHtml(typeof formula === "string" ? formula : JSON.stringify(formula))}</code></p>`).join("");
+  const status = el("valuationStatus");
+  if (status) status.textContent = state.valuationError
+    ? `Target data unavailable: ${state.valuationError}`
+    : state.valuationLoading ? "Loading saved valuation assumptions…"
+      : `${records.length} saved scenarios · revision ${state.valuation?.revision ?? "not loaded"} · ${state.valuation?.persistent ? "durably stored" : "persistence not confirmed"}. Initial analyst assumptions require review; they are not live forecasts.`;
+  body.innerHTML = records.map((record) => {
+    const a = record.assumption || {};
+    const symbol = nseSymbol(a || record);
+    const active = state.valuation?.active_targets?.[symbol];
+    return `<tr><td><strong>${escapeHtml(symbol)}</strong><small>${escapeHtml(a.source_type || "source needed")} · ${a.corporate_action_reviewed ? "review recorded" : "review pending"}</small></td>
+      <td>${fmtPrice(a.reference_price)}<small>${escapeHtml(a.reference_date || "")}</small></td><td>${fmtNumber(a.annual_eps)} / ${fmtNumber(a.base_pe_low)}–${fmtNumber(a.base_pe_high)}×</td>
+      ${[3, 9, 12].map((months) => `<td>${valuationRange((record.targets || []).find((target) => target.months === months))}</td>`).join("")}
+      <td>${active ? `Fixed ${fmtPrice(active.target_price ?? active.price)}<small>Saved activation; does not float</small>` : "Not activated"}</td>
+      <td><button class="small-button" type="button" data-valuation-symbol="${escapeHtml(symbol)}">Review</button></td></tr>`;
+  }).join("") || `<tr><td colspan="8" class="empty-state">${state.valuationLoading ? "Loading scenarios…" : "No saved valuation data. No targets have been invented."}</td></tr>`;
+  const symbols = [...new Set([...state.universeRows.map(nseSymbol), ...state.rows.map(nseSymbol), ...records.map((item) => nseSymbol(item.assumption || item))])].filter(Boolean).sort();
+  if (el("valuationSymbols")) el("valuationSymbols").innerHTML = symbols.map((symbol) => `<option value="${escapeHtml(symbol)}"></option>`).join("");
+  const record = valuationRecord();
+  const a = record?.assumption;
+  const selected = el("valuationSelected");
+  const scan = state.rows.find((item) => nseSymbol(item) === state.valuationSymbol);
+  if (selected) selected.innerHTML = !a || !(record.targets || []).length
+    ? `<p class="valuation-warning"><strong>${escapeHtml(state.valuationSymbol || "Choose a stock")} · DATA NEEDED</strong><br>No complete per-stock EPS / P/E assumptions are available. Enter reviewed sources and assumptions; numeric inputs for new stocks are blank.</p>`
+    : `<h4>${escapeHtml(a.symbol)} · calculated scenario <span class="status-pill neutral">${escapeHtml(record.status || "ASSUMPTIONS")}</span></h4>
+      <p>As of ${escapeHtml(a.as_of)} · reference ${escapeHtml(a.reference_date)} at ${fmtPrice(a.reference_price)} · review valid until ${escapeHtml(a.valid_until || "not set")}. Model ${escapeHtml(record.model_version || "")}</p>
+      <p>Normalised annual EPS ${fmtPrice(a.annual_eps)} × P/E ${fmtNumber(a.base_pe_low)}–${fmtNumber(a.base_pe_high)}. These are assumptions; the P/E range is not a verified market multiple.</p>
+      <div class="valuation-target-cards">${(record.targets || []).filter((target) => [3, 9, 12].includes(target.months)).map((target) => `<article><strong>${target.months} months · ${escapeHtml(target.due_date)}</strong><span>${valuationRange(target)}</span><small>Reference-price upside ${fmtPct(target.upside_low_pct)} to ${fmtPct(target.upside_high_pct)}</small></article>`).join("")}</div>
+      <p>12-month bear sensitivity ${fmtPrice(record.bear_12m?.price ?? record.bear_12m)}${record.bull_12m != null ? ` · bull sensitivity ${fmtPrice(record.bull_12m?.price ?? record.bull_12m)}` : " · bull case not supplied"}. Sensitivities are not floors or probabilities.</p>
+      <p>Share basis: ${escapeHtml(a.corporate_action_basis || "Review pending")} · ${a.corporate_action_reviewed ? "review recorded" : "REVIEW PENDING"}</p>
+      <p>${escapeHtml(a.notes || "")}</p><p class="valuation-source-links">Sources: ${valuationSafeLinks(a.source_urls) || "No source provided"}</p>
+      <p class="valuation-warning">${escapeHtml((record.warnings || []).map((warning) => typeof warning === "string" ? warning : JSON.stringify(warning)).join(" · "))}</p>`;
+  if (selected) selected.innerHTML += `<p class="valuation-scan-separation">Separate current-batch AshStock decision: <strong>${escapeHtml(scan ? decisionDisplay(scan.decision) : "NOT EVALUATED IN CURRENT BATCH")}</strong>. A valuation scenario does not create SELECT eligibility or replace scanner gates.</p>`;
+  renderValuationActivation();
+}
+
+function fillValuationForm() {
+  const a = valuationRecord()?.assumption || {};
+  const identity = valuationIdentity();
+  const fields = {
+    valuationSymbol: state.valuationSymbol, valuationInstrumentKey: identity.instrument_key, valuationIsin: identity.isin,
+    valuationReferencePrice: a.reference_price, valuationReferenceDate: a.reference_date, valuationAsOf: String(a.as_of || "").slice(0, 10),
+    valuationValidUntil: String(a.valid_until || "").slice(0, 10), valuationAnnualEps: a.annual_eps, valuationPeLow: a.base_pe_low,
+    valuationPeHigh: a.base_pe_high, valuationBearEps: a.bear_eps, valuationBearPe: a.bear_pe, valuationBullEps: a.bull_eps,
+    valuationBullPe: a.bull_pe, valuationSources: (a.source_urls || []).join("\n"), valuationNotes: a.notes,
+    valuationCorporateBasis: a.corporate_action_basis, valuationSaveReason: "", valuationActivationReason: ""
+  };
+  for (const [id, value] of Object.entries(fields)) if (el(id)) el(id).value = value ?? "";
+  for (const id of ["valuationReviewed", "valuationActivationConfirm"]) if (el(id)) el(id).checked = false;
+  if (el("valuationActionResult")) el("valuationActionResult").textContent = "";
+}
+
+async function loadValuationTargets(symbol = state.valuationSymbol, { fillForm = true } = {}) {
+  if (state.valuationSaving) return;
+  const request = ++state.valuationRequest;
+  const requestedSymbol = String(symbol || "").trim().toUpperCase();
+  state.valuationLoading = true;
+  state.valuationError = "";
+  // A selection change invalidates the old activation form immediately, before awaiting network.
+  state.valuationSymbol = requestedSymbol;
+  if (el("valuationActivationConfirm")) el("valuationActivationConfirm").checked = false;
+  renderValuationTargets();
+  try {
+    const result = await api(`/api/valuation-targets${requestedSymbol ? `?symbol=${encodeURIComponent(requestedSymbol)}` : ""}`);
+    if (request !== state.valuationRequest) return;
+    if (result.ok === false) throw new Error(result.error || "Valuation data could not be loaded");
+    state.valuation = result;
+    state.valuationSymbol = requestedSymbol || nseSymbol(result.records?.[0]?.assumption || result.records?.[0]);
+    if (fillForm) fillValuationForm();
+  } catch (error) {
+    if (request !== state.valuationRequest) return;
+    state.valuationError = error.message;
+    if (fillForm) fillValuationForm();
+  } finally {
+    if (request === state.valuationRequest) { state.valuationLoading = false; renderValuationTargets(); }
+  }
+}
+
+function renderValuationActivation() {
+  const record = valuationRecord();
+  const symbol = state.valuationSymbol;
+  const position = record && Object.prototype.hasOwnProperty.call(record, "open_position")
+    ? record.open_position : openPaperPosition(symbol);
+  const identity = valuationIdentity();
+  const holding = position && numberValue(position.qty) > 0 && position.status !== "CLOSED"
+    && position.instrument_key === identity.instrument_key;
+  const active = state.valuation?.active_targets?.[symbol];
+  const months = Number(el("valuationHorizon")?.value || 3);
+  const policy = el("valuationPricePolicy")?.value || "low";
+  const target = record?.targets?.find((item) => item.months === months);
+  const price = numberValue(target?.[policy]);
+  const busy = state.valuationLoading || state.valuationSaving || Boolean(state.valuationError);
+  const eligible = Boolean(holding && record?.activation_allowed === true && target?.activation_allowed !== false && price > 0);
+  const preview = el("valuationActivationPreview");
+  if (preview) preview.textContent = `Proposed ${months}-month ${policy} internal trigger: ${fmtPrice(valuationTriggerPrice(price))} · due ${target?.due_date || "unknown"}. The internal trigger is rounded upward to ₹0.01 by the server; it is not an exchange limit-order price or a forced sale on the due date. ${!holding ? "A matching open paper holding is required." : !eligible ? "Review or data checks are incomplete; activation is blocked." : "Server will recheck reviewed sources, expiry, fresh quote and price above market and entry."}`;
+  if (el("valuationActivate")) el("valuationActivate").disabled = busy || !eligible;
+  if (el("valuationDeactivate")) el("valuationDeactivate").disabled = busy || !active;
+  if (el("valuationSave")) el("valuationSave").disabled = busy || !symbol || !identity.instrument_key;
+  if (el("valuationRefresh")) el("valuationRefresh").disabled = state.valuationSaving;
+  const node = el("valuationActiveTarget");
+  if (node) node.innerHTML = active
+    ? `<strong>${escapeHtml(symbol)} · fixed saved paper target ${fmtPrice(active.target_price ?? active.price)}</strong><p>${escapeHtml(String(active.horizon ?? active.horizon_months ?? ""))} months · ${escapeHtml(active.price_policy || "")} · activated ${escapeHtml(isoDate(active.activated_at || active.created_at))}. Saved price snapshot; recalculation does not move it.</p><p>Current effective target: ${fmtPrice(effectivePositionTarget(position))} · ${escapeHtml(effectivePositionTargetLabel(position))}. A blocked valuation does not silently fall back to the legacy target.</p>`
+    : `<strong>${escapeHtml(symbol || "No selected stock")} · no valuation override active</strong><p>${holding ? `Existing technical target ${fmtPrice(effectivePositionTarget(position))}; stop ${fmtPrice(position.stop_price)} stays governed by the paper engine.` : "No matching open paper holding is available for activation."}</p>`;
+}
+
+async function submitValuationAssumption(event) {
+  event?.preventDefault();
+  if (state.valuationSaving || state.valuationLoading) return;
+  const form = el("valuationAssumptionForm");
+  if (form?.reportValidity && !form.reportValidity()) return;
+  const result = el("valuationActionResult");
+  const value = (id) => String(el(id)?.value || "").trim();
+  if (!el("valuationReviewed")?.checked) { if (result) result.textContent = "Save blocked: explicitly review the sources and corporate-action basis first."; return; }
+  const assumption = {
+    ...valuationIdentity(), reference_price: numberValue(value("valuationReferencePrice")), reference_date: value("valuationReferenceDate"),
+    as_of: value("valuationAsOf"), valid_until: value("valuationValidUntil"), annual_eps: numberValue(value("valuationAnnualEps")),
+    eps_basis: "normalised_annual", base_pe_low: numberValue(value("valuationPeLow")), base_pe_high: numberValue(value("valuationPeHigh")),
+    bear_eps: numberValue(value("valuationBearEps")), bear_pe: numberValue(value("valuationBearPe")),
+    source_type: "user_assumption", source_urls: value("valuationSources").split(/\r?\n/).map((url) => url.trim()).filter(Boolean),
+    notes: value("valuationNotes"), corporate_action_basis: value("valuationCorporateBasis"), corporate_action_reviewed: true
+  };
+  if (value("valuationBullEps")) assumption.bull_eps = numberValue(value("valuationBullEps"));
+  if (value("valuationBullPe")) assumption.bull_pe = numberValue(value("valuationBullPe"));
+  const reason = value("valuationSaveReason");
+  if (!reason || !assumption.instrument_key || !assumption.source_urls.length) { if (result) result.textContent = "Save blocked: market identity, source URL and revision reason are required."; return; }
+  const badSource = assumption.source_urls.some((source) => {
+    try { return !["https:", "http:"].includes(new URL(source).protocol); } catch (_) { return true; }
+  });
+  if (badSource || assumption.base_pe_low > assumption.base_pe_high || Boolean(value("valuationBullEps")) !== Boolean(value("valuationBullPe"))) {
+    if (result) result.textContent = "Save blocked: use complete HTTP(S) source URLs, P/E low ≤ high, and provide both bull EPS and bull P/E or leave both blank.";
+    return;
+  }
+  await mutateValuation("assumptions", { expected_revision: state.valuation?.revision, reason, assumption }, "Assumptions saved. No sell target was activated and no order was created.");
+}
+
+async function submitValuationActivation(event, deactivate = false) {
+  event?.preventDefault();
+  if (state.valuationSaving || state.valuationLoading || state.valuationError) return;
+  const result = el("valuationActionResult");
+  const reason = String(el("valuationActivationReason")?.value || "").trim();
+  if (!reason || !el("valuationActivationConfirm")?.checked) { if (result) result.textContent = "No change made. Enter a reason and explicitly confirm the paper target-policy change."; return; }
+  const button = el(deactivate ? "valuationDeactivate" : "valuationActivate");
+  if (button?.disabled) return;
+  const identity = valuationIdentity();
+  const horizon = Number(el("valuationHorizon")?.value);
+  const price_policy = el("valuationPricePolicy")?.value;
+  const price = valuationRecord()?.targets?.find((item) => item.months === horizon)?.[price_policy];
+  const question = deactivate
+    ? `Remove ${identity.symbol}'s fixed valuation override and restore the paper engine's technical target behavior? The normal paper engine may subsequently exit if its checks permit.`
+    : `Activate ${fmtPrice(valuationTriggerPrice(price))} as ${identity.symbol}'s fixed ${horizon}-month ${price_policy} internal paper sell trigger, rounded upward to INR 0.01? This does not sell immediately; normal paper execution and stop checks still apply.`;
+  if (!window.confirm(question)) return;
+  await mutateValuation(deactivate ? "deactivate" : "activate", { ...identity, horizon, price_policy, expected_revision: state.valuation?.revision, reason, confirm: true }, deactivate ? "Valuation override removed; technical target behavior restored." : "Fixed paper target activated. No immediate sell or live order was submitted.");
+}
+
+async function mutateValuation(action, body, message) {
+  state.valuationSaving = true;
+  renderValuationActivation();
+  try {
+    const response = await api(`/api/valuation-targets/${action}`, { method: "POST", body });
+    if (response.ok === false) throw new Error(response.error || "Target change rejected");
+    state.valuation = response;
+    state.valuationError = "";
+    fillValuationForm();
+    if (el("valuationActionResult")) el("valuationActionResult").textContent = response.notice || message;
+    if (action !== "assumptions") await loadOrders();
+  } catch (error) {
+    if (el("valuationActionResult")) el("valuationActionResult").textContent = `No confirmed change: ${error.message}. Refresh saved targets before retrying if the revision changed.`;
+  } finally {
+    state.valuationSaving = false;
+    if (el("valuationActivationConfirm")) el("valuationActivationConfirm").checked = false;
+    renderValuationTargets();
+  }
 }
 
 function renderScanControls() {
@@ -1086,7 +1348,7 @@ function renderAutoOrderReadiness(row = state.selected) {
       <article><span>Entry</span><strong>${escapeHtml(entryText)}</strong><small>${quotePrice ? escapeHtml(isoDate(state.selectedQuote?.timestamp)) : "Real Upstox quote gate"}</small></article>
       <article><span>Quantity</span><strong>${fmtInt(openPosition?.qty || latestOrder?.qty || qty)}</strong><small>₹1 lakh minimum entry from ₹5 crore paper capital</small></article>
       <article><span>Stop</span><strong>${fmtPrice(openPosition?.stop_price || latestOrder?.stop_price || stopPrice)}</strong><small>Engine risk rule</small></article>
-      <article><span>Target</span><strong>${fmtPrice(openPosition?.target_price || latestOrder?.target_price || targetPrice)}</strong><small>${fmtNumber(targetPct)}% target room</small></article>
+      <article><span>Target</span><strong>${openPosition ? fmtPrice(effectivePositionTarget(openPosition)) : fmtPrice(latestOrder?.target_price || targetPrice)}</strong><small>${openPosition ? escapeHtml(effectivePositionTargetLabel(openPosition)) : `${fmtNumber(targetPct)}% technical target room`}</small></article>
       <article><span>Parameter proof</span><strong>${escapeHtml(proofText)}</strong><small>Score | hits/evaluated</small></article>
       <article><span>Execution</span><strong>${openPosition ? "BOUGHT" : executionReady ? "AUTOMATIC" : "FILTERED"}</strong><small>Fresh quote and market gates apply</small></article>
     </div>
@@ -1646,7 +1908,7 @@ function renderOpenPositionRows(model, limit = null) {
     <td>${fmtPrice(position.market_value)}</td>
     <td class="${portfolioPnlClass(position.unrealized_pnl)}"><strong>${fmtPrice(position.unrealized_pnl)}</strong></td>
     <td class="${portfolioPnlClass(position.unrealized_pnl_pct)}">${fmtPct(position.unrealized_pnl_pct)}</td>
-    <td>${fmtPrice(position.target_price)}</td>
+    <td>${fmtPrice(effectivePositionTarget(position))}<small>${escapeHtml(effectivePositionTargetLabel(position))}</small></td>
     <td>${fmtPrice(position.stop_price)}</td>
     <td>${renderTradeActions(position, { compact: true })}</td>
   </tr>`).join("");
@@ -2058,6 +2320,8 @@ function renderAll() {
   renderOrders();
   renderPortfolioDashboard();
   renderSignalDashboard();
+  renderValuationTargets();
+  renderMarketImportStatus();
   if (state.activeParameter) renderParameterProof(state.activeParameter);
   window.lucide?.createIcons?.();
 }
@@ -2068,7 +2332,7 @@ function switchSection(section, navKey = section, navTitle = "") {
   if (section === "portfolio") state.portfolioView = navKey === "performance" ? "performance" : "holdings";
   all(".rail-item[data-section]").forEach((button) => button.classList.toggle("active", (button.dataset.navKey || button.dataset.section) === navKey));
   all(".section").forEach((panel) => panel.classList.toggle("active", panel.dataset.panel === section));
-  const titleMap = { dashboard: "Dashboard", portfolio: "Holdings", screener: "Scanner", piano: "Trading", "signal-piano": "Signals", orders: "Paper Book", settings: "Settings", help: "Help" };
+  const titleMap = { dashboard: "Dashboard", portfolio: "Holdings", screener: "Scanner", piano: "Trading", "signal-piano": "Signals", orders: "Paper Book", valuation: "Sell Targets", settings: "Settings", help: "Help" };
   el("sectionTitle").textContent = navTitle || titleMap[section] || "Dashboard";
   if (section === "portfolio" || section === "orders") renderPortfolioDashboard();
   window.lucide?.createIcons?.();
@@ -2172,7 +2436,7 @@ async function downloadTradeLedger(kind) {
   }
   const headers = open ? [
     "symbol", "name", "sector", "qty", "entry_price", "current_price", "market_value",
-    "unrealized_pnl", "unrealized_pnl_pct", "entry_date", "quote_timestamp", "target_price", "stop_price", "status"
+    "unrealized_pnl", "unrealized_pnl_pct", "entry_date", "quote_timestamp", "target_price", "effective_target_price", "effective_target_source", "stop_price", "status"
   ] : [
     "symbol", "name", "sector", "qty", "entry_price", "exit_price", "entry_value", "exit_value",
     "gross_realized_pnl", "round_trip_cost", "realized_pnl", "return_pct", "entry_at", "exit_at", "holding_days", "close_reason"
@@ -2578,6 +2842,26 @@ function bindUi() {
   el("upstoxTokenForm")?.addEventListener("submit", submitUpstoxToken);
   el("formulaSettingsForm")?.addEventListener("submit", submitFormulaSettings);
   el("formulaSettingsReset")?.addEventListener("click", resetFormulaSettings);
+  el("valuationRefresh")?.addEventListener("click", () => loadValuationTargets());
+  el("valuationLookupForm")?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!state.valuationSaving) loadValuationTargets(el("valuationSymbol")?.value);
+  });
+  el("valuationUseSelected")?.addEventListener("click", () => {
+    if (state.selected?.symbol) loadValuationTargets(state.selected.symbol);
+    else if (el("valuationActionResult")) el("valuationActionResult").textContent = "Select a stock in the scanner first, or enter an NSE symbol above.";
+  });
+  el("valuationSummaryBody")?.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-valuation-symbol]");
+    if (button && !state.valuationSaving) loadValuationTargets(button.dataset.valuationSymbol);
+  });
+  el("valuationAssumptionForm")?.addEventListener("submit", submitValuationAssumption);
+  el("valuationActivationForm")?.addEventListener("submit", submitValuationActivation);
+  el("valuationDeactivate")?.addEventListener("click", (event) => submitValuationActivation(event, true));
+  for (const id of ["valuationHorizon", "valuationPricePolicy"]) el(id)?.addEventListener("change", () => {
+    if (el("valuationActivationConfirm")) el("valuationActivationConfirm").checked = false;
+    renderValuationActivation();
+  });
   el("symbolSearch")?.addEventListener("input", () => { renderCandidates(); renderScreener(); });
   el("decisionFilter")?.addEventListener("change", () => {
     renderCandidates();
@@ -2647,7 +2931,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   renderAll();
   renderFormulaSettings();
   window.lucide?.createIcons?.();
-  await Promise.all([loadOrders(), loadFormulaSettings()]);
+  await Promise.all([loadOrders(), loadFormulaSettings(), loadValuationTargets(), loadMarketImportStatus()]);
   await Promise.all([refreshScan(), loadSignalMarketContext(), loadReleaseIdentity()]);
   window.setInterval(maybeAutoStartPaperPortfolio, 60_000);
 });

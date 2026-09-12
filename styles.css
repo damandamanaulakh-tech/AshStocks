@@ -22,6 +22,71 @@
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
+/* Dated, explicitly reviewed valuation scenarios are separate from scanner signals. */
+.market-import-status {
+  margin: 0 0 12px;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.valuation-section.section.active {
+  display: grid;
+  gap: 16px;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  align-content: start;
+  scrollbar-gutter: stable;
+}
+.valuation-panel { min-width: 0; padding-bottom: 18px; }
+.valuation-panel > :not(.panel-head) { margin-left: 18px; margin-right: 18px; }
+.valuation-disclaimer, .valuation-selected p, .valuation-active-target p,
+.valuation-formulas p, .valuation-status {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.valuation-formulas { padding: 8px 14px; background: var(--panel-2); border-left: 3px solid var(--cyan); }
+.valuation-formulas strong, .valuation-active-target strong { color: var(--ink); }
+.valuation-formulas code { white-space: pre-wrap; color: var(--soft); }
+.valuation-formulas details { margin: 10px 0; }
+.valuation-formulas summary { cursor: pointer; color: var(--cyan); }
+.valuation-summary-wrap { overflow: auto; max-height: 480px; }
+.valuation-summary-wrap table { min-width: 1150px; font-size: 12px; }
+.valuation-summary-wrap small, .valuation-target-cards small { display: block; margin-top: 5px; color: var(--muted); font-size: 10px; }
+.valuation-lookup { display: flex; flex-wrap: wrap; align-items: end; gap: 10px; margin-bottom: 18px; }
+.valuation-lookup label { flex: 1 1 230px; }
+.valuation-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 16px 0; }
+.valuation-fields label, .valuation-lookup label { display: grid; gap: 6px; color: var(--soft); font-size: 12px; }
+.valuation-fields input, .valuation-fields select, .valuation-fields textarea, .valuation-lookup input {
+  width: 100%; min-width: 0; box-sizing: border-box; padding: 9px 10px; color: var(--ink); background: var(--bg-2); border: 1px solid var(--line-2); border-radius: 5px; font: inherit;
+}
+.valuation-fields textarea { resize: vertical; }
+.valuation-fields input:read-only { color: var(--muted); }
+.valuation-fields input:focus-visible, .valuation-fields select:focus-visible,
+.valuation-fields textarea:focus-visible, .valuation-lookup input:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+.valuation-wide { grid-column: 1 / -1; }
+.valuation-editor { margin-top: 20px; border-top: 1px solid var(--line); padding-top: 14px; }
+.valuation-editor summary { cursor: pointer; color: var(--cyan); font-size: 13px; }
+.valuation-check { display: flex; align-items: start; gap: 9px; margin: 14px 0; color: var(--soft); font-size: 12px; line-height: 1.6; }
+.valuation-check input { width: 16px; height: 16px; flex: 0 0 16px; margin-top: 3px; accent-color: var(--cyan); }
+.valuation-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.valuation-target-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.valuation-target-cards article { display: grid; gap: 8px; padding: 14px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 6px; }
+.valuation-target-cards strong { color: var(--cyan); font-size: 12px; }
+.valuation-target-cards span { color: var(--ink); font-size: 15px; }
+.valuation-selected .valuation-warning { color: var(--amber); }
+.valuation-scan-separation { padding: 10px 12px; border: 1px dashed var(--line-2); }
+.valuation-source-links a { color: var(--cyan); }
+.valuation-active-target { padding: 12px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 6px; }
+@media (max-width: 900px) { .valuation-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); } .valuation-target-cards { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 600px) { .valuation-fields { grid-template-columns: minmax(0, 1fr); } .valuation-panel > :not(.panel-head) { margin-left: 10px; margin-right: 10px; } .valuation-lookup .small-button { width: 100%; } }
+
 /* 175-node parameter tunnel */
 .parameter-tunnel-shell {
   min-height: calc(100vh - 144px);

@@ -81,8 +81,8 @@ for (const asset of ["./broker-shell.css", "./app-broker-shell.js", "./app-broke
   mustNotLoad("index.html", asset);
 }
 
-mustLoad("index.html", "./styles.css?v=20260903.1");
-mustLoad("index.html", "./app.js?v=20260908.1");
+mustLoad("index.html", "./styles.css?v=20260909.1");
+mustLoad("index.html", "./app.js?v=20260909.1");
 mustInclude("index.html", "Legacy broker workspace loaders remain", "legacy-loader isolation explanation");
 
 for (const asset of [

@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>ASH Stock</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="./styles.css?v=20260903.1" />
+    <link rel="stylesheet" href="./styles.css?v=20260909.1" />
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
-    <script src="./app.js?v=20260908.1" defer></script>
+    <script src="./app.js?v=20260909.1" defer></script>
     <!-- The current shell is owned by app.js. Legacy broker workspace loaders remain
          available in the repository but are intentionally not mounted on this page. -->
   </head>
@@ -71,6 +71,10 @@
             <i data-lucide="book-open-check" aria-hidden="true"></i>
             <span>Paper Book</span>
           </button>
+          <button class="rail-item" type="button" data-section="valuation" data-nav-key="valuation" data-nav-title="Sell Targets">
+            <i data-lucide="target" aria-hidden="true"></i>
+            <span>Sell Targets</span>
+          </button>
           <button class="rail-item" type="button" data-section="settings" data-nav-key="settings" data-nav-title="Settings">
             <i data-lucide="settings" aria-hidden="true"></i>
             <span>Settings</span>
@@ -113,9 +117,9 @@
               <i data-lucide="lock" aria-hidden="true"></i>
               <span>Live locked</span>
             </button>
-            <button class="ghost-button" type="button" id="nseMasterBtn" title="Reload the official NSE master, then scan every eligible stock in paced batches. Existing paper automation remains active.">
+            <button class="ghost-button" type="button" id="nseMasterBtn" title="Fetch the current official Upstox NSE master from the market source, reconcile eligible equities and scan in paced batches. This does not guarantee 2,400 newly listed stocks or portfolio additions. Existing paper automation remains active.">
               <i data-lucide="database-zap" aria-hidden="true"></i>
-              <span>NSE Master</span>
+              <span>NSE / Upstox</span>
             </button>
             <button class="ghost-button" type="button" id="scanAllBtn" title="Resume the saved universe cycle; finish every batch before repeating stocks. Existing paper automation remains active.">Scan all / Resume</button>
             <button class="ghost-button action" type="button" id="paperEngineBtn">
@@ -131,6 +135,7 @@
         <section class="notice-line" id="noticeLine" role="status" aria-live="polite">
           ASH Stock engine booting
         </section>
+        <p class="market-import-status" id="marketImportStatus" role="status">Market-master provenance has not been loaded. NSE / Upstox fetches the official source; an unchanged market may contain the same stocks.</p>
 
         <section class="section active signal-dashboard" id="dashboardSection" data-panel="dashboard">
           <section class="signal-market-strip" aria-label="Live market strip">
@@ -423,6 +428,75 @@
               </details>
             </section>
           </div>
+        </section>
+
+        <section class="section valuation-section" id="valuationSection" data-panel="valuation">
+          <article class="panel valuation-panel">
+            <div class="panel-head"><div><span class="mini-label">EPS × P/E · Paper target planning</span><h3>3, 9 and 12 month sell targets</h3></div><button class="small-button" id="valuationRefresh" type="button">Refresh saved targets</button></div>
+            <p class="valuation-disclaimer">Calculated valuation scenarios, not verified forecasts or AshStock SELECT signals. Assumptions must be reviewed before activation. Saving assumptions does not create an order or change a holding's sell target.</p>
+            <div class="valuation-formulas" id="valuationFormulas">
+              <p><strong>12-month base range</strong> = normalised annual EPS × base P/E low / high. Mid = (low + high) ÷ 2.</p>
+              <p><strong>3 / 9-month marker</strong> = reference price + (12-month value − reference price) × months ÷ 12.</p>
+              <p><strong>Bear / optional bull sensitivity</strong> = scenario EPS × scenario P/E. Upside = (target ÷ reference price − 1) × 100.</p>
+              <p>Shorter horizons are interpolated markers, not independent predictions. Dates are measured from the reference date. Scenarios exclude dividends, taxes and costs; bear values are not guaranteed floors.</p>
+              <details><summary>All server formula definitions</summary><div id="valuationFormulaCatalog">Formula catalog not yet loaded.</div></details>
+            </div>
+            <p id="valuationStatus" class="valuation-status" role="status" aria-live="polite">Loading saved assumptions…</p>
+            <div class="table-wrap valuation-summary-wrap" tabindex="0" aria-label="Saved valuation scenario ranges">
+              <table><thead><tr><th>Stock / evidence</th><th>Reference</th><th>Annual EPS / base P/E</th><th>3 months</th><th>9 months</th><th>12 months</th><th>Paper target</th><th>Review</th></tr></thead><tbody id="valuationSummaryBody"></tbody></table>
+            </div>
+          </article>
+          <article class="panel valuation-panel">
+            <div class="panel-head"><div><span class="mini-label">All saved assumptions and any NSE equity</span><h3>Review one stock</h3></div></div>
+            <form id="valuationLookupForm" class="valuation-lookup">
+              <label for="valuationSymbol">NSE symbol<input id="valuationSymbol" list="valuationSymbols" autocomplete="off" placeholder="Choose or enter NSE symbol" required maxlength="40" /></label>
+              <datalist id="valuationSymbols"></datalist>
+              <button class="small-button" type="submit">Open stock</button>
+              <button class="small-button" id="valuationUseSelected" type="button">Use scanner selection</button>
+            </form>
+            <div id="valuationSelected" class="valuation-selected"></div>
+            <details class="valuation-editor"><summary>Edit dated EPS and P/E assumptions</summary>
+              <form id="valuationAssumptionForm">
+                <div class="valuation-fields">
+                  <label>Instrument key<input id="valuationInstrumentKey" placeholder="NSE_EQ|ISIN" required readonly /></label>
+                  <label>ISIN<input id="valuationIsin" required readonly /></label>
+                  <label>Reference price (₹)<input id="valuationReferencePrice" type="number" min="0.01" step="any" required /></label>
+                  <label>Reference date<input id="valuationReferenceDate" type="date" required /></label>
+                  <label>Evidence as of<input id="valuationAsOf" type="date" required /></label>
+                  <label>Review valid until<input id="valuationValidUntil" type="date" required /></label>
+                  <label>Normalised annual EPS (₹)<input id="valuationAnnualEps" type="number" min="0.0001" step="any" required /></label>
+                  <label>Base P/E low<input id="valuationPeLow" type="number" min="0.0001" step="any" required /></label>
+                  <label>Base P/E high<input id="valuationPeHigh" type="number" min="0.0001" step="any" required /></label>
+                  <label>Bear annual EPS (₹)<input id="valuationBearEps" type="number" min="0.0001" step="any" required /></label>
+                  <label>Bear P/E<input id="valuationBearPe" type="number" min="0.0001" step="any" required /></label>
+                  <label>Bull annual EPS (optional)<input id="valuationBullEps" type="number" min="0.0001" step="any" /></label>
+                  <label>Bull P/E (optional)<input id="valuationBullPe" type="number" min="0.0001" step="any" /></label>
+                  <label class="valuation-wide">Source URLs — one per line<textarea id="valuationSources" rows="3" required placeholder="https://company.example/investor-results"></textarea></label>
+                  <label class="valuation-wide">EPS normalisation, P/E rationale and uncertainties<textarea id="valuationNotes" rows="3" required></textarea></label>
+                  <label class="valuation-wide">Corporate-action / share-count basis<input id="valuationCorporateBasis" required placeholder="Describe the split / bonus adjustment and earnings share basis reviewed" /></label>
+                  <label class="valuation-wide">Reason for this revision<input id="valuationSaveReason" required maxlength="500" /></label>
+                </div>
+                <label class="valuation-check"><input id="valuationReviewed" type="checkbox" required /> I have reviewed the sources, dates, normalised EPS and corporate-action basis. These are my assumptions, not verified forecasts.</label>
+                <button id="valuationSave" class="small-button" type="submit">Save reviewed assumptions only</button>
+              </form>
+            </details>
+          </article>
+          <article class="panel valuation-panel">
+            <div class="panel-head"><div><span class="mini-label">Existing open paper holdings only</span><h3>Activate a fixed paper sell target</h3></div><span class="status-pill good">Live orders locked</span></div>
+            <div id="valuationActiveTarget" class="valuation-active-target"></div>
+            <p class="valuation-disclaimer">Activation fixes the selected price snapshot for the existing holding; it does not sell immediately. The paper engine can later exit when its quote and execution checks permit. Stops remain active. Assumption edits and refreshes do not move an already activated target.</p>
+            <form id="valuationActivationForm">
+              <div class="valuation-fields">
+                <label>Horizon<select id="valuationHorizon"><option value="3">3 months</option><option value="9">9 months</option><option value="12">12 months</option></select></label>
+                <label>Price in range<select id="valuationPricePolicy"><option value="low">Low</option><option value="mid">Midpoint</option><option value="high">High</option></select></label>
+                <label class="valuation-wide">Reason for activation or removal<input id="valuationActivationReason" required maxlength="500" /></label>
+              </div>
+              <p id="valuationActivationPreview" class="valuation-status"></p>
+              <label class="valuation-check"><input id="valuationActivationConfirm" type="checkbox" required /> I confirm this changes the selected existing holding's paper sell-target policy. It does not place a live order.</label>
+              <div class="valuation-actions"><button class="small-button" id="valuationActivate" type="submit" disabled>Activate fixed paper target</button><button class="small-button" id="valuationDeactivate" type="button" disabled>Remove override / restore technical target</button></div>
+            </form>
+            <p id="valuationActionResult" class="valuation-status" role="status" aria-live="polite"></p>
+          </article>
         </section>
 
         <section class="section" id="helpSection" data-panel="help">
