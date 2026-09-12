@@ -16,6 +16,22 @@ const SCAN_LEDGER_FILE = path.join(ROOT, "data", "scan_ledger.jsonl");
 const UPSTOX_AUTH_FILE = path.join(ROOT, "data", "upstox_auth.json");
 const PAPER_LEDGER_FILE = path.join(ROOT, "data", "paper_ledger.jsonl");
 
+// All provider traffic is mocked, including the fail-closed suspension lookup
+// that now runs before scanner requests. Only explicit loopback requests reach TCP.
+function smokeProviderFetch(localFetch) {
+  return async (input, init) => {
+    const target = String(input);
+    if (target === "https://assets.upstox.com/market-quote/instruments/exchange/suspended-instrument.json.gz") {
+      return new Response(JSON.stringify([{ exchange: "NSE", segment: "NSE_EQ", instrument_type: "EQ",
+        trading_symbol: "SMOKESUSPENDED", isin: "INE000X01010", instrument_key: "NSE_EQ|INE000X01010" }]),
+      { status: 200, headers: { "content-type": "application/json", "last-modified": new Date().toUTCString() } });
+    }
+    const url = new URL(target);
+    if (url.protocol === "http:" && url.hostname === "127.0.0.1") return localFetch(input, init);
+    throw new Error("Unmocked external smoke request blocked: " + target);
+  };
+}
+
 function assert(condition, message) {
   if (!condition) throw new Error(message);
 }
@@ -119,6 +135,7 @@ function kellyClosedTrades(wins, losses, winPnl = 100, lossPnl = -50) {
 
 async function runProductionMongoHealthGuard() {
   const script = `
+globalThis.fetch = (${smokeProviderFetch.toString()})(globalThis.fetch);
 process.env.NODE_ENV = "production";
 process.env.REQUIRE_AUTH = "true";
 process.env.REQUIRE_DB = "true";
@@ -126,6 +143,8 @@ process.env.APP_PASSWORD = "smoke-password";
 process.env.APP_SESSION_SECRET = "smoke-session";
 process.env.MONGODB_URI = "mongodb://192.0.2.1:27017/ashstock";
 process.env.MONGO_TIMEOUT_MS = "500";
+process.env.DISABLE_DATA_BANK_AUTO_BOOTSTRAP = "true";
+process.env.DISABLE_PAPER_ENGINE_SCHEDULER = "true";
 const { createServer } = await import("./server.js");
 const server = createServer();
 await new Promise((resolve, reject) => {
@@ -195,12 +214,16 @@ globalThis.__ASH_STOCK_ENV = {
   NODE_ENV: "test",
   REQUIRE_AUTH: "false",
   REQUIRE_DB: "false",
+  MONGODB_URI: "", MONGO_URI: "", MONGO_URL: "", DATABASE_URL: "",
+  DISABLE_DATA_BANK_AUTO_BOOTSTRAP: "true",
+  DISABLE_PAPER_ENGINE_SCHEDULER: "true",
   UPSTOX_API_KEY: "smoke-key",
   UPSTOX_API_SECRET: "smoke-secret",
   UPSTOX_ACCESS_TOKEN: "smoke-token",
   DISABLE_PAPER_ENGINE_AUTOBUY: "false",
   PAPER_ENGINE_MAX_BUYS_PER_RUN: "1"
 };
+globalThis.fetch = (${smokeProviderFetch.toString()})(globalThis.fetch);
 const nativeFetch = globalThis.fetch;
 const { createServer } = await import("./server.js");
 const server = createServer();
@@ -268,7 +291,7 @@ try {
   const upstreamQuoteBatchSizes = [];
   globalThis.fetch = async (url) => {
     const target = String(url);
-    if (!target.startsWith("https://api.upstox.com/v2/market-quote/quotes")) throw new Error("unexpected network request " + target);
+    if (!target.startsWith("https://api.upstox.com/v2/market-quote/quotes")) return nativeFetch(url);
     upstreamQuoteBatchSizes.push(new URL(target).searchParams.get("instrument_key").split(",").filter(Boolean).length);
     return new Response(JSON.stringify({ status: "success", data: quoteData }), { status: 200, headers: { "content-type": "application/json" } });
   };
@@ -498,7 +521,10 @@ async function main() {
     UPSTOX_ACCESS_TOKEN: "",
     NODE_ENV: "test",
     REQUIRE_AUTH: "false",
-    REQUIRE_DB: "false"
+    REQUIRE_DB: "false",
+    MONGODB_URI: "", MONGO_URI: "", MONGO_URL: "", DATABASE_URL: "",
+    DISABLE_DATA_BANK_AUTO_BOOTSTRAP: "true",
+    DISABLE_PAPER_ENGINE_SCHEDULER: "true"
   };
 
   assert(
@@ -1271,7 +1297,9 @@ async function main() {
   }
 }
 
+const smokeNativeFetch = globalThis.fetch;
+globalThis.fetch = smokeProviderFetch(smokeNativeFetch);
 main().catch((error) => {
   console.error(JSON.stringify({ ok: false, error: error.message }));
   process.exitCode = 1;
-});
+}).finally(() => { globalThis.fetch = smokeNativeFetch; });

@@ -3,12 +3,13 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import vm from "node:vm";
+import { Readable } from "node:stream";
 import { planUniverseBatch, completeUniverseBatch, sanitizeUniverseRotation } from "../lib/universe-rotation.mjs";
 
 const now = "2026-09-08T05:00:00.000Z";
 const makeRows = (count) => Array.from({ length: count }, (_, index) => ({
   symbol: `STOCK${String(index).padStart(4, "0")}`, name: `Test Company ${index}`,
-  instrument_key: `NSE_EQ|INE${String(index).padStart(9, "0")}`, exchange: "NSE"
+  instrument_key: `NSE_EQ|INE${String(index).padStart(9, "0")}`, isin: `INE${String(index).padStart(9, "0")}`, exchange: "NSE"
 }));
 const scanResult = (plan, failures = []) => ({ ok: true, scanned: plan.rows.length, failures, summary: { WATCH: plan.rows.length - failures.length, DATA_NEEDED: failures.length } });
 
@@ -107,7 +108,6 @@ const upstreamSymbols = [];
 const jsonResponse = (value, status = 200) => new Response(JSON.stringify(value), { status, headers: { "content-type": "application/json" } });
 globalThis.fetch = async (input, init) => {
   const url = String(input);
-  if (url.startsWith("http://127.0.0.1:")) return nativeFetch(input, init);
   if (url.includes("/historical-candle/")) {
     upstreamSymbols.push(decodeURIComponent(url.split("/historical-candle/")[1].split("/")[0]));
     if (holdNext) {
@@ -140,8 +140,8 @@ try {
   assert.equal(metadataMethods.length, 3, "Every storage backend needs a metadata-only update");
   const storedLedger = { positions: [{ symbol: "HELD", qty: 10, last_price: null }], trades: [], orders: [] };
   const rawStored = { universe: makeRows(3), paperTrader: storedLedger, scannerSettings: { minScoreSelect: 70 }, universeRevision: 1 };
-  const requested = { universe: makeRows(5), scannerRotation: {}, universeRevision: 2, paperTrader: {}, scannerSettings: {} };
-  const metadataFields = ({ universe, scannerRotation, universeRevision }) => ({ universe, scannerRotation, universeRevision });
+  const requested = { universe: makeRows(5), scannerRotation: {}, universeRevision: 2, universeImport: null, paperTrader: {}, scannerSettings: {} };
+  const metadataFields = ({ universe, scannerRotation, universeRevision, universeImport }) => ({ universe, scannerRotation, universeRevision, universeImport });
   const memoryContext = vm.createContext({ state: structuredClone(rawStored), universeMetadataFields: metadataFields, requested });
   const memorySaved = await vm.runInContext(`(async function(nextState) { ${metadataMethods[0][1]} })(requested)`, memoryContext);
   assert.deepEqual(memorySaved.paperTrader, storedLedger);
@@ -156,17 +156,23 @@ try {
   const mongoContext = vm.createContext({ requested, universeMetadataFields: metadataFields,
     collection: { updateOne: async (filter, update) => { mongoUpdate = { filter, update }; return { matchedCount: 1 }; } } });
   await vm.runInContext(`(async function(nextState) { ${metadataMethods[2][1]} })(requested)`, mongoContext);
-  assert.deepEqual(Object.keys(mongoUpdate.update.$set).sort(), ["state.scannerRotation", "state.universe", "state.universeRevision", "updatedAt"].sort(), "Mongo must update only metadata paths, never replace the whole state or paper ledger");
+  assert.deepEqual(Object.keys(mongoUpdate.update.$set).sort(), ["state.scannerRotation", "state.universe", "state.universeRevision", "state.universeImport", "updatedAt"].sort(), "Mongo must update only metadata paths, never replace the whole state or paper ledger");
   assert.deepEqual(Object.keys(mongoUpdate.update), ["$set"]);
   assert.equal(mongoUpdate.filter._id, "default");
   console.log("Rotation storage checks passed: memory/file preserve the ledger; Mongo updates metadata paths only.");
   server = createServer();
-  await new Promise((resolve, reject) => { server.once("error", reject); server.listen(0, "127.0.0.1", resolve); });
-  const base = `http://127.0.0.1:${server.address().port}`;
-  const call = async (url, method = "GET", body) => {
-    const response = await nativeFetch(base + url, { method, headers: { "content-type": "application/json" }, ...(body === undefined ? {} : { body: JSON.stringify(body) }) });
-    return { status: response.status, body: await response.json() };
-  };
+  // Exercise the actual HTTP route listener with streams, without opening a
+  // socket. All upstream calls remain mocked, including concurrent batch tests.
+  const call = (url, method = "GET", body) => new Promise((resolve, reject) => {
+    const req = Readable.from(body === undefined ? [] : [Buffer.from(JSON.stringify(body))]);
+    Object.assign(req, { url, method, headers: { host: "localhost", "content-type": "application/json" }, socket: { remoteAddress: "127.0.0.1" } });
+    const res = { statusCode: 200, headers: {}, headersSent: false,
+      writeHead(status, headers) { this.statusCode = status; this.headers = headers; this.headersSent = true; },
+      setHeader(name, value) { this.headers[name] = value; },
+      end(value) { try { resolve({ status: this.statusCode, body: JSON.parse(String(value || "{}")) }); } catch (error) { reject(error); } }
+    };
+    Promise.resolve(server.listeners("request")[0](req, res)).catch(reject);
+  });
   assert.equal((await call("/api/scanner/next-batch")).status, 405);
   assert.equal((await call("/api/data-bank/load-upstox-nse", "POST", {})).body.saved_universe, 5);
   const seedState = (await call("/api/state")).body.state;
@@ -272,6 +278,7 @@ try {
   console.log("Rotation API checks passed: persisted coverage, failure retries, overlap/master/settings race guards, unchanged formulas/ledger, atomic master refresh.");
 } finally {
   globalThis.fetch = nativeFetch;
-  if (server) await new Promise((resolve) => server.close(resolve));
+  if (server?.listening) await new Promise((resolve) => server.close(resolve));
+  delete globalThis.__ASH_STOCK_ENV;
   process.chdir(originalCwd);
 }
