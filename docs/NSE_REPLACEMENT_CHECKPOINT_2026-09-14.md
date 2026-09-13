@@ -3,7 +3,7 @@
 Repository: `damandamanaulakh-tech/AshStocks`.
 Branch: `codex/valuation-targets-market-refresh`.
 Parent phase commit: `3cde3cd8930f3207de6840e350b8025df6a85db6`.
-This document accompanies the implementation commit; verify its GitHub branch ref before claiming publication. Publication is not deployment or a live database import.
+Implementation published and verified at `2b998afef33c95e2c202b709a41fe57a2cbd9b16`, tree `d2c77404af74873762accfc425408fc37e611df0`. Local branch synchronized cleanly. Publication is not deployment or a live database import.
 
 ## Approved objective and policy
 
@@ -62,10 +62,12 @@ This file contains reference identities, not prices, OHLCV, verified earnings, v
 
 The 13 September public checks returned HTTP 200 for `/api/health` and `/api/ready`. Readiness reported `storage: mongodb` and `persistent: true`; authentication is configured and required. These observations do not prove the production commit or broker session. The browser available to the agent showed `/login`; authenticated Upstox status and the current saved universe remain unverified.
 
+**14 September live addendum (supersedes the prior login blocker):** the scoped browser now opens the authenticated dashboard. Settings displays UI build **`226e139`**, MongoDB storage, **2,349 saved universe rows / instrument keys**, and an Upstox token reported **active via OAuth**, saved 13 September at 10:26:26 (expiry not supplied). Token presence is not a successful current-price or historical-candle probe. The first readiness request timed out after 20 seconds during startup; the bounded retry returned HTTP 200, `ok: true`, `storage: mongodb`, `persistent: true`. No settings, database records or orders were changed. Direct browser navigation to the known read-only `/api/state` route was blocked by the client; no alternate access or credential extraction was attempted. Therefore individual BRICS symbols in the live 2,349-row database remain unverified, despite confirmed membership in the 2,279-row reference.
+
 1. Verify this phase's GitHub commit/ref and clean local branch. Keep `main` and local `V01-2026-09-07` at `226e1394d5af3f0c380593d58917b8d2ee5c13e8`.
-2. Have the user sign in to the scoped AshStocks browser tab, without sending passwords in chat.
+2. Reuse the scoped authenticated AshStocks tab if the session remains available; never request passwords in chat.
 3. Discuss and authorize the production release target. Verify CI/staging and deployment commit; do not silently merge or switch Render to this feature branch.
 4. Confirm authenticated persistence and `import_version: official-nse-master-v2`, then perform the authorized metadata replacement. Capture before/after import counts and holdings/ledger preservation, and verify Upstox candles separately. Existing paper automation may run during the button's subsequent scan; do not confuse import with an order or silently activate trading.
 5. Stop on source, authentication, persistence or identity failures. Retain existing database state. Redeploying the prior code alone does not restore a prior universe; any data rollback needs the pre-import metadata record and must preserve the ledger.
 
-V01 release-asset upload, production rollout, broker authentication, live OHLCV coverage and actual portfolio additions remain separate unfinished items. The user also requested a BRICS summit company-benefit review; preserve its evidence levels and exact listed identities separately from stock selection scores and EPS/PE assumptions.
+V01 release-asset upload, production rollout, actual provider quote/candle verification and portfolio additions remain separate unfinished items. The BRICS company-benefit review and exact reference memberships are saved in `BRICS_COMPANY_REVIEW_2026-09-14.md` and its data evidence file; none modifies stock selection scores or EPS/PE assumptions.

@@ -11,7 +11,7 @@ The user requested small phases that are verified and pushed before proceeding, 
 | 1 | Dated annual EPS × P/E engine, twelve initial assumption sets, deterministic unit tests | Published commit `1d63abdcd89a2c3d57719834e4765160f70bd05d` |
 | 2 | Fresh official NSE/suspension imports, dated reference data, provenance, validation and import/rotation tests | Published commit `b44db8c67ec55053d495964b69d66da252aafe29` |
 | 3 | Sell Targets UI, storage and audit, explicit paper-target activation, manual/automatic exits, regression tests | Published commit `3cde3cd8930f3207de6840e350b8025df6a85db6` |
-| 4 | Fresh NSE company-list membership, exact Upstox identity matching, stock-only EQ replacement | User approved; implementation and dated evidence described in `NSE_REPLACEMENT_CHECKPOINT_2026-09-14.md`. Verify the accompanying commit/ref before describing it as pushed |
+| 4 | Fresh NSE company-list membership, exact Upstox identity matching, stock-only EQ replacement | Published and verified commit `2b998afef33c95e2c202b709a41fe57a2cbd9b16`; implementation, BRICS evidence and live release gap described in `NSE_REPLACEMENT_CHECKPOINT_2026-09-14.md` |
 | 5 | V01 release-asset publication and production rollout | Separate outstanding items; not completed by these feature commits |
 
 ## Verified implementation state

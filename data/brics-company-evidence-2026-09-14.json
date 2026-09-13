@@ -6,6 +6,8 @@
   "universe_reference": "official-nse-master-2026-09-13.json",
   "universe_reference_fetched_at": "2026-09-13T05:00:56.416Z",
   "application_database_updated": false,
+  "live_individual_membership_verified": false,
+  "live_membership_check_limit": "Authenticated Settings reports 2349 saved instruments on build 226e139; direct read-only state navigation blocked by browser client",
   "automatic_selection_or_order_enabled": false,
   "eps_or_price_targets_changed": false,
   "records": [
