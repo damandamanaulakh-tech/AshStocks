@@ -8,7 +8,7 @@ const css = await fs.readFile(new URL("../styles.css", import.meta.url), "utf8")
 const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
 assert.equal(ids.length, new Set(ids).size, "Existing element IDs must remain unique");
 for (const id of ["valuationSection", "valuationAssumptionForm", "valuationActivationForm", "valuationReviewed", "valuationActivationConfirm", "valuationFormulaCatalog", "nseMasterBtn", "scanAllBtn", "quickTradeForm"]) assert.ok(ids.includes(id), `${id} remains mounted`);
-assert.match(html, /app\.js\?v=20260909\.1/);
+assert.match(html, /app\.js\?v=20260913\.1/);
 assert.match(html, /styles\.css\?v=20260909\.1/);
 assert.doesNotMatch(html.match(/<input id="valuationReviewed"[^>]+>/)[0], /\schecked(?:\s|=|\/|>)/);
 assert.doesNotMatch(html.match(/<input id="valuationActivationConfirm"[^>]+>/)[0], /\schecked(?:\s|=|\/|>)/);
@@ -132,6 +132,10 @@ run(`state.marketImport={fetched_at:"2026-09-09T05:00:00Z",eligible_count:2348,a
 assert.match(node("marketImportStatus").textContent, /52 below/);
 assert.match(node("marketImportStatus").textContent, /no invented stocks/);
 assert.match(node("marketImportStatus").textContent, /0 new to saved data/);
+assert.match(node("marketImportStatus").textContent, /Legacy import.*membership has not been verified/);
+run(`state.marketImport={...state.marketImport,membership_verified:true,equity_source_last_modified:"2026-09-10T21:35:02Z",excluded_not_nse_equity_count:351,excluded_non_eq_series_count:14,excluded_suspended_count:12};renderMarketImportStatus()`);
+assert.match(node("marketImportStatus").textContent, /exact symbol \+ ISIN, EQ series only/);
+assert.match(node("marketImportStatus").textContent, /351 provider entries outside the company list, 14 other-series matches and 12 suspended excluded/);
 assert.match(source, /if \(loaded\) await scanFullUniverse\(\)/, "Failed official refresh must not scan an old master");
 assert.match(source, /state\.scanPauseRequested = true/);
 console.log("Valuation UI guard passed: escaping, complete formula catalog, missing-data blanks, explicit reviewed saves / activation confirmation, fixed target display, stale response protection, master provenance and legacy control bindings.");

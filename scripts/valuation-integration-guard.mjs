@@ -4,6 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import vm from "node:vm";
 import { Readable } from "node:stream";
+import { OFFICIAL_NSE_EQUITY_URL, OFFICIAL_NSE_MASTER_URL, OFFICIAL_NSE_SUSPENDED_URL } from "../lib/official-nse-master.mjs";
 
 // Exercise actual HTTP handlers without opening a socket. All provider traffic
 // is mocked and runtime/state files live in a new temporary directory.
@@ -24,6 +25,7 @@ const key = "NSE_EQ|INE464A01036";
 const masterRow = { symbol: "BBL", trading_symbol: "BBL", name: "Bharat Bijlee", isin: "INE464A01036",
   instrument_key: key, exchange: "NSE", segment: "NSE_EQ", instrument_type: "EQ" };
 let master = [masterRow];
+const membershipRows = [masterRow];
 let feedFails = false;
 let quotePrice = 2300;
 let quoteAge = 0;
@@ -31,11 +33,13 @@ let depthQuantity = 100;
 let onQuote = null;
 const calls = [];
 const jsonResponse = (value, status = 200) => new Response(JSON.stringify(value), { status, headers: { "content-type": "application/json", "last-modified": new Date(clock).toUTCString() } });
+const equityResponse = () => new Response("SYMBOL, NAME OF COMPANY, SERIES, DATE OF LISTING, PAID UP VALUE, MARKET LOT, ISIN NUMBER, FACE VALUE\r\n" + membershipRows.map((row) => [row.trading_symbol, row.name, "EQ", "01-JAN-2020", 10, 1, row.isin, 10].map((value) => `"${String(value).replaceAll('"', '""')}"`).join(",")).join("\r\n") + "\r\n", { headers: { "content-type": "text/csv", "last-modified": new Date(clock).toUTCString() } });
 globalThis.fetch = async (input) => {
   const url = String(input);
   calls.push(url);
-  if (url.includes("suspended-instrument")) return jsonResponse([]);
-  if (url === "https://assets.upstox.com/market-quote/instruments/exchange/NSE.json.gz") return jsonResponse(feedFails ? {} : master, feedFails ? 503 : 200);
+  if (url === OFFICIAL_NSE_SUSPENDED_URL) return jsonResponse([]);
+  if (url === OFFICIAL_NSE_EQUITY_URL) return equityResponse();
+  if (url === OFFICIAL_NSE_MASTER_URL) return jsonResponse(feedFails ? {} : master, feedFails ? 503 : 200);
   if (url.includes("/historical-candle/")) return jsonResponse({ status: "success", data: { candles: Array.from({ length: 253 }, (_, index) => {
     const close = 100 + index;
     return [new Date(clock - (252 - index) * 86400000).toISOString(), close * 0.99, close * 1.01, close * 0.98, close, 800000];

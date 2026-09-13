@@ -26,7 +26,8 @@ async function loadUpstoxNseDataBank(options = {}) {
       suspendedInstrumentCache = { at: Date.now(), promise: null, payload: officialSuspendedPayload(snapshot.suspended, snapshot.suspendedRows) };
       return saved;
     });
-    return { ok: true, source: "Upstox NSE instruments JSON", url: OFFICIAL_NSE_MASTER_URL,
+    return { ok: true, source: "NSE EQ-series companies + Upstox instrument master", url: OFFICIAL_NSE_MASTER_URL,
+      equity_source_url: OFFICIAL_NSE_EQUITY_URL,
       total_records_read: snapshot.master.records.length, saved_universe: state.universe.length,
       rows_with_instrument_key: state.universe.filter((row) => row.instrument_key).length,
       sample: state.universe.slice(0, 5), import: sanitizeOfficialNseImport(state.universeImport), data_bank: dataBankSummary(state) };
@@ -74,6 +75,10 @@ function replaceOfficialFunction(source, start, end, replacement, mustReplace, l
 
 export function applyOfficialNseMasterPatches(source, mustReplace) {
   let output = mustReplace(source, "\nasync function dataBankStatus() {", `\n${officialMasterCode}\nasync function dataBankStatus() {`, "insert strict official NSE import helpers");
+  output = mustReplace(output, '    security_type: String(row.security_type || row.securityType || "").trim(),',
+    '    security_type: String(row.security_type || row.securityType || "").trim(),\n    ...(["EQ", "BE", "BZ"].includes(row.nse_series) ? { nse_series: row.nse_series } : {}),', "preserve verified NSE series through scanner storage");
+  output = mustReplace(output, 'name: String(row.name || row.company || row.company_name || row.short_name || row.shortName || row.symbol || "").trim().slice(0, 120),',
+    'name: String(row.name || row.company || row.company_name || row.short_name || row.shortName || row.symbol || "").trim().slice(0, row.nse_series ? 200 : 120),', "preserve full NSE company names without changing legacy name limits");
   output = replaceOfficialFunction(output, "async function loadUpstoxNseDataBank(options = {}) {", "function isoDate(date) {", LOADER, mustReplace, "fresh validated official NSE master import");
   output = replaceOfficialFunction(output, "async function loadSuspendedInstrumentPayload(force = false) {", "async function suspendedNseEqSymbolSet() {", SUSPENDED_LOADER, mustReplace, "bounded official suspension retrieval");
   output = replaceOfficialFunction(output, "async function filterSuspendedScannerRows(rows = []) {", "async function dataIntelligencePayload(force = false) {", String.raw`
@@ -93,7 +98,8 @@ async function filterSuspendedScannerRows(rows = []) {
         const store = await getStore();
         const state = await store.getState();
         json(res, 200, { ok: true, import: sanitizeOfficialNseImport(state.universeImport), universe_count: state.universe.length,
-          import_in_flight: officialMasterImportInFlight, requested_count: 2400, source_url: OFFICIAL_NSE_MASTER_URL });
+          import_in_flight: officialMasterImportInFlight, requested_count: 2400, source_url: OFFICIAL_NSE_MASTER_URL,
+          equity_source_url: OFFICIAL_NSE_EQUITY_URL, import_version: OFFICIAL_NSE_IMPORT_VERSION });
         return;
       }
       if (url.pathname === "/api/data-bank/status") {`, "read-only current market import provenance");

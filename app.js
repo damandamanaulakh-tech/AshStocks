@@ -188,7 +188,10 @@ function renderMarketImportStatus() {
   if (!node) return;
   const item = state.marketImport;
   if (!item) return;
-  node.textContent = `Official market-source fetch: ${isoDate(item.fetched_at) || "time unavailable"} · source modified ${isoDate(item.source_last_modified) || "not supplied"} · ${fmtInt(item.eligible_count)} eligible · ${fmtInt(item.added_count)} new to saved data / ${fmtInt(item.updated_count)} changed / ${fmtInt(item.removed_count)} removed / ${fmtInt(item.unchanged_count)} unchanged. ${Number(item.shortfall) > 0 ? `${fmtInt(item.shortfall)} below the requested ${fmtInt(item.requested_count || 2400)}; no invented stocks added.` : "A refresh does not guarantee newly listed stocks or portfolio eligibility."}`;
+  const membership = item.membership_verified === true
+    ? `NSE company list modified ${isoDate(item.equity_source_last_modified) || "time unavailable"}; exact symbol + ISIN, EQ series only. ${fmtInt(item.excluded_not_nse_equity_count)} provider entries outside the company list, ${fmtInt(item.excluded_non_eq_series_count)} other-series matches and ${fmtInt(item.excluded_suspended_count)} suspended excluded.`
+    : "Legacy import: NSE company-list membership has not been verified. Refresh required.";
+  node.textContent = `${membership} Upstox fetch: ${isoDate(item.fetched_at) || "time unavailable"} · source modified ${isoDate(item.source_last_modified) || "not supplied"} · ${fmtInt(item.eligible_count)} eligible · ${fmtInt(item.added_count)} new to saved data / ${fmtInt(item.updated_count)} changed / ${fmtInt(item.removed_count)} removed / ${fmtInt(item.unchanged_count)} unchanged. ${Number(item.shortfall) > 0 ? `${fmtInt(item.shortfall)} below the requested ${fmtInt(item.requested_count || 2400)}; no invented stocks added.` : "A refresh does not guarantee newly listed stocks or portfolio eligibility."}`;
 }
 
 async function loadMarketImportStatus() {

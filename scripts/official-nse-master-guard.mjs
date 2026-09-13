@@ -6,9 +6,9 @@ import vm from "node:vm";
 import zlib from "node:zlib";
 import { Readable } from "node:stream";
 import {
-  OFFICIAL_NSE_MASTER_URL, OFFICIAL_NSE_SUSPENDED_URL, buildOfficialNseUniverse,
+  OFFICIAL_NSE_MASTER_URL, OFFICIAL_NSE_SUSPENDED_URL, OFFICIAL_NSE_EQUITY_URL, buildOfficialNseUniverse,
   diffOfficialNseUniverse, fetchOfficialInstrumentSource, fetchOfficialNseMaster,
-  officialNseImportMetadata, sanitizeOfficialNseImport, validateOfficialSuspendedRows
+  officialNseImportMetadata, sanitizeOfficialNseImport, validateOfficialSuspendedRows, parseOfficialNseEquityCsv
 } from "../lib/official-nse-master.mjs";
 
 const now = "2026-09-09T03:00:00.000Z";
@@ -19,6 +19,10 @@ const rows = (count, offset = 0) => Array.from({ length: count }, (_, n) => {
     instrument_key: `NSE_EQ|${isin}`, trading_symbol: `TEST${String(index).padStart(4, "0")}`,
     name: `Test Company ${index}` };
 });
+const membership = (records) => records.map((row) => ({ symbol: row.trading_symbol, name: row.name, isin: row.isin, series: "EQ" }));
+const equityHeaders = "SYMBOL, NAME OF COMPANY, SERIES, DATE OF LISTING, PAID UP VALUE, MARKET LOT, ISIN NUMBER, FACE VALUE";
+const csvCell = (value) => `"${String(value).replaceAll('"', '""')}"`;
+const equityCsv = (records) => equityHeaders + "\r\n" + records.map((row) => [row.symbol, row.name, row.series, "01-JAN-2020", 10, 1, row.isin, 10].map(csvCell).join(",")).join("\r\n") + "\r\n";
 const response = (data, { gzip = false, status = 200, headers = {} } = {}) => {
   const bytes = typeof data === "string" ? data : JSON.stringify(data);
   return new Response(gzip ? zlib.gzipSync(bytes) : bytes, { status,
@@ -28,59 +32,135 @@ const response = (data, { gzip = false, status = 200, headers = {} } = {}) => {
 let calls = [];
 const fetchImpl = async (url, init) => {
   calls.push({ url, init });
-  assert.ok([OFFICIAL_NSE_MASTER_URL, OFFICIAL_NSE_SUSPENDED_URL].includes(url));
-  return response(url === OFFICIAL_NSE_MASTER_URL ? rows(3) : [], { gzip: url === OFFICIAL_NSE_MASTER_URL });
+  assert.ok([OFFICIAL_NSE_MASTER_URL, OFFICIAL_NSE_SUSPENDED_URL, OFFICIAL_NSE_EQUITY_URL].includes(url));
+  return response(url === OFFICIAL_NSE_MASTER_URL ? rows(3) : url === OFFICIAL_NSE_EQUITY_URL ? equityCsv(membership(rows(3))) : [], { gzip: url === OFFICIAL_NSE_MASTER_URL });
 };
 const first = await fetchOfficialNseMaster({ fetchImpl, now });
 assert.equal(first.universe.length, 3);
 assert.equal(first.master.encoding, "gzip");
 assert.equal(first.suspended.encoding, "json");
+assert.equal(first.equity.encoding, "csv");
+assert.equal(first.counts.nse_equity_count, 3);
+assert.equal(first.counts.matched_nse_equity_count, 3);
+assert.equal(first.counts.excluded_not_nse_equity_count, 0);
+assert.equal(first.counts.nse_unmatched_count, 0);
+assert.equal(first.counts.nse_non_eq_count, 0);
+assert.equal(first.counts.excluded_non_eq_series_count, 0);
 assert.match(first.master.source_sha256, /^[a-f0-9]{64}$/);
 assert.equal(first.master.source_last_modified, "2026-09-08T00:01:59.000Z");
 assert.equal(first.master.source_time_verified, true);
 assert.ok(calls.every(({ init }) => init.cache === "no-store" && init.redirect === "error" && init.signal));
 await fetchOfficialNseMaster({ fetchImpl, now });
-assert.equal(calls.length, 4, "Every click reads BOTH official sources afresh, including same-day repeats");
+assert.equal(calls.length, 6, "Every click reads ALL THREE official sources afresh, including same-day repeats");
 await assert.rejects(fetchOfficialNseMaster({ url: "http://localhost/private", fetchImpl, now }), /source_not_allowed/);
 await assert.rejects(fetchOfficialInstrumentSource(`${OFFICIAL_NSE_MASTER_URL}?cached=1`, { fetchImpl, now }), /source_not_allowed/);
-assert.equal(calls.length, 4, "Unapproved URL must be rejected before any network request");
+assert.equal(calls.length, 6, "Unapproved URL must be rejected before any network request");
 const metadata = officialNseImportMetadata(first);
 assert.equal(metadata.added_count, 3);
 assert.equal(metadata.requested_count, 2400);
 assert.equal(metadata.shortfall, 2397);
 assert.equal(metadata.is_live_quote_data, false);
+assert.equal(metadata.version, "official-nse-master-v2");
+assert.equal(metadata.membership_verified, true);
+assert.equal(metadata.membership_policy, "nse-equity-list-eq-series-exact-symbol-isin-v2");
+assert.equal(metadata.equity_source_url, OFFICIAL_NSE_EQUITY_URL);
+assert.equal(metadata.equity_source_sha256, first.equity.source_sha256);
+assert.equal(metadata.equity_decoded_sha256, first.equity.decoded_sha256);
+assert.equal(metadata.equity_fetched_at, first.equity.fetched_at);
+assert.equal(metadata.equity_source_last_modified, first.equity.source_last_modified);
+assert.equal(metadata.equity_source_age_hours, first.equity.source_age_hours);
+assert.equal(metadata.equity_downloaded_bytes, first.equity.downloaded_bytes);
+assert.equal(metadata.equity_source_time_verified, true);
+assert.equal(Object.hasOwn(metadata, "excluded_fund_count"), false);
 const unchanged = officialNseImportMetadata(first, first.universe, metadata);
 assert.equal(unchanged.added_count, 0);
 assert.equal(unchanged.updated_count, 0);
 assert.equal(unchanged.unchanged_count, 3);
 assert.equal(unchanged.source_changed, false);
+for (const source of ["master", "suspended", "equity"]) {
+  const changedSource = structuredClone(first);
+  changedSource[source].source_sha256 = "a".repeat(64);
+  assert.equal(officialNseImportMetadata(changedSource, first.universe, metadata).source_changed, true, `${source} evidence changes must be visible even if the universe is unchanged`);
+}
 const changedRows = structuredClone(first.universe);
 changedRows[1].name = "Updated legal name";
 changedRows.pop();
-changedRows.push(buildOfficialNseUniverse(rows(1, 50), []).universe[0]);
+changedRows.push(buildOfficialNseUniverse(rows(1, 50), [], membership(rows(1, 50))).universe[0]);
 const diff = diffOfficialNseUniverse(first.universe, changedRows);
 assert.deepEqual([diff.added_count, diff.updated_count, diff.removed_count, diff.unchanged_count], [1, 1, 1, 1]);
 assert.deepEqual(sanitizeOfficialNseImport(metadata), metadata);
 assert.equal(sanitizeOfficialNseImport({ version: "unknown" }), null);
+const historical = JSON.parse(await fs.readFile(new URL("../data/official-nse-master-2026-09-10.json", import.meta.url), "utf8")).import;
+const historicalSanitized = sanitizeOfficialNseImport(historical);
+assert.equal(historicalSanitized.version, "official-nse-master-v1", "Historical evidence must remain readable as v1");
+assert.notEqual(historicalSanitized.membership_verified, true, "A v1 snapshot must never be falsely promoted to NSE-verified company membership");
+assert.notEqual(sanitizeOfficialNseImport({ ...historical, membership_verified: true }).membership_verified, true, "An injected membership flag cannot upgrade historical v1 evidence");
+
+const quotedMembership = membership(rows(3));
+quotedMembership[0].name = 'Company, "Quoted" Holdings';
+quotedMembership[1].series = "BE";
+quotedMembership[2].series = "BZ";
+assert.deepEqual(parseOfficialNseEquityCsv("\uFEFF" + equityCsv(quotedMembership)), quotedMembership, "Official header whitespace, BOM, CRLF, commas and escaped quotes are supported");
+const seriesFiltered = buildOfficialNseUniverse(rows(3), [], quotedMembership);
+assert.equal(seriesFiltered.counts.nse_equity_count, 3);
+assert.equal(seriesFiltered.counts.matched_nse_equity_count, 3);
+assert.equal(seriesFiltered.counts.nse_non_eq_count, 2);
+assert.equal(seriesFiltered.counts.excluded_non_eq_series_count, 2);
+assert.equal(seriesFiltered.counts.eligible_count, 1);
+assert.deepEqual(seriesFiltered.universe.map((row) => row.symbol), [quotedMembership[0].symbol], "BE/BZ companies are valid listing evidence but are excluded from the EQ-only scanner even when Upstox labels them instrument_type EQ");
+assert.equal(seriesFiltered.universe[0].nse_series, "EQ");
+assert.deepEqual(seriesFiltered.reconciliation.excluded_non_eq_series.map((row) => row.symbol), quotedMembership.slice(1).map((row) => row.symbol));
+const dvr = { symbol: "JISLDVREQS", name: "Jain Irrigation - DVR", isin: "IN9175A01010", series: "EQ" };
+assert.deepEqual(parseOfficialNseEquityCsv(equityCsv([dvr])), [dvr], "Do not reject genuine IN9 DVR equity identities");
+for (const badCsv of ["", equityHeaders + "\r\n", "<html>Unavailable</html>", "SYMBOL,ISIN\nABC,INE000000000", equityCsv(quotedMembership).replace('"Company, ""Quoted"" Holdings"', '"Unclosed company'), equityCsv(quotedMembership).replace(",\"10\"\r\n", "\r\n")]) {
+  assert.throws(() => parseOfficialNseEquityCsv(badCsv), /official_nse_equity_csv_|official_nse_membership_/, "Malformed or empty membership evidence must fail closed");
+}
+for (const badRow of [{ ...quotedMembership[0], series: "XX" }, { ...quotedMembership[0], isin: "INF000000000" }, { ...quotedMembership[0], symbol: "" }, { ...quotedMembership[0], name: "" }]) {
+  assert.throws(() => parseOfficialNseEquityCsv(equityCsv([badRow])), /membership_invalid/);
+}
+for (const duplicate of [quotedMembership[0], { ...quotedMembership[0], name: "Other name" }, { ...quotedMembership[0], symbol: "OTHER" }, { ...quotedMembership[0], isin: rows(1, 100)[0].isin }]) {
+  assert.throws(() => parseOfficialNseEquityCsv(equityCsv([quotedMembership[0], duplicate])), /membership_duplicate_identity/);
+}
 
 const stockRows = rows(4);
 stockRows[1].name = "Example ETF";
+const stockMembership = membership([stockRows[0], stockRows[2], stockRows[3]]);
 const symbolOnlySuspension = { exchange: "NSE", segment: "NSE_EQ", instrument_type: "EQ", trading_symbol: stockRows[2].trading_symbol };
-const filtered = buildOfficialNseUniverse(stockRows, [symbolOnlySuspension]);
+const filtered = buildOfficialNseUniverse(stockRows, [symbolOnlySuspension], stockMembership);
 assert.deepEqual(filtered.universe.map((row) => row.symbol), [stockRows[0].trading_symbol, stockRows[3].trading_symbol]);
-assert.equal(filtered.counts.excluded_fund_count, 1);
+assert.equal(filtered.counts.excluded_not_nse_equity_count, 1);
 assert.equal(filtered.counts.excluded_suspended_count, 1);
+assert.equal(filtered.counts.matched_nse_equity_count, 3);
+assert.equal(filtered.counts.nse_unmatched_count, 0);
+assert.deepEqual(filtered.reconciliation.outside_nse_company_list.map((row) => row.symbol), [stockRows[1].trading_symbol]);
+assert.deepEqual(filtered.reconciliation.excluded_suspended.map((row) => row.symbol), [stockRows[2].trading_symbol]);
+assert.equal(filtered.counts.unique_equity_count, filtered.counts.eligible_count + filtered.counts.excluded_not_nse_equity_count + filtered.counts.excluded_non_eq_series_count + filtered.counts.excluded_suspended_count, "Every distinct broker equity identity must appear in one auditable outcome");
+assert.equal(buildOfficialNseUniverse(stockRows, [], membership(stockRows)).universe.length, 4, "Names containing ETF are not grounds to reject an authoritative company membership match");
+const fundRows = [stockRows[0], { ...stockRows[1], isin: "INF000000001", instrument_key: "NSE_EQ|INF000000001", name: "Opaque AMC instrument" }];
+assert.equal(buildOfficialNseUniverse(fundRows, [], membership([stockRows[0]])).counts.excluded_not_nse_equity_count, 1, "Fund identities absent from the NSE equity list are excluded even when their broker label lacks ETF keywords");
+const extraMembership = [...stockMembership, ...membership(rows(1, 20))];
+assert.equal(buildOfficialNseUniverse(stockRows, [], extraMembership).counts.nse_unmatched_count, 1, "Listed equities missing broker tradable keys are reported, never fabricated");
+assert.deepEqual(buildOfficialNseUniverse(stockRows, [], extraMembership).reconciliation.nse_without_upstox_eq_match.map((row) => row.symbol), [extraMembership.at(-1).symbol]);
+assert.throws(() => buildOfficialNseUniverse(stockRows, []), /membership_required/);
+assert.throws(() => buildOfficialNseUniverse(stockRows, [], { data: stockMembership }), /membership_required/);
+assert.throws(() => buildOfficialNseUniverse(stockRows, [], []), /membership_required|equity_csv_empty|membership_empty/);
+assert.throws(() => buildOfficialNseUniverse(stockRows, [], [{ ...stockMembership[0], isin: rows(1, 20)[0].isin }]), /membership_identity_conflict/);
+assert.throws(() => buildOfficialNseUniverse(stockRows, [], [{ ...stockMembership[0], symbol: "OTHER" }]), /membership_identity_conflict/);
+assert.throws(() => buildOfficialNseUniverse(stockRows, [], [{ ...stockMembership[0], isin: "INF000000000" }]), /membership_invalid/);
+assert.throws(() => buildOfficialNseUniverse(stockRows, [], [stockMembership[0], stockMembership[0]]), /membership_duplicate_identity/);
+const dvrMaster = { ...stockRows[0], trading_symbol: dvr.symbol, isin: dvr.isin, instrument_key: `NSE_EQ|${dvr.isin}` };
+assert.equal(buildOfficialNseUniverse([dvrMaster], [], [dvr]).universe[0].name, dvr.name, "Use NSE legal names, not broker labels");
 assert.equal(validateOfficialSuspendedRows([{ ...stockRows[2], isin: undefined }]).length, 1, "Suspension evidence may omit redundant ISIN");
 assert.throws(() => validateOfficialSuspendedRows([{ ...symbolOnlySuspension, trading_symbol: "" }]), /suspension_identity_invalid/);
 assert.throws(() => validateOfficialSuspendedRows([{ ...stockRows[2], instrument_key: stockRows[1].instrument_key }]), /suspension_identity_invalid/);
 const dummySuspension = { ...symbolOnlySuspension, isin: "DUMMY10887", instrument_key: "NSE_EQ|DUMMY10887" };
 assert.deepEqual(validateOfficialSuspendedRows([dummySuspension]), [{ symbol: symbolOnlySuspension.trading_symbol, instrument_key: "" }], "Official paired DUMMY identifiers must become symbol-only exclusion evidence");
-assert.deepEqual(buildOfficialNseUniverse(stockRows, [dummySuspension]).universe, filtered.universe, "A DUMMY suspension blocks the matching real master stock by symbol");
+assert.deepEqual(buildOfficialNseUniverse(stockRows, [dummySuspension], stockMembership).universe, filtered.universe, "A DUMMY suspension blocks the matching real master stock by symbol");
 const doubleYSuspension = { ...symbolOnlySuspension, isin: "DUMMYY000006", instrument_key: "NSE_EQ|DUMMYY000006" };
 assert.deepEqual(validateOfficialSuspendedRows([doubleYSuspension]), [{ symbol: symbolOnlySuspension.trading_symbol, instrument_key: "" }], "Observed paired DUMMYY identifiers are symbol-only exclusions too");
-assert.deepEqual(buildOfficialNseUniverse(stockRows, [doubleYSuspension]).universe, filtered.universe);
-assert.throws(() => buildOfficialNseUniverse([{ ...stockRows[0], isin: doubleYSuspension.isin, instrument_key: doubleYSuspension.instrument_key }], []), /nse_identity_invalid/);
-assert.throws(() => buildOfficialNseUniverse([{ ...stockRows[0], isin: dummySuspension.isin, instrument_key: dummySuspension.instrument_key }], []), /nse_identity_invalid/, "DUMMY identifiers must never become imported/tradable master instruments");
+assert.deepEqual(buildOfficialNseUniverse(stockRows, [doubleYSuspension], stockMembership).universe, filtered.universe);
+assert.throws(() => buildOfficialNseUniverse([{ ...stockRows[0], isin: doubleYSuspension.isin, instrument_key: doubleYSuspension.instrument_key }], [], stockMembership), /nse_identity_invalid/);
+assert.throws(() => buildOfficialNseUniverse([{ ...stockRows[0], isin: dummySuspension.isin, instrument_key: dummySuspension.instrument_key }], [], stockMembership), /nse_identity_invalid/, "DUMMY identifiers must never become imported/tradable master instruments");
 for (const invalid of [
   { ...dummySuspension, instrument_key: "NSE_EQ|DUMMY10888" },
   { ...dummySuspension, isin: "DUMMY0000287" },
@@ -92,17 +172,18 @@ for (const invalid of [
   { ...dummySuspension, isin: "DUMMYYY000006", instrument_key: "NSE_EQ|DUMMYYY000006" },
   { ...dummySuspension, trading_symbol: "" }
 ]) assert.throws(() => validateOfficialSuspendedRows([invalid]), /suspension_identity_invalid/, "Malformed or inconsistent DUMMY evidence must still fail closed");
-assert.throws(() => buildOfficialNseUniverse([{ ...stockRows[0], isin: undefined }], []), /nse_identity_invalid/, "Master imports must still require a matching ISIN");
-assert.throws(() => buildOfficialNseUniverse([{ ...stockRows[0], exchange: "BSE" }], []), /nse_identity_invalid/);
-assert.throws(() => buildOfficialNseUniverse([{ ...stockRows[0], instrument_key: "NSE_EQ|WRONG" }], []), /nse_identity_invalid/);
-assert.throws(() => buildOfficialNseUniverse([], []), /empty_master/);
-assert.throws(() => buildOfficialNseUniverse(stockRows, { data: [] }), /array_required/);
-assert.throws(() => buildOfficialNseUniverse([null], []), /record_invalid/);
-assert.equal(buildOfficialNseUniverse([...rows(2), ...rows(2)], []).counts.duplicate_count, 2);
-assert.throws(() => buildOfficialNseUniverse([stockRows[0], { ...stockRows[0], name: "Conflicting name" }], []), /duplicate_identity_conflict/);
-assert.throws(() => buildOfficialNseUniverse([stockRows[0], { ...stockRows[0], trading_symbol: "DIFFERENT" }], []), /duplicate_identity_conflict/);
-assert.equal(buildOfficialNseUniverse(rows(2501), []).universe.length, 2501, "Do not truncate valid stocks to the requested 2,400");
-assert.throws(() => buildOfficialNseUniverse(rows(1), rows(1)), /empty_eligible_master/);
+assert.throws(() => buildOfficialNseUniverse([{ ...stockRows[0], isin: undefined }], [], stockMembership), /nse_identity_invalid/, "Master imports must still require a matching ISIN");
+assert.throws(() => buildOfficialNseUniverse([{ ...stockRows[0], exchange: "BSE" }], [], stockMembership), /nse_identity_invalid/);
+assert.throws(() => buildOfficialNseUniverse([{ ...stockRows[0], instrument_key: "NSE_EQ|WRONG" }], [], stockMembership), /nse_identity_invalid/);
+assert.throws(() => buildOfficialNseUniverse([], [], stockMembership), /empty_master/);
+assert.throws(() => buildOfficialNseUniverse(stockRows, { data: [] }, stockMembership), /array_required/);
+assert.throws(() => buildOfficialNseUniverse([null], [], stockMembership), /record_invalid/);
+assert.equal(buildOfficialNseUniverse([...rows(2), ...rows(2)], [], membership(rows(2))).counts.duplicate_count, 2);
+assert.throws(() => buildOfficialNseUniverse([stockRows[0], { ...stockRows[0], name: "Conflicting name" }], [], stockMembership), /duplicate_identity_conflict/);
+assert.throws(() => buildOfficialNseUniverse([stockRows[0], { ...stockRows[0], trading_symbol: "DIFFERENT" }], [], stockMembership), /duplicate_identity_conflict/);
+assert.equal(buildOfficialNseUniverse(rows(2501), [], membership(rows(2501))).universe.length, 2501, "Do not truncate valid stocks to the requested 2,400");
+assert.throws(() => buildOfficialNseUniverse(rows(1), rows(1), membership(rows(1))), /empty_eligible_master/);
+assert.throws(() => buildOfficialNseUniverse(rows(1), [], membership(rows(1, 20))), /empty_eligible_master/);
 
 const failures = [
   [() => response([], { status: 503 }), /fetch_http_503/],
@@ -117,8 +198,13 @@ for (const [fn, pattern] of failures) await assert.rejects(fetchOfficialInstrume
 await assert.rejects(fetchOfficialInstrumentSource(OFFICIAL_NSE_MASTER_URL, { fetchImpl: async () => response(rows(2)), maxDownloadBytes: 10, now }), /download_too_large/);
 await assert.rejects(fetchOfficialInstrumentSource(OFFICIAL_NSE_MASTER_URL, { fetchImpl: async () => response(rows(2), { gzip: true }), maxDecodedBytes: 10, now }), /larger than|too_large/);
 await assert.rejects(fetchOfficialInstrumentSource(OFFICIAL_NSE_MASTER_URL, { fetchImpl: () => new Promise(() => {}), timeoutMs: 10, now }), /fetch_timeout/);
-await assert.rejects(fetchOfficialNseMaster({ fetchImpl: async (url) => response(url === OFFICIAL_NSE_MASTER_URL ? rows(2) : [], { status: url === OFFICIAL_NSE_MASTER_URL ? 200 : 503 }), now }), /fetch_http_503/);
-console.log("Official NSE unit guards passed: fixed fresh URLs, gzip/plain, bounded fetch, strict identities, exclusions, no padding, provenance and diffs.");
+await assert.rejects(fetchOfficialInstrumentSource(OFFICIAL_NSE_EQUITY_URL, { fetchImpl: async () => new Response(equityCsv(membership(rows(2)))), now }), /official_nse_source_date_required/);
+await assert.rejects(fetchOfficialInstrumentSource(OFFICIAL_NSE_EQUITY_URL, { fetchImpl: async () => response(equityCsv(membership(rows(2)))), maxDownloadBytes: 10, now }), /download_too_large/);
+await assert.rejects(fetchOfficialInstrumentSource(OFFICIAL_NSE_EQUITY_URL, { fetchImpl: async () => response(equityCsv(membership(rows(2))), { headers: { "last-modified": "Thu, 01 Jan 2026 00:00:00 GMT" } }), now }), /source_stale/);
+for (const failedSource of [OFFICIAL_NSE_SUSPENDED_URL, OFFICIAL_NSE_EQUITY_URL]) {
+  await assert.rejects(fetchOfficialNseMaster({ fetchImpl: async (url) => response(url === OFFICIAL_NSE_MASTER_URL ? rows(2) : url === OFFICIAL_NSE_EQUITY_URL ? equityCsv(membership(rows(2))) : [], { status: url === failedSource ? 503 : 200 }), now }), /fetch_http_503/);
+}
+console.log("Official NSE unit guards passed: three fresh sources, strict CSV and company membership, identity conflict rejection, bounded fetch, suspensions, no padding, v1/v2 provenance and diffs.");
 
 // Runtime integration is completely isolated and mocks every upstream. No live
 // broker, database, private token or production portfolio is ever accessed.
@@ -128,13 +214,22 @@ const nativeFetch = globalThis.fetch;
 process.chdir(temp);
 globalThis.__ASH_STOCK_ENV = { NODE_ENV: "test", REQUIRE_AUTH: "false", REQUIRE_DB: "false",
   DISABLE_DATA_BANK_AUTO_BOOTSTRAP: "true", DISABLE_PAPER_ENGINE_SCHEDULER: "true", DISABLE_PAPER_ENGINE_AUTOBUY: "true" };
-let masterRows = rows(3), suspendedRows = [], mode = "normal", fetchCalls = 0;
+let masterRows = rows(3), suspendedRows = [], membershipRows = membership(rows(3)), mode = "normal", fetchCalls = 0;
+membershipRows[0].name = "Official NSE " + "Long Legal Company ".repeat(7).trim();
+assert.ok(membershipRows[0].name.length > 120 && membershipRows[0].name.length <= 200);
 globalThis.fetch = async (input, init) => {
   const url = String(input);
-  if (![OFFICIAL_NSE_MASTER_URL, OFFICIAL_NSE_SUSPENDED_URL].includes(url)) throw new Error("Unexpected upstream: " + url);
+  if (![OFFICIAL_NSE_MASTER_URL, OFFICIAL_NSE_SUSPENDED_URL, OFFICIAL_NSE_EQUITY_URL].includes(url)) throw new Error("Unexpected upstream: " + url);
   fetchCalls += 1;
   if (mode === "network-failure") throw new Error("mock upstream unavailable");
   if (mode === "suspension-failure" && url === OFFICIAL_NSE_SUSPENDED_URL) return response([], { status: 503 });
+  if (url === OFFICIAL_NSE_EQUITY_URL) {
+    if (mode === "membership-failure") return response("unavailable", { status: 503 });
+    if (mode === "membership-missing") return response(equityCsv([]), { headers: { "last-modified": new Date().toUTCString() } });
+    if (mode === "membership-no-date") return new Response(equityCsv(membershipRows));
+    if (mode === "membership-conflict") return response(equityCsv([{ ...membershipRows[0], isin: rows(1, 900)[0].isin }]), { headers: { "last-modified": new Date().toUTCString() } });
+    return response(equityCsv(membershipRows), { headers: { "last-modified": new Date().toUTCString() } });
+  }
   return response(url === OFFICIAL_NSE_MASTER_URL ? masterRows : suspendedRows, { gzip: true, headers: { "last-modified": new Date().toUTCString() } });
 };
 let server;
@@ -163,26 +258,32 @@ try {
   assert.equal(imported.status, 200, JSON.stringify(imported.body));
   assert.equal(imported.body.saved_universe, 3, "Caller cannot truncate the actual official market master");
   assert.equal(imported.body.import.eligible_count, 3);
+  assert.equal(imported.body.import.membership_verified, true);
   const after = (await call("/api/state")).body.state;
   assert.deepEqual(after.paperTrader, ledgerBefore, "Replacing scanner master must preserve existing holdings and ledger");
+  assert.equal(after.universe[0].name, membershipRows[0].name, "A valid NSE legal name longer than the broker label limit must survive storage without truncation");
+  assert.ok(after.universe.every((row) => row.nse_series === "EQ"), "Persist the NSE series classification used for refresh comparisons");
   const repeated = await load();
   assert.equal(repeated.body.import.added_count, 0);
   assert.equal(repeated.body.import.updated_count, 0);
   assert.equal(repeated.body.import.unchanged_count, 3);
-  assert.equal(fetchCalls, 4);
+  assert.equal(fetchCalls, 6);
   const prior = (await call("/api/state")).body.state;
-  for (const failureMode of ["network-failure", "suspension-failure"]) {
+  for (const failureMode of ["network-failure", "suspension-failure", "membership-failure", "membership-missing", "membership-no-date", "membership-conflict"]) {
     mode = failureMode;
     const failed = await load();
     assert.ok(failed.status >= 400);
+    const membershipFailureCodes = { "membership-failure": /fetch_http_503/, "membership-missing": /equity_csv_empty|membership_empty/, "membership-no-date": /source_date_required/, "membership-conflict": /membership_identity_conflict/ };
+    if (membershipFailureCodes[failureMode]) assert.match(JSON.stringify(failed.body), membershipFailureCodes[failureMode], "The expected membership gate, not an unrelated error, must reject this refresh");
     const state = (await call("/api/state")).body.state;
-    for (const key of ["universe", "universeImport", "universeRevision", "paperTrader"]) assert.deepEqual(state[key], prior[key], `Failed ${failureMode} must preserve ${key}`);
+    for (const key of ["universe", "universeImport", "universeRevision", "scannerRotation", "scannerSettings", "valuationTargets", "paperTrader"]) assert.deepEqual(state[key], prior[key], `Failed ${failureMode} must preserve ${key}`);
   }
   mode = "normal";
   masterRows = [];
   assert.ok((await load()).status >= 400);
   assert.deepEqual((await call("/api/state")).body.state.universe, prior.universe);
   masterRows = rows(5001);
+  membershipRows = membership(masterRows);
   assert.ok((await load()).status >= 400, "Do not silently truncate sources exceeding storage capacity");
   assert.deepEqual((await call("/api/state")).body.state.universe, prior.universe);
   const countBeforeBlocked = fetchCalls;
@@ -190,6 +291,7 @@ try {
   assert.equal(fetchCalls, countBeforeBlocked);
   masterRows = rows(4, 1);
   masterRows[0].name = "Updated legal name";
+  membershipRows = membership(masterRows);
   suspendedRows = [{ exchange: "NSE", segment: "NSE_EQ", instrument_type: "EQ", trading_symbol: masterRows[3].trading_symbol }];
   const changed = await load();
   assert.equal(changed.body.saved_universe, 3);

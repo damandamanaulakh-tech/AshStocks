@@ -5,6 +5,7 @@ import path from "node:path";
 import vm from "node:vm";
 import { Readable } from "node:stream";
 import { planUniverseBatch, completeUniverseBatch, sanitizeUniverseRotation } from "../lib/universe-rotation.mjs";
+import { OFFICIAL_NSE_EQUITY_URL, OFFICIAL_NSE_MASTER_URL, OFFICIAL_NSE_SUSPENDED_URL } from "../lib/official-nse-master.mjs";
 
 const now = "2026-09-08T05:00:00.000Z";
 const makeRows = (count) => Array.from({ length: count }, (_, index) => ({
@@ -104,8 +105,10 @@ let holdNext = false;
 let signalHeld;
 let releaseHeld;
 let masterRows = makeRows(5);
+let membershipRows = makeRows(5);
 const upstreamSymbols = [];
 const jsonResponse = (value, status = 200) => new Response(JSON.stringify(value), { status, headers: { "content-type": "application/json" } });
+const equityResponse = () => new Response("SYMBOL, NAME OF COMPANY, SERIES, DATE OF LISTING, PAID UP VALUE, MARKET LOT, ISIN NUMBER, FACE VALUE\r\n" + membershipRows.map((row) => [row.symbol, row.name, "EQ", "01-JAN-2020", 10, 1, row.isin, 10].join(",")).join("\r\n") + "\r\n", { headers: { "content-type": "text/csv", "last-modified": new Date().toUTCString() } });
 globalThis.fetch = async (input, init) => {
   const url = String(input);
   if (url.includes("/historical-candle/")) {
@@ -123,8 +126,9 @@ globalThis.fetch = async (input, init) => {
     });
     return jsonResponse({ status: "success", data: { candles } });
   }
-  if (url.includes("suspended")) return jsonResponse([]);
-  if (url.startsWith("https://assets.upstox.com/")) return jsonResponse(masterRows.map((row) => ({ ...row, trading_symbol: row.symbol, segment: "NSE_EQ", instrument_type: "EQ" })));
+  if (url === OFFICIAL_NSE_EQUITY_URL) return equityResponse();
+  if (url === OFFICIAL_NSE_SUSPENDED_URL) return jsonResponse([]);
+  if (url === OFFICIAL_NSE_MASTER_URL) return jsonResponse(masterRows.map((row) => ({ ...row, trading_symbol: row.symbol, segment: "NSE_EQ", instrument_type: "EQ" })));
   if (url.startsWith("https://api.upstox.com/")) return jsonResponse({ status: "success", data: [] });
   throw new Error(`Unexpected upstream during isolated test: ${url}`);
 };
@@ -225,6 +229,7 @@ try {
 
   const oldRevision = (await call("/api/state")).body.state.universeRevision;
   masterRows = makeRows(7);
+  membershipRows = makeRows(7);
   await call("/api/data-bank/load-upstox-nse", "POST", {});
   const refreshed = (await call("/api/state")).body.state;
   assert.equal(refreshed.universe.length, 7);
@@ -242,6 +247,7 @@ try {
   await masterHeld;
   try {
     masterRows = makeRows(8);
+    membershipRows = makeRows(8);
     assert.equal((await call("/api/data-bank/load-upstox-nse", "POST", {})).body.saved_universe, 8);
   } finally { releaseHeld(); }
   assert.equal((await staleMasterBatch).body.error, "universe_or_settings_changed_during_scan");

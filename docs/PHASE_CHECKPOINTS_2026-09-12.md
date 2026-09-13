@@ -10,8 +10,8 @@ The user requested small phases that are verified and pushed before proceeding, 
 | --- | --- | --- |
 | 1 | Dated annual EPS × P/E engine, twelve initial assumption sets, deterministic unit tests | Published commit `1d63abdcd89a2c3d57719834e4765160f70bd05d` |
 | 2 | Fresh official NSE/suspension imports, dated reference data, provenance, validation and import/rotation tests | Published commit `b44db8c67ec55053d495964b69d66da252aafe29` |
-| 3 | Sell Targets UI, storage and audit, explicit paper-target activation, manual/automatic exits, regression tests | This document accompanies the Phase 3 integration commit; its exact hash is available in branch history |
-| 4 | Stock-only classification decision for the 58 fund-like candidates | Pending user decision and classification verification; no filter change silently made |
+| 3 | Sell Targets UI, storage and audit, explicit paper-target activation, manual/automatic exits, regression tests | Published commit `3cde3cd8930f3207de6840e350b8025df6a85db6` |
+| 4 | Fresh NSE company-list membership, exact Upstox identity matching, stock-only EQ replacement | User approved; implementation and dated evidence described in `NSE_REPLACEMENT_CHECKPOINT_2026-09-14.md`. Verify the accompanying commit/ref before describing it as pushed |
 | 5 | V01 release-asset publication and production rollout | Separate outstanding items; not completed by these feature commits |
 
 ## Verified implementation state
@@ -36,5 +36,5 @@ The user requested small phases that are verified and pushed before proceeding, 
 1. Read this checkpoint and `VALUATION_TARGETS_MARKET_REFRESH_2026-09-10.md`.
 2. Check `git status`, the exact feature-branch ref and commit tree on GitHub. Never infer a completed push from staged files or a configured remote.
 3. Verify current account usage before selecting the next bounded phase. The account limits are shared and change; do not treat an earlier percentage as current.
-4. Resolve the Phase 4 choice before changing stock eligibility. Treat deployment/V01 credentials and approval as their own release boundary.
+4. Phase 4 replacement is approved; read its 14 September checkpoint. Treat deployment/V01 credentials and approval as their own release boundary.
 5. Keep each approved phase on the feature branch, test it, push without force, verify its ref/tree, then update the checkpoint. Do not leave a large new batch only in local edits.
