@@ -32,6 +32,9 @@ jobs:
       - name: Python compatibility check
         run: python -m py_compile app.py main.py ashstocks/api.py
 
+      - name: Offline historical asset validator
+        run: python -B -m unittest discover -s tests -p test_asset_ohlcv_validation.py
+
       - name: Python API smoke test
         run: python scripts/check_python_api.py
 
