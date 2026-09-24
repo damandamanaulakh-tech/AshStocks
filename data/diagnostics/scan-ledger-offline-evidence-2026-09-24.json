@@ -1,0 +1,483 @@
+{
+  "schema_version": "ash-scan-ledger-offline-audit-v1",
+  "as_of": "2026-09-24",
+  "revisions": {
+    "feature": "c2a99bf97128d645eb1891e474743b522c9e26a6",
+    "main": "226e1394d5af3f0c380593d58917b8d2ee5c13e8",
+    "base": "37a9e9ceacabd33bc5a2085ad621e368f8fc0cd8"
+  },
+  "source_sha256": {
+    "vendor/base-server-37a9e9ceacabd33bc5a2085ad621e368f8fc0cd8.mjs": "156db2e19447e47c5b642a66f6b74f4809763d386d6cc40430b3dd98d264f324",
+    "feature:server-paper-engine-autobuy-patch.mjs": "45d0269388008be26455390c6ee69a8ec4fcb7eaa66a0e9becc3bc718738badc",
+    "main:server-paper-engine-autobuy-patch.mjs": "5fc9cdda28efa27f4a7ec9e0cbb914eb9bee60279231b6f7ed047ea74450899f",
+    "server-universe-rotation-patch.mjs": "833cbd59f102f31d8796f2935670e72ddfb311ddd3e1adabbc357e98a6e3296d",
+    "lib/universe-rotation.mjs": "cf24cdebdf6b9bec5289c87c34faf27c175535044afd97df54f0c0a894a01580"
+  },
+  "method": "Immutable-commit source-derived engine run/due bodies, rotation/cache implementation and Mongo append/ledger helpers evaluated in disposable VM; all source reads use local git show, no server boot, no sockets, no actual providers/database.",
+  "mocks": [
+    "getStore/state and Mongo insertOne in-memory only; getState is explicitly nonthrowing in these fixtures",
+    "synthetic scanner uses a 400-symbol fixture in 200-row batches for rotation; main direct scanner receives its supplied universe",
+    "fixed clock / always-open market",
+    "provider quotes, settings normalization, planning/risk/execution/lifecycle callbacks are explicit mocks",
+    "withStateMutation directly invokes its callback without the real queue; concurrency races not tested"
+  ],
+  "privacy": "No real credentials, raw portfolio state or database contents read. Token fixture is a literal dummy; process.env is never inspected.",
+  "side_effects": {
+    "network_attempts": 0,
+    "mongo_connections": 0,
+    "server_listeners": 0,
+    "repo_writes": 0,
+    "raw_asset_writes": 0
+  },
+  "results": [
+    {
+      "name": "main_three_successful_runs_reappend_one_fresh_cached_scan",
+      "passed": true,
+      "counts": {
+        "scanner": 0,
+        "plan": 3,
+        "quotes": 3,
+        "monitor": 3,
+        "orders": 3,
+        "stateSave": 3,
+        "metadataSave": 0
+      },
+      "append_attempts": 3,
+      "successful_inserts": 3,
+      "modes": [
+        "paper-engine-manual",
+        "paper-engine-manual",
+        "paper-engine-manual"
+      ],
+      "events": [
+        "getState",
+        "insert:paper-engine-manual",
+        "plan",
+        "quotes",
+        "monitor",
+        "order",
+        "saveState",
+        "getState",
+        "insert:paper-engine-manual",
+        "plan",
+        "quotes",
+        "monitor",
+        "order",
+        "saveState",
+        "getState",
+        "insert:paper-engine-manual",
+        "plan",
+        "quotes",
+        "monitor",
+        "order",
+        "saveState"
+      ],
+      "last_result": true,
+      "distinct_record_ids": 3,
+      "distinct_compact_payloads": 1,
+      "retained_rows_per_record": 75,
+      "cache_flags": [
+        true,
+        true,
+        true
+      ],
+      "synthetic_json_bytes": [
+        9602,
+        9602,
+        9602
+      ],
+      "sizing_warning": "synthetic fixture JSON only, not BSON/compression/live Mongo sizing"
+    },
+    {
+      "name": "main_expired_cached_scan_requests_new_scan",
+      "passed": true,
+      "counts": {
+        "scanner": 1,
+        "plan": 1,
+        "quotes": 1,
+        "monitor": 1,
+        "orders": 1,
+        "stateSave": 1,
+        "metadataSave": 0
+      },
+      "append_attempts": 1,
+      "successful_inserts": 1,
+      "modes": [
+        "paper-engine-manual"
+      ],
+      "events": [
+        "getState",
+        "scanner",
+        "insert:paper-engine-manual",
+        "plan",
+        "quotes",
+        "monitor",
+        "order",
+        "saveState"
+      ],
+      "last_result": true
+    },
+    {
+      "name": "feature_two_fresh_runs_write_rotation_plus_engine_pairs",
+      "passed": true,
+      "counts": {
+        "scanner": 2,
+        "plan": 2,
+        "quotes": 2,
+        "monitor": 2,
+        "orders": 2,
+        "stateSave": 2,
+        "metadataSave": 2
+      },
+      "append_attempts": 4,
+      "successful_inserts": 4,
+      "modes": [
+        "universe-rotation",
+        "paper-engine-manual",
+        "universe-rotation",
+        "paper-engine-manual"
+      ],
+      "events": [
+        "getState",
+        "getState",
+        "scanner",
+        "getState",
+        "insert:universe-rotation",
+        "saveUniverseMetadata",
+        "getState",
+        "insert:paper-engine-manual",
+        "plan",
+        "quotes",
+        "monitor",
+        "order",
+        "saveState",
+        "getState",
+        "getState",
+        "scanner",
+        "getState",
+        "insert:universe-rotation",
+        "saveUniverseMetadata",
+        "getState",
+        "insert:paper-engine-manual",
+        "plan",
+        "quotes",
+        "monitor",
+        "order",
+        "saveState"
+      ],
+      "last_result": true,
+      "pair_content_equal_excluding_event_identity_mode_source": true,
+      "cache_flags": [
+        false,
+        false
+      ],
+      "synthetic_json_bytes": [
+        9595,
+        9602,
+        9595,
+        9602
+      ],
+      "sizing_warning": "different audit events duplicate the compact content; not evidence that either event is disposable"
+    },
+    {
+      "name": "feature_precommitted_scan_reused_once_after_success",
+      "passed": true,
+      "counts": {
+        "scanner": 2,
+        "plan": 2,
+        "quotes": 2,
+        "monitor": 2,
+        "orders": 2,
+        "stateSave": 2,
+        "metadataSave": 2
+      },
+      "append_attempts": 4,
+      "successful_inserts": 4,
+      "modes": [
+        "universe-rotation",
+        "paper-engine-manual",
+        "universe-rotation",
+        "paper-engine-manual"
+      ],
+      "events": [
+        "getState",
+        "scanner",
+        "getState",
+        "insert:universe-rotation",
+        "saveUniverseMetadata",
+        "getState",
+        "getState",
+        "insert:paper-engine-manual",
+        "plan",
+        "quotes",
+        "monitor",
+        "order",
+        "saveState",
+        "getState",
+        "getState",
+        "scanner",
+        "getState",
+        "insert:universe-rotation",
+        "saveUniverseMetadata",
+        "getState",
+        "insert:paper-engine-manual",
+        "plan",
+        "quotes",
+        "monitor",
+        "order",
+        "saveState"
+      ],
+      "last_result": true,
+      "cache_flags": [
+        true,
+        false
+      ]
+    },
+    {
+      "name": "main_insert_rejection_aborts_before_plan_quotes_monitor_orders",
+      "passed": true,
+      "counts": {
+        "scanner": 0,
+        "plan": 0,
+        "quotes": 0,
+        "monitor": 0,
+        "orders": 0,
+        "stateSave": 0,
+        "metadataSave": 0
+      },
+      "append_attempts": 1,
+      "successful_inserts": 0,
+      "modes": [],
+      "events": [
+        "getState",
+        "insert:paper-engine-manual"
+      ],
+      "last_result": null,
+      "manual_promise_rejected": true,
+      "manual_last_result_not_replaced": true
+    },
+    {
+      "name": "feature_rotation_insert_rejection_prevents_cursor_cache_and_downstream",
+      "passed": true,
+      "counts": {
+        "scanner": 1,
+        "plan": 0,
+        "quotes": 0,
+        "monitor": 0,
+        "orders": 0,
+        "stateSave": 0,
+        "metadataSave": 0
+      },
+      "append_attempts": 1,
+      "successful_inserts": 0,
+      "modes": [],
+      "events": [
+        "getState",
+        "getState",
+        "scanner",
+        "getState",
+        "insert:universe-rotation"
+      ],
+      "last_result": null,
+      "committed_cache": null,
+      "rotation_progress_saved": false
+    },
+    {
+      "name": "feature_engine_insert_rejection_leaves_committed_scan_unconsumed_then_retries_cache",
+      "passed": true,
+      "initial_and_retry": {
+        "counts": {
+          "scanner": 1,
+          "plan": 0,
+          "quotes": 0,
+          "monitor": 0,
+          "orders": 0,
+          "stateSave": 0,
+          "metadataSave": 1
+        },
+        "append_attempts": 3,
+        "successful_inserts": 1,
+        "modes": [
+          "universe-rotation"
+        ],
+        "events": [
+          "getState",
+          "getState",
+          "scanner",
+          "getState",
+          "insert:universe-rotation",
+          "saveUniverseMetadata",
+          "getState",
+          "insert:paper-engine-manual",
+          "getState",
+          "getState",
+          "insert:paper-engine-manual"
+        ],
+        "last_result": null
+      },
+      "recovery": {
+        "counts": {
+          "scanner": 1,
+          "plan": 1,
+          "quotes": 1,
+          "monitor": 1,
+          "orders": 1,
+          "stateSave": 1,
+          "metadataSave": 1
+        },
+        "append_attempts": 4,
+        "successful_inserts": 2,
+        "modes": [
+          "universe-rotation",
+          "paper-engine-manual"
+        ],
+        "events": [
+          "getState",
+          "getState",
+          "scanner",
+          "getState",
+          "insert:universe-rotation",
+          "saveUniverseMetadata",
+          "getState",
+          "insert:paper-engine-manual",
+          "getState",
+          "getState",
+          "insert:paper-engine-manual",
+          "getState",
+          "getState",
+          "insert:paper-engine-manual",
+          "plan",
+          "quotes",
+          "monitor",
+          "order",
+          "saveState"
+        ],
+        "last_result": true
+      },
+      "recovery_cache_used": true,
+      "failed_attempts_add_no_documents": true
+    },
+    {
+      "name": "feature_post_append_state_save_failure_can_reappend_same_cached_payload",
+      "passed": true,
+      "counts": {
+        "scanner": 1,
+        "plan": 2,
+        "quotes": 2,
+        "monitor": 2,
+        "orders": 2,
+        "stateSave": 2,
+        "metadataSave": 1
+      },
+      "append_attempts": 3,
+      "successful_inserts": 3,
+      "modes": [
+        "universe-rotation",
+        "paper-engine-manual",
+        "paper-engine-manual"
+      ],
+      "events": [
+        "getState",
+        "getState",
+        "scanner",
+        "getState",
+        "insert:universe-rotation",
+        "saveUniverseMetadata",
+        "getState",
+        "insert:paper-engine-manual",
+        "plan",
+        "quotes",
+        "monitor",
+        "order",
+        "saveState",
+        "getState",
+        "getState",
+        "insert:paper-engine-manual",
+        "plan",
+        "quotes",
+        "monitor",
+        "order",
+        "saveState"
+      ],
+      "last_result": true,
+      "retry_cache_used": true,
+      "identical_successful_engine_payloads": 2,
+      "scope_limit": "State-save rejection is a separate downstream failure scenario. Lifecycle callbacks are mocked; repeated callback calls do not prove real duplicate filled orders."
+    },
+    {
+      "name": "main_scheduler_catches_insert_failure_and_does_not_retry_same_slot",
+      "passed": true,
+      "counts": {
+        "scanner": 0,
+        "plan": 0,
+        "quotes": 0,
+        "monitor": 0,
+        "orders": 0,
+        "stateSave": 0,
+        "metadataSave": 0
+      },
+      "append_attempts": 2,
+      "successful_inserts": 0,
+      "modes": [],
+      "events": [
+        "getState",
+        "insert:paper-engine-10:30",
+        "getState",
+        "insert:paper-engine-10:32"
+      ],
+      "last_result": false,
+      "same_slot_retry_attempts": 0,
+      "next_two_minute_slot_attempted": true,
+      "marked_run_keys": 2
+    },
+    {
+      "name": "feature_scheduler_catches_insert_failure_and_does_not_retry_same_slot",
+      "passed": true,
+      "counts": {
+        "scanner": 2,
+        "plan": 0,
+        "quotes": 0,
+        "monitor": 0,
+        "orders": 0,
+        "stateSave": 0,
+        "metadataSave": 0
+      },
+      "append_attempts": 2,
+      "successful_inserts": 0,
+      "modes": [],
+      "events": [
+        "getState",
+        "getState",
+        "scanner",
+        "getState",
+        "insert:universe-rotation",
+        "getState",
+        "getState",
+        "scanner",
+        "getState",
+        "insert:universe-rotation"
+      ],
+      "last_result": false,
+      "same_slot_retry_attempts": 0,
+      "next_two_minute_slot_attempted": true,
+      "marked_run_keys": 2
+    },
+    {
+      "name": "mongo_append_path_does_not_enforce_250_record_count_retention",
+      "passed": true,
+      "successful_inserts": 251,
+      "distinct_ids": 251,
+      "source_scope": "actual Mongo append method and ledger builder with mocked insertOne; this does not inspect existing server-side TTL indexes or production retention"
+    }
+  ],
+  "total_scenarios": 11,
+  "all_passed": true,
+  "limits": [
+    "This is offline control-flow evidence, not live Mongo size/alarm/deployment proof.",
+    "The real getState path can first archive a paper-ledger startup backfill and fail before scan append; this earlier write/failure path is explicitly mocked out, not exonerated.",
+    "Mocked trading success is used only to prove downstream callbacks are reachable when ledger writes succeed. No scoring, fill correctness or real-order claim is made.",
+    "JSON byte counts are synthetic fixture sizes and omit Mongo BSON/storage/index/compression overhead.",
+    "Feature and main sources are immutable local Git objects at the recorded SHAs, not proof of the live deployed revision.",
+    "The HTTP outer 500 catch is source-inspected, not an exercised server route in this harness."
+  ]
+}
