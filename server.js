@@ -122,6 +122,12 @@ function patchServerSource(source) {
   );
   output = mustReplace(
     output,
+    '            provider: "AshStocks India Scanner",\n            engine: ENGINE_VERSION,\n            storage: store.mode,',
+    '            provider: "AshStocks India Scanner",\n            engine: ENGINE_VERSION,\n            commit: ENV.RENDER_GIT_COMMIT || ENV.RENDER_COMMIT || null,\n            storage: store.mode,',
+    'readiness identifies the checked release'
+  );
+  output = mustReplace(
+    output,
     '    upstox: upstoxStatus(),\n    requirements: {',
     '    upstox: upstoxStatus(),\n    bootstrap: dataBankBootstrapStatus(),\n    requirements: {',
     'data bank summary bootstrap status'

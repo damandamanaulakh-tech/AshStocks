@@ -7,6 +7,8 @@ import { fileURLToPath } from "node:url";
 const PORT = Number(process.env.SMOKE_PORT || 5199);
 const BASE = `http://127.0.0.1:${PORT}`;
 const ROOT = path.dirname(fileURLToPath(new URL("../package.json", import.meta.url)));
+const SMOKE_RELEASE_COMMIT = "1234567890abcdef1234567890abcdef12345678";
+const SMOKE_FALLBACK_COMMIT = "abcdef1234567890abcdef1234567890abcdef12";
 const Q1_INPUTS = [
   path.join(ROOT, "data", "q1_inputs", "fii_symbol_daily.csv"),
   path.join(ROOT, "data", "q1_inputs", "Q1_FII_20D_ranked_top_bottom_deciles_READY_FOR_PRICE_JOIN.csv")
@@ -556,6 +558,8 @@ try {
 async function main() {
   globalThis.__ASH_STOCK_ENV = {
     ...process.env,
+    RENDER_GIT_COMMIT: SMOKE_RELEASE_COMMIT,
+    RENDER_COMMIT: SMOKE_FALLBACK_COMMIT,
     UPSTOX_API_KEY: "smoke-key",
     UPSTOX_API_SECRET: "smoke-secret",
     UPSTOX_ACCESS_TOKEN: "",
@@ -646,6 +650,7 @@ async function main() {
     const health = await request("/api/health");
     assert(health.response.status === 200, "health should be 200 in local smoke");
     assert(health.body.provider === "AshStocks India Scanner", "health should expose scanner provider");
+    assert(health.body.commit === SMOKE_RELEASE_COMMIT, "health should identify the primary release commit");
     assert(health.body.data_bank.requirements.daily_candles_required === 253, "health should expose data-bank candle requirement");
     const servedApp = await request("/app.js");
     const servedAppText = servedApp.body;
@@ -663,7 +668,20 @@ async function main() {
     const ready = await request("/api/ready");
     assert(ready.response.status === 200, "ready should be 200 in local smoke");
     assert(ready.body.ok === true, "ready body should be ok");
+    assert(ready.body.commit === SMOKE_RELEASE_COMMIT, "ready should identify the same checked release as health");
     assert(ready.body.data_bank.upstox.instruments_json_url.endsWith("NSE.json.gz"), "ready should expose Upstox NSE instruments JSON URL");
+
+    try {
+      globalThis.__ASH_STOCK_ENV.RENDER_GIT_COMMIT = "";
+      const fallbackReady = await request("/api/ready");
+      assert(fallbackReady.response.status === 200 && fallbackReady.body.commit === SMOKE_FALLBACK_COMMIT, "ready should expose the fallback release commit");
+      globalThis.__ASH_STOCK_ENV.RENDER_COMMIT = "";
+      const unknownReady = await request("/api/ready");
+      assert(unknownReady.response.status === 200 && unknownReady.body.commit === null, "ready must not invent a release commit when unconfigured");
+    } finally {
+      globalThis.__ASH_STOCK_ENV.RENDER_GIT_COMMIT = SMOKE_RELEASE_COMMIT;
+      globalThis.__ASH_STOCK_ENV.RENDER_COMMIT = SMOKE_FALLBACK_COMMIT;
+    }
 
     const state = await request("/api/state");
     assert(state.response.status === 200, "state should be readable");
