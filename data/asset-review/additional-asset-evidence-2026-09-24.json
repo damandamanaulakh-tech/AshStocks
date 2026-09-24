@@ -1,0 +1,4693 @@
+{
+ "schema_version": "ashstocks-additional-asset-evidence-v1",
+ "as_of": "2026-09-24",
+ "read_only": true,
+ "database_import_performed": false,
+ "source_assets_modified": false,
+ "production_activation_performed": false,
+ "inventory_reference": "data/asset-review/backenddata-release-inventory-2026-09-24.json",
+ "inventory_sha256": "12845723602d01fcc30b8af89a46514a177f1c848b78c8aed56657725ff96d45",
+ "scope": {
+  "pinned_release_asset_count": 171,
+  "archive_integrity_checked_this_batch": 10,
+  "selected_member_bytes_and_crc_checked": 110,
+  "fully_parsed_csv_member_instances": 89,
+  "unique_csv_content_hashes": 52,
+  "xlsx_member_instances_with_stored_cell_content_read": 3,
+  "worksheets_read": 25,
+  "xlsx_nonempty_cells_read": 47345,
+  "plain_text_members_read": 1,
+  "binary_xls_members_byte_checked_but_content_unread": 2,
+  "ifr_members_byte_checked_but_content_uninterpreted": 15,
+  "other_members_of_macro_and_delivery_archives_not_parsed_this_batch": 21,
+  "interpretation": "Scoped member-instance counts include duplicate contents and overlap with earlier asset audits. They are not new market observation counts or a full semantic review of all 171 assets.",
+  "all_release_asset_contents_reviewed": false
+ },
+ "source_audit_digests": {
+  "macro_and_equity_audit_sha256": "2e0abe8d5bab668d1dc32bdd7c7b9fce1a2c56fe7b93b9c4ad6b5d7e22f23282",
+  "institutional_audit_sha256": "1390e96706445d2eff1a55a7c0779c04a3764a83ed7c08ca4a7fa87cf3818fe0",
+  "note": "Working evidence hashes before publication compaction; preserve provenance, not a claim that the combined JSON is byte-identical to helper stdout."
+ },
+ "macro_and_equity": {
+  "as_of": "2026-09-24",
+  "comparison_with_existing_merged_delivery": {
+   "archive": "delivery_batch_check_v0_1.zip",
+   "bytes": 5104660,
+   "compared_columns": [
+    "Prev Close",
+    "Open Price",
+    "High Price",
+    "Low Price",
+    "Last Price",
+    "Close Price",
+    "Average Price",
+    "Total Traded Quantity",
+    "Turnover ₹",
+    "No. of Trades",
+    "Deliverable Qty",
+    "% Dly Qt to Traded Qty"
+   ],
+   "conflicting_keys": 0,
+   "crc_verified": true,
+   "differing_value_keys": 0,
+   "duplicate_key_rows": 0,
+   "member": "delivery_batch_check_v0_1/nse_volume_delivery_16stocks_eq_merged.csv",
+   "numeric_normalization": "Decimal; grouping commas removed; blank/dash/NA markers preserved as missing; not source edits",
+   "only_merged_keys": 0,
+   "only_raw_keys": 0,
+   "raw_unique_eq_keys": 32201,
+   "rows": 32201,
+   "sha256": "03c8a3814e6eb00d3c9fd14e1f93f26decedb87121f2070933a2b622e7fc0e88",
+   "unique_keys": 32201
+  },
+  "database_import_performed": false,
+  "inventory_sha256": "12845723602d01fcc30b8af89a46514a177f1c848b78c8aed56657725ff96d45",
+  "limitations": [
+   "Selected contents only, not every file in every archive.",
+   "Local pinned byte/CRC provenance does not establish original provider or adjustment policy.",
+   "No ISIN or corporate-action history verified; EQ series is not sufficient current eligibility evidence.",
+   "No session calendar or missing trading-session inference; calendar gaps are observations only.",
+   "No live API or Mongo coverage queried; these assets must not be labelled current."
+  ],
+  "macro": {
+   "archive": "FO.Gold.COmm.zip",
+   "bytes": 227019,
+   "columns": {
+    "brent_usd": {
+     "first_populated": "2011-06-08",
+     "invalid_numeric": 0,
+     "last_populated": "2026-06-08",
+     "missing": 164,
+     "negative": 0,
+     "populated": 3741,
+     "zero": 0
+    },
+    "eurinr": {
+     "first_populated": "2011-06-08",
+     "invalid_numeric": 0,
+     "last_populated": "2026-06-08",
+     "missing": 0,
+     "negative": 0,
+     "populated": 3905,
+     "zero": 0
+    },
+    "gold_usd": {
+     "first_populated": "2011-06-08",
+     "invalid_numeric": 0,
+     "last_populated": "2026-06-08",
+     "missing": 139,
+     "negative": 0,
+     "populated": 3766,
+     "zero": 0
+    },
+    "in10y_gsec_yield": {
+     "first_populated": null,
+     "invalid_numeric": 0,
+     "last_populated": null,
+     "missing": 3905,
+     "negative": 0,
+     "populated": 0,
+     "zero": 0
+    },
+    "silver_usd": {
+     "first_populated": "2011-06-08",
+     "invalid_numeric": 0,
+     "last_populated": "2026-06-08",
+     "missing": 139,
+     "negative": 0,
+     "populated": 3766,
+     "zero": 0
+    },
+    "us10y_yield": {
+     "first_populated": "2011-06-08",
+     "invalid_numeric": 0,
+     "last_populated": "2026-06-08",
+     "missing": 139,
+     "negative": 0,
+     "populated": 3766,
+     "zero": 0
+    },
+    "usdinr": {
+     "first_populated": "2011-06-08",
+     "invalid_numeric": 0,
+     "last_populated": "2026-06-08",
+     "missing": 0,
+     "negative": 0,
+     "populated": 3905,
+     "zero": 0
+    },
+    "wti_usd": {
+     "first_populated": "2011-06-08",
+     "invalid_numeric": 0,
+     "last_populated": "2026-06-08",
+     "missing": 138,
+     "negative": 1,
+     "populated": 3767,
+     "zero": 0
+    }
+   },
+   "crc_verified": true,
+   "date_format": "DD-MM-YYYY",
+   "date_max": "2026-06-08",
+   "date_min": "2011-06-08",
+   "days_stale": 108,
+   "descending_steps": 0,
+   "duplicate_date_rows": 0,
+   "header": [
+    "trade_date",
+    "usdinr",
+    "eurinr",
+    "gold_usd",
+    "silver_usd",
+    "brent_usd",
+    "wti_usd",
+    "us10y_yield",
+    "in10y_gsec_yield"
+   ],
+   "member": "FO Gold COmm/feed9_fx_commodity_daily_15Y.csv",
+   "negative_value_locations": [
+    {
+     "column": "wti_usd",
+     "csv_record": 2311,
+     "date": "2020-04-20"
+    }
+   ],
+   "row_grain": "one date with eight macro series; no OHLCV bars or instrument identifiers",
+   "rows": 3905,
+   "sha256": "a957871dd21c29f6d3b0b0b964a408d2ec9626e8a97974db2403b4eb955beb34",
+   "source_instrument_and_units_verified": false,
+   "weekend_rows": 0
+  },
+  "raw_equity": {
+   "all_series_quality_occurrences": {
+    "BL:missing_delivery_pair": 369,
+    "E1:delivery_percent_ratio_mismatch_over_0_011pp": 4,
+    "E1:missing_delivery_pair": 4,
+    "EQ:delivery_percent_ratio_mismatch_over_0_011pp": 60,
+    "EQ:missing_delivery_pair": 56,
+    "IL:missing_delivery_pair": 12,
+    "N2:missing_delivery_pair": 32,
+    "N5:missing_delivery_pair": 4,
+    "N6:missing_delivery_pair": 22,
+    "T0:invalid_ohlc_bounds": 96,
+    "T0:missing_delivery_pair": 8
+   },
+   "bounded_issue_locations": [
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "date": "2020-04-13",
+     "member": "5 years for Stocks/02-02-2016-TO-01-02-2021-BAJAJFINSV-ALL-N.csv",
+     "reasons": [
+      "missing_delivery_pair"
+     ],
+     "row": 205,
+     "series": "EQ",
+     "symbol": "BAJAJFINSV"
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "date": "2019-06-18",
+     "member": "5 years for Stocks/02-02-2016-TO-01-02-2021-BAJAJFINSV-ALL-N.csv",
+     "reasons": [
+      "delivery_percent_ratio_mismatch_over_0_011pp"
+     ],
+     "row": 406,
+     "series": "EQ",
+     "symbol": "BAJAJFINSV"
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "date": "2019-06-17",
+     "member": "5 years for Stocks/02-02-2016-TO-01-02-2021-BAJAJFINSV-ALL-N.csv",
+     "reasons": [
+      "delivery_percent_ratio_mismatch_over_0_011pp"
+     ],
+     "row": 407,
+     "series": "EQ",
+     "symbol": "BAJAJFINSV"
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "date": "2019-01-28",
+     "member": "5 years for Stocks/02-02-2016-TO-01-02-2021-BAJAJFINSV-ALL-N.csv",
+     "reasons": [
+      "missing_delivery_pair"
+     ],
+     "row": 501,
+     "series": "EQ",
+     "symbol": "BAJAJFINSV"
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "date": "2020-04-13",
+     "member": "5 years for Stocks/02-02-2016-TO-01-02-2021-BHARTIARTL-ALL-N.csv",
+     "reasons": [
+      "missing_delivery_pair"
+     ],
+     "row": 205,
+     "series": "EQ",
+     "symbol": "BHARTIARTL"
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "date": "2019-06-18",
+     "member": "5 years for Stocks/02-02-2016-TO-01-02-2021-BHARTIARTL-ALL-N.csv",
+     "reasons": [
+      "delivery_percent_ratio_mismatch_over_0_011pp"
+     ],
+     "row": 406,
+     "series": "EQ",
+     "symbol": "BHARTIARTL"
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "date": "2019-06-17",
+     "member": "5 years for Stocks/02-02-2016-TO-01-02-2021-BHARTIARTL-ALL-N.csv",
+     "reasons": [
+      "delivery_percent_ratio_mismatch_over_0_011pp"
+     ],
+     "row": 407,
+     "series": "EQ",
+     "symbol": "BHARTIARTL"
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "date": "2019-01-28",
+     "member": "5 years for Stocks/02-02-2016-TO-01-02-2021-BHARTIARTL-ALL-N.csv",
+     "reasons": [
+      "missing_delivery_pair"
+     ],
+     "row": 501,
+     "series": "EQ",
+     "symbol": "BHARTIARTL"
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "date": "2020-04-13",
+     "member": "5 years for Stocks/02-02-2016-TO-01-02-2021-DRREDDY-ALL-N.csv",
+     "reasons": [
+      "missing_delivery_pair"
+     ],
+     "row": 205,
+     "series": "EQ",
+     "symbol": "DRREDDY"
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "date": "2019-06-18",
+     "member": "5 years for Stocks/02-02-2016-TO-01-02-2021-DRREDDY-ALL-N.csv",
+     "reasons": [
+      "delivery_percent_ratio_mismatch_over_0_011pp"
+     ],
+     "row": 406,
+     "series": "EQ",
+     "symbol": "DRREDDY"
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "date": "2019-06-17",
+     "member": "5 years for Stocks/02-02-2016-TO-01-02-2021-DRREDDY-ALL-N.csv",
+     "reasons": [
+      "delivery_percent_ratio_mismatch_over_0_011pp"
+     ],
+     "row": 407,
+     "series": "EQ",
+     "symbol": "DRREDDY"
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "date": "2019-02-25",
+     "member": "5 years for Stocks/02-02-2016-TO-01-02-2021-DRREDDY-ALL-N.csv",
+     "reasons": [
+      "missing_delivery_pair"
+     ],
+     "row": 481,
+     "series": "BL",
+     "symbol": "DRREDDY"
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "date": "2019-02-18",
+     "member": "5 years for Stocks/02-02-2016-TO-01-02-2021-DRREDDY-ALL-N.csv",
+     "reasons": [
+      "missing_delivery_pair"
+     ],
+     "row": 487,
+     "series": "BL",
+     "symbol": "DRREDDY"
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "date": "2019-01-28",
+     "member": "5 years for Stocks/02-02-2016-TO-01-02-2021-DRREDDY-ALL-N.csv",
+     "reasons": [
+      "missing_delivery_pair"
+     ],
+     "row": 502,
+     "series": "EQ",
+     "symbol": "DRREDDY"
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "date": "2020-04-13",
+     "member": "5 years for Stocks/02-02-2016-TO-01-02-2021-HDFCBANK-ALL-N.csv",
+     "reasons": [
+      "missing_delivery_pair"
+     ],
+     "row": 205,
+     "series": "EQ",
+     "symbol": "HDFCBANK"
+    }
+   ],
+   "conflicting_key_count": 0,
+   "coverage": [
+    {
+     "date_max": "2021-02-01",
+     "date_min": "2016-02-02",
+     "gaps_above_10_calendar_days": 0,
+     "largest_calendar_gap_days": 5,
+     "symbol": "BAJAJFINSV",
+     "unique_eq_rows": 1238
+    },
+    {
+     "date_max": "2026-06-08",
+     "date_min": "2021-06-09",
+     "gaps_above_10_calendar_days": 0,
+     "largest_calendar_gap_days": 5,
+     "symbol": "BAJFINANCE",
+     "unique_eq_rows": 1239
+    },
+    {
+     "date_max": "2026-06-08",
+     "date_min": "2016-02-02",
+     "gaps_above_10_calendar_days": 1,
+     "largest_calendar_gap_days": 128,
+     "symbol": "BHARTIARTL",
+     "unique_eq_rows": 2477
+    },
+    {
+     "date_max": "2026-06-08",
+     "date_min": "2016-02-02",
+     "gaps_above_10_calendar_days": 1,
+     "largest_calendar_gap_days": 128,
+     "symbol": "DRREDDY",
+     "unique_eq_rows": 2477
+    },
+    {
+     "date_max": "2026-06-08",
+     "date_min": "2016-02-02",
+     "gaps_above_10_calendar_days": 1,
+     "largest_calendar_gap_days": 128,
+     "symbol": "HDFCBANK",
+     "unique_eq_rows": 2477
+    },
+    {
+     "date_max": "2026-06-08",
+     "date_min": "2016-02-02",
+     "gaps_above_10_calendar_days": 1,
+     "largest_calendar_gap_days": 128,
+     "symbol": "HINDUNILVR",
+     "unique_eq_rows": 2477
+    },
+    {
+     "date_max": "2026-06-08",
+     "date_min": "2021-06-09",
+     "gaps_above_10_calendar_days": 0,
+     "largest_calendar_gap_days": 5,
+     "symbol": "ICICIBANK",
+     "unique_eq_rows": 1239
+    },
+    {
+     "date_max": "2026-06-08",
+     "date_min": "2016-02-02",
+     "gaps_above_10_calendar_days": 1,
+     "largest_calendar_gap_days": 128,
+     "symbol": "INFY",
+     "unique_eq_rows": 2477
+    },
+    {
+     "date_max": "2021-02-01",
+     "date_min": "2016-02-02",
+     "gaps_above_10_calendar_days": 0,
+     "largest_calendar_gap_days": 5,
+     "symbol": "M&M",
+     "unique_eq_rows": 1238
+    },
+    {
+     "date_max": "2026-06-08",
+     "date_min": "2016-02-02",
+     "gaps_above_10_calendar_days": 1,
+     "largest_calendar_gap_days": 128,
+     "symbol": "MARUTI",
+     "unique_eq_rows": 2477
+    },
+    {
+     "date_max": "2026-06-08",
+     "date_min": "2021-06-09",
+     "gaps_above_10_calendar_days": 0,
+     "largest_calendar_gap_days": 5,
+     "symbol": "ONGC",
+     "unique_eq_rows": 1239
+    },
+    {
+     "date_max": "2026-06-08",
+     "date_min": "2016-02-02",
+     "gaps_above_10_calendar_days": 1,
+     "largest_calendar_gap_days": 128,
+     "symbol": "RELIANCE",
+     "unique_eq_rows": 2477
+    },
+    {
+     "date_max": "2026-06-08",
+     "date_min": "2016-02-02",
+     "gaps_above_10_calendar_days": 1,
+     "largest_calendar_gap_days": 128,
+     "symbol": "SBIN",
+     "unique_eq_rows": 2477
+    },
+    {
+     "date_max": "2026-06-08",
+     "date_min": "2016-02-02",
+     "gaps_above_10_calendar_days": 1,
+     "largest_calendar_gap_days": 128,
+     "symbol": "SUNPHARMA",
+     "unique_eq_rows": 2477
+    },
+    {
+     "date_max": "2026-06-08",
+     "date_min": "2016-02-02",
+     "gaps_above_10_calendar_days": 1,
+     "largest_calendar_gap_days": 128,
+     "symbol": "TATASTEEL",
+     "unique_eq_rows": 2477
+    },
+    {
+     "date_max": "2021-02-01",
+     "date_min": "2016-02-02",
+     "gaps_above_10_calendar_days": 0,
+     "largest_calendar_gap_days": 5,
+     "symbol": "TCS",
+     "unique_eq_rows": 1238
+    }
+   ],
+   "delivery_ratio_mismatch": {
+    "absolute_difference_pp_max": 6.568733051852678,
+    "absolute_difference_pp_min": 0.01831547408128389,
+    "dates": [
+     "2019-06-17",
+     "2019-06-18",
+     "2025-10-21"
+    ],
+    "symbols": 13
+   },
+   "duplicate_content_groups": [
+    {
+     "sha256": "18bfbf056a1567b3bf2974b572ae0a90619c90e703d77be82e3df8568d54e028",
+     "occurrences": 3,
+     "archives": [
+      "5.years.for.Stocks.zip",
+      "15.stock.10.years.trades.zip"
+     ]
+    },
+    {
+     "sha256": "1c03602585d8fd973e121d2a42e06cb21cc18353a8ef03987293e971fbf8ec04",
+     "occurrences": 3,
+     "archives": [
+      "5.years.for.Stocks.zip",
+      "15.stock.10.years.trades.zip"
+     ]
+    },
+    {
+     "sha256": "28ed14809bafd82de37f130af0559bfc69bb0fb6852e8972a57019f1ed0f1cea",
+     "occurrences": 2,
+     "archives": [
+      "5.years.for.Stocks.zip",
+      "15.stock.10.years.trades.zip"
+     ]
+    },
+    {
+     "sha256": "302814c50c79db08f218efbd404b3f690cefa389dbc022a1da2744eb48ed7f8b",
+     "occurrences": 2,
+     "archives": [
+      "5.years.for.Stocks.zip",
+      "15.stock.10.years.trades.zip"
+     ]
+    },
+    {
+     "sha256": "3b453cee66d710513f53fac796033631ee28b347c9d27d9319e6106aa416da89",
+     "occurrences": 3,
+     "archives": [
+      "5.years.for.Stocks.zip",
+      "15.stock.10.years.trades.zip"
+     ]
+    },
+    {
+     "sha256": "493fb56ca441aaa06761accde30b544cb99afcfa605a21fd7ed983d86c67c32f",
+     "occurrences": 2,
+     "archives": [
+      "5.years.for.Stocks.zip",
+      "15.stock.10.years.trades.zip"
+     ]
+    },
+    {
+     "sha256": "4d29b7fdf4cf249e39ebcfec901aeac42572c8b0d9e9fba6bdfb72e9c6b9ca86",
+     "occurrences": 2,
+     "archives": [
+      "5.years.for.Stocks.zip",
+      "15.stock.10.years.trades.zip"
+     ]
+    },
+    {
+     "sha256": "66b146791fa0b6a87f104f472fcb41423b69c85904b10a0736f20d9d17aa1723",
+     "occurrences": 2,
+     "archives": [
+      "5.years.for.Stocks.zip",
+      "15.stock.10.years.trades.zip"
+     ]
+    },
+    {
+     "sha256": "7c7c2aec9cacf35ba3aedd1c0f09a885a436824bfc521f85cc8d973694097a6d",
+     "occurrences": 2,
+     "archives": [
+      "5.years.for.Stocks.zip",
+      "15.stock.10.years.trades.zip"
+     ]
+    },
+    {
+     "sha256": "82a599c9a6627ee698b65c8aeb6f622c79830bfbd3b4c55f355648d7f1530985",
+     "occurrences": 2,
+     "archives": [
+      "5.years.for.Stocks.zip",
+      "15.stock.10.years.trades.zip"
+     ]
+    },
+    {
+     "sha256": "8fd6f16eb518162e3588ed48c33116d49f334a27d50c7c3ce7e2946165a7bbf0",
+     "occurrences": 3,
+     "archives": [
+      "5.years.for.Stocks.zip",
+      "15.stock.10.years.trades.zip"
+     ]
+    },
+    {
+     "sha256": "975c28e6f2d4ee66f3d8ffb71f658e2494a246a1b0dfcdb0bb5f3027cb9dc867",
+     "occurrences": 2,
+     "archives": [
+      "5.years.for.Stocks.zip",
+      "15.stock.10.years.trades.zip"
+     ]
+    },
+    {
+     "sha256": "9852703ffc1921b5bc7277225fc41ef6f9af4a8aeccafe18c922b938b820ce2a",
+     "occurrences": 2,
+     "archives": [
+      "5.years.for.Stocks.zip",
+      "15.stock.10.years.trades.zip"
+     ]
+    },
+    {
+     "sha256": "9a75b49ff8f950454ef65db3f305af4106432c994905bc992997837ebf16d7de",
+     "occurrences": 2,
+     "archives": [
+      "5.years.for.Stocks.zip",
+      "15.stock.10.years.trades.zip"
+     ]
+    },
+    {
+     "sha256": "b642cc9e10c439a34a1500e8dd979773bfd0544d9483df227cac086fc1eb12b6",
+     "occurrences": 2,
+     "archives": [
+      "5.years.for.Stocks.zip",
+      "15.stock.10.years.trades.zip"
+     ]
+    },
+    {
+     "sha256": "bace29e25ee5b4c0af524e0d8158c990ac1738e385004c00c0c1870952d9f600",
+     "occurrences": 2,
+     "archives": [
+      "5.years.for.Stocks.zip",
+      "15.stock.10.years.trades.zip"
+     ]
+    },
+    {
+     "sha256": "c862203756eac74f3c27b50c3f1fc7650e54b8feabb5c96febc9f8a1f4e258dd",
+     "occurrences": 2,
+     "archives": [
+      "5.years.for.Stocks.zip",
+      "15.stock.10.years.trades.zip"
+     ]
+    },
+    {
+     "sha256": "c9b437227fb4fc4f7636e8482511cb789af6a3ff007259e0b0e40ce3637ea623",
+     "occurrences": 2,
+     "archives": [
+      "5.years.for.Stocks.zip",
+      "15.stock.10.years.trades.zip"
+     ]
+    },
+    {
+     "sha256": "d0beb82df373efbb8cdcfb7c68cb3a21be95e5ccafee2a1d5f55a1004b4ff019",
+     "occurrences": 2,
+     "archives": [
+      "5.years.for.Stocks.zip",
+      "15.stock.10.years.trades.zip"
+     ]
+    },
+    {
+     "sha256": "d359bf4b9acb3a8bd394809c2b5bcec4820aee7788488bcfd0792e035f082397",
+     "occurrences": 2,
+     "archives": [
+      "5.years.for.Stocks.zip",
+      "15.stock.10.years.trades.zip"
+     ]
+    },
+    {
+     "sha256": "d5bafe87d57d84b714a6a634dd3c17886447384c68d508b70ebbcc72b2eac3ea",
+     "occurrences": 2,
+     "archives": [
+      "5.years.for.Stocks.zip",
+      "15.stock.10.years.trades.zip"
+     ]
+    },
+    {
+     "sha256": "d8d47eb48110868e5f02b1b5c34298d786956f5902025dd84f6ff06818448bf8",
+     "occurrences": 2,
+     "archives": [
+      "5.years.for.Stocks.zip",
+      "15.stock.10.years.trades.zip"
+     ]
+    },
+    {
+     "sha256": "e9dc57797a1beb05c630463548cfe857c65ca7af74155a2a2447b2151454d6ca",
+     "occurrences": 2,
+     "archives": [
+      "5.years.for.Stocks.zip",
+      "15.stock.10.years.trades.zip"
+     ]
+    },
+    {
+     "sha256": "f112fd603597d7a0392cdad63fb133c36fba4ad73ea3fefd38a4e7b120226ced",
+     "occurrences": 2,
+     "archives": [
+      "5.years.for.Stocks.zip",
+      "15.stock.10.years.trades.zip"
+     ]
+    },
+    {
+     "sha256": "f349176091693037055102458ce2641a098b68f3c7e91cc666cb7c303e4aa6ff",
+     "occurrences": 2,
+     "archives": [
+      "5.years.for.Stocks.zip",
+      "15.stock.10.years.trades.zip"
+     ]
+    },
+    {
+     "sha256": "fa06d5c40bc0467cb6d7daa1c02156ad6d697bfc27afd44f0f9f7c4383608492",
+     "occurrences": 2,
+     "archives": [
+      "5.years.for.Stocks.zip",
+      "15.stock.10.years.trades.zip"
+     ]
+    }
+   ],
+   "duplicate_content_occurrences": 30,
+   "duplicate_key_occurrences": 41112,
+   "eq_quality_occurrences": {
+    "EQ:delivery_percent_ratio_mismatch_over_0_011pp": 60,
+    "EQ:missing_delivery_pair": 56
+   },
+   "header_after_whitespace_normalization": [
+    "Symbol",
+    "Series",
+    "Date",
+    "Prev Close",
+    "Open Price",
+    "High Price",
+    "Low Price",
+    "Last Price",
+    "Close Price",
+    "Average Price",
+    "Total Traded Quantity",
+    "Turnover ₹",
+    "No. of Trades",
+    "Deliverable Qty",
+    "% Dly Qt to Traded Qty"
+   ],
+   "member_summaries": [
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "member": "5 years for Stocks/02-02-2016-TO-01-02-2021-BAJAJFINSV-ALL-N.csv",
+     "sha256": "8fd6f16eb518162e3588ed48c33116d49f334a27d50c7c3ce7e2946165a7bbf0",
+     "crc_verified": true,
+     "rows": 1239,
+     "symbols": [
+      "BAJAJFINSV"
+     ],
+     "series": {
+      "BL": 1,
+      "EQ": 1238
+     },
+     "date_min": "2016-02-02",
+     "date_max": "2021-02-01",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "delivery_percent_ratio_mismatch_over_0_011pp": 2,
+      "missing_delivery_pair": 2
+     }
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "member": "5 years for Stocks/02-02-2016-TO-01-02-2021-BHARTIARTL-ALL-N.csv",
+     "sha256": "18bfbf056a1567b3bf2974b572ae0a90619c90e703d77be82e3df8568d54e028",
+     "crc_verified": true,
+     "rows": 1241,
+     "symbols": [
+      "BHARTIARTL"
+     ],
+     "series": {
+      "BL": 3,
+      "EQ": 1238
+     },
+     "date_min": "2016-02-02",
+     "date_max": "2021-02-01",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "delivery_percent_ratio_mismatch_over_0_011pp": 2,
+      "missing_delivery_pair": 2
+     }
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "member": "5 years for Stocks/02-02-2016-TO-01-02-2021-DRREDDY-ALL-N.csv",
+     "sha256": "bace29e25ee5b4c0af524e0d8158c990ac1738e385004c00c0c1870952d9f600",
+     "crc_verified": true,
+     "rows": 1240,
+     "symbols": [
+      "DRREDDY"
+     ],
+     "series": {
+      "BL": 2,
+      "EQ": 1238
+     },
+     "date_min": "2016-02-02",
+     "date_max": "2021-02-01",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "delivery_percent_ratio_mismatch_over_0_011pp": 2,
+      "missing_delivery_pair": 4
+     }
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "member": "5 years for Stocks/02-02-2016-TO-01-02-2021-HDFCBANK-ALL-N.csv",
+     "sha256": "493fb56ca441aaa06761accde30b544cb99afcfa605a21fd7ed983d86c67c32f",
+     "crc_verified": true,
+     "rows": 1424,
+     "symbols": [
+      "HDFCBANK"
+     ],
+     "series": {
+      "BL": 3,
+      "EQ": 1238,
+      "IL": 183
+     },
+     "date_min": "2016-02-02",
+     "date_max": "2021-02-01",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "delivery_percent_ratio_mismatch_over_0_011pp": 2,
+      "missing_delivery_pair": 10
+     }
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "member": "5 years for Stocks/02-02-2016-TO-01-02-2021-HINDUNILVR-ALL-N.csv",
+     "sha256": "e9dc57797a1beb05c630463548cfe857c65ca7af74155a2a2447b2151454d6ca",
+     "crc_verified": true,
+     "rows": 1239,
+     "symbols": [
+      "HINDUNILVR"
+     ],
+     "series": {
+      "BL": 1,
+      "EQ": 1238
+     },
+     "date_min": "2016-02-02",
+     "date_max": "2021-02-01",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "delivery_percent_ratio_mismatch_over_0_011pp": 2,
+      "missing_delivery_pair": 2
+     }
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "member": "5 years for Stocks/02-02-2016-TO-01-02-2021-INFY-ALL-N.csv",
+     "sha256": "f112fd603597d7a0392cdad63fb133c36fba4ad73ea3fefd38a4e7b120226ced",
+     "crc_verified": true,
+     "rows": 1241,
+     "symbols": [
+      "INFY"
+     ],
+     "series": {
+      "BL": 3,
+      "EQ": 1238
+     },
+     "date_min": "2016-02-02",
+     "date_max": "2021-02-01",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "delivery_percent_ratio_mismatch_over_0_011pp": 2,
+      "missing_delivery_pair": 3
+     }
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "member": "5 years for Stocks/02-02-2016-TO-01-02-2021-M&M-ALL-N.csv",
+     "sha256": "82a599c9a6627ee698b65c8aeb6f622c79830bfbd3b4c55f355648d7f1530985",
+     "crc_verified": true,
+     "rows": 1241,
+     "symbols": [
+      "M&M"
+     ],
+     "series": {
+      "BL": 3,
+      "EQ": 1238
+     },
+     "date_min": "2016-02-02",
+     "date_max": "2021-02-01",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "delivery_percent_ratio_mismatch_over_0_011pp": 2,
+      "missing_delivery_pair": 4
+     }
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "member": "5 years for Stocks/02-02-2016-TO-01-02-2021-MARUTI-ALL-N.csv",
+     "sha256": "975c28e6f2d4ee66f3d8ffb71f658e2494a246a1b0dfcdb0bb5f3027cb9dc867",
+     "crc_verified": true,
+     "rows": 1240,
+     "symbols": [
+      "MARUTI"
+     ],
+     "series": {
+      "BL": 2,
+      "EQ": 1238
+     },
+     "date_min": "2016-02-02",
+     "date_max": "2021-02-01",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "delivery_percent_ratio_mismatch_over_0_011pp": 2,
+      "missing_delivery_pair": 2
+     }
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "member": "5 years for Stocks/02-02-2016-TO-01-02-2021-RELIANCE-ALL-N.csv",
+     "sha256": "66b146791fa0b6a87f104f472fcb41423b69c85904b10a0736f20d9d17aa1723",
+     "crc_verified": true,
+     "rows": 1240,
+     "symbols": [
+      "RELIANCE"
+     ],
+     "series": {
+      "BL": 2,
+      "EQ": 1238
+     },
+     "date_min": "2016-02-02",
+     "date_max": "2021-02-01",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "delivery_percent_ratio_mismatch_over_0_011pp": 2,
+      "missing_delivery_pair": 2
+     }
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "member": "5 years for Stocks/02-02-2016-TO-01-02-2021-SBIN-ALL-N.csv",
+     "sha256": "f349176091693037055102458ce2641a098b68f3c7e91cc666cb7c303e4aa6ff",
+     "crc_verified": true,
+     "rows": 4138,
+     "symbols": [
+      "SBIN"
+     ],
+     "series": {
+      "BL": 1,
+      "EQ": 1238,
+      "N2": 1004,
+      "N3": 18,
+      "N4": 5,
+      "N5": 1237,
+      "N6": 635
+     },
+     "date_min": "2016-02-02",
+     "date_max": "2021-02-01",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "delivery_percent_ratio_mismatch_over_0_011pp": 2,
+      "missing_delivery_pair": 31
+     }
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "member": "5 years for Stocks/02-02-2016-TO-01-02-2021-SUNPHARMA-ALL-N.csv",
+     "sha256": "b642cc9e10c439a34a1500e8dd979773bfd0544d9483df227cac086fc1eb12b6",
+     "crc_verified": true,
+     "rows": 1240,
+     "symbols": [
+      "SUNPHARMA"
+     ],
+     "series": {
+      "BL": 2,
+      "EQ": 1238
+     },
+     "date_min": "2016-02-02",
+     "date_max": "2021-02-01",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "delivery_percent_ratio_mismatch_over_0_011pp": 2,
+      "missing_delivery_pair": 3
+     }
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "member": "5 years for Stocks/02-02-2016-TO-01-02-2021-TATASTEEL-ALL-N.csv",
+     "sha256": "d5bafe87d57d84b714a6a634dd3c17886447384c68d508b70ebbcc72b2eac3ea",
+     "crc_verified": true,
+     "rows": 1828,
+     "symbols": [
+      "TATASTEEL"
+     ],
+     "series": {
+      "E1": 590,
+      "EQ": 1238
+     },
+     "date_min": "2016-02-02",
+     "date_max": "2021-02-01",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "delivery_percent_ratio_mismatch_over_0_011pp": 4,
+      "missing_delivery_pair": 4
+     }
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "member": "5 years for Stocks/02-02-2016-TO-01-02-2021-TCS-ALL-N.csv",
+     "sha256": "c9b437227fb4fc4f7636e8482511cb789af6a3ff007259e0b0e40ce3637ea623",
+     "crc_verified": true,
+     "rows": 1242,
+     "symbols": [
+      "TCS"
+     ],
+     "series": {
+      "BL": 4,
+      "EQ": 1238
+     },
+     "date_min": "2016-02-02",
+     "date_max": "2021-02-01",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "delivery_percent_ratio_mismatch_over_0_011pp": 2,
+      "missing_delivery_pair": 5
+     }
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "member": "5 years for Stocks/9-06-2021-TO-9-06-2026-BAJFINANCE-ALL-N.csv",
+     "sha256": "9852703ffc1921b5bc7277225fc41ef6f9af4a8aeccafe18c922b938b820ce2a",
+     "crc_verified": true,
+     "rows": 1252,
+     "symbols": [
+      "BAJFINANCE"
+     ],
+     "series": {
+      "BL": 13,
+      "EQ": 1239
+     },
+     "date_min": "2021-06-09",
+     "date_max": "2026-06-08",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "missing_delivery_pair": 13
+     }
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "member": "5 years for Stocks/9-06-2021-TO-9-06-2026-BHARTIARTL-ALL-N.csv",
+     "sha256": "9a75b49ff8f950454ef65db3f305af4106432c994905bc992997837ebf16d7de",
+     "crc_verified": true,
+     "rows": 1263,
+     "symbols": [
+      "BHARTIARTL"
+     ],
+     "series": {
+      "BL": 24,
+      "EQ": 1239
+     },
+     "date_min": "2021-06-09",
+     "date_max": "2026-06-08",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "missing_delivery_pair": 24
+     }
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "member": "5 years for Stocks/9-06-2021-TO-9-06-2026-DRREDDY-ALL-N.csv",
+     "sha256": "1c03602585d8fd973e121d2a42e06cb21cc18353a8ef03987293e971fbf8ec04",
+     "crc_verified": true,
+     "rows": 1247,
+     "symbols": [
+      "DRREDDY"
+     ],
+     "series": {
+      "BL": 8,
+      "EQ": 1239
+     },
+     "date_min": "2021-06-09",
+     "date_max": "2026-06-08",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "missing_delivery_pair": 8
+     }
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "member": "5 years for Stocks/9-06-2021-TO-9-06-2026-HDFCBANK-ALL-N.csv",
+     "sha256": "fa06d5c40bc0467cb6d7daa1c02156ad6d697bfc27afd44f0f9f7c4383608492",
+     "crc_verified": true,
+     "rows": 1274,
+     "symbols": [
+      "HDFCBANK"
+     ],
+     "series": {
+      "BL": 16,
+      "EQ": 1239,
+      "T0": 1,
+      "W3": 18
+     },
+     "date_min": "2021-06-09",
+     "date_max": "2026-06-08",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "invalid_ohlc_bounds": 1,
+      "missing_delivery_pair": 16
+     }
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "member": "5 years for Stocks/9-06-2021-TO-9-06-2026-HINDUNILVR-ALL-N.csv",
+     "sha256": "7c7c2aec9cacf35ba3aedd1c0f09a885a436824bfc521f85cc8d973694097a6d",
+     "crc_verified": true,
+     "rows": 1246,
+     "symbols": [
+      "HINDUNILVR"
+     ],
+     "series": {
+      "BL": 7,
+      "EQ": 1239
+     },
+     "date_min": "2021-06-09",
+     "date_max": "2026-06-08",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "missing_delivery_pair": 7
+     }
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "member": "5 years for Stocks/9-06-2021-TO-9-06-2026-ICICIBANK-ALL-N.csv",
+     "sha256": "d359bf4b9acb3a8bd394809c2b5bcec4820aee7788488bcfd0792e035f082397",
+     "crc_verified": true,
+     "rows": 1254,
+     "symbols": [
+      "ICICIBANK"
+     ],
+     "series": {
+      "BL": 15,
+      "EQ": 1239
+     },
+     "date_min": "2021-06-09",
+     "date_max": "2026-06-08",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "missing_delivery_pair": 15
+     }
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "member": "5 years for Stocks/9-06-2021-TO-9-06-2026-INFY-ALL-N.csv",
+     "sha256": "4d29b7fdf4cf249e39ebcfec901aeac42572c8b0d9e9fba6bdfb72e9c6b9ca86",
+     "crc_verified": true,
+     "rows": 1255,
+     "symbols": [
+      "INFY"
+     ],
+     "series": {
+      "BL": 14,
+      "EQ": 1239,
+      "T0": 2
+     },
+     "date_min": "2021-06-09",
+     "date_max": "2026-06-08",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "invalid_ohlc_bounds": 2,
+      "missing_delivery_pair": 14
+     }
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "member": "5 years for Stocks/9-06-2021-TO-9-06-2026-MARUTI-ALL-N.csv",
+     "sha256": "3b453cee66d710513f53fac796033631ee28b347c9d27d9319e6106aa416da89",
+     "crc_verified": true,
+     "rows": 1246,
+     "symbols": [
+      "MARUTI"
+     ],
+     "series": {
+      "BL": 7,
+      "EQ": 1239
+     },
+     "date_min": "2021-06-09",
+     "date_max": "2026-06-08",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "missing_delivery_pair": 7
+     }
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "member": "5 years for Stocks/9-06-2021-TO-9-06-2026-ONGC-ALL-N.csv",
+     "sha256": "d8d47eb48110868e5f02b1b5c34298d786956f5902025dd84f6ff06818448bf8",
+     "crc_verified": true,
+     "rows": 1251,
+     "symbols": [
+      "ONGC"
+     ],
+     "series": {
+      "BL": 7,
+      "EQ": 1239,
+      "T0": 5
+     },
+     "date_min": "2021-06-09",
+     "date_max": "2026-06-08",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "invalid_ohlc_bounds": 5,
+      "missing_delivery_pair": 7
+     }
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "member": "5 years for Stocks/9-06-2021-TO-9-06-2026-RELIANCE-ALL-N (1).csv",
+     "sha256": "d0beb82df373efbb8cdcfb7c68cb3a21be95e5ccafee2a1d5f55a1004b4ff019",
+     "crc_verified": true,
+     "rows": 1260,
+     "symbols": [
+      "RELIANCE"
+     ],
+     "series": {
+      "BL": 18,
+      "EQ": 1239,
+      "T0": 3
+     },
+     "date_min": "2021-06-09",
+     "date_max": "2026-06-08",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "invalid_ohlc_bounds": 3,
+      "missing_delivery_pair": 19
+     }
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "member": "5 years for Stocks/9-06-2021-TO-9-06-2026-SBIN-ALL-N (1).csv",
+     "sha256": "302814c50c79db08f218efbd404b3f690cefa389dbc022a1da2744eb48ed7f8b",
+     "crc_verified": true,
+     "rows": 1285,
+     "symbols": [
+      "SBIN"
+     ],
+     "series": {
+      "BL": 13,
+      "EQ": 1239,
+      "T0": 33
+     },
+     "date_min": "2021-06-09",
+     "date_max": "2026-06-08",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "delivery_percent_ratio_mismatch_over_0_011pp": 1,
+      "invalid_ohlc_bounds": 28,
+      "missing_delivery_pair": 15
+     }
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "member": "5 years for Stocks/9-06-2021-TO-9-06-2026-SUNPHARMA-ALL-N.csv",
+     "sha256": "c862203756eac74f3c27b50c3f1fc7650e54b8feabb5c96febc9f8a1f4e258dd",
+     "crc_verified": true,
+     "rows": 1255,
+     "symbols": [
+      "SUNPHARMA"
+     ],
+     "series": {
+      "BL": 16,
+      "EQ": 1239
+     },
+     "date_min": "2021-06-09",
+     "date_max": "2026-06-08",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "delivery_percent_ratio_mismatch_over_0_011pp": 1,
+      "missing_delivery_pair": 16
+     }
+    },
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "member": "5 years for Stocks/9-06-2021-TO-9-06-2026-TATASTEEL-ALL-N.csv",
+     "sha256": "28ed14809bafd82de37f130af0559bfc69bb0fb6852e8972a57019f1ed0f1cea",
+     "crc_verified": true,
+     "rows": 1258,
+     "symbols": [
+      "TATASTEEL"
+     ],
+     "series": {
+      "BL": 8,
+      "EQ": 1239,
+      "T0": 11
+     },
+     "date_min": "2021-06-09",
+     "date_max": "2026-06-08",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "invalid_ohlc_bounds": 9,
+      "missing_delivery_pair": 9
+     }
+    },
+    {
+     "archive": "15.stock.10.years.trades.zip",
+     "member": "15 stock 10 years trades/02-02-2016-TO-01-02-2021-BAJAJFINSV-ALL-N (1).csv",
+     "sha256": "8fd6f16eb518162e3588ed48c33116d49f334a27d50c7c3ce7e2946165a7bbf0",
+     "crc_verified": true,
+     "rows": 1239,
+     "symbols": [
+      "BAJAJFINSV"
+     ],
+     "series": {
+      "BL": 1,
+      "EQ": 1238
+     },
+     "date_min": "2016-02-02",
+     "date_max": "2021-02-01",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "delivery_percent_ratio_mismatch_over_0_011pp": 2,
+      "missing_delivery_pair": 2
+     }
+    },
+    {
+     "archive": "15.stock.10.years.trades.zip",
+     "member": "15 stock 10 years trades/02-02-2016-TO-01-02-2021-BAJAJFINSV-ALL-N.csv",
+     "sha256": "8fd6f16eb518162e3588ed48c33116d49f334a27d50c7c3ce7e2946165a7bbf0",
+     "crc_verified": true,
+     "rows": 1239,
+     "symbols": [
+      "BAJAJFINSV"
+     ],
+     "series": {
+      "BL": 1,
+      "EQ": 1238
+     },
+     "date_min": "2016-02-02",
+     "date_max": "2021-02-01",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "delivery_percent_ratio_mismatch_over_0_011pp": 2,
+      "missing_delivery_pair": 2
+     }
+    },
+    {
+     "archive": "15.stock.10.years.trades.zip",
+     "member": "15 stock 10 years trades/02-02-2016-TO-01-02-2021-BHARTIARTL-ALL-N (1).csv",
+     "sha256": "18bfbf056a1567b3bf2974b572ae0a90619c90e703d77be82e3df8568d54e028",
+     "crc_verified": true,
+     "rows": 1241,
+     "symbols": [
+      "BHARTIARTL"
+     ],
+     "series": {
+      "BL": 3,
+      "EQ": 1238
+     },
+     "date_min": "2016-02-02",
+     "date_max": "2021-02-01",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "delivery_percent_ratio_mismatch_over_0_011pp": 2,
+      "missing_delivery_pair": 2
+     }
+    },
+    {
+     "archive": "15.stock.10.years.trades.zip",
+     "member": "15 stock 10 years trades/02-02-2016-TO-01-02-2021-BHARTIARTL-ALL-N.csv",
+     "sha256": "18bfbf056a1567b3bf2974b572ae0a90619c90e703d77be82e3df8568d54e028",
+     "crc_verified": true,
+     "rows": 1241,
+     "symbols": [
+      "BHARTIARTL"
+     ],
+     "series": {
+      "BL": 3,
+      "EQ": 1238
+     },
+     "date_min": "2016-02-02",
+     "date_max": "2021-02-01",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "delivery_percent_ratio_mismatch_over_0_011pp": 2,
+      "missing_delivery_pair": 2
+     }
+    },
+    {
+     "archive": "15.stock.10.years.trades.zip",
+     "member": "15 stock 10 years trades/02-02-2016-TO-01-02-2021-DRREDDY-ALL-N.csv",
+     "sha256": "bace29e25ee5b4c0af524e0d8158c990ac1738e385004c00c0c1870952d9f600",
+     "crc_verified": true,
+     "rows": 1240,
+     "symbols": [
+      "DRREDDY"
+     ],
+     "series": {
+      "BL": 2,
+      "EQ": 1238
+     },
+     "date_min": "2016-02-02",
+     "date_max": "2021-02-01",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "delivery_percent_ratio_mismatch_over_0_011pp": 2,
+      "missing_delivery_pair": 4
+     }
+    },
+    {
+     "archive": "15.stock.10.years.trades.zip",
+     "member": "15 stock 10 years trades/02-02-2016-TO-01-02-2021-HDFCBANK-ALL-N.csv",
+     "sha256": "493fb56ca441aaa06761accde30b544cb99afcfa605a21fd7ed983d86c67c32f",
+     "crc_verified": true,
+     "rows": 1424,
+     "symbols": [
+      "HDFCBANK"
+     ],
+     "series": {
+      "BL": 3,
+      "EQ": 1238,
+      "IL": 183
+     },
+     "date_min": "2016-02-02",
+     "date_max": "2021-02-01",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "delivery_percent_ratio_mismatch_over_0_011pp": 2,
+      "missing_delivery_pair": 10
+     }
+    },
+    {
+     "archive": "15.stock.10.years.trades.zip",
+     "member": "15 stock 10 years trades/02-02-2016-TO-01-02-2021-HINDUNILVR-ALL-N.csv",
+     "sha256": "e9dc57797a1beb05c630463548cfe857c65ca7af74155a2a2447b2151454d6ca",
+     "crc_verified": true,
+     "rows": 1239,
+     "symbols": [
+      "HINDUNILVR"
+     ],
+     "series": {
+      "BL": 1,
+      "EQ": 1238
+     },
+     "date_min": "2016-02-02",
+     "date_max": "2021-02-01",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "delivery_percent_ratio_mismatch_over_0_011pp": 2,
+      "missing_delivery_pair": 2
+     }
+    },
+    {
+     "archive": "15.stock.10.years.trades.zip",
+     "member": "15 stock 10 years trades/02-02-2016-TO-01-02-2021-INFY-ALL-N.csv",
+     "sha256": "f112fd603597d7a0392cdad63fb133c36fba4ad73ea3fefd38a4e7b120226ced",
+     "crc_verified": true,
+     "rows": 1241,
+     "symbols": [
+      "INFY"
+     ],
+     "series": {
+      "BL": 3,
+      "EQ": 1238
+     },
+     "date_min": "2016-02-02",
+     "date_max": "2021-02-01",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "delivery_percent_ratio_mismatch_over_0_011pp": 2,
+      "missing_delivery_pair": 3
+     }
+    },
+    {
+     "archive": "15.stock.10.years.trades.zip",
+     "member": "15 stock 10 years trades/02-02-2016-TO-01-02-2021-M&M-ALL-N.csv",
+     "sha256": "82a599c9a6627ee698b65c8aeb6f622c79830bfbd3b4c55f355648d7f1530985",
+     "crc_verified": true,
+     "rows": 1241,
+     "symbols": [
+      "M&M"
+     ],
+     "series": {
+      "BL": 3,
+      "EQ": 1238
+     },
+     "date_min": "2016-02-02",
+     "date_max": "2021-02-01",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "delivery_percent_ratio_mismatch_over_0_011pp": 2,
+      "missing_delivery_pair": 4
+     }
+    },
+    {
+     "archive": "15.stock.10.years.trades.zip",
+     "member": "15 stock 10 years trades/02-02-2016-TO-01-02-2021-MARUTI-ALL-N.csv",
+     "sha256": "975c28e6f2d4ee66f3d8ffb71f658e2494a246a1b0dfcdb0bb5f3027cb9dc867",
+     "crc_verified": true,
+     "rows": 1240,
+     "symbols": [
+      "MARUTI"
+     ],
+     "series": {
+      "BL": 2,
+      "EQ": 1238
+     },
+     "date_min": "2016-02-02",
+     "date_max": "2021-02-01",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "delivery_percent_ratio_mismatch_over_0_011pp": 2,
+      "missing_delivery_pair": 2
+     }
+    },
+    {
+     "archive": "15.stock.10.years.trades.zip",
+     "member": "15 stock 10 years trades/02-02-2016-TO-01-02-2021-RELIANCE-ALL-N.csv",
+     "sha256": "66b146791fa0b6a87f104f472fcb41423b69c85904b10a0736f20d9d17aa1723",
+     "crc_verified": true,
+     "rows": 1240,
+     "symbols": [
+      "RELIANCE"
+     ],
+     "series": {
+      "BL": 2,
+      "EQ": 1238
+     },
+     "date_min": "2016-02-02",
+     "date_max": "2021-02-01",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "delivery_percent_ratio_mismatch_over_0_011pp": 2,
+      "missing_delivery_pair": 2
+     }
+    },
+    {
+     "archive": "15.stock.10.years.trades.zip",
+     "member": "15 stock 10 years trades/02-02-2016-TO-01-02-2021-SBIN-ALL-N.csv",
+     "sha256": "f349176091693037055102458ce2641a098b68f3c7e91cc666cb7c303e4aa6ff",
+     "crc_verified": true,
+     "rows": 4138,
+     "symbols": [
+      "SBIN"
+     ],
+     "series": {
+      "BL": 1,
+      "EQ": 1238,
+      "N2": 1004,
+      "N3": 18,
+      "N4": 5,
+      "N5": 1237,
+      "N6": 635
+     },
+     "date_min": "2016-02-02",
+     "date_max": "2021-02-01",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "delivery_percent_ratio_mismatch_over_0_011pp": 2,
+      "missing_delivery_pair": 31
+     }
+    },
+    {
+     "archive": "15.stock.10.years.trades.zip",
+     "member": "15 stock 10 years trades/02-02-2016-TO-01-02-2021-SUNPHARMA-ALL-N.csv",
+     "sha256": "b642cc9e10c439a34a1500e8dd979773bfd0544d9483df227cac086fc1eb12b6",
+     "crc_verified": true,
+     "rows": 1240,
+     "symbols": [
+      "SUNPHARMA"
+     ],
+     "series": {
+      "BL": 2,
+      "EQ": 1238
+     },
+     "date_min": "2016-02-02",
+     "date_max": "2021-02-01",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "delivery_percent_ratio_mismatch_over_0_011pp": 2,
+      "missing_delivery_pair": 3
+     }
+    },
+    {
+     "archive": "15.stock.10.years.trades.zip",
+     "member": "15 stock 10 years trades/02-02-2016-TO-01-02-2021-TATASTEEL-ALL-N.csv",
+     "sha256": "d5bafe87d57d84b714a6a634dd3c17886447384c68d508b70ebbcc72b2eac3ea",
+     "crc_verified": true,
+     "rows": 1828,
+     "symbols": [
+      "TATASTEEL"
+     ],
+     "series": {
+      "E1": 590,
+      "EQ": 1238
+     },
+     "date_min": "2016-02-02",
+     "date_max": "2021-02-01",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "delivery_percent_ratio_mismatch_over_0_011pp": 4,
+      "missing_delivery_pair": 4
+     }
+    },
+    {
+     "archive": "15.stock.10.years.trades.zip",
+     "member": "15 stock 10 years trades/02-02-2016-TO-01-02-2021-TCS-ALL-N.csv",
+     "sha256": "c9b437227fb4fc4f7636e8482511cb789af6a3ff007259e0b0e40ce3637ea623",
+     "crc_verified": true,
+     "rows": 1242,
+     "symbols": [
+      "TCS"
+     ],
+     "series": {
+      "BL": 4,
+      "EQ": 1238
+     },
+     "date_min": "2016-02-02",
+     "date_max": "2021-02-01",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "delivery_percent_ratio_mismatch_over_0_011pp": 2,
+      "missing_delivery_pair": 5
+     }
+    },
+    {
+     "archive": "15.stock.10.years.trades.zip",
+     "member": "15 stock 10 years trades/9-06-2021-TO-9-06-2026-BAJFINANCE-ALL-N.csv",
+     "sha256": "9852703ffc1921b5bc7277225fc41ef6f9af4a8aeccafe18c922b938b820ce2a",
+     "crc_verified": true,
+     "rows": 1252,
+     "symbols": [
+      "BAJFINANCE"
+     ],
+     "series": {
+      "BL": 13,
+      "EQ": 1239
+     },
+     "date_min": "2021-06-09",
+     "date_max": "2026-06-08",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "missing_delivery_pair": 13
+     }
+    },
+    {
+     "archive": "15.stock.10.years.trades.zip",
+     "member": "15 stock 10 years trades/9-06-2021-TO-9-06-2026-BHARTIARTL-ALL-N.csv",
+     "sha256": "9a75b49ff8f950454ef65db3f305af4106432c994905bc992997837ebf16d7de",
+     "crc_verified": true,
+     "rows": 1263,
+     "symbols": [
+      "BHARTIARTL"
+     ],
+     "series": {
+      "BL": 24,
+      "EQ": 1239
+     },
+     "date_min": "2021-06-09",
+     "date_max": "2026-06-08",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "missing_delivery_pair": 24
+     }
+    },
+    {
+     "archive": "15.stock.10.years.trades.zip",
+     "member": "15 stock 10 years trades/9-06-2021-TO-9-06-2026-DRREDDY-ALL-N (1).csv",
+     "sha256": "1c03602585d8fd973e121d2a42e06cb21cc18353a8ef03987293e971fbf8ec04",
+     "crc_verified": true,
+     "rows": 1247,
+     "symbols": [
+      "DRREDDY"
+     ],
+     "series": {
+      "BL": 8,
+      "EQ": 1239
+     },
+     "date_min": "2021-06-09",
+     "date_max": "2026-06-08",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "missing_delivery_pair": 8
+     }
+    },
+    {
+     "archive": "15.stock.10.years.trades.zip",
+     "member": "15 stock 10 years trades/9-06-2021-TO-9-06-2026-DRREDDY-ALL-N.csv",
+     "sha256": "1c03602585d8fd973e121d2a42e06cb21cc18353a8ef03987293e971fbf8ec04",
+     "crc_verified": true,
+     "rows": 1247,
+     "symbols": [
+      "DRREDDY"
+     ],
+     "series": {
+      "BL": 8,
+      "EQ": 1239
+     },
+     "date_min": "2021-06-09",
+     "date_max": "2026-06-08",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "missing_delivery_pair": 8
+     }
+    },
+    {
+     "archive": "15.stock.10.years.trades.zip",
+     "member": "15 stock 10 years trades/9-06-2021-TO-9-06-2026-HDFCBANK-ALL-N.csv",
+     "sha256": "fa06d5c40bc0467cb6d7daa1c02156ad6d697bfc27afd44f0f9f7c4383608492",
+     "crc_verified": true,
+     "rows": 1274,
+     "symbols": [
+      "HDFCBANK"
+     ],
+     "series": {
+      "BL": 16,
+      "EQ": 1239,
+      "T0": 1,
+      "W3": 18
+     },
+     "date_min": "2021-06-09",
+     "date_max": "2026-06-08",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "invalid_ohlc_bounds": 1,
+      "missing_delivery_pair": 16
+     }
+    },
+    {
+     "archive": "15.stock.10.years.trades.zip",
+     "member": "15 stock 10 years trades/9-06-2021-TO-9-06-2026-HINDUNILVR-ALL-N.csv",
+     "sha256": "7c7c2aec9cacf35ba3aedd1c0f09a885a436824bfc521f85cc8d973694097a6d",
+     "crc_verified": true,
+     "rows": 1246,
+     "symbols": [
+      "HINDUNILVR"
+     ],
+     "series": {
+      "BL": 7,
+      "EQ": 1239
+     },
+     "date_min": "2021-06-09",
+     "date_max": "2026-06-08",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "missing_delivery_pair": 7
+     }
+    },
+    {
+     "archive": "15.stock.10.years.trades.zip",
+     "member": "15 stock 10 years trades/9-06-2021-TO-9-06-2026-ICICIBANK-ALL-N.csv",
+     "sha256": "d359bf4b9acb3a8bd394809c2b5bcec4820aee7788488bcfd0792e035f082397",
+     "crc_verified": true,
+     "rows": 1254,
+     "symbols": [
+      "ICICIBANK"
+     ],
+     "series": {
+      "BL": 15,
+      "EQ": 1239
+     },
+     "date_min": "2021-06-09",
+     "date_max": "2026-06-08",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "missing_delivery_pair": 15
+     }
+    },
+    {
+     "archive": "15.stock.10.years.trades.zip",
+     "member": "15 stock 10 years trades/9-06-2021-TO-9-06-2026-INFY-ALL-N.csv",
+     "sha256": "4d29b7fdf4cf249e39ebcfec901aeac42572c8b0d9e9fba6bdfb72e9c6b9ca86",
+     "crc_verified": true,
+     "rows": 1255,
+     "symbols": [
+      "INFY"
+     ],
+     "series": {
+      "BL": 14,
+      "EQ": 1239,
+      "T0": 2
+     },
+     "date_min": "2021-06-09",
+     "date_max": "2026-06-08",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "invalid_ohlc_bounds": 2,
+      "missing_delivery_pair": 14
+     }
+    },
+    {
+     "archive": "15.stock.10.years.trades.zip",
+     "member": "15 stock 10 years trades/9-06-2021-TO-9-06-2026-MARUTI-ALL-N (1).csv",
+     "sha256": "3b453cee66d710513f53fac796033631ee28b347c9d27d9319e6106aa416da89",
+     "crc_verified": true,
+     "rows": 1246,
+     "symbols": [
+      "MARUTI"
+     ],
+     "series": {
+      "BL": 7,
+      "EQ": 1239
+     },
+     "date_min": "2021-06-09",
+     "date_max": "2026-06-08",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "missing_delivery_pair": 7
+     }
+    },
+    {
+     "archive": "15.stock.10.years.trades.zip",
+     "member": "15 stock 10 years trades/9-06-2021-TO-9-06-2026-MARUTI-ALL-N.csv",
+     "sha256": "3b453cee66d710513f53fac796033631ee28b347c9d27d9319e6106aa416da89",
+     "crc_verified": true,
+     "rows": 1246,
+     "symbols": [
+      "MARUTI"
+     ],
+     "series": {
+      "BL": 7,
+      "EQ": 1239
+     },
+     "date_min": "2021-06-09",
+     "date_max": "2026-06-08",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "missing_delivery_pair": 7
+     }
+    },
+    {
+     "archive": "15.stock.10.years.trades.zip",
+     "member": "15 stock 10 years trades/9-06-2021-TO-9-06-2026-ONGC-ALL-N.csv",
+     "sha256": "d8d47eb48110868e5f02b1b5c34298d786956f5902025dd84f6ff06818448bf8",
+     "crc_verified": true,
+     "rows": 1251,
+     "symbols": [
+      "ONGC"
+     ],
+     "series": {
+      "BL": 7,
+      "EQ": 1239,
+      "T0": 5
+     },
+     "date_min": "2021-06-09",
+     "date_max": "2026-06-08",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "invalid_ohlc_bounds": 5,
+      "missing_delivery_pair": 7
+     }
+    },
+    {
+     "archive": "15.stock.10.years.trades.zip",
+     "member": "15 stock 10 years trades/9-06-2021-TO-9-06-2026-RELIANCE-ALL-N (1).csv",
+     "sha256": "d0beb82df373efbb8cdcfb7c68cb3a21be95e5ccafee2a1d5f55a1004b4ff019",
+     "crc_verified": true,
+     "rows": 1260,
+     "symbols": [
+      "RELIANCE"
+     ],
+     "series": {
+      "BL": 18,
+      "EQ": 1239,
+      "T0": 3
+     },
+     "date_min": "2021-06-09",
+     "date_max": "2026-06-08",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "invalid_ohlc_bounds": 3,
+      "missing_delivery_pair": 19
+     }
+    },
+    {
+     "archive": "15.stock.10.years.trades.zip",
+     "member": "15 stock 10 years trades/9-06-2021-TO-9-06-2026-SBIN-ALL-N (1).csv",
+     "sha256": "302814c50c79db08f218efbd404b3f690cefa389dbc022a1da2744eb48ed7f8b",
+     "crc_verified": true,
+     "rows": 1285,
+     "symbols": [
+      "SBIN"
+     ],
+     "series": {
+      "BL": 13,
+      "EQ": 1239,
+      "T0": 33
+     },
+     "date_min": "2021-06-09",
+     "date_max": "2026-06-08",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "delivery_percent_ratio_mismatch_over_0_011pp": 1,
+      "invalid_ohlc_bounds": 28,
+      "missing_delivery_pair": 15
+     }
+    },
+    {
+     "archive": "15.stock.10.years.trades.zip",
+     "member": "15 stock 10 years trades/9-06-2021-TO-9-06-2026-SUNPHARMA-ALL-N.csv",
+     "sha256": "c862203756eac74f3c27b50c3f1fc7650e54b8feabb5c96febc9f8a1f4e258dd",
+     "crc_verified": true,
+     "rows": 1255,
+     "symbols": [
+      "SUNPHARMA"
+     ],
+     "series": {
+      "BL": 16,
+      "EQ": 1239
+     },
+     "date_min": "2021-06-09",
+     "date_max": "2026-06-08",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "delivery_percent_ratio_mismatch_over_0_011pp": 1,
+      "missing_delivery_pair": 16
+     }
+    },
+    {
+     "archive": "15.stock.10.years.trades.zip",
+     "member": "15 stock 10 years trades/9-06-2021-TO-9-06-2026-TATASTEEL-ALL-N.csv",
+     "sha256": "28ed14809bafd82de37f130af0559bfc69bb0fb6852e8972a57019f1ed0f1cea",
+     "crc_verified": true,
+     "rows": 1258,
+     "symbols": [
+      "TATASTEEL"
+     ],
+     "series": {
+      "BL": 8,
+      "EQ": 1239,
+      "T0": 11
+     },
+     "date_min": "2021-06-09",
+     "date_max": "2026-06-08",
+     "duplicate_key_rows": 0,
+     "quality": {
+      "invalid_ohlc_bounds": 9,
+      "missing_delivery_pair": 9
+     }
+    }
+   ],
+   "members": 56,
+   "observed_series_rows": {
+    "BL": 405,
+    "E1": 1180,
+    "EQ": 69356,
+    "IL": 366,
+    "N2": 2008,
+    "N3": 36,
+    "N4": 10,
+    "N5": 2474,
+    "N6": 1270,
+    "T0": 110,
+    "W3": 36
+   },
+   "symbols": 16,
+   "total_rows": 77251,
+   "unique_content_members": 26,
+   "unique_eq_quality": {
+    "delivery_percent_ratio_mismatch_over_0_011pp": 28,
+    "missing_delivery_pair": 26
+   },
+   "unique_keys_by_series": {
+    "BL": 193,
+    "E1": 590,
+    "EQ": 32201,
+    "IL": 183,
+    "N2": 1004,
+    "N3": 18,
+    "N4": 5,
+    "N5": 1237,
+    "N6": 635,
+    "T0": 55,
+    "W3": 18
+   },
+   "unique_symbol_series_date_keys": 36139,
+   "archive_summaries": [
+    {
+     "archive": "5.years.for.Stocks.zip",
+     "csv_members": 26,
+     "unique_content_members": 26,
+     "rows": 36139
+    },
+    {
+     "archive": "15.stock.10.years.trades.zip",
+     "csv_members": 30,
+     "unique_content_members": 26,
+     "rows": 41112
+    }
+   ]
+  },
+  "read_only": true,
+  "schema": "ashstocks-selected-macro-and-equity-asset-audit-v1",
+  "source_archives": [
+   {
+    "archive": "FO.Gold.COmm.zip",
+    "bytes": 650231,
+    "non_directory_members": 15,
+    "pinned": true,
+    "selected_members": 1,
+    "sha256": "91ec88fc88e461ab7eaa15b345fdaa15a0804c09a64e5afe1761e861549f8378"
+   },
+   {
+    "archive": "5.years.for.Stocks.zip",
+    "bytes": 1744115,
+    "non_directory_members": 26,
+    "pinned": true,
+    "selected_members": 26,
+    "sha256": "9a52a8100ccbb124fa33944133be697e584e74a8c63d15a3009cf625b031da91"
+   },
+   {
+    "archive": "15.stock.10.years.trades.zip",
+    "bytes": 1990441,
+    "non_directory_members": 30,
+    "pinned": true,
+    "selected_members": 30,
+    "sha256": "f97aafa4dd1b1b2d8aef4befacb74c454212d88868543a2648fbb828e6a4916b"
+   },
+   {
+    "archive": "delivery_batch_check_v0_1.zip",
+    "bytes": 1774075,
+    "non_directory_members": 8,
+    "pinned": true,
+    "selected_members": 1,
+    "sha256": "e90a7ffe3669c09cd1eae56474e76e713c6729b6fcf10f9de5b25b1c73b96c6f"
+   }
+  ],
+  "consumer_mapping": [
+   {
+    "dataset": "macro daily CSV",
+    "candidate_consumer": "Historical market-regime research and optional macro feature adapter",
+    "existing_runtime": "server-market-context-patch.mjs:8-9,22-34 fetches live Yahoo USDINR and gold cards",
+    "connection_state": "No raw asset adapter found; gold_usd instrument basis is not proven equivalent to GC=F",
+    "current_dashboard_use_allowed": false
+   },
+   {
+    "dataset": "32,201 unique EQ historical stock-days",
+    "candidate_consumer": "Historical OHLCV/delivery panel after identity, adjustment, calendar and quality review",
+    "existing_runtime": "lib/stock-selection-engine.mjs:262 consumes caller-supplied deliveryPercentile20; config/stock-selection-parameters.v0.1.json:61 limits it to optional confirmation",
+    "connection_state": "Exact duplicate coverage of existing merged16stock file; no net new EQ history; Mongo presence remains unqueried",
+    "current_universe_replacement_allowed": false
+   },
+   {
+    "dataset": "non-EQ raw rows",
+    "candidate_consumer": "Separate series-specific research only after identity/type validation",
+    "connection_state": "Must not be silently combined with EQ equity candles",
+    "automatic_equity_import_allowed": false
+   }
+  ]
+ },
+ "institutional": {
+  "schema_version": "ashstocks-institutional-archive-readonly-audit-v1",
+  "as_of": "2026-09-24",
+  "read_only": true,
+  "database_import_performed": false,
+  "source_assets_modified": false,
+  "requested_fii_zip": {
+   "exists_in_pinned_release": false,
+   "exists_as_local_root_asset": false,
+   "status": "Referenced only by embedded source_file claims in audited data; that is not proof the archive exists."
+  },
+  "archives": [
+   {
+    "archive": "FII.DII.Nifty.zip",
+    "bytes": 803225,
+    "sha256": "f5671b47ceb5a9265e75da7017b21996cc87897ae440dcbeb1cdc054c717331c",
+    "pinned_size_sha256_match": true,
+    "coverage": "selected CSV, XLSX and text contents audited; see each member status for exceptions",
+    "members": [
+     {
+      "member": "FII DII Nifty/",
+      "bytes": 0,
+      "directory": true
+     },
+     {
+      "member": "FII DII Nifty/fii_stats_05-Jun-2026.xls",
+      "bytes": 9216,
+      "directory": false,
+      "sha256": "69f845663e636a495c5ff54ce41549f348094332d7b3c8a20e1ef47bce64f8eb",
+      "crc_read_completed": true,
+      "identical_root_assets": [
+       "fii_stats_05-Jun-2026.xls"
+      ],
+      "content_status": "binary XLS unread; hash/reference only"
+     },
+     {
+      "member": "FII DII Nifty/fii_stats_08-Jun-2026.xls",
+      "bytes": 9216,
+      "directory": false,
+      "sha256": "97aca37bc73cc59aa32431e25e06be2608fd7ce035ff8e85e5f2f6757c65ed69",
+      "crc_read_completed": true,
+      "identical_root_assets": [
+       "fii_stats_08-Jun-2026.1.xls",
+       "fii_stats_08-Jun-2026.xls"
+      ],
+      "content_status": "binary XLS unread; hash/reference only"
+     },
+     {
+      "member": "FII DII Nifty/Indian Stock Market Chronicles FIIDII and Nifty Historical Study.xlsx",
+      "bytes": 821252,
+      "directory": false,
+      "sha256": "2bfcdf1fc5aa5b4d4ce4012796a17b4f4876741bd69037ff8028c06ba73662b3",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "all nonempty worksheet cell values and formula/cache/error nodes read",
+      "workbook": {
+       "formula_cells": 0,
+       "formula_cached_nonempty": 0,
+       "typed_error_cells": 0,
+       "sheets": [
+        {
+         "sheet": "FII & DII , Nifty Data",
+         "declared_extent": {
+          "max_row": 2340,
+          "max_column": 8
+         },
+         "actual_nonempty_extent": "A1:H2340",
+         "nonempty_rows": 2340,
+         "nonempty_cells": 18720,
+         "first_nonempty_row_number": 1,
+         "dates": {
+          "Date": {
+           "min": "2014-01-01",
+           "max": "2023-07-14",
+           "distinct_dates": 2339,
+           "valid_rows": 2339,
+           "unparsed_nonmissing_rows": 0,
+           "missing_rows": 0,
+           "duplicate_date_rows": 0,
+           "weekend_rows": 4
+          }
+         }
+        },
+        {
+         "sheet": "Gross  Sales of FII & DII",
+         "declared_extent": {
+          "max_row": 16,
+          "max_column": 3
+         },
+         "actual_nonempty_extent": "A1:C16",
+         "nonempty_rows": 14,
+         "nonempty_cells": 42,
+         "first_nonempty_row_number": 3,
+         "dates": {}
+        },
+        {
+         "sheet": "Gross  Purchases of FII & DII",
+         "declared_extent": {
+          "max_row": 16,
+          "max_column": 3
+         },
+         "actual_nonempty_extent": "A1:C16",
+         "nonempty_rows": 14,
+         "nonempty_cells": 42,
+         "first_nonempty_row_number": 3,
+         "dates": {}
+        },
+        {
+         "sheet": "Net Sales or PurchasesFII & DII",
+         "declared_extent": {
+          "max_row": 16,
+          "max_column": 4
+         },
+         "actual_nonempty_extent": "A1:D16",
+         "nonempty_rows": 14,
+         "nonempty_cells": 56,
+         "first_nonempty_row_number": 3,
+         "dates": {}
+        },
+        {
+         "sheet": "Nifty Data",
+         "declared_extent": {
+          "max_row": 2359,
+          "max_column": 2
+         },
+         "actual_nonempty_extent": "A1:B2359",
+         "nonempty_rows": 2359,
+         "nonempty_cells": 4718,
+         "first_nonempty_row_number": 1,
+         "dates": {
+          "Date": {
+           "min": "2014-01-01",
+           "max": "2023-07-14",
+           "distinct_dates": 2358,
+           "valid_rows": 2358,
+           "unparsed_nonmissing_rows": 0,
+           "missing_rows": 0,
+           "duplicate_date_rows": 0,
+           "weekend_rows": 6
+          }
+         }
+        },
+        {
+         "sheet": "Raw Data",
+         "declared_extent": {
+          "max_row": 2969,
+          "max_column": 7
+         },
+         "actual_nonempty_extent": "A1:G2969",
+         "nonempty_rows": 2969,
+         "nonempty_cells": 20783,
+         "first_nonempty_row_number": 1,
+         "dates": {
+          "Date": {
+           "min": "2014-01-01",
+           "max": "2023-07-17",
+           "distinct_dates": 2340,
+           "valid_rows": 2968,
+           "unparsed_nonmissing_rows": 0,
+           "missing_rows": 0,
+           "duplicate_date_rows": 628,
+           "weekend_rows": 4
+          }
+         }
+        },
+        {
+         "sheet": "Dash Board",
+         "declared_extent": {
+          "max_row": 2,
+          "max_column": 21
+         },
+         "actual_nonempty_extent": "A1:A1",
+         "nonempty_rows": 1,
+         "nonempty_cells": 1,
+         "first_nonempty_row_number": 1,
+         "dates": {}
+        }
+       ],
+       "native_objects_rendered_or_recalculated": false,
+       "reader_warnings": [
+        "Slicer List extension is not supported and will be removed"
+       ]
+      }
+     }
+    ],
+    "uncompressed_bytes": 839684
+   },
+   {
+    "archive": "volume_derivatives_review_v0_3.zip",
+    "bytes": 213753,
+    "sha256": "98d12b02ad6db594bd575785c18f65146bdd86f0bc50bce53b4fc45465910a49",
+    "pinned_size_sha256_match": true,
+    "coverage": "selected CSV, XLSX and text contents audited; see each member status for exceptions",
+    "members": [
+     {
+      "member": "volume_derivatives_review_v0_3/",
+      "bytes": 0,
+      "directory": true
+     },
+     {
+      "member": "volume_derivatives_review_v0_3/fii_dii_cash_full_history_clean.csv",
+      "bytes": 765678,
+      "directory": false,
+      "sha256": "78dd9152a24422ef851cf755535b85af4169efe2edbcbe2a4e976c722e56b368",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "all CSV rows and fields read",
+      "csv": {
+       "header": [
+        "trade_date",
+        "fii_gross_purchase_cr",
+        "fii_gross_sales_cr",
+        "fii_net_cr",
+        "dii_gross_purchase_cr",
+        "dii_gross_sales_cr",
+        "dii_net_cr",
+        "source_file",
+        "fii_5d_net_cr",
+        "fii_10d_net_cr",
+        "dii_5d_net_cr",
+        "dii_10d_net_cr",
+        "fii_minus_dii_5d_cr",
+        "fii_negative_day",
+        "fii_negative_days_10d",
+        "FII_CASH_STRESS_Q10",
+        "FII_CASH_STRESS_Q05",
+        "FII_SELL_CLUSTER_7IN10",
+        "FII_DII_DIVERGENCE_5D"
+       ],
+       "data_rows": 3770,
+       "malformed_width_rows": 0,
+       "exact_duplicate_rows": 0,
+       "missing_by_column": {
+        "fii_5d_net_cr": 2,
+        "fii_10d_net_cr": 4,
+        "dii_5d_net_cr": 2,
+        "dii_10d_net_cr": 4,
+        "fii_minus_dii_5d_cr": 2,
+        "fii_negative_days_10d": 4
+       },
+       "dates": {
+        "trade_date": {
+         "min": "2007-01-06",
+         "max": "2022-12-08",
+         "distinct_dates": 3770,
+         "valid_rows": 3770,
+         "unparsed_nonmissing_rows": 0,
+         "missing_rows": 0,
+         "duplicate_date_rows": 0,
+         "weekend_rows": 395
+        }
+       },
+       "candidate_keys": {
+        "trade_date": {
+         "distinct_keys": 3770,
+         "duplicate_rows": 0,
+         "conflicting_rows": 0
+        }
+       },
+       "embedded_source_file_claims": [
+        "Fii Dii Trading activity.csv"
+       ],
+       "numeric_cell_coverage": {
+        "nonmissing_numeric_cells": 45222,
+        "entirely_numeric_nonmissing_column_count": 12,
+        "fractional_column_count": 11,
+        "fractional_cell_count": 41158
+       }
+      }
+     },
+     {
+      "member": "volume_derivatives_review_v0_3/participantwise_oi_latest_clean.csv",
+      "bytes": 1223,
+      "directory": false,
+      "sha256": "844455bfdbd8a07dd6e6da694e4ceef2805516990635659cb2261ab4a1ad873f",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "all CSV rows and fields read",
+      "csv": {
+       "header": [
+        "trade_date",
+        "client_type",
+        "Future Index Long",
+        "Future Index Short",
+        "Future Stock Long",
+        "Future Stock Short",
+        "Option Index Call Long",
+        "Option Index Put Long",
+        "Option Index Call Short",
+        "Option Index Put Short",
+        "Option Stock Call Long",
+        "Option Stock Put Long",
+        "Option Stock Call Short",
+        "Option Stock Put Short",
+        "Total Long Contracts",
+        "Total Short Contracts",
+        "kind",
+        "source_file"
+       ],
+       "data_rows": 5,
+       "malformed_width_rows": 0,
+       "exact_duplicate_rows": 0,
+       "missing_by_column": {},
+       "dates": {
+        "trade_date": {
+         "min": "2026-06-08",
+         "max": "2026-06-08",
+         "distinct_dates": 1,
+         "valid_rows": 5,
+         "unparsed_nonmissing_rows": 0,
+         "missing_rows": 0,
+         "duplicate_date_rows": 4,
+         "weekend_rows": 0
+        }
+       },
+       "candidate_keys": {
+        "trade_date,client_type": {
+         "distinct_keys": 5,
+         "duplicate_rows": 0,
+         "conflicting_rows": 0
+        }
+       },
+       "embedded_source_file_claims": [
+        "FII.zip:FII/fao_participant_oi_08062026.csv"
+       ],
+       "numeric_cell_coverage": {
+        "nonmissing_numeric_cells": 70,
+        "entirely_numeric_nonmissing_column_count": 14,
+        "fractional_column_count": 0,
+        "fractional_cell_count": 0
+       }
+      }
+     },
+     {
+      "member": "volume_derivatives_review_v0_3/readiness_status.csv",
+      "bytes": 1159,
+      "directory": false,
+      "sha256": "c9a6dc808f05eefb89b7d85d04aabd076938e0920f9ba5b5d9f233c2ae577c45",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "all CSV rows and fields read",
+      "csv": {
+       "header": [
+        "feed",
+        "status",
+        "coverage",
+        "usable_for",
+        "next_gap"
+       ],
+       "data_rows": 6,
+       "malformed_width_rows": 0,
+       "exact_duplicate_rows": 0,
+       "missing_by_column": {},
+       "dates": {},
+       "candidate_keys": {},
+       "numeric_cell_coverage": {
+        "nonmissing_numeric_cells": 0,
+        "entirely_numeric_nonmissing_column_count": 0,
+        "fractional_column_count": 0,
+        "fractional_cell_count": 0
+       }
+      }
+     },
+     {
+      "member": "volume_derivatives_review_v0_3/README_SUMMARY.txt",
+      "bytes": 880,
+      "directory": false,
+      "sha256": "0b3cd19115ab6523a38a0c53bf067597b9ae7317dc3b1e4e25fd31bf8348cb27",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "all text read; statements are unverified embedded source claims",
+      "source_claims_text": "SOURCEBORN FII/VOLUME/DERIVATIVES REVIEW v0.3\n\nKey result: FII/DII cash daily history is READY for 2007-01-06 to 2022-12-08 (3770 dates).\nKey result: latest FII/DII cash snapshot for 2026-06-08 is included separately, but it is not continuous history.\nKey result: participant-wise OI/volume and FII derivatives stats are present only for latest/current dates; useful for parser confirmation, not historical validation.\nKey result: F&O bhavcopy sample for 2026-06-03 is useful for PCR/OI parser confirmation, not historical testing yet.\n\nNext runnable validation: join existing IFR internals with FII/DII cash history and test FII_CASH_01/02/03 for 2008, COVID 2020 and 2022 windows. 2024 remains missing in the continuous cash-history file.\nStill needed for derivatives validation: historical daily fii_stats, participantwise OI, participantwise volume, and F&O bhavcopy archives."
+     }
+    ],
+    "uncompressed_bytes": 768940
+   },
+   {
+    "archive": "fii_volume_derivatives_review_v0_3_csv_pack.zip",
+    "bytes": 331739,
+    "sha256": "519b9ebf1f04020a9126d44216684255a8a92beacdbb715fbbb77ef161079dea",
+    "pinned_size_sha256_match": true,
+    "coverage": "selected CSV, XLSX and text contents audited; see each member status for exceptions",
+    "members": [
+     {
+      "member": "fii_volume_derivatives_review_v0_3_csv_pack/",
+      "bytes": 0,
+      "directory": true
+     },
+     {
+      "member": "fii_volume_derivatives_review_v0_3_csv_pack/cash_event_window_signal_summary.csv",
+      "bytes": 847,
+      "directory": false,
+      "sha256": "4c63146212b4a92811684e0e33bfe4e20630e182a7e27a0301c5e400a49d6c26",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "all CSV rows and fields read",
+      "csv": {
+       "header": [
+        "event",
+        "type",
+        "start",
+        "end",
+        "rows",
+        "date_min",
+        "date_max",
+        "fii_net_sum_cr",
+        "dii_net_sum_cr",
+        "fii_negative_days",
+        "fii_cash_stress_q10_days",
+        "fii_cash_stress_q05_days",
+        "fii_sell_cluster_7in10_days",
+        "fii_dii_divergence_5d_days",
+        "status"
+       ],
+       "data_rows": 6,
+       "malformed_width_rows": 0,
+       "exact_duplicate_rows": 0,
+       "missing_by_column": {
+        "date_min": 2,
+        "date_max": 2,
+        "fii_net_sum_cr": 2,
+        "dii_net_sum_cr": 2
+       },
+       "dates": {
+        "start": {
+         "min": "2007-11-01",
+         "max": "2024-06-04",
+         "distinct_dates": 6,
+         "valid_rows": 6,
+         "unparsed_nonmissing_rows": 0,
+         "missing_rows": 0,
+         "duplicate_date_rows": 0,
+         "weekend_rows": 0
+        },
+        "end": {
+         "min": "2008-01-21",
+         "max": "2024-06-30",
+         "distinct_dates": 6,
+         "valid_rows": 6,
+         "unparsed_nonmissing_rows": 0,
+         "missing_rows": 0,
+         "duplicate_date_rows": 0,
+         "weekend_rows": 1
+        },
+        "date_min": {
+         "min": "2007-11-04",
+         "max": "2021-12-01",
+         "distinct_dates": 4,
+         "valid_rows": 4,
+         "unparsed_nonmissing_rows": 0,
+         "missing_rows": 2,
+         "duplicate_date_rows": 0,
+         "weekend_rows": 1
+        },
+        "date_max": {
+         "min": "2008-01-21",
+         "max": "2022-01-31",
+         "distinct_dates": 4,
+         "valid_rows": 4,
+         "unparsed_nonmissing_rows": 0,
+         "missing_rows": 2,
+         "duplicate_date_rows": 0,
+         "weekend_rows": 0
+        }
+       },
+       "candidate_keys": {},
+       "numeric_cell_coverage": {
+        "nonmissing_numeric_cells": 44,
+        "entirely_numeric_nonmissing_column_count": 8,
+        "fractional_column_count": 2,
+        "fractional_cell_count": 8
+       }
+      }
+     },
+     {
+      "member": "fii_volume_derivatives_review_v0_3_csv_pack/event_coverage_new_data.csv",
+      "bytes": 442,
+      "directory": false,
+      "sha256": "6ebd88649f1701f08ee6e9b426c84559cb36f3f767bb6d3656a55d4b98b564ba",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "all CSV rows and fields read",
+      "csv": {
+       "header": [
+        "event",
+        "start",
+        "end",
+        "pwoi_oi_rows",
+        "fii_dii_cash_rows",
+        "coverage_status"
+       ],
+       "data_rows": 6,
+       "malformed_width_rows": 0,
+       "exact_duplicate_rows": 0,
+       "missing_by_column": {},
+       "dates": {
+        "start": {
+         "min": "2007-11-01",
+         "max": "2024-06-04",
+         "distinct_dates": 6,
+         "valid_rows": 6,
+         "unparsed_nonmissing_rows": 0,
+         "missing_rows": 0,
+         "duplicate_date_rows": 0,
+         "weekend_rows": 0
+        },
+        "end": {
+         "min": "2008-01-21",
+         "max": "2024-06-30",
+         "distinct_dates": 6,
+         "valid_rows": 6,
+         "unparsed_nonmissing_rows": 0,
+         "missing_rows": 0,
+         "duplicate_date_rows": 0,
+         "weekend_rows": 1
+        }
+       },
+       "candidate_keys": {},
+       "numeric_cell_coverage": {
+        "nonmissing_numeric_cells": 12,
+        "entirely_numeric_nonmissing_column_count": 2,
+        "fractional_column_count": 0,
+        "fractional_cell_count": 0
+       }
+      }
+     },
+     {
+      "member": "fii_volume_derivatives_review_v0_3_csv_pack/fii_derivatives_stats_current_clean.csv",
+      "bytes": 4423,
+      "directory": false,
+      "sha256": "36cabe3add2f256f26998ed63254b7da259ef6573f5a473297f69fc3a53217ec",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "all CSV rows and fields read",
+      "csv": {
+       "header": [
+        "trade_date",
+        "instrument",
+        "buy_contracts",
+        "buy_value_cr",
+        "sell_contracts",
+        "sell_value_cr",
+        "open_int_contracts",
+        "open_int_value_cr",
+        "net_contracts_buy_minus_sell",
+        "net_value_cr_buy_minus_sell",
+        "source_file"
+       ],
+       "data_rows": 28,
+       "malformed_width_rows": 0,
+       "exact_duplicate_rows": 0,
+       "missing_by_column": {},
+       "dates": {
+        "trade_date": {
+         "min": "2026-06-05",
+         "max": "2026-06-08",
+         "distinct_dates": 2,
+         "valid_rows": 28,
+         "unparsed_nonmissing_rows": 0,
+         "missing_rows": 0,
+         "duplicate_date_rows": 26,
+         "weekend_rows": 0
+        }
+       },
+       "candidate_keys": {
+        "trade_date,instrument": {
+         "distinct_keys": 28,
+         "duplicate_rows": 0,
+         "conflicting_rows": 0
+        }
+       },
+       "embedded_source_file_claims": [
+        "Reports-Daily-Multiple.zip:fii_stats_05-Jun-2026.xls",
+        "Reports-Daily-Multiple.zip:fii_stats_08-Jun-2026.xls"
+       ],
+       "numeric_cell_coverage": {
+        "nonmissing_numeric_cells": 224,
+        "entirely_numeric_nonmissing_column_count": 8,
+        "fractional_column_count": 4,
+        "fractional_cell_count": 111
+       }
+      }
+     },
+     {
+      "member": "fii_volume_derivatives_review_v0_3_csv_pack/fii_dii_cash_flow_2012_2023.csv",
+      "bytes": 155726,
+      "directory": false,
+      "sha256": "b1d5070f30830ec8ef6dac5310b140d0bda2e59c52be8365ea57ed636e6b7feb",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "all CSV rows and fields read",
+      "csv": {
+       "header": [
+        "trade_date",
+        "fii_gross_purchase_cr",
+        "fii_gross_sales_cr",
+        "fii_net_purchase_sales_cr",
+        "dii_net_purchase_sales_cr",
+        "dii_gross_sales_cr",
+        "dii_gross_purchase_cr",
+        "source_file"
+       ],
+       "data_rows": 2340,
+       "malformed_width_rows": 0,
+       "exact_duplicate_rows": 0,
+       "missing_by_column": {},
+       "dates": {
+        "trade_date": {
+         "min": "2014-01-01",
+         "max": "2023-07-17",
+         "distinct_dates": 2340,
+         "valid_rows": 2340,
+         "unparsed_nonmissing_rows": 0,
+         "missing_rows": 0,
+         "duplicate_date_rows": 0,
+         "weekend_rows": 4
+        }
+       },
+       "candidate_keys": {
+        "trade_date": {
+         "distinct_keys": 2340,
+         "duplicate_rows": 0,
+         "conflicting_rows": 0
+        }
+       },
+       "embedded_source_file_claims": [
+        "fii_dii.xlsx"
+       ],
+       "numeric_cell_coverage": {
+        "nonmissing_numeric_cells": 14040,
+        "entirely_numeric_nonmissing_column_count": 6,
+        "fractional_column_count": 6,
+        "fractional_cell_count": 12495
+       }
+      }
+     },
+     {
+      "member": "fii_volume_derivatives_review_v0_3_csv_pack/fii_dii_cash_full_history_clean.csv",
+      "bytes": 765678,
+      "directory": false,
+      "sha256": "78dd9152a24422ef851cf755535b85af4169efe2edbcbe2a4e976c722e56b368",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "byte-identical content already read in this audit",
+      "same_content_as": "volume_derivatives_review_v0_3.zip::volume_derivatives_review_v0_3/fii_dii_cash_full_history_clean.csv"
+     },
+     {
+      "member": "fii_volume_derivatives_review_v0_3_csv_pack/fii_dii_cash_latest_snapshot_2026_06_08.csv",
+      "bytes": 238,
+      "directory": false,
+      "sha256": "b1ea1625fd8d58c2bea9724625f48beae492a69cc7de49f90795ba7a2afb22ba",
+      "crc_read_completed": true,
+      "identical_root_assets": [
+       "fii_dii_cash_latest_snapshot_2026_06_08.csv"
+      ],
+      "content_status": "all CSV rows and fields read",
+      "csv": {
+       "header": [
+        "category",
+        "trade_date",
+        "buy_value_cr",
+        "sell_value_cr",
+        "net_value_cr",
+        "source_file"
+       ],
+       "data_rows": 2,
+       "malformed_width_rows": 0,
+       "exact_duplicate_rows": 0,
+       "missing_by_column": {},
+       "dates": {
+        "trade_date": {
+         "min": "2026-06-08",
+         "max": "2026-06-08",
+         "distinct_dates": 1,
+         "valid_rows": 2,
+         "unparsed_nonmissing_rows": 0,
+         "missing_rows": 0,
+         "duplicate_date_rows": 1,
+         "weekend_rows": 0
+        }
+       },
+       "candidate_keys": {
+        "trade_date,category": {
+         "distinct_keys": 2,
+         "duplicate_rows": 0,
+         "conflicting_rows": 0
+        }
+       },
+       "embedded_source_file_claims": [
+        "FII.zip:FII/fii-dii-combined-latest.csv"
+       ],
+       "numeric_cell_coverage": {
+        "nonmissing_numeric_cells": 6,
+        "entirely_numeric_nonmissing_column_count": 3,
+        "fractional_column_count": 3,
+        "fractional_cell_count": 6
+       }
+      }
+     },
+     {
+      "member": "fii_volume_derivatives_review_v0_3_csv_pack/fii_volume_derivatives_parameters_v0_3.csv",
+      "bytes": 1420,
+      "directory": false,
+      "sha256": "3c74411e3a16c08afcd5163b0d4fabb784854d8a37cf4016914325a11b3dd494",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "all CSV rows and fields read",
+      "csv": {
+       "header": [
+        "parameter_id",
+        "name",
+        "formula",
+        "uses",
+        "status"
+       ],
+       "data_rows": 9,
+       "malformed_width_rows": 0,
+       "exact_duplicate_rows": 0,
+       "missing_by_column": {},
+       "dates": {},
+       "candidate_keys": {},
+       "formula_description_rows": 9,
+       "numeric_cell_coverage": {
+        "nonmissing_numeric_cells": 0,
+        "entirely_numeric_nonmissing_column_count": 0,
+        "fractional_column_count": 0,
+        "fractional_cell_count": 0
+       }
+      }
+     },
+     {
+      "member": "fii_volume_derivatives_review_v0_3_csv_pack/fii_volume_derivatives_review_v0_3.xlsx",
+      "bytes": 35038,
+      "directory": false,
+      "sha256": "97a6bb5360368ac3ae0b2787b3f6fa9230aaa328df289a38295d4d50b4792eee",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "all nonempty worksheet cell values and formula/cache/error nodes read",
+      "workbook": {
+       "formula_cells": 0,
+       "formula_cached_nonempty": 0,
+       "typed_error_cells": 0,
+       "sheets": [
+        {
+         "sheet": "01_Status",
+         "declared_extent": {
+          "max_row": null,
+          "max_column": null
+         },
+         "actual_nonempty_extent": "A1:B11",
+         "nonempty_rows": 11,
+         "nonempty_cells": 22,
+         "first_nonempty_row_number": 1,
+         "dates": {}
+        },
+        {
+         "sheet": "02_Readiness",
+         "declared_extent": {
+          "max_row": null,
+          "max_column": null
+         },
+         "actual_nonempty_extent": "A1:E7",
+         "nonempty_rows": 7,
+         "nonempty_cells": 35,
+         "first_nonempty_row_number": 1,
+         "dates": {}
+        },
+        {
+         "sheet": "03_Cash_Event_Summary",
+         "declared_extent": {
+          "max_row": null,
+          "max_column": null
+         },
+         "actual_nonempty_extent": "A1:O7",
+         "nonempty_rows": 7,
+         "nonempty_cells": 97,
+         "first_nonempty_row_number": 1,
+         "dates": {
+          "start": {
+           "min": "2007-11-01",
+           "max": "2024-06-04",
+           "distinct_dates": 6,
+           "valid_rows": 6,
+           "unparsed_nonmissing_rows": 0,
+           "missing_rows": 0,
+           "duplicate_date_rows": 0,
+           "weekend_rows": 0
+          },
+          "end": {
+           "min": "2008-01-21",
+           "max": "2024-06-30",
+           "distinct_dates": 6,
+           "valid_rows": 6,
+           "unparsed_nonmissing_rows": 0,
+           "missing_rows": 0,
+           "duplicate_date_rows": 0,
+           "weekend_rows": 1
+          },
+          "date_min": {
+           "min": "2007-11-04",
+           "max": "2021-12-01",
+           "distinct_dates": 4,
+           "valid_rows": 4,
+           "unparsed_nonmissing_rows": 0,
+           "missing_rows": 2,
+           "duplicate_date_rows": 0,
+           "weekend_rows": 1
+          },
+          "date_max": {
+           "min": "2008-01-21",
+           "max": "2022-01-31",
+           "distinct_dates": 4,
+           "valid_rows": 4,
+           "unparsed_nonmissing_rows": 0,
+           "missing_rows": 2,
+           "duplicate_date_rows": 0,
+           "weekend_rows": 0
+          }
+         }
+        },
+        {
+         "sheet": "04_New_Params",
+         "declared_extent": {
+          "max_row": null,
+          "max_column": null
+         },
+         "actual_nonempty_extent": "A1:E10",
+         "nonempty_rows": 10,
+         "nonempty_cells": 50,
+         "first_nonempty_row_number": 1,
+         "dates": {}
+        },
+        {
+         "sheet": "05_DerivStats_Current",
+         "declared_extent": {
+          "max_row": null,
+          "max_column": null
+         },
+         "actual_nonempty_extent": "A1:K29",
+         "nonempty_rows": 29,
+         "nonempty_cells": 319,
+         "first_nonempty_row_number": 1,
+         "dates": {
+          "trade_date": {
+           "min": "2026-06-05",
+           "max": "2026-06-08",
+           "distinct_dates": 2,
+           "valid_rows": 28,
+           "unparsed_nonmissing_rows": 0,
+           "missing_rows": 0,
+           "duplicate_date_rows": 26,
+           "weekend_rows": 0
+          }
+         }
+        },
+        {
+         "sheet": "06_Participant_OI",
+         "declared_extent": {
+          "max_row": null,
+          "max_column": null
+         },
+         "actual_nonempty_extent": "A1:R6",
+         "nonempty_rows": 6,
+         "nonempty_cells": 108,
+         "first_nonempty_row_number": 1,
+         "dates": {
+          "trade_date": {
+           "min": "2026-06-08",
+           "max": "2026-06-08",
+           "distinct_dates": 1,
+           "valid_rows": 5,
+           "unparsed_nonmissing_rows": 0,
+           "missing_rows": 0,
+           "duplicate_date_rows": 4,
+           "weekend_rows": 0
+          }
+         }
+        },
+        {
+         "sheet": "07_Participant_Vol",
+         "declared_extent": {
+          "max_row": null,
+          "max_column": null
+         },
+         "actual_nonempty_extent": "A1:R6",
+         "nonempty_rows": 6,
+         "nonempty_cells": 108,
+         "first_nonempty_row_number": 1,
+         "dates": {
+          "trade_date": {
+           "min": "2026-06-08",
+           "max": "2026-06-08",
+           "distinct_dates": 1,
+           "valid_rows": 5,
+           "unparsed_nonmissing_rows": 0,
+           "missing_rows": 0,
+           "duplicate_date_rows": 4,
+           "weekend_rows": 0
+          }
+         }
+        },
+        {
+         "sheet": "08_FO_Summary",
+         "declared_extent": {
+          "max_row": null,
+          "max_column": null
+         },
+         "actual_nonempty_extent": "A1:F3",
+         "nonempty_rows": 3,
+         "nonempty_cells": 18,
+         "first_nonempty_row_number": 1,
+         "dates": {}
+        },
+        {
+         "sheet": "09_FPI_Monthly",
+         "declared_extent": {
+          "max_row": null,
+          "max_column": null
+         },
+         "actual_nonempty_extent": "A1:F136",
+         "nonempty_rows": 136,
+         "nonempty_cells": 751,
+         "first_nonempty_row_number": 1,
+         "dates": {
+          "period": {
+           "min": "2017-01-01",
+           "max": "2026-05-01",
+           "distinct_dates": 113,
+           "valid_rows": 113,
+           "unparsed_nonmissing_rows": 0,
+           "missing_rows": 22,
+           "duplicate_date_rows": 0,
+           "weekend_rows": 33
+          }
+         }
+        },
+        {
+         "sheet": "10_File_Inventory",
+         "declared_extent": {
+          "max_row": null,
+          "max_column": null
+         },
+         "actual_nonempty_extent": "A1:F58",
+         "nonempty_rows": 58,
+         "nonempty_cells": 309,
+         "first_nonempty_row_number": 1,
+         "dates": {}
+        },
+        {
+         "sheet": "11_Cash_Sample",
+         "declared_extent": {
+          "max_row": null,
+          "max_column": null
+         },
+         "actual_nonempty_extent": "A1:S21",
+         "nonempty_rows": 21,
+         "nonempty_cells": 381,
+         "first_nonempty_row_number": 1,
+         "dates": {
+          "trade_date": {
+           "min": null,
+           "max": null,
+           "distinct_dates": 0,
+           "valid_rows": 0,
+           "unparsed_nonmissing_rows": 20,
+           "missing_rows": 0,
+           "duplicate_date_rows": 0,
+           "weekend_rows": 0
+          }
+         }
+        }
+       ],
+       "native_objects_rendered_or_recalculated": false,
+       "reader_warnings": []
+      }
+     },
+     {
+      "member": "fii_volume_derivatives_review_v0_3_csv_pack/file_inventory_new_batch.csv",
+      "bytes": 310,
+      "directory": false,
+      "sha256": "ca2c45659fec16d8251f65ea61de191cdaef9ab10e66e00dc9832463412045ee",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "all CSV rows and fields read",
+      "csv": {
+       "header": [
+        "file_name",
+        "exists",
+        "size_bytes",
+        "detected_type",
+        "member_count",
+        "notes"
+       ],
+       "data_rows": 4,
+       "malformed_width_rows": 0,
+       "exact_duplicate_rows": 0,
+       "missing_by_column": {},
+       "dates": {},
+       "candidate_keys": {},
+       "numeric_cell_coverage": {
+        "nonmissing_numeric_cells": 8,
+        "entirely_numeric_nonmissing_column_count": 2,
+        "fractional_column_count": 0,
+        "fractional_cell_count": 0
+       }
+      }
+     },
+     {
+      "member": "fii_volume_derivatives_review_v0_3_csv_pack/fo_futures_bhavcopy_2026_06_03_sample.csv",
+      "bytes": 64099,
+      "directory": false,
+      "sha256": "5d8d0dd1cc3ebc6f18bbbe5a402cab973b08a0d0cfeef36b93b8bdbf8f7bac98",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "all CSV rows and fields read",
+      "csv": {
+       "header": [
+        "INSTRUMENT",
+        "SYMBOL",
+        "EXP_DATE",
+        "OPEN_PRICE",
+        "HI_PRICE",
+        "LO_PRICE",
+        "CLOSE_PRICE",
+        "OPEN_INT*",
+        "TRD_VAL",
+        "TRD_QTY",
+        "NO_OF_CONT",
+        "NO_OF_TRADE"
+       ],
+       "data_rows": 625,
+       "malformed_width_rows": 0,
+       "exact_duplicate_rows": 0,
+       "missing_by_column": {
+        "SYMBOL": 1,
+        "EXP_DATE": 1,
+        "OPEN_PRICE": 1,
+        "HI_PRICE": 1,
+        "LO_PRICE": 1,
+        "CLOSE_PRICE": 1,
+        "OPEN_INT*": 1,
+        "TRD_VAL": 1,
+        "TRD_QTY": 1,
+        "NO_OF_CONT": 1,
+        "NO_OF_TRADE": 1
+       },
+       "dates": {
+        "EXP_DATE": {
+         "min": "2026-06-30",
+         "max": "2026-08-25",
+         "distinct_dates": 3,
+         "valid_rows": 624,
+         "unparsed_nonmissing_rows": 0,
+         "missing_rows": 1,
+         "duplicate_date_rows": 621,
+         "weekend_rows": 0
+        }
+       },
+       "candidate_keys": {
+        "INSTRUMENT,SYMBOL,EXP_DATE": {
+         "distinct_keys": 625,
+         "duplicate_rows": 0,
+         "conflicting_rows": 0
+        }
+       },
+       "numeric_cell_coverage": {
+        "nonmissing_numeric_cells": 5616,
+        "entirely_numeric_nonmissing_column_count": 9,
+        "fractional_column_count": 5,
+        "fractional_cell_count": 1890
+       }
+      }
+     },
+     {
+      "member": "fii_volume_derivatives_review_v0_3_csv_pack/fo_options_pcr_oi_by_symbol_2026_06_03.csv",
+      "bytes": 6747,
+      "directory": false,
+      "sha256": "2379fe6fc2dd8bcd63ba2a3e50bed682eb8c8a5d04f905cf608f2860fd7a094a",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "all CSV rows and fields read",
+      "csv": {
+       "header": [
+        "SYMBOL",
+        "CE      ",
+        "PE      "
+       ],
+       "data_rows": 216,
+       "malformed_width_rows": 0,
+       "exact_duplicate_rows": 0,
+       "missing_by_column": {},
+       "dates": {},
+       "candidate_keys": {
+        "SYMBOL": {
+         "distinct_keys": 216,
+         "duplicate_rows": 0,
+         "conflicting_rows": 0
+        }
+       },
+       "numeric_cell_coverage": {
+        "nonmissing_numeric_cells": 432,
+        "entirely_numeric_nonmissing_column_count": 2,
+        "fractional_column_count": 0,
+        "fractional_cell_count": 0
+       }
+      }
+     },
+     {
+      "member": "fii_volume_derivatives_review_v0_3_csv_pack/fo_report_pack_summary_2026_06_03.csv",
+      "bytes": 177,
+      "directory": false,
+      "sha256": "0a1a4fa71cebbe681f34efc8400d140f4ec7a4ecdd2244f62b1faec9e926975e",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "all CSV rows and fields read",
+      "csv": {
+       "header": [
+        "file",
+        "rows",
+        "unique_symbols",
+        "unique_instruments",
+        "status",
+        "notes"
+       ],
+       "data_rows": 2,
+       "malformed_width_rows": 0,
+       "exact_duplicate_rows": 0,
+       "missing_by_column": {},
+       "dates": {},
+       "candidate_keys": {},
+       "numeric_cell_coverage": {
+        "nonmissing_numeric_cells": 6,
+        "entirely_numeric_nonmissing_column_count": 3,
+        "fractional_column_count": 0,
+        "fractional_cell_count": 0
+       }
+      }
+     },
+     {
+      "member": "fii_volume_derivatives_review_v0_3_csv_pack/fpi_monthly_net_investments_parsed.csv",
+      "bytes": 11192,
+      "directory": false,
+      "sha256": "cbd4e0fd4c205b4787a1e3dc5f15196df088f9b00b222b3a4f46d035461c6480",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "all CSV rows and fields read",
+      "csv": {
+       "header": [
+        "year",
+        "month_name",
+        "source_file",
+        "total_cr",
+        "month",
+        "period"
+       ],
+       "data_rows": 135,
+       "malformed_width_rows": 0,
+       "exact_duplicate_rows": 0,
+       "missing_by_column": {
+        "total_cr": 21,
+        "month": 22,
+        "period": 22
+       },
+       "dates": {
+        "period": {
+         "min": "2017-01-01",
+         "max": "2026-05-01",
+         "distinct_dates": 113,
+         "valid_rows": 113,
+         "unparsed_nonmissing_rows": 0,
+         "missing_rows": 22,
+         "duplicate_date_rows": 0,
+         "weekend_rows": 33
+        }
+       },
+       "candidate_keys": {
+        "period": {
+         "distinct_keys": 114,
+         "duplicate_rows": 21,
+         "conflicting_rows": 21
+        }
+       },
+       "embedded_source_file_claims": [
+        "FII.zip:FII/_09062026050605.xls",
+        "FII.zip:FII/_09062026050607.xls",
+        "FII.zip:FII/_09062026050614.xls",
+        "FII.zip:FII/_09062026050619.xls",
+        "FII.zip:FII/_09062026050620.xls",
+        "FII.zip:FII/_09062026050623.xls",
+        "FII.zip:FII/_09062026050624.xls",
+        "FII.zip:FII/_09062026050627.xls",
+        "FII.zip:FII/_09062026050632.xls",
+        "FII.zip:FII/_09062026050642.xls"
+       ],
+       "numeric_cell_coverage": {
+        "nonmissing_numeric_cells": 362,
+        "entirely_numeric_nonmissing_column_count": 3,
+        "fractional_column_count": 0,
+        "fractional_cell_count": 0
+       }
+      }
+     },
+     {
+      "member": "fii_volume_derivatives_review_v0_3_csv_pack/new_fii_volume_derivatives_parameters_v0_3.csv",
+      "bytes": 1420,
+      "directory": false,
+      "sha256": "3c74411e3a16c08afcd5163b0d4fabb784854d8a37cf4016914325a11b3dd494",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "byte-identical content already read in this audit",
+      "same_content_as": "fii_volume_derivatives_review_v0_3_csv_pack.zip::fii_volume_derivatives_review_v0_3_csv_pack/fii_volume_derivatives_parameters_v0_3.csv"
+     },
+     {
+      "member": "fii_volume_derivatives_review_v0_3_csv_pack/participantwise_oi_latest_clean.csv",
+      "bytes": 1223,
+      "directory": false,
+      "sha256": "844455bfdbd8a07dd6e6da694e4ceef2805516990635659cb2261ab4a1ad873f",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "byte-identical content already read in this audit",
+      "same_content_as": "volume_derivatives_review_v0_3.zip::volume_derivatives_review_v0_3/participantwise_oi_latest_clean.csv"
+     },
+     {
+      "member": "fii_volume_derivatives_review_v0_3_csv_pack/participantwise_volume_latest_clean.csv",
+      "bytes": 1229,
+      "directory": false,
+      "sha256": "209fadbebb6c7a80b1f66fb19558fb6408346ac0642266ad94eb7f5798778782",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "all CSV rows and fields read",
+      "csv": {
+       "header": [
+        "trade_date",
+        "client_type",
+        "Future Index Long",
+        "Future Index Short",
+        "Future Stock Long",
+        "Future Stock Short",
+        "Option Index Call Long",
+        "Option Index Put Long",
+        "Option Index Call Short",
+        "Option Index Put Short",
+        "Option Stock Call Long",
+        "Option Stock Put Long",
+        "Option Stock Call Short",
+        "Option Stock Put Short",
+        "Total Long Contracts",
+        "Total Short Contracts",
+        "kind",
+        "source_file"
+       ],
+       "data_rows": 5,
+       "malformed_width_rows": 0,
+       "exact_duplicate_rows": 0,
+       "missing_by_column": {},
+       "dates": {
+        "trade_date": {
+         "min": "2026-06-08",
+         "max": "2026-06-08",
+         "distinct_dates": 1,
+         "valid_rows": 5,
+         "unparsed_nonmissing_rows": 0,
+         "missing_rows": 0,
+         "duplicate_date_rows": 4,
+         "weekend_rows": 0
+        }
+       },
+       "candidate_keys": {
+        "trade_date,client_type": {
+         "distinct_keys": 5,
+         "duplicate_rows": 0,
+         "conflicting_rows": 0
+        }
+       },
+       "embedded_source_file_claims": [
+        "FII.zip:FII/fao_participant_vol_08062026.csv"
+       ],
+       "numeric_cell_coverage": {
+        "nonmissing_numeric_cells": 70,
+        "entirely_numeric_nonmissing_column_count": 14,
+        "fractional_column_count": 0,
+        "fractional_cell_count": 0
+       }
+      }
+     },
+     {
+      "member": "fii_volume_derivatives_review_v0_3_csv_pack/readiness_status.csv",
+      "bytes": 1159,
+      "directory": false,
+      "sha256": "c9a6dc808f05eefb89b7d85d04aabd076938e0920f9ba5b5d9f233c2ae577c45",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "byte-identical content already read in this audit",
+      "same_content_as": "volume_derivatives_review_v0_3.zip::volume_derivatives_review_v0_3/readiness_status.csv"
+     },
+     {
+      "member": "fii_volume_derivatives_review_v0_3_csv_pack/source_file_inventory.csv",
+      "bytes": 4317,
+      "directory": false,
+      "sha256": "1024b08e6ee0244b0b46a7a4af3173e26aa6311bac41371878e195f477417b0c",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "all CSV rows and fields read",
+      "csv": {
+       "header": [
+        "container",
+        "member",
+        "size_bytes",
+        "kind",
+        "status",
+        "notes"
+       ],
+       "data_rows": 57,
+       "malformed_width_rows": 0,
+       "exact_duplicate_rows": 0,
+       "missing_by_column": {
+        "notes": 39
+       },
+       "dates": {},
+       "candidate_keys": {},
+       "numeric_cell_coverage": {
+        "nonmissing_numeric_cells": 57,
+        "entirely_numeric_nonmissing_column_count": 1,
+        "fractional_column_count": 0,
+        "fractional_cell_count": 0
+       }
+      }
+     }
+    ],
+    "uncompressed_bytes": 1055685
+   },
+   {
+    "archive": "fii_derivatives_cash_review_v0_2_csv_pack.zip",
+    "bytes": 3189462,
+    "sha256": "d6f8ab176a3b6863dea2c7456963e044485772e7d440c3907486537e4a7a2b5b",
+    "pinned_size_sha256_match": true,
+    "coverage": "selected CSV, XLSX and text contents audited; see each member status for exceptions",
+    "members": [
+     {
+      "member": "fii_derivatives_cash_review_v0_2_csv_pack/",
+      "bytes": 0,
+      "directory": true
+     },
+     {
+      "member": "fii_derivatives_cash_review_v0_2_csv_pack/event_coverage_new_data.csv",
+      "bytes": 442,
+      "directory": false,
+      "sha256": "8a28fc1fcb3382e94b285bfe6fcbc980185f6841f49cedefdb81780f0f7f3e01",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "all CSV rows and fields read",
+      "csv": {
+       "header": [
+        "event",
+        "start",
+        "end",
+        "pwoi_oi_rows",
+        "fii_dii_cash_rows",
+        "coverage_status"
+       ],
+       "data_rows": 6,
+       "malformed_width_rows": 0,
+       "exact_duplicate_rows": 0,
+       "missing_by_column": {},
+       "dates": {
+        "start": {
+         "min": "2007-11-01",
+         "max": "2024-06-04",
+         "distinct_dates": 6,
+         "valid_rows": 6,
+         "unparsed_nonmissing_rows": 0,
+         "missing_rows": 0,
+         "duplicate_date_rows": 0,
+         "weekend_rows": 0
+        },
+        "end": {
+         "min": "2008-01-21",
+         "max": "2024-06-30",
+         "distinct_dates": 6,
+         "valid_rows": 6,
+         "unparsed_nonmissing_rows": 0,
+         "missing_rows": 0,
+         "duplicate_date_rows": 0,
+         "weekend_rows": 1
+        }
+       },
+       "candidate_keys": {},
+       "numeric_cell_coverage": {
+        "nonmissing_numeric_cells": 12,
+        "entirely_numeric_nonmissing_column_count": 2,
+        "fractional_column_count": 0,
+        "fractional_cell_count": 0
+       }
+      }
+     },
+     {
+      "member": "fii_derivatives_cash_review_v0_2_csv_pack/fii_derivatives_cash_review_v0_2.xlsx",
+      "bytes": 13607,
+      "directory": false,
+      "sha256": "3d4353e100d8993e0a2a4dab18fbb9f36c63e003c18e1be879eca04ee6c23fd8",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "all nonempty worksheet cell values and formula/cache/error nodes read",
+      "workbook": {
+       "formula_cells": 0,
+       "formula_cached_nonempty": 0,
+       "typed_error_cells": 0,
+       "sheets": [
+        {
+         "sheet": "01_Review_Summary",
+         "declared_extent": {
+          "max_row": null,
+          "max_column": null
+         },
+         "actual_nonempty_extent": "A1:F9",
+         "nonempty_rows": 8,
+         "nonempty_cells": 33,
+         "first_nonempty_row_number": 1,
+         "dates": {}
+        },
+        {
+         "sheet": "02_Event_Coverage",
+         "declared_extent": {
+          "max_row": null,
+          "max_column": null
+         },
+         "actual_nonempty_extent": "A1:F7",
+         "nonempty_rows": 7,
+         "nonempty_cells": 42,
+         "first_nonempty_row_number": 1,
+         "dates": {
+          "start": {
+           "min": "2007-11-01",
+           "max": "2024-06-04",
+           "distinct_dates": 6,
+           "valid_rows": 6,
+           "unparsed_nonmissing_rows": 0,
+           "missing_rows": 0,
+           "duplicate_date_rows": 0,
+           "weekend_rows": 0
+          },
+          "end": {
+           "min": "2008-01-21",
+           "max": "2024-06-30",
+           "distinct_dates": 6,
+           "valid_rows": 6,
+           "unparsed_nonmissing_rows": 0,
+           "missing_rows": 0,
+           "duplicate_date_rows": 0,
+           "weekend_rows": 1
+          }
+         }
+        },
+        {
+         "sheet": "03_Signal_Readiness",
+         "declared_extent": {
+          "max_row": null,
+          "max_column": null
+         },
+         "actual_nonempty_extent": "A1:C12",
+         "nonempty_rows": 12,
+         "nonempty_cells": 36,
+         "first_nonempty_row_number": 1,
+         "dates": {}
+        },
+        {
+         "sheet": "04_File_Inventory",
+         "declared_extent": {
+          "max_row": null,
+          "max_column": null
+         },
+         "actual_nonempty_extent": "A1:F5",
+         "nonempty_rows": 5,
+         "nonempty_cells": 30,
+         "first_nonempty_row_number": 1,
+         "dates": {}
+        },
+        {
+         "sheet": "05_PWOI_FII_Features",
+         "declared_extent": {
+          "max_row": null,
+          "max_column": null
+         },
+         "actual_nonempty_extent": "A1:L31",
+         "nonempty_rows": 31,
+         "nonempty_cells": 368,
+         "first_nonempty_row_number": 1,
+         "dates": {
+          "trade_date": {
+           "min": "2012-01-02",
+           "max": "2012-02-10",
+           "distinct_dates": 30,
+           "valid_rows": 30,
+           "unparsed_nonmissing_rows": 0,
+           "missing_rows": 0,
+           "duplicate_date_rows": 0,
+           "weekend_rows": 1
+          }
+         }
+        },
+        {
+         "sheet": "06_FII_DII_Cash_Sample",
+         "declared_extent": {
+          "max_row": null,
+          "max_column": null
+         },
+         "actual_nonempty_extent": "A1:H31",
+         "nonempty_rows": 31,
+         "nonempty_cells": 248,
+         "first_nonempty_row_number": 1,
+         "dates": {
+          "trade_date": {
+           "min": "2014-01-01",
+           "max": "2014-02-11",
+           "distinct_dates": 30,
+           "valid_rows": 30,
+           "unparsed_nonmissing_rows": 0,
+           "missing_rows": 0,
+           "duplicate_date_rows": 0,
+           "weekend_rows": 0
+          }
+         }
+        },
+        {
+         "sheet": "07_Next_Loop",
+         "declared_extent": {
+          "max_row": null,
+          "max_column": null
+         },
+         "actual_nonempty_extent": "A1:D7",
+         "nonempty_rows": 7,
+         "nonempty_cells": 28,
+         "first_nonempty_row_number": 1,
+         "dates": {}
+        }
+       ],
+       "native_objects_rendered_or_recalculated": false,
+       "reader_warnings": []
+      }
+     },
+     {
+      "member": "fii_derivatives_cash_review_v0_2_csv_pack/fii_derivatives_stats_current_clean.csv",
+      "bytes": 4423,
+      "directory": false,
+      "sha256": "36cabe3add2f256f26998ed63254b7da259ef6573f5a473297f69fc3a53217ec",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "byte-identical content already read in this audit",
+      "same_content_as": "fii_volume_derivatives_review_v0_3_csv_pack.zip::fii_volume_derivatives_review_v0_3_csv_pack/fii_derivatives_stats_current_clean.csv"
+     },
+     {
+      "member": "fii_derivatives_cash_review_v0_2_csv_pack/fii_dii_cash_flow_2012_2023.csv",
+      "bytes": 155726,
+      "directory": false,
+      "sha256": "b1d5070f30830ec8ef6dac5310b140d0bda2e59c52be8365ea57ed636e6b7feb",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "byte-identical content already read in this audit",
+      "same_content_as": "fii_volume_derivatives_review_v0_3_csv_pack.zip::fii_volume_derivatives_review_v0_3_csv_pack/fii_dii_cash_flow_2012_2023.csv"
+     },
+     {
+      "member": "fii_derivatives_cash_review_v0_2_csv_pack/fii_dii_latest_cash_snapshot.csv",
+      "bytes": 418,
+      "directory": false,
+      "sha256": "2d35648ddcfb4ca927d4b319b307f5a376cafe483ebb2e4d698d2c35eb3b346f",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "all CSV rows and fields read",
+      "csv": {
+       "header": [
+        "CATEGORY",
+        "DATE",
+        "BUY VALUE \n(₹ Crores)",
+        "SELL VALUE \n(₹ Crores)",
+        "NET VALUE \n(₹ Crores)",
+        "source_file"
+       ],
+       "data_rows": 4,
+       "malformed_width_rows": 0,
+       "exact_duplicate_rows": 0,
+       "missing_by_column": {},
+       "dates": {
+        "DATE": {
+         "min": "2026-06-08",
+         "max": "2026-06-08",
+         "distinct_dates": 1,
+         "valid_rows": 4,
+         "unparsed_nonmissing_rows": 0,
+         "missing_rows": 0,
+         "duplicate_date_rows": 3,
+         "weekend_rows": 0
+        }
+       },
+       "candidate_keys": {},
+       "embedded_source_file_claims": [
+        "fii-dii-combined-latest.csv",
+        "fii-dii-nse-latest.csv"
+       ],
+       "numeric_cell_coverage": {
+        "nonmissing_numeric_cells": 12,
+        "entirely_numeric_nonmissing_column_count": 3,
+        "fractional_column_count": 3,
+        "fractional_cell_count": 12
+       }
+      }
+     },
+     {
+      "member": "fii_derivatives_cash_review_v0_2_csv_pack/file_inventory_new_batch.csv",
+      "bytes": 310,
+      "directory": false,
+      "sha256": "ca2c45659fec16d8251f65ea61de191cdaef9ab10e66e00dc9832463412045ee",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "byte-identical content already read in this audit",
+      "same_content_as": "fii_volume_derivatives_review_v0_3_csv_pack.zip::fii_volume_derivatives_review_v0_3_csv_pack/file_inventory_new_batch.csv"
+     },
+     {
+      "member": "fii_derivatives_cash_review_v0_2_csv_pack/PWOI_data.csv",
+      "bytes": 1385616,
+      "directory": false,
+      "sha256": "f9ddcc4ae5eda651543697676d561b840b3fdad761f4d9e09aa70f3cf798133a",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "all CSV rows and fields read",
+      "csv": {
+       "header": [
+        "Client.Future Index Long",
+        "Client.Future Index Short",
+        "Client.Future Stock Long",
+        "Client.Future Stock Short",
+        "Client.Option Index Call Long",
+        "Client.Option Index Call Short",
+        "Client.Option Index Put Long",
+        "Client.Option Index Put Short",
+        "Client.Option Stock Call Long",
+        "Client.Option Stock Call Short",
+        "Client.Option Stock Put Long",
+        "Client.Option Stock Put Short",
+        "Client.Total Long Contracts",
+        "Client.Total Short Contracts",
+        "DII.Future Index Long",
+        "DII.Future Index Short",
+        "DII.Future Stock Long",
+        "DII.Future Stock Short",
+        "DII.Option Index Call Long",
+        "DII.Option Index Call Short",
+        "DII.Option Index Put Long",
+        "DII.Option Index Put Short",
+        "DII.Option Stock Call Long",
+        "DII.Option Stock Call Short",
+        "DII.Option Stock Put Long",
+        "DII.Option Stock Put Short",
+        "DII.Total Long Contracts",
+        "DII.Total Short Contracts",
+        "Date",
+        "FII.Future Index Long",
+        "FII.Future Index Short",
+        "FII.Future Stock Long",
+        "FII.Future Stock Short",
+        "FII.Option Index Call Long",
+        "FII.Option Index Call Short",
+        "FII.Option Index Put Long",
+        "FII.Option Index Put Short",
+        "FII.Option Stock Call Long",
+        "FII.Option Stock Call Short",
+        "FII.Option Stock Put Long",
+        "FII.Option Stock Put Short",
+        "FII.Total Long Contracts",
+        "FII.Total Short Contracts",
+        "Pro.Future Index Long",
+        "Pro.Future Index Short",
+        "Pro.Future Stock Long",
+        "Pro.Future Stock Short",
+        "Pro.Option Index Call Long",
+        "Pro.Option Index Call Short",
+        "Pro.Option Index Put Long",
+        "Pro.Option Index Put Short",
+        "Pro.Option Stock Call Long",
+        "Pro.Option Stock Call Short",
+        "Pro.Option Stock Put Long",
+        "Pro.Option Stock Put Short",
+        "Pro.Total Long Contracts",
+        "Pro.Total Short Contracts",
+        "TOTAL.Future Index Long",
+        "TOTAL.Future Index Short",
+        "TOTAL.Future Stock Long",
+        "TOTAL.Future Stock Short",
+        "TOTAL.Option Index Call Long",
+        "TOTAL.Option Index Call Short",
+        "TOTAL.Option Index Put Long",
+        "TOTAL.Option Index Put Short",
+        "TOTAL.Option Stock Call Long",
+        "TOTAL.Option Stock Call Short",
+        "TOTAL.Option Stock Put Long",
+        "TOTAL.Option Stock Put Short",
+        "TOTAL.Total Long Contracts",
+        "TOTAL.Total Short Contracts"
+       ],
+       "data_rows": 3078,
+       "malformed_width_rows": 0,
+       "exact_duplicate_rows": 287,
+       "missing_by_column": {
+        "Client.Future Index Long": 2,
+        "Client.Future Index Short": 2,
+        "Client.Future Stock Long": 2,
+        "Client.Future Stock Short": 922,
+        "Client.Option Index Call Long": 2,
+        "Client.Option Index Call Short": 2,
+        "Client.Option Index Put Long": 2,
+        "Client.Option Index Put Short": 2,
+        "Client.Option Stock Call Long": 2,
+        "Client.Option Stock Call Short": 2,
+        "Client.Option Stock Put Long": 2,
+        "Client.Option Stock Put Short": 2,
+        "Client.Total Long Contracts": 920,
+        "Client.Total Short Contracts": 2,
+        "DII.Future Index Long": 2,
+        "DII.Future Index Short": 2,
+        "DII.Future Stock Long": 2,
+        "DII.Future Stock Short": 922,
+        "DII.Option Index Call Long": 2,
+        "DII.Option Index Call Short": 3,
+        "DII.Option Index Put Long": 2,
+        "DII.Option Index Put Short": 3,
+        "DII.Option Stock Call Long": 2,
+        "DII.Option Stock Call Short": 3,
+        "DII.Option Stock Put Long": 3,
+        "DII.Option Stock Put Short": 3,
+        "DII.Total Long Contracts": 920,
+        "DII.Total Short Contracts": 2,
+        "FII.Future Index Long": 3,
+        "FII.Future Index Short": 3,
+        "FII.Future Stock Long": 3,
+        "FII.Future Stock Short": 923,
+        "FII.Option Index Call Long": 3,
+        "FII.Option Index Call Short": 3,
+        "FII.Option Index Put Long": 3,
+        "FII.Option Index Put Short": 3,
+        "FII.Option Stock Call Long": 3,
+        "FII.Option Stock Call Short": 3,
+        "FII.Option Stock Put Long": 3,
+        "FII.Option Stock Put Short": 3,
+        "FII.Total Long Contracts": 921,
+        "FII.Total Short Contracts": 3,
+        "Pro.Future Index Long": 2,
+        "Pro.Future Index Short": 2,
+        "Pro.Future Stock Long": 2,
+        "Pro.Future Stock Short": 922,
+        "Pro.Option Index Call Long": 2,
+        "Pro.Option Index Call Short": 2,
+        "Pro.Option Index Put Long": 2,
+        "Pro.Option Index Put Short": 2,
+        "Pro.Option Stock Call Long": 2,
+        "Pro.Option Stock Call Short": 2,
+        "Pro.Option Stock Put Long": 2,
+        "Pro.Option Stock Put Short": 2,
+        "Pro.Total Long Contracts": 920,
+        "Pro.Total Short Contracts": 2,
+        "TOTAL.Future Index Long": 3,
+        "TOTAL.Future Index Short": 3,
+        "TOTAL.Future Stock Long": 3,
+        "TOTAL.Future Stock Short": 923,
+        "TOTAL.Option Index Call Long": 3,
+        "TOTAL.Option Index Call Short": 3,
+        "TOTAL.Option Index Put Long": 3,
+        "TOTAL.Option Index Put Short": 3,
+        "TOTAL.Option Stock Call Long": 3,
+        "TOTAL.Option Stock Call Short": 3,
+        "TOTAL.Option Stock Put Long": 3,
+        "TOTAL.Option Stock Put Short": 3,
+        "TOTAL.Total Long Contracts": 921,
+        "TOTAL.Total Short Contracts": 3
+       },
+       "dates": {
+        "Date": {
+         "min": "2012-01-02",
+         "max": "2023-04-27",
+         "distinct_dates": 2791,
+         "valid_rows": 3078,
+         "unparsed_nonmissing_rows": 0,
+         "missing_rows": 0,
+         "duplicate_date_rows": 287,
+         "weekend_rows": 14
+        }
+       },
+       "candidate_keys": {
+        "Date": {
+         "distinct_keys": 2791,
+         "duplicate_rows": 287,
+         "conflicting_rows": 0
+        }
+       },
+       "numeric_cell_coverage": {
+        "nonmissing_numeric_cells": 206097,
+        "entirely_numeric_nonmissing_column_count": 70,
+        "fractional_column_count": 35,
+        "fractional_cell_count": 265
+       }
+      }
+     },
+     {
+      "member": "fii_derivatives_cash_review_v0_2_csv_pack/pwoi_fii_derivatives_features_2012_2023.csv",
+      "bytes": 248198,
+      "directory": false,
+      "sha256": "534ea28a349006557101bfb72024c28634f9569b31bd5711d211f621f4d93f40",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "all CSV rows and fields read",
+      "csv": {
+       "header": [
+        "trade_date",
+        "fii_index_fut_long",
+        "fii_index_fut_short",
+        "fii_index_fut_net",
+        "fii_index_fut_long_pct",
+        "fii_stock_fut_net",
+        "fii_index_call_net",
+        "fii_index_put_net",
+        "fii_total_net_contracts",
+        "fii_total_long_pct",
+        "fii_index_fut_net_1d_chg",
+        "fii_total_net_1d_chg"
+       ],
+       "data_rows": 2791,
+       "malformed_width_rows": 0,
+       "exact_duplicate_rows": 0,
+       "missing_by_column": {
+        "fii_index_fut_long_pct": 2,
+        "fii_total_long_pct": 2,
+        "fii_index_fut_net_1d_chg": 1,
+        "fii_total_net_1d_chg": 1
+       },
+       "dates": {
+        "trade_date": {
+         "min": "2012-01-02",
+         "max": "2023-04-27",
+         "distinct_dates": 2791,
+         "valid_rows": 2791,
+         "unparsed_nonmissing_rows": 0,
+         "missing_rows": 0,
+         "duplicate_date_rows": 0,
+         "weekend_rows": 12
+        }
+       },
+       "candidate_keys": {
+        "trade_date": {
+         "distinct_keys": 2791,
+         "duplicate_rows": 0,
+         "conflicting_rows": 0
+        }
+       },
+       "numeric_cell_coverage": {
+        "nonmissing_numeric_cells": 30695,
+        "entirely_numeric_nonmissing_column_count": 11,
+        "fractional_column_count": 2,
+        "fractional_cell_count": 4660
+       }
+      }
+     },
+     {
+      "member": "fii_derivatives_cash_review_v0_2_csv_pack/pwoi_participant_oi_long_2012_2023.csv",
+      "bytes": 7973047,
+      "directory": false,
+      "sha256": "1ec8bde183c2a9f89bcc88b98579126bc540a5820150a2e68b94403e0ea72636",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "all CSV rows and fields read",
+      "csv": {
+       "header": [
+        "trade_date",
+        "participant",
+        "product",
+        "long_contracts",
+        "short_contracts",
+        "net_contracts",
+        "total_contracts",
+        "long_pct",
+        "source"
+       ],
+       "data_rows": 97635,
+       "malformed_width_rows": 0,
+       "exact_duplicate_rows": 0,
+       "missing_by_column": {
+        "long_contracts": 4590,
+        "short_contracts": 4603,
+        "long_pct": 3023
+       },
+       "dates": {
+        "trade_date": {
+         "min": "2012-01-02",
+         "max": "2023-04-27",
+         "distinct_dates": 2790,
+         "valid_rows": 97635,
+         "unparsed_nonmissing_rows": 0,
+         "missing_rows": 0,
+         "duplicate_date_rows": 94845,
+         "weekend_rows": 420
+        }
+       },
+       "candidate_keys": {
+        "trade_date,participant,product": {
+         "distinct_keys": 97635,
+         "duplicate_rows": 0,
+         "conflicting_rows": 0
+        }
+       },
+       "numeric_cell_coverage": {
+        "nonmissing_numeric_cells": 475959,
+        "entirely_numeric_nonmissing_column_count": 5,
+        "fractional_column_count": 1,
+        "fractional_cell_count": 78035
+       }
+      }
+     },
+     {
+      "member": "fii_derivatives_cash_review_v0_2_csv_pack/pwoi_participant_oi_wide_2012_2023.csv",
+      "bytes": 1343172,
+      "directory": false,
+      "sha256": "a30c7b852761803bcf8d16849ec6eaa1f4634e60bed761cba3310520068e3b64",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "all CSV rows and fields read",
+      "csv": {
+       "header": [
+        "trade_date",
+        "source_file",
+        "source_member",
+        "Client.Future Index Long",
+        "Client.Future Index Short",
+        "Client.Future Stock Long",
+        "Client.Future Stock Short",
+        "Client.Option Index Call Long",
+        "Client.Option Index Call Short",
+        "Client.Option Index Put Long",
+        "Client.Option Index Put Short",
+        "Client.Option Stock Call Long",
+        "Client.Option Stock Call Short",
+        "Client.Option Stock Put Long",
+        "Client.Option Stock Put Short",
+        "Client.Total Long Contracts",
+        "Client.Total Short Contracts",
+        "DII.Future Index Long",
+        "DII.Future Index Short",
+        "DII.Future Stock Long",
+        "DII.Future Stock Short",
+        "DII.Option Index Call Long",
+        "DII.Option Index Call Short",
+        "DII.Option Index Put Long",
+        "DII.Option Index Put Short",
+        "DII.Option Stock Call Long",
+        "DII.Option Stock Call Short",
+        "DII.Option Stock Put Long",
+        "DII.Option Stock Put Short",
+        "DII.Total Long Contracts",
+        "DII.Total Short Contracts",
+        "FII.Future Index Long",
+        "FII.Future Index Short",
+        "FII.Future Stock Long",
+        "FII.Future Stock Short",
+        "FII.Option Index Call Long",
+        "FII.Option Index Call Short",
+        "FII.Option Index Put Long",
+        "FII.Option Index Put Short",
+        "FII.Option Stock Call Long",
+        "FII.Option Stock Call Short",
+        "FII.Option Stock Put Long",
+        "FII.Option Stock Put Short",
+        "FII.Total Long Contracts",
+        "FII.Total Short Contracts",
+        "Pro.Future Index Long",
+        "Pro.Future Index Short",
+        "Pro.Future Stock Long",
+        "Pro.Future Stock Short",
+        "Pro.Option Index Call Long",
+        "Pro.Option Index Call Short",
+        "Pro.Option Index Put Long",
+        "Pro.Option Index Put Short",
+        "Pro.Option Stock Call Long",
+        "Pro.Option Stock Call Short",
+        "Pro.Option Stock Put Long",
+        "Pro.Option Stock Put Short",
+        "Pro.Total Long Contracts",
+        "Pro.Total Short Contracts",
+        "TOTAL.Future Index Long",
+        "TOTAL.Future Index Short",
+        "TOTAL.Future Stock Long",
+        "TOTAL.Future Stock Short",
+        "TOTAL.Option Index Call Long",
+        "TOTAL.Option Index Call Short",
+        "TOTAL.Option Index Put Long",
+        "TOTAL.Option Index Put Short",
+        "TOTAL.Option Stock Call Long",
+        "TOTAL.Option Stock Call Short",
+        "TOTAL.Option Stock Put Long",
+        "TOTAL.Option Stock Put Short",
+        "TOTAL.Total Long Contracts",
+        "TOTAL.Total Short Contracts"
+       ],
+       "data_rows": 2791,
+       "malformed_width_rows": 0,
+       "exact_duplicate_rows": 0,
+       "missing_by_column": {
+        "Client.Future Index Long": 1,
+        "Client.Future Index Short": 1,
+        "Client.Future Stock Long": 1,
+        "Client.Future Stock Short": 921,
+        "Client.Option Index Call Long": 1,
+        "Client.Option Index Call Short": 1,
+        "Client.Option Index Put Long": 1,
+        "Client.Option Index Put Short": 1,
+        "Client.Option Stock Call Long": 1,
+        "Client.Option Stock Call Short": 1,
+        "Client.Option Stock Put Long": 1,
+        "Client.Option Stock Put Short": 1,
+        "Client.Total Long Contracts": 919,
+        "Client.Total Short Contracts": 1,
+        "DII.Future Index Long": 1,
+        "DII.Future Index Short": 1,
+        "DII.Future Stock Long": 1,
+        "DII.Future Stock Short": 921,
+        "DII.Option Index Call Long": 1,
+        "DII.Option Index Call Short": 2,
+        "DII.Option Index Put Long": 1,
+        "DII.Option Index Put Short": 2,
+        "DII.Option Stock Call Long": 1,
+        "DII.Option Stock Call Short": 2,
+        "DII.Option Stock Put Long": 2,
+        "DII.Option Stock Put Short": 2,
+        "DII.Total Long Contracts": 919,
+        "DII.Total Short Contracts": 1,
+        "FII.Future Index Long": 2,
+        "FII.Future Index Short": 2,
+        "FII.Future Stock Long": 2,
+        "FII.Future Stock Short": 922,
+        "FII.Option Index Call Long": 2,
+        "FII.Option Index Call Short": 2,
+        "FII.Option Index Put Long": 2,
+        "FII.Option Index Put Short": 2,
+        "FII.Option Stock Call Long": 2,
+        "FII.Option Stock Call Short": 2,
+        "FII.Option Stock Put Long": 2,
+        "FII.Option Stock Put Short": 2,
+        "FII.Total Long Contracts": 920,
+        "FII.Total Short Contracts": 2,
+        "Pro.Future Index Long": 1,
+        "Pro.Future Index Short": 1,
+        "Pro.Future Stock Long": 1,
+        "Pro.Future Stock Short": 921,
+        "Pro.Option Index Call Long": 1,
+        "Pro.Option Index Call Short": 1,
+        "Pro.Option Index Put Long": 1,
+        "Pro.Option Index Put Short": 1,
+        "Pro.Option Stock Call Long": 1,
+        "Pro.Option Stock Call Short": 1,
+        "Pro.Option Stock Put Long": 1,
+        "Pro.Option Stock Put Short": 1,
+        "Pro.Total Long Contracts": 919,
+        "Pro.Total Short Contracts": 1,
+        "TOTAL.Future Index Long": 2,
+        "TOTAL.Future Index Short": 2,
+        "TOTAL.Future Stock Long": 2,
+        "TOTAL.Future Stock Short": 922,
+        "TOTAL.Option Index Call Long": 2,
+        "TOTAL.Option Index Call Short": 2,
+        "TOTAL.Option Index Put Long": 2,
+        "TOTAL.Option Index Put Short": 2,
+        "TOTAL.Option Stock Call Long": 2,
+        "TOTAL.Option Stock Call Short": 2,
+        "TOTAL.Option Stock Put Long": 2,
+        "TOTAL.Option Stock Put Short": 2,
+        "TOTAL.Total Long Contracts": 920,
+        "TOTAL.Total Short Contracts": 2
+       },
+       "dates": {
+        "trade_date": {
+         "min": "2012-01-02",
+         "max": "2023-04-27",
+         "distinct_dates": 2791,
+         "valid_rows": 2791,
+         "unparsed_nonmissing_rows": 0,
+         "missing_rows": 0,
+         "duplicate_date_rows": 0,
+         "weekend_rows": 12
+        }
+       },
+       "candidate_keys": {
+        "trade_date": {
+         "distinct_keys": 2791,
+         "duplicate_rows": 0,
+         "conflicting_rows": 0
+        }
+       },
+       "embedded_source_file_claims": [
+        "PWOI_data.csv.zip"
+       ],
+       "numeric_cell_coverage": {
+        "nonmissing_numeric_cells": 186077,
+        "entirely_numeric_nonmissing_column_count": 70,
+        "fractional_column_count": 0,
+        "fractional_cell_count": 0
+       }
+      }
+     },
+     {
+      "member": "fii_derivatives_cash_review_v0_2_csv_pack/readiness_summary.csv",
+      "bytes": 548,
+      "directory": false,
+      "sha256": "879e5356f6cc6c6b43b3e82896503d0749256510341b9d180c10db3181a5f057",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "all CSV rows and fields read",
+      "csv": {
+       "header": [
+        "feed",
+        "status",
+        "rows",
+        "date_min",
+        "date_max",
+        "notes"
+       ],
+       "data_rows": 4,
+       "malformed_width_rows": 0,
+       "exact_duplicate_rows": 0,
+       "missing_by_column": {
+        "date_min": 1,
+        "date_max": 1
+       },
+       "dates": {
+        "date_min": {
+         "min": "2012-01-02",
+         "max": "2014-01-01",
+         "distinct_dates": 2,
+         "valid_rows": 3,
+         "unparsed_nonmissing_rows": 0,
+         "missing_rows": 1,
+         "duplicate_date_rows": 1,
+         "weekend_rows": 0
+        },
+        "date_max": {
+         "min": "2023-04-27",
+         "max": "2023-07-17",
+         "distinct_dates": 2,
+         "valid_rows": 3,
+         "unparsed_nonmissing_rows": 0,
+         "missing_rows": 1,
+         "duplicate_date_rows": 1,
+         "weekend_rows": 0
+        }
+       },
+       "candidate_keys": {},
+       "numeric_cell_coverage": {
+        "nonmissing_numeric_cells": 4,
+        "entirely_numeric_nonmissing_column_count": 1,
+        "fractional_column_count": 0,
+        "fractional_cell_count": 0
+       }
+      }
+     },
+     {
+      "member": "fii_derivatives_cash_review_v0_2_csv_pack/signal_readiness_map_after_new_batch.csv",
+      "bytes": 1200,
+      "directory": false,
+      "sha256": "6736e599d0c867288b9cae6650d881a9d7ff104362950382fcd49e52f7185dd9",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "all CSV rows and fields read",
+      "csv": {
+       "header": [
+        "signal_or_layer",
+        "status",
+        "reason"
+       ],
+       "data_rows": 11,
+       "malformed_width_rows": 0,
+       "exact_duplicate_rows": 0,
+       "missing_by_column": {},
+       "dates": {},
+       "candidate_keys": {},
+       "numeric_cell_coverage": {
+        "nonmissing_numeric_cells": 0,
+        "entirely_numeric_nonmissing_column_count": 0,
+        "fractional_column_count": 0,
+        "fractional_cell_count": 0
+       }
+      }
+     }
+    ],
+    "uncompressed_bytes": 11126707
+   },
+   {
+    "archive": "IFR_FII_Cash_Stack_Test_v0_6_CSV.zip",
+    "bytes": 410449,
+    "sha256": "2008f4036bdb44e068779ad648785b4433609442e406efd87ad834ea6664d9f7",
+    "pinned_size_sha256_match": true,
+    "coverage": "member inventory and bytes/checksums only; content not interpreted",
+    "members": [
+     {
+      "member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/",
+      "bytes": 0,
+      "directory": true
+     },
+     {
+      "member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/block_robustness.csv",
+      "bytes": 2998,
+      "directory": false,
+      "sha256": "af6e100f6ab3bb4f9d2b02ca6abcf4eac9da1b605f38788f01d78d8de70b6304",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "unread"
+     },
+     {
+      "member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/daily_joined_ifr_fii_cash_signals.csv",
+      "bytes": 712860,
+      "directory": false,
+      "sha256": "54853fbf3f42526bfc2367d1e9b31ba95f75c00f07ea28d02002768785597cf8",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "unread"
+     },
+     {
+      "member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/equity_curves_selected.csv",
+      "bytes": 345286,
+      "directory": false,
+      "sha256": "0b08888c8a21971bcc7758cc38e775be7d1743691b85b6c58e0a59ee42b24860",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "unread"
+     },
+     {
+      "member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/event_fire_matrix.csv",
+      "bytes": 2542,
+      "directory": false,
+      "sha256": "3269b0b9f0f802319d5a323dd4dc592937f263901ac59f4b9410adb88b4df653",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "unread"
+     },
+     {
+      "member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/parameter_decisions.csv",
+      "bytes": 1115,
+      "directory": false,
+      "sha256": "cacfe7b4492d3f0901124ba64310df829cf7476068120b3ed5c41e2ba98b0cb0",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "unread"
+     },
+     {
+      "member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/signal_correlation_matrix.csv",
+      "bytes": 2934,
+      "directory": false,
+      "sha256": "d6f2db92665d14e8f34d6888cc46a629309e322ac6a18d639cd2659f2e57a8fb",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "unread"
+     },
+     {
+      "member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/signal_forward_return_distribution.csv",
+      "bytes": 2354,
+      "directory": false,
+      "sha256": "595e3cbebbb05e98945832c8cda3b216a325dd50e78b9985e3f7125f3d03cb85",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "unread"
+     },
+     {
+      "member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/signal_independence_clusters.csv",
+      "bytes": 229,
+      "directory": false,
+      "sha256": "bb3b6ec2374d95d7bc74c544973fcd8b37923b1ce19bdfd54a029d62f8dc253b",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "unread"
+     },
+     {
+      "member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/strategy_performance.csv",
+      "bytes": 2960,
+      "directory": false,
+      "sha256": "0aa0e7130e33dc306815186eb3957b2cbb7702837f79a351ee0539ab6d750909",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "unread"
+     }
+    ],
+    "uncompressed_bytes": 1073278
+   },
+   {
+    "archive": "ifr_fii_cash_stack_test_v0_6.zip",
+    "bytes": 406689,
+    "sha256": "fd75e0939860eae2335bd2516c8d57aee8de12e7886de8b9124acd5ab6c49bb4",
+    "pinned_size_sha256_match": true,
+    "coverage": "member inventory and bytes/checksums only; content not interpreted",
+    "members": [
+     {
+      "member": "ifr_fii_cash_stack_test_v0_6/",
+      "bytes": 0,
+      "directory": true
+     },
+     {
+      "member": "ifr_fii_cash_stack_test_v0_6/block_robustness.csv",
+      "bytes": 2998,
+      "directory": false,
+      "sha256": "af6e100f6ab3bb4f9d2b02ca6abcf4eac9da1b605f38788f01d78d8de70b6304",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "unread"
+     },
+     {
+      "member": "ifr_fii_cash_stack_test_v0_6/daily_joined_ifr_fii_cash_signals.csv",
+      "bytes": 712860,
+      "directory": false,
+      "sha256": "54853fbf3f42526bfc2367d1e9b31ba95f75c00f07ea28d02002768785597cf8",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "unread"
+     },
+     {
+      "member": "ifr_fii_cash_stack_test_v0_6/equity_curves_selected.csv",
+      "bytes": 345286,
+      "directory": false,
+      "sha256": "0b08888c8a21971bcc7758cc38e775be7d1743691b85b6c58e0a59ee42b24860",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "unread"
+     },
+     {
+      "member": "ifr_fii_cash_stack_test_v0_6/event_fire_matrix.csv",
+      "bytes": 2542,
+      "directory": false,
+      "sha256": "3269b0b9f0f802319d5a323dd4dc592937f263901ac59f4b9410adb88b4df653",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "unread"
+     },
+     {
+      "member": "ifr_fii_cash_stack_test_v0_6/signal_independence_clusters.csv",
+      "bytes": 229,
+      "directory": false,
+      "sha256": "bb3b6ec2374d95d7bc74c544973fcd8b37923b1ce19bdfd54a029d62f8dc253b",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "unread"
+     },
+     {
+      "member": "ifr_fii_cash_stack_test_v0_6/strategy_performance.csv",
+      "bytes": 2960,
+      "directory": false,
+      "sha256": "0aa0e7130e33dc306815186eb3957b2cbb7702837f79a351ee0539ab6d750909",
+      "crc_read_completed": true,
+      "identical_root_assets": [],
+      "content_status": "unread"
+     }
+    ],
+    "uncompressed_bytes": 1066875
+   }
+  ],
+  "duplicate_member_groups": [
+   {
+    "sha256": "78dd9152a24422ef851cf755535b85af4169efe2edbcbe2a4e976c722e56b368",
+    "members": [
+     "volume_derivatives_review_v0_3.zip::volume_derivatives_review_v0_3/fii_dii_cash_full_history_clean.csv",
+     "fii_volume_derivatives_review_v0_3_csv_pack.zip::fii_volume_derivatives_review_v0_3_csv_pack/fii_dii_cash_full_history_clean.csv"
+    ]
+   },
+   {
+    "sha256": "844455bfdbd8a07dd6e6da694e4ceef2805516990635659cb2261ab4a1ad873f",
+    "members": [
+     "volume_derivatives_review_v0_3.zip::volume_derivatives_review_v0_3/participantwise_oi_latest_clean.csv",
+     "fii_volume_derivatives_review_v0_3_csv_pack.zip::fii_volume_derivatives_review_v0_3_csv_pack/participantwise_oi_latest_clean.csv"
+    ]
+   },
+   {
+    "sha256": "c9a6dc808f05eefb89b7d85d04aabd076938e0920f9ba5b5d9f233c2ae577c45",
+    "members": [
+     "volume_derivatives_review_v0_3.zip::volume_derivatives_review_v0_3/readiness_status.csv",
+     "fii_volume_derivatives_review_v0_3_csv_pack.zip::fii_volume_derivatives_review_v0_3_csv_pack/readiness_status.csv"
+    ]
+   },
+   {
+    "sha256": "36cabe3add2f256f26998ed63254b7da259ef6573f5a473297f69fc3a53217ec",
+    "members": [
+     "fii_volume_derivatives_review_v0_3_csv_pack.zip::fii_volume_derivatives_review_v0_3_csv_pack/fii_derivatives_stats_current_clean.csv",
+     "fii_derivatives_cash_review_v0_2_csv_pack.zip::fii_derivatives_cash_review_v0_2_csv_pack/fii_derivatives_stats_current_clean.csv"
+    ]
+   },
+   {
+    "sha256": "b1d5070f30830ec8ef6dac5310b140d0bda2e59c52be8365ea57ed636e6b7feb",
+    "members": [
+     "fii_volume_derivatives_review_v0_3_csv_pack.zip::fii_volume_derivatives_review_v0_3_csv_pack/fii_dii_cash_flow_2012_2023.csv",
+     "fii_derivatives_cash_review_v0_2_csv_pack.zip::fii_derivatives_cash_review_v0_2_csv_pack/fii_dii_cash_flow_2012_2023.csv"
+    ]
+   },
+   {
+    "sha256": "3c74411e3a16c08afcd5163b0d4fabb784854d8a37cf4016914325a11b3dd494",
+    "members": [
+     "fii_volume_derivatives_review_v0_3_csv_pack.zip::fii_volume_derivatives_review_v0_3_csv_pack/fii_volume_derivatives_parameters_v0_3.csv",
+     "fii_volume_derivatives_review_v0_3_csv_pack.zip::fii_volume_derivatives_review_v0_3_csv_pack/new_fii_volume_derivatives_parameters_v0_3.csv"
+    ]
+   },
+   {
+    "sha256": "ca2c45659fec16d8251f65ea61de191cdaef9ab10e66e00dc9832463412045ee",
+    "members": [
+     "fii_volume_derivatives_review_v0_3_csv_pack.zip::fii_volume_derivatives_review_v0_3_csv_pack/file_inventory_new_batch.csv",
+     "fii_derivatives_cash_review_v0_2_csv_pack.zip::fii_derivatives_cash_review_v0_2_csv_pack/file_inventory_new_batch.csv"
+    ]
+   },
+   {
+    "sha256": "af6e100f6ab3bb4f9d2b02ca6abcf4eac9da1b605f38788f01d78d8de70b6304",
+    "members": [
+     "IFR_FII_Cash_Stack_Test_v0_6_CSV.zip::IFR_FII_Cash_Stack_Test_v0_6_CSV/block_robustness.csv",
+     "ifr_fii_cash_stack_test_v0_6.zip::ifr_fii_cash_stack_test_v0_6/block_robustness.csv"
+    ]
+   },
+   {
+    "sha256": "54853fbf3f42526bfc2367d1e9b31ba95f75c00f07ea28d02002768785597cf8",
+    "members": [
+     "IFR_FII_Cash_Stack_Test_v0_6_CSV.zip::IFR_FII_Cash_Stack_Test_v0_6_CSV/daily_joined_ifr_fii_cash_signals.csv",
+     "ifr_fii_cash_stack_test_v0_6.zip::ifr_fii_cash_stack_test_v0_6/daily_joined_ifr_fii_cash_signals.csv"
+    ]
+   },
+   {
+    "sha256": "0b08888c8a21971bcc7758cc38e775be7d1743691b85b6c58e0a59ee42b24860",
+    "members": [
+     "IFR_FII_Cash_Stack_Test_v0_6_CSV.zip::IFR_FII_Cash_Stack_Test_v0_6_CSV/equity_curves_selected.csv",
+     "ifr_fii_cash_stack_test_v0_6.zip::ifr_fii_cash_stack_test_v0_6/equity_curves_selected.csv"
+    ]
+   },
+   {
+    "sha256": "3269b0b9f0f802319d5a323dd4dc592937f263901ac59f4b9410adb88b4df653",
+    "members": [
+     "IFR_FII_Cash_Stack_Test_v0_6_CSV.zip::IFR_FII_Cash_Stack_Test_v0_6_CSV/event_fire_matrix.csv",
+     "ifr_fii_cash_stack_test_v0_6.zip::ifr_fii_cash_stack_test_v0_6/event_fire_matrix.csv"
+    ]
+   },
+   {
+    "sha256": "bb3b6ec2374d95d7bc74c544973fcd8b37923b1ce19bdfd54a029d62f8dc253b",
+    "members": [
+     "IFR_FII_Cash_Stack_Test_v0_6_CSV.zip::IFR_FII_Cash_Stack_Test_v0_6_CSV/signal_independence_clusters.csv",
+     "ifr_fii_cash_stack_test_v0_6.zip::ifr_fii_cash_stack_test_v0_6/signal_independence_clusters.csv"
+    ]
+   },
+   {
+    "sha256": "0aa0e7130e33dc306815186eb3957b2cbb7702837f79a351ee0539ab6d750909",
+    "members": [
+     "IFR_FII_Cash_Stack_Test_v0_6_CSV.zip::IFR_FII_Cash_Stack_Test_v0_6_CSV/strategy_performance.csv",
+     "ifr_fii_cash_stack_test_v0_6.zip::ifr_fii_cash_stack_test_v0_6/strategy_performance.csv"
+    ]
+   }
+  ],
+  "method": "Pinned archive size and SHA256 enforced before ZIP parse; bounded member bytes read in memory without extraction; unique CSV content fully read, all worksheet cells streamed; no recalculation, export, database or network.",
+  "summary": {
+   "archives_integrity_and_member_bytes_checked": 6,
+   "archives_content_audited": 4,
+   "selected_archive_uncompressed_bytes": 13791016,
+   "member_files_in_six_archives": 52,
+   "selected_member_files": 37,
+   "unique_csv_contents_fully_read": 24,
+   "csv_member_instances_in_selected_archives": 31,
+   "unique_csv_content_rows_read": 113536,
+   "workbooks_cell_contents_read": 3,
+   "worksheets_cell_contents_read": 25,
+   "worksheet_nonempty_cells_read": 47345,
+   "formula_cells": 0,
+   "typed_error_cells": 0,
+   "plain_text_members_read": 1,
+   "binary_xls_members_content_unread": 2,
+   "ifr_members_content_unread": 15,
+   "duplicate_member_byte_groups": 13,
+   "raw_investor_or_transaction_samples_included": false
+  },
+  "supplemental_checks": {
+   "nifty_workbook": {
+    "raw_sheet_rows": 2968,
+    "root_fii_dii_rows": 2968,
+    "raw_sheet_row_multiset_equals_root_fii_dii": true,
+    "nifty_close_rows": 2358,
+    "nifty_close_nonpositive_or_missing_rows": 0,
+    "nifty_dates_without_raw_cash": 19,
+    "raw_cash_dates_without_nifty": [
+     "2023-07-17"
+    ],
+    "units": "Source main sheet explicitly labels FII/DII values Crores; Nifty is Close only, not OHLCV."
+   },
+   "deduplicated_cash_flow": {
+    "derived_rows": 2340,
+    "root_unique_dates": 2340,
+    "same_dates": true,
+    "numeric_values_mismatched_rows": 0,
+    "interpretation": "This is a deduplicated/date-normalized view of existing root cash data, not additional observed cash history."
+   },
+   "clean_cash_derivative": {
+    "rows": 3770,
+    "dates_and_six_core_values_equal_root_under_dayfirst": true,
+    "mismatched_rows": 0,
+    "dates_before_full_5_observation_window_with_nonmissing_5d_value": 2,
+    "dates_before_full_10_observation_window_with_nonmissing_10d_value": 5,
+    "warning": "Renaming and sorting reproduce the unresolved root date convention and arithmetic issue; derived signal fields are not verified production formulas."
+   },
+   "pwoi_raw_to_wide": {
+    "source_rows": 3078,
+    "derived_rows": 2791,
+    "same_date_set": true,
+    "value_mismatched_rows": 21,
+    "value_mismatched_cells": 243,
+    "all_changes_are_finite_fractional_source_to_integer_output": true,
+    "max_abs_change": "0.5",
+    "interpretation": "Wide view deduplicates dates and preserves missing numerical cells, but rounds fractional source contract counts in some rows. Neither fractional source counts nor rounding policy is independently justified. Missing-to-zero behavior appears in subsequent feature/long-table derivation."
+   },
+   "pwoi_missing_input_propagation": {
+    "direct_features": {
+     "fii_index_fut_long": {
+      "source_missing_rows": 2,
+      "source_missing_but_feature_zero": 2
+     },
+     "fii_index_fut_short": {
+      "source_missing_rows": 2,
+      "source_missing_but_feature_zero": 2
+     }
+    },
+    "derived_features": {
+     "fii_stock_fut_net": {
+      "rows_with_missing_operand": 922,
+      "still_populated_feature_rows": 922,
+      "equals_zero_filled_operand_difference": 922
+     },
+     "fii_total_net_contracts": {
+      "rows_with_missing_operand": 920,
+      "still_populated_feature_rows": 920,
+      "equals_zero_filled_operand_difference": 920
+     }
+    },
+    "long_rows_with_missing_operand": 9193,
+    "long_rows_missing_operand_but_net_populated": 9193,
+    "long_rows_missing_operand_but_total_populated": 9193,
+    "raw_wide_dates_not_present_in_long": [
+     "2013-08-22"
+    ],
+    "interpretation": "Some supplied feature/long-table outputs behave as missing operands replaced by zero. Do not use such outputs as verified observed positioning."
+   },
+   "monthly_parser_residue": {
+    "rows": 135,
+    "valid_period_rows": 113,
+    "missing_period_rows": 22,
+    "footnote_rows": 21,
+    "part_month_rows_without_period": [
+     {
+      "year": "2026",
+      "month_name": "June **",
+      "source_file": "FII.zip:FII/_09062026050607.xls"
+     }
+    ],
+    "warning": "June ** row has a value but no period and is partial through June 8, 2026. Do not count footnotes as monthly records or silently label the partial June row a full month."
+   },
+   "fo_snapshot": {
+    "reported_csv_rows": 625,
+    "contract_rows": 624,
+    "footnote_rows": 1,
+    "distinct_symbols": 216,
+    "instrument_types": {
+     "FUTIDX": 12,
+     "FUTSTK": 612
+    },
+    "expiry_dates": [
+     "2026-06-30",
+     "2026-07-28",
+     "2026-08-25"
+    ],
+    "ohlc_bound_mismatch_rows": 0,
+    "rows_with_zero_ohlc_component": 0,
+    "trade_date_inferred_from_filename_only": "2026-06-03",
+    "trade_date_column_present": false,
+    "option_symbol_rows": 216,
+    "option_columns": [
+     "SYMBOL",
+     "CE      ",
+     "PE      "
+    ],
+    "actual_pcr_ratio_column_present": false,
+    "warning": "These are derivative contracts/option side aggregates, not cash-equity stock OHLCV or a current universe. File with PCR in name has CE/PE aggregates but no explicit PCR column."
+   },
+   "embedded_review_claims": {
+    "v0_3_status_main_unlock": "FII/DII cash daily history ready from 2008 to 2026",
+    "actual_clean_cash_date_max": "2022-12-08",
+    "verdict": "Status text overstates 2008 to 2026 continuous readiness; source ends2022 and separateJune2026snapshot is not continuous history. Treat READY labels and parameter descriptions as unverified claims, not activation authority."
+   }
+  },
+  "source_type_connections": [
+   {
+    "source": "Nifty workbook Nifty Data sheet",
+    "type": "historical index close",
+    "candidate_consumers": "Historical benchmark comparison and date-aligned research after source/session verification",
+    "must_not_feed": "Live Nifty quotes, individual stock OHLCV, current portfolio signals",
+    "new_data_vs_audited_root_sources": "2358 close dates; cash Raw Data is existing root data, not additional history"
+   },
+   {
+    "source": "PWOI_data and wide CSV",
+    "type": "historical participant/product derivatives OI contract counts",
+    "candidate_consumers": "Separate dated institutional-derivative history after gaps, decimals, duplicated dates and source types are resolved",
+    "must_not_feed": "Company holdings percentages or fresh institutional status",
+    "new_data_vs_audited_root_sources": "Historical participant OI2012-2023, not cash-equity universe membership"
+   },
+   {
+    "source": "PWOI derived feature/long CSV",
+    "type": "precomputed derived measures",
+    "candidate_consumers": "Formula/provenance review only until missing operand behavior repaired in a separate approved derived pipeline",
+    "must_not_feed": "Automatic risk or buy gates as currently supplied"
+   },
+   {
+    "source": "Clean cash CSVs",
+    "type": "normalized/deduplicated views of existing audited root cash data",
+    "candidate_consumers": "Historical reference after source/date/units/arithmetic checks",
+    "must_not_feed": "A second import of the same core cash observations"
+   },
+   {
+    "source": "June2026 FII/participant/F&O snapshots",
+    "type": "historical dated derivatives/cash snapshots",
+    "candidate_consumers": "Parser fixtures and historical reference with explicit date and scope",
+    "must_not_feed": "Current market context or automatic addition of stock symbols"
+   },
+   {
+    "source": "Parameter/readiness/model-review files",
+    "type": "Source descriptions, hypotheses and unverified readiness claims",
+    "candidate_consumers": "Human formula review and provenance documentation",
+    "must_not_feed": "Direct formula activation or production readiness assertions"
+   }
+  ],
+  "limitations": [
+   "FII.zip is absent from both pinned release inventory and local raw-assets root. Embedded source_file strings referencing it are unverified provenance claims.",
+   "All selected cell/CSV content was read, but Excel charts, pivots, slicers, formatting and external links were not rendered, recalculated or semantically verified. Read-only loader warning about slicer removal did not result in export or any file modification.",
+   "Two binary XLS members are byte-identical to already-catalogued root binary XLS assets; contents still unread because no supported bundled reader is present.",
+   "The two IFR test archives were inventoried and all member bytes hashed for duplicate comparison only. Their strategy results and formulas were not interpreted in this batch.",
+   "Date parser supports the observed string formats; numeric unformatted Excel serials in the v0.3 Cash Sample sheet remain explicitly unparsed by generic date-summary logic, not classified as source corruption.",
+   "Monthly missing-period candidate-key collisions include footnote rows and an undated partial-month row, not proved duplicate month observations.",
+   "Zero replacements, integer rounding, thresholds, rolling warmup policy and READY labels found in supplied derived files are not approved or verified application rules.",
+   "Units derive from field names or embedded workbook labels and remain source claims; no live exchange/provider verification performed.",
+   "Exploratory bounded audit only. No extraction, downloads, library installation, original edits, Mongo operations, imports or source code changes.",
+   "Base helper generates archive/member and content statistics; supplemental helper generates semantic/root equivalence and transformation checks. Summary/pruned numeric coverage/connection mapping/limitations assembled for this evidence; not a byte-for-byte untouched helper output."
+  ]
+ },
+ "publication_compaction": {
+  "numeric_coverage": "Institutional numeric per-column lists collapsed to counts; missingness, date/key checks and all transformation diagnostics preserved.",
+  "workbook_headers": "Institutional first-row labels omitted from this consolidated copy; sheet names/ranges/counts/date summaries retained.",
+  "privacy": "No investor/entity transaction samples, credentials, local workstation paths, or raw time-series rows published. One partial-month amount omitted; its missing-period/partial status preserved."
+ },
+ "previous_coverage_checkpoints": [
+  "docs/ASSET_DATA_FLOW_AUDIT_2026-09-24.md",
+  "docs/OHLCV_VALIDATION_CHECKPOINT_2026-09-24.md",
+  "docs/ASSET_IDENTITY_AND_WORKBOOK_CHECKPOINT_2026-09-24.md",
+  "docs/ROOT_CSV_ASSET_CHECKPOINT_2026-09-24.md"
+ ],
+ "remaining_coverage": [
+  "Three root binary XLS files, including the two byte-identical nested FII-stat copies, remain content-unread.",
+  "The 15 members of both IFR cash-stack test archives were inventoried/hashed only; their formulas and strategy results are uninterpreted.",
+  "Other archive families, PDFs and remaining HTML semantics are not completed by this scoped checkpoint; 2021_06.zip still requires a valid replacement/recovery source.",
+  "Native Excel charts, pivots, slicers, formatting, external links, recalculation and point-in-time formula correctness were not verified by cell-content reads.",
+  "Historical identity/corporate actions, provider authority, date conventions/units, actual Mongo coverage/capacity, fresh feed contracts and exact dashboard screenshot requirements remain open."
+ ]
+}
