@@ -1,0 +1,2077 @@
+{
+  "schema_version": "ashstocks-root-workbook-readonly-audit-v1",
+  "as_of": "2026-09-24",
+  "read_only": true,
+  "formula_recalculation_performed": false,
+  "database_import_performed": false,
+  "source_root": "V01-2026-09-07/payload/raw-assets",
+  "method": "Read XLSX ZIP parts via streaming XML, resolve shared/inline strings, count all stored worksheet cells and formula/cache/error nodes, independently inspect headers via openpyxl; parse HTML-XLS cell text and complete annual CSV. Dimensions come from actual cell coordinates, not metadata. No original file writes. Published report omits per-investor transaction samples.",
+  "summary": {
+    "root_xlsx_files_fully_scanned": 14,
+    "root_xlsx_sheets_fully_scanned": 14,
+    "root_xlsx_nonempty_cells": 13069717,
+    "formula_cells": 0,
+    "typed_error_cells": 0,
+    "html_xls_fully_scanned": 10,
+    "binary_xls_content_unread": 3,
+    "annual_csv_fully_scanned": 1,
+    "other_root_csv_not_scanned_this_subtask": 10,
+    "nested_archives_not_scanned_this_subtask": true
+  },
+  "classification": {
+    "nse_matrices": "One price value per date and symbol. No separate open/high/low/close/volume fields, no EPS or P/E. Compatible with close-price analysis only after source price basis/corporate-action/identity verification; do not synthesize OHLCV.",
+    "fpi_transactions": "Masked investor transaction reports with ISIN, trade/report dates, rate, quantity and value. Not OHLCV candles, holdings percentages or company EPS.",
+    "fii_dii": "Historical aggregate gross purchase/sales and net flow, not per-company fundamental data.",
+    "html_xls": "Monthly FPI net investments by category in INR crores; not DII and not stock-level flow."
+  },
+  "important_findings": [
+    "All 14 root XLSX contain values only, no formula nodes.",
+    "The ten NSE XLSX and annual CSV have identical 1,417-symbol headers; header presence is not nonmissing coverage or verified historical identity.",
+    "NSE.2019.xlsx extends into 2020; NSE.2020-24.xlsx ends 2024-07-05.",
+    "January 2022 transaction workbook declares A1 but actual range A1:S192104; dimension-trusting imports can silently truncate.",
+    "fii_dii.xlsx has no dimension metadata; actual range A1:G2969. There are 628 same-date duplicate rows and all are identical across six numerical fields; no conflicting same-date rows detected.",
+    "Binary fii_stats_08-Jun-2026.xls and fii_stats_08-Jun-2026.1.xls have identical SHA256; preserve originals pending approved cleanup."
+  ],
+  "records": [
+    {
+      "file": "NSE.2011.xlsx",
+      "bytes": 1827707,
+      "sha256": "01184dd6da9a1864b0dda8cbe006899bbf9438e4328c97e1ae16591f59f0a1e2",
+      "sheets": [
+        {
+          "sheet": "2011",
+          "member": "xl/worksheets/sheet1.xml",
+          "declared_dimension": "A1:BBN248",
+          "actual_max_row": 248,
+          "actual_max_column": 1418,
+          "stored_cells": 192166,
+          "nonempty_cells": 192166,
+          "formula_cells": 0,
+          "formula_cached_nonempty": 0,
+          "error_cells": 0,
+          "data_nonempty_rows": 246,
+          "blank_explicit_rows": 0,
+          "header": [
+            "Date",
+            "RELIANCE",
+            "TCS",
+            "HDFCBANK",
+            "ICICIBANK",
+            "BHARTIARTL",
+            "SBIN",
+            "INFY",
+            "LICI",
+            "ITC",
+            "HINDUNILVR",
+            "LT",
+            "...",
+            "CAREERP",
+            "INTLCONV",
+            "SHREEPUSHK",
+            "PRITIKAUTO"
+          ],
+          "dates": {
+            "Date": {
+              "min": "2011-01-03",
+              "max": "2011-12-30",
+              "distinct_dates": 246,
+              "parsed_rows": 246,
+              "invalid_rows": 0,
+              "duplicate_date_rows": 0
+            }
+          },
+          "all_cell_types": {
+            "s": 1418,
+            "n": 190748
+          },
+          "numeric_matrix_cells": 190502,
+          "matrix_missing_cells": 158080,
+          "matrix_nonpositive_cells": 0,
+          "matrix_other_values": 0,
+          "targets": {
+            "THERMAX": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            },
+            "BSOFT": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            },
+            "KEC": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            },
+            "GODFRYPHLP": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            },
+            "JWL": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            },
+            "ZENSARTECH": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            },
+            "RAILTEL": {
+              "numeric_cells": 0,
+              "missing_cells": 246
+            },
+            "RHIM": {
+              "numeric_cells": 0,
+              "missing_cells": 246
+            },
+            "LATENTVIEW": {
+              "numeric_cells": 0,
+              "missing_cells": 246
+            },
+            "SURYAROSNI": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            },
+            "BBL": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            }
+          },
+          "header_row": 1,
+          "symbol_columns": 1417,
+          "duplicate_symbol_headers": {},
+          "header_sha256": "785daa9663261745e59ea5a96f2db3076bf203b5191d7fe7cb8ec085f30ce27b",
+          "actual_range": "A1:BBN248"
+        }
+      ],
+      "coverage": "all worksheet stored cells parsed; no formula recalculation"
+    },
+    {
+      "file": "NSE.2012.xlsx",
+      "bytes": 1858330,
+      "sha256": "e521a00177b9deb23a2afac5e87658f5522d7f0e63a424f0c177c2264d35706b",
+      "sheets": [
+        {
+          "sheet": "2012",
+          "member": "xl/worksheets/sheet1.xml",
+          "declared_dimension": "A1:BBN250",
+          "actual_max_row": 250,
+          "actual_max_column": 1418,
+          "stored_cells": 197562,
+          "nonempty_cells": 197562,
+          "formula_cells": 0,
+          "formula_cached_nonempty": 0,
+          "error_cells": 0,
+          "data_nonempty_rows": 248,
+          "blank_explicit_rows": 0,
+          "header": [
+            "Date",
+            "RELIANCE",
+            "TCS",
+            "HDFCBANK",
+            "ICICIBANK",
+            "BHARTIARTL",
+            "SBIN",
+            "INFY",
+            "LICI",
+            "ITC",
+            "HINDUNILVR",
+            "LT",
+            "...",
+            "CAREERP",
+            "INTLCONV",
+            "SHREEPUSHK",
+            "PRITIKAUTO"
+          ],
+          "dates": {
+            "Date": {
+              "min": "2012-01-02",
+              "max": "2012-12-31",
+              "distinct_dates": 248,
+              "parsed_rows": 248,
+              "invalid_rows": 0,
+              "duplicate_date_rows": 0
+            }
+          },
+          "all_cell_types": {
+            "s": 1418,
+            "n": 196144
+          },
+          "numeric_matrix_cells": 195896,
+          "matrix_missing_cells": 155520,
+          "matrix_nonpositive_cells": 0,
+          "matrix_other_values": 0,
+          "targets": {
+            "THERMAX": {
+              "numeric_cells": 245,
+              "missing_cells": 3
+            },
+            "BSOFT": {
+              "numeric_cells": 245,
+              "missing_cells": 3
+            },
+            "KEC": {
+              "numeric_cells": 245,
+              "missing_cells": 3
+            },
+            "GODFRYPHLP": {
+              "numeric_cells": 245,
+              "missing_cells": 3
+            },
+            "JWL": {
+              "numeric_cells": 245,
+              "missing_cells": 3
+            },
+            "ZENSARTECH": {
+              "numeric_cells": 245,
+              "missing_cells": 3
+            },
+            "RAILTEL": {
+              "numeric_cells": 0,
+              "missing_cells": 248
+            },
+            "RHIM": {
+              "numeric_cells": 198,
+              "missing_cells": 50
+            },
+            "LATENTVIEW": {
+              "numeric_cells": 0,
+              "missing_cells": 248
+            },
+            "SURYAROSNI": {
+              "numeric_cells": 245,
+              "missing_cells": 3
+            },
+            "BBL": {
+              "numeric_cells": 245,
+              "missing_cells": 3
+            }
+          },
+          "header_row": 1,
+          "symbol_columns": 1417,
+          "duplicate_symbol_headers": {},
+          "header_sha256": "785daa9663261745e59ea5a96f2db3076bf203b5191d7fe7cb8ec085f30ce27b",
+          "actual_range": "A1:BBN250"
+        }
+      ],
+      "coverage": "all worksheet stored cells parsed; no formula recalculation"
+    },
+    {
+      "file": "NSE.2013.xlsx",
+      "bytes": 1871035,
+      "sha256": "e0452e86aba1f7a05c2ff7b5ea7e38577d6616c8fa25c10ca8f93ba26f496fbe",
+      "sheets": [
+        {
+          "sheet": "2013",
+          "member": "xl/worksheets/sheet1.xml",
+          "declared_dimension": "A1:BBN249",
+          "actual_max_row": 249,
+          "actual_max_column": 1418,
+          "stored_cells": 203323,
+          "nonempty_cells": 203323,
+          "formula_cells": 0,
+          "formula_cached_nonempty": 0,
+          "error_cells": 0,
+          "data_nonempty_rows": 248,
+          "blank_explicit_rows": 0,
+          "header": [
+            "Date",
+            "RELIANCE",
+            "TCS",
+            "HDFCBANK",
+            "ICICIBANK",
+            "BHARTIARTL",
+            "SBIN",
+            "INFY",
+            "LICI",
+            "ITC",
+            "HINDUNILVR",
+            "LT",
+            "...",
+            "CAREERP",
+            "INTLCONV",
+            "SHREEPUSHK",
+            "PRITIKAUTO"
+          ],
+          "dates": {
+            "Date": {
+              "min": "2013-01-01",
+              "max": "2013-12-31",
+              "distinct_dates": 248,
+              "parsed_rows": 248,
+              "invalid_rows": 0,
+              "duplicate_date_rows": 0
+            }
+          },
+          "all_cell_types": {
+            "s": 1418,
+            "n": 201905
+          },
+          "numeric_matrix_cells": 201657,
+          "matrix_missing_cells": 149759,
+          "matrix_nonpositive_cells": 0,
+          "matrix_other_values": 0,
+          "targets": {
+            "THERMAX": {
+              "numeric_cells": 248,
+              "missing_cells": 0
+            },
+            "BSOFT": {
+              "numeric_cells": 248,
+              "missing_cells": 0
+            },
+            "KEC": {
+              "numeric_cells": 248,
+              "missing_cells": 0
+            },
+            "GODFRYPHLP": {
+              "numeric_cells": 248,
+              "missing_cells": 0
+            },
+            "JWL": {
+              "numeric_cells": 248,
+              "missing_cells": 0
+            },
+            "ZENSARTECH": {
+              "numeric_cells": 248,
+              "missing_cells": 0
+            },
+            "RAILTEL": {
+              "numeric_cells": 0,
+              "missing_cells": 248
+            },
+            "RHIM": {
+              "numeric_cells": 248,
+              "missing_cells": 0
+            },
+            "LATENTVIEW": {
+              "numeric_cells": 0,
+              "missing_cells": 248
+            },
+            "SURYAROSNI": {
+              "numeric_cells": 248,
+              "missing_cells": 0
+            },
+            "BBL": {
+              "numeric_cells": 248,
+              "missing_cells": 0
+            }
+          },
+          "header_row": 1,
+          "symbol_columns": 1417,
+          "duplicate_symbol_headers": {},
+          "header_sha256": "785daa9663261745e59ea5a96f2db3076bf203b5191d7fe7cb8ec085f30ce27b",
+          "actual_range": "A1:BBN249"
+        }
+      ],
+      "coverage": "all worksheet stored cells parsed; no formula recalculation"
+    },
+    {
+      "file": "NSE.2014.xlsx",
+      "bytes": 1891536,
+      "sha256": "cde64150c7a7fd038ea130e8180ed916d3e857be144cf793c35e009ca2cc9e9a",
+      "sheets": [
+        {
+          "sheet": "2014",
+          "member": "xl/worksheets/sheet1.xml",
+          "declared_dimension": "A1:BBN245",
+          "actual_max_row": 245,
+          "actual_max_column": 1418,
+          "stored_cells": 202753,
+          "nonempty_cells": 202753,
+          "formula_cells": 0,
+          "formula_cached_nonempty": 0,
+          "error_cells": 0,
+          "data_nonempty_rows": 244,
+          "blank_explicit_rows": 0,
+          "header": [
+            "Date",
+            "RELIANCE",
+            "TCS",
+            "HDFCBANK",
+            "ICICIBANK",
+            "BHARTIARTL",
+            "SBIN",
+            "INFY",
+            "LICI",
+            "ITC",
+            "HINDUNILVR",
+            "LT",
+            "...",
+            "CAREERP",
+            "INTLCONV",
+            "SHREEPUSHK",
+            "PRITIKAUTO"
+          ],
+          "dates": {
+            "Date": {
+              "min": "2014-01-01",
+              "max": "2014-12-31",
+              "distinct_dates": 244,
+              "parsed_rows": 244,
+              "invalid_rows": 0,
+              "duplicate_date_rows": 0
+            }
+          },
+          "all_cell_types": {
+            "s": 1418,
+            "n": 201335
+          },
+          "numeric_matrix_cells": 201091,
+          "matrix_missing_cells": 144657,
+          "matrix_nonpositive_cells": 0,
+          "matrix_other_values": 0,
+          "targets": {
+            "THERMAX": {
+              "numeric_cells": 244,
+              "missing_cells": 0
+            },
+            "BSOFT": {
+              "numeric_cells": 244,
+              "missing_cells": 0
+            },
+            "KEC": {
+              "numeric_cells": 244,
+              "missing_cells": 0
+            },
+            "GODFRYPHLP": {
+              "numeric_cells": 244,
+              "missing_cells": 0
+            },
+            "JWL": {
+              "numeric_cells": 244,
+              "missing_cells": 0
+            },
+            "ZENSARTECH": {
+              "numeric_cells": 244,
+              "missing_cells": 0
+            },
+            "RAILTEL": {
+              "numeric_cells": 0,
+              "missing_cells": 244
+            },
+            "RHIM": {
+              "numeric_cells": 244,
+              "missing_cells": 0
+            },
+            "LATENTVIEW": {
+              "numeric_cells": 0,
+              "missing_cells": 244
+            },
+            "SURYAROSNI": {
+              "numeric_cells": 244,
+              "missing_cells": 0
+            },
+            "BBL": {
+              "numeric_cells": 244,
+              "missing_cells": 0
+            }
+          },
+          "header_row": 1,
+          "symbol_columns": 1417,
+          "duplicate_symbol_headers": {},
+          "header_sha256": "785daa9663261745e59ea5a96f2db3076bf203b5191d7fe7cb8ec085f30ce27b",
+          "actual_range": "A1:BBN245"
+        }
+      ],
+      "coverage": "all worksheet stored cells parsed; no formula recalculation"
+    },
+    {
+      "file": "NSE.2015.xlsx",
+      "bytes": 1981985,
+      "sha256": "6395ddbfa966e2b37af9b492f693c3537c0a000682c0f8c929fc1d7f249c472b",
+      "sheets": [
+        {
+          "sheet": "2015",
+          "member": "xl/worksheets/sheet1.xml",
+          "declared_dimension": "A1:BBN247",
+          "actual_max_row": 247,
+          "actual_max_column": 1418,
+          "stored_cells": 211390,
+          "nonempty_cells": 211390,
+          "formula_cells": 0,
+          "formula_cached_nonempty": 0,
+          "error_cells": 0,
+          "data_nonempty_rows": 246,
+          "blank_explicit_rows": 0,
+          "header": [
+            "Date",
+            "RELIANCE",
+            "TCS",
+            "HDFCBANK",
+            "ICICIBANK",
+            "BHARTIARTL",
+            "SBIN",
+            "INFY",
+            "LICI",
+            "ITC",
+            "HINDUNILVR",
+            "LT",
+            "...",
+            "CAREERP",
+            "INTLCONV",
+            "SHREEPUSHK",
+            "PRITIKAUTO"
+          ],
+          "dates": {
+            "Date": {
+              "min": "2015-01-01",
+              "max": "2015-12-31",
+              "distinct_dates": 246,
+              "parsed_rows": 246,
+              "invalid_rows": 0,
+              "duplicate_date_rows": 0
+            }
+          },
+          "all_cell_types": {
+            "s": 1418,
+            "n": 209972
+          },
+          "numeric_matrix_cells": 209726,
+          "matrix_missing_cells": 138856,
+          "matrix_nonpositive_cells": 0,
+          "matrix_other_values": 0,
+          "targets": {
+            "THERMAX": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            },
+            "BSOFT": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            },
+            "KEC": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            },
+            "GODFRYPHLP": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            },
+            "JWL": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            },
+            "ZENSARTECH": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            },
+            "RAILTEL": {
+              "numeric_cells": 0,
+              "missing_cells": 246
+            },
+            "RHIM": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            },
+            "LATENTVIEW": {
+              "numeric_cells": 0,
+              "missing_cells": 246
+            },
+            "SURYAROSNI": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            },
+            "BBL": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            }
+          },
+          "header_row": 1,
+          "symbol_columns": 1417,
+          "duplicate_symbol_headers": {},
+          "header_sha256": "785daa9663261745e59ea5a96f2db3076bf203b5191d7fe7cb8ec085f30ce27b",
+          "actual_range": "A1:BBN247"
+        }
+      ],
+      "coverage": "all worksheet stored cells parsed; no formula recalculation"
+    },
+    {
+      "file": "NSE.2016.xlsx",
+      "bytes": 2084971,
+      "sha256": "f8b47172a9a3370335d96e218349a2c32a75fd6ad82c97d254885294cf90520c",
+      "sheets": [
+        {
+          "sheet": "2016",
+          "member": "xl/worksheets/sheet1.xml",
+          "declared_dimension": "A1:BBN248",
+          "actual_max_row": 248,
+          "actual_max_column": 1418,
+          "stored_cells": 223117,
+          "nonempty_cells": 223117,
+          "formula_cells": 0,
+          "formula_cached_nonempty": 0,
+          "error_cells": 0,
+          "data_nonempty_rows": 246,
+          "blank_explicit_rows": 0,
+          "header": [
+            "Date",
+            "RELIANCE",
+            "TCS",
+            "HDFCBANK",
+            "ICICIBANK",
+            "BHARTIARTL",
+            "SBIN",
+            "INFY",
+            "LICI",
+            "ITC",
+            "HINDUNILVR",
+            "LT",
+            "...",
+            "CAREERP",
+            "INTLCONV",
+            "SHREEPUSHK",
+            "PRITIKAUTO"
+          ],
+          "dates": {
+            "Date": {
+              "min": "2016-01-01",
+              "max": "2016-12-30",
+              "distinct_dates": 246,
+              "parsed_rows": 246,
+              "invalid_rows": 0,
+              "duplicate_date_rows": 0
+            }
+          },
+          "all_cell_types": {
+            "s": 1418,
+            "n": 221699
+          },
+          "numeric_matrix_cells": 221453,
+          "matrix_missing_cells": 127129,
+          "matrix_nonpositive_cells": 0,
+          "matrix_other_values": 0,
+          "targets": {
+            "THERMAX": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            },
+            "BSOFT": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            },
+            "KEC": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            },
+            "GODFRYPHLP": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            },
+            "JWL": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            },
+            "ZENSARTECH": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            },
+            "RAILTEL": {
+              "numeric_cells": 0,
+              "missing_cells": 246
+            },
+            "RHIM": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            },
+            "LATENTVIEW": {
+              "numeric_cells": 0,
+              "missing_cells": 246
+            },
+            "SURYAROSNI": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            },
+            "BBL": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            }
+          },
+          "header_row": 1,
+          "symbol_columns": 1417,
+          "duplicate_symbol_headers": {},
+          "header_sha256": "785daa9663261745e59ea5a96f2db3076bf203b5191d7fe7cb8ec085f30ce27b",
+          "actual_range": "A1:BBN248"
+        }
+      ],
+      "coverage": "all worksheet stored cells parsed; no formula recalculation"
+    },
+    {
+      "file": "NSE.2017.xlsx",
+      "bytes": 2302425,
+      "sha256": "989112bf1d20e1ac2c8686554888fd16f98c5c4a63888822fd313909bffde716",
+      "sheets": [
+        {
+          "sheet": "2017",
+          "member": "xl/worksheets/sheet1.xml",
+          "declared_dimension": "A1:BBN249",
+          "actual_max_row": 249,
+          "actual_max_column": 1418,
+          "stored_cells": 238422,
+          "nonempty_cells": 238422,
+          "formula_cells": 0,
+          "formula_cached_nonempty": 0,
+          "error_cells": 0,
+          "data_nonempty_rows": 248,
+          "blank_explicit_rows": 0,
+          "header": [
+            "Date",
+            "RELIANCE",
+            "TCS",
+            "HDFCBANK",
+            "ICICIBANK",
+            "BHARTIARTL",
+            "SBIN",
+            "INFY",
+            "LICI",
+            "ITC",
+            "HINDUNILVR",
+            "LT",
+            "...",
+            "CAREERP",
+            "INTLCONV",
+            "SHREEPUSHK",
+            "PRITIKAUTO"
+          ],
+          "dates": {
+            "Date": {
+              "min": "2017-01-02",
+              "max": "2017-12-29",
+              "distinct_dates": 248,
+              "parsed_rows": 248,
+              "invalid_rows": 0,
+              "duplicate_date_rows": 0
+            }
+          },
+          "all_cell_types": {
+            "s": 1418,
+            "n": 237004
+          },
+          "numeric_matrix_cells": 236756,
+          "matrix_missing_cells": 114660,
+          "matrix_nonpositive_cells": 0,
+          "matrix_other_values": 0,
+          "targets": {
+            "THERMAX": {
+              "numeric_cells": 248,
+              "missing_cells": 0
+            },
+            "BSOFT": {
+              "numeric_cells": 248,
+              "missing_cells": 0
+            },
+            "KEC": {
+              "numeric_cells": 248,
+              "missing_cells": 0
+            },
+            "GODFRYPHLP": {
+              "numeric_cells": 248,
+              "missing_cells": 0
+            },
+            "JWL": {
+              "numeric_cells": 248,
+              "missing_cells": 0
+            },
+            "ZENSARTECH": {
+              "numeric_cells": 248,
+              "missing_cells": 0
+            },
+            "RAILTEL": {
+              "numeric_cells": 0,
+              "missing_cells": 248
+            },
+            "RHIM": {
+              "numeric_cells": 248,
+              "missing_cells": 0
+            },
+            "LATENTVIEW": {
+              "numeric_cells": 0,
+              "missing_cells": 248
+            },
+            "SURYAROSNI": {
+              "numeric_cells": 248,
+              "missing_cells": 0
+            },
+            "BBL": {
+              "numeric_cells": 248,
+              "missing_cells": 0
+            }
+          },
+          "header_row": 1,
+          "symbol_columns": 1417,
+          "duplicate_symbol_headers": {},
+          "header_sha256": "785daa9663261745e59ea5a96f2db3076bf203b5191d7fe7cb8ec085f30ce27b",
+          "actual_range": "A1:BBN249"
+        }
+      ],
+      "coverage": "all worksheet stored cells parsed; no formula recalculation"
+    },
+    {
+      "file": "NSE.2018.xlsx",
+      "bytes": 2400569,
+      "sha256": "a8b2c3fe6637e1c79934165345f800f6c878eaee8784af60b7b548c4058e5032",
+      "sheets": [
+        {
+          "sheet": "2018",
+          "member": "xl/worksheets/sheet1.xml",
+          "declared_dimension": "A1:BBN247",
+          "actual_max_row": 247,
+          "actual_max_column": 1418,
+          "stored_cells": 252249,
+          "nonempty_cells": 252249,
+          "formula_cells": 0,
+          "formula_cached_nonempty": 0,
+          "error_cells": 0,
+          "data_nonempty_rows": 246,
+          "blank_explicit_rows": 0,
+          "header": [
+            "Date",
+            "RELIANCE",
+            "TCS",
+            "HDFCBANK",
+            "ICICIBANK",
+            "BHARTIARTL",
+            "SBIN",
+            "INFY",
+            "LICI",
+            "ITC",
+            "HINDUNILVR",
+            "LT",
+            "...",
+            "CAREERP",
+            "INTLCONV",
+            "SHREEPUSHK",
+            "PRITIKAUTO"
+          ],
+          "dates": {
+            "Date": {
+              "min": "2018-01-01",
+              "max": "2018-12-31",
+              "distinct_dates": 246,
+              "parsed_rows": 246,
+              "invalid_rows": 0,
+              "duplicate_date_rows": 0
+            }
+          },
+          "all_cell_types": {
+            "s": 1418,
+            "n": 250831
+          },
+          "numeric_matrix_cells": 250585,
+          "matrix_missing_cells": 97997,
+          "matrix_nonpositive_cells": 0,
+          "matrix_other_values": 0,
+          "targets": {
+            "THERMAX": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            },
+            "BSOFT": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            },
+            "KEC": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            },
+            "GODFRYPHLP": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            },
+            "JWL": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            },
+            "ZENSARTECH": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            },
+            "RAILTEL": {
+              "numeric_cells": 0,
+              "missing_cells": 246
+            },
+            "RHIM": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            },
+            "LATENTVIEW": {
+              "numeric_cells": 0,
+              "missing_cells": 246
+            },
+            "SURYAROSNI": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            },
+            "BBL": {
+              "numeric_cells": 246,
+              "missing_cells": 0
+            }
+          },
+          "header_row": 1,
+          "symbol_columns": 1417,
+          "duplicate_symbol_headers": {},
+          "header_sha256": "785daa9663261745e59ea5a96f2db3076bf203b5191d7fe7cb8ec085f30ce27b",
+          "actual_range": "A1:BBN247"
+        }
+      ],
+      "coverage": "all worksheet stored cells parsed; no formula recalculation"
+    },
+    {
+      "file": "NSE.2019.xlsx",
+      "bytes": 4057843,
+      "sha256": "7379611a8551a1a7d510b33094233d9c285fddf2453c0c1367dff642e2aae1e7",
+      "sheets": [
+        {
+          "sheet": "2019",
+          "member": "xl/worksheets/sheet1.xml",
+          "declared_dimension": "A1:BBN409",
+          "actual_max_row": 409,
+          "actual_max_column": 1418,
+          "stored_cells": 434979,
+          "nonempty_cells": 434979,
+          "formula_cells": 0,
+          "formula_cached_nonempty": 0,
+          "error_cells": 0,
+          "data_nonempty_rows": 407,
+          "blank_explicit_rows": 0,
+          "header": [
+            "Date",
+            "RELIANCE",
+            "TCS",
+            "HDFCBANK",
+            "ICICIBANK",
+            "BHARTIARTL",
+            "SBIN",
+            "INFY",
+            "LICI",
+            "ITC",
+            "HINDUNILVR",
+            "LT",
+            "...",
+            "CAREERP",
+            "INTLCONV",
+            "SHREEPUSHK",
+            "PRITIKAUTO"
+          ],
+          "dates": {
+            "Date": {
+              "min": "2019-01-01",
+              "max": "2020-08-27",
+              "distinct_dates": 407,
+              "parsed_rows": 407,
+              "invalid_rows": 0,
+              "duplicate_date_rows": 0
+            }
+          },
+          "all_cell_types": {
+            "s": 1418,
+            "n": 433561
+          },
+          "numeric_matrix_cells": 433154,
+          "matrix_missing_cells": 143565,
+          "matrix_nonpositive_cells": 0,
+          "matrix_other_values": 0,
+          "targets": {
+            "THERMAX": {
+              "numeric_cells": 407,
+              "missing_cells": 0
+            },
+            "BSOFT": {
+              "numeric_cells": 407,
+              "missing_cells": 0
+            },
+            "KEC": {
+              "numeric_cells": 407,
+              "missing_cells": 0
+            },
+            "GODFRYPHLP": {
+              "numeric_cells": 407,
+              "missing_cells": 0
+            },
+            "JWL": {
+              "numeric_cells": 407,
+              "missing_cells": 0
+            },
+            "ZENSARTECH": {
+              "numeric_cells": 407,
+              "missing_cells": 0
+            },
+            "RAILTEL": {
+              "numeric_cells": 0,
+              "missing_cells": 407
+            },
+            "RHIM": {
+              "numeric_cells": 407,
+              "missing_cells": 0
+            },
+            "LATENTVIEW": {
+              "numeric_cells": 0,
+              "missing_cells": 407
+            },
+            "SURYAROSNI": {
+              "numeric_cells": 407,
+              "missing_cells": 0
+            },
+            "BBL": {
+              "numeric_cells": 407,
+              "missing_cells": 0
+            }
+          },
+          "header_row": 1,
+          "symbol_columns": 1417,
+          "duplicate_symbol_headers": {},
+          "header_sha256": "785daa9663261745e59ea5a96f2db3076bf203b5191d7fe7cb8ec085f30ce27b",
+          "actual_range": "A1:BBN409"
+        }
+      ],
+      "coverage": "all worksheet stored cells parsed; no formula recalculation"
+    },
+    {
+      "file": "NSE.2020-24.xlsx",
+      "bytes": 10472394,
+      "sha256": "73dab7414b2822e4bf782b9f6e6579e9fbfb3631b6d666eaa0540704c689e986",
+      "sheets": [
+        {
+          "sheet": "Sheet1",
+          "member": "xl/worksheets/sheet1.xml",
+          "declared_dimension": "A1:BBN955",
+          "actual_max_row": 955,
+          "actual_max_column": 1418,
+          "stored_cells": 1180857,
+          "nonempty_cells": 1180857,
+          "formula_cells": 0,
+          "formula_cached_nonempty": 0,
+          "error_cells": 0,
+          "data_nonempty_rows": 953,
+          "blank_explicit_rows": 0,
+          "header": [
+            "Date",
+            "RELIANCE",
+            "TCS",
+            "HDFCBANK",
+            "ICICIBANK",
+            "BHARTIARTL",
+            "SBIN",
+            "INFY",
+            "LICI",
+            "ITC",
+            "HINDUNILVR",
+            "LT",
+            "...",
+            "CAREERP",
+            "INTLCONV",
+            "SHREEPUSHK",
+            "PRITIKAUTO"
+          ],
+          "dates": {
+            "Date": {
+              "min": "2020-08-28",
+              "max": "2024-07-05",
+              "distinct_dates": 953,
+              "parsed_rows": 953,
+              "invalid_rows": 0,
+              "duplicate_date_rows": 0
+            }
+          },
+          "all_cell_types": {
+            "s": 1418,
+            "n": 1179439
+          },
+          "numeric_matrix_cells": 1178486,
+          "matrix_missing_cells": 171915,
+          "matrix_nonpositive_cells": 0,
+          "matrix_other_values": 0,
+          "targets": {
+            "THERMAX": {
+              "numeric_cells": 953,
+              "missing_cells": 0
+            },
+            "BSOFT": {
+              "numeric_cells": 953,
+              "missing_cells": 0
+            },
+            "KEC": {
+              "numeric_cells": 953,
+              "missing_cells": 0
+            },
+            "GODFRYPHLP": {
+              "numeric_cells": 953,
+              "missing_cells": 0
+            },
+            "JWL": {
+              "numeric_cells": 953,
+              "missing_cells": 0
+            },
+            "ZENSARTECH": {
+              "numeric_cells": 953,
+              "missing_cells": 0
+            },
+            "RAILTEL": {
+              "numeric_cells": 827,
+              "missing_cells": 126
+            },
+            "RHIM": {
+              "numeric_cells": 953,
+              "missing_cells": 0
+            },
+            "LATENTVIEW": {
+              "numeric_cells": 647,
+              "missing_cells": 306
+            },
+            "SURYAROSNI": {
+              "numeric_cells": 953,
+              "missing_cells": 0
+            },
+            "BBL": {
+              "numeric_cells": 953,
+              "missing_cells": 0
+            }
+          },
+          "header_row": 1,
+          "symbol_columns": 1417,
+          "duplicate_symbol_headers": {},
+          "header_sha256": "785daa9663261745e59ea5a96f2db3076bf203b5191d7fe7cb8ec085f30ce27b",
+          "actual_range": "A1:BBN955"
+        }
+      ],
+      "coverage": "all worksheet stored cells parsed; no formula recalculation"
+    },
+    {
+      "file": "Oct.2023.xlsx",
+      "bytes": 18582698,
+      "sha256": "9dff7cbb180aec53338e03a6b52af33dbaf9aacfc0c1b075d2699cbac3e906de",
+      "sheets": [
+        {
+          "sheet": "Sheet1",
+          "member": "xl/worksheets/sheet1.xml",
+          "declared_dimension": "A1:S168529",
+          "actual_max_row": 168529,
+          "actual_max_column": 19,
+          "stored_cells": 3202051,
+          "nonempty_cells": 3202051,
+          "formula_cells": 0,
+          "formula_cached_nonempty": 0,
+          "error_cells": 0,
+          "data_nonempty_rows": 168528,
+          "blank_explicit_rows": 0,
+          "header": [
+            "RFDE_CUST_REG_NUM",
+            "RFDE_RPT_DT",
+            "RFDE_TXN_ID",
+            "FII",
+            "SUB_ACC",
+            "BRKER",
+            "SCRIP_NAME",
+            "ISIN",
+            "TR_DATE",
+            "TR_TYPE(*)",
+            "RFDE_SE_REG_NUM",
+            "RFDE_STLD_CODE",
+            "RATE",
+            "QUANTITY",
+            "VALUE (in Rs)",
+            "RFDE_INSTR_TYPE",
+            "RFDE_REASON_DLAY",
+            "RFDE_RPT_TYPE",
+            "RFDE_AMDMNT_REASON"
+          ],
+          "dates": {
+            "RFDE_RPT_DT": {
+              "min": "2023-10-03",
+              "max": "2023-11-07",
+              "distinct_dates": 15,
+              "parsed_rows": 168528,
+              "invalid_rows": 0,
+              "duplicate_date_rows": 168513
+            },
+            "TR_DATE": {
+              "min": "2023-10-03",
+              "max": "2023-10-31",
+              "distinct_dates": 15,
+              "parsed_rows": 168528,
+              "invalid_rows": 0,
+              "duplicate_date_rows": 168513
+            }
+          },
+          "all_cell_types": {
+            "s": 2696467,
+            "n": 505584
+          },
+          "numeric_matrix_cells": 0,
+          "matrix_missing_cells": 0,
+          "matrix_nonpositive_cells": 0,
+          "matrix_other_values": 0,
+          "targets": {},
+          "header_row": 1,
+          "actual_range": "A1:S168529",
+          "unique_isins": 1644
+        }
+      ],
+      "coverage": "all worksheet stored cells parsed; no formula recalculation"
+    },
+    {
+      "file": "REG_FII_DATALOAD_MASKING.January_Equity_2022.xlsx",
+      "bytes": 22463733,
+      "sha256": "c50d20e96218e0b91b31d02ce142a35369402add4bc9469e5f2f044ffed7f714",
+      "sheets": [
+        {
+          "sheet": "REG_FII_DATALOAD_MASKING",
+          "member": "xl/worksheets/sheet1.xml",
+          "declared_dimension": "A1",
+          "actual_max_row": 192104,
+          "actual_max_column": 19,
+          "stored_cells": 3649976,
+          "nonempty_cells": 3649976,
+          "formula_cells": 0,
+          "formula_cached_nonempty": 0,
+          "error_cells": 0,
+          "data_nonempty_rows": 192103,
+          "blank_explicit_rows": 0,
+          "header": [
+            "RFDE_CUST_REG_NUM",
+            "RFDE_RPT_DT",
+            "RFDE_TXN_ID",
+            "FII",
+            "SUB_ACC",
+            "BRKER",
+            "SCRIP_NAME",
+            "ISIN",
+            "TR_DATE",
+            "TR_TYPE(*)",
+            "RFDE_SE_REG_NUM",
+            "RFDE_STLD_CODE",
+            "RATE",
+            "QUANTITY",
+            "VALUE (in Rs)",
+            "RFDE_INSTR_TYPE",
+            "RFDE_REASON_DLAY",
+            "RFDE_RPT_TYPE",
+            "RFDE_AMDMNT_REASON"
+          ],
+          "dates": {
+            "RFDE_RPT_DT": {
+              "min": "2022-01-03",
+              "max": "2022-02-07",
+              "distinct_dates": 24,
+              "parsed_rows": 192103,
+              "invalid_rows": 0,
+              "duplicate_date_rows": 192079
+            },
+            "TR_DATE": {
+              "min": "2022-01-01",
+              "max": "2022-01-31",
+              "distinct_dates": 23,
+              "parsed_rows": 192103,
+              "invalid_rows": 0,
+              "duplicate_date_rows": 192080
+            }
+          },
+          "all_cell_types": {
+            "inlineStr": 3073667,
+            "n": 576309
+          },
+          "numeric_matrix_cells": 0,
+          "matrix_missing_cells": 0,
+          "matrix_nonpositive_cells": 0,
+          "matrix_other_values": 0,
+          "targets": {},
+          "header_row": 1,
+          "actual_range": "A1:S192104",
+          "unique_isins": 1483
+        }
+      ],
+      "coverage": "all worksheet stored cells parsed; no formula recalculation"
+    },
+    {
+      "file": "RFDE_CUST_REG_NUM.April.2023.xlsx",
+      "bytes": 16570240,
+      "sha256": "23b04264c8757eb9dc581afa3e8ab9d0fd2255c2c921b68951cd618883c3991c",
+      "sheets": [
+        {
+          "sheet": "Sheet1",
+          "member": "xl/worksheets/sheet1.xml",
+          "declared_dimension": "A1:S150531",
+          "actual_max_row": 150531,
+          "actual_max_column": 19,
+          "stored_cells": 2860089,
+          "nonempty_cells": 2860089,
+          "formula_cells": 0,
+          "formula_cached_nonempty": 0,
+          "error_cells": 0,
+          "data_nonempty_rows": 150530,
+          "blank_explicit_rows": 0,
+          "header": [
+            "RFDE_CUST_REG_NUM",
+            "RFDE_RPT_DT",
+            "RFDE_TXN_ID",
+            "FII",
+            "SUB_ACC",
+            "BRKER",
+            "SCRIP_NAME",
+            "ISIN",
+            "TR_DATE",
+            "TR_TYPE(*)",
+            "RFDE_SE_REG_NUM",
+            "RFDE_STLD_CODE",
+            "RATE",
+            "QUANTITY",
+            "VALUE (in Rs)",
+            "RFDE_INSTR_TYPE",
+            "RFDE_REASON_DLAY",
+            "RFDE_RPT_TYPE",
+            "RFDE_AMDMNT_REASON"
+          ],
+          "dates": {
+            "RFDE_RPT_DT": {
+              "min": "2023-04-03",
+              "max": "2023-05-04",
+              "distinct_dates": 20,
+              "parsed_rows": 150530,
+              "invalid_rows": 0,
+              "duplicate_date_rows": 150510
+            },
+            "TR_DATE": {
+              "min": "2023-04-01",
+              "max": "2023-04-28",
+              "distinct_dates": 18,
+              "parsed_rows": 150530,
+              "invalid_rows": 0,
+              "duplicate_date_rows": 150512
+            }
+          },
+          "all_cell_types": {
+            "s": 2408499,
+            "n": 451590
+          },
+          "numeric_matrix_cells": 0,
+          "matrix_missing_cells": 0,
+          "matrix_nonpositive_cells": 0,
+          "matrix_other_values": 0,
+          "targets": {},
+          "header_row": 1,
+          "actual_range": "A1:S150531",
+          "unique_isins": 1448
+        }
+      ],
+      "coverage": "all worksheet stored cells parsed; no formula recalculation"
+    },
+    {
+      "file": "_09062026050605.xls",
+      "bytes": 7264,
+      "sha256": "0dec0684d186f92a873255041c15861433d5f8c506cca0918ca4a6cd3015604b",
+      "format": "HTML table with .xls extension",
+      "coverage": "all table cell text read",
+      "rows": 18,
+      "cells": 76,
+      "first_rows": [
+        [
+          "",
+          "Monthly FPI Net Investments (Calendar Year - 2019)",
+          ""
+        ],
+        [
+          "Calendar Year",
+          "INR Crores"
+        ],
+        [
+          "Equity",
+          "Debt",
+          "Hybrid",
+          "Total"
+        ],
+        [
+          "January",
+          "-4262",
+          "-1301",
+          "7",
+          "-5556"
+        ],
+        [
+          "February",
+          "17220",
+          "-6037",
+          "871",
+          "12053"
+        ]
+      ],
+      "last_rows": [
+        [
+          "* The data presented above is compiled on the basis of reports submitted to SEBI/Depositories by Custodians and constitutes trades conducted by FPIs on and up to the previous trading day(s)."
+        ],
+        [
+          "* No bifurcation of net investment data available before March 1997"
+        ]
+      ]
+    },
+    {
+      "file": "_09062026050607.xls",
+      "bytes": 11379,
+      "sha256": "b0a4bd64ba51fadbc751a4cf1f7afbf2327a11e4e39335c2e055787c2baed851",
+      "format": "HTML table with .xls extension",
+      "coverage": "all table cell text read",
+      "rows": 14,
+      "cells": 116,
+      "first_rows": [
+        [
+          "",
+          "Monthly FPI Net Investments (Calendar Year - 2026)",
+          ""
+        ],
+        [
+          "Calendar Year",
+          "INR Crores"
+        ],
+        [
+          "Equity",
+          "Debt",
+          "Hybrid",
+          "Mutual Funds",
+          "Alternative Investment Funds(AIFs)",
+          "Total"
+        ],
+        [
+          "Equity",
+          "Debt-General Limit",
+          "Debt-VRR",
+          "Debt-FAR",
+          "Hybrid",
+          "Equity",
+          "Debt",
+          "Hybrid",
+          "Solution Oriented",
+          "Other",
+          "AIF"
+        ],
+        [
+          "January",
+          "-35962",
+          "-7308",
+          "60",
+          "13261",
+          "232",
+          "312",
+          "42",
+          "0",
+          "0",
+          "128",
+          "-4",
+          "-29240"
+        ]
+      ],
+      "last_rows": [
+        [
+          "* The data presented above is compiled on the basis of reports submitted to SEBI/Depositories by Custodians and constitutes trades conducted by FPIs on and up to the previous trading day(s)."
+        ],
+        [
+          "* No bifurcation of net investment data available before March 1997"
+        ]
+      ]
+    },
+    {
+      "file": "_09062026050614.xls",
+      "bytes": 17909,
+      "sha256": "1e129a06067a0f8fbcb17951da6975aaecf373fc6948cc5eab9fe56c4b168964",
+      "format": "HTML table with .xls extension",
+      "coverage": "all table cell text read",
+      "rows": 19,
+      "cells": 193,
+      "first_rows": [
+        [
+          "",
+          "Monthly FPI Net Investments (Calendar Year - 2025)",
+          ""
+        ],
+        [
+          "Calendar Year",
+          "INR Crores"
+        ],
+        [
+          "Equity",
+          "Debt",
+          "Hybrid",
+          "Mutual Funds",
+          "Alternative Investment Funds(AIFs)",
+          "Total"
+        ],
+        [
+          "Equity",
+          "Debt-General Limit",
+          "Debt-VRR",
+          "Debt-FAR",
+          "Hybrid",
+          "Equity",
+          "Debt",
+          "Hybrid",
+          "Solution Oriented",
+          "Other",
+          "AIF"
+        ],
+        [
+          "January",
+          "-78027",
+          "-3424",
+          "-4197",
+          "8192",
+          "206",
+          "101",
+          "-121",
+          "-5",
+          "0",
+          "63",
+          "0",
+          "-77211"
+        ]
+      ],
+      "last_rows": [
+        [
+          "* The data presented above is compiled on the basis of reports submitted to SEBI/Depositories by Custodians and constitutes trades conducted by FPIs on and up to the previous trading day(s)."
+        ],
+        [
+          "* No bifurcation of net investment data available before March 1997"
+        ]
+      ]
+    },
+    {
+      "file": "_09062026050619.xls",
+      "bytes": 17796,
+      "sha256": "ae6ebb7708216b65b14452d8969fd6764ea35c9509402da3c5936cb2358a56f9",
+      "format": "HTML table with .xls extension",
+      "coverage": "all table cell text read",
+      "rows": 19,
+      "cells": 193,
+      "first_rows": [
+        [
+          "",
+          "Monthly FPI Net Investments (Calendar Year - 2024)",
+          ""
+        ],
+        [
+          "Calendar Year",
+          "INR Crores"
+        ],
+        [
+          "Equity",
+          "Debt",
+          "Hybrid",
+          "Mutual Funds",
+          "Alternative Investment Funds(AIFs)",
+          "Total"
+        ],
+        [
+          "Equity",
+          "Debt-General Limit",
+          "Debt-VRR",
+          "Debt-FAR",
+          "Hybrid",
+          "Equity",
+          "Debt",
+          "Hybrid",
+          "Solution Oriented",
+          "Other",
+          "AIF"
+        ],
+        [
+          "January",
+          "-25744",
+          "19837",
+          "-710",
+          "-",
+          "24",
+          "-",
+          "-",
+          "-",
+          "-",
+          "-",
+          "-",
+          "-6593"
+        ]
+      ],
+      "last_rows": [
+        [
+          "* The data presented above is compiled on the basis of reports submitted to SEBI/Depositories by Custodians and constitutes trades conducted by FPIs on and up to the previous trading day(s)."
+        ],
+        [
+          "* No bifurcation of net investment data available before March 1997"
+        ]
+      ]
+    },
+    {
+      "file": "_09062026050620.xls",
+      "bytes": 8532,
+      "sha256": "19cdd445441140c0afa7e8ed3158eba6ffb18ee87191fbcff4dcf4bd8a5dff0c",
+      "format": "HTML table with .xls extension",
+      "coverage": "all table cell text read",
+      "rows": 18,
+      "cells": 90,
+      "first_rows": [
+        [
+          "",
+          "Monthly FPI Net Investments (Calendar Year - 2020)",
+          ""
+        ],
+        [
+          "Calendar Year",
+          "INR Crores"
+        ],
+        [
+          "Equity",
+          "Debt",
+          "Debt-VRR",
+          "Hybrid",
+          "Total"
+        ],
+        [
+          "January",
+          "12123",
+          "-11648",
+          "529",
+          "-46",
+          "957"
+        ],
+        [
+          "February",
+          "1820",
+          "2097",
+          "2637",
+          "2416",
+          "8970"
+        ]
+      ],
+      "last_rows": [
+        [
+          "* The data presented above is compiled on the basis of reports submitted to SEBI/Depositories by Custodians and constitutes trades conducted by FPIs on and up to the previous trading day(s)."
+        ],
+        [
+          "* No bifurcation of net investment data available before March 1997"
+        ]
+      ]
+    },
+    {
+      "file": "_09062026050623.xls",
+      "bytes": 8531,
+      "sha256": "6af5fd5a3b2d02207f1e0fe17f27f2613c6c96cce0e65b4d55f480a97918cfe3",
+      "format": "HTML table with .xls extension",
+      "coverage": "all table cell text read",
+      "rows": 18,
+      "cells": 90,
+      "first_rows": [
+        [
+          "",
+          "Monthly FPI Net Investments (Calendar Year - 2023)",
+          ""
+        ],
+        [
+          "Calendar Year",
+          "INR Crores"
+        ],
+        [
+          "Equity",
+          "Debt",
+          "Debt-VRR",
+          "Hybrid",
+          "Total"
+        ],
+        [
+          "January",
+          "-28852",
+          "3531",
+          "-1076",
+          "-146",
+          "-26544"
+        ],
+        [
+          "February",
+          "-5294",
+          "2436",
+          "-1044",
+          "-237",
+          "-4139"
+        ]
+      ],
+      "last_rows": [
+        [
+          "* The data presented above is compiled on the basis of reports submitted to SEBI/Depositories by Custodians and constitutes trades conducted by FPIs on and up to the previous trading day(s)."
+        ],
+        [
+          "* No bifurcation of net investment data available before March 1997"
+        ]
+      ]
+    },
+    {
+      "file": "_09062026050624.xls",
+      "bytes": 7265,
+      "sha256": "ee15fd586d2f4e9354e609837f2cbc703c34ed297e7a8078f2523a5cbc96bd81",
+      "format": "HTML table with .xls extension",
+      "coverage": "all table cell text read",
+      "rows": 18,
+      "cells": 76,
+      "first_rows": [
+        [
+          "",
+          "Monthly FPI Net Investments (Calendar Year - 2018)",
+          ""
+        ],
+        [
+          "Calendar Year",
+          "INR Crores"
+        ],
+        [
+          "Equity",
+          "Debt",
+          "Hybrid",
+          "Total"
+        ],
+        [
+          "January",
+          "13781",
+          "8523",
+          "-32",
+          "22272"
+        ],
+        [
+          "February",
+          "-11423",
+          "-254",
+          "3",
+          "-11674"
+        ]
+      ],
+      "last_rows": [
+        [
+          "* The data presented above is compiled on the basis of reports submitted to SEBI/Depositories by Custodians and constitutes trades conducted by FPIs on and up to the previous trading day(s)."
+        ],
+        [
+          "* No bifurcation of net investment data available before March 1997"
+        ]
+      ]
+    },
+    {
+      "file": "_09062026050627.xls",
+      "bytes": 7244,
+      "sha256": "37a45e5afe5f166c9a6e8efbb1e614539f7d2a3a2a520e02b8d7a1ad07ac355f",
+      "format": "HTML table with .xls extension",
+      "coverage": "all table cell text read",
+      "rows": 18,
+      "cells": 76,
+      "first_rows": [
+        [
+          "",
+          "Monthly FPI Net Investments (Calendar Year - 2017)",
+          ""
+        ],
+        [
+          "Calendar Year",
+          "INR Crores"
+        ],
+        [
+          "Equity",
+          "Debt",
+          "Hybrid",
+          "Total"
+        ],
+        [
+          "January",
+          "-1177",
+          "-2319",
+          "0",
+          "-3496"
+        ],
+        [
+          "February",
+          "9902",
+          "5960",
+          "0",
+          "15862"
+        ]
+      ],
+      "last_rows": [
+        [
+          "* The data presented above is compiled on the basis of reports submitted to SEBI/Depositories by Custodians and constitutes trades conducted by FPIs on and up to the previous trading day(s)."
+        ],
+        [
+          "* No bifurcation of net investment data available before March 1997"
+        ]
+      ]
+    },
+    {
+      "file": "_09062026050632.xls",
+      "bytes": 8538,
+      "sha256": "abb65226cdb9cff24c308b1522b912ac6e358da1b1f42942ee910dd86adbabd9",
+      "format": "HTML table with .xls extension",
+      "coverage": "all table cell text read",
+      "rows": 18,
+      "cells": 90,
+      "first_rows": [
+        [
+          "",
+          "Monthly FPI Net Investments (Calendar Year - 2022)",
+          ""
+        ],
+        [
+          "Calendar Year",
+          "INR Crores"
+        ],
+        [
+          "Equity",
+          "Debt",
+          "Debt-VRR",
+          "Hybrid",
+          "Total"
+        ],
+        [
+          "January",
+          "-33303",
+          "5194",
+          "-2114",
+          "1697",
+          "-28526"
+        ],
+        [
+          "February",
+          "-35592",
+          "-3073",
+          "487",
+          "110",
+          "-38068"
+        ]
+      ],
+      "last_rows": [
+        [
+          "* The data presented above is compiled on the basis of reports submitted to SEBI/Depositories by Custodians and constitutes trades conducted by FPIs on and up to the previous trading day(s)."
+        ],
+        [
+          "* No bifurcation of net investment data available before March 1997"
+        ]
+      ]
+    },
+    {
+      "file": "_09062026050642.xls",
+      "bytes": 8533,
+      "sha256": "06ce6452abaa5cb7bd9dcc720fbd46d57aef17217f4af17d8d6b7d68244d9c7f",
+      "format": "HTML table with .xls extension",
+      "coverage": "all table cell text read",
+      "rows": 18,
+      "cells": 90,
+      "first_rows": [
+        [
+          "",
+          "Monthly FPI Net Investments (Calendar Year - 2021)",
+          ""
+        ],
+        [
+          "Calendar Year",
+          "INR Crores"
+        ],
+        [
+          "Equity",
+          "Debt",
+          "Debt-VRR",
+          "Hybrid",
+          "Total"
+        ],
+        [
+          "January",
+          "19473",
+          "-2518",
+          "-2306",
+          "-17",
+          "14631"
+        ],
+        [
+          "February",
+          "25787",
+          "-6488",
+          "4364",
+          "350",
+          "24013"
+        ]
+      ],
+      "last_rows": [
+        [
+          "* The data presented above is compiled on the basis of reports submitted to SEBI/Depositories by Custodians and constitutes trades conducted by FPIs on and up to the previous trading day(s)."
+        ],
+        [
+          "* No bifurcation of net investment data available before March 1997"
+        ]
+      ]
+    },
+    {
+      "file": "fii_dii.xlsx",
+      "bytes": 150075,
+      "sha256": "469b236a69a41cbb1a75c8543c3bbc773e8084572b319a7a2126add785d11664",
+      "sheets": [
+        {
+          "sheet": "Sheet",
+          "member": "xl/worksheets/sheet1.xml",
+          "declared_dimension": null,
+          "actual_max_row": 2969,
+          "actual_max_column": 7,
+          "stored_cells": 20783,
+          "nonempty_cells": 20783,
+          "formula_cells": 0,
+          "formula_cached_nonempty": 0,
+          "error_cells": 0,
+          "data_nonempty_rows": 2968,
+          "blank_explicit_rows": 0,
+          "header": [
+            "Date",
+            "FII_Gross_Purchase",
+            "FII_Gross_Sales",
+            "FII_Net_Purchase/Sales",
+            "DII_Net_Purchase/Sales",
+            "DII_Gross_Sales",
+            "DII_Gross_Purchase"
+          ],
+          "dates": {
+            "Date": {
+              "min": "2014-01-01",
+              "max": "2023-07-17",
+              "distinct_dates": 2340,
+              "parsed_rows": 2968,
+              "invalid_rows": 0,
+              "duplicate_date_rows": 628
+            }
+          },
+          "all_cell_types": {
+            "s": 2975,
+            "n": 17808
+          },
+          "numeric_matrix_cells": 0,
+          "matrix_missing_cells": 0,
+          "matrix_nonpositive_cells": 0,
+          "matrix_other_values": 0,
+          "targets": {},
+          "header_row": 1,
+          "actual_range": "A1:G2969"
+        }
+      ],
+      "coverage": "all worksheet stored cells parsed; no formula recalculation"
+    },
+    {
+      "file": "fii_stats_05-Jun-2026.xls",
+      "bytes": 9216,
+      "sha256": "69f845663e636a495c5ff54ce41549f348094332d7b3c8a20e1ef47bce64f8eb",
+      "format": "OLE/BIFF XLS",
+      "coverage": "signature and checksum only",
+      "unread_reason": "bundled xlrd not available; no installation attempted"
+    },
+    {
+      "file": "fii_stats_08-Jun-2026.1.xls",
+      "bytes": 9216,
+      "sha256": "97aca37bc73cc59aa32431e25e06be2608fd7ce035ff8e85e5f2f6757c65ed69",
+      "format": "OLE/BIFF XLS",
+      "coverage": "signature and checksum only",
+      "unread_reason": "bundled xlrd not available; no installation attempted"
+    },
+    {
+      "file": "fii_stats_08-Jun-2026.xls",
+      "bytes": 9216,
+      "sha256": "97aca37bc73cc59aa32431e25e06be2608fd7ce035ff8e85e5f2f6757c65ed69",
+      "format": "OLE/BIFF XLS",
+      "coverage": "signature and checksum only",
+      "unread_reason": "bundled xlrd not available; no installation attempted"
+    }
+  ],
+  "annual_csv": {
+    "file": "NSE.1991.-.2010.csv",
+    "bytes": 20582586,
+    "sha256": "53d81d2e2a350f9265c7bce076a8ed42141d4cfa562b813075af9cecff1f4d78",
+    "data_rows": 5138,
+    "columns": 1418,
+    "symbol_columns": 1417,
+    "header_sha256": "785daa9663261745e59ea5a96f2db3076bf203b5191d7fe7cb8ec085f30ce27b",
+    "header_duplicates": {},
+    "first_data_rows": [
+      [
+        "02-01-1991",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "03-01-1991",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    ],
+    "distinct_dates": 5138,
+    "duplicate_date_rows": 0,
+    "numeric_price_cells": 1326114,
+    "missing_price_cells": 5954432,
+    "nonpositive_price_cells": 0,
+    "other_values": {},
+    "malformed_rows": 0,
+    "targets": {
+      "THERMAX": {
+        "missing": 2999,
+        "numeric": 2139
+      },
+      "BSOFT": {
+        "missing": 2998,
+        "numeric": 2140
+      },
+      "KEC": {
+        "missing": 3033,
+        "numeric": 2105
+      },
+      "GODFRYPHLP": {
+        "missing": 2092,
+        "numeric": 3046
+      },
+      "JWL": {
+        "missing": 5086,
+        "numeric": 52
+      },
+      "ZENSARTECH": {
+        "missing": 3002,
+        "numeric": 2136
+      },
+      "RAILTEL": {
+        "missing": 5138
+      },
+      "RHIM": {
+        "missing": 5138
+      },
+      "LATENTVIEW": {
+        "missing": 5138
+      },
+      "SURYAROSNI": {
+        "missing": 3002,
+        "numeric": 2136
+      },
+      "BBL": {
+        "missing": 4123,
+        "numeric": 1015
+      }
+    },
+    "date_min": "1991-01-02",
+    "date_max": "2010-12-31",
+    "date_format": "dd-mm-yyyy",
+    "dates_with_all_prices_missing": 0,
+    "weekend_rows": 1,
+    "out_of_order_rows": 0,
+    "coverage": "all CSV rows and fields parsed; no file modifications"
+  },
+  "duplicate_flow_verification": {
+    "file": "fii_dii.xlsx",
+    "duplicate_date_keys": 628,
+    "identical_only_duplicate_keys": 628,
+    "conflicting_duplicate_keys": 0,
+    "maximum_rows_per_date": 2
+  },
+  "limitations": [
+    "No historical price basis, corporate-action adjustment, market-calendar completeness, symbol lifecycle, publication date or upstream authority independently established.",
+    "Values-only files have no formulas to preserve or recalculate within these 14 workbooks; this does not cover formulas elsewhere in the repository or archives.",
+    "No root file named NSE.XLSX exists in this preserved release set.",
+    "No live market, Mongo or production app comparison performed.",
+    "Three binary XLS file contents remain unread because bundled xlrd is absent; no software installation attempted.",
+    "Other ten root CSV and nested archives are outside this subtask; main agent is separately inspecting AM.07.Parameter.Files.zip.",
+    "This is an exploratory read-only audit, not a reusable untrusted-workbook import validator."
+  ]
+}
