@@ -1,0 +1,774 @@
+{
+  "bounds": {
+    "max_cells_per_sheet": 4000000,
+    "max_nested_part_bytes": 250000000,
+    "max_source_bytes": 30000000,
+    "max_workbook_data_rows": 250000,
+    "max_zip_entries": 500
+  },
+  "candidates": [
+    {
+      "asset": "AM.07.Parameter.Files.zip",
+      "business_validity_verified": false,
+      "byte_for_byte_equal": true,
+      "bytes": 5104660,
+      "container_context": {
+        "archive_comment_bytes": 0,
+        "member_comment_bytes": 0,
+        "member_crc32": "80fb3a9a",
+        "member_crc_read_completed": true,
+        "member_size": 5104660,
+        "non_directory_members": 44
+      },
+      "context": {
+        "data_rows": 32201,
+        "date_max": "2026-06-08",
+        "date_min": "2016-02-02",
+        "delivery_ratio_mismatch_over_0_011_percentage_points": 28,
+        "distinct_dates": 2477,
+        "distinct_source_file_claims": 26,
+        "duplicate_symbol_series_date_rows": 0,
+        "header": [
+          "trade_date",
+          "symbol",
+          "series",
+          "prev_close",
+          "open",
+          "high",
+          "low",
+          "last",
+          "close",
+          "vwap",
+          "tot_traded_qty",
+          "tot_traded_value",
+          "total_trades",
+          "deliv_qty",
+          "deliv_perc",
+          "source_file"
+        ],
+        "missing_delivery_quantity_percentage_pairs": 26,
+        "prior_coverage_quality_counts_match": true,
+        "scope": "all CSV rows re-parsed for schema, date/key scope and delivery missingness/ratio context",
+        "series": {
+          "EQ": 32201
+        },
+        "source_file_is_embedded_claim_not_upstream_verification": true,
+        "symbols": 16
+      },
+      "context_reuse_rationale": "Identical normalized EQ delivery sample retains exact dates, symbol/series keys, source-file claims and quality flags in both archive contexts.",
+      "currentness_verified": false,
+      "fresh_target_and_reference_sha256_equal": true,
+      "from": "inventory_only",
+      "inherited_and_new_limits": [
+        "Sixteen historical stock symbols are a sample, not an NSE universe or market-wide breadth.",
+        "Preserve 26 missing delivery pairs, 28 ratio discrepancies and previously documented 128-day gaps for 10 symbols; no repair or forward-fill.",
+        "Symbols/series/source filenames do not verify point-in-time ISIN, corporate actions or original provider authority.",
+        "Values are historical through 2026-06-08; source labels do not make this a current feed.",
+        "The containing archive can include derived readiness or strategy claims; reviewing this member does not validate those siblings."
+      ],
+      "member": "AM 07 Parameter Files/nse_volume_delivery_16stocks_eq_merged.csv",
+      "previous_full_content_evidence_pointer_and_hash_match": true,
+      "reference": {
+        "asset": "delivery_batch_check_v0_1.zip",
+        "evidence": [
+          {
+            "file": "data/asset-review/additional-asset-evidence-2026-09-24.json",
+            "locator": "/macro_and_equity/comparison_with_existing_merged_delivery"
+          }
+        ],
+        "member": "delivery_batch_check_v0_1/nse_volume_delivery_16stocks_eq_merged.csv"
+      },
+      "review_depth": "context-confirmed reuse of full serialized-content evidence plus fresh targeted context checks",
+      "runtime_import_ready": false,
+      "sha256": "03c8a3814e6eb00d3c9fd14e1f93f26decedb87121f2070933a2b622e7fc0e88",
+      "to": "reviewed"
+    },
+    {
+      "asset": "FO.Gold.COmm.zip",
+      "business_validity_verified": false,
+      "byte_for_byte_equal": true,
+      "bytes": 177,
+      "container_context": {
+        "archive_comment_bytes": 0,
+        "member_comment_bytes": 0,
+        "member_crc32": "c2a8e9dd",
+        "member_crc_read_completed": true,
+        "member_size": 177,
+        "non_directory_members": 15
+      },
+      "context": {
+        "data_rows": 2,
+        "header": [
+          "file",
+          "rows",
+          "unique_symbols",
+          "unique_instruments",
+          "status",
+          "notes"
+        ],
+        "interpretation": "Row totals and unique instrument counts include a footnote. Actual contracts are 624 futures / 12886 options across 2 instrument types each; USED is an embedded research claim.",
+        "member_date_claim": "2026-06-03 from filename only",
+        "relative_reference_checks": [
+          {
+            "actual_contract_instrument_types": {
+              "FUTIDX": 12,
+              "FUTSTK": 612
+            },
+            "actual_contract_rows": 624,
+            "bytes": 57190,
+            "claim_status": "USED",
+            "contract_unique_symbols": 216,
+            "declared_rows": 625,
+            "declared_unique_instruments": 3,
+            "declared_unique_symbols": 216,
+            "expiry_date_column_is_not_trade_date": true,
+            "footnote_rows": 1,
+            "header": [
+              "INSTRUMENT",
+              "SYMBOL",
+              "EXP_DATE",
+              "OPEN_PRICE",
+              "HI_PRICE",
+              "LO_PRICE",
+              "CLOSE_PRICE",
+              "OPEN_INT*",
+              "TRD_VAL",
+              "TRD_QTY",
+              "NO_OF_CONT",
+              "NO_OF_TRADE"
+            ],
+            "member": "FO Gold COmm/fo03062026.csv",
+            "numeric_prices_oi_turnover_revalidated": false,
+            "physical_records_after_header": 625,
+            "record_width_counts": {
+              "12": 625
+            },
+            "relative_file_claim": "fo03062026.csv",
+            "separate_member_coverage_upgrade": false,
+            "sha256": "f011b2611c0a97b64e26b5f2361d9303028ef75f03a83ab32424f3b767ffbb3b",
+            "status_is_not_production_authorization": true,
+            "trade_date_field_present": false
+          },
+          {
+            "actual_contract_instrument_types": {
+              "OPTIDX": 1981,
+              "OPTSTK": 10905
+            },
+            "actual_contract_rows": 12886,
+            "bytes": 2706771,
+            "claim_status": "USED",
+            "contract_unique_symbols": 216,
+            "declared_rows": 12887,
+            "declared_unique_instruments": 3,
+            "declared_unique_symbols": 216,
+            "expiry_date_column_is_not_trade_date": true,
+            "footnote_rows": 1,
+            "header": [
+              "INSTRUMENT",
+              "SYMBOL",
+              "EXP_DATE",
+              "STR_PRICE",
+              "OPT_TYPE",
+              "OPEN_PRICE",
+              "HI_PRICE",
+              "LO_PRICE",
+              "CLOSE_PRICE",
+              "OPEN_INT*",
+              "TRD_QTY",
+              "NO_OF_CONT",
+              "NO_OF_TRADE",
+              "NOTION_VAL",
+              "PR_VAL"
+            ],
+            "member": "FO Gold COmm/op03062026.csv",
+            "numeric_prices_oi_turnover_revalidated": false,
+            "physical_records_after_header": 12887,
+            "record_width_counts": {
+              "1": 1,
+              "15": 12886
+            },
+            "relative_file_claim": "op03062026.csv",
+            "separate_member_coverage_upgrade": false,
+            "sha256": "3a1c744322274c8fe78c8e322b68bcc7e2f0cb0992233f63d6a3b0b5088701e2",
+            "status_is_not_production_authorization": true,
+            "trade_date_field_present": false
+          }
+        ],
+        "scope": "all summary cells read and relative-file contract/footer counts checked; underlying numeric contract tables not promoted",
+        "trade_date_field_present": false
+      },
+      "context_reuse_rationale": "Same summary schema/text and relative raw file names; inherited read coverage is valid, but footer-inflated counts must remain explicit rather than treated as correct contract counts.",
+      "currentness_verified": false,
+      "fresh_target_and_reference_sha256_equal": true,
+      "from": "inventory_only",
+      "inherited_and_new_limits": [
+        "This is a two-row inventory summary, not futures/options OHLCV or a trading signal.",
+        "The relative filenames resolve, but physical record counts and unique-instrument claims include footer metadata.",
+        "June 3 as-of comes from filenames; expiry fields must not be interpreted as trade dates.",
+        "Summary USED status cannot establish provider freshness, quantitative validity or runtime activation."
+      ],
+      "member": "FO Gold COmm/fo_report_pack_summary_2026_06_03.csv",
+      "previous_full_content_evidence_pointer_and_hash_match": true,
+      "reference": {
+        "asset": "fii_volume_derivatives_review_v0_3_csv_pack.zip",
+        "evidence": [
+          {
+            "file": "data/asset-review/additional-asset-evidence-2026-09-24.json",
+            "locator": "/institutional/archives/2/members/12"
+          }
+        ],
+        "member": "fii_volume_derivatives_review_v0_3_csv_pack/fo_report_pack_summary_2026_06_03.csv"
+      },
+      "review_depth": "context-confirmed reuse of full serialized-content evidence plus fresh targeted context checks",
+      "runtime_import_ready": false,
+      "sha256": "0a1a4fa71cebbe681f34efc8400d140f4ec7a4ecdd2244f62b1faec9e926975e",
+      "to": "reviewed"
+    },
+    {
+      "asset": "Jan_2022.zip",
+      "business_validity_verified": false,
+      "byte_for_byte_equal": true,
+      "bytes": 22463733,
+      "container_context": {
+        "archive_comment_bytes": 0,
+        "member_comment_bytes": 0,
+        "member_crc32": "492a6a9e",
+        "member_crc_read_completed": true,
+        "member_size": 22463733,
+        "non_directory_members": 1
+      },
+      "context": {
+        "archive_month_matches_internal_trade_dates": true,
+        "reporting_dates_extend_beyond_archive_month": true,
+        "scope": "fresh package/header/all-date-column/context checks; prior full-cell read reused by exact bytes",
+        "sheets": [
+          {
+            "actual_range": "A1:S192104",
+            "category_counts": {
+              "RFDE_INSTR_TYPE": {
+                "REG_DL_INSTR_EQ": 191660,
+                "REG_DL_INSTR_EU": 393,
+                "REG_DL_INSTR_MD": 50
+              },
+              "RFDE_RPT_TYPE": {
+                "DL_RPT_TYPE_N": 192103
+              },
+              "TR_TYPE(*)": {
+                "01            ": 101292,
+                "02            ": 35,
+                "04            ": 89601,
+                "07            ": 738,
+                "08            ": 32,
+                "09            ": 4,
+                "10            ": 2,
+                "11            ": 39,
+                "12            ": 4,
+                "13            ": 27,
+                "14            ": 4,
+                "15            ": 300,
+                "16            ": 25
+              }
+            },
+            "data_rows": 192103,
+            "dates": {
+              "RFDE_RPT_DT": {
+                "distinct_dates": 24,
+                "max": "2022-02-07",
+                "min": "2022-01-03",
+                "parsed_rows": 192103
+              },
+              "TR_DATE": {
+                "distinct_dates": 23,
+                "max": "2022-01-31",
+                "min": "2022-01-01",
+                "parsed_rows": 192103
+              }
+            },
+            "declared_dimension": "A1",
+            "error_nodes": 0,
+            "formula_nodes": 0,
+            "header": [
+              "RFDE_CUST_REG_NUM",
+              "RFDE_RPT_DT",
+              "RFDE_TXN_ID",
+              "FII",
+              "SUB_ACC",
+              "BRKER",
+              "SCRIP_NAME",
+              "ISIN",
+              "TR_DATE",
+              "TR_TYPE(*)",
+              "RFDE_SE_REG_NUM",
+              "RFDE_STLD_CODE",
+              "RATE",
+              "QUANTITY",
+              "VALUE (in Rs)",
+              "RFDE_INSTR_TYPE",
+              "RFDE_REASON_DLAY",
+              "RFDE_RPT_TYPE",
+              "RFDE_AMDMNT_REASON"
+            ],
+            "nonempty_cells_recounted": 3649976,
+            "prior_counts_header_dates_match": true,
+            "sheet": "REG_FII_DATALOAD_MASKING",
+            "stored_cells_recounted": 3649976,
+            "worksheet_part": "xl/worksheets/sheet1.xml"
+          }
+        ],
+        "workbook_date1904_attribute": "false"
+      },
+      "context_reuse_rationale": "Single-member archive carries exactly the previously reviewed standalone transaction workbook; internal trade dates match archive month without converting reporting dates into trade dates.",
+      "currentness_verified": false,
+      "fresh_target_and_reference_sha256_equal": true,
+      "from": "inventory_only",
+      "inherited_and_new_limits": [
+        "Masked institutional transaction events, not equity OHLCV, shareholding percentages or company fundamentals.",
+        "VALUE (in Rs) explicitly labels value currency; transaction-type/instrument/report codes are preserved, not independently translated.",
+        "Repeated dates are expected across transaction rows; this audit does not establish transaction-key uniqueness or completeness of the month.",
+        "Reporting dates extend into the next month; source availability must not be backdated to trade dates in a point-in-time backtest.",
+        "Original publisher, source authority, instrument identities and reconciliation with Mongo remain unverified.",
+        "Inherited full stored-cell review does not verify native Excel charts, pivots, external refresh, or every economic interpretation.",
+        "Declared worksheet dimension A1 is wrong; actual range A1:S192104. Dimension-trusting readers can truncate."
+      ],
+      "member": "January_Equity_2022.xlsx",
+      "previous_full_content_evidence_pointer_and_hash_match": true,
+      "reference": {
+        "asset": "REG_FII_DATALOAD_MASKING.January_Equity_2022.xlsx",
+        "evidence": [
+          {
+            "file": "data/asset-review/root-workbook-content-audit-2026-09-24.json",
+            "locator": "/records/11"
+          }
+        ]
+      },
+      "review_depth": "context-confirmed reuse of full serialized-content evidence plus fresh targeted context checks",
+      "runtime_import_ready": false,
+      "sha256": "c50d20e96218e0b91b31d02ce142a35369402add4bc9469e5f2f044ffed7f714",
+      "to": "reviewed"
+    },
+    {
+      "asset": "Oct_2023.zip",
+      "business_validity_verified": false,
+      "byte_for_byte_equal": true,
+      "bytes": 18582698,
+      "container_context": {
+        "archive_comment_bytes": 0,
+        "member_comment_bytes": 0,
+        "member_crc32": "4786eb5e",
+        "member_crc_read_completed": true,
+        "member_size": 18582698,
+        "non_directory_members": 1
+      },
+      "context": {
+        "archive_month_matches_internal_trade_dates": true,
+        "reporting_dates_extend_beyond_archive_month": true,
+        "scope": "fresh package/header/all-date-column/context checks; prior full-cell read reused by exact bytes",
+        "sheets": [
+          {
+            "actual_range": "A1:S168529",
+            "category_counts": {
+              "RFDE_INSTR_TYPE": {
+                "REG_DL_INSTR_EQ": 166968,
+                "REG_DL_INSTR_EU": 1530,
+                "REG_DL_INSTR_MD": 24,
+                "REG_DL_INSTR_PS": 4,
+                "REG_DL_INSTR_RR": 1,
+                "REG_DL_INSTR_WR": 1
+              },
+              "RFDE_RPT_TYPE": {
+                "DL_RPT_TYPE_N": 168528
+              },
+              "TR_TYPE(*)": {
+                "01            ": 80268,
+                "02            ": 248,
+                "03            ": 50,
+                "04            ": 85096,
+                "05            ": 1,
+                "07            ": 1426,
+                "08            ": 2,
+                "11            ": 25,
+                "13            ": 3,
+                "15            ": 1406,
+                "16            ": 3
+              }
+            },
+            "data_rows": 168528,
+            "dates": {
+              "RFDE_RPT_DT": {
+                "distinct_dates": 15,
+                "max": "2023-11-07",
+                "min": "2023-10-03",
+                "parsed_rows": 168528
+              },
+              "TR_DATE": {
+                "distinct_dates": 15,
+                "max": "2023-10-31",
+                "min": "2023-10-03",
+                "parsed_rows": 168528
+              }
+            },
+            "declared_dimension": "A1:S168529",
+            "error_nodes": 0,
+            "formula_nodes": 0,
+            "header": [
+              "RFDE_CUST_REG_NUM",
+              "RFDE_RPT_DT",
+              "RFDE_TXN_ID",
+              "FII",
+              "SUB_ACC",
+              "BRKER",
+              "SCRIP_NAME",
+              "ISIN",
+              "TR_DATE",
+              "TR_TYPE(*)",
+              "RFDE_SE_REG_NUM",
+              "RFDE_STLD_CODE",
+              "RATE",
+              "QUANTITY",
+              "VALUE (in Rs)",
+              "RFDE_INSTR_TYPE",
+              "RFDE_REASON_DLAY",
+              "RFDE_RPT_TYPE",
+              "RFDE_AMDMNT_REASON"
+            ],
+            "nonempty_cells_recounted": 3202051,
+            "prior_counts_header_dates_match": true,
+            "sheet": "Sheet1",
+            "stored_cells_recounted": 3202051,
+            "worksheet_part": "xl/worksheets/sheet1.xml"
+          }
+        ],
+        "workbook_date1904_attribute": null
+      },
+      "context_reuse_rationale": "Single-member archive carries exactly the previously reviewed standalone transaction workbook; internal trade dates match archive month without converting reporting dates into trade dates.",
+      "currentness_verified": false,
+      "fresh_target_and_reference_sha256_equal": true,
+      "from": "inventory_only",
+      "inherited_and_new_limits": [
+        "Masked institutional transaction events, not equity OHLCV, shareholding percentages or company fundamentals.",
+        "VALUE (in Rs) explicitly labels value currency; transaction-type/instrument/report codes are preserved, not independently translated.",
+        "Repeated dates are expected across transaction rows; this audit does not establish transaction-key uniqueness or completeness of the month.",
+        "Reporting dates extend into the next month; source availability must not be backdated to trade dates in a point-in-time backtest.",
+        "Original publisher, source authority, instrument identities and reconciliation with Mongo remain unverified.",
+        "Inherited full stored-cell review does not verify native Excel charts, pivots, external refresh, or every economic interpretation."
+      ],
+      "member": "Oct 2023.xlsx",
+      "previous_full_content_evidence_pointer_and_hash_match": true,
+      "reference": {
+        "asset": "Oct.2023.xlsx",
+        "evidence": [
+          {
+            "file": "data/asset-review/root-workbook-content-audit-2026-09-24.json",
+            "locator": "/records/10"
+          }
+        ]
+      },
+      "review_depth": "context-confirmed reuse of full serialized-content evidence plus fresh targeted context checks",
+      "runtime_import_ready": false,
+      "sha256": "9dff7cbb180aec53338e03a6b52af33dbaf9aacfc0c1b075d2699cbac3e906de",
+      "to": "reviewed"
+    },
+    {
+      "asset": "volume_delivery_batch_check_v0_1.zip",
+      "business_validity_verified": false,
+      "byte_for_byte_equal": true,
+      "bytes": 5104660,
+      "container_context": {
+        "archive_comment_bytes": 0,
+        "member_comment_bytes": 0,
+        "member_crc32": "80fb3a9a",
+        "member_crc_read_completed": true,
+        "member_size": 5104660,
+        "non_directory_members": 8
+      },
+      "context": {
+        "data_rows": 32201,
+        "date_max": "2026-06-08",
+        "date_min": "2016-02-02",
+        "delivery_ratio_mismatch_over_0_011_percentage_points": 28,
+        "distinct_dates": 2477,
+        "distinct_source_file_claims": 26,
+        "duplicate_symbol_series_date_rows": 0,
+        "header": [
+          "trade_date",
+          "symbol",
+          "series",
+          "prev_close",
+          "open",
+          "high",
+          "low",
+          "last",
+          "close",
+          "vwap",
+          "tot_traded_qty",
+          "tot_traded_value",
+          "total_trades",
+          "deliv_qty",
+          "deliv_perc",
+          "source_file"
+        ],
+        "missing_delivery_quantity_percentage_pairs": 26,
+        "prior_coverage_quality_counts_match": true,
+        "scope": "all CSV rows re-parsed for schema, date/key scope and delivery missingness/ratio context",
+        "series": {
+          "EQ": 32201
+        },
+        "source_file_is_embedded_claim_not_upstream_verification": true,
+        "symbols": 16
+      },
+      "context_reuse_rationale": "Identical normalized EQ delivery sample retains exact dates, symbol/series keys, source-file claims and quality flags in both archive contexts.",
+      "currentness_verified": false,
+      "fresh_target_and_reference_sha256_equal": true,
+      "from": "inventory_only",
+      "inherited_and_new_limits": [
+        "Sixteen historical stock symbols are a sample, not an NSE universe or market-wide breadth.",
+        "Preserve 26 missing delivery pairs, 28 ratio discrepancies and previously documented 128-day gaps for 10 symbols; no repair or forward-fill.",
+        "Symbols/series/source filenames do not verify point-in-time ISIN, corporate actions or original provider authority.",
+        "Values are historical through 2026-06-08; source labels do not make this a current feed.",
+        "The containing archive can include derived readiness or strategy claims; reviewing this member does not validate those siblings."
+      ],
+      "member": "volume_delivery_batch_check_v0_1/nse_volume_delivery_16stocks_eq_merged.csv",
+      "previous_full_content_evidence_pointer_and_hash_match": true,
+      "reference": {
+        "asset": "delivery_batch_check_v0_1.zip",
+        "evidence": [
+          {
+            "file": "data/asset-review/additional-asset-evidence-2026-09-24.json",
+            "locator": "/macro_and_equity/comparison_with_existing_merged_delivery"
+          }
+        ],
+        "member": "delivery_batch_check_v0_1/nse_volume_delivery_16stocks_eq_merged.csv"
+      },
+      "review_depth": "context-confirmed reuse of full serialized-content evidence plus fresh targeted context checks",
+      "runtime_import_ready": false,
+      "sha256": "03c8a3814e6eb00d3c9fd14e1f93f26decedb87121f2070933a2b622e7fc0e88",
+      "to": "reviewed"
+    }
+  ],
+  "coverage_files_modified": false,
+  "database_import_performed": false,
+  "definition": "Reviewed means complete serialized-content evidence applies to these exact bytes in a confirmed context; not complete business validity or permission to ingest.",
+  "evidence_files": {
+    "data/asset-review/additional-asset-evidence-2026-09-24.json": {
+      "bytes": 146431,
+      "sha256": "0eb6c0645f001e56bb17d752c597257ebdd2b1eedf01ad5101f6d0fe5bd136a8"
+    },
+    "data/asset-review/backenddata-release-inventory-2026-09-24.json": {
+      "bytes": 52467,
+      "sha256": "12845723602d01fcc30b8af89a46514a177f1c848b78c8aed56657725ff96d45"
+    },
+    "data/asset-review/content-coverage-progress-2026-09-24.json": {
+      "bytes": 24941,
+      "sha256": "d5dea34be7ae9f3603502e8d93c225b46f6c81850a9f8e78e2d957f5e633fa4a"
+    },
+    "data/asset-review/remaining-content-baseline-2026-09-24.json": {
+      "bytes": 480929,
+      "sha256": "ee04b8138113febb39e6323a2048a3c78c9b11c3ace96653fb1ad2080de1bf52"
+    },
+    "data/asset-review/root-workbook-content-audit-2026-09-24.json": {
+      "bytes": 58979,
+      "sha256": "3f8443457b04ce2aa89df040c0ffeb3f9c13bf16e052ff05801c1f912d8bbec3"
+    }
+  },
+  "fresh_source_integrity": {
+    "AM.07.Parameter.Files.zip": {
+      "bytes": 10303731,
+      "pinned_size_sha256_match": true,
+      "sha256": "652be4ddb2b40915543ad848b2bfa10d011c6c2c5723a6e6a3480a85ddb2e2e5"
+    },
+    "FO.Gold.COmm.zip": {
+      "bytes": 650231,
+      "pinned_size_sha256_match": true,
+      "sha256": "91ec88fc88e461ab7eaa15b345fdaa15a0804c09a64e5afe1761e861549f8378"
+    },
+    "Jan_2022.zip": {
+      "bytes": 21686824,
+      "pinned_size_sha256_match": true,
+      "sha256": "a00e55ee85f744774875f8181f8aa4a9ca3147a328aead72c2a4f9706515e311"
+    },
+    "Oct.2023.xlsx": {
+      "bytes": 18582698,
+      "pinned_size_sha256_match": true,
+      "sha256": "9dff7cbb180aec53338e03a6b52af33dbaf9aacfc0c1b075d2699cbac3e906de"
+    },
+    "Oct_2023.zip": {
+      "bytes": 18451982,
+      "pinned_size_sha256_match": true,
+      "sha256": "b7ec4490b6d07681451814100519d11d58c86481747f5105347e0e6635b832dc"
+    },
+    "REG_FII_DATALOAD_MASKING.January_Equity_2022.xlsx": {
+      "bytes": 22463733,
+      "pinned_size_sha256_match": true,
+      "sha256": "c50d20e96218e0b91b31d02ce142a35369402add4bc9469e5f2f044ffed7f714"
+    },
+    "delivery_batch_check_v0_1.zip": {
+      "bytes": 1774075,
+      "pinned_size_sha256_match": true,
+      "sha256": "e90a7ffe3669c09cd1eae56474e76e713c6729b6fcf10f9de5b25b1c73b96c6f"
+    },
+    "fii_volume_derivatives_review_v0_3_csv_pack.zip": {
+      "bytes": 331739,
+      "pinned_size_sha256_match": true,
+      "sha256": "519b9ebf1f04020a9126d44216684255a8a92beacdbb715fbbb77ef161079dea"
+    },
+    "volume_delivery_batch_check_v0_1.zip": {
+      "bytes": 1774201,
+      "pinned_size_sha256_match": true,
+      "sha256": "cb8f516e21f7cac8c18b28b540035573b6277e4ea3540b902a2d9fa24c8d0061"
+    }
+  },
+  "global_limits": [
+    "Upgrades are proposed for the owner to apply; this audit does not edit coverage/plan documents.",
+    "The two monthly workbooks reuse prior full stored-cell coverage; semantic context checks do not prove every transaction correct or a complete market month.",
+    "No other monthly workbook or adjacent raw FO contract member is promoted by this scope.",
+    "No whole-repository review, current market feed, Mongo coverage, financial forecast, trading eligibility or duplicate deletion is established."
+  ],
+  "method": [
+    "Freshly verify every target parent archive and reference source against pinned release bytes/SHA256.",
+    "Read selected members to EOF for CRC; compare full target/reference byte arrays and SHA256.",
+    "Resolve prior full-content evidence pointers and retain their scope/limitations.",
+    "Independently stream both monthly worksheet XML parts, recount stored cells, resolve headers and scan all report/trade date columns without retaining investor values.",
+    "Reparse both delivery copies for schema, dates, keys and inherited quality diagnostics.",
+    "Fully inspect the two-row FO summary and bounded relative-reference row/instrument context, preserving embedded-claim discrepancies."
+  ],
+  "mongo_accessed": false,
+  "network_accessed": false,
+  "privacy": "No investor, broker, transaction identifiers, raw scrip samples or transaction values retained in output.",
+  "production_activation_performed": false,
+  "proposed_updates": [
+    {
+      "asset": "AM.07.Parameter.Files.zip",
+      "evidence": "data/asset-review/duplicate-context-evidence-2026-09-24.json",
+      "from": "partial",
+      "member_updates": [
+        {
+          "evidence": "data/asset-review/duplicate-context-evidence-2026-09-24.json",
+          "from": "inventory_only",
+          "member": "AM 07 Parameter Files/nse_volume_delivery_16stocks_eq_merged.csv",
+          "to": "reviewed"
+        }
+      ],
+      "remaining_member_status_counts": {
+        "inventory_only": 19,
+        "partial": 2,
+        "reviewed": 23
+      },
+      "to": "partial"
+    },
+    {
+      "asset": "FO.Gold.COmm.zip",
+      "evidence": "data/asset-review/duplicate-context-evidence-2026-09-24.json",
+      "from": "partial",
+      "member_updates": [
+        {
+          "evidence": "data/asset-review/duplicate-context-evidence-2026-09-24.json",
+          "from": "inventory_only",
+          "member": "FO Gold COmm/fo_report_pack_summary_2026_06_03.csv",
+          "to": "reviewed"
+        }
+      ],
+      "remaining_member_status_counts": {
+        "inventory_only": 13,
+        "reviewed": 2
+      },
+      "to": "partial"
+    },
+    {
+      "asset": "Jan_2022.zip",
+      "evidence": "data/asset-review/duplicate-context-evidence-2026-09-24.json",
+      "from": "inventory_only",
+      "member_updates": [
+        {
+          "evidence": "data/asset-review/duplicate-context-evidence-2026-09-24.json",
+          "from": "inventory_only",
+          "member": "January_Equity_2022.xlsx",
+          "to": "reviewed"
+        }
+      ],
+      "remaining_member_status_counts": {
+        "reviewed": 1
+      },
+      "to": "reviewed"
+    },
+    {
+      "asset": "Oct_2023.zip",
+      "evidence": "data/asset-review/duplicate-context-evidence-2026-09-24.json",
+      "from": "inventory_only",
+      "member_updates": [
+        {
+          "evidence": "data/asset-review/duplicate-context-evidence-2026-09-24.json",
+          "from": "inventory_only",
+          "member": "Oct 2023.xlsx",
+          "to": "reviewed"
+        }
+      ],
+      "remaining_member_status_counts": {
+        "reviewed": 1
+      },
+      "to": "reviewed"
+    },
+    {
+      "asset": "volume_delivery_batch_check_v0_1.zip",
+      "evidence": "data/asset-review/duplicate-context-evidence-2026-09-24.json",
+      "from": "inventory_only",
+      "member_updates": [
+        {
+          "evidence": "data/asset-review/duplicate-context-evidence-2026-09-24.json",
+          "from": "inventory_only",
+          "member": "volume_delivery_batch_check_v0_1/nse_volume_delivery_16stocks_eq_merged.csv",
+          "to": "reviewed"
+        }
+      ],
+      "remaining_member_status_counts": {
+        "inventory_only": 7,
+        "reviewed": 1
+      },
+      "to": "partial"
+    }
+  ],
+  "raw_sources_modified": false,
+  "read_only_raw_audit": true,
+  "review_date": "2026-09-24",
+  "reviewed_against_commit": "3ad1177353615eac831035803c11f4ee9140a54f",
+  "runtime_modified": false,
+  "schema_version": "ashstocks-duplicate-context-evidence-v1",
+  "summary": {
+    "after_only_this_batch_asset_status_counts": {
+      "corrupt": 1,
+      "inventory_only": 91,
+      "partial": 23,
+      "reviewed": 56
+    },
+    "after_only_this_batch_member_status_counts": {
+      "inventory_only": 212,
+      "partial": 6,
+      "reviewed": 374
+    },
+    "archives_remaining_partial": [
+      "AM.07.Parameter.Files.zip",
+      "FO.Gold.COmm.zip",
+      "volume_delivery_batch_check_v0_1.zip"
+    ],
+    "candidate_members": 5,
+    "context_confirmed_content_coverage_upgrades": 5,
+    "inventory_to_partial_archives": [
+      "volume_delivery_batch_check_v0_1.zip"
+    ],
+    "new_unique_financial_datasets": 0,
+    "previous_asset_status_counts": {
+      "corrupt": 1,
+      "inventory_only": 94,
+      "partial": 22,
+      "reviewed": 54
+    },
+    "previous_member_status_counts": {
+      "inventory_only": 217,
+      "partial": 6,
+      "reviewed": 369
+    },
+    "single_member_archives_completed": [
+      "Jan_2022.zip",
+      "Oct_2023.zip"
+    ]
+  }
+}

@@ -4,7 +4,7 @@
   "baseline_commit": "efb8ca934464551f6db3e32ce31cb94f0ea98cd6",
   "baseline_file": "data/asset-review/remaining-content-baseline-2026-09-24.json",
   "baseline_file_sha256": "ee04b8138113febb39e6323a2048a3c78c9b11c3ace96653fb1ad2080de1bf52",
-  "definition": "Reviewed is full serialized table/cell/text read with documented scope, not complete formula validity, currentness, source authority, Mongo coverage, or permission to trade. PDFs remain partial after all-page OCR.",
+  "definition": "Reviewed is full serialized table/cell/text coverage, established by direct read or context-confirmed byte-identical reuse of prior full-content evidence with documented scope. It is not complete formula validity, currentness, source authority, Mongo coverage, or permission to trade. PDFs remain partial after all-page OCR.",
   "accepted_evidence": [
     {
       "file": "data/asset-review/archived-reports-evidence-2026-09-24.json",
@@ -25,6 +25,14 @@
     {
       "file": "data/asset-review/metadata-closure-evidence-2026-09-24.json",
       "sha256": "db8c74dc10e5442eb1b4b4bfdb0e2a4426f35485161b172b4a7c2547ab0c7ac1"
+    },
+    {
+      "file": "data/asset-review/participant-snapshot-evidence-2026-09-24.json",
+      "sha256": "481c659c4b58ac3921c5e07e78974f2a3db4d2cbfaab0aec9b15cdceda0870f3"
+    },
+    {
+      "file": "data/asset-review/duplicate-context-evidence-2026-09-24.json",
+      "sha256": "482fbf7725e59c3490a55a71fc9f759706f2d279432628b33d312a875270cde2"
     }
   ],
   "updates": [
@@ -631,28 +639,568 @@
           "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
         }
       ]
+    },
+    {
+      "asset": "Reports-Archives-Multiple-01042026.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "fao_participant_oi_01042026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        },
+        {
+          "member": "fao_participant_vol_01042026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        }
+      ]
+    },
+    {
+      "asset": "Reports-Archives-Multiple-01062026.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "fao_participant_oi_01062026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        },
+        {
+          "member": "fao_participant_vol_01062026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        }
+      ]
+    },
+    {
+      "asset": "Reports-Archives-Multiple-03062026.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "fao_participant_oi_03062026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        },
+        {
+          "member": "fao_participant_vol_03062026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        }
+      ]
+    },
+    {
+      "asset": "Reports-Archives-Multiple-06052026.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "fao_participant_oi_06052026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        },
+        {
+          "member": "fao_participant_vol_06052026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        }
+      ]
+    },
+    {
+      "asset": "Reports-Archives-Multiple-11022026.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "fao_participant_oi_11022026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        },
+        {
+          "member": "fao_participant_vol_11022026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        }
+      ]
+    },
+    {
+      "asset": "Reports-Archives-Multiple-13032026.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "fao_participant_oi_13032026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        },
+        {
+          "member": "fao_participant_vol_13032026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        }
+      ]
+    },
+    {
+      "asset": "Reports-Archives-Multiple-13112025.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "fao_participant_oi_13112025.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        },
+        {
+          "member": "fao_participant_vol_13112025.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        }
+      ]
+    },
+    {
+      "asset": "Reports-Archives-Multiple-14012026.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "fao_participant_oi_14012026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        },
+        {
+          "member": "fao_participant_vol_14012026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        }
+      ]
+    },
+    {
+      "asset": "Reports-Archives-Multiple-14052026.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "fao_participant_oi_14052026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        },
+        {
+          "member": "fao_participant_vol_14052026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        }
+      ]
+    },
+    {
+      "asset": "Reports-Archives-Multiple-15042026.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "fao_participant_oi_15042026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        },
+        {
+          "member": "fao_participant_vol_15042026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        }
+      ]
+    },
+    {
+      "asset": "Reports-Archives-Multiple-16042026.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "fao_participant_oi_16042026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        },
+        {
+          "member": "fao_participant_vol_16042026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        }
+      ]
+    },
+    {
+      "asset": "Reports-Archives-Multiple-18032026.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "fao_participant_oi_18032026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        },
+        {
+          "member": "fao_participant_vol_18032026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        }
+      ]
+    },
+    {
+      "asset": "Reports-Archives-Multiple-19112025.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "fao_participant_oi_19112025.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        },
+        {
+          "member": "fao_participant_vol_19112025.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        }
+      ]
+    },
+    {
+      "asset": "Reports-Archives-Multiple-20052026.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "fao_participant_oi_20052026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        },
+        {
+          "member": "fao_participant_vol_20052026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        }
+      ]
+    },
+    {
+      "asset": "Reports-Archives-Multiple-22042026.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "fao_participant_oi_22042026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        },
+        {
+          "member": "fao_participant_vol_22042026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        }
+      ]
+    },
+    {
+      "asset": "Reports-Archives-Multiple-24112025.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "fao_participant_oi_24112025.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        },
+        {
+          "member": "fao_participant_vol_24112025.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        }
+      ]
+    },
+    {
+      "asset": "Reports-Archives-Multiple-25022026.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "fao_participant_oi_25022026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        },
+        {
+          "member": "fao_participant_vol_25022026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        }
+      ]
+    },
+    {
+      "asset": "Reports-Archives-Multiple-25032026.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "fao_participant_oi_25032026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        },
+        {
+          "member": "fao_participant_vol_25032026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        }
+      ]
+    },
+    {
+      "asset": "Reports-Archives-Multiple-26122025.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "fao_participant_oi_26122025.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        },
+        {
+          "member": "fao_participant_vol_26122025.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        }
+      ]
+    },
+    {
+      "asset": "Reports-Archives-Multiple-27052026.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "fao_participant_oi_27052026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        },
+        {
+          "member": "fao_participant_vol_27052026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        }
+      ]
+    },
+    {
+      "asset": "Reports-Archives-Multiple-29042026.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "fao_participant_oi_29042026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        },
+        {
+          "member": "fao_participant_vol_29042026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/participant-snapshot-evidence-2026-09-24.json"
+        }
+      ]
+    },
+    {
+      "asset": "AM.07.Parameter.Files.zip",
+      "evidence": "data/asset-review/duplicate-context-evidence-2026-09-24.json",
+      "from": "partial",
+      "member_updates": [
+        {
+          "evidence": "data/asset-review/duplicate-context-evidence-2026-09-24.json",
+          "from": "inventory_only",
+          "member": "AM 07 Parameter Files/nse_volume_delivery_16stocks_eq_merged.csv",
+          "to": "reviewed"
+        }
+      ],
+      "remaining_member_status_counts": {
+        "inventory_only": 19,
+        "partial": 2,
+        "reviewed": 23
+      },
+      "to": "partial"
+    },
+    {
+      "asset": "FO.Gold.COmm.zip",
+      "evidence": "data/asset-review/duplicate-context-evidence-2026-09-24.json",
+      "from": "partial",
+      "member_updates": [
+        {
+          "evidence": "data/asset-review/duplicate-context-evidence-2026-09-24.json",
+          "from": "inventory_only",
+          "member": "FO Gold COmm/fo_report_pack_summary_2026_06_03.csv",
+          "to": "reviewed"
+        }
+      ],
+      "remaining_member_status_counts": {
+        "inventory_only": 13,
+        "reviewed": 2
+      },
+      "to": "partial"
+    },
+    {
+      "asset": "Jan_2022.zip",
+      "evidence": "data/asset-review/duplicate-context-evidence-2026-09-24.json",
+      "from": "inventory_only",
+      "member_updates": [
+        {
+          "evidence": "data/asset-review/duplicate-context-evidence-2026-09-24.json",
+          "from": "inventory_only",
+          "member": "January_Equity_2022.xlsx",
+          "to": "reviewed"
+        }
+      ],
+      "remaining_member_status_counts": {
+        "reviewed": 1
+      },
+      "to": "reviewed"
+    },
+    {
+      "asset": "Oct_2023.zip",
+      "evidence": "data/asset-review/duplicate-context-evidence-2026-09-24.json",
+      "from": "inventory_only",
+      "member_updates": [
+        {
+          "evidence": "data/asset-review/duplicate-context-evidence-2026-09-24.json",
+          "from": "inventory_only",
+          "member": "Oct 2023.xlsx",
+          "to": "reviewed"
+        }
+      ],
+      "remaining_member_status_counts": {
+        "reviewed": 1
+      },
+      "to": "reviewed"
+    },
+    {
+      "asset": "volume_delivery_batch_check_v0_1.zip",
+      "evidence": "data/asset-review/duplicate-context-evidence-2026-09-24.json",
+      "from": "inventory_only",
+      "member_updates": [
+        {
+          "evidence": "data/asset-review/duplicate-context-evidence-2026-09-24.json",
+          "from": "inventory_only",
+          "member": "volume_delivery_batch_check_v0_1/nse_volume_delivery_16stocks_eq_merged.csv",
+          "to": "reviewed"
+        }
+      ],
+      "remaining_member_status_counts": {
+        "inventory_only": 7,
+        "reviewed": 1
+      },
+      "to": "partial"
     }
   ],
   "summary": {
     "assets": 171,
     "asset_status_counts": {
-      "reviewed": 54,
-      "partial": 22,
-      "inventory_only": 94,
+      "reviewed": 77,
+      "partial": 23,
+      "inventory_only": 70,
       "corrupt": 1
     },
     "members": 592,
     "member_status_counts": {
-      "reviewed": 369,
+      "reviewed": 416,
       "partial": 6,
-      "inventory_only": 217
+      "inventory_only": 170
     },
-    "member_status_upgrades": 64,
+    "member_status_upgrades": 111,
     "corrupt_archive": "2021_06.zip",
     "corrupt_archive_member_count": null
   },
-  "excluded_promotions": "Five duplicate-reuse candidates retain their baseline status pending context confirmation. Disguised XLS signatures prove format only. No remaining monthly transaction data is declared reviewed here.",
+  "excluded_promotions": "Only the five exact duplicate members supported by duplicate-context-evidence-2026-09-24.json are now accepted; this does not promote sibling files. Disguised XLS signatures prove format only. Other monthly transaction members, underlying FO contract numeric tables and remaining partial/inventory-only content retain their prior limits. No duplicate deletion, import or runtime activation is authorized by this ledger.",
   "mongo_accessed": false,
   "imported": false,
-  "runtime_modified": false
+  "runtime_modified": false,
+  "latest_batch": {
+    "id": "participant-and-duplicate-context-2026-09-24",
+    "checkpoint": "docs/PARTICIPANT_AND_DUPLICATE_ASSET_CHECKPOINT_2026-09-24.md",
+    "reviewed_against_commit": "3ad1177353615eac831035803c11f4ee9140a54f",
+    "previous_progress_sha256": "d5dea34be7ae9f3603502e8d93c225b46f6c81850a9f8e78e2d957f5e633fa4a",
+    "previous_summary": {
+      "assets": 171,
+      "asset_status_counts": {
+        "reviewed": 54,
+        "partial": 22,
+        "inventory_only": 94,
+        "corrupt": 1
+      },
+      "members": 592,
+      "member_status_counts": {
+        "reviewed": 369,
+        "partial": 6,
+        "inventory_only": 217
+      },
+      "member_status_upgrades": 64,
+      "corrupt_archive": "2021_06.zip",
+      "corrupt_archive_member_count": null
+    },
+    "new_member_status_upgrades": 47,
+    "direct_participant_member_upgrades": 42,
+    "context_confirmed_duplicate_member_upgrades": 5,
+    "newly_reviewed_archives": 23,
+    "newly_partial_archives": 1,
+    "update_application": "Apply every updates entry in array order to the immutable baseline; repeated asset entries are sequential member-level progress, not duplicate assets.",
+    "historical_digest_note": "The duplicate-context audit records the pre-acceptance progress digest as historical input. It is not a digest of this updated overlay."
+  }
 }
