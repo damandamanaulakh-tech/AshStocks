@@ -1,0 +1,1862 @@
+{
+  "schema_version": "ash-bhavcopy-content-audit-v1",
+  "date": "2026-09-24",
+  "reviewed_against_commit": "edc22309d60311e46b115a7bc60103dbd1016e51",
+  "asset": "BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv.zip",
+  "bytes": 2679420,
+  "sha256": "81341ff03db112396a09711b22dc352984f67b8bfb5a712ba6f71e3529b17757",
+  "all_crc_checks_passed": true,
+  "members": [
+    {
+      "member": "BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv/BhavCopy_NSE_FO_0_0_0_20260603_F_0000.csv",
+      "bytes": 7090238,
+      "sha256": "2e18991b2c6c6c252a61592ff2f115e4791092c6b472762006193509aa0975bd",
+      "data_rows": 39115,
+      "columns": 34,
+      "raw_headers": [
+        "TradDt",
+        "BizDt",
+        "Sgmt",
+        "Src",
+        "FinInstrmTp",
+        "FinInstrmId",
+        "ISIN",
+        "TckrSymb",
+        "SctySrs",
+        "XpryDt",
+        "FininstrmActlXpryDt",
+        "StrkPric",
+        "OptnTp",
+        "FinInstrmNm",
+        "OpnPric",
+        "HghPric",
+        "LwPric",
+        "ClsPric",
+        "LastPric",
+        "PrvsClsgPric",
+        "UndrlygPric",
+        "SttlmPric",
+        "OpnIntrst",
+        "ChngInOpnIntrst",
+        "TtlTradgVol",
+        "TtlTrfVal",
+        "TtlNbOfTxsExctd",
+        "SsnId",
+        "NewBrdLotQty",
+        "Rmks",
+        "Rsvd1",
+        "Rsvd2",
+        "Rsvd3",
+        "Rsvd4"
+      ],
+      "headers": [
+        "TradDt",
+        "BizDt",
+        "Sgmt",
+        "Src",
+        "FinInstrmTp",
+        "FinInstrmId",
+        "ISIN",
+        "TckrSymb",
+        "SctySrs",
+        "XpryDt",
+        "FininstrmActlXpryDt",
+        "StrkPric",
+        "OptnTp",
+        "FinInstrmNm",
+        "OpnPric",
+        "HghPric",
+        "LwPric",
+        "ClsPric",
+        "LastPric",
+        "PrvsClsgPric",
+        "UndrlygPric",
+        "SttlmPric",
+        "OpnIntrst",
+        "ChngInOpnIntrst",
+        "TtlTradgVol",
+        "TtlTrfVal",
+        "TtlNbOfTxsExctd",
+        "SsnId",
+        "NewBrdLotQty",
+        "Rmks",
+        "Rsvd1",
+        "Rsvd2",
+        "Rsvd3",
+        "Rsvd4"
+      ],
+      "all_used_cells_consumed": true,
+      "blank_fields": 275093,
+      "missing_by_column": {
+        "TradDt": 0,
+        "BizDt": 0,
+        "Sgmt": 0,
+        "Src": 0,
+        "FinInstrmTp": 0,
+        "FinInstrmId": 0,
+        "ISIN": 39115,
+        "TckrSymb": 0,
+        "SctySrs": 39115,
+        "XpryDt": 0,
+        "FininstrmActlXpryDt": 0,
+        "StrkPric": 644,
+        "OptnTp": 644,
+        "FinInstrmNm": 0,
+        "OpnPric": 0,
+        "HghPric": 0,
+        "LwPric": 0,
+        "ClsPric": 0,
+        "LastPric": 0,
+        "PrvsClsgPric": 0,
+        "UndrlygPric": 0,
+        "SttlmPric": 0,
+        "OpnIntrst": 0,
+        "ChngInOpnIntrst": 0,
+        "TtlTradgVol": 0,
+        "TtlTrfVal": 0,
+        "TtlNbOfTxsExctd": 0,
+        "SsnId": 0,
+        "NewBrdLotQty": 0,
+        "Rmks": 39115,
+        "Rsvd1": 39115,
+        "Rsvd2": 39115,
+        "Rsvd3": 39115,
+        "Rsvd4": 39115
+      },
+      "numeric_profiles": {
+        "StrkPric": {
+          "observed": 38471,
+          "invalid_or_nonfinite": 0,
+          "min": 4,
+          "max": 82000,
+          "zero": 0,
+          "negative": 0
+        },
+        "OpnPric": {
+          "observed": 39115,
+          "invalid_or_nonfinite": 0,
+          "min": 0,
+          "max": 70300,
+          "zero": 25605,
+          "negative": 0
+        },
+        "HghPric": {
+          "observed": 39115,
+          "invalid_or_nonfinite": 0,
+          "min": 0,
+          "max": 70804.2,
+          "zero": 25605,
+          "negative": 0
+        },
+        "LwPric": {
+          "observed": 39115,
+          "invalid_or_nonfinite": 0,
+          "min": 0,
+          "max": 69804.2,
+          "zero": 25605,
+          "negative": 0
+        },
+        "ClsPric": {
+          "observed": 39115,
+          "invalid_or_nonfinite": 0,
+          "min": 0.01,
+          "max": 72009,
+          "zero": 0,
+          "negative": 0
+        },
+        "LastPric": {
+          "observed": 39115,
+          "invalid_or_nonfinite": 0,
+          "min": 0,
+          "max": 70704.2,
+          "zero": 20319,
+          "negative": 0
+        },
+        "PrvsClsgPric": {
+          "observed": 39115,
+          "invalid_or_nonfinite": 0,
+          "min": 0.01,
+          "max": 72009,
+          "zero": 0,
+          "negative": 0
+        },
+        "UndrlygPric": {
+          "observed": 39115,
+          "invalid_or_nonfinite": 0,
+          "min": 14.85,
+          "max": 69856.4,
+          "zero": 0,
+          "negative": 0
+        },
+        "SttlmPric": {
+          "observed": 39115,
+          "invalid_or_nonfinite": 0,
+          "min": 0,
+          "max": 70945,
+          "zero": 41,
+          "negative": 0
+        },
+        "OpnIntrst": {
+          "observed": 39115,
+          "invalid_or_nonfinite": 0,
+          "min": 0,
+          "max": 5315667225,
+          "zero": 20482,
+          "negative": 0
+        },
+        "ChngInOpnIntrst": {
+          "observed": 39115,
+          "invalid_or_nonfinite": 0,
+          "min": -31020150,
+          "max": 47745300,
+          "zero": 26500,
+          "negative": 3989
+        },
+        "TtlTradgVol": {
+          "observed": 39115,
+          "invalid_or_nonfinite": 0,
+          "min": 0,
+          "max": 3167616,
+          "zero": 25605,
+          "negative": 0
+        },
+        "TtlTrfVal": {
+          "observed": 39115,
+          "invalid_or_nonfinite": 0,
+          "min": 0,
+          "max": 4833475953081.75,
+          "zero": 25605,
+          "negative": 0
+        },
+        "TtlNbOfTxsExctd": {
+          "observed": 39115,
+          "invalid_or_nonfinite": 0,
+          "min": 0,
+          "max": 1899580,
+          "zero": 25605,
+          "negative": 0
+        },
+        "NewBrdLotQty": {
+          "observed": 39115,
+          "invalid_or_nonfinite": 0,
+          "min": 15,
+          "max": 71475,
+          "zero": 0,
+          "negative": 0
+        }
+      },
+      "categories": {
+        "TradDt": {
+          "2026-06-03": 39115
+        },
+        "BizDt": {
+          "2026-06-03": 39115
+        },
+        "Sgmt": {
+          "FO": 39115
+        },
+        "Src": {
+          "NSE": 39115
+        },
+        "FinInstrmTp": {
+          "STO": 32959,
+          "STF": 629,
+          "IDO": 5512,
+          "IDF": 15
+        },
+        "OptnTp": {
+          "PE": 19267,
+          "CE": 19204,
+          "": 644
+        },
+        "SsnId": {
+          "F1": 39115
+        }
+      },
+      "distinct_symbols": 216,
+      "key": [
+        "TradDt",
+        "FinInstrmId"
+      ],
+      "duplicate_key_rows": 0,
+      "source_diagnostics": {
+        "zero_traded_volume": 25605,
+        "zero_all_ohl": 25605,
+        "active_rows_with_zero_ohl": 0,
+        "active_high_below_low": 0,
+        "missing_isin": 39115,
+        "trade_business_date_mismatches": 0,
+        "expiry_before_trade": 0,
+        "nonpositive_lot": 0
+      },
+      "oi_by_instrument_and_option": {
+        "STO|PE": {
+          "rows": 16500,
+          "open_interest": 3017828018,
+          "change_oi": 194863972,
+          "traded_volume": 1915915
+        },
+        "STO|CE": {
+          "rows": 16459,
+          "open_interest": 4978752568,
+          "change_oi": 181605081,
+          "traded_volume": 3629599
+        },
+        "STF|none": {
+          "rows": 629,
+          "open_interest": 16744340679,
+          "change_oi": 86256299,
+          "traded_volume": 1229360
+        },
+        "IDO|PE": {
+          "rows": 2767,
+          "open_interest": 224373845,
+          "change_oi": 41025115,
+          "traded_volume": 31878745
+        },
+        "IDO|CE": {
+          "rows": 2745,
+          "open_interest": 222982820,
+          "change_oi": 42565950,
+          "traded_volume": 34442279
+        },
+        "IDF|none": {
+          "rows": 15,
+          "open_interest": 25896985,
+          "change_oi": 1745235,
+          "traded_volume": 209664
+        }
+      }
+    },
+    {
+      "member": "BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv/BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv",
+      "bytes": 7360340,
+      "sha256": "97293e8807bf2c62420712233093a059b603abca9be658ddd2d015e8e3ad1fbc",
+      "data_rows": 40604,
+      "columns": 34,
+      "raw_headers": [
+        "TradDt",
+        "BizDt",
+        "Sgmt",
+        "Src",
+        "FinInstrmTp",
+        "FinInstrmId",
+        "ISIN",
+        "TckrSymb",
+        "SctySrs",
+        "XpryDt",
+        "FininstrmActlXpryDt",
+        "StrkPric",
+        "OptnTp",
+        "FinInstrmNm",
+        "OpnPric",
+        "HghPric",
+        "LwPric",
+        "ClsPric",
+        "LastPric",
+        "PrvsClsgPric",
+        "UndrlygPric",
+        "SttlmPric",
+        "OpnIntrst",
+        "ChngInOpnIntrst",
+        "TtlTradgVol",
+        "TtlTrfVal",
+        "TtlNbOfTxsExctd",
+        "SsnId",
+        "NewBrdLotQty",
+        "Rmks",
+        "Rsvd1",
+        "Rsvd2",
+        "Rsvd3",
+        "Rsvd4"
+      ],
+      "headers": [
+        "TradDt",
+        "BizDt",
+        "Sgmt",
+        "Src",
+        "FinInstrmTp",
+        "FinInstrmId",
+        "ISIN",
+        "TckrSymb",
+        "SctySrs",
+        "XpryDt",
+        "FininstrmActlXpryDt",
+        "StrkPric",
+        "OptnTp",
+        "FinInstrmNm",
+        "OpnPric",
+        "HghPric",
+        "LwPric",
+        "ClsPric",
+        "LastPric",
+        "PrvsClsgPric",
+        "UndrlygPric",
+        "SttlmPric",
+        "OpnIntrst",
+        "ChngInOpnIntrst",
+        "TtlTradgVol",
+        "TtlTrfVal",
+        "TtlNbOfTxsExctd",
+        "SsnId",
+        "NewBrdLotQty",
+        "Rmks",
+        "Rsvd1",
+        "Rsvd2",
+        "Rsvd3",
+        "Rsvd4"
+      ],
+      "all_used_cells_consumed": true,
+      "blank_fields": 285516,
+      "missing_by_column": {
+        "TradDt": 0,
+        "BizDt": 0,
+        "Sgmt": 0,
+        "Src": 0,
+        "FinInstrmTp": 0,
+        "FinInstrmId": 0,
+        "ISIN": 40604,
+        "TckrSymb": 0,
+        "SctySrs": 40604,
+        "XpryDt": 0,
+        "FininstrmActlXpryDt": 0,
+        "StrkPric": 644,
+        "OptnTp": 644,
+        "FinInstrmNm": 0,
+        "OpnPric": 0,
+        "HghPric": 0,
+        "LwPric": 0,
+        "ClsPric": 0,
+        "LastPric": 0,
+        "PrvsClsgPric": 0,
+        "UndrlygPric": 0,
+        "SttlmPric": 0,
+        "OpnIntrst": 0,
+        "ChngInOpnIntrst": 0,
+        "TtlTradgVol": 0,
+        "TtlTrfVal": 0,
+        "TtlNbOfTxsExctd": 0,
+        "SsnId": 0,
+        "NewBrdLotQty": 0,
+        "Rmks": 40604,
+        "Rsvd1": 40604,
+        "Rsvd2": 40604,
+        "Rsvd3": 40604,
+        "Rsvd4": 40604
+      },
+      "numeric_profiles": {
+        "StrkPric": {
+          "observed": 39960,
+          "invalid_or_nonfinite": 0,
+          "min": 4,
+          "max": 82000,
+          "zero": 0,
+          "negative": 0
+        },
+        "OpnPric": {
+          "observed": 40604,
+          "invalid_or_nonfinite": 0,
+          "min": 0,
+          "max": 70021.2,
+          "zero": 26426,
+          "negative": 0
+        },
+        "HghPric": {
+          "observed": 40604,
+          "invalid_or_nonfinite": 0,
+          "min": 0,
+          "max": 70350,
+          "zero": 26426,
+          "negative": 0
+        },
+        "LwPric": {
+          "observed": 40604,
+          "invalid_or_nonfinite": 0,
+          "min": 0,
+          "max": 69250.2,
+          "zero": 26426,
+          "negative": 0
+        },
+        "ClsPric": {
+          "observed": 40604,
+          "invalid_or_nonfinite": 0,
+          "min": 0.01,
+          "max": 72009,
+          "zero": 0,
+          "negative": 0
+        },
+        "LastPric": {
+          "observed": 40604,
+          "invalid_or_nonfinite": 0,
+          "min": 0,
+          "max": 69441,
+          "zero": 19981,
+          "negative": 0
+        },
+        "PrvsClsgPric": {
+          "observed": 40604,
+          "invalid_or_nonfinite": 0,
+          "min": 0.01,
+          "max": 72009,
+          "zero": 0,
+          "negative": 0
+        },
+        "UndrlygPric": {
+          "observed": 40604,
+          "invalid_or_nonfinite": 0,
+          "min": 14.4,
+          "max": 68975.4,
+          "zero": 0,
+          "negative": 0
+        },
+        "SttlmPric": {
+          "observed": 40604,
+          "invalid_or_nonfinite": 0,
+          "min": 0,
+          "max": 69979.2,
+          "zero": 81,
+          "negative": 0
+        },
+        "OpnIntrst": {
+          "observed": 40604,
+          "invalid_or_nonfinite": 0,
+          "min": 0,
+          "max": 5474270250,
+          "zero": 20176,
+          "negative": 0
+        },
+        "ChngInOpnIntrst": {
+          "observed": 40604,
+          "invalid_or_nonfinite": 0,
+          "min": -12365175,
+          "max": 43242375,
+          "zero": 27443,
+          "negative": 4702
+        },
+        "TtlTradgVol": {
+          "observed": 40604,
+          "invalid_or_nonfinite": 0,
+          "min": 0,
+          "max": 8274151,
+          "zero": 26426,
+          "negative": 0
+        },
+        "TtlTrfVal": {
+          "observed": 40604,
+          "invalid_or_nonfinite": 0,
+          "min": 0,
+          "max": 12539417082419.5,
+          "zero": 26426,
+          "negative": 0
+        },
+        "TtlNbOfTxsExctd": {
+          "observed": 40604,
+          "invalid_or_nonfinite": 0,
+          "min": 0,
+          "max": 4014562,
+          "zero": 26426,
+          "negative": 0
+        },
+        "NewBrdLotQty": {
+          "observed": 40604,
+          "invalid_or_nonfinite": 0,
+          "min": 15,
+          "max": 71475,
+          "zero": 0,
+          "negative": 0
+        }
+      },
+      "categories": {
+        "TradDt": {
+          "2026-06-08": 40604
+        },
+        "BizDt": {
+          "2026-06-08": 40604
+        },
+        "Sgmt": {
+          "FO": 40604
+        },
+        "Src": {
+          "NSE": 40604
+        },
+        "FinInstrmTp": {
+          "STO": 34420,
+          "STF": 629,
+          "IDO": 5540,
+          "IDF": 15
+        },
+        "OptnTp": {
+          "CE": 19959,
+          "PE": 20001,
+          "": 644
+        },
+        "SsnId": {
+          "F1": 40604
+        }
+      },
+      "distinct_symbols": 216,
+      "key": [
+        "TradDt",
+        "FinInstrmId"
+      ],
+      "duplicate_key_rows": 0,
+      "source_diagnostics": {
+        "zero_traded_volume": 26426,
+        "zero_all_ohl": 26426,
+        "active_rows_with_zero_ohl": 0,
+        "active_high_below_low": 0,
+        "missing_isin": 40604,
+        "trade_business_date_mismatches": 0,
+        "expiry_before_trade": 0,
+        "nonpositive_lot": 0
+      },
+      "oi_by_instrument_and_option": {
+        "STO|CE": {
+          "rows": 17200,
+          "open_interest": 5829631407,
+          "change_oi": 309287405,
+          "traded_volume": 2963976
+        },
+        "STO|PE": {
+          "rows": 17220,
+          "open_interest": 3355891897,
+          "change_oi": 89448530,
+          "traded_volume": 1495926
+        },
+        "STF|none": {
+          "rows": 629,
+          "open_interest": 17116634064,
+          "change_oi": 94532727,
+          "traded_volume": 888007
+        },
+        "IDO|PE": {
+          "rows": 2781,
+          "open_interest": 284945140,
+          "change_oi": 15992670,
+          "traded_volume": 66952921
+        },
+        "IDO|CE": {
+          "rows": 2759,
+          "open_interest": 363353725,
+          "change_oi": 40225310,
+          "traded_volume": 72029538
+        },
+        "IDF|none": {
+          "rows": 15,
+          "open_interest": 26687435,
+          "change_oi": 215720,
+          "traded_volume": 119052
+        }
+      }
+    },
+    {
+      "member": "BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv/fopl_jun2026.csv",
+      "bytes": 7195,
+      "sha256": "f6952467ee1070c2034ad61e5630afb197a80cf0b69af48b52696beed92370a7",
+      "data_rows": 211,
+      "columns": 4,
+      "raw_headers": [
+        "Symbol",
+        "FPI Category I",
+        "FPI Category II",
+        "FPI Category II Others"
+      ],
+      "headers": [
+        "Symbol",
+        "FPI Category I",
+        "FPI Category II",
+        "FPI Category II Others"
+      ],
+      "all_used_cells_consumed": true,
+      "blank_fields": 0,
+      "missing_by_column": {
+        "Symbol": 0,
+        "FPI Category I": 0,
+        "FPI Category II": 0,
+        "FPI Category II Others": 0
+      },
+      "numeric_profiles": {
+        "FPI Category I": {
+          "observed": 211,
+          "invalid_or_nonfinite": 0,
+          "min": 221050,
+          "max": 3628785750,
+          "zero": 0,
+          "negative": 0
+        },
+        "FPI Category II": {
+          "observed": 211,
+          "invalid_or_nonfinite": 0,
+          "min": 147375,
+          "max": 2419142850,
+          "zero": 0,
+          "negative": 0
+        },
+        "FPI Category II Others": {
+          "observed": 211,
+          "invalid_or_nonfinite": 0,
+          "min": 73675,
+          "max": 1209571425,
+          "zero": 0,
+          "negative": 0
+        }
+      },
+      "categories": {},
+      "distinct_symbols": 211,
+      "key": [
+        "Symbol"
+      ],
+      "duplicate_key_rows": 0
+    },
+    {
+      "member": "BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv/mpl_jun2026.csv",
+      "bytes": 3702,
+      "sha256": "dece2fb1f6cda3e2dbf1312ee0cb8596c7534a797add8773c3165479b938707e",
+      "data_rows": 211,
+      "columns": 2,
+      "raw_headers": [
+        "UNDERLYING_NAME",
+        "MWPL (June 2026)"
+      ],
+      "headers": [
+        "UNDERLYING_NAME",
+        "MWPL (June 2026)"
+      ],
+      "all_used_cells_consumed": true,
+      "blank_fields": 0,
+      "missing_by_column": {
+        "UNDERLYING_NAME": 0,
+        "MWPL (June 2026)": 0
+      },
+      "numeric_profiles": {
+        "MWPL (June 2026)": {
+          "observed": 211,
+          "invalid_or_nonfinite": 0,
+          "min": 736885,
+          "max": 12096038468,
+          "zero": 0,
+          "negative": 0
+        }
+      },
+      "categories": {},
+      "distinct_symbols": 211,
+      "key": [
+        "UNDERLYING_NAME"
+      ],
+      "duplicate_key_rows": 0
+    },
+    {
+      "member": "BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv/sec_bhavdata_full_08062026 (2).csv",
+      "bytes": 311417,
+      "sha256": "a2f18f4359bc2fc407369782c3df98749dae18b96c394888e5e5fefe398b05b2",
+      "data_rows": 3237,
+      "columns": 15,
+      "raw_headers": [
+        "SYMBOL",
+        " SERIES",
+        " DATE1",
+        " PREV_CLOSE",
+        " OPEN_PRICE",
+        " HIGH_PRICE",
+        " LOW_PRICE",
+        " LAST_PRICE",
+        " CLOSE_PRICE",
+        " AVG_PRICE",
+        " TTL_TRD_QNTY",
+        " TURNOVER_LACS",
+        " NO_OF_TRADES",
+        " DELIV_QTY",
+        " DELIV_PER"
+      ],
+      "headers": [
+        "SYMBOL",
+        "SERIES",
+        "DATE1",
+        "PREV_CLOSE",
+        "OPEN_PRICE",
+        "HIGH_PRICE",
+        "LOW_PRICE",
+        "LAST_PRICE",
+        "CLOSE_PRICE",
+        "AVG_PRICE",
+        "TTL_TRD_QNTY",
+        "TURNOVER_LACS",
+        "NO_OF_TRADES",
+        "DELIV_QTY",
+        "DELIV_PER"
+      ],
+      "all_used_cells_consumed": true,
+      "blank_fields": 0,
+      "missing_by_column": {
+        "SYMBOL": 0,
+        "SERIES": 0,
+        "DATE1": 0,
+        "PREV_CLOSE": 0,
+        "OPEN_PRICE": 0,
+        "HIGH_PRICE": 0,
+        "LOW_PRICE": 0,
+        "LAST_PRICE": 0,
+        "CLOSE_PRICE": 0,
+        "AVG_PRICE": 0,
+        "TTL_TRD_QNTY": 0,
+        "TURNOVER_LACS": 0,
+        "NO_OF_TRADES": 0,
+        "DELIV_QTY": 257,
+        "DELIV_PER": 257
+      },
+      "numeric_profiles": {
+        "PREV_CLOSE": {
+          "observed": 3237,
+          "invalid_or_nonfinite": 0,
+          "min": 0.15,
+          "max": 123505,
+          "zero": 0,
+          "negative": 0
+        },
+        "OPEN_PRICE": {
+          "observed": 3237,
+          "invalid_or_nonfinite": 0,
+          "min": 0.15,
+          "max": 123500,
+          "zero": 0,
+          "negative": 0
+        },
+        "HIGH_PRICE": {
+          "observed": 3237,
+          "invalid_or_nonfinite": 0,
+          "min": 0.15,
+          "max": 123940,
+          "zero": 0,
+          "negative": 0
+        },
+        "LOW_PRICE": {
+          "observed": 3237,
+          "invalid_or_nonfinite": 0,
+          "min": 0.14,
+          "max": 122205,
+          "zero": 0,
+          "negative": 0
+        },
+        "LAST_PRICE": {
+          "observed": 3237,
+          "invalid_or_nonfinite": 0,
+          "min": 0.15,
+          "max": 122800,
+          "zero": 0,
+          "negative": 0
+        },
+        "CLOSE_PRICE": {
+          "observed": 3237,
+          "invalid_or_nonfinite": 0,
+          "min": 0.14,
+          "max": 122820,
+          "zero": 0,
+          "negative": 0
+        },
+        "AVG_PRICE": {
+          "observed": 3237,
+          "invalid_or_nonfinite": 0,
+          "min": 0.15,
+          "max": 123062.38,
+          "zero": 0,
+          "negative": 0
+        },
+        "TTL_TRD_QNTY": {
+          "observed": 3237,
+          "invalid_or_nonfinite": 0,
+          "min": 1,
+          "max": 551994929,
+          "zero": 0,
+          "negative": 0
+        },
+        "TURNOVER_LACS": {
+          "observed": 3237,
+          "invalid_or_nonfinite": 0,
+          "min": 0,
+          "max": 209796.9,
+          "zero": 4,
+          "negative": 0
+        },
+        "NO_OF_TRADES": {
+          "observed": 3237,
+          "invalid_or_nonfinite": 0,
+          "min": 1,
+          "max": 730259,
+          "zero": 0,
+          "negative": 0
+        },
+        "DELIV_QTY": {
+          "observed": 2980,
+          "invalid_or_nonfinite": 0,
+          "min": 0,
+          "max": 156145681,
+          "zero": 3,
+          "negative": 0
+        },
+        "DELIV_PER": {
+          "observed": 2980,
+          "invalid_or_nonfinite": 0,
+          "min": 0,
+          "max": 100,
+          "zero": 3,
+          "negative": 0
+        }
+      },
+      "categories": {
+        "SERIES": {
+          "GS": 41,
+          "EQ": 2446,
+          "SM": 308,
+          "BE": 220,
+          "ST": 119,
+          "BZ": 37,
+          "IV": 13,
+          "E1": 5,
+          "RR": 6,
+          "SZ": 1,
+          "GB": 41
+        },
+        "DATE1": {
+          "08-Jun-2026": 3237
+        }
+      },
+      "distinct_symbols": 3237,
+      "key": [
+        "DATE1",
+        "SYMBOL",
+        "SERIES"
+      ],
+      "duplicate_key_rows": 0,
+      "delivery_diagnostics": {
+        "comparable_rows": 2980,
+        "percentage_mismatch_over_0_011": 0,
+        "delivery_above_traded": 0,
+        "eq_rows": 2446
+      }
+    },
+    {
+      "member": "BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv/sec_bhavdata_full_08062026.csv",
+      "bytes": 367132,
+      "sha256": "e497e4512736cf87106460f5eb9c41089fed60c6cd756fa1591f4ad592fedc84",
+      "data_rows": 3237,
+      "columns": 15,
+      "raw_headers": [
+        "SYMBOL",
+        " SERIES",
+        " DATE1",
+        " PREV_CLOSE",
+        " OPEN_PRICE",
+        " HIGH_PRICE",
+        " LOW_PRICE",
+        " LAST_PRICE",
+        " CLOSE_PRICE",
+        " AVG_PRICE",
+        " TTL_TRD_QNTY",
+        " TURNOVER_LACS",
+        " NO_OF_TRADES",
+        " DELIV_QTY",
+        " DELIV_PER"
+      ],
+      "headers": [
+        "SYMBOL",
+        "SERIES",
+        "DATE1",
+        "PREV_CLOSE",
+        "OPEN_PRICE",
+        "HIGH_PRICE",
+        "LOW_PRICE",
+        "LAST_PRICE",
+        "CLOSE_PRICE",
+        "AVG_PRICE",
+        "TTL_TRD_QNTY",
+        "TURNOVER_LACS",
+        "NO_OF_TRADES",
+        "DELIV_QTY",
+        "DELIV_PER"
+      ],
+      "all_used_cells_consumed": true,
+      "blank_fields": 0,
+      "missing_by_column": {
+        "SYMBOL": 0,
+        "SERIES": 0,
+        "DATE1": 0,
+        "PREV_CLOSE": 0,
+        "OPEN_PRICE": 0,
+        "HIGH_PRICE": 0,
+        "LOW_PRICE": 0,
+        "LAST_PRICE": 0,
+        "CLOSE_PRICE": 0,
+        "AVG_PRICE": 0,
+        "TTL_TRD_QNTY": 0,
+        "TURNOVER_LACS": 0,
+        "NO_OF_TRADES": 0,
+        "DELIV_QTY": 257,
+        "DELIV_PER": 257
+      },
+      "numeric_profiles": {
+        "PREV_CLOSE": {
+          "observed": 3237,
+          "invalid_or_nonfinite": 0,
+          "min": 0.15,
+          "max": 123505,
+          "zero": 0,
+          "negative": 0
+        },
+        "OPEN_PRICE": {
+          "observed": 3237,
+          "invalid_or_nonfinite": 0,
+          "min": 0.15,
+          "max": 123500,
+          "zero": 0,
+          "negative": 0
+        },
+        "HIGH_PRICE": {
+          "observed": 3237,
+          "invalid_or_nonfinite": 0,
+          "min": 0.15,
+          "max": 123940,
+          "zero": 0,
+          "negative": 0
+        },
+        "LOW_PRICE": {
+          "observed": 3237,
+          "invalid_or_nonfinite": 0,
+          "min": 0.14,
+          "max": 122205,
+          "zero": 0,
+          "negative": 0
+        },
+        "LAST_PRICE": {
+          "observed": 3237,
+          "invalid_or_nonfinite": 0,
+          "min": 0.15,
+          "max": 122800,
+          "zero": 0,
+          "negative": 0
+        },
+        "CLOSE_PRICE": {
+          "observed": 3237,
+          "invalid_or_nonfinite": 0,
+          "min": 0.14,
+          "max": 122820,
+          "zero": 0,
+          "negative": 0
+        },
+        "AVG_PRICE": {
+          "observed": 3237,
+          "invalid_or_nonfinite": 0,
+          "min": 0.15,
+          "max": 123062.38,
+          "zero": 0,
+          "negative": 0
+        },
+        "TTL_TRD_QNTY": {
+          "observed": 3237,
+          "invalid_or_nonfinite": 0,
+          "min": 1,
+          "max": 551994929,
+          "zero": 0,
+          "negative": 0
+        },
+        "TURNOVER_LACS": {
+          "observed": 3237,
+          "invalid_or_nonfinite": 0,
+          "min": 0,
+          "max": 209796.9,
+          "zero": 4,
+          "negative": 0
+        },
+        "NO_OF_TRADES": {
+          "observed": 3237,
+          "invalid_or_nonfinite": 0,
+          "min": 1,
+          "max": 730259,
+          "zero": 0,
+          "negative": 0
+        },
+        "DELIV_QTY": {
+          "observed": 2980,
+          "invalid_or_nonfinite": 0,
+          "min": 0,
+          "max": 156145681,
+          "zero": 3,
+          "negative": 0
+        },
+        "DELIV_PER": {
+          "observed": 2980,
+          "invalid_or_nonfinite": 0,
+          "min": 0,
+          "max": 100,
+          "zero": 3,
+          "negative": 0
+        }
+      },
+      "categories": {
+        "SERIES": {
+          "GS": 41,
+          "EQ": 2446,
+          "SM": 308,
+          "BE": 220,
+          "ST": 119,
+          "BZ": 37,
+          "IV": 13,
+          "E1": 5,
+          "RR": 6,
+          "SZ": 1,
+          "GB": 41
+        },
+        "DATE1": {
+          "08-Jun-2026": 3237
+        }
+      },
+      "distinct_symbols": 3237,
+      "key": [
+        "DATE1",
+        "SYMBOL",
+        "SERIES"
+      ],
+      "duplicate_key_rows": 0,
+      "delivery_diagnostics": {
+        "comparable_rows": 2980,
+        "percentage_mismatch_over_0_011": 0,
+        "delivery_above_traded": 0,
+        "eq_rows": 2446
+      }
+    }
+  ],
+  "comparisons": {
+    "equity_normalized_vs_raw": {
+      "clean_rows": 3237,
+      "raw_rows": 3237,
+      "missing_keys": 0,
+      "extra_raw_keys": 0,
+      "mismatched_cells": 0,
+      "examples": [],
+      "method": "Trim field whitespace; compare declared numeric columns numerically, retain missing markers as null for comparison only; no source rewrite."
+    },
+    "position_limit_tables": {
+      "fpi_rows": 211,
+      "mwpl_rows": 211,
+      "unmatched_fpi_symbols": [],
+      "unmatched_mwpl_symbols": [],
+      "sample_ratios": [
+        {
+          "symbol": "360ONE",
+          "category1_over_mwpl": 0.29999813808871656,
+          "category2_over_mwpl": 0.19998993031763915,
+          "others_over_mwpl": 0.09999496515881957
+        },
+        {
+          "symbol": "ABB",
+          "category1_over_mwpl": 0.2999881458200047,
+          "category2_over_mwpl": 0.19999209721333647,
+          "others_over_mwpl": 0.09999604860666823
+        },
+        {
+          "symbol": "ABCAPITAL",
+          "category1_over_mwpl": 0.2999997317009011,
+          "category2_over_mwpl": 0.1999914452305446,
+          "others_over_mwpl": 0.09998315876018808
+        },
+        {
+          "symbol": "ADANIENSOL",
+          "category1_over_mwpl": 0.29998221134338965,
+          "category2_over_mwpl": 0.19998814089559308,
+          "others_over_mwpl": 0.09999407044779654
+        },
+        {
+          "symbol": "ADANIENT",
+          "category1_over_mwpl": 0.29999157400925136,
+          "category2_over_mwpl": 0.19999744396753305,
+          "others_over_mwpl": 0.09999413004171831
+        }
+      ],
+      "interpretation": "Position-limit tables are not actual FPI holdings, flow or a buy signal; percentage fits are diagnostics only."
+    },
+    "two_dates": {
+      "dates": [
+        "2026-06-03",
+        "2026-06-08"
+      ],
+      "calendar_day_gap": 5,
+      "shared_instrument_ids": 39115,
+      "not_consecutive_session_proof": true,
+      "do_not_treat_difference_as_one_day_oi_change": true
+    }
+  },
+  "limits": [
+    "Historical June 3/8 and June-month 2026 snapshots, not current market data.",
+    "Full CSV read and repository-pinned hashes do not authenticate original upstream download, point-in-time company membership or current provider acceptance.",
+    "Raw CSV widths independently verified; missing delivery markers are retained as unknown and inactive zero OHLC is not repaired.",
+    "The two equity CSVs are semantically equal after whitespace/Decimal numeric comparison, not byte-identical. Both originals preserved; this is not deletion approval.",
+    "All 12 requested symbols are EQ rows on June 8 only; 2446 EQ rows are not a verified current company universe.",
+    "468 shared-ID strike/lot changes are arithmetically consistent with dated corporate-action notices, not full contract-master validation. The source-text discrepancy and unit/lot residuals remain explicit.",
+    "97 rows per derivative date have OI not divisible by the row's current lot size; diagnostic only, not declared corruption, no repair.",
+    "No original/raw/V01 file, application runtime, ranking weight, threshold, universe, Mongo state or deployment changed. No application API or trades executed.",
+    "FO.Gold.COmm.zip was header sampled only in this round; remaining monthly/AM07 review assignments produced no completed evidence after worker usage errors and gain no coverage."
+  ],
+  "scope": "Full read-only content audit of exactly six CSV members. Reviewed means serialized row/cell coverage with explicit limits, not import/activation/currentness approval.",
+  "repository": "damandamanaulakh-tech/AshStocks",
+  "source_pin": {
+    "inventory_file": "data/asset-review/backenddata-release-inventory-2026-09-24.json",
+    "release_asset_id": 495311445,
+    "sha256_matches_inventory": true,
+    "bytes_match_inventory": true,
+    "baseline_file": "data/asset-review/remaining-content-baseline-2026-09-24.json",
+    "previous_progress_file": "data/asset-review/content-coverage-progress-2026-09-24.json",
+    "previous_progress_sha256": "7501e460aaa88ba8fac9a405b86222dd4fca1d7de1f550c648ee297564742d69",
+    "historical_pin_note": "This digest identifies the pre-acceptance overlay, not the updated overlay."
+  },
+  "independent_verification": {
+    "members": [
+      {
+        "member": "BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv/BhavCopy_NSE_FO_0_0_0_20260603_F_0000.csv",
+        "rows": 39115,
+        "fields": 1329910,
+        "columns": 34,
+        "sha256": "2e18991b2c6c6c252a61592ff2f115e4791092c6b472762006193509aa0975bd",
+        "crc32": "92c6c0c7",
+        "crc_verified_to_eof": true,
+        "raw_row_width_errors": 0,
+        "blank_fields": 275093,
+        "dates": {
+          "TradDt": {
+            "min": "2026-06-03",
+            "max": "2026-06-03",
+            "distinct": 1,
+            "valid": 39115
+          },
+          "BizDt": {
+            "min": "2026-06-03",
+            "max": "2026-06-03",
+            "distinct": 1,
+            "valid": 39115
+          },
+          "XpryDt": {
+            "min": "2026-06-09",
+            "max": "2030-12-31",
+            "distinct": 18,
+            "valid": 39115
+          },
+          "FininstrmActlXpryDt": {
+            "min": "2026-06-09",
+            "max": "2030-12-31",
+            "distinct": 18,
+            "valid": 39115
+          }
+        }
+      },
+      {
+        "member": "BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv/BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv",
+        "rows": 40604,
+        "fields": 1380536,
+        "columns": 34,
+        "sha256": "97293e8807bf2c62420712233093a059b603abca9be658ddd2d015e8e3ad1fbc",
+        "crc32": "12f9649d",
+        "crc_verified_to_eof": true,
+        "raw_row_width_errors": 0,
+        "blank_fields": 285516,
+        "dates": {
+          "TradDt": {
+            "min": "2026-06-08",
+            "max": "2026-06-08",
+            "distinct": 1,
+            "valid": 40604
+          },
+          "BizDt": {
+            "min": "2026-06-08",
+            "max": "2026-06-08",
+            "distinct": 1,
+            "valid": 40604
+          },
+          "XpryDt": {
+            "min": "2026-06-09",
+            "max": "2030-12-31",
+            "distinct": 18,
+            "valid": 40604
+          },
+          "FininstrmActlXpryDt": {
+            "min": "2026-06-09",
+            "max": "2030-12-31",
+            "distinct": 18,
+            "valid": 40604
+          }
+        }
+      },
+      {
+        "member": "BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv/fopl_jun2026.csv",
+        "rows": 211,
+        "fields": 844,
+        "columns": 4,
+        "sha256": "f6952467ee1070c2034ad61e5630afb197a80cf0b69af48b52696beed92370a7",
+        "crc32": "f6b66652",
+        "crc_verified_to_eof": true,
+        "raw_row_width_errors": 0,
+        "blank_fields": 0,
+        "dates": {}
+      },
+      {
+        "member": "BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv/mpl_jun2026.csv",
+        "rows": 211,
+        "fields": 422,
+        "columns": 2,
+        "sha256": "dece2fb1f6cda3e2dbf1312ee0cb8596c7534a797add8773c3165479b938707e",
+        "crc32": "5e4f136c",
+        "crc_verified_to_eof": true,
+        "raw_row_width_errors": 0,
+        "blank_fields": 0,
+        "dates": {}
+      },
+      {
+        "member": "BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv/sec_bhavdata_full_08062026 (2).csv",
+        "rows": 3237,
+        "fields": 48555,
+        "columns": 15,
+        "sha256": "a2f18f4359bc2fc407369782c3df98749dae18b96c394888e5e5fefe398b05b2",
+        "crc32": "5a677c96",
+        "crc_verified_to_eof": true,
+        "raw_row_width_errors": 0,
+        "blank_fields": 0,
+        "dates": {
+          "DATE1": {
+            "min": "2026-06-08",
+            "max": "2026-06-08",
+            "distinct": 1,
+            "valid": 3237
+          }
+        }
+      },
+      {
+        "member": "BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv/sec_bhavdata_full_08062026.csv",
+        "rows": 3237,
+        "fields": 48555,
+        "columns": 15,
+        "sha256": "e497e4512736cf87106460f5eb9c41089fed60c6cd756fa1591f4ad592fedc84",
+        "crc32": "d6f63e46",
+        "crc_verified_to_eof": true,
+        "raw_row_width_errors": 0,
+        "blank_fields": 0,
+        "dates": {
+          "DATE1": {
+            "min": "2026-06-08",
+            "max": "2026-06-08",
+            "distinct": 1,
+            "valid": 3237
+          }
+        }
+      }
+    ],
+    "equity_comparison_mismatch_count": 0,
+    "equity_difference_examples": [],
+    "derivative_groups": [
+      {
+        "member": "BhavCopy_NSE_FO_0_0_0_20260603_F_0000.csv",
+        "groups": {
+          "STO|PE": {
+            "rows": 16500,
+            "open_interest": 3017828018,
+            "change_oi": 194863972,
+            "traded_volume": 1915915
+          },
+          "STO|CE": {
+            "rows": 16459,
+            "open_interest": 4978752568,
+            "change_oi": 181605081,
+            "traded_volume": 3629599
+          },
+          "STF|none": {
+            "rows": 629,
+            "open_interest": 16744340679,
+            "change_oi": 86256299,
+            "traded_volume": 1229360
+          },
+          "IDO|PE": {
+            "rows": 2767,
+            "open_interest": 224373845,
+            "change_oi": 41025115,
+            "traded_volume": 31878745
+          },
+          "IDO|CE": {
+            "rows": 2745,
+            "open_interest": 222982820,
+            "change_oi": 42565950,
+            "traded_volume": 34442279
+          },
+          "IDF|none": {
+            "rows": 15,
+            "open_interest": 25896985,
+            "change_oi": 1745235,
+            "traded_volume": 209664
+          }
+        },
+        "full_rows_oi_multiple_of_lot_violations": 97,
+        "noninteger_volume": 0
+      },
+      {
+        "member": "BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv",
+        "groups": {
+          "STO|CE": {
+            "rows": 17200,
+            "open_interest": 5829631407,
+            "change_oi": 309287405,
+            "traded_volume": 2963976
+          },
+          "STO|PE": {
+            "rows": 17220,
+            "open_interest": 3355891897,
+            "change_oi": 89448530,
+            "traded_volume": 1495926
+          },
+          "STF|none": {
+            "rows": 629,
+            "open_interest": 17116634064,
+            "change_oi": 94532727,
+            "traded_volume": 888007
+          },
+          "IDO|PE": {
+            "rows": 2781,
+            "open_interest": 284945140,
+            "change_oi": 15992670,
+            "traded_volume": 66952921
+          },
+          "IDO|CE": {
+            "rows": 2759,
+            "open_interest": 363353725,
+            "change_oi": 40225310,
+            "traded_volume": 72029538
+          },
+          "IDF|none": {
+            "rows": 15,
+            "open_interest": 26687435,
+            "change_oi": 215720,
+            "traded_volume": 119052
+          }
+        },
+        "full_rows_oi_multiple_of_lot_violations": 97,
+        "noninteger_volume": 0
+      }
+    ],
+    "position_limit_ratio_ranges": {
+      "FPI Category I": {
+        "min": "0.2999586093014516493733704414",
+        "max": "0.3",
+        "above_expected_ratio": 0,
+        "expected_comparator": "0.3",
+        "meaning": "diagnostic only, not source rounding authority"
+      },
+      "FPI Category II": {
+        "min": "0.1999584182038915933497635917",
+        "max": "0.2",
+        "above_expected_ratio": 0,
+        "expected_comparator": "0.2",
+        "meaning": "diagnostic only, not source rounding authority"
+      },
+      "FPI Category II Others": {
+        "min": "0.09995822710633153732615674194",
+        "max": "0.1",
+        "above_expected_ratio": 0,
+        "expected_comparator": "0.1",
+        "meaning": "diagnostic only, not source rounding authority"
+      }
+    },
+    "requested_equity_symbol_presence": {
+      "BBL": true,
+      "LATENTVIEW": true,
+      "JWL": true,
+      "RAILTEL": true,
+      "KEC": true,
+      "TRANSRAILL": true,
+      "GODFRYPHLP": true,
+      "BSOFT": true,
+      "ZENSARTECH": true,
+      "RHIM": true,
+      "SURYAROSNI": true,
+      "THERMAX": true
+    },
+    "requested_symbol_authority": "Existing dated valuation-assumptions-2026-09-09.json uses TRANSRAILL for Transrail; historical symbol presence only, not current provider identity or Mongo verification.",
+    "contract_identity_comparison": {
+      "compared_fields": [
+        "TckrSymb",
+        "FinInstrmTp",
+        "XpryDt",
+        "FininstrmActlXpryDt",
+        "StrkPric",
+        "OptnTp",
+        "NewBrdLotQty"
+      ],
+      "shared_ids": 39115,
+      "changed_rows": 468,
+      "changed_by_symbol": {
+        "TRENT": 109,
+        "BANKBARODA": 163,
+        "HDFCAMC": 196
+      },
+      "changed_field_combinations": {
+        "StrkPric,NewBrdLotQty": 106,
+        "NewBrdLotQty": 3,
+        "StrkPric": 359
+      },
+      "examples": [
+        {
+          "id": "176210",
+          "symbol": "TRENT",
+          "columns": [
+            "StrkPric",
+            "NewBrdLotQty"
+          ]
+        },
+        {
+          "id": "176208",
+          "symbol": "TRENT",
+          "columns": [
+            "StrkPric",
+            "NewBrdLotQty"
+          ]
+        },
+        {
+          "id": "151213",
+          "symbol": "TRENT",
+          "columns": [
+            "StrkPric",
+            "NewBrdLotQty"
+          ]
+        },
+        {
+          "id": "38112",
+          "symbol": "TRENT",
+          "columns": [
+            "StrkPric",
+            "NewBrdLotQty"
+          ]
+        },
+        {
+          "id": "146084",
+          "symbol": "TRENT",
+          "columns": [
+            "StrkPric",
+            "NewBrdLotQty"
+          ]
+        },
+        {
+          "id": "146246",
+          "symbol": "TRENT",
+          "columns": [
+            "StrkPric",
+            "NewBrdLotQty"
+          ]
+        },
+        {
+          "id": "151207",
+          "symbol": "TRENT",
+          "columns": [
+            "StrkPric",
+            "NewBrdLotQty"
+          ]
+        },
+        {
+          "id": "176212",
+          "symbol": "TRENT",
+          "columns": [
+            "StrkPric",
+            "NewBrdLotQty"
+          ]
+        },
+        {
+          "id": "146077",
+          "symbol": "TRENT",
+          "columns": [
+            "StrkPric",
+            "NewBrdLotQty"
+          ]
+        },
+        {
+          "id": "146233",
+          "symbol": "TRENT",
+          "columns": [
+            "StrkPric",
+            "NewBrdLotQty"
+          ]
+        },
+        {
+          "id": "151144",
+          "symbol": "TRENT",
+          "columns": [
+            "StrkPric",
+            "NewBrdLotQty"
+          ]
+        },
+        {
+          "id": "146243",
+          "symbol": "TRENT",
+          "columns": [
+            "StrkPric",
+            "NewBrdLotQty"
+          ]
+        }
+      ],
+      "interpretation": "Changes are not automatically errors; corporate-action and point-in-time contract authority is required before comparing prices/OI across these dates."
+    },
+    "all_rows": 86615,
+    "all_fields": 2808822,
+    "new_coverage_only": true
+  },
+  "corporate_action_diagnostic": {
+    "method": "Compare June 3 and June 8 shared IDs. TRENT lot x1.5 and option strike /1.5; BANKBARODA strike -8.50; HDFCAMC strike -54, unchanged dividend lots. Diagnostic nearest 0.05 rounding with Decimal half-up; actual dated contract master not inspected.",
+    "results": {
+      "TRENT": {
+        "shared_rows": 109,
+        "changed_rows": 109,
+        "changed_by_type": {
+          "STO": 106,
+          "STF": 3
+        },
+        "arithmetic_mismatch_count": 0,
+        "mismatch_examples": [],
+        "examples": [
+          {
+            "id": "176210",
+            "expiry": "2026-06-30",
+            "instrument": "STO",
+            "strike_before": "3600.00",
+            "strike_after": "2400.00",
+            "lot_before": "100",
+            "lot_after": "150"
+          },
+          {
+            "id": "176208",
+            "expiry": "2026-06-30",
+            "instrument": "STO",
+            "strike_before": "3500.00",
+            "strike_after": "2333.35",
+            "lot_before": "100",
+            "lot_after": "150"
+          },
+          {
+            "id": "151213",
+            "expiry": "2026-08-25",
+            "instrument": "STO",
+            "strike_before": "4600.00",
+            "strike_after": "3066.65",
+            "lot_before": "150",
+            "lot_after": "225"
+          }
+        ]
+      },
+      "BANKBARODA": {
+        "shared_rows": 166,
+        "changed_rows": 163,
+        "changed_by_type": {
+          "STO": 163
+        },
+        "arithmetic_mismatch_count": 0,
+        "mismatch_examples": [],
+        "examples": [
+          {
+            "id": "74679",
+            "expiry": "2026-08-25",
+            "instrument": "STO",
+            "strike_before": "310.00",
+            "strike_after": "301.50",
+            "lot_before": "2925",
+            "lot_after": "2925"
+          },
+          {
+            "id": "74597",
+            "expiry": "2026-08-25",
+            "instrument": "STO",
+            "strike_before": "250.00",
+            "strike_after": "241.50",
+            "lot_before": "2925",
+            "lot_after": "2925"
+          },
+          {
+            "id": "74411",
+            "expiry": "2026-07-28",
+            "instrument": "STO",
+            "strike_before": "297.50",
+            "strike_after": "289.00",
+            "lot_before": "2925",
+            "lot_after": "2925"
+          }
+        ]
+      },
+      "HDFCAMC": {
+        "shared_rows": 199,
+        "changed_rows": 196,
+        "changed_by_type": {
+          "STO": 196
+        },
+        "arithmetic_mismatch_count": 0,
+        "mismatch_examples": [],
+        "examples": [
+          {
+            "id": "99122",
+            "expiry": "2026-07-28",
+            "instrument": "STO",
+            "strike_before": "2460.00",
+            "strike_after": "2406.00",
+            "lot_before": "300",
+            "lot_after": "300"
+          },
+          {
+            "id": "96843",
+            "expiry": "2026-07-28",
+            "instrument": "STO",
+            "strike_before": "2360.00",
+            "strike_after": "2306.00",
+            "lot_before": "300",
+            "lot_after": "300"
+          },
+          {
+            "id": "118186",
+            "expiry": "2026-06-30",
+            "instrument": "STO",
+            "strike_before": "2960.00",
+            "strike_after": "2906.00",
+            "lot_before": "300",
+            "lot_after": "300"
+          }
+        ]
+      }
+    },
+    "unmodified_other_contract_fields": true,
+    "source_conflict": "CMPT74492 extracted options paragraph says factor 2, inconsistent with its stated 1.5 and worked examples. NSE FAOP74486 explicitly states factor 1.5 and lots 150/225. The discrepancy is preserved, not treated as authority to apply 2.",
+    "limits": "Consistency with dated notices, not full contract-master identity validation, continuous session history, or approval to adjust/import source data.",
+    "source_visual_verification": "Web PDF text inspected; attempted PDF screenshots failed with cache miss. Extracted-text inconsistency retained, not silently repaired."
+  },
+  "methods": {
+    "primary": "Bundled @oai/artifact-tool Workbook.fromCSV, getUsedRange().values consumed for every CSV data cell; raw archive/member SHA256; unzip full CRC verification; full numeric, missingness, categorical/key profiles.",
+    "independent": "Python zipfile read to EOF and strict csv.reader; raw row-width/header validation, parsed dates, Decimal equity equality/position ratios, integer OI group sums and dated-contract attribute comparison.",
+    "comparisons_agree": "Both readers agree on all six member SHA256 identities, row/column/blank counts and all derivative group sums. Both independently find zero normalized-equity cell differences.",
+    "new_data_rows": 86615,
+    "new_data_fields": 2808822,
+    "blank_fields": 560609,
+    "unit_policy": "Equity TURNOVER_LACS retains its named lakh units and DELIV_PER is a 0-100 percentage; do not mix with raw rupees/fractional values in other assets. Derivative volume/OI/turnover unit contract is not inferred from numerical fit.",
+    "no_application_regression_rerun": true
+  },
+  "consumer_mapping": [
+    {
+      "consumer": "ashstocks/data/nse_fo_bhavcopy.py::parse_nse_fo_bhavcopy_csv",
+      "observed": "Maps UDiFF fields, requires five named columns, coerces dates/numbers, returns a dataframe-bearing ParseResult with a summary method. No named runtime caller found by bounded Python/JavaScript search.",
+      "role": "unwired parser candidate",
+      "required": "Explicit point-in-time identity, units, duplicate/schema rejection, corporate-action/session/freshness contract and consumer tests before wiring."
+    },
+    {
+      "consumer": "data/parameter-catalog-175.json::NO10",
+      "formula": "price_up and OI_up and 0.8 <= PCR <= 1.3",
+      "readiness": "FNO_FEED_REQUIRED",
+      "observed": "No explicit NO10 evaluator branch found in server-parameter-tunnel-patch.mjs; two dated whole-contract files are not a current per-stock PCR/price/OI feed."
+    },
+    {
+      "consumer": "config/stock-selection-parameters.v0.1.json::foOi and lib/stock-selection-engine.mjs",
+      "role": "current_snapshot_annotation_only; scoreWeightPct 0",
+      "required": "oiRegime contract plus validated as-of data; aggregate OI totals do not supply stock regime automatically."
+    },
+    {
+      "consumer": "config/stock-selection-parameters.v0.1.json::fpiMwpl",
+      "role": "audit_annotation_only; deterministic_ratio_not_rank_eligible; scoreWeightPct 0",
+      "observed": "211 limit rows describe approximately 30/20/10 percent of MWPL, not observed holdings or flows. Library labels FPI_MWPL_PROFILE_UNVALIDATED."
+    },
+    {
+      "consumer": "data/parameter-catalog-175.json::NO07 and NO09",
+      "observed": "Single-date stock delivery is not NO07 own-60D delivery history. Contract OI is not NO09 participant-specific net index-futures 60D history."
+    }
+  ],
+  "online_sources": [
+    {
+      "url": "https://nsearchives.nseindia.com/content/circulars/CMPT70271.pdf",
+      "publication_date": "2025-09-18",
+      "effective_date": "2025-10-01",
+      "role": "Dated FPI stock-derivative limits: Category I 30%, Category II excluding individuals/family offices/corporates 20%, remaining Category II 10% of MWPL. Historical table ratios are consistent; exact rounding and all subsequent regulatory changes are not certified."
+    },
+    {
+      "url": "https://nsearchives.nseindia.com/content/circulars/FAOP74486.pdf",
+      "publication_date": "2026-06-01",
+      "effective_date": "2026-06-04",
+      "role": "TRENT 1:2 bonus, 1.5 adjustment factor, revised lots June 150 and July onward 225; nearest-tick rounding and dated contract master required."
+    },
+    {
+      "url": "https://nsearchives.nseindia.com/content/circulars/CMPT74492.pdf",
+      "publication_date": "2026-06-01",
+      "role": "TRENT clearing notice has inconsistent factor 2 in extracted option paragraph versus 1.5 and worked examples. Retained as source discrepancy; not authority for a factor-2 repair."
+    },
+    {
+      "url": "https://www.archive.nseclearing.in/content/circulars/CMPT74187.pdf",
+      "publication_date": "2026-05-13",
+      "effective_date": "2026-06-05",
+      "role": "BANKBARODA dividend adjustment 8.50 rupees; compare option strikes, not unadjusted price changes across dates."
+    },
+    {
+      "url": "https://nsearchives.nseindia.com/content/circulars/CMPT74497.pdf",
+      "publication_date": "2026-06-02",
+      "effective_date": "2026-06-05",
+      "role": "HDFCAMC dividend adjustment 54 rupees; compare option strikes, not unadjusted price changes across dates."
+    },
+    {
+      "url": "https://www.nseindia.com/static/resources/forms-formats-members",
+      "role": "Official UDiFF format-family landing page inspected; linked June 30 workbook could not be retrieved."
+    }
+  ],
+  "unavailable_online_resource": {
+    "url": "https://nsearchives.nseindia.com/web/mediaattachment/2026-06/UDiFF_trade_and_Bhavcopy_file_formats_20260630115803.xlsx",
+    "attempts": [
+      "web tool unsupported content type",
+      "curl HTTP/2 INTERNAL_ERROR exit 92",
+      "targeted HTTP/1.1 retry timed out after 30 seconds with zero bytes exit 28"
+    ],
+    "content_inspected": false,
+    "impact": "Exact exchange field/units contract remains SOURCE_REQUIRED; a later June 30 format version also needs applicability checked against June 3/8."
+  },
+  "proposed_coverage_update": {
+    "asset": "BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv.zip",
+    "from": "inventory_only",
+    "to": "reviewed",
+    "evidence": "data/asset-review/bhavcopy-content-evidence-2026-09-24.json",
+    "member_updates": [
+      {
+        "member": "BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv/BhavCopy_NSE_FO_0_0_0_20260603_F_0000.csv",
+        "from": "inventory_only",
+        "to": "reviewed",
+        "evidence": "data/asset-review/bhavcopy-content-evidence-2026-09-24.json"
+      },
+      {
+        "member": "BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv/BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv",
+        "from": "inventory_only",
+        "to": "reviewed",
+        "evidence": "data/asset-review/bhavcopy-content-evidence-2026-09-24.json"
+      },
+      {
+        "member": "BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv/fopl_jun2026.csv",
+        "from": "inventory_only",
+        "to": "reviewed",
+        "evidence": "data/asset-review/bhavcopy-content-evidence-2026-09-24.json"
+      },
+      {
+        "member": "BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv/mpl_jun2026.csv",
+        "from": "inventory_only",
+        "to": "reviewed",
+        "evidence": "data/asset-review/bhavcopy-content-evidence-2026-09-24.json"
+      },
+      {
+        "member": "BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv/sec_bhavdata_full_08062026 (2).csv",
+        "from": "inventory_only",
+        "to": "reviewed",
+        "evidence": "data/asset-review/bhavcopy-content-evidence-2026-09-24.json"
+      },
+      {
+        "member": "BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv/sec_bhavdata_full_08062026.csv",
+        "from": "inventory_only",
+        "to": "reviewed",
+        "evidence": "data/asset-review/bhavcopy-content-evidence-2026-09-24.json"
+      }
+    ],
+    "remaining_member_status_counts": {
+      "reviewed": 6
+    }
+  },
+  "raw_sources_modified": false,
+  "runtime_modified": false,
+  "mongo_accessed": false,
+  "imported": false,
+  "deployed": false
+}

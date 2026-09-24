@@ -37,6 +37,10 @@
     {
       "file": "data/asset-review/derived-delivery-context-evidence-2026-09-24.json",
       "sha256": "b1692deb1293d66cb156b9a923b75e2149f88c0bfa7b22e56654ac578ff1f7c7"
+    },
+    {
+      "file": "data/asset-review/bhavcopy-content-evidence-2026-09-24.json",
+      "sha256": "942e4450789c02ab767baeb3110cc68f877bd68a406c6111752df76b7755f277"
     }
   ],
   "updates": [
@@ -1205,58 +1209,105 @@
       "remaining_member_status_counts": {
         "reviewed": 8
       }
+    },
+    {
+      "asset": "BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/bhavcopy-content-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv/BhavCopy_NSE_FO_0_0_0_20260603_F_0000.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/bhavcopy-content-evidence-2026-09-24.json"
+        },
+        {
+          "member": "BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv/BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/bhavcopy-content-evidence-2026-09-24.json"
+        },
+        {
+          "member": "BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv/fopl_jun2026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/bhavcopy-content-evidence-2026-09-24.json"
+        },
+        {
+          "member": "BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv/mpl_jun2026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/bhavcopy-content-evidence-2026-09-24.json"
+        },
+        {
+          "member": "BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv/sec_bhavdata_full_08062026 (2).csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/bhavcopy-content-evidence-2026-09-24.json"
+        },
+        {
+          "member": "BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv/sec_bhavdata_full_08062026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/bhavcopy-content-evidence-2026-09-24.json"
+        }
+      ],
+      "remaining_member_status_counts": {
+        "reviewed": 6
+      }
     }
   ],
   "summary": {
     "assets": 171,
     "asset_status_counts": {
-      "reviewed": 78,
+      "reviewed": 79,
       "partial": 22,
-      "inventory_only": 70,
+      "inventory_only": 69,
       "corrupt": 1
     },
     "members": 592,
     "member_status_counts": {
-      "reviewed": 423,
+      "reviewed": 429,
       "partial": 6,
-      "inventory_only": 163
+      "inventory_only": 157
     },
-    "member_status_upgrades": 118,
+    "member_status_upgrades": 124,
     "corrupt_archive": "2021_06.zip",
     "corrupt_archive_member_count": null
   },
-  "excluded_promotions": "Only explicitly evidenced members are upgraded. This batch completes the seven delivery-context siblings but does not promote neighboring packs or certify producer formulas, continuous sessions, missingness, currentness or runtime readiness. Other partial/inventory-only content and corrupt archives retain their prior limits. No duplicate deletion, import or activation is authorized.",
+  "excluded_promotions": "Only explicitly evidenced members are upgraded. This batch completes the six bhavcopy archive CSVs, not FO.Gold.COmm, monthly transaction or AM07 siblings. Historical reading/corporate-action arithmetic does not certify source authority, units, current membership, runtime readiness or import permission. No duplicate deletion or activation is authorized.",
   "mongo_accessed": false,
   "imported": false,
   "runtime_modified": false,
   "latest_batch": {
-    "id": "derived-delivery-context-2026-09-24",
-    "checkpoint": "docs/DERIVED_DELIVERY_CONTEXT_CHECKPOINT_2026-09-24.md",
-    "reviewed_against_commit": "c2a99bf97128d645eb1891e474743b522c9e26a6",
-    "previous_progress_sha256": "c2d8dc8a151cde96b21b9d74fb6fdf1939bb67a37332b3f765ea968cadf8a698",
+    "id": "bhavcopy-content-2026-09-24",
+    "checkpoint": "docs/BHAVCOPY_CONTENT_CHECKPOINT_2026-09-24.md",
+    "reviewed_against_commit": "edc22309d60311e46b115a7bc60103dbd1016e51",
+    "previous_progress_sha256": "7501e460aaa88ba8fac9a405b86222dd4fca1d7de1f550c648ee297564742d69",
     "previous_summary": {
       "assets": 171,
       "asset_status_counts": {
-        "reviewed": 77,
-        "partial": 23,
+        "reviewed": 78,
+        "partial": 22,
         "inventory_only": 70,
         "corrupt": 1
       },
       "members": 592,
       "member_status_counts": {
-        "reviewed": 416,
+        "reviewed": 423,
         "partial": 6,
-        "inventory_only": 170
+        "inventory_only": 163
       },
-      "member_status_upgrades": 111,
+      "member_status_upgrades": 118,
       "corrupt_archive": "2021_06.zip",
       "corrupt_archive_member_count": null
     },
-    "new_member_status_upgrades": 7,
-    "direct_csv_member_upgrades": 7,
+    "new_member_status_upgrades": 6,
+    "direct_csv_member_upgrades": 6,
     "newly_reviewed_archives": 1,
     "newly_partial_archives": 0,
     "update_application": "Apply every updates entry in array order to the immutable baseline; repeated asset entries are sequential member-level progress, not duplicate assets.",
-    "historical_digest_note": "The derived-delivery evidence records the pre-acceptance progress digest as historical input, not a digest of this updated overlay."
+    "historical_digest_note": "Bhavcopy evidence records the pre-acceptance progress digest as historical input, not the digest of this updated overlay."
   }
 }
