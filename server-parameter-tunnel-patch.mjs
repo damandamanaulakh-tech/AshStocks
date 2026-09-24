@@ -134,13 +134,13 @@ function tunnelResult(parameter, state, value, evidence, effect = "") {
   };
 }
 
-function tunnelUnavailable(parameter) {
+function tunnelUnavailable(parameter, reason = parameter.implementation_note) {
   return tunnelResult(
     parameter,
     "SOURCE_REQUIRED",
     null,
-    "Requires " + parameter.required + " from " + parameter.source,
-    "not counted until the named real feed is connected"
+    reason || "Requires " + parameter.required + " from " + parameter.source,
+    "not counted until the named input or formula contract is resolved"
   );
 }
 
@@ -150,8 +150,67 @@ function tunnelCheck(parameter, condition, value, evidence, risk = false) {
   return tunnelResult(parameter, condition ? "HIT" : "MISS", value, evidence);
 }
 
+// Strict, local guards for the corrected formulas only. Do not let the legacy
+// candle normalizer turn missing values into zero or drop a hole in a lookback.
+function tunnelFormulaNumber(value) {
+  if (typeof value === "number") return Number.isFinite(value) ? value : null;
+  if (typeof value !== "string" || !/^[+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?$/.test(value.trim())) return null;
+  const number = Number(value);
+  return Number.isFinite(number) ? number : null;
+}
+
+// WeakMap lineage is process-local and cannot be forged through a JSON field.
+// Lazy initialization also permits normalization during module initialization.
+function tunnelFormulaSource(candles) {
+  const sources = tunnelFormulaSource.sources || (tunnelFormulaSource.sources = new WeakMap());
+  return Array.isArray(candles) ? sources.get(candles) || candles : [];
+}
+
+function tunnelRememberFormulaInput(input, normalized) {
+  const source = tunnelFormulaSource(input);
+  tunnelFormulaSource.sources.set(normalized, source);
+  return normalized;
+}
+
+function tunnelFormulaSlice(candles, count) {
+  if (!Array.isArray(candles)) return [];
+  const output = candles.slice(-count);
+  const source = tunnelFormulaSource(candles).slice().sort((a, b) => {
+    const stamp = (item) => Date.parse(Array.isArray(item) ? item[0] : item?.date || item?.time || item?.timestamp || "");
+    const left = stamp(a), right = stamp(b);
+    // Keep invalid dated inputs inside the bounded evidence, not silently gone.
+    return (Number.isFinite(left) ? left : Infinity) - (Number.isFinite(right) ? right : Infinity);
+  }).slice(-count);
+  tunnelFormulaSource.sources.set(output, source);
+  return output;
+}
+
+function tunnelFormulaWindow(data, count, fields) {
+  const input = data.formulaCandles;
+  if (!input || input.length !== data.candles.length || input.length < count) return null;
+  if (input.some((candle) => !candle.validDate)) return null;
+  const sample = input.slice(-count);
+  if (new Set(sample.map((candle) => candle.day)).size !== sample.length) return null;
+  for (const candle of sample) {
+    if (fields.some((field) => candle[field] === null || (field === "volume" ? candle[field] < 0 : candle[field] <= 0))) return null;
+    if (fields.includes("high") && fields.includes("low") &&
+        (candle.high < candle.low || candle.close < candle.low || candle.close > candle.high)) return null;
+  }
+  return sample;
+}
+
 function parameterTunnelData(row = {}) {
   const candles = normalizeCandles(row.candles || []);
+  const formulaCandles = tunnelFormulaSource(row.candles).map((input) => {
+    const item = Array.isArray(input) ? { date: input[0], open: input[1], high: input[2], low: input[3], close: input[4], volume: input[5] } : input || {};
+    const date = item.date || item.time || item.timestamp;
+    const day = typeof date === "string" ? date.slice(0, 10) : "";
+    const time = typeof date === "string" ? Date.parse(date) : NaN;
+    const validDate = /^\d{4}-\d{2}-\d{2}$/.test(day) && Number.isFinite(time) &&
+      Number.isFinite(Date.parse(day + "T00:00:00Z")) && new Date(day + "T00:00:00Z").toISOString().slice(0, 10) === day;
+    return { day, time, validDate, open: tunnelFormulaNumber(item.open), high: tunnelFormulaNumber(item.high),
+      low: tunnelFormulaNumber(item.low), close: tunnelFormulaNumber(item.close), volume: tunnelFormulaNumber(item.volume) };
+  }).sort((a, b) => a.time - b.time);
   const closes = candles.map((candle) => candle.close);
   const highs = candles.map((candle) => candle.high);
   const lows = candles.map((candle) => candle.low);
@@ -174,7 +233,7 @@ function parameterTunnelData(row = {}) {
   const low252 = lows.length >= 252 ? Math.min(...lows.slice(-252)) : null;
   const clv = candles.map(tunnelClv);
   return {
-    candles, closes, highs, lows, volumes, latest, previous, returns, atrSeries, rsiSeries, obv, clv,
+    candles, formulaCandles, closes, highs, lows, volumes, latest, previous, returns, atrSeries, rsiSeries, obv, clv,
     sma20, sma50, sma200, vol20, atr14, high20Prior, high20, low20, high252, low252,
     close: latest?.close ?? tunnelFinite(row.close),
     return21: closes.length >= 22 ? closes.at(-1) / closes.at(-22) - 1 : null,
@@ -207,14 +266,13 @@ function evaluateParameterTunnelNode(parameter, row, data, context) {
   const lastRanges = candles.slice(-14).map((candle) => candle.high - candle.low);
   const vol5 = tunnelSma(volumes, 5);
   const ret10 = closes.length >= 11 ? closes.at(-1) / closes.at(-11) - 1 : null;
-  const downVol5 = candles.slice(-5).reduce((sum, candle, index, sample) => sum + (index && candle.close < sample[index - 1].close ? candle.volume : 0), 0);
-  const totalVol5 = candles.slice(-5).reduce((sum, candle) => sum + candle.volume, 0);
   const downVol7 = candles.slice(-7).reduce((sum, candle, index, sample) => sum + (index && candle.close < sample[index - 1].close ? candle.volume : 0), 0);
   const totalVol7 = candles.slice(-7).reduce((sum, candle) => sum + candle.volume, 0);
   const positive = (condition, value, evidence) => tunnelCheck(parameter, condition, value, evidence);
   const risk = (condition, value, evidence) => tunnelCheck(parameter, condition, value, evidence, true);
   const id = parameter.id;
 
+  if (parameter.implementation_status === "SOURCE_REQUIRED") return tunnelUnavailable(parameter);
   if (!latest) return tunnelUnavailable(parameter);
 
   if (id === "B22_P001") return positive(data.sma20 === null ? null : data.close > data.sma20, fmt(data.close), "Close " + fmt(data.close) + " versus SMA20 " + fmt(data.sma20));
@@ -262,9 +320,13 @@ function evaluateParameterTunnelNode(parameter, row, data, context) {
     return positive(widths.length < 126 ? null : tunnelPercentile(current, widths.slice(-126)) <= 15, fmt(tunnelPercentile(current, widths.slice(-126)), "pct"), "Bollinger-width percentile over 126 sessions");
   }
   if (id === "T12W_0004") {
-    const cleanAtr = atrSeries.filter(Number.isFinite);
-    const pct = tunnelPercentile(data.atr14, cleanAtr.slice(-252));
-    return positive(cleanAtr.length < 126 ? null : pct <= 20, fmt(pct, "pct"), "ATR14 percentile");
+    // 266 candles give 252 ATR14 samples with an actual predecessor close;
+    // exclude the initial seeded ATR sample. No global ATR convention changes.
+    if (!tunnelFormulaWindow(data, 266, ["high", "low", "close"])) return tunnelUnavailable(parameter, "Requires 266 valid unique-date HLC observations for 252 fully anchored ATR14 samples");
+    const window = atrSeries.slice(-252);
+    if (!window.every(Number.isFinite)) return tunnelUnavailable(parameter);
+    const pct = tunnelPercentile(data.atr14, window);
+    return positive(pct <= 20 && data.close > data.low20, fmt(pct, "pct"), "ATR14 percentile over 252 complete samples; close strictly above trailing 20D low");
   }
   if (id === "T12W_0005") {
     if (candles.length < 11) return tunnelUnavailable(parameter);
@@ -284,20 +346,25 @@ function evaluateParameterTunnelNode(parameter, row, data, context) {
     return positive(above >= 3, above, above + " of last 5 closes above rolling base midpoint");
   }
   if (id === "T12W_0008") return positive(atrSeries.filter(Number.isFinite).length < 3 ? null : atrSeries.at(-1) < atrSeries.at(-2) && atrSeries.at(-2) < atrSeries.at(-3) && tunnelSlope(lows, 5) > 0, fmt(tunnelSlope(lows, 5)), "ATR falling three sessions and five-session low slope " + fmt(tunnelSlope(lows, 5)));
-  if (id === "T12W_0009") return positive(vol5 === null || data.vol20 === null ? null : vol5 < data.vol20 * 0.75, fmt(vol5 / data.vol20, "x"), "Five-day volume versus twenty-day average");
   if (id === "T12W_0010") return positive(lastRanges.length < 3 ? null : lastRanges.at(-1) < lastRanges.at(-2) && lastRanges.at(-2) < lastRanges.at(-3) && data.close >= data.low20, fmt(range), "Three contracting ranges without a 10D-low break");
   if (id === "T12W_0011") {
     const deviation = tunnelStdev(closes, 5);
     const mean = tunnelSma(closes, 5);
     return positive(deviation === null || mean === null ? null : deviation / mean <= 0.015, fmt(deviation / mean * 100, "%"), "Five-close cluster deviation");
   }
-  if (id === "T12W_0012") return positive(closes.length < 20 ? null : tunnelSlope(closes, 10) > 0 && tunnelStdev(closes, 20) / data.sma20 < 0.04, fmt(tunnelSlope(closes, 10)), "Positive ten-session slope during controlled width");
   if (id === "T12W_0013") return positive(data.high20 === null ? null : data.close >= 0.97 * data.high20 && latest.volume < 2 * data.vol20, fmt((data.high20 - data.close) / data.high20 * 100, "%"), "Distance below twenty-day high");
   if (id === "T12W_0014") return positive(atrSeries.filter(Number.isFinite).length < 5 ? null : Math.abs(tunnelSlope(atrSeries.filter(Number.isFinite), 5)) <= data.close * 0.001, fmt(tunnelSlope(atrSeries.filter(Number.isFinite), 5)), "Five-session ATR slope");
   if (id === "T12W_0015") return positive(data.high20 === null ? null : (data.close / data.high20 - 1) <= -0.02 && (data.close / data.high20 - 1) >= -0.06 && data.close >= data.low20, fmt((data.close / data.high20 - 1) * 100, "%"), "Pullback from ten/twenty-session high");
   if (id === "T12W_0016") return positive(clv.length < 10 ? null : tunnelAverage(clv.slice(-5)) > tunnelAverage(clv.slice(-10, -5)), fmt(tunnelAverage(clv.slice(-5))), "Recent CLV versus prior five sessions");
   if (id === "T12W_0017") return positive(obv.length < 10 || ret10 === null ? null : tunnelSlope(obv, 10) > 0 && Math.abs(ret10) <= 0.03, fmt(tunnelSlope(obv, 10)), "OBV rising while ten-session return is " + fmt(ret10 * 100, "%"));
-  if (id === "T12W_0018") return positive(totalVol7 ? (totalVol7 - downVol7) / totalVol7 >= 0.62 : null, fmt(totalVol7 ? (totalVol7 - downVol7) / totalVol7 * 100 : null, "%"), "Seven-session up-volume share");
+  if (id === "T12W_0018") {
+    const sample = tunnelFormulaWindow(data, 8, ["close"]);
+    if (!sample || !tunnelFormulaWindow(data, 7, ["close", "volume"])) return tunnelUnavailable(parameter, "Requires seven finite nonnegative volumes and eight valid closes including the first session's predecessor");
+    const total = sample.slice(1).reduce((sum, candle) => sum + candle.volume, 0);
+    const up = sample.slice(1).reduce((sum, candle, index) => sum + (candle.close > sample[index].close ? candle.volume : 0), 0);
+    if (!Number.isFinite(total) || !Number.isFinite(up) || total <= 0) return tunnelUnavailable(parameter, "Seven-session volume denominator must be finite and positive");
+    return positive(up / total >= 0.62, fmt(up / total * 100, "%"), "Strict up-close volume share over seven sessions; unchanged closes are not up volume");
+  }
   if (id === "T12W_0019") return positive(clv.length < 7 ? null : tunnelAverage(clv.slice(-7)) >= 0.65, fmt(tunnelAverage(clv.slice(-7))), "Seven-session average CLV");
   if (id === "T12W_0020") return positive(data.high20 === null || data.vol20 === null ? null : data.close >= data.high20 * 0.98 && latest.volume > 1.3 * data.vol20 && tunnelClv(latest) >= 0.5, fmt(latest.volume / data.vol20, "x"), "Near resistance with volume and midrange hold");
   if (id === "T12W_0021") return positive(vol5 === null || data.vol20 === null || ret10 === null ? null : vol5 > 1.25 * data.vol20 && Math.abs(ret10) < 0.03, fmt(vol5 / data.vol20, "x"), "Volume expanded while price stayed flat");
@@ -357,16 +424,18 @@ function evaluateParameterTunnelNode(parameter, row, data, context) {
     const rejects = candles.slice(-10).filter((candle) => candle.high >= data.sma50 && candle.close < data.sma50).length;
     return risk(rejects >= 2, rejects, "Fifty-day-average rejections in last ten");
   }
-  if (id === "T12W_0079") return risk(data.sma20 === null ? null : data.close / data.sma20 > 1.12 && tunnelClv(latest) < 0.4, fmt(data.close / data.sma20, "x"), "Extension above twenty-day mean with weak close");
-  if (id === "T12W_0080") return risk(totalVol5 ? downVol5 / totalVol5 >= 0.65 : null, fmt(totalVol5 ? downVol5 / totalVol5 * 100 : null, "%"), "Five-session down-volume share");
-  if (id === "T12W_0081") return risk(atrSeries.filter(Number.isFinite).length < 3 || data.sma20 === null ? null : atrSeries.at(-1) > atrSeries.at(-2) && atrSeries.at(-2) > atrSeries.at(-3) && data.close < tunnelSma(closes, 10), fmt(data.atr14), "ATR rising while close is below ten-day average");
-  if (id === "T12W_0084") {
-    if (candles.length < 8) return tunnelUnavailable(parameter);
-    let count = 0;
-    candles.slice(-7).forEach((candle, index) => { const prior = candles[candles.length - 8 + index]; if (candle.open > prior.close && candle.close < candle.open) count += 1; });
-    return risk(count >= 3, count, "Opening-strength/closing-weakness count");
+  if (id === "T12W_0080") {
+    if (!tunnelFormulaWindow(data, 20, ["close"]) || !tunnelFormulaWindow(data, 1, ["high", "low", "close"]) || latest.high <= latest.low || !Number.isFinite(data.sma20) || data.sma20 <= 0) return tunnelUnavailable(parameter, "Requires 20 valid closes and a finite positive latest HLC range");
+    return risk(data.close / data.sma20 > 1.12 && tunnelClv(latest) < 0.4, fmt(data.close / data.sma20, "x"), "Extension above twenty-day mean with CLV below 0.4");
   }
-  if (id === "T12W_0085") return risk(candles.length < 10 ? null : candles.slice(-10).filter((candle) => (candle.high - Math.max(candle.open, candle.close)) / Math.max(0.0001, candle.high - candle.low) > 0.45 && data.high20 && candle.high >= data.high20 * 0.95).length >= 3, candles.slice(-10).filter((candle) => (candle.high - Math.max(candle.open, candle.close)) / Math.max(0.0001, candle.high - candle.low) > 0.45).length, "Supply-wick count near high");
+  if (id === "T12W_0084") {
+    if (!tunnelFormulaWindow(data, 17, ["high", "low", "close"])) return tunnelUnavailable(parameter, "Requires 17 valid HLC observations for three fully anchored ATR14 samples");
+    const recent = atrSeries.slice(-3), mean10 = tunnelSma(closes, 10);
+    if (!recent.every(Number.isFinite) || !Number.isFinite(mean10)) return tunnelUnavailable(parameter);
+    // Retain the existing three-observation/two-increase convention; do not
+    // silently introduce an extra increment when correcting the dispatch ID.
+    return risk(recent[2] > recent[1] && recent[1] > recent[0] && data.close < mean10, fmt(data.atr14), "Three strictly rising ATR14 observations (two increases) and close below ten-day average");
+  }
 
   if (id === "NL01" || id === "NU01") return positive(data.atr14 === null || !row.advisor?.entry_zone ? null : Math.abs(data.close - tunnelAverage(row.advisor.entry_zone)) / data.atr14 <= 0.5, fmt(data.atr14 === null || !row.advisor?.entry_zone ? null : Math.abs(data.close - tunnelAverage(row.advisor.entry_zone)) / data.atr14, " ATR"), "Close versus planned entry zone");
   if (id === "NL02") return positive(data.atr14 === null || !row.stop_price ? null : (data.close - row.stop_price) / data.atr14 >= 0.8 && (data.close - row.stop_price) / data.atr14 <= 2.5, fmt((data.close - row.stop_price) / data.atr14, " ATR"), "Stop distance");
@@ -503,6 +572,12 @@ export function applyParameterTunnelPatches(source, mustReplace) {
     "\nfunction runScanner(universe, options = {}) {",
     `\n${PARAMETER_TUNNEL_FUNCTIONS}\nfunction runScanner(universe, options = {}) {`,
     "insert 175-node parameter tunnel"
+  );
+  output = mustReplace(
+    output,
+    "function normalizeCandles(candles) {",
+    "function normalizeCandles(candles) {\n  const normalized = normalizeCandlesForScanner(Array.isArray(candles) ? candles.map((candle) => candle && typeof candle === 'object' ? candle : {}) : []);\n  return tunnelRememberFormulaInput(candles, normalized);\n}\n\nfunction normalizeCandlesForScanner(candles) {",
+    "preserve raw formula evidence through candle normalization"
   );
   output = mustReplace(
     output,

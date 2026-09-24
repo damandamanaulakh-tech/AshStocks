@@ -332,7 +332,9 @@ try {
   const scan = firstResult.scan;
   const selectRows = scan?.rows?.filter((row) => symbols.includes(row.symbol)) || [];
   if (response.status !== 200 || scan?.rows?.length !== symbols.length + 1 || selectRows.length !== symbols.length || !selectRows.every((row) => row.decision === "SELECT")) throw new Error("all real-quote candidates should be SELECT from persisted-universe history while the manual symbol remains resolvable: " + JSON.stringify(firstResult));
-  if (!selectRows.every((row) => row.parameter_tunnel?.summary?.evaluated >= 80)) throw new Error("every real-quote candidate should execute the wired tunnel");
+  if (!selectRows.every((row) => row.parameter_tunnel?.total === 175 &&
+    ["T12W_0018", "T12W_0080", "T12W_0084"].every((id) => row.parameter_tunnel.results.some((item) => item.id === id && item.state !== "SOURCE_REQUIRED")) &&
+    ["T12W_0009", "T12W_0012", "T12W_0073", "T12W_0078", "T12W_0079", "T12W_0081", "T12W_0082", "T12W_0083", "T12W_0085", "T12W_0086", "T12W_0087", "T12W_0088"].every((id) => row.parameter_tunnel.results.some((item) => item.id === id && item.state === "SOURCE_REQUIRED")))) throw new Error("real-quote candidates must evaluate defined formulas and preserve unresolved rules as unavailable");
   if (firstResult.scan_cache_used !== false || scan.rotation?.total !== 5 || new Set(upstreamHistoricalKeys).size !== 5) throw new Error("first engine cycle must scan all persisted fixture identities through mocked Upstox history");
   if (firstResult.auto_buy?.orders_filled !== 1 || firstResult.auto_buy?.pending_after_run !== 3) throw new Error("first capped cycle should leave three SELECT rows pending");
   globalThis.__ASH_STOCK_ENV.PAPER_ENGINE_MAX_BUYS_PER_RUN = "25";
@@ -357,7 +359,11 @@ try {
   if (firstOrder?.price !== 352.05 || firstOrder?.quote_timestamp !== "2026-07-27T04:30:00.000Z") throw new Error("paper market fill must use the real Upstox ask");
   if (!(firstOrder.qty * firstOrder.price > 100000 && firstOrder.qty * firstOrder.price <= 100000 + firstOrder.price)) throw new Error("non-divisible automatic allocation should permit only the final whole-share rounding above Rs 1 lakh");
   if (firstPosition?.entry_price !== 352.05 || firstPosition?.instrument_key !== "NSE_EQ|INETEST00001") throw new Error("real-quote position must persist in the paper ledger");
-  if (!ledger.positions.every((position) => position.parameter_evidence?.evaluated >= 80)) throw new Error("every paper position must retain parameter evidence");
+  if (!ledger.positions.every((position) => {
+    const entryRow = (position.symbol === "REALQUOTE" ? selectRows : secondCandidates).find((row) => row.symbol === position.symbol);
+    return entryRow && position.parameter_evidence?.evaluated === entryRow.parameter_tunnel.summary.evaluated &&
+      position.parameter_evidence.evaluated > 0;
+  })) throw new Error("every paper position must retain its actual entry-scan parameter evidence count");
   if (!ledger.positions.every((position) => Number.isFinite(position.unrealized_pnl) && Number.isFinite(position.unrealized_pnl_pct))) throw new Error("every open position must expose mark-to-market P&L");
   if (!Number.isFinite(ledger.funds?.unrealized_pnl) || !Number.isFinite(ledger.funds?.total_pnl)) throw new Error("paper funds must expose unrealized and total P&L");
   if (ledger.mark_to_market?.source !== "Upstox Market Quote API" || ledger.mark_to_market?.marked_positions !== 3) throw new Error("paper ledger must revalue every filled position from Upstox quotes");
@@ -611,12 +617,34 @@ async function main() {
   assert(directScan.rows[0].paper_order.status === "READY", "selectable row should create a paper-only order intent");
   assert(directScan.rows[0].paper_order.broker_write_enabled === false, "scanner must not enable broker writes");
   assert(directScan.rows[0].proof.formula.includes("momentum_score"), "proof row should expose scoring formula");
-  assert(directScan.parameter_tunnel_version === "ashstocks-parameter-tunnel-v1.0-175", "scanner should expose the reviewed 175-node tunnel version");
+  assert(directScan.parameter_tunnel_version === "ashstocks-parameter-tunnel-v1.1-175-formula-parity", "scanner should expose the reviewed 175-node tunnel version");
   assert(directScan.rows[0].parameter_tunnel.total === 175, "every scanner row should carry all 175 parameter nodes");
   assert(directScan.rows[0].parameter_tunnel.summary.evaluated === 0, "metric-only rows must not invent candle-derived parameter evidence");
   assert(directScan.rows[0].score === directScan.rows[0].base_score, "missing candle evidence must not dilute the existing scanner score");
   assert(directScan.rows[0].pre_rise_status === "DATA_NEEDED", "metric-only rows should report missing pre-rise candle evidence");
   assert(directScan.rows[0].pre_rise_edge_confirmed === false, "pre-rise evidence must never confirm live edge");
+
+  // Exercise the fully assembled normalizer -> scoring -> bounded evidence ->
+  // tunnel path, not only helper-level tests. These are synthetic offline rows.
+  const formulaCandles = (count) => Array.from({ length: count }, (_, index) => ({
+    date: new Date(Date.UTC(2025, 0, 1 + index)).toISOString().slice(0, 10),
+    open: 100, high: 102 - index / count, low: 98 + index / count, close: 100, volume: 1000
+  }));
+  const formulaScan = (candles) => runScanner([{ symbol: "FORMULAFIXTURE", name: "Offline formula fixture", sector: "Test", candles }]).rows[0];
+  const formulaNode = (row, id) => row.parameter_tunnel.results.find((item) => item.id === id);
+  const completeFormulaRow = formulaScan(formulaCandles(300));
+  assert(completeFormulaRow.candles.length === 266, "scanner must retain bounded complete ATR252 evidence");
+  assert(formulaNode(completeFormulaRow, "T12W_0004").state === "HIT", "266-candle ATR evidence must reach the assembled scanner");
+  assert(formulaNode(formulaScan(formulaCandles(265)), "T12W_0004").state === "SOURCE_REQUIRED", "scanner must reject incomplete ATR252 evidence");
+  for (const invalid of [null, "100%", false, "", Infinity]) {
+    const candles = formulaCandles(30);
+    candles[25].close = invalid;
+    Object.assign(candles.at(-1), { close: 120, high: 130, low: 119, open: 120 });
+    assert(formulaNode(formulaScan(candles), "T12W_0080").state === "SOURCE_REQUIRED", "normalization must not erase invalid formula evidence");
+  }
+  const nullRecordCandles = formulaCandles(30);
+  nullRecordCandles[25] = null;
+  assert(formulaNode(formulaScan(nullRecordCandles), "T12W_0080").state === "SOURCE_REQUIRED", "null candle record must fail closed without throwing");
 
   const correlationScan = runScanner(
     [{ symbol: "CORRCAND", name: "Correlation Candidate", sector: "Test", candles: proofCandles(0) }],
@@ -624,7 +652,8 @@ async function main() {
   );
   assert(correlationScan.rows[0].decision === "BLOCKED", "over-correlated candidate should be blocked");
   assert(correlationScan.rows[0].gates.correlation === false, "correlation gate should fail for identical return series");
-  assert(correlationScan.rows[0].parameter_tunnel.summary.evaluated >= 80, "full candles should execute the wired tunnel parameters");
+  assert(["T12W_0018", "T12W_0080", "T12W_0084"].every((id) => formulaNode(correlationScan.rows[0], id).state !== "SOURCE_REQUIRED"), "full candles should execute the corrected defined formulas");
+  assert(formulaNode(correlationScan.rows[0], "T12W_0004").state === "SOURCE_REQUIRED", "253 fixture candles cannot satisfy ATR252 warmup");
   assert(correlationScan.rows[0].pre_rise_model === "ashstocks-pre-rise-pattern-v0.1", "full candles should execute the pre-rise tracker");
 
   const preRiseScan = runScanner([

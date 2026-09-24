@@ -1,5 +1,5 @@
 {
-  "version": "ashstocks-parameter-tunnel-v1.0-175",
+  "version": "ashstocks-parameter-tunnel-v1.1-175-formula-parity",
   "generatedAt": "2026-07-26T19:08:37.650Z",
   "total": 175,
   "parameters": [
@@ -520,7 +520,7 @@
       "threshold": "ATR regime compresses before directional expansion.",
       "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
       "reason": "ATR regime compresses before directional expansion.",
-      "example": "Formula example, not a live stock value: evaluate \"ATR14 percentile over 252 days <= 20 and price above 20D low\" on a complete 1-2W window. A true result records HIT and stores the dated input evidence.",
+      "example": "Formula example, not a live stock value: ATR14 percentile over 252 days <= 20 and price above 20D low. Requires at least 266 valid unique-date observations. 252 trailing fully anchored arithmetic-mean ATR14 samples; empirical <= percentile convention; close strictly above trailing20 low. Excludes seeded first ATR; lead window is not warmup.",
       "status": "EXECUTABLE",
       "readiness": "UPSTOX_READY",
       "tags": [
@@ -528,7 +528,10 @@
         "compression"
       ],
       "required": "date,high,low,close",
-      "lookback": "1-2W"
+      "lookback": "1-2W",
+      "minimum_candles": 266,
+      "implementation_note": "252 trailing fully anchored arithmetic-mean ATR14 samples; empirical <= percentile convention; close strictly above trailing20 low. Excludes seeded first ATR; lead window is not warmup.",
+      "implementation_status": "EXECUTABLE"
     },
     {
       "id": "T12W_0005",
@@ -616,16 +619,20 @@
       "threshold": "Base tightens while volume drops before institutional move.",
       "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
       "reason": "Base tightens while volume drops before institutional move.",
-      "example": "Formula example, not a live stock value: evaluate \"bandwidth low + volume_5d_avg < volume_20d_avg*0.75\" on a complete 1-2W window. A true result records HIT and stores the dated input evidence.",
-      "status": "EXECUTABLE",
-      "readiness": "UPSTOX_READY",
+      "example": "Preserved formula, not currently executable: bandwidth low + volume_5d_avg < volume_20d_avg*0.75. Preserved formula requires a bandwidth definition, low-bandwidth cutoff and reference window; volume dry-up alone is not this rule.",
+      "status": "DEFINED",
+      "readiness": "FORMULA_CONTRACT_REQUIRED",
       "tags": [
         "all",
         "compression",
         "volume"
       ],
       "required": "date,high,low,close,volume",
-      "lookback": "1-2W"
+      "lookback": "1-2W",
+      "previous_catalog_status": "EXECUTABLE",
+      "previous_catalog_readiness": "UPSTOX_READY",
+      "implementation_status": "SOURCE_REQUIRED",
+      "implementation_note": "Preserved formula requires a bandwidth definition, low-bandwidth cutoff and reference window; volume dry-up alone is not this rule."
     },
     {
       "id": "T12W_0010",
@@ -674,15 +681,19 @@
       "threshold": "Tightness with slow upward close slope.",
       "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
       "reason": "Tightness with slow upward close slope.",
-      "example": "Formula example, not a live stock value: evaluate \"bandwidth percentile <=25 and linear_slope(close,10)>0\" on a complete 2W window. A true result records HIT and stores the dated input evidence.",
-      "status": "EXECUTABLE",
-      "readiness": "UPSTOX_READY",
+      "example": "Preserved formula, not currently executable: bandwidth percentile <=25 and linear_slope(close,10)>0. Preserved formula requires a bandwidth definition and percentile reference window; a fixed width threshold is not a percentile.",
+      "status": "DEFINED",
+      "readiness": "FORMULA_CONTRACT_REQUIRED",
       "tags": [
         "all",
         "compression"
       ],
       "required": "date,close,high,low",
-      "lookback": "2W"
+      "lookback": "2W",
+      "previous_catalog_status": "EXECUTABLE",
+      "previous_catalog_readiness": "UPSTOX_READY",
+      "implementation_status": "SOURCE_REQUIRED",
+      "implementation_note": "Preserved formula requires a bandwidth definition and percentile reference window; a fixed width threshold is not a percentile."
     },
     {
       "id": "T12W_0013",
@@ -791,7 +802,7 @@
       "threshold": "More volume on up-close days than down-close days.",
       "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
       "reason": "More volume on up-close days than down-close days.",
-      "example": "Formula example, not a live stock value: evaluate \"sum(volume where close>prior_close last7) / total_volume_7d >= 0.62\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "example": "Formula example, not a live stock value: sum(volume where close>prior_close last7) / total_volume_7d >= 0.62. Requires at least 8 valid unique-date observations. Seven finite nonnegative volumes with eight positive closes; strictly up-close only, unchanged never counts up; positive denominator.",
       "status": "EXECUTABLE",
       "readiness": "UPSTOX_READY",
       "tags": [
@@ -800,7 +811,10 @@
         "accumulation"
       ],
       "required": "date,close,volume",
-      "lookback": "1W"
+      "lookback": "1W",
+      "minimum_candles": 8,
+      "implementation_note": "Seven finite nonnegative volumes with eight positive closes; strictly up-close only, unchanged never counts up; positive denominator.",
+      "implementation_status": "EXECUTABLE"
     },
     {
       "id": "T12W_0019",
@@ -1359,16 +1373,20 @@
       "threshold": "Failed rally with higher volume.",
       "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
       "reason": "Failed rally with higher volume.",
-      "example": "Formula example, not a live stock value: evaluate \"swing_high lower than prior swing_high and volume higher\" on a complete 1-2W window. A true result records HIT and stores the dated input evidence.",
-      "status": "EXECUTABLE",
-      "readiness": "UPSTOX_READY",
+      "example": "Preserved formula, not currently executable: swing_high lower than prior swing_high and volume higher. Implementation/contract pending: swing confirmation and volume-comparison definitions are unresolved.",
+      "status": "DEFINED",
+      "readiness": "FORMULA_CONTRACT_REQUIRED",
       "tags": [
         "all",
         "volume",
         "distribution"
       ],
       "required": "date,high,close,volume",
-      "lookback": "1-2W"
+      "lookback": "1-2W",
+      "previous_catalog_status": "EXECUTABLE",
+      "previous_catalog_readiness": "UPSTOX_READY",
+      "implementation_status": "SOURCE_REQUIRED",
+      "implementation_note": "Implementation/contract pending: swing confirmation and volume-comparison definitions are unresolved."
     },
     {
       "id": "T12W_0074",
@@ -1456,15 +1474,19 @@
       "threshold": "Price fails after filling previous gap/resistance.",
       "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
       "reason": "Price fails after filling previous gap/resistance.",
-      "example": "Formula example, not a live stock value: evaluate \"close below gap_fill_level after touching it\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
-      "status": "EXECUTABLE",
-      "readiness": "UPSTOX_READY",
+      "example": "Preserved formula, not currently executable: close below gap_fill_level after touching it. Implementation/contract pending: gap construction, fill level and rejection timing are unresolved.",
+      "status": "DEFINED",
+      "readiness": "FORMULA_CONTRACT_REQUIRED",
       "tags": [
         "all",
         "distribution"
       ],
       "required": "date,high,low,close",
-      "lookback": "1W"
+      "lookback": "1W",
+      "previous_catalog_status": "EXECUTABLE",
+      "previous_catalog_readiness": "UPSTOX_READY",
+      "implementation_status": "SOURCE_REQUIRED",
+      "implementation_note": "Implementation/contract pending: gap construction, fill level and rejection timing are unresolved."
     },
     {
       "id": "T12W_0079",
@@ -1475,16 +1497,20 @@
       "threshold": "Fast vertical move then failure risk.",
       "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
       "reason": "Fast vertical move then failure risk.",
-      "example": "Formula example, not a live stock value: evaluate \"3 consecutive up closes with total gain > 8% then CLV weak\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
-      "status": "EXECUTABLE",
-      "readiness": "UPSTOX_READY",
+      "example": "Preserved formula, not currently executable: 3 consecutive up closes with total gain > 8% then CLV weak. Preserved formula requires a numeric weak-CLV threshold and timing for 'then'; mean extension is a different rule.",
+      "status": "DEFINED",
+      "readiness": "FORMULA_CONTRACT_REQUIRED",
       "tags": [
         "all",
         "distribution",
         "risk"
       ],
       "required": "date,high,low,close,volume",
-      "lookback": "1W"
+      "lookback": "1W",
+      "previous_catalog_status": "EXECUTABLE",
+      "previous_catalog_readiness": "UPSTOX_READY",
+      "implementation_status": "SOURCE_REQUIRED",
+      "implementation_note": "Preserved formula requires a numeric weak-CLV threshold and timing for 'then'; mean extension is a different rule."
     },
     {
       "id": "T12W_0080",
@@ -1495,7 +1521,7 @@
       "threshold": "Overextended price plus weak close.",
       "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
       "reason": "Overextended price plus weak close.",
-      "example": "Formula example, not a live stock value: evaluate \"close/ma20>1.12 and CLV<0.4\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "example": "Formula example, not a live stock value: close/ma20>1.12 and CLV<0.4. Requires at least 20 valid unique-date observations. Close/SMA20 >1.12 and CLV<0.4; latest HLC range must be finite and positive.",
       "status": "EXECUTABLE",
       "readiness": "UPSTOX_READY",
       "tags": [
@@ -1503,7 +1529,10 @@
         "distribution"
       ],
       "required": "date,high,low,close",
-      "lookback": "1W"
+      "lookback": "1W",
+      "minimum_candles": 20,
+      "implementation_note": "Close/SMA20 >1.12 and CLV<0.4; latest HLC range must be finite and positive.",
+      "implementation_status": "EXECUTABLE"
     },
     {
       "id": "T12W_0081",
@@ -1514,15 +1543,19 @@
       "threshold": "Multiple pre-fall warnings appear together.",
       "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
       "reason": "Multiple pre-fall warnings appear together.",
-      "example": "Formula example, not a live stock value: evaluate \"sum distribution flags last10 >= threshold\" on a complete 1-2W window. A true result records HIT and stores the dated input evidence.",
-      "status": "EXECUTABLE",
-      "readiness": "UPSTOX_READY",
+      "example": "Preserved formula, not currently executable: sum distribution flags last10 >= threshold. Preserved formula requires distribution-flag constituents, counting policy and a numeric cluster threshold.",
+      "status": "DEFINED",
+      "readiness": "FORMULA_CONTRACT_REQUIRED",
       "tags": [
         "all",
         "distribution"
       ],
       "required": "date,open,high,low,close,volume",
-      "lookback": "1-2W"
+      "lookback": "1-2W",
+      "previous_catalog_status": "EXECUTABLE",
+      "previous_catalog_readiness": "UPSTOX_READY",
+      "implementation_status": "SOURCE_REQUIRED",
+      "implementation_note": "Preserved formula requires distribution-flag constituents, counting policy and a numeric cluster threshold."
     },
     {
       "id": "T12W_0082",
@@ -1533,15 +1566,19 @@
       "threshold": "Price near highs while OBV rolls over.",
       "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
       "reason": "Price near highs while OBV rolls over.",
-      "example": "Formula example, not a live stock value: evaluate \"price 20D high proximity and slope(OBV,10)<0\" on a complete 1-2W window. A true result records HIT and stores the dated input evidence.",
-      "status": "EXECUTABLE",
-      "readiness": "UPSTOX_READY",
+      "example": "Preserved formula, not currently executable: price 20D high proximity and slope(OBV,10)<0. Implementation/contract pending: the high-proximity cutoff is unresolved.",
+      "status": "DEFINED",
+      "readiness": "FORMULA_CONTRACT_REQUIRED",
       "tags": [
         "all",
         "distribution"
       ],
       "required": "date,close,volume",
-      "lookback": "1-2W"
+      "lookback": "1-2W",
+      "previous_catalog_status": "EXECUTABLE",
+      "previous_catalog_readiness": "UPSTOX_READY",
+      "implementation_status": "SOURCE_REQUIRED",
+      "implementation_note": "Implementation/contract pending: the high-proximity cutoff is unresolved."
     },
     {
       "id": "T12W_0083",
@@ -1552,16 +1589,20 @@
       "threshold": "Down volume dominates abruptly.",
       "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
       "reason": "Down volume dominates abruptly.",
-      "example": "Formula example, not a live stock value: evaluate \"down_volume_5d/total_volume_5d>=0.65\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
-      "status": "EXECUTABLE",
-      "readiness": "UPSTOX_READY",
+      "example": "Preserved formula, not currently executable: down_volume_5d/total_volume_5d>=0.65. Implementation pending; this preserved down-volume rule is not activated by the formula-correction batch.",
+      "status": "DEFINED",
+      "readiness": "IMPLEMENTATION_REQUIRED",
       "tags": [
         "all",
         "volume",
         "distribution"
       ],
       "required": "date,close,volume",
-      "lookback": "1W"
+      "lookback": "1W",
+      "previous_catalog_status": "EXECUTABLE",
+      "previous_catalog_readiness": "UPSTOX_READY",
+      "implementation_status": "SOURCE_REQUIRED",
+      "implementation_note": "Implementation pending; this preserved down-volume rule is not activated by the formula-correction batch."
     },
     {
       "id": "T12W_0084",
@@ -1572,7 +1613,7 @@
       "threshold": "ATR rises while price weakens.",
       "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
       "reason": "ATR rises while price weakens.",
-      "example": "Formula example, not a live stock value: evaluate \"ATR14 rising 3 days and close below 10DMA\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
+      "example": "Formula example, not a live stock value: ATR14 rising 3 days and close below 10DMA. Requires at least 17 valid unique-date observations. Preserves existing three ATR14 observations/two strict increases convention, with close below SMA10; excludes seeded first ATR. Three increments would be a separate contract decision.",
       "status": "EXECUTABLE",
       "readiness": "UPSTOX_READY",
       "tags": [
@@ -1580,7 +1621,10 @@
         "distribution"
       ],
       "required": "date,high,low,close",
-      "lookback": "1W"
+      "lookback": "1W",
+      "minimum_candles": 17,
+      "implementation_note": "Preserves existing three ATR14 observations/two strict increases convention, with close below SMA10; excludes seeded first ATR. Three increments would be a separate contract decision.",
+      "implementation_status": "EXECUTABLE"
     },
     {
       "id": "T12W_0085",
@@ -1591,16 +1635,20 @@
       "threshold": "Strong momentum flag breaks downward instead of continuing.",
       "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
       "reason": "Strong momentum flag breaks downward instead of continuing.",
-      "example": "Formula example, not a live stock value: evaluate \"prior strong gain + tight flag + close below flag low\" on a complete 1-2W window. A true result records HIT and stores the dated input evidence.",
-      "status": "EXECUTABLE",
-      "readiness": "UPSTOX_READY",
+      "example": "Preserved formula, not currently executable: prior strong gain + tight flag + close below flag low. Preserved formula requires strong-gain, flag-window/tightness and flag-low definitions; supply wicks are a different rule.",
+      "status": "DEFINED",
+      "readiness": "FORMULA_CONTRACT_REQUIRED",
       "tags": [
         "all",
         "distribution",
         "momentum"
       ],
       "required": "date,high,low,close,volume",
-      "lookback": "1-2W"
+      "lookback": "1-2W",
+      "previous_catalog_status": "EXECUTABLE",
+      "previous_catalog_readiness": "UPSTOX_READY",
+      "implementation_status": "SOURCE_REQUIRED",
+      "implementation_note": "Preserved formula requires strong-gain, flag-window/tightness and flag-low definitions; supply wicks are a different rule."
     },
     {
       "id": "T12W_0086",
@@ -1611,15 +1659,19 @@
       "threshold": "Reclaim above support fails again quickly.",
       "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
       "reason": "Reclaim above support fails again quickly.",
-      "example": "Formula example, not a live stock value: evaluate \"close above support then close below within 3D\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
-      "status": "EXECUTABLE",
-      "readiness": "UPSTOX_READY",
+      "example": "Preserved formula, not currently executable: close above support then close below within 3D. Implementation/contract pending: support construction and reclaim timing are unresolved.",
+      "status": "DEFINED",
+      "readiness": "FORMULA_CONTRACT_REQUIRED",
       "tags": [
         "all",
         "distribution"
       ],
       "required": "date,high,low,close",
-      "lookback": "1W"
+      "lookback": "1W",
+      "previous_catalog_status": "EXECUTABLE",
+      "previous_catalog_readiness": "UPSTOX_READY",
+      "implementation_status": "SOURCE_REQUIRED",
+      "implementation_note": "Implementation/contract pending: support construction and reclaim timing are unresolved."
     },
     {
       "id": "T12W_0087",
@@ -1630,15 +1682,19 @@
       "threshold": "Sellers dominate after strong open repeatedly.",
       "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
       "reason": "Sellers dominate after strong open repeatedly.",
-      "example": "Formula example, not a live stock value: evaluate \"count(open>prior_close and close<open last7)>=3\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
-      "status": "EXECUTABLE",
-      "readiness": "UPSTOX_READY",
+      "example": "Preserved formula, not currently executable: count(open>prior_close and close<open last7)>=3. Implementation pending; this preserved strong-open/weak-close rule is not activated by the formula-correction batch.",
+      "status": "DEFINED",
+      "readiness": "IMPLEMENTATION_REQUIRED",
       "tags": [
         "all",
         "distribution"
       ],
       "required": "date,open,close",
-      "lookback": "1W"
+      "lookback": "1W",
+      "previous_catalog_status": "EXECUTABLE",
+      "previous_catalog_readiness": "UPSTOX_READY",
+      "implementation_status": "SOURCE_REQUIRED",
+      "implementation_note": "Implementation pending; this preserved strong-open/weak-close rule is not activated by the formula-correction batch."
     },
     {
       "id": "T12W_0088",
@@ -1649,15 +1705,19 @@
       "threshold": "Repeated upper wicks near resistance.",
       "source": "Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_v0_2.xlsx / 01_New_Trigger_Params",
       "reason": "Repeated upper wicks near resistance.",
-      "example": "Formula example, not a live stock value: evaluate \"count(upper_wick_ratio>0.45 near resistance last10)>=3\" on a complete 1W window. A true result records HIT and stores the dated input evidence.",
-      "status": "EXECUTABLE",
-      "readiness": "UPSTOX_READY",
+      "example": "Preserved formula, not currently executable: count(upper_wick_ratio>0.45 near resistance last10)>=3. Implementation/contract pending: resistance lookback and proximity tolerance are unresolved.",
+      "status": "DEFINED",
+      "readiness": "FORMULA_CONTRACT_REQUIRED",
       "tags": [
         "all",
         "distribution"
       ],
       "required": "date,open,high,low,close",
-      "lookback": "1W"
+      "lookback": "1W",
+      "previous_catalog_status": "EXECUTABLE",
+      "previous_catalog_readiness": "UPSTOX_READY",
+      "implementation_status": "SOURCE_REQUIRED",
+      "implementation_note": "Implementation/contract pending: resistance lookback and proximity tolerance are unresolved."
     },
     {
       "id": "T12W_0100",
@@ -3615,5 +3675,6 @@
     ],
     "required": "Latest candle timestamp",
     "lookback": "Latest record"
-  }
+  },
+  "implementationReviewedAt": "2026-09-24"
 }

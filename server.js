@@ -245,7 +245,7 @@ function startDataBankBootstrap() {
   output = mustReplace(
     output,
     '    instrument_key: row.instrument_key,\n    decision,',
-    '    instrument_key: row.instrument_key,\n    candles: Array.isArray(row.candles) ? row.candles.slice(-260) : [],\n    decision,',
+    '    instrument_key: row.instrument_key,\n    candles: tunnelFormulaSlice(row.candles, 266),\n    decision,',
     'include candle evidence in scanner rows'
   );
   output = mustReplace(
