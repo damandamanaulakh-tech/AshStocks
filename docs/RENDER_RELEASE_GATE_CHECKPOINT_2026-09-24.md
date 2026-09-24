@@ -19,7 +19,7 @@ The authenticated Render dashboard was inspected read-only for **AshStocks**, se
 | Compute | Free, 0.1 CPU / 512 MB RAM, Oregon |
 | Shell | Not available for Free compute; no command executed and no upgrade selected |
 
-This is fresh evidence that a recent redeploy still used old code. It explains why publishing the feature branch has not updated this main-linked service. It does not prove that deployment age caused every dashboard or trading issue. Main and the V01 tag remain unchanged; release-branch choice still requires confirmation.
+This is fresh evidence that a recent redeploy still used old code. It explains why publishing the feature branch has not updated this main-linked service. It does not prove that deployment age caused every dashboard or trading issue. Main and the **local** V01 tag remain unchanged; release-branch choice still requires confirmation.
 
 The bounded application-log search for `Mongo` over the last seven days returned no matching entries. Recent startup logs were normal npm/Node/live messages. This is **not** evidence that Mongo is healthy, that no alarm exists, or that all logs were reviewed. Render's 512 MB application RAM allocation is not a Mongo storage-size measurement and must not be conflated with the preserved local V01 backup.
 
@@ -61,3 +61,9 @@ Local Node is v24.19.0; CI is configured for Node 20. This is not a claim of a r
 4. Deploy the agreed commit. Verify platform build/start status and exact-response commits with the new gate, then separately prove provider endpoints, persistence/read-back, fresh universe, dashboard coverage and sequential paper flows.
 
 Neither the CSV audit nor this release guard marks Phases 2–8 complete. The active nine-phase plan continues to track those outcomes separately.
+
+## Publication verification
+
+The CSV checkpoint was published as `00a81c50436313c1735a91b30a78311cd4336b5d`, then the tested release gate as `2eab137be9c549f128aad1268f0652e4f3c0deb1` on `codex/valuation-targets-market-refresh`. Local and remote feature refs matched; the release-gate tree was `543027881f6010884eda3485c4ba9976fc8bf069`. Main remained `226e1394d5af3f0c380593d58917b8d2ee5c13e8`.
+
+The local `V01-2026-09-07` tag also still resolves to `226e139`. The exact GitHub tag-ref lookup returned 404, so **remote V01 tag publication is not verified and remains pending**, together with the previously recorded V01 release-asset publication. A local tag/backup must not be reported as a completed remote recovery package. No V01 bytes or local tag were changed.
