@@ -25,7 +25,7 @@ for (const text of [
   'id="quickTradeSubmit"',
   'id="quickTradeCancel"',
   './styles.css?v=20260909.1',
-  './app.js?v=20260913.1',
+  './app.js?v=20260924.1',
   '<th>Action</th>'
 ]) mustInclude("index.html", text, "inline trade dialog and action column");
 

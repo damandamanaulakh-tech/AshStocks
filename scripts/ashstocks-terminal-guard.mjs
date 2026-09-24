@@ -68,7 +68,7 @@ for (const text of [
   'id="railBuild"',
   'id="helpSection" data-panel="help"',
   'styles.css?v=20260909.1',
-  'app.js?v=20260913.1',
+  'app.js?v=20260924.1',
   'FII Holding / Δ',
   'Legacy broker workspace loaders remain'
 ]) {

@@ -112,13 +112,16 @@ const equityResponse = () => new Response("SYMBOL, NAME OF COMPANY, SERIES, DATE
 globalThis.fetch = async (input, init) => {
   const url = String(input);
   if (url.includes("/historical-candle/")) {
-    upstreamSymbols.push(decodeURIComponent(url.split("/historical-candle/")[1].split("/")[0]));
+    const instrumentKey = decodeURIComponent(url.split("/historical-candle/")[1].split("/")[0]);
+    upstreamSymbols.push(instrumentKey);
     if (holdNext) {
       holdNext = false;
       signalHeld();
       await new Promise((resolve) => { releaseHeld = resolve; });
     }
-    if (failAll || failOne) { failOne = false; return jsonResponse({ error: "guard_feed_unavailable" }, 503); }
+    // This suite isolates candidate-feed failures. Holding-feed failures have
+    // their own mixed-success, fail-closed cases in holdings-history-guard.
+    if ((failAll || failOne) && instrumentKey !== "NSE_EQ|INE999999999") { failOne = false; return jsonResponse({ error: "guard_feed_unavailable" }, 503); }
     const today = Date.now();
     const candles = Array.from({ length: 253 }, (_, index) => {
       const close = 100 + index;
@@ -197,7 +200,9 @@ try {
   assert.equal(batch3.body.rotation.attempted, 5);
   assert.equal(batch3.body.rotation.complete, true);
   assert.equal(batch3.body.rotation.batch_count, 1);
-  assert.equal(new Set(upstreamSymbols).size, 5, "Every loaded stock reaches the existing candle scanner");
+  const candidateKeys = makeRows(5).map((row) => row.instrument_key);
+  assert.equal(new Set(upstreamSymbols.filter((key) => candidateKeys.includes(key))).size, 5, "Every loaded candidate reaches the existing candle scanner");
+  assert.ok(upstreamSymbols.includes("NSE_EQ|INE999999999"), "The existing out-of-batch holding also needs history for correlation");
   const after = (await call("/api/state")).body.state;
   assert.deepEqual(after.scannerSettings, before.scannerSettings, "Formula settings must not change");
   assert.deepEqual(after.paperTrader, before.paperTrader, "Rotation endpoint must not place orders or mutate paper holdings");

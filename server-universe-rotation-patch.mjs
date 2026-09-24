@@ -8,6 +8,42 @@ const rotationCode = readFileSync(new URL("./lib/universe-rotation.mjs", import.
 const FUNCTIONS = String.raw`
 ${rotationCode}
 let universeBatchInFlight = false;
+let committedUniverseScan = null;
+
+function paperEngineHoldingsFingerprint(state = {}) {
+  return crypto.createHash("sha256").update(JSON.stringify(state.paperTrader?.positions || [])).digest("hex");
+}
+
+function paperEngineUniverseFingerprint(state = {}) {
+  return crypto.createHash("sha256").update(JSON.stringify(state.universe || [])).digest("hex");
+}
+
+// Only an internally committed rotation batch can be reused for execution.
+// An ad-hoc /scanner/run result must never become an execution authority.
+async function paperEngineSelectionScan(state) {
+  const cached = committedUniverseScan;
+  const scan = cached?.scan;
+  const age = scan?.asOf ? Date.now() - Date.parse(scan.asOf) : Infinity;
+  const horizon = normalizeRotationHorizon(scan?.rotation?.horizon);
+  const progress = sanitizeUniverseRotation(state.scannerRotation)[horizon];
+  const day = new Date(Date.now() + 330 * 60 * 1000).toISOString().slice(0, 10);
+  if (cached && !cached.consumed && scan.ok === true && age >= 0 && age <= 5 * 60 * 1000
+      && cached.universeRevision === (state.universeRevision || 0)
+      && cached.universeFingerprint === paperEngineUniverseFingerprint(state)
+      && cached.settingsRevision === selectionSettingsRevision(state)
+      && cached.holdingsFingerprint === paperEngineHoldingsFingerprint(state)
+      && scan.rotation?.day === day && progress?.key === scan.rotation.key
+      && progress.cycle === scan.rotation.cycle && progress.offset === scan.rotation.attempted) {
+    return { scan, cacheUsed: true };
+  }
+  // The caller owns the state mutation lock. The internal context is never
+  // accepted from an HTTP request, preventing a nested-lock deadlock.
+  return { scan: await runNextUniverseBatch({ horizon: "intraday" }, { stateMutationHeld: true }), cacheUsed: false };
+}
+
+function consumePaperEngineScan(scan) {
+  if (committedUniverseScan?.scan === scan) committedUniverseScan.consumed = true;
+}
 
 function universeMetadataFields(input = {}) {
   return {
@@ -17,7 +53,7 @@ function universeMetadataFields(input = {}) {
   };
 }
 
-async function runNextUniverseBatch(body = {}) {
+async function runNextUniverseBatch(body = {}, internal = {}) {
   if (universeBatchInFlight) return { ok: false, error: "universe_batch_busy", message: "Another universe batch is running; wait for it to finish." };
   universeBatchInFlight = true;
   try {
@@ -39,15 +75,19 @@ async function runNextUniverseBatch(body = {}) {
     catch (error) { return { ok: false, error: error.message, message: "Batch progress was not advanced; retry after resolving the data-feed failure.", failures: result.failures || [] }; }
     stampPersistedSelectionSettings(result, state);
     result.rotation = completed.view;
-    const saved = await withStateMutation(async () => {
+    const commitBatch = async () => {
       const current = await store.getState();
       if ((current.universeRevision || 0) !== revision || (current.selectionSettingsControl?.revision || 0) !== settingsRevision || JSON.stringify(current.universe) !== JSON.stringify(state.universe)) return null;
       const ledger = await appendScanLedger(result, { store, mode: "universe-rotation", source: result.source || "Upstox historical candles" });
       result.ledger = scanLedgerMeta(ledger);
       const saved = await store.saveUniverseMetadata({ ...current, scannerRotation: { ...sanitizeUniverseRotation(current.scannerRotation), [plan.horizon]: completed.progress } });
       latestParameterTunnelScan = result;
+      committedUniverseScan = { scan: result, universeRevision: revision, settingsRevision,
+        universeFingerprint: paperEngineUniverseFingerprint(state),
+        holdingsFingerprint: paperEngineHoldingsFingerprint(state), consumed: false };
       return saved;
-    });
+    };
+    const saved = internal.stateMutationHeld === true ? await commitBatch() : await withStateMutation(commitBatch);
     if (!saved) return { ok: false, error: "universe_or_settings_changed_during_scan", message: "The master or settings changed during this batch. Start a scan of the refreshed universe." };
     return result;
   } finally {

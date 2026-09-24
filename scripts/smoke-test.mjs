@@ -232,33 +232,35 @@ await new Promise((resolve, reject) => {
   server.listen(0, "127.0.0.1", resolve);
 });
 const base = "http://127.0.0.1:" + server.address().port;
-const candles = [];
-for (let index = 0; index < 253; index += 1) {
-  const date = new NativeDate(fixedNow - (252 - index) * 86400000);
-  const close = 100 + index;
-  candles.push({ date: date.toISOString().slice(0, 10), open: close * 0.99, high: close * 1.01, low: close * 0.98, close, volume: 800000 });
-}
 try {
   const symbols = ["REALQUOTE", "SELECTTWO", "SELECTTHREE", "SELECTFOUR"];
-  let response = await nativeFetch(base + "/api/scanner/run", {
-    method: "POST",
+  // Distinct, deterministic return series retain momentum without making every
+  // candidate a duplicate of the first holding under the unchanged 0.85 gate.
+  const candleSeries = symbols.map((_, symbolIndex) => Array.from({ length: 253 }, (_, index) => {
+    const date = new NativeDate(fixedNow - (252 - index) * 86400000);
+    const variation = symbolIndex ? 0.6 * Math.sin(index * (0.65 + symbolIndex * 0.37)) : 0;
+    const close = 100 + index + variation;
+    return [date.toISOString(), close * 0.99, close * 1.01, close * 0.98, close, 800000];
+  }));
+  const historyByKey = new Map(symbols.map((_, index) => ["NSE_EQ|INETEST0000" + (index + 1), candleSeries[index]]));
+  historyByKey.set("NSE_EQ|INETEST00005", []);
+  let response = await nativeFetch(base + "/api/state");
+  const initialState = await response.json();
+  response = await nativeFetch(base + "/api/state", {
+    method: "PUT",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify({ universe: [
+    body: JSON.stringify({ state: { ...initialState.state, universe: [
       ...symbols.map((symbol, index) => ({
         symbol,
         name: "Real Quote Test " + (index + 1),
         sector: "Test",
         exchange: "NSE",
-        instrument_key: "NSE_EQ|INETEST0000" + (index + 1),
-        candles
+        instrument_key: "NSE_EQ|INETEST0000" + (index + 1)
       })),
       { symbol: "MANUALQUOTE", name: "Manual Quote Test", sector: "Test", exchange: "NSE", instrument_key: "NSE_EQ|INETEST00005", candles: [] }
-    ] })
+    ] } })
   });
-  const scan = await response.json();
-  const selectRows = scan.rows?.filter((row) => symbols.includes(row.symbol)) || [];
-  if (scan.rows?.length !== symbols.length + 1 || selectRows.length !== symbols.length || !selectRows.every((row) => row.decision === "SELECT")) throw new Error("all real-quote candidates should be SELECT while the manual symbol remains resolvable");
-  if (!selectRows.every((row) => row.parameter_tunnel?.summary?.evaluated >= 80)) throw new Error("every real-quote candidate should execute the wired tunnel");
+  if (response.status !== 200) throw new Error("isolated persisted universe should seed successfully");
 
   const quoteSymbols = [...symbols, "MANUALQUOTE", "GTTQUOTE", "CONCURRENTONE", "CONCURRENTTWO"];
   const quoteData = Object.fromEntries(quoteSymbols.map((symbol, index) => [
@@ -289,15 +291,30 @@ try {
   ];
   quoteData["NSE_EQ:INETEST00007"].depth.buy = [];
   const upstreamQuoteBatchSizes = [];
-  globalThis.fetch = async (url) => {
+  const upstreamHistoricalKeys = [];
+  globalThis.fetch = async (url, init) => {
     const target = String(url);
-    if (!target.startsWith("https://api.upstox.com/v2/market-quote/quotes")) return nativeFetch(url);
+    if (target.startsWith("https://api.upstox.com/v2/historical-candle/")) {
+      const instrumentKey = decodeURIComponent(new URL(target).pathname.split("/")[3]);
+      if (!historyByKey.has(instrumentKey)) throw new Error("Unexpected historical fixture identity: " + instrumentKey);
+      upstreamHistoricalKeys.push(instrumentKey);
+      return new Response(JSON.stringify({ status: "success", data: { candles: historyByKey.get(instrumentKey) } }), { status: 200, headers: { "content-type": "application/json" } });
+    }
+    if (target.startsWith("https://api.upstox.com/v2/market/fii?") || target.startsWith("https://api.upstox.com/v2/market/dii?")) {
+      return new Response(JSON.stringify({ status: "success", data: [] }), { status: 200, headers: { "content-type": "application/json" } });
+    }
+    if (!target.startsWith("https://api.upstox.com/v2/market-quote/quotes")) return nativeFetch(url, init);
     upstreamQuoteBatchSizes.push(new URL(target).searchParams.get("instrument_key").split(",").filter(Boolean).length);
     return new Response(JSON.stringify({ status: "success", data: quoteData }), { status: 200, headers: { "content-type": "application/json" } });
   };
 
   response = await nativeFetch(base + "/api/paper-engine/run", { method: "POST" });
   const firstResult = await response.json();
+  const scan = firstResult.scan;
+  const selectRows = scan?.rows?.filter((row) => symbols.includes(row.symbol)) || [];
+  if (response.status !== 200 || scan?.rows?.length !== symbols.length + 1 || selectRows.length !== symbols.length || !selectRows.every((row) => row.decision === "SELECT")) throw new Error("all real-quote candidates should be SELECT from persisted-universe history while the manual symbol remains resolvable: " + JSON.stringify(firstResult));
+  if (!selectRows.every((row) => row.parameter_tunnel?.summary?.evaluated >= 80)) throw new Error("every real-quote candidate should execute the wired tunnel");
+  if (firstResult.scan_cache_used !== false || scan.rotation?.total !== 5 || new Set(upstreamHistoricalKeys).size !== 5) throw new Error("first engine cycle must scan all persisted fixture identities through mocked Upstox history");
   if (firstResult.auto_buy?.orders_filled !== 1 || firstResult.auto_buy?.pending_after_run !== 3) throw new Error("first capped cycle should leave three SELECT rows pending");
   globalThis.__ASH_STOCK_ENV.PAPER_ENGINE_MAX_BUYS_PER_RUN = "25";
   response = await nativeFetch(base + "/api/paper-engine/run", { method: "POST" });
@@ -308,10 +325,16 @@ try {
   const firstPosition = ledger.positions?.find((position) => position.symbol === "REALQUOTE");
   if (result.auto_buy?.selection_contract !== "SELECT_FINAL") throw new Error("SELECT must be the final paper-buy authorization");
   if (result.auto_buy?.fill_method !== "UPSTOX_FULL_VISIBLE_ASK_DEPTH_FOK") throw new Error("paper engine must declare full visible ask-depth FOK execution");
-  if (result.auto_buy?.selected_in_scan !== 4 || result.auto_buy?.already_open_before !== 1) throw new Error("paper engine must reconcile existing positions against every SELECT");
+  // A fresh scan cannot correlate the sole holding against itself; it is
+  // DATA_NEEDED, while the other three candidates have genuine holding history.
+  if (result.auto_buy?.selected_in_scan !== 3 || result.auto_buy?.already_open_before !== 0) throw new Error("paper engine must use current holding-aware SELECT outcomes rather than the prior scan");
+  if (result.scan_cache_used !== false || result.scan?.holding_history?.loaded !== 1 || result.scan?.holding_history?.failures?.length !== 0) throw new Error("second engine cycle must hydrate the existing holding history before selection");
+  const secondCandidates = result.scan?.rows?.filter((row) => symbols.slice(1).includes(row.symbol)) || [];
+  if (secondCandidates.length !== 3 || !secondCandidates.every((row) => row.decision === "SELECT" && row.correlation?.status === "pass" && row.correlation?.threshold === 0.85 && Number.isFinite(row.correlation?.max_correlation) && row.correlation.max_correlation < 0.2)) throw new Error("distinct candidate history must pass the unchanged correlation gate with measured low correlation");
   if (result.auto_buy?.orders_filled !== 2 || result.auto_buy?.pending_after_run !== 1) throw new Error("second cycle must keep the shallow-ask SELECT pending while filling fully covered tickets: " + JSON.stringify(result.auto_buy));
   if (!result.auto_buy?.rejections?.some((order) => order.symbol === "SELECTTWO" && order.rejection_reason === "insufficient_upstox_ask_depth_for_full_paper_buy")) throw new Error("automatic BUY must reject incomplete visible ask depth explicitly");
   if (ledger.positions?.length !== 3 || ledger.positions?.some((position) => position.symbol === "SELECTTWO")) throw new Error("partial visible asks must never create an automatic BUY position");
+  if (ledger.positions.filter((position) => position.symbol === "REALQUOTE").length !== 1 || ledger.orders.filter((order) => order.symbol === "REALQUOTE" && order.side === "BUY" && order.status === "PAPER_FILLED").length !== 1) throw new Error("rescanning must not duplicate the first automatic holding or its filled order");
   if (firstOrder?.price !== 352.05 || firstOrder?.quote_timestamp !== "2026-07-27T04:30:00.000Z") throw new Error("paper market fill must use the real Upstox ask");
   if (!(firstOrder.qty * firstOrder.price > 100000 && firstOrder.qty * firstOrder.price <= 100000 + firstOrder.price)) throw new Error("non-divisible automatic allocation should permit only the final whole-share rounding above Rs 1 lakh");
   if (firstPosition?.entry_price !== 352.05 || firstPosition?.instrument_key !== "NSE_EQ|INETEST00001") throw new Error("real-quote position must persist in the paper ledger");

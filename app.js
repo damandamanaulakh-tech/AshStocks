@@ -7,6 +7,7 @@ const state = {
   selected: null,
   selectedQuote: null,
   orders: null,
+  ordersRequest: 0,
   health: null,
   marketContext: null,
   marketQuotes: [],
@@ -31,6 +32,17 @@ const state = {
   tunnelParameterQuery: "",
   tunnelStockQuery: "",
   lastAutoPortfolioAttemptAt: 0,
+  paperEngineRunning: false,
+  lastPaperEngineResult: null,
+  lastPaperEngineReport: null,
+  lastPaperEngineFingerprint: "",
+  lastPaperEngineStatusKey: "",
+  paperEngineResultRevision: 0,
+  paperEngineStatusPolling: false,
+  paperEngineStatusRunAt: 0,
+  paperEngineStatus: null,
+  paperEngineStatusError: "",
+  selectedQuoteRequest: 0,
   paperLedgerTab: "open",
   portfolioView: "holdings",
   orderWorkspaceView: "book",
@@ -156,6 +168,7 @@ async function loadUniverseForFreshScan() {
 
 async function loadNseMaster() {
   if (state.scanInFlight || state.fullScanRunning || state.masterLoading) return;
+  state.paperEngineResultRevision += 1;
   state.masterLoading = true;
   renderScanControls();
   setNotice("Fetching the current official Upstox NSE market master; checking new, changed and removed equities", "info");
@@ -482,31 +495,179 @@ async function scanFullUniverse() {
   }
 }
 
+function paperEngineCount(value) {
+  if (value === undefined || value === null) return "not reported";
+  if (!["number", "string"].includes(typeof value) || String(value).trim() === "" || !Number.isSafeInteger(Number(value)) || Number(value) < 0) {
+    throw new Error("Invalid paper-engine count; execution outcome is unconfirmed");
+  }
+  return String(Number(value));
+}
+
+function applyPaperEngineScan(scan) {
+  if (scan === undefined || scan === null) return "Engine scan not returned; radar has not been refreshed";
+  if (scan.ok === false || !Array.isArray(scan.rows) || !Number.isFinite(Date.parse(scan.asOf))
+    || scan.rows.some((row) => !row || typeof row !== "object" || !nseSymbol(row) || typeof row.decision !== "string")) {
+    throw new Error("Invalid paper-engine scan; radar synchronization is unconfirmed");
+  }
+  if (Date.parse(state.scan?.asOf) > Date.parse(scan.asOf)) return "Engine used an earlier scan; newer radar retained";
+  const symbol = nseSymbol(state.selected);
+  state.scan = scan;
+  state.rows = scan.rows;
+  state.scanBasket = state.rows;
+  state.rotation = scan.rotation || null;
+  state.selected = state.rows.find((row) => nseSymbol(row) === symbol)
+    || sortedRows().find((row) => ["SELECT", "WATCH"].includes(row.decision)) || sortedRows()[0] || null;
+  state.selectedQuoteRequest += 1;
+  state.selectedQuote = null;
+  if (scan.institutional?.market) state.institutional.market = scan.institutional.market;
+  for (const stock of scan.institutional?.stocks || []) {
+    if (nseSymbol(stock)) state.institutional.stocks[nseSymbol(stock)] = stock;
+  }
+  if (scan.institutional) {
+    state.institutional.status = scan.institutional.ok ? "ready" : "data_needed";
+    state.institutional.asOf = scan.institutional.as_of || null;
+    state.institutional.version = scan.institutional.version || null;
+  }
+  return `Radar synchronized to engine scan ${isoDate(scan.asOf)}`;
+}
+
+function renderPaperEngineControls() {
+  if (el("paperEngineBtn")) el("paperEngineBtn").disabled = state.paperEngineRunning;
+  if (el("signalPaperEngineAction")) el("signalPaperEngineAction").disabled = state.paperEngineRunning || !state.rows.length;
+}
+
+function recordPaperEngineResult(result) {
+  if (!result || typeof result !== "object" || result.ok !== true) throw new Error(result?.error || "Paper-engine response did not confirm success");
+  let report;
+  if (result.skipped) {
+    report = { message: `Paper engine skipped: ${result.reason || result.skipped}. No new execution result confirmed.`, tone: "warn" };
+  } else {
+    const autoBuy = result.auto_buy;
+    if (!autoBuy || typeof autoBuy !== "object" || Array.isArray(autoBuy) || !Object.prototype.hasOwnProperty.call(autoBuy, "orders_filled")) {
+      throw new Error("Paper-engine execution summary is missing; outcome is unconfirmed");
+    }
+    const selected = paperEngineCount(autoBuy.selected_in_scan);
+    const tickets = paperEngineCount(autoBuy.candidates_ready);
+    const filled = paperEngineCount(autoBuy.orders_filled);
+    const rejected = paperEngineCount(autoBuy.rejected);
+    const pending = paperEngineCount(autoBuy.pending_after_run);
+    const scanNotice = applyPaperEngineScan(result.scan);
+    const reasons = [
+      ...(Array.isArray(autoBuy.blockers) ? autoBuy.blockers.map((item) => item?.reason || item?.code) : []),
+      ...(Array.isArray(autoBuy.rejections) ? autoBuy.rejections.map((item) => `${item.symbol || "Stock"}: ${item.rejection_reason || "reason not reported"}`) : []),
+      result.quote_error ? `Quote error: ${result.quote_error}` : ""
+    ].filter(Boolean);
+    report = {
+      message: `Paper engine: SELECT ${selected}; buy tickets ${tickets}; fills ${filled}; rejected ${rejected}; pending SELECT ${pending}. ${scanNotice}${reasons.length ? ` | ${[...new Set(reasons)].join(" | ")}` : ""}`,
+      tone: Number(filled) > 0 && !reasons.length && scanNotice.startsWith("Radar synchronized") ? "ok" : "warn"
+    };
+  }
+  state.lastPaperEngineResult = result;
+  state.lastPaperEngineFingerprint = JSON.stringify(result);
+  state.lastPaperEngineStatusKey = "";
+  state.lastPaperEngineReport = report;
+  return report;
+}
+
+function paperEngineLedgerWarning(report) {
+  if (state.lastPaperEngineReport !== report || state.orders?.ok !== false) return;
+  report.message += ` | Ledger refresh failed: ${state.orders.error || "not available"}`;
+  report.tone = "warn";
+}
+
+function paperEngineViewBusy() {
+  return state.paperEngineRunning || state.scanInFlight || state.fullScanRunning || state.masterLoading
+    || state.quickTradeSubmitting || state.valuationSaving;
+}
+
+async function refreshPaperEngineStatus() {
+  if (state.paperEngineStatusPolling || paperEngineViewBusy()) return null;
+  state.paperEngineStatusPolling = true;
+  const revision = state.paperEngineResultRevision;
+  try {
+    // Observe the server scheduler even when the browser has no SELECT rows.
+    // This must never start a scanner or paper-engine mutation.
+    const payload = await api("/api/paper-engine/status");
+    if (revision !== state.paperEngineResultRevision || paperEngineViewBusy()) return null;
+    if (payload?.ok !== true || !payload.status || typeof payload.status !== "object" || Array.isArray(payload.status)) {
+      throw new Error(payload?.error || "Paper-engine status response is unavailable");
+    }
+    const status = payload.status;
+    const result = status.lastResult;
+    const runAt = Date.parse(status.lastRunAt) || 0;
+    const lastScanAt = Date.parse(state.lastPaperEngineResult?.scan?.asOf) || 0;
+    const resultScanAt = Date.parse(result?.scan?.asOf) || 0;
+    if ((runAt && runAt < Math.max(state.paperEngineStatusRunAt, lastScanAt))
+      || (resultScanAt && resultScanAt < lastScanAt)) return null;
+    state.paperEngineStatus = status;
+    state.paperEngineStatusError = "";
+    // Older deployments may not expose a last result; do not invent zero counts.
+    if (result === undefined || result === null || status.running) return status;
+    const fingerprint = JSON.stringify(result);
+    const statusKey = `${status.lastRunAt || ""}:${fingerprint}`;
+    state.paperEngineStatusRunAt = Math.max(state.paperEngineStatusRunAt, runAt);
+    if (statusKey === state.lastPaperEngineStatusKey) return status;
+    if (!state.lastPaperEngineStatusKey && fingerprint === state.lastPaperEngineFingerprint) {
+      // The manual response already rendered this result and refreshed orders.
+      state.lastPaperEngineStatusKey = statusKey;
+      return status;
+    }
+    if (result.ok === false && typeof result.error === "string" && result.error) {
+      state.lastPaperEngineResult = result;
+      state.lastPaperEngineFingerprint = fingerprint;
+      state.lastPaperEngineStatusKey = statusKey;
+      state.lastPaperEngineReport = { message: `Paper engine failed: ${result.error}. No successful execution outcome confirmed.`, tone: "error" };
+      return status;
+    }
+    const report = recordPaperEngineResult(result);
+    state.lastPaperEngineStatusKey = statusKey;
+    renderAll();
+    if (!result.skipped) {
+      // Once per new result only. The existing orders GET may refresh persisted
+      // quote marks, but it does not submit orders or start another engine scan.
+      await loadOrders({ isCurrent: () => revision === state.paperEngineResultRevision
+        && !paperEngineViewBusy() && state.lastPaperEngineReport === report });
+      paperEngineLedgerWarning(report);
+    }
+    return status;
+  } catch (error) {
+    if (revision === state.paperEngineResultRevision && !paperEngineViewBusy()) {
+      state.paperEngineStatusError = `Engine status refresh failed: ${error.message}. Last displayed outcome retained.`;
+    }
+    return null;
+  } finally {
+    state.paperEngineStatusPolling = false;
+    // A background read has its own persistent output; never replace a user's
+    // scanner, import, trade, or manual-engine notice with polling chatter.
+    renderAutoOrderReadiness();
+  }
+}
+
 async function runPaperEngineNow() {
-  const button = el("paperEngineBtn");
-  if (button) button.disabled = true;
+  if (state.paperEngineRunning) return null;
+  state.paperEngineResultRevision += 1;
+  state.paperEngineRunning = true;
+  renderPaperEngineControls();
   setNotice("Running paper engine: Upstox scan, SELECT filter, paper fills, target/stop monitor", "info");
   try {
     const result = await api("/api/paper-engine/run", { method: "POST", body: { trigger: "dashboard" } });
-    const autoBuy = result.auto_buy || {};
-    const filled = Number(autoBuy.orders_filled || 0);
-    const ready = Number(autoBuy.candidates_ready || 0);
-    const rejected = Number(autoBuy.rejected || 0);
-    const positions = Array.isArray(result.positions) ? result.positions.length : 0;
-    const pending = Number(autoBuy.pending_after_run || 0);
-    const rejectionReason = autoBuy.rejections?.[0]?.rejection_reason || "";
-    const message = filled
-      ? `Paper engine filled ${filled} BUY order(s); open positions ${positions}; pending SELECT ${pending}`
-      : `Paper engine ran: ${ready} SELECT candidate(s), ${filled} fills, ${rejected} rejected, pending SELECT ${pending}${rejectionReason ? ` | ${rejectionReason}` : ""}`;
-    setNotice(message, filled ? "ok" : "warn");
+    const report = recordPaperEngineResult(result);
+    if (result.skipped) {
+      setNotice(report.message, report.tone);
+      return result;
+    }
     await loadOrders();
+    paperEngineLedgerWarning(report);
+    setNotice(report.message, report.tone);
     return result;
   } catch (error) {
     state.lastError = error.message;
     setNotice(`Paper engine failed: ${error.message}`, "error");
     return null;
   } finally {
-    if (button) button.disabled = false;
+    state.paperEngineRunning = false;
+    renderPaperEngineControls();
+    renderAutoOrderReadiness();
   }
 }
 
@@ -1133,9 +1294,8 @@ function renderSignalDashboard() {
   }
 
   const paperTitle = el("signalPaperTitle");
-  if (paperTitle) paperTitle.textContent = row?.decision === "SELECT" ? `Paper BUY Ready · ${row.symbol}` : row ? `Paper ${decisionDisplay(row.decision)} · ${row.symbol}` : "Paper BUY Readiness";
-  const paperAction = el("signalPaperEngineAction");
-  if (paperAction) paperAction.disabled = !state.rows.length;
+  if (paperTitle) paperTitle.textContent = row ? `Paper execution · ${row.symbol} · ${paperExecutionDisplay(row).status}` : "Paper BUY Readiness";
+  renderPaperEngineControls();
   window.lucide?.createIcons?.();
 }
 
@@ -1238,12 +1398,15 @@ function drawChart(row) {
 }
 
 async function fetchSelectedQuote(row) {
+  const request = ++state.selectedQuoteRequest;
   state.selectedQuote = null;
   if (!row?.instrument_key) return null;
   try {
     const payload = await api(`/api/upstox/quote?instrument_key=${encodeURIComponent(row.instrument_key)}&symbol=${encodeURIComponent(row.symbol)}`);
+    if (request !== state.selectedQuoteRequest || nseSymbol(state.selected) !== nseSymbol(row)) return null;
     state.selectedQuote = payload.quotes?.[0] || null;
   } catch (error) {
+    if (request !== state.selectedQuoteRequest || nseSymbol(state.selected) !== nseSymbol(row)) return null;
     state.selectedQuote = { error: error.message };
   }
   return state.selectedQuote;
@@ -1297,11 +1460,36 @@ function renderSymbol() {
   renderPiano();
 }
 
+function paperExecutionDisplay(row) {
+  const symbol = nseSymbol(row);
+  const openPosition = (state.orders?.positions || []).find((item) => nseSymbol(item) === symbol && item.status !== "CLOSED" && numberValue(item.qty) > 0);
+  const latestOrder = (state.orders?.orders || [])
+    .filter((item) => nseSymbol(item) === symbol && String(item.side || "BUY").toUpperCase() === "BUY")
+    .sort((a, b) => (Date.parse(b.updated_at || b.created_at || b.quote_timestamp) || 0) - (Date.parse(a.updated_at || a.created_at || a.quote_timestamp) || 0))[0];
+  const selected = row?.decision === "SELECT";
+  const status = state.orders?.ok === false ? "LEDGER UNAVAILABLE" : openPosition ? "POSITION OPEN"
+    : latestOrder?.status === "REJECTED" ? "LAST BUY REJECTED"
+      : latestOrder?.status ? `LAST BUY ${latestOrder.status}`
+        : selected ? "SELECT — EXECUTION PENDING" : decisionDisplay(row?.decision);
+  const reason = state.orders?.ok === false ? `Ledger unavailable: ${state.orders.error || "current order status not confirmed"}`
+    : !openPosition && latestOrder?.status === "REJECTED"
+    ? `Last rejection${latestOrder.updated_at || latestOrder.created_at ? ` (${isoDate(latestOrder.updated_at || latestOrder.created_at)})` : ""}: ${latestOrder.rejection_reason || "reason not reported"}`
+    : selected && !openPosition ? "SELECT is the scanner decision, not a fill. Server quote, market, liquidity and capital gates determine execution." : "";
+  return { openPosition, latestOrder, selected, status, reason,
+    tone: openPosition ? "good" : selected || latestOrder?.status === "REJECTED" ? "watch" : "neutral",
+    execution: openPosition ? "BOUGHT" : selected ? "SERVER CHECK REQUIRED" : "NOT SELECTED" };
+}
+
 function renderAutoOrderReadiness(row = state.selected) {
   const node = el("autoOrderReadiness");
   if (!node) return;
+  const report = state.lastPaperEngineReport;
+  const engineSummary = `<div class="engine-run-summary" role="status"><strong>Latest engine outcome</strong>
+    <p>${escapeHtml(report?.message || "No completed execution result has been reported to this page.")}</p>
+    ${state.paperEngineStatus?.running ? `<p>Server engine is running; the previous completed outcome remains displayed.</p>` : ""}
+    ${state.paperEngineStatusError ? `<p class="mark-warning">${escapeHtml(state.paperEngineStatusError)}</p>` : ""}</div>`;
   if (!row) {
-    node.innerHTML = `<div class="engine-order-state neutral">
+    node.innerHTML = `${engineSummary}<div class="engine-order-state neutral">
       <span>No selected NSE stock</span>
       <strong>Scanner has not returned a candidate</strong>
     </div>`;
@@ -1322,19 +1510,7 @@ function renderAutoOrderReadiness(row = state.selected) {
   const tunnel = row.parameter_tunnel?.summary || {};
   const evaluated = numberValue(tunnel.evaluated) || 0;
   const evidenceScore = numberValue(tunnel.evidence_score) || 0;
-  const openPosition = (state.orders?.positions || []).find((item) => item.symbol === row.symbol);
-  const latestOrder = (state.orders?.orders || []).find((item) => item.symbol === row.symbol);
-  const executionReady = row.decision === "SELECT" && evaluated >= 35 && evidenceScore >= 48;
-  const status = openPosition
-    ? "POSITION OPEN"
-    : latestOrder?.status
-      ? latestOrder.status
-      : executionReady && quotePrice
-        ? "AUTO BUY READY"
-        : executionReady
-          ? "REAL QUOTE REQUIRED"
-          : decisionDisplay(row.decision);
-  const tone = openPosition || latestOrder?.status === "FILLED" || status === "AUTO BUY READY" ? "good" : executionReady ? "watch" : "neutral";
+  const { openPosition, latestOrder, status, tone, reason, execution } = paperExecutionDisplay(row);
   const entryText = openPosition
     ? fmtPrice(openPosition.entry_price)
     : quotePrice
@@ -1342,18 +1518,19 @@ function renderAutoOrderReadiness(row = state.selected) {
       : "Upstox quote required";
   const proofText = evaluated ? `${fmtNumber(evidenceScore)} | ${fmtInt(tunnel.positive_hits || 0)}/${fmtInt(evaluated)}` : decisionDisplay(row.decision);
 
-  node.innerHTML = `
+  node.innerHTML = `${engineSummary}
     <div class="engine-order-state ${tone}">
       <span>${escapeHtml(row.symbol)} · BUY MARKET · Paper Swing</span>
       <strong>${escapeHtml(status)}</strong>
     </div>
+    ${reason ? `<p class="mark-warning">${escapeHtml(reason)}</p>` : ""}
     <div class="engine-order-grid">
       <article><span>Entry</span><strong>${escapeHtml(entryText)}</strong><small>${quotePrice ? escapeHtml(isoDate(state.selectedQuote?.timestamp)) : "Real Upstox quote gate"}</small></article>
       <article><span>Quantity</span><strong>${fmtInt(openPosition?.qty || latestOrder?.qty || qty)}</strong><small>₹1 lakh minimum entry from ₹5 crore paper capital</small></article>
       <article><span>Stop</span><strong>${fmtPrice(openPosition?.stop_price || latestOrder?.stop_price || stopPrice)}</strong><small>Engine risk rule</small></article>
       <article><span>Target</span><strong>${openPosition ? fmtPrice(effectivePositionTarget(openPosition)) : fmtPrice(latestOrder?.target_price || targetPrice)}</strong><small>${openPosition ? escapeHtml(effectivePositionTargetLabel(openPosition)) : `${fmtNumber(targetPct)}% technical target room`}</small></article>
       <article><span>Parameter proof</span><strong>${escapeHtml(proofText)}</strong><small>Score | hits/evaluated</small></article>
-      <article><span>Execution</span><strong>${openPosition ? "BOUGHT" : executionReady ? "AUTOMATIC" : "FILTERED"}</strong><small>Fresh quote and market gates apply</small></article>
+      <article><span>Execution</span><strong>${escapeHtml(execution)}</strong><small>Fresh quote and market gates apply; estimates are not a submitted order</small></article>
     </div>
     <div class="engine-order-actions"><span>Manual paper control</span>${renderTradeActions(row)}</div>`;
 }
@@ -2117,12 +2294,16 @@ async function refreshUpstoxStatus() {
   renderUpstoxSettings();
 }
 
-async function loadOrders() {
+async function loadOrders(options = {}) {
+  const request = ++state.ordersRequest;
+  let orders;
   try {
-    state.orders = await api("/api/paper-trader/orders");
+    orders = await api("/api/paper-trader/orders");
   } catch (error) {
-    state.orders = { ok: false, error: error.message, orders: [], positions: [], trades: [] };
+    orders = { ok: false, error: error.message, orders: [], positions: [], trades: [] };
   }
+  if (request !== state.ordersRequest || (options.isCurrent && !options.isCurrent())) return;
+  state.orders = orders;
   renderAll();
 }
 
@@ -2251,6 +2432,7 @@ async function refreshMarketStrip() {
 
 async function refreshScan(options = {}) {
   if (state.scanInFlight || state.masterLoading || (state.fullScanRunning && !options.fullSweep)) return null;
+  state.paperEngineResultRevision += 1;
   state.scanInFlight = true;
   renderScanControls();
   try {
@@ -2936,5 +3118,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   window.lucide?.createIcons?.();
   await Promise.all([loadOrders(), loadFormulaSettings(), loadValuationTargets(), loadMarketImportStatus()]);
   await Promise.all([refreshScan(), loadSignalMarketContext(), loadReleaseIdentity()]);
+  await refreshPaperEngineStatus();
+  window.setInterval(refreshPaperEngineStatus, 60_000);
   window.setInterval(maybeAutoStartPaperPortfolio, 60_000);
 });

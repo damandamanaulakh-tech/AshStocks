@@ -103,6 +103,29 @@ function paperEngineCandidateTickets(plan = {}, state = defaultState(), settings
     .slice(0, Math.min(settings.maxBuysPerRun, affordableEntrySlots));
 }
 
+function paperEngineCandidateBlockers(state, settings, scan, tickets, kelly) {
+  const open = paperEngineOpenSymbols(state);
+  const selected = unique((scan.rows || []).filter((row) => String(row.decision || "").toUpperCase() === settings.requireScannerDecision).map((row) => normalizeSymbol(row.symbol)).filter(Boolean));
+  const alreadyOpen = selected.filter((symbol) => open.has(symbol)).length;
+  const pending = selected.length - alreadyOpen;
+  const trader = sanitizePaperTraderState(state.paperTrader || {});
+  const funds = paperLifecycleFunds(trader);
+  const reserved = trader.gtt.filter((plan) => plan.status === "ACTIVE" && plan.side === "BUY").length;
+  const positionSlots = Math.max(0, PAPER_CAPITAL_POLICY.maximumOpenPositions - open.size - reserved);
+  const cashSlots = Math.max(0, Math.floor(Math.max(0, finiteOr(funds.buying_power, 0)) / (PAPER_CAPITAL_POLICY.minimumEntryValue + paperTransactionCost(PAPER_CAPITAL_POLICY.minimumEntryValue))));
+  const blockers = [];
+  if (!selected.length) blockers.push({ code: "no_selected_candidates", reason: "No stocks in this evaluated batch met the saved SELECT rules.", count: scan.rows?.length || 0 });
+  if (alreadyOpen) blockers.push({ code: "already_open", reason: "Selected stocks already held are not opened again by automatic buying.", count: alreadyOpen });
+  if (pending && !settings.enabled) blockers.push({ code: "autobuy_disabled", reason: "Automatic paper buying is disabled.", count: pending });
+  if (pending && kelly.blockNewEntries) blockers.push({ code: "kelly_blocked", reason: "The existing Kelly risk policy blocks new entries (" + kelly.status + ").", count: pending });
+  if (pending && !positionSlots) blockers.push({ code: "position_capacity", reason: "Open positions and active BUY plans occupy the available position slots.", count: pending });
+  if (pending && !cashSlots) blockers.push({ code: "insufficient_buying_power", reason: "Available paper buying power cannot cover the minimum entry and transaction cost.", count: pending });
+  if (settings.enabled && !kelly.blockNewEntries && pending > tickets.length && positionSlots && cashSlots) {
+    blockers.push({ code: "run_capacity", reason: "Remaining SELECT stocks exceed this run's entry, position or buying-power capacity.", count: pending - tickets.length });
+  }
+  return blockers;
+}
+
 function paperEngineRecordRejection(state, ticket, scanRow, reason, executionEvidence = {}) {
   const trader = sanitizePaperTraderState(state.paperTrader || {});
   const parameterEvidence = {
@@ -343,16 +366,17 @@ const PAPER_ENGINE_RUN_REPLACEMENT = String.raw`async function runPaperEngineOnc
     return result;
   }
 
-  const cachedScanAgeMs = latestParameterTunnelScan?.asOf ? Date.now() - Date.parse(latestParameterTunnelScan.asOf) : Infinity;
-  const cachedScan = cachedScanAgeMs >= 0 && cachedScanAgeMs <= 5 * 60 * 1000 && Array.isArray(latestParameterTunnelScan?.rows) && latestParameterTunnelScan.rows.length
-    ? latestParameterTunnelScan
-    : null;
-  const scan = cachedScan || await runUpstoxScanner({ universe: state.universe, settings: state.scannerSettings, holdings: state.paperTrader?.positions || [] }, state.universe);
+  const selection = await paperEngineSelectionScan(state);
+  const scan = selection.scan;
   if (!scan.ok) {
     const result = { ...scan, trigger, slot };
     paperEngineState.lastResult = result;
     return result;
   }
+
+  // Scanning commits rotation metadata. Keep that latest state when saving
+  // the paper ledger below, rather than restoring the pre-scan cursor.
+  state = await store.getState();
 
   const ledger = await appendScanLedger(scan, {
     store,
@@ -370,6 +394,7 @@ const PAPER_ENGINE_RUN_REPLACEMENT = String.raw`async function runPaperEngineOnc
     .filter(Boolean));
   const openBefore = paperEngineOpenSymbols(workingState);
   const tickets = autoSettings.enabled ? paperEngineCandidateTickets(plan, workingState, autoSettings, scan) : [];
+  const candidateBlockers = paperEngineCandidateBlockers(workingState, autoSettings, scan, tickets, kelly);
   const market = paperEngineMarketState();
   const scanBySymbol = new Map((scan.rows || []).map((row) => [normalizeSymbol(row.symbol), row]));
   const universeBySymbol = new Map(normalizeScannerUniverse(state.universe || []).map((row) => [normalizeSymbol(row.symbol), row]));
@@ -519,6 +544,7 @@ const PAPER_ENGINE_RUN_REPLACEMENT = String.raw`async function runPaperEngineOnc
     history: plan.history
   });
   await store.saveState({ ...workingState, paperTrader: savedPaperTrader });
+  consumePaperEngineScan(scan);
 
   const result = {
     ok: true,
@@ -528,6 +554,7 @@ const PAPER_ENGINE_RUN_REPLACEMENT = String.raw`async function runPaperEngineOnc
     ledger: scanLedgerMeta(ledger),
     summary: scan.summary,
     scanned: scan.scanned,
+    scan,
     plan_summary: plan.summary,
     auto_buy: {
       enabled: autoSettings.enabled,
@@ -554,6 +581,7 @@ const PAPER_ENGINE_RUN_REPLACEMENT = String.raw`async function runPaperEngineOnc
       selected_in_scan: selectedSymbols.length,
       already_open_before: selectedSymbols.filter((symbol) => openBefore.has(symbol)).length,
       candidates_ready: tickets.length,
+      blockers: candidateBlockers,
       orders_filled: orders.length,
       pending_after_run: pendingSymbols.length,
       pending_symbols: pendingSymbols.slice(0, PAPER_CAPITAL_POLICY.maximumCandidateEntries),
@@ -569,7 +597,7 @@ const PAPER_ENGINE_RUN_REPLACEMENT = String.raw`async function runPaperEngineOnc
     positions: savedPaperTrader.positions.slice(0, PAPER_CAPITAL_POLICY.maximumOpenPositions),
     market,
     quote_error: quoteError || null,
-    scan_cache_used: Boolean(cachedScan),
+    scan_cache_used: selection.cacheUsed,
     safety: { paper_only: true, live_orders: false, broker_write_enabled: false, upstox_quotes_required_for_fills: true }
   };
   paperEngineState.lastRunAt = new Date().toISOString();
