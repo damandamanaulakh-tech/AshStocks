@@ -1,0 +1,2533 @@
+{
+  "schema_version": "ashstocks.derived-delivery-context-evidence.v1",
+  "review_date": "2026-09-24",
+  "reviewed_against_commit": "c2a99bf97128d645eb1891e474743b522c9e26a6",
+  "definition": "Full serialized-content review of the seven previously unread CSV siblings; previously reviewed merged source fully reread for independent calculations. Full read does not certify source authority or fitness for current trading.",
+  "source_integrity": {
+    "asset": "volume_delivery_batch_check_v0_1.zip",
+    "bytes": 1774201,
+    "sha256": "cb8f516e21f7cac8c18b28b540035573b6277e4ea3540b902a2d9fa24c8d0061",
+    "release_inventory_pin_matches": true,
+    "all_member_crc_verified": true,
+    "release_inventory": {
+      "file": "data/asset-review/backenddata-release-inventory-2026-09-24.json",
+      "bytes": 52467,
+      "sha256": "12845723602d01fcc30b8af89a46514a177f1c848b78c8aed56657725ff96d45"
+    },
+    "directory_entries": 1,
+    "immediate_file_members": 8,
+    "uncompressed_file_bytes": 5966194,
+    "producer_code_or_readme_members": 0
+  },
+  "evidence_inputs": [
+    {
+      "file": "data/asset-review/duplicate-context-evidence-2026-09-24.json",
+      "bytes": 30895,
+      "sha256": "482fbf7725e59c3490a55a71fc9f759706f2d279432628b33d312a875270cde2"
+    },
+    {
+      "file": "data/asset-review/additional-asset-evidence-2026-09-24.json",
+      "bytes": 146431,
+      "sha256": "0eb6c0645f001e56bb17d752c597257ebdd2b1eedf01ad5101f6d0fe5bd136a8"
+    },
+    {
+      "file": "data/asset-review/content-coverage-progress-2026-09-24.json",
+      "bytes": 44463,
+      "sha256": "c2d8dc8a151cde96b21b9d74fb6fdf1939bb67a37332b3f765ea968cadf8a698"
+    }
+  ],
+  "summary": {
+    "newly_reviewed_members": 7,
+    "newly_reviewed_data_rows": 5036,
+    "newly_reviewed_data_fields": 69770,
+    "newly_reviewed_nonempty_data_fields": 68970,
+    "newly_reviewed_uncompressed_bytes": 861534,
+    "complete_small_summary_rows_retained": 82,
+    "previously_reviewed_source_reread_rows": 32201,
+    "all_data_rows_read_this_batch": 37237,
+    "archive_unread_members_after_this_audit": 0,
+    "source_symbols_union": 16,
+    "source_symbols_each_date": [
+      13
+    ],
+    "source_distinct_dates": 2477,
+    "source_date_min": "2016-02-02",
+    "source_date_max": "2026-06-08",
+    "source_age_calendar_days_on_review": 108
+  },
+  "members": [
+    {
+      "member": "volume_delivery_batch_check_v0_1/industry_coverage_summary.csv",
+      "bytes": 266,
+      "sha256": "b3ce0e056050717ae4b5da14607ef6d5888a803b19af7a15a8a7035967b88253",
+      "crc32": "5a0b55c2",
+      "crc_read_completed": true,
+      "data_rows": 9,
+      "columns": 3,
+      "headers": [
+        "industry_group",
+        "stocks",
+        "symbols"
+      ],
+      "data_fields": 27,
+      "nonempty_data_fields": 27,
+      "missing_by_column": {
+        "industry_group": 0,
+        "stocks": 0,
+        "symbols": 0
+      },
+      "row_width_errors": 0,
+      "duplicate_key_rows": 0,
+      "key": [
+        "industry_group"
+      ],
+      "dates": {},
+      "numeric_columns": {
+        "stocks": {
+          "observed": 9,
+          "min": 1.0,
+          "max": 3.0,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 0
+        }
+      },
+      "review_depth": "full row and field read; independent arithmetic/context checks recorded separately",
+      "new_coverage_upgrade": true,
+      "complete_source_rows": [
+        {
+          "industry_group": "Auto",
+          "stocks": "2",
+          "symbols": "M&M, MARUTI"
+        },
+        {
+          "industry_group": "Banks",
+          "stocks": "3",
+          "symbols": "HDFCBANK, ICICIBANK, SBIN"
+        },
+        {
+          "industry_group": "Energy/Oil-Gas",
+          "stocks": "2",
+          "symbols": "ONGC, RELIANCE"
+        },
+        {
+          "industry_group": "FMCG",
+          "stocks": "1",
+          "symbols": "HINDUNILVR"
+        },
+        {
+          "industry_group": "Finance/NBFC",
+          "stocks": "2",
+          "symbols": "BAJAJFINSV, BAJFINANCE"
+        },
+        {
+          "industry_group": "IT",
+          "stocks": "2",
+          "symbols": "INFY, TCS"
+        },
+        {
+          "industry_group": "Metals",
+          "stocks": "1",
+          "symbols": "TATASTEEL"
+        },
+        {
+          "industry_group": "Pharma",
+          "stocks": "2",
+          "symbols": "DRREDDY, SUNPHARMA"
+        },
+        {
+          "industry_group": "Telecom",
+          "stocks": "1",
+          "symbols": "BHARTIARTL"
+        }
+      ]
+    },
+    {
+      "member": "volume_delivery_batch_check_v0_1/mini_delivery_trigger_counts_16stocks.csv",
+      "bytes": 165502,
+      "sha256": "fd5c11f15aad4e351ebe48867354c212e4b4992d615bad14fe86421cb8018eed",
+      "crc32": "f2500a78",
+      "crc_read_completed": true,
+      "data_rows": 2477,
+      "columns": 7,
+      "headers": [
+        "trade_date",
+        "n_symbols",
+        "delivery_distribution_count",
+        "delivery_accumulation_count",
+        "distribution_count_pct",
+        "accumulation_count_pct",
+        "data_status"
+      ],
+      "data_fields": 17339,
+      "nonempty_data_fields": 17339,
+      "missing_by_column": {
+        "trade_date": 0,
+        "n_symbols": 0,
+        "delivery_distribution_count": 0,
+        "delivery_accumulation_count": 0,
+        "distribution_count_pct": 0,
+        "accumulation_count_pct": 0,
+        "data_status": 0
+      },
+      "row_width_errors": 0,
+      "duplicate_key_rows": 0,
+      "key": [
+        "trade_date"
+      ],
+      "dates": {
+        "trade_date": {
+          "min": "2016-02-02",
+          "max": "2026-06-08",
+          "distinct": 2477,
+          "invalid": 0
+        }
+      },
+      "numeric_columns": {
+        "n_symbols": {
+          "observed": 2477,
+          "min": 13.0,
+          "max": 13.0,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 0
+        },
+        "delivery_distribution_count": {
+          "observed": 2477,
+          "min": 0.0,
+          "max": 7.0,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 0
+        },
+        "delivery_accumulation_count": {
+          "observed": 2477,
+          "min": 0.0,
+          "max": 8.0,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 0
+        },
+        "distribution_count_pct": {
+          "observed": 2477,
+          "min": 0.0,
+          "max": 0.5384615384615384,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 596
+        },
+        "accumulation_count_pct": {
+          "observed": 2477,
+          "min": 0.0,
+          "max": 0.6153846153846154,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 607
+        }
+      },
+      "review_depth": "full row and field read; independent arithmetic/context checks recorded separately",
+      "new_coverage_upgrade": true,
+      "status_values": {
+        "SAMPLE_16_STOCKS_NOT_MARKET_WIDE": 2477
+      }
+    },
+    {
+      "member": "volume_delivery_batch_check_v0_1/mini_market_internals_16stocks.csv",
+      "bytes": 690809,
+      "sha256": "47d96ac175309c23af66581a40a9af6415b07aaee24d64aa0d18b41508a359ba",
+      "crc32": "1e5c6f68",
+      "crc_read_completed": true,
+      "data_rows": 2477,
+      "columns": 21,
+      "headers": [
+        "trade_date",
+        "n_symbols",
+        "equal_weight_ret_1d",
+        "dispersion_1d",
+        "up_pct_1d",
+        "down3_pct_1d",
+        "up3_pct_1d",
+        "tail_down3_5d",
+        "tail_up3_5d",
+        "total_volume",
+        "total_turnover",
+        "avg_delivery_pct",
+        "total_delivery_qty",
+        "avg_trades",
+        "volume_hhi",
+        "delivery_hhi",
+        "tail_repair_ratio_5d",
+        "sample_tail_damage_q90_fire",
+        "sample_tail_damage_q95_fire",
+        "sample_damage_cluster_5in10",
+        "data_status"
+      ],
+      "data_fields": 52017,
+      "nonempty_data_fields": 51217,
+      "missing_by_column": {
+        "trade_date": 0,
+        "n_symbols": 0,
+        "equal_weight_ret_1d": 1,
+        "dispersion_1d": 1,
+        "up_pct_1d": 1,
+        "down3_pct_1d": 1,
+        "up3_pct_1d": 1,
+        "tail_down3_5d": 5,
+        "tail_up3_5d": 5,
+        "total_volume": 0,
+        "total_turnover": 0,
+        "avg_delivery_pct": 2,
+        "total_delivery_qty": 0,
+        "avg_trades": 0,
+        "volume_hhi": 0,
+        "delivery_hhi": 2,
+        "tail_repair_ratio_5d": 781,
+        "sample_tail_damage_q90_fire": 0,
+        "sample_tail_damage_q95_fire": 0,
+        "sample_damage_cluster_5in10": 0,
+        "data_status": 0
+      },
+      "row_width_errors": 0,
+      "duplicate_key_rows": 0,
+      "key": [
+        "trade_date"
+      ],
+      "dates": {
+        "trade_date": {
+          "min": "2016-02-02",
+          "max": "2026-06-08",
+          "distinct": 2477,
+          "invalid": 0
+        }
+      },
+      "numeric_columns": {
+        "n_symbols": {
+          "observed": 2477,
+          "min": 13.0,
+          "max": 13.0,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 0
+        },
+        "equal_weight_ret_1d": {
+          "observed": 2476,
+          "min": -0.11811802673547254,
+          "max": 0.1637766529929463,
+          "invalid_or_nonfinite": 0,
+          "negative": 1129,
+          "noninteger": 2476
+        },
+        "dispersion_1d": {
+          "observed": 2476,
+          "min": 0.0022871344762352684,
+          "max": 0.25475361368012506,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 2476
+        },
+        "up_pct_1d": {
+          "observed": 2476,
+          "min": 0.0,
+          "max": 1.0,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 2388
+        },
+        "down3_pct_1d": {
+          "observed": 2476,
+          "min": 0.0,
+          "max": 1.0,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 583
+        },
+        "up3_pct_1d": {
+          "observed": 2476,
+          "min": 0.0,
+          "max": 1.0,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 831
+        },
+        "tail_down3_5d": {
+          "observed": 2472,
+          "min": 0.0,
+          "max": 1.0,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 1689
+        },
+        "tail_up3_5d": {
+          "observed": 2472,
+          "min": 0.0,
+          "max": 0.9230769230769231,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 2029
+        },
+        "total_volume": {
+          "observed": 2477,
+          "min": 4419475.0,
+          "max": 541976961.0,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 0
+        },
+        "total_turnover": {
+          "observed": 2477,
+          "min": 2890069537.95,
+          "max": 626744591415.85,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 2375
+        },
+        "avg_delivery_pct": {
+          "observed": 2475,
+          "min": 20.21,
+          "max": 71.92923076923077,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 2474
+        },
+        "total_delivery_qty": {
+          "observed": 2477,
+          "min": 0.0,
+          "max": 380859747.0,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 0
+        },
+        "avg_trades": {
+          "observed": 2477,
+          "min": 6479.2307692307695,
+          "max": 583679.1538461539,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 2293
+        },
+        "volume_hhi": {
+          "observed": 2477,
+          "min": 0.1065235404612088,
+          "max": 0.7832253931069914,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 2477
+        },
+        "delivery_hhi": {
+          "observed": 2475,
+          "min": 0.10350810816230892,
+          "max": 0.7817846170027692,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 2475
+        },
+        "tail_repair_ratio_5d": {
+          "observed": 1696,
+          "min": 0.0,
+          "max": 11.0,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 634
+        },
+        "sample_tail_damage_q90_fire": {
+          "observed": 2477,
+          "min": 0.0,
+          "max": 1.0,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 0
+        },
+        "sample_tail_damage_q95_fire": {
+          "observed": 2477,
+          "min": 0.0,
+          "max": 1.0,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 0
+        },
+        "sample_damage_cluster_5in10": {
+          "observed": 2477,
+          "min": 0.0,
+          "max": 1.0,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 0
+        }
+      },
+      "review_depth": "full row and field read; independent arithmetic/context checks recorded separately",
+      "new_coverage_upgrade": true,
+      "status_values": {
+        "SAMPLE_16_STOCKS_NOT_MARKET_WIDE": 2477
+      }
+    },
+    {
+      "member": "volume_delivery_batch_check_v0_1/nse_volume_delivery_16stocks_eq_merged.csv",
+      "bytes": 5104660,
+      "sha256": "03c8a3814e6eb00d3c9fd14e1f93f26decedb87121f2070933a2b622e7fc0e88",
+      "crc32": "80fb3a9a",
+      "crc_read_completed": true,
+      "data_rows": 32201,
+      "columns": 16,
+      "headers": [
+        "trade_date",
+        "symbol",
+        "series",
+        "prev_close",
+        "open",
+        "high",
+        "low",
+        "last",
+        "close",
+        "vwap",
+        "tot_traded_qty",
+        "tot_traded_value",
+        "total_trades",
+        "deliv_qty",
+        "deliv_perc",
+        "source_file"
+      ],
+      "data_fields": 515216,
+      "nonempty_data_fields": 515164,
+      "missing_by_column": {
+        "trade_date": 0,
+        "symbol": 0,
+        "series": 0,
+        "prev_close": 0,
+        "open": 0,
+        "high": 0,
+        "low": 0,
+        "last": 0,
+        "close": 0,
+        "vwap": 0,
+        "tot_traded_qty": 0,
+        "tot_traded_value": 0,
+        "total_trades": 0,
+        "deliv_qty": 26,
+        "deliv_perc": 26,
+        "source_file": 0
+      },
+      "row_width_errors": 0,
+      "duplicate_key_rows": 0,
+      "key": [
+        "symbol",
+        "series",
+        "trade_date"
+      ],
+      "dates": {
+        "trade_date": {
+          "min": "2016-02-02",
+          "max": "2026-06-08",
+          "distinct": 2477,
+          "invalid": 0
+        }
+      },
+      "numeric_columns": {
+        "prev_close": {
+          "observed": 32201,
+          "min": 95.2,
+          "max": 17292.0,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 30116
+        },
+        "open": {
+          "observed": 32201,
+          "min": 96.55,
+          "max": 17230.0,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 16909
+        },
+        "high": {
+          "observed": 32201,
+          "min": 97.85,
+          "max": 17370.0,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 22248
+        },
+        "low": {
+          "observed": 32201,
+          "min": 95.0,
+          "max": 17142.0,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 23430
+        },
+        "last": {
+          "observed": 32201,
+          "min": 95.2,
+          "max": 17289.0,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 20218
+        },
+        "close": {
+          "observed": 32201,
+          "min": 95.2,
+          "max": 17292.0,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 30116
+        },
+        "vwap": {
+          "observed": 32201,
+          "min": 96.49,
+          "max": 17235.1,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 31871
+        },
+        "tot_traded_qty": {
+          "observed": 32201,
+          "min": 11308.0,
+          "max": 262677081.0,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 0
+        },
+        "tot_traded_value": {
+          "observed": 32201,
+          "min": 19979700.05,
+          "max": 381639143690.1,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 30218
+        },
+        "total_trades": {
+          "observed": 32201,
+          "min": 1153.0,
+          "max": 2098772.0,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 0
+        },
+        "deliv_qty": {
+          "observed": 32175,
+          "min": 3549.0,
+          "max": 174212666.0,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 0
+        },
+        "deliv_perc": {
+          "observed": 32175,
+          "min": 3.68,
+          "max": 97.32,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 31841
+        }
+      },
+      "review_depth": "full row and field read; independent arithmetic/context checks recorded separately",
+      "new_coverage_upgrade": false
+    },
+    {
+      "member": "volume_delivery_batch_check_v0_1/readiness_status.csv",
+      "bytes": 835,
+      "sha256": "f4739b09cb0c0445645481bcdf0c8b1ec250a9c9a48c4c3a0b5e6f4abef393bc",
+      "crc32": "fe50815d",
+      "crc_read_completed": true,
+      "data_rows": 11,
+      "columns": 3,
+      "headers": [
+        "check",
+        "result",
+        "detail"
+      ],
+      "data_fields": 33,
+      "nonempty_data_fields": 33,
+      "missing_by_column": {
+        "check": 0,
+        "result": 0,
+        "detail": 0
+      },
+      "row_width_errors": 0,
+      "duplicate_key_rows": 0,
+      "key": [
+        "check"
+      ],
+      "dates": {},
+      "numeric_columns": {},
+      "review_depth": "full row and field read; independent arithmetic/context checks recorded separately",
+      "new_coverage_upgrade": true,
+      "complete_source_rows": [
+        {
+          "check": "feed_type",
+          "result": "PASS",
+          "detail": "Security-wise Price volume & Deliverable position data confirmed"
+        },
+        {
+          "check": "files_received",
+          "result": "30",
+          "detail": "CSV files inside uploaded ZIP"
+        },
+        {
+          "check": "raw_rows",
+          "result": "41112",
+          "detail": "all series before EQ filtering"
+        },
+        {
+          "check": "eq_rows_deduped",
+          "result": "32201",
+          "detail": "deduped rows with Series=EQ"
+        },
+        {
+          "check": "symbols",
+          "result": "16",
+          "detail": "BAJAJFINSV, BAJFINANCE, BHARTIARTL, DRREDDY, HDFCBANK, HINDUNILVR, ICICIBANK, INFY, M&M, MARUTI, ONGC, RELIANCE, SBIN, SUNPHARMA, TATASTEEL, TCS"
+        },
+        {
+          "check": "industry_groups",
+          "result": "9",
+          "detail": "Auto, Banks, Energy/Oil-Gas, FMCG, Finance/NBFC, IT, Metals, Pharma, Telecom"
+        },
+        {
+          "check": "date_range",
+          "result": "2016-02-02 to 2026-06-08",
+          "detail": "but coverage is uneven by symbol"
+        },
+        {
+          "check": "duplicate_rows_removed",
+          "result": "4954",
+          "detail": "duplicate symbol-date EQ rows from repeated files"
+        },
+        {
+          "check": "fii_derivatives",
+          "result": "MISSING",
+          "detail": "not in this ZIP"
+        },
+        {
+          "check": "participantwise_oi",
+          "result": "MISSING",
+          "detail": "not in this ZIP"
+        },
+        {
+          "check": "market_wide_edge_test",
+          "result": "HOLD",
+          "detail": "16 symbols only; enough for format + mini test, not full market signal proof"
+        }
+      ]
+    },
+    {
+      "member": "volume_delivery_batch_check_v0_1/source_file_summary.csv",
+      "bytes": 2854,
+      "sha256": "171d092d5a3463b0d2e437ef8245bd6ebdfce10593ff9936a69648780da5e9de",
+      "crc32": "0b615932",
+      "crc_read_completed": true,
+      "data_rows": 30,
+      "columns": 7,
+      "headers": [
+        "file_name",
+        "rows_raw",
+        "rows_eq",
+        "symbols",
+        "date_min",
+        "date_max",
+        "series_values"
+      ],
+      "data_fields": 210,
+      "nonempty_data_fields": 210,
+      "missing_by_column": {
+        "file_name": 0,
+        "rows_raw": 0,
+        "rows_eq": 0,
+        "symbols": 0,
+        "date_min": 0,
+        "date_max": 0,
+        "series_values": 0
+      },
+      "row_width_errors": 0,
+      "duplicate_key_rows": 0,
+      "key": [
+        "file_name"
+      ],
+      "dates": {
+        "date_min": {
+          "min": "2016-02-02",
+          "max": "2021-06-09",
+          "distinct": 2,
+          "invalid": 0
+        },
+        "date_max": {
+          "min": "2021-02-01",
+          "max": "2026-06-08",
+          "distinct": 2,
+          "invalid": 0
+        }
+      },
+      "numeric_columns": {
+        "rows_raw": {
+          "observed": 30,
+          "min": 1239.0,
+          "max": 4138.0,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 0
+        },
+        "rows_eq": {
+          "observed": 30,
+          "min": 1238.0,
+          "max": 1239.0,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 0
+        }
+      },
+      "review_depth": "full row and field read; independent arithmetic/context checks recorded separately",
+      "new_coverage_upgrade": true,
+      "complete_source_rows": [
+        {
+          "file_name": "02-02-2016-TO-01-02-2021-BAJAJFINSV-ALL-N (1).csv",
+          "rows_raw": "1239",
+          "rows_eq": "1238",
+          "symbols": "BAJAJFINSV",
+          "date_min": "2016-02-02",
+          "date_max": "2021-02-01",
+          "series_values": "BL,EQ"
+        },
+        {
+          "file_name": "02-02-2016-TO-01-02-2021-BAJAJFINSV-ALL-N.csv",
+          "rows_raw": "1239",
+          "rows_eq": "1238",
+          "symbols": "BAJAJFINSV",
+          "date_min": "2016-02-02",
+          "date_max": "2021-02-01",
+          "series_values": "BL,EQ"
+        },
+        {
+          "file_name": "02-02-2016-TO-01-02-2021-BHARTIARTL-ALL-N (1).csv",
+          "rows_raw": "1241",
+          "rows_eq": "1238",
+          "symbols": "BHARTIARTL",
+          "date_min": "2016-02-02",
+          "date_max": "2021-02-01",
+          "series_values": "BL,EQ"
+        },
+        {
+          "file_name": "02-02-2016-TO-01-02-2021-BHARTIARTL-ALL-N.csv",
+          "rows_raw": "1241",
+          "rows_eq": "1238",
+          "symbols": "BHARTIARTL",
+          "date_min": "2016-02-02",
+          "date_max": "2021-02-01",
+          "series_values": "BL,EQ"
+        },
+        {
+          "file_name": "02-02-2016-TO-01-02-2021-DRREDDY-ALL-N.csv",
+          "rows_raw": "1240",
+          "rows_eq": "1238",
+          "symbols": "DRREDDY",
+          "date_min": "2016-02-02",
+          "date_max": "2021-02-01",
+          "series_values": "BL,EQ"
+        },
+        {
+          "file_name": "02-02-2016-TO-01-02-2021-HDFCBANK-ALL-N.csv",
+          "rows_raw": "1424",
+          "rows_eq": "1238",
+          "symbols": "HDFCBANK",
+          "date_min": "2016-02-02",
+          "date_max": "2021-02-01",
+          "series_values": "BL,EQ,IL"
+        },
+        {
+          "file_name": "02-02-2016-TO-01-02-2021-HINDUNILVR-ALL-N.csv",
+          "rows_raw": "1239",
+          "rows_eq": "1238",
+          "symbols": "HINDUNILVR",
+          "date_min": "2016-02-02",
+          "date_max": "2021-02-01",
+          "series_values": "BL,EQ"
+        },
+        {
+          "file_name": "02-02-2016-TO-01-02-2021-INFY-ALL-N.csv",
+          "rows_raw": "1241",
+          "rows_eq": "1238",
+          "symbols": "INFY",
+          "date_min": "2016-02-02",
+          "date_max": "2021-02-01",
+          "series_values": "BL,EQ"
+        },
+        {
+          "file_name": "02-02-2016-TO-01-02-2021-M&M-ALL-N.csv",
+          "rows_raw": "1241",
+          "rows_eq": "1238",
+          "symbols": "M&M",
+          "date_min": "2016-02-02",
+          "date_max": "2021-02-01",
+          "series_values": "BL,EQ"
+        },
+        {
+          "file_name": "02-02-2016-TO-01-02-2021-MARUTI-ALL-N.csv",
+          "rows_raw": "1240",
+          "rows_eq": "1238",
+          "symbols": "MARUTI",
+          "date_min": "2016-02-02",
+          "date_max": "2021-02-01",
+          "series_values": "BL,EQ"
+        },
+        {
+          "file_name": "02-02-2016-TO-01-02-2021-RELIANCE-ALL-N.csv",
+          "rows_raw": "1240",
+          "rows_eq": "1238",
+          "symbols": "RELIANCE",
+          "date_min": "2016-02-02",
+          "date_max": "2021-02-01",
+          "series_values": "BL,EQ"
+        },
+        {
+          "file_name": "02-02-2016-TO-01-02-2021-SBIN-ALL-N.csv",
+          "rows_raw": "4138",
+          "rows_eq": "1238",
+          "symbols": "SBIN",
+          "date_min": "2016-02-02",
+          "date_max": "2021-02-01",
+          "series_values": "BL,EQ,N2,N3,N4,N5,N6"
+        },
+        {
+          "file_name": "02-02-2016-TO-01-02-2021-SUNPHARMA-ALL-N.csv",
+          "rows_raw": "1240",
+          "rows_eq": "1238",
+          "symbols": "SUNPHARMA",
+          "date_min": "2016-02-02",
+          "date_max": "2021-02-01",
+          "series_values": "BL,EQ"
+        },
+        {
+          "file_name": "02-02-2016-TO-01-02-2021-TATASTEEL-ALL-N.csv",
+          "rows_raw": "1828",
+          "rows_eq": "1238",
+          "symbols": "TATASTEEL",
+          "date_min": "2016-02-02",
+          "date_max": "2021-02-01",
+          "series_values": "E1,EQ"
+        },
+        {
+          "file_name": "02-02-2016-TO-01-02-2021-TCS-ALL-N.csv",
+          "rows_raw": "1242",
+          "rows_eq": "1238",
+          "symbols": "TCS",
+          "date_min": "2016-02-02",
+          "date_max": "2021-02-01",
+          "series_values": "BL,EQ"
+        },
+        {
+          "file_name": "9-06-2021-TO-9-06-2026-BAJFINANCE-ALL-N.csv",
+          "rows_raw": "1252",
+          "rows_eq": "1239",
+          "symbols": "BAJFINANCE",
+          "date_min": "2021-06-09",
+          "date_max": "2026-06-08",
+          "series_values": "BL,EQ"
+        },
+        {
+          "file_name": "9-06-2021-TO-9-06-2026-BHARTIARTL-ALL-N.csv",
+          "rows_raw": "1263",
+          "rows_eq": "1239",
+          "symbols": "BHARTIARTL",
+          "date_min": "2021-06-09",
+          "date_max": "2026-06-08",
+          "series_values": "BL,EQ"
+        },
+        {
+          "file_name": "9-06-2021-TO-9-06-2026-DRREDDY-ALL-N (1).csv",
+          "rows_raw": "1247",
+          "rows_eq": "1239",
+          "symbols": "DRREDDY",
+          "date_min": "2021-06-09",
+          "date_max": "2026-06-08",
+          "series_values": "BL,EQ"
+        },
+        {
+          "file_name": "9-06-2021-TO-9-06-2026-DRREDDY-ALL-N.csv",
+          "rows_raw": "1247",
+          "rows_eq": "1239",
+          "symbols": "DRREDDY",
+          "date_min": "2021-06-09",
+          "date_max": "2026-06-08",
+          "series_values": "BL,EQ"
+        },
+        {
+          "file_name": "9-06-2021-TO-9-06-2026-HDFCBANK-ALL-N.csv",
+          "rows_raw": "1274",
+          "rows_eq": "1239",
+          "symbols": "HDFCBANK",
+          "date_min": "2021-06-09",
+          "date_max": "2026-06-08",
+          "series_values": "BL,EQ,T0,W3"
+        },
+        {
+          "file_name": "9-06-2021-TO-9-06-2026-HINDUNILVR-ALL-N.csv",
+          "rows_raw": "1246",
+          "rows_eq": "1239",
+          "symbols": "HINDUNILVR",
+          "date_min": "2021-06-09",
+          "date_max": "2026-06-08",
+          "series_values": "BL,EQ"
+        },
+        {
+          "file_name": "9-06-2021-TO-9-06-2026-ICICIBANK-ALL-N.csv",
+          "rows_raw": "1254",
+          "rows_eq": "1239",
+          "symbols": "ICICIBANK",
+          "date_min": "2021-06-09",
+          "date_max": "2026-06-08",
+          "series_values": "BL,EQ"
+        },
+        {
+          "file_name": "9-06-2021-TO-9-06-2026-INFY-ALL-N.csv",
+          "rows_raw": "1255",
+          "rows_eq": "1239",
+          "symbols": "INFY",
+          "date_min": "2021-06-09",
+          "date_max": "2026-06-08",
+          "series_values": "BL,EQ,T0"
+        },
+        {
+          "file_name": "9-06-2021-TO-9-06-2026-MARUTI-ALL-N (1).csv",
+          "rows_raw": "1246",
+          "rows_eq": "1239",
+          "symbols": "MARUTI",
+          "date_min": "2021-06-09",
+          "date_max": "2026-06-08",
+          "series_values": "BL,EQ"
+        },
+        {
+          "file_name": "9-06-2021-TO-9-06-2026-MARUTI-ALL-N.csv",
+          "rows_raw": "1246",
+          "rows_eq": "1239",
+          "symbols": "MARUTI",
+          "date_min": "2021-06-09",
+          "date_max": "2026-06-08",
+          "series_values": "BL,EQ"
+        },
+        {
+          "file_name": "9-06-2021-TO-9-06-2026-ONGC-ALL-N.csv",
+          "rows_raw": "1251",
+          "rows_eq": "1239",
+          "symbols": "ONGC",
+          "date_min": "2021-06-09",
+          "date_max": "2026-06-08",
+          "series_values": "BL,EQ,T0"
+        },
+        {
+          "file_name": "9-06-2021-TO-9-06-2026-RELIANCE-ALL-N (1).csv",
+          "rows_raw": "1260",
+          "rows_eq": "1239",
+          "symbols": "RELIANCE",
+          "date_min": "2021-06-09",
+          "date_max": "2026-06-08",
+          "series_values": "BL,EQ,T0"
+        },
+        {
+          "file_name": "9-06-2021-TO-9-06-2026-SBIN-ALL-N (1).csv",
+          "rows_raw": "1285",
+          "rows_eq": "1239",
+          "symbols": "SBIN",
+          "date_min": "2021-06-09",
+          "date_max": "2026-06-08",
+          "series_values": "BL,EQ,T0"
+        },
+        {
+          "file_name": "9-06-2021-TO-9-06-2026-SUNPHARMA-ALL-N.csv",
+          "rows_raw": "1255",
+          "rows_eq": "1239",
+          "symbols": "SUNPHARMA",
+          "date_min": "2021-06-09",
+          "date_max": "2026-06-08",
+          "series_values": "BL,EQ"
+        },
+        {
+          "file_name": "9-06-2021-TO-9-06-2026-TATASTEEL-ALL-N.csv",
+          "rows_raw": "1258",
+          "rows_eq": "1239",
+          "symbols": "TATASTEEL",
+          "date_min": "2021-06-09",
+          "date_max": "2026-06-08",
+          "series_values": "BL,EQ,T0"
+        }
+      ]
+    },
+    {
+      "member": "volume_delivery_batch_check_v0_1/symbol_coverage_summary.csv",
+      "bytes": 992,
+      "sha256": "6caf6c1b875823d54a137b4f7eb1ea27792271db622322b4cf05ea1fde69ed7e",
+      "crc32": "67cbf1c1",
+      "crc_read_completed": true,
+      "data_rows": 16,
+      "columns": 7,
+      "headers": [
+        "symbol",
+        "rows",
+        "first_date",
+        "last_date",
+        "null_volume",
+        "null_delivery",
+        "avg_deliv_perc"
+      ],
+      "data_fields": 112,
+      "nonempty_data_fields": 112,
+      "missing_by_column": {
+        "symbol": 0,
+        "rows": 0,
+        "first_date": 0,
+        "last_date": 0,
+        "null_volume": 0,
+        "null_delivery": 0,
+        "avg_deliv_perc": 0
+      },
+      "row_width_errors": 0,
+      "duplicate_key_rows": 0,
+      "key": [
+        "symbol"
+      ],
+      "dates": {
+        "first_date": {
+          "min": "2016-02-02",
+          "max": "2021-06-09",
+          "distinct": 2,
+          "invalid": 0
+        },
+        "last_date": {
+          "min": "2021-02-01",
+          "max": "2026-06-08",
+          "distinct": 2,
+          "invalid": 0
+        }
+      },
+      "numeric_columns": {
+        "rows": {
+          "observed": 16,
+          "min": 1238.0,
+          "max": 2477.0,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 0
+        },
+        "null_volume": {
+          "observed": 16,
+          "min": 0.0,
+          "max": 0.0,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 0
+        },
+        "null_delivery": {
+          "observed": 16,
+          "min": 0.0,
+          "max": 2.0,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 0
+        },
+        "avg_deliv_perc": {
+          "observed": 16,
+          "min": 30.709789898989897,
+          "max": 61.39376969696969,
+          "invalid_or_nonfinite": 0,
+          "negative": 0,
+          "noninteger": 16
+        }
+      },
+      "review_depth": "full row and field read; independent arithmetic/context checks recorded separately",
+      "new_coverage_upgrade": true,
+      "complete_source_rows": [
+        {
+          "symbol": "BAJAJFINSV",
+          "rows": "1238",
+          "first_date": "2016-02-02",
+          "last_date": "2021-02-01",
+          "null_volume": "0",
+          "null_delivery": "2",
+          "avg_deliv_perc": "36.74654530744337"
+        },
+        {
+          "symbol": "BAJFINANCE",
+          "rows": "1239",
+          "first_date": "2021-06-09",
+          "last_date": "2026-06-08",
+          "null_volume": "0",
+          "null_delivery": "0",
+          "avg_deliv_perc": "45.845197740112994"
+        },
+        {
+          "symbol": "BHARTIARTL",
+          "rows": "2477",
+          "first_date": "2016-02-02",
+          "last_date": "2026-06-08",
+          "null_volume": "0",
+          "null_delivery": "2",
+          "avg_deliv_perc": "53.28144242424243"
+        },
+        {
+          "symbol": "DRREDDY",
+          "rows": "2477",
+          "first_date": "2016-02-02",
+          "last_date": "2026-06-08",
+          "null_volume": "0",
+          "null_delivery": "2",
+          "avg_deliv_perc": "44.845696969696974"
+        },
+        {
+          "symbol": "HDFCBANK",
+          "rows": "2477",
+          "first_date": "2016-02-02",
+          "last_date": "2026-06-08",
+          "null_volume": "0",
+          "null_delivery": "2",
+          "avg_deliv_perc": "58.10467878787878"
+        },
+        {
+          "symbol": "HINDUNILVR",
+          "rows": "2477",
+          "first_date": "2016-02-02",
+          "last_date": "2026-06-08",
+          "null_volume": "0",
+          "null_delivery": "2",
+          "avg_deliv_perc": "61.39376969696969"
+        },
+        {
+          "symbol": "ICICIBANK",
+          "rows": "1239",
+          "first_date": "2021-06-09",
+          "last_date": "2026-06-08",
+          "null_volume": "0",
+          "null_delivery": "0",
+          "avg_deliv_perc": "56.42986279257466"
+        },
+        {
+          "symbol": "INFY",
+          "rows": "2477",
+          "first_date": "2016-02-02",
+          "last_date": "2026-06-08",
+          "null_volume": "0",
+          "null_delivery": "2",
+          "avg_deliv_perc": "60.78051313131313"
+        },
+        {
+          "symbol": "M&M",
+          "rows": "1238",
+          "first_date": "2016-02-02",
+          "last_date": "2021-02-01",
+          "null_volume": "0",
+          "null_delivery": "2",
+          "avg_deliv_perc": "50.9848786407767"
+        },
+        {
+          "symbol": "MARUTI",
+          "rows": "2477",
+          "first_date": "2016-02-02",
+          "last_date": "2026-06-08",
+          "null_volume": "0",
+          "null_delivery": "2",
+          "avg_deliv_perc": "45.389228282828284"
+        },
+        {
+          "symbol": "ONGC",
+          "rows": "1239",
+          "first_date": "2021-06-09",
+          "last_date": "2026-06-08",
+          "null_volume": "0",
+          "null_delivery": "0",
+          "avg_deliv_perc": "47.03763518966909"
+        },
+        {
+          "symbol": "RELIANCE",
+          "rows": "2477",
+          "first_date": "2016-02-02",
+          "last_date": "2026-06-08",
+          "null_volume": "0",
+          "null_delivery": "2",
+          "avg_deliv_perc": "50.95736161616162"
+        },
+        {
+          "symbol": "SBIN",
+          "rows": "2477",
+          "first_date": "2016-02-02",
+          "last_date": "2026-06-08",
+          "null_volume": "0",
+          "null_delivery": "2",
+          "avg_deliv_perc": "36.431268686868684"
+        },
+        {
+          "symbol": "SUNPHARMA",
+          "rows": "2477",
+          "first_date": "2016-02-02",
+          "last_date": "2026-06-08",
+          "null_volume": "0",
+          "null_delivery": "2",
+          "avg_deliv_perc": "48.35251717171717"
+        },
+        {
+          "symbol": "TATASTEEL",
+          "rows": "2477",
+          "first_date": "2016-02-02",
+          "last_date": "2026-06-08",
+          "null_volume": "0",
+          "null_delivery": "2",
+          "avg_deliv_perc": "30.709789898989897"
+        },
+        {
+          "symbol": "TCS",
+          "rows": "1238",
+          "first_date": "2016-02-02",
+          "last_date": "2021-02-01",
+          "null_volume": "0",
+          "null_delivery": "2",
+          "avg_deliv_perc": "54.99742718446603"
+        }
+      ]
+    },
+    {
+      "member": "volume_delivery_batch_check_v0_1/symbol_industry_map.csv",
+      "bytes": 276,
+      "sha256": "a71a4fec594cc6d08a0f8cbbe0898fefb034b5f1c0d27d236998402efecd2f5c",
+      "crc32": "4e2d18ac",
+      "crc_read_completed": true,
+      "data_rows": 16,
+      "columns": 2,
+      "headers": [
+        "symbol",
+        "industry_group"
+      ],
+      "data_fields": 32,
+      "nonempty_data_fields": 32,
+      "missing_by_column": {
+        "symbol": 0,
+        "industry_group": 0
+      },
+      "row_width_errors": 0,
+      "duplicate_key_rows": 0,
+      "key": [
+        "symbol"
+      ],
+      "dates": {},
+      "numeric_columns": {},
+      "review_depth": "full row and field read; independent arithmetic/context checks recorded separately",
+      "new_coverage_upgrade": true,
+      "complete_source_rows": [
+        {
+          "symbol": "M&M",
+          "industry_group": "Auto"
+        },
+        {
+          "symbol": "MARUTI",
+          "industry_group": "Auto"
+        },
+        {
+          "symbol": "HDFCBANK",
+          "industry_group": "Banks"
+        },
+        {
+          "symbol": "ICICIBANK",
+          "industry_group": "Banks"
+        },
+        {
+          "symbol": "SBIN",
+          "industry_group": "Banks"
+        },
+        {
+          "symbol": "ONGC",
+          "industry_group": "Energy/Oil-Gas"
+        },
+        {
+          "symbol": "RELIANCE",
+          "industry_group": "Energy/Oil-Gas"
+        },
+        {
+          "symbol": "HINDUNILVR",
+          "industry_group": "FMCG"
+        },
+        {
+          "symbol": "BAJAJFINSV",
+          "industry_group": "Finance/NBFC"
+        },
+        {
+          "symbol": "BAJFINANCE",
+          "industry_group": "Finance/NBFC"
+        },
+        {
+          "symbol": "INFY",
+          "industry_group": "IT"
+        },
+        {
+          "symbol": "TCS",
+          "industry_group": "IT"
+        },
+        {
+          "symbol": "TATASTEEL",
+          "industry_group": "Metals"
+        },
+        {
+          "symbol": "DRREDDY",
+          "industry_group": "Pharma"
+        },
+        {
+          "symbol": "SUNPHARMA",
+          "industry_group": "Pharma"
+        },
+        {
+          "symbol": "BHARTIARTL",
+          "industry_group": "Telecom"
+        }
+      ]
+    }
+  ],
+  "summary_reconciliation": {
+    "source_claim_totals": {
+      "rows_raw_sum": 41112,
+      "rows_eq_sum": 37155,
+      "implied_duplicate_eq_rows_removed": 4954,
+      "declared_source_labels": 30,
+      "retained_source_labels": 26,
+      "declared_labels_not_retained": [
+        "02-02-2016-TO-01-02-2021-BAJAJFINSV-ALL-N.csv",
+        "02-02-2016-TO-01-02-2021-BHARTIARTL-ALL-N.csv",
+        "9-06-2021-TO-9-06-2026-DRREDDY-ALL-N.csv",
+        "9-06-2021-TO-9-06-2026-MARUTI-ALL-N.csv"
+      ],
+      "retained_labels_not_declared": []
+    },
+    "symbol_coverage_checks": [
+      {
+        "symbol": "BAJAJFINSV",
+        "mismatched_columns": [],
+        "computed": {
+          "rows": 1238,
+          "first_date": "2016-02-02",
+          "last_date": "2021-02-01",
+          "null_volume": 0,
+          "null_delivery": 2,
+          "avg_deliv_perc": 36.74654530744336
+        }
+      },
+      {
+        "symbol": "BAJFINANCE",
+        "mismatched_columns": [],
+        "computed": {
+          "rows": 1239,
+          "first_date": "2021-06-09",
+          "last_date": "2026-06-08",
+          "null_volume": 0,
+          "null_delivery": 0,
+          "avg_deliv_perc": 45.845197740112994
+        }
+      },
+      {
+        "symbol": "BHARTIARTL",
+        "mismatched_columns": [],
+        "computed": {
+          "rows": 2477,
+          "first_date": "2016-02-02",
+          "last_date": "2026-06-08",
+          "null_volume": 0,
+          "null_delivery": 2,
+          "avg_deliv_perc": 53.28144242424243
+        }
+      },
+      {
+        "symbol": "DRREDDY",
+        "mismatched_columns": [],
+        "computed": {
+          "rows": 2477,
+          "first_date": "2016-02-02",
+          "last_date": "2026-06-08",
+          "null_volume": 0,
+          "null_delivery": 2,
+          "avg_deliv_perc": 44.845696969696974
+        }
+      },
+      {
+        "symbol": "HDFCBANK",
+        "mismatched_columns": [],
+        "computed": {
+          "rows": 2477,
+          "first_date": "2016-02-02",
+          "last_date": "2026-06-08",
+          "null_volume": 0,
+          "null_delivery": 2,
+          "avg_deliv_perc": 58.1046787878788
+        }
+      },
+      {
+        "symbol": "HINDUNILVR",
+        "mismatched_columns": [],
+        "computed": {
+          "rows": 2477,
+          "first_date": "2016-02-02",
+          "last_date": "2026-06-08",
+          "null_volume": 0,
+          "null_delivery": 2,
+          "avg_deliv_perc": 61.393769696969706
+        }
+      },
+      {
+        "symbol": "ICICIBANK",
+        "mismatched_columns": [],
+        "computed": {
+          "rows": 1239,
+          "first_date": "2021-06-09",
+          "last_date": "2026-06-08",
+          "null_volume": 0,
+          "null_delivery": 0,
+          "avg_deliv_perc": 56.42986279257465
+        }
+      },
+      {
+        "symbol": "INFY",
+        "mismatched_columns": [],
+        "computed": {
+          "rows": 2477,
+          "first_date": "2016-02-02",
+          "last_date": "2026-06-08",
+          "null_volume": 0,
+          "null_delivery": 2,
+          "avg_deliv_perc": 60.78051313131313
+        }
+      },
+      {
+        "symbol": "M&M",
+        "mismatched_columns": [],
+        "computed": {
+          "rows": 1238,
+          "first_date": "2016-02-02",
+          "last_date": "2021-02-01",
+          "null_volume": 0,
+          "null_delivery": 2,
+          "avg_deliv_perc": 50.98487864077671
+        }
+      },
+      {
+        "symbol": "MARUTI",
+        "mismatched_columns": [],
+        "computed": {
+          "rows": 2477,
+          "first_date": "2016-02-02",
+          "last_date": "2026-06-08",
+          "null_volume": 0,
+          "null_delivery": 2,
+          "avg_deliv_perc": 45.389228282828284
+        }
+      },
+      {
+        "symbol": "ONGC",
+        "mismatched_columns": [],
+        "computed": {
+          "rows": 1239,
+          "first_date": "2021-06-09",
+          "last_date": "2026-06-08",
+          "null_volume": 0,
+          "null_delivery": 0,
+          "avg_deliv_perc": 47.03763518966909
+        }
+      },
+      {
+        "symbol": "RELIANCE",
+        "mismatched_columns": [],
+        "computed": {
+          "rows": 2477,
+          "first_date": "2016-02-02",
+          "last_date": "2026-06-08",
+          "null_volume": 0,
+          "null_delivery": 2,
+          "avg_deliv_perc": 50.95736161616162
+        }
+      },
+      {
+        "symbol": "SBIN",
+        "mismatched_columns": [],
+        "computed": {
+          "rows": 2477,
+          "first_date": "2016-02-02",
+          "last_date": "2026-06-08",
+          "null_volume": 0,
+          "null_delivery": 2,
+          "avg_deliv_perc": 36.431268686868684
+        }
+      },
+      {
+        "symbol": "SUNPHARMA",
+        "mismatched_columns": [],
+        "computed": {
+          "rows": 2477,
+          "first_date": "2016-02-02",
+          "last_date": "2026-06-08",
+          "null_volume": 0,
+          "null_delivery": 2,
+          "avg_deliv_perc": 48.352517171717174
+        }
+      },
+      {
+        "symbol": "TATASTEEL",
+        "mismatched_columns": [],
+        "computed": {
+          "rows": 2477,
+          "first_date": "2016-02-02",
+          "last_date": "2026-06-08",
+          "null_volume": 0,
+          "null_delivery": 2,
+          "avg_deliv_perc": 30.709789898989904
+        }
+      },
+      {
+        "symbol": "TCS",
+        "mismatched_columns": [],
+        "computed": {
+          "rows": 1238,
+          "first_date": "2016-02-02",
+          "last_date": "2021-02-01",
+          "null_volume": 0,
+          "null_delivery": 2,
+          "avg_deliv_perc": 54.99742718446603
+        }
+      }
+    ],
+    "industry_checks": [
+      {
+        "industry_group": "Auto",
+        "symbols_and_count_match": true
+      },
+      {
+        "industry_group": "Banks",
+        "symbols_and_count_match": true
+      },
+      {
+        "industry_group": "Energy/Oil-Gas",
+        "symbols_and_count_match": true
+      },
+      {
+        "industry_group": "FMCG",
+        "symbols_and_count_match": true
+      },
+      {
+        "industry_group": "Finance/NBFC",
+        "symbols_and_count_match": true
+      },
+      {
+        "industry_group": "IT",
+        "symbols_and_count_match": true
+      },
+      {
+        "industry_group": "Metals",
+        "symbols_and_count_match": true
+      },
+      {
+        "industry_group": "Pharma",
+        "symbols_and_count_match": true
+      },
+      {
+        "industry_group": "Telecom",
+        "symbols_and_count_match": true
+      }
+    ],
+    "mapped_symbols_equal_source_union": true,
+    "source_label_checks": [
+      {
+        "file_name": "02-02-2016-TO-01-02-2021-BAJAJFINSV-ALL-N (1).csv",
+        "declared_eq_rows": 1238,
+        "retained_rows": 1238,
+        "retained_rows_not_above_declared": true,
+        "retained_symbols_match_claim": true,
+        "retained_dates_within_claim": true
+      },
+      {
+        "file_name": "02-02-2016-TO-01-02-2021-BAJAJFINSV-ALL-N.csv",
+        "declared_eq_rows": 1238,
+        "retained_rows": 0,
+        "retained_rows_not_above_declared": true,
+        "retained_symbols_match_claim": true,
+        "retained_dates_within_claim": true
+      },
+      {
+        "file_name": "02-02-2016-TO-01-02-2021-BHARTIARTL-ALL-N (1).csv",
+        "declared_eq_rows": 1238,
+        "retained_rows": 1238,
+        "retained_rows_not_above_declared": true,
+        "retained_symbols_match_claim": true,
+        "retained_dates_within_claim": true
+      },
+      {
+        "file_name": "02-02-2016-TO-01-02-2021-BHARTIARTL-ALL-N.csv",
+        "declared_eq_rows": 1238,
+        "retained_rows": 0,
+        "retained_rows_not_above_declared": true,
+        "retained_symbols_match_claim": true,
+        "retained_dates_within_claim": true
+      },
+      {
+        "file_name": "02-02-2016-TO-01-02-2021-DRREDDY-ALL-N.csv",
+        "declared_eq_rows": 1238,
+        "retained_rows": 1238,
+        "retained_rows_not_above_declared": true,
+        "retained_symbols_match_claim": true,
+        "retained_dates_within_claim": true
+      },
+      {
+        "file_name": "02-02-2016-TO-01-02-2021-HDFCBANK-ALL-N.csv",
+        "declared_eq_rows": 1238,
+        "retained_rows": 1238,
+        "retained_rows_not_above_declared": true,
+        "retained_symbols_match_claim": true,
+        "retained_dates_within_claim": true
+      },
+      {
+        "file_name": "02-02-2016-TO-01-02-2021-HINDUNILVR-ALL-N.csv",
+        "declared_eq_rows": 1238,
+        "retained_rows": 1238,
+        "retained_rows_not_above_declared": true,
+        "retained_symbols_match_claim": true,
+        "retained_dates_within_claim": true
+      },
+      {
+        "file_name": "02-02-2016-TO-01-02-2021-INFY-ALL-N.csv",
+        "declared_eq_rows": 1238,
+        "retained_rows": 1238,
+        "retained_rows_not_above_declared": true,
+        "retained_symbols_match_claim": true,
+        "retained_dates_within_claim": true
+      },
+      {
+        "file_name": "02-02-2016-TO-01-02-2021-M&M-ALL-N.csv",
+        "declared_eq_rows": 1238,
+        "retained_rows": 1238,
+        "retained_rows_not_above_declared": true,
+        "retained_symbols_match_claim": true,
+        "retained_dates_within_claim": true
+      },
+      {
+        "file_name": "02-02-2016-TO-01-02-2021-MARUTI-ALL-N.csv",
+        "declared_eq_rows": 1238,
+        "retained_rows": 1238,
+        "retained_rows_not_above_declared": true,
+        "retained_symbols_match_claim": true,
+        "retained_dates_within_claim": true
+      },
+      {
+        "file_name": "02-02-2016-TO-01-02-2021-RELIANCE-ALL-N.csv",
+        "declared_eq_rows": 1238,
+        "retained_rows": 1238,
+        "retained_rows_not_above_declared": true,
+        "retained_symbols_match_claim": true,
+        "retained_dates_within_claim": true
+      },
+      {
+        "file_name": "02-02-2016-TO-01-02-2021-SBIN-ALL-N.csv",
+        "declared_eq_rows": 1238,
+        "retained_rows": 1238,
+        "retained_rows_not_above_declared": true,
+        "retained_symbols_match_claim": true,
+        "retained_dates_within_claim": true
+      },
+      {
+        "file_name": "02-02-2016-TO-01-02-2021-SUNPHARMA-ALL-N.csv",
+        "declared_eq_rows": 1238,
+        "retained_rows": 1238,
+        "retained_rows_not_above_declared": true,
+        "retained_symbols_match_claim": true,
+        "retained_dates_within_claim": true
+      },
+      {
+        "file_name": "02-02-2016-TO-01-02-2021-TATASTEEL-ALL-N.csv",
+        "declared_eq_rows": 1238,
+        "retained_rows": 1238,
+        "retained_rows_not_above_declared": true,
+        "retained_symbols_match_claim": true,
+        "retained_dates_within_claim": true
+      },
+      {
+        "file_name": "02-02-2016-TO-01-02-2021-TCS-ALL-N.csv",
+        "declared_eq_rows": 1238,
+        "retained_rows": 1238,
+        "retained_rows_not_above_declared": true,
+        "retained_symbols_match_claim": true,
+        "retained_dates_within_claim": true
+      },
+      {
+        "file_name": "9-06-2021-TO-9-06-2026-BAJFINANCE-ALL-N.csv",
+        "declared_eq_rows": 1239,
+        "retained_rows": 1239,
+        "retained_rows_not_above_declared": true,
+        "retained_symbols_match_claim": true,
+        "retained_dates_within_claim": true
+      },
+      {
+        "file_name": "9-06-2021-TO-9-06-2026-BHARTIARTL-ALL-N.csv",
+        "declared_eq_rows": 1239,
+        "retained_rows": 1239,
+        "retained_rows_not_above_declared": true,
+        "retained_symbols_match_claim": true,
+        "retained_dates_within_claim": true
+      },
+      {
+        "file_name": "9-06-2021-TO-9-06-2026-DRREDDY-ALL-N (1).csv",
+        "declared_eq_rows": 1239,
+        "retained_rows": 1239,
+        "retained_rows_not_above_declared": true,
+        "retained_symbols_match_claim": true,
+        "retained_dates_within_claim": true
+      },
+      {
+        "file_name": "9-06-2021-TO-9-06-2026-DRREDDY-ALL-N.csv",
+        "declared_eq_rows": 1239,
+        "retained_rows": 0,
+        "retained_rows_not_above_declared": true,
+        "retained_symbols_match_claim": true,
+        "retained_dates_within_claim": true
+      },
+      {
+        "file_name": "9-06-2021-TO-9-06-2026-HDFCBANK-ALL-N.csv",
+        "declared_eq_rows": 1239,
+        "retained_rows": 1239,
+        "retained_rows_not_above_declared": true,
+        "retained_symbols_match_claim": true,
+        "retained_dates_within_claim": true
+      },
+      {
+        "file_name": "9-06-2021-TO-9-06-2026-HINDUNILVR-ALL-N.csv",
+        "declared_eq_rows": 1239,
+        "retained_rows": 1239,
+        "retained_rows_not_above_declared": true,
+        "retained_symbols_match_claim": true,
+        "retained_dates_within_claim": true
+      },
+      {
+        "file_name": "9-06-2021-TO-9-06-2026-ICICIBANK-ALL-N.csv",
+        "declared_eq_rows": 1239,
+        "retained_rows": 1239,
+        "retained_rows_not_above_declared": true,
+        "retained_symbols_match_claim": true,
+        "retained_dates_within_claim": true
+      },
+      {
+        "file_name": "9-06-2021-TO-9-06-2026-INFY-ALL-N.csv",
+        "declared_eq_rows": 1239,
+        "retained_rows": 1239,
+        "retained_rows_not_above_declared": true,
+        "retained_symbols_match_claim": true,
+        "retained_dates_within_claim": true
+      },
+      {
+        "file_name": "9-06-2021-TO-9-06-2026-MARUTI-ALL-N (1).csv",
+        "declared_eq_rows": 1239,
+        "retained_rows": 1239,
+        "retained_rows_not_above_declared": true,
+        "retained_symbols_match_claim": true,
+        "retained_dates_within_claim": true
+      },
+      {
+        "file_name": "9-06-2021-TO-9-06-2026-MARUTI-ALL-N.csv",
+        "declared_eq_rows": 1239,
+        "retained_rows": 0,
+        "retained_rows_not_above_declared": true,
+        "retained_symbols_match_claim": true,
+        "retained_dates_within_claim": true
+      },
+      {
+        "file_name": "9-06-2021-TO-9-06-2026-ONGC-ALL-N.csv",
+        "declared_eq_rows": 1239,
+        "retained_rows": 1239,
+        "retained_rows_not_above_declared": true,
+        "retained_symbols_match_claim": true,
+        "retained_dates_within_claim": true
+      },
+      {
+        "file_name": "9-06-2021-TO-9-06-2026-RELIANCE-ALL-N (1).csv",
+        "declared_eq_rows": 1239,
+        "retained_rows": 1239,
+        "retained_rows_not_above_declared": true,
+        "retained_symbols_match_claim": true,
+        "retained_dates_within_claim": true
+      },
+      {
+        "file_name": "9-06-2021-TO-9-06-2026-SBIN-ALL-N (1).csv",
+        "declared_eq_rows": 1239,
+        "retained_rows": 1239,
+        "retained_rows_not_above_declared": true,
+        "retained_symbols_match_claim": true,
+        "retained_dates_within_claim": true
+      },
+      {
+        "file_name": "9-06-2021-TO-9-06-2026-SUNPHARMA-ALL-N.csv",
+        "declared_eq_rows": 1239,
+        "retained_rows": 1239,
+        "retained_rows_not_above_declared": true,
+        "retained_symbols_match_claim": true,
+        "retained_dates_within_claim": true
+      },
+      {
+        "file_name": "9-06-2021-TO-9-06-2026-TATASTEEL-ALL-N.csv",
+        "declared_eq_rows": 1239,
+        "retained_rows": 1239,
+        "retained_rows_not_above_declared": true,
+        "retained_symbols_match_claim": true,
+        "retained_dates_within_claim": true
+      }
+    ],
+    "readiness_claims": "Saved PASS/HOLD/MISSING are source claims, not acceptance decisions. 30 files means claimed upstream raw set; this ZIP has only 8 CSVs. Totals, symbol/date/industry summaries reconcile to this stored merged sample.",
+    "upstream_raw_reverification_this_batch": false,
+    "prior_raw_reconciliation_pointer": {
+      "file": "data/asset-review/additional-asset-evidence-2026-09-24.json",
+      "locator": "/macro_and_equity/comparison_with_existing_merged_delivery",
+      "description": "Prior full raw-to-merged EQ key/value check; merged source SHA matches. Its result is reused, not represented as new upstream verification."
+    }
+  },
+  "units": {
+    "prices": "Source-normalized price fields; source currency/provider/adjustment not newly verified.",
+    "tot_traded_value/total_turnover": "Rupee turnover inherited from prior raw header Turnover ₹, not crore; no new provider reconciliation.",
+    "tot_traded_qty/deliv_qty/total_volume/total_delivery_qty": "Traded/deliverable quantities, not cash or ownership percentage.",
+    "deliv_perc/avg_delivery_pct": "0–100 percentage scale.",
+    "returns/dispersion/breadth/tails/distribution_count_pct/accumulation_count_pct": "0–1 fraction scale for percentages; returns and dispersion in fractional price-change units.",
+    "volume_hhi/delivery_hhi/tail_repair_ratio_5d": "Dimensionless concentration / ratio.",
+    "trades/counts/flags": "Trade counts, sample-symbol counts or binary research flags as named; not shares added to universe."
+  },
+  "independent_recomputation": {
+    "definition_status": "Inferred reproducing transformations; the archive does not supply formula code or timing contracts.",
+    "formulas": {
+      "equal_weight_ret_1d": "Mean of available close/previous stored same-symbol close - 1; no date-gap reset.",
+      "dispersion_1d": "Sample standard deviation (ddof=1) of available same-symbol stored-close returns.",
+      "up_pct_1d/down3_pct_1d/up3_pct_1d": "Count(ret1 > 0 / ret1 < -0.03 / ret1 > 0.03) divided by all source symbols on date; missing comparison=false. Result missing only when all returns missing.",
+      "tail_down3_5d/tail_up3_5d": "Count(close/5th prior stored same-symbol close - 1 < -0.03 / > 0.03) divided by all source symbols on date; missing comparison=false. Result missing only when all five-observation returns missing.",
+      "total_volume/total_turnover": "Sum of source tot_traded_qty / tot_traded_value by observed date.",
+      "avg_delivery_pct/avg_trades": "Mean of nonmissing source deliv_perc / total_trades.",
+      "total_delivery_qty": "Missing-skipping sum of deliv_qty; all-missing groups become zero.",
+      "volume_hhi/delivery_hhi": "Sum of squared stock quantity shares of daily total, with zero denominator missing.",
+      "tail_repair_ratio_5d": "tail_up3_5d / tail_down3_5d; zero denominator gives missing.",
+      "sample_tail_damage_q90_fire/sample_tail_damage_q95_fire": "Reproduced by tail_down3_5d >= its full-sample q90/q95; missing comparisons give zero. Producer/calibration timestamp not supplied.",
+      "sample_damage_cluster_5in10": "Reproduced by count of q90 fires in trailing 10 observations >=5. min_periods=1 and min_periods=10 both match; initial-window policy cannot be uniquely identified."
+    },
+    "comparison_default_absolute_tolerance": 1e-10,
+    "turnover_absolute_tolerance": 0.0001,
+    "checks": {
+      "n_symbols": {
+        "rows": 2477,
+        "missingness_mismatches": 0,
+        "value_mismatches": 0,
+        "max_abs_diff": 0.0,
+        "mismatch_dates": []
+      },
+      "equal_weight_ret_1d": {
+        "rows": 2477,
+        "missingness_mismatches": 0,
+        "value_mismatches": 0,
+        "max_abs_diff": 9.974659986866641e-17,
+        "mismatch_dates": []
+      },
+      "dispersion_1d_ddof1": {
+        "rows": 2477,
+        "missingness_mismatches": 0,
+        "value_mismatches": 0,
+        "max_abs_diff": 1.0061396160665481e-16,
+        "mismatch_dates": []
+      },
+      "dispersion_1d_ddof0": {
+        "rows": 2477,
+        "missingness_mismatches": 0,
+        "value_mismatches": 2476,
+        "max_abs_diff": 0.011960822583783753,
+        "mismatch_dates": [
+          "2016-02-03",
+          "2016-02-04",
+          "2016-02-05",
+          "2016-02-08",
+          "2016-02-09",
+          "2016-02-10",
+          "2016-02-11",
+          "2016-02-12",
+          "2016-02-15",
+          "2016-02-16",
+          "2016-02-17",
+          "2016-02-18"
+        ]
+      },
+      "total_volume": {
+        "rows": 2477,
+        "missingness_mismatches": 0,
+        "value_mismatches": 0,
+        "max_abs_diff": 0.0,
+        "mismatch_dates": []
+      },
+      "total_turnover": {
+        "rows": 2477,
+        "missingness_mismatches": 0,
+        "value_mismatches": 0,
+        "max_abs_diff": 6.103515625e-05,
+        "mismatch_dates": []
+      },
+      "avg_delivery_pct": {
+        "rows": 2477,
+        "missingness_mismatches": 0,
+        "value_mismatches": 0,
+        "max_abs_diff": 7.105427357601002e-15,
+        "mismatch_dates": []
+      },
+      "total_delivery_qty": {
+        "rows": 2477,
+        "missingness_mismatches": 0,
+        "value_mismatches": 0,
+        "max_abs_diff": 0.0,
+        "mismatch_dates": []
+      },
+      "avg_trades": {
+        "rows": 2477,
+        "missingness_mismatches": 0,
+        "value_mismatches": 0,
+        "max_abs_diff": 5.820766091346741e-11,
+        "mismatch_dates": []
+      },
+      "up_pct_1d_all_rows_denominator": {
+        "rows": 2477,
+        "missingness_mismatches": 0,
+        "value_mismatches": 0,
+        "max_abs_diff": 1.1102230246251565e-16,
+        "mismatch_dates": []
+      },
+      "up_pct_1d_valid_rows_denominator": {
+        "rows": 2477,
+        "missingness_mismatches": 0,
+        "value_mismatches": 1,
+        "max_abs_diff": 0.18461538461538463,
+        "mismatch_dates": [
+          "2021-06-09"
+        ]
+      },
+      "down3_pct_1d_all_rows_denominator": {
+        "rows": 2477,
+        "missingness_mismatches": 0,
+        "value_mismatches": 0,
+        "max_abs_diff": 1.1102230246251565e-16,
+        "mismatch_dates": []
+      },
+      "down3_pct_1d_valid_rows_denominator": {
+        "rows": 2477,
+        "missingness_mismatches": 0,
+        "value_mismatches": 1,
+        "max_abs_diff": 0.023076923076923106,
+        "mismatch_dates": [
+          "2021-06-09"
+        ]
+      },
+      "up3_pct_1d_all_rows_denominator": {
+        "rows": 2477,
+        "missingness_mismatches": 0,
+        "value_mismatches": 0,
+        "max_abs_diff": 8.326672684688674e-17,
+        "mismatch_dates": []
+      },
+      "up3_pct_1d_valid_rows_denominator": {
+        "rows": 2477,
+        "missingness_mismatches": 0,
+        "value_mismatches": 1,
+        "max_abs_diff": 0.16153846153846152,
+        "mismatch_dates": [
+          "2021-06-09"
+        ]
+      },
+      "tail_down3_5d_all_rows_denominator": {
+        "rows": 2477,
+        "missingness_mismatches": 0,
+        "value_mismatches": 0,
+        "max_abs_diff": 1.1102230246251565e-16,
+        "mismatch_dates": []
+      },
+      "tail_down3_5d_valid_rows_denominator": {
+        "rows": 2477,
+        "missingness_mismatches": 0,
+        "value_mismatches": 4,
+        "max_abs_diff": 0.04615384615384621,
+        "mismatch_dates": [
+          "2021-06-09",
+          "2021-06-10",
+          "2021-06-11",
+          "2021-06-15"
+        ]
+      },
+      "tail_up3_5d_all_rows_denominator": {
+        "rows": 2477,
+        "missingness_mismatches": 0,
+        "value_mismatches": 0,
+        "max_abs_diff": 1.1102230246251565e-16,
+        "mismatch_dates": []
+      },
+      "tail_up3_5d_valid_rows_denominator": {
+        "rows": 2477,
+        "missingness_mismatches": 0,
+        "value_mismatches": 5,
+        "max_abs_diff": 0.18461538461538463,
+        "mismatch_dates": [
+          "2021-06-09",
+          "2021-06-10",
+          "2021-06-11",
+          "2021-06-14",
+          "2021-06-15"
+        ]
+      },
+      "volume_hhi": {
+        "rows": 2477,
+        "missingness_mismatches": 0,
+        "value_mismatches": 0,
+        "max_abs_diff": 1.3877787807814457e-16,
+        "mismatch_dates": []
+      },
+      "delivery_hhi": {
+        "rows": 2477,
+        "missingness_mismatches": 0,
+        "value_mismatches": 0,
+        "max_abs_diff": 2.220446049250313e-16,
+        "mismatch_dates": []
+      },
+      "tail_repair_ratio_5d": {
+        "rows": 2477,
+        "missingness_mismatches": 0,
+        "value_mismatches": 0,
+        "max_abs_diff": 3.552713678800501e-15,
+        "mismatch_dates": []
+      },
+      "cluster_q90_5in10_min1": {
+        "rows": 2477,
+        "missingness_mismatches": 0,
+        "value_mismatches": 0,
+        "max_abs_diff": 0.0,
+        "mismatch_dates": []
+      },
+      "cluster_q90_5in10_min10": {
+        "rows": 2477,
+        "missingness_mismatches": 0,
+        "value_mismatches": 0,
+        "max_abs_diff": 0.0,
+        "mismatch_dates": []
+      }
+    },
+    "quantile_flag_reconstruction": {
+      "sample_tail_damage_q90_fire": {
+        "full_sample_threshold": 0.3846153846153846,
+        "strict_gt": {
+          "rows": 2477,
+          "missingness_mismatches": 0,
+          "value_mismatches": 104,
+          "max_abs_diff": 1.0,
+          "mismatch_dates": [
+            "2016-02-15",
+            "2016-02-16",
+            "2016-05-03",
+            "2016-05-24",
+            "2016-06-27",
+            "2016-09-14",
+            "2016-09-30",
+            "2016-10-17",
+            "2016-11-03",
+            "2016-11-09",
+            "2016-11-18",
+            "2016-12-15"
+          ]
+        },
+        "greater_equal": {
+          "rows": 2477,
+          "missingness_mismatches": 0,
+          "value_mismatches": 0,
+          "max_abs_diff": 0.0,
+          "mismatch_dates": []
+        },
+        "saved_fire_count": 325,
+        "saved_first_fire_date": "2016-02-10",
+        "source_definition_proven": false
+      },
+      "sample_tail_damage_q95_fire": {
+        "full_sample_threshold": 0.5384615384615384,
+        "strict_gt": {
+          "rows": 2477,
+          "missingness_mismatches": 0,
+          "value_mismatches": 53,
+          "max_abs_diff": 1.0,
+          "mismatch_dates": [
+            "2016-02-29",
+            "2016-10-13",
+            "2016-11-07",
+            "2016-11-15",
+            "2016-11-16",
+            "2016-11-21",
+            "2016-12-20",
+            "2016-12-22",
+            "2016-12-23",
+            "2017-12-05",
+            "2017-12-06",
+            "2018-02-02"
+          ]
+        },
+        "greater_equal": {
+          "rows": 2477,
+          "missingness_mismatches": 0,
+          "value_mismatches": 0,
+          "max_abs_diff": 0.0,
+          "mismatch_dates": []
+        },
+        "saved_fire_count": 148,
+        "saved_first_fire_date": "2016-02-11",
+        "source_definition_proven": false
+      }
+    },
+    "trigger_arithmetic": {
+      "distribution": {
+        "ratio_vs_count_over_n_symbols": {
+          "rows": 2477,
+          "missingness_mismatches": 0,
+          "value_mismatches": 0,
+          "max_abs_diff": 8.326672684688674e-17,
+          "mismatch_dates": []
+        },
+        "total_fires_across_dates": 870,
+        "max_per_date": 7,
+        "first_nonzero_date": "2016-02-10",
+        "first_nonzero_observation_1_based": 7,
+        "count_outside_zero_to_n": 0
+      },
+      "accumulation": {
+        "ratio_vs_count_over_n_symbols": {
+          "rows": 2477,
+          "missingness_mismatches": 0,
+          "value_mismatches": 0,
+          "max_abs_diff": 8.326672684688674e-17,
+          "mismatch_dates": []
+        },
+        "total_fires_across_dates": 843,
+        "max_per_date": 8,
+        "first_nonzero_date": "2016-02-10",
+        "first_nonzero_observation_1_based": 7,
+        "count_outside_zero_to_n": 0
+      },
+      "dates_with_both_sides_nonzero": 141
+    },
+    "unresolved_trigger_generation": {
+      "producer_definition_present": false,
+      "stock_level_flags_present": false,
+      "exploratory_candidates": 24,
+      "exactly_matching_candidates": 0,
+      "candidate_family": "High delivery percent above own full-window rolling20/60 mean times1.0/1.1/1.2 or q70/q80/q90, AND negative/positive stored-close return. Exploratory rejection only; no inferred approved replacement.",
+      "mismatched_dates_range": [
+        1063,
+        2210
+      ],
+      "decision": "SOURCE_REQUIRED: no reproducible accumulation/distribution generation contract, despite valid saved count ratios."
+    }
+  },
+  "gap_and_missingness_diagnostics": {
+    "source_observation_gaps_over_seven_calendar_days": [
+      {
+        "symbol": "BHARTIARTL",
+        "previous_observation": "2021-02-01",
+        "next_observation": "2021-06-09",
+        "calendar_days": 128
+      },
+      {
+        "symbol": "DRREDDY",
+        "previous_observation": "2021-02-01",
+        "next_observation": "2021-06-09",
+        "calendar_days": 128
+      },
+      {
+        "symbol": "HDFCBANK",
+        "previous_observation": "2021-02-01",
+        "next_observation": "2021-06-09",
+        "calendar_days": 128
+      },
+      {
+        "symbol": "HINDUNILVR",
+        "previous_observation": "2021-02-01",
+        "next_observation": "2021-06-09",
+        "calendar_days": 128
+      },
+      {
+        "symbol": "INFY",
+        "previous_observation": "2021-02-01",
+        "next_observation": "2021-06-09",
+        "calendar_days": 128
+      },
+      {
+        "symbol": "MARUTI",
+        "previous_observation": "2021-02-01",
+        "next_observation": "2021-06-09",
+        "calendar_days": 128
+      },
+      {
+        "symbol": "RELIANCE",
+        "previous_observation": "2021-02-01",
+        "next_observation": "2021-06-09",
+        "calendar_days": 128
+      },
+      {
+        "symbol": "SBIN",
+        "previous_observation": "2021-02-01",
+        "next_observation": "2021-06-09",
+        "calendar_days": 128
+      },
+      {
+        "symbol": "SUNPHARMA",
+        "previous_observation": "2021-02-01",
+        "next_observation": "2021-06-09",
+        "calendar_days": 128
+      },
+      {
+        "symbol": "TATASTEEL",
+        "previous_observation": "2021-02-01",
+        "next_observation": "2021-06-09",
+        "calendar_days": 128
+      }
+    ],
+    "gap_example": {
+      "date": "2021-06-09",
+      "source_rows": 13,
+      "valid_stored_close_returns": 10,
+      "saved_equal_weight_ret_1d": 0.1637766529929463,
+      "mean_using_same_rows_own_prev_close": -0.008928271314674715,
+      "prev_close_comparator_authority": "Diagnostic contrast only, not verified official daily return or approved replacement.",
+      "saved_up_pct_1d": 0.6153846153846154,
+      "finite_return_only_up_fraction": 0.8,
+      "incoming_symbols_with_missing_ret1": [
+        "BAJFINANCE",
+        "ICICIBANK",
+        "ONGC"
+      ],
+      "tail_valid_return_counts_first_five_after_gap": {
+        "2021-06-09": 10,
+        "2021-06-10": 10,
+        "2021-06-11": 10,
+        "2021-06-14": 10,
+        "2021-06-15": 10
+      },
+      "cluster_keeps_pre_gap_observations": "The 10-observation window crosses the 128-day hole; saved cluster stays 1 on 2021-06-09 through 2021-06-14."
+    },
+    "all_missing_delivery_days": [
+      {
+        "date": "2019-01-28",
+        "source_rows": 13,
+        "missing_delivery_quantity_rows": 13,
+        "saved_total_delivery_qty": 0.0,
+        "saved_average_delivery_pct_is_missing": true,
+        "saved_delivery_hhi_is_missing": true,
+        "saved_distribution_count": 0,
+        "saved_accumulation_count": 0
+      },
+      {
+        "date": "2020-04-13",
+        "source_rows": 13,
+        "missing_delivery_quantity_rows": 13,
+        "saved_total_delivery_qty": 0.0,
+        "saved_average_delivery_pct_is_missing": true,
+        "saved_delivery_hhi_is_missing": true,
+        "saved_distribution_count": 0,
+        "saved_accumulation_count": 0
+      }
+    ],
+    "source_delivery_missing_pairs": 26,
+    "source_delivery_ratio_disagreements_over_0_011_percentage_points": 28,
+    "source_r1_extremes": {
+      "min": -0.8994748687171793,
+      "max": 0.7308599276843264
+    },
+    "initial_missing_tail_dates": [
+      "2016-02-02",
+      "2016-02-03",
+      "2016-02-04",
+      "2016-02-05",
+      "2016-02-08"
+    ],
+    "initial_missing_tail_saved_flags": {
+      "2016-02-02": {
+        "sample_tail_damage_q90_fire": 0,
+        "sample_tail_damage_q95_fire": 0,
+        "sample_damage_cluster_5in10": 0
+      },
+      "2016-02-03": {
+        "sample_tail_damage_q90_fire": 0,
+        "sample_tail_damage_q95_fire": 0,
+        "sample_damage_cluster_5in10": 0
+      },
+      "2016-02-04": {
+        "sample_tail_damage_q90_fire": 0,
+        "sample_tail_damage_q95_fire": 0,
+        "sample_damage_cluster_5in10": 0
+      },
+      "2016-02-05": {
+        "sample_tail_damage_q90_fire": 0,
+        "sample_tail_damage_q95_fire": 0,
+        "sample_damage_cluster_5in10": 0
+      },
+      "2016-02-08": {
+        "sample_tail_damage_q90_fire": 0,
+        "sample_tail_damage_q95_fire": 0,
+        "sample_damage_cluster_5in10": 0
+      }
+    },
+    "no_imputation_or_adjustment_performed": true
+  },
+  "source_required_findings": [
+    {
+      "id": "DELIVERY-GAP",
+      "finding": "1D/5D labels span stored observations, not guaranteed adjacent trading sessions; ten returns cross a 128-calendar-day gap. Breadth denominators include missing returns as false.",
+      "required": "Explicit session calendar, gap-reset/warmup policy and point-in-time membership."
+    },
+    {
+      "id": "DELIVERY-CALIBRATION",
+      "finding": "Full-sample inclusive q90/q95 thresholds reproduce all flags. No producer/calibration timestamp exists; possible future-information leakage, not proof of the original fitting procedure.",
+      "required": "Versioned source definition and training-only/as-of calibration before any live or out-of-sample claim."
+    },
+    {
+      "id": "DELIVERY-MISSING",
+      "finding": "Two all-missing delivery days produce aggregate quantity zero and both trigger counts zero. Initial missing tails also yield zero damage flags.",
+      "required": "Separate unavailable data from genuine zero quantity or a valid no-signal state."
+    },
+    {
+      "id": "DELIVERY-TRIGGERS",
+      "finding": "Saved count fractions reconcile but accumulation/distribution generation and warmup rules cannot be recovered authoritatively. First fires occur on only the seventh observed date.",
+      "required": "Producer source and per-stock feature/flag contract; do not substitute NO07 or DELIVERY_20 formulas."
+    },
+    {
+      "id": "DELIVERY-SAMPLE",
+      "finding": "Sixteen historical symbols form a changing 13-stock-per-date sample, not a broad market universe; max date is 2026-06-08. No point-in-time ISIN/provider/corporate-action proof supplied.",
+      "required": "Identity, adjustments, coverage and freshness checks plus explicit research-only scope."
+    }
+  ],
+  "consumer_mapping": [
+    {
+      "consumer": "NO07 Delivery Percentage Spike",
+      "locations": [
+        "data/parameter-catalog-175.json:2522",
+        "server-parameter-tunnel-patch.mjs"
+      ],
+      "contract": "delivery_percent > percentile80(own60D) AND CLV>0; catalog readiness NSE_DELIVERY_FEED_REQUIRED; no explicit NO07 evaluator branch found.",
+      "decision": "Potential historical per-stock delivery source only. Saved aggregate counts cannot satisfy it; no import or activation."
+    },
+    {
+      "consumer": "stock-selection DELIVERY_20 confirmation",
+      "locations": [
+        "config/stock-selection-parameters.v0.1.json:61",
+        "lib/stock-selection-engine.mjs:262"
+      ],
+      "contract": "deliveryPercentile20 >=0.75 and positive return1d; optional coverage-limited confirmation; scoreWeightPct=0.",
+      "decision": "Different20D contract, not NO07 own60D and not demonstrated producer of saved triggers. This audit does not supply or wire the field."
+    },
+    {
+      "consumer": "B15_P016 up-volume/down-volume",
+      "locations": [
+        "server-parameter-tunnel-patch.mjs:293"
+      ],
+      "contract": "Last20OHLCV volume buckets using comparison with prior close; requires21candles. Does not read deliverable quantity or saved delivery-trigger counts.",
+      "decision": "Conceptual source overlap only, not evidence these archive tables feed this consumer."
+    },
+    {
+      "consumer": "Market-internals/IFR-style research",
+      "locations": [],
+      "contract": "Same style of breadth/tail/cluster fields is not proof of matching calibration or full-market scope.",
+      "decision": "Offline reproduction and parser fixtures only pending gap, denominator, missingness and calibration contracts."
+    }
+  ],
+  "runtime_reference_check": {
+    "searched_extensions": [
+      ".py",
+      ".mjs",
+      ".js",
+      ".html",
+      ".md"
+    ],
+    "excluded_path": "vendor/**",
+    "terms": [
+      "sample_tail_damage_q90_fire",
+      "sample_damage_cluster_5in10",
+      "delivery_distribution_count",
+      "mini_market_internals_16stocks",
+      "mini_delivery_trigger_counts_16stocks"
+    ],
+    "result": "Only historical documentation ledger references found; no named producer/runtime code reference. This search is not a proof against every possible generic loader."
+  },
+  "proposed_updates": [
+    {
+      "asset": "volume_delivery_batch_check_v0_1.zip",
+      "from": "partial",
+      "to": "reviewed",
+      "evidence": "data/asset-review/derived-delivery-context-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "volume_delivery_batch_check_v0_1/industry_coverage_summary.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/derived-delivery-context-evidence-2026-09-24.json"
+        },
+        {
+          "member": "volume_delivery_batch_check_v0_1/mini_delivery_trigger_counts_16stocks.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/derived-delivery-context-evidence-2026-09-24.json"
+        },
+        {
+          "member": "volume_delivery_batch_check_v0_1/mini_market_internals_16stocks.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/derived-delivery-context-evidence-2026-09-24.json"
+        },
+        {
+          "member": "volume_delivery_batch_check_v0_1/readiness_status.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/derived-delivery-context-evidence-2026-09-24.json"
+        },
+        {
+          "member": "volume_delivery_batch_check_v0_1/source_file_summary.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/derived-delivery-context-evidence-2026-09-24.json"
+        },
+        {
+          "member": "volume_delivery_batch_check_v0_1/symbol_coverage_summary.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/derived-delivery-context-evidence-2026-09-24.json"
+        },
+        {
+          "member": "volume_delivery_batch_check_v0_1/symbol_industry_map.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/derived-delivery-context-evidence-2026-09-24.json"
+        }
+      ],
+      "remaining_member_status_counts": {
+        "reviewed": 8
+      }
+    }
+  ],
+  "coverage_overlay_updated": false,
+  "bounds": {
+    "other_archive_siblings_promoted": false,
+    "current_stock_signal_verified": false,
+    "return_performance_claim_verified": false,
+    "provider_authority_verified": false,
+    "runtime_import_ready": false,
+    "producer_code_executed": false,
+    "runtime_tests_executed": false,
+    "raw_sources_modified": false,
+    "database_import_performed": false,
+    "mongo_accessed": false,
+    "network_accessed": false,
+    "runtime_modified": false,
+    "production_activation_performed": false,
+    "universe_modified": false,
+    "portfolio_modified": false,
+    "deployed": false
+  },
+  "reproducibility": {
+    "analysis_runtime": "Bundled Python3 with pandas2.2.3; zipfile/csv strict parse and SHA256; supplied code not executed.",
+    "helpers": [
+      {
+        "path": "/private/tmp/ash-derived-delivery-probe.py",
+        "sha256": "ce00f0f9c9f846729635d9b4a6dff6064a850b8bf2f55d3647986a37f926b29d"
+      },
+      {
+        "path": "/private/tmp/ash-derived-delivery-final.py",
+        "sha256": "35f62fea53b2db2f2e148deabd858b9bca5946937839dc3320966aee34c8da6d"
+      }
+    ],
+    "helper_location_scope": "Temporary provenance, not a user deliverable or required production dependency. All reviewed source identities, source summaries, formulas and limits are retained here.",
+    "independent_parent_check": "Parent separately consumed all8CSV used ranges through bundled artifact-tool Workbook.fromCSV, checked archiveCRC/SHA and matched rows/columns, gap/missingness diagnostics and inclusive fullsamplethreshold reproduction.",
+    "prior_evidence_limits": "Reuse of prior full raw-to-merged validation and source-unit labels is explicit; original upstream rawfiles not reopened in this batch.",
+    "coverage_depth": "Every row/field consumed; all seven new members profiled. Arithmetic reconstruction does not establish original producer intent, point-in-time availability or economic correctness."
+  }
+}

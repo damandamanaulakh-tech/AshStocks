@@ -33,6 +33,10 @@
     {
       "file": "data/asset-review/duplicate-context-evidence-2026-09-24.json",
       "sha256": "482fbf7725e59c3490a55a71fc9f759706f2d279432628b33d312a875270cde2"
+    },
+    {
+      "file": "data/asset-review/derived-delivery-context-evidence-2026-09-24.json",
+      "sha256": "b1692deb1293d66cb156b9a923b75e2149f88c0bfa7b22e56654ac578ff1f7c7"
     }
   ],
   "updates": [
@@ -1148,59 +1152,111 @@
         "reviewed": 1
       },
       "to": "partial"
+    },
+    {
+      "asset": "volume_delivery_batch_check_v0_1.zip",
+      "from": "partial",
+      "to": "reviewed",
+      "evidence": "data/asset-review/derived-delivery-context-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "volume_delivery_batch_check_v0_1/industry_coverage_summary.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/derived-delivery-context-evidence-2026-09-24.json"
+        },
+        {
+          "member": "volume_delivery_batch_check_v0_1/mini_delivery_trigger_counts_16stocks.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/derived-delivery-context-evidence-2026-09-24.json"
+        },
+        {
+          "member": "volume_delivery_batch_check_v0_1/mini_market_internals_16stocks.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/derived-delivery-context-evidence-2026-09-24.json"
+        },
+        {
+          "member": "volume_delivery_batch_check_v0_1/readiness_status.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/derived-delivery-context-evidence-2026-09-24.json"
+        },
+        {
+          "member": "volume_delivery_batch_check_v0_1/source_file_summary.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/derived-delivery-context-evidence-2026-09-24.json"
+        },
+        {
+          "member": "volume_delivery_batch_check_v0_1/symbol_coverage_summary.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/derived-delivery-context-evidence-2026-09-24.json"
+        },
+        {
+          "member": "volume_delivery_batch_check_v0_1/symbol_industry_map.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/derived-delivery-context-evidence-2026-09-24.json"
+        }
+      ],
+      "remaining_member_status_counts": {
+        "reviewed": 8
+      }
     }
   ],
   "summary": {
     "assets": 171,
     "asset_status_counts": {
-      "reviewed": 77,
-      "partial": 23,
+      "reviewed": 78,
+      "partial": 22,
       "inventory_only": 70,
       "corrupt": 1
     },
     "members": 592,
     "member_status_counts": {
-      "reviewed": 416,
+      "reviewed": 423,
       "partial": 6,
-      "inventory_only": 170
+      "inventory_only": 163
     },
-    "member_status_upgrades": 111,
+    "member_status_upgrades": 118,
     "corrupt_archive": "2021_06.zip",
     "corrupt_archive_member_count": null
   },
-  "excluded_promotions": "Only the five exact duplicate members supported by duplicate-context-evidence-2026-09-24.json are now accepted; this does not promote sibling files. Disguised XLS signatures prove format only. Other monthly transaction members, underlying FO contract numeric tables and remaining partial/inventory-only content retain their prior limits. No duplicate deletion, import or runtime activation is authorized by this ledger.",
+  "excluded_promotions": "Only explicitly evidenced members are upgraded. This batch completes the seven delivery-context siblings but does not promote neighboring packs or certify producer formulas, continuous sessions, missingness, currentness or runtime readiness. Other partial/inventory-only content and corrupt archives retain their prior limits. No duplicate deletion, import or activation is authorized.",
   "mongo_accessed": false,
   "imported": false,
   "runtime_modified": false,
   "latest_batch": {
-    "id": "participant-and-duplicate-context-2026-09-24",
-    "checkpoint": "docs/PARTICIPANT_AND_DUPLICATE_ASSET_CHECKPOINT_2026-09-24.md",
-    "reviewed_against_commit": "3ad1177353615eac831035803c11f4ee9140a54f",
-    "previous_progress_sha256": "d5dea34be7ae9f3603502e8d93c225b46f6c81850a9f8e78e2d957f5e633fa4a",
+    "id": "derived-delivery-context-2026-09-24",
+    "checkpoint": "docs/DERIVED_DELIVERY_CONTEXT_CHECKPOINT_2026-09-24.md",
+    "reviewed_against_commit": "c2a99bf97128d645eb1891e474743b522c9e26a6",
+    "previous_progress_sha256": "c2d8dc8a151cde96b21b9d74fb6fdf1939bb67a37332b3f765ea968cadf8a698",
     "previous_summary": {
       "assets": 171,
       "asset_status_counts": {
-        "reviewed": 54,
-        "partial": 22,
-        "inventory_only": 94,
+        "reviewed": 77,
+        "partial": 23,
+        "inventory_only": 70,
         "corrupt": 1
       },
       "members": 592,
       "member_status_counts": {
-        "reviewed": 369,
+        "reviewed": 416,
         "partial": 6,
-        "inventory_only": 217
+        "inventory_only": 170
       },
-      "member_status_upgrades": 64,
+      "member_status_upgrades": 111,
       "corrupt_archive": "2021_06.zip",
       "corrupt_archive_member_count": null
     },
-    "new_member_status_upgrades": 47,
-    "direct_participant_member_upgrades": 42,
-    "context_confirmed_duplicate_member_upgrades": 5,
-    "newly_reviewed_archives": 23,
-    "newly_partial_archives": 1,
+    "new_member_status_upgrades": 7,
+    "direct_csv_member_upgrades": 7,
+    "newly_reviewed_archives": 1,
+    "newly_partial_archives": 0,
     "update_application": "Apply every updates entry in array order to the immutable baseline; repeated asset entries are sequential member-level progress, not duplicate assets.",
-    "historical_digest_note": "The duplicate-context audit records the pre-acceptance progress digest as historical input. It is not a digest of this updated overlay."
+    "historical_digest_note": "The derived-delivery evidence records the pre-acceptance progress digest as historical input, not a digest of this updated overlay."
   }
 }
