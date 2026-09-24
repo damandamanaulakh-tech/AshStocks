@@ -8,7 +8,7 @@ import { spawn } from "node:child_process";
 const root = fileURLToPath(new URL("../", import.meta.url));
 const { scripts } = JSON.parse(await fs.readFile(path.join(root, "package.json"), "utf8"));
 const name = process.argv[2] || "check";
-const allowed = new Set(["check", "guard", "test:paper-flow", "test:rotation", "test:valuation", "test:official-market"]);
+const allowed = new Set(["check", "guard", "test:mongo-memory", "test:paper-flow", "test:rotation", "test:valuation", "test:official-market"]);
 if (!allowed.has(name)) throw new Error(`Unsupported local check: ${name}`);
 
 function expand(script, stack = []) {

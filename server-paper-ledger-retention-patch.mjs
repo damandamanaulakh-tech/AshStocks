@@ -157,17 +157,77 @@ const PAPER_LEDGER_FILE_STORE = String.raw`
 `;
 
 const PAPER_LEDGER_MONGO_STORE = String.raw`
-      async function archivePaperLedgerMongo(rawState, source = "state-save") {
+      const MONGO_PAPER_LEDGER_CACHE_LIMIT = 2000;
+      const MONGO_PAPER_LEDGER_CACHE_MS = 5 * 60 * 1000;
+      const MONGO_PAPER_LEDGER_BATCH_LIMIT = 500;
+      const MONGO_PAPER_LEDGER_QUEUE_LIMIT = 32;
+      // Only hashes and successful-write timestamps survive a call, never payloads.
+      const confirmedPaperLedgerEvents = new Map();
+      let paperLedgerArchiveQueue = Promise.resolve();
+      let paperLedgerArchivePending = 0;
+
+      async function archivePaperLedgerMongoBatch(rawState, source) {
+        // Collection BulkWriteResult in driver 6.x has no acknowledged flag.
+        // Refuse unacknowledged configuration, then verify update counts below.
+        if (paperLedger.writeConcern?.w === 0 || paperLedger.writeConcern?.w === "0") {
+          throw new Error("paper_ledger_acknowledged_writes_required");
+        }
+        const now = Date.now();
+        for (const [eventId, confirmedAt] of confirmedPaperLedgerEvents) {
+          const age = now - confirmedAt;
+          if (age < 0 || age >= MONGO_PAPER_LEDGER_CACHE_MS) confirmedPaperLedgerEvents.delete(eventId);
+        }
         const records = [...new Map(paperLedgerArchiveRecords(rawState, source).map((record) => [record.event_id, record])).values()];
         if (!records.length) return { seen: 0, inserted: 0 };
-        const result = await paperLedger.bulkWrite(records.map((record) => ({
-          updateOne: {
-            filter: { _id: record.event_id },
-            update: { $setOnInsert: { ...record, _id: record.event_id, occurredAtDate: new Date(record.occurred_at) } },
-            upsert: true
+        const pending = records.filter((record) => !confirmedPaperLedgerEvents.has(record.event_id));
+        let inserted = 0;
+        for (let start = 0; start < pending.length; start += MONGO_PAPER_LEDGER_BATCH_LIMIT) {
+          const batch = pending.slice(start, start + MONGO_PAPER_LEDGER_BATCH_LIMIT);
+          const result = await paperLedger.bulkWrite(batch.map((record) => ({
+            updateOne: {
+              filter: { _id: record.event_id },
+              update: { $setOnInsert: { ...record, _id: record.event_id, occurredAtDate: new Date(record.occurred_at) } },
+              upsert: true
+            }
+          })), { ordered: false });
+          const matched = result?.matchedCount;
+          const upserted = result?.upsertedCount;
+          if (result?.acknowledged === false
+              || (typeof result?.isOk === "function" && !result.isOk())
+              || (result?.ok !== undefined && result.ok !== 1)
+              || (typeof result?.hasWriteErrors === "function" && result.hasWriteErrors())
+              || (typeof result?.getWriteConcernError === "function" && result.getWriteConcernError())
+              || !Number.isInteger(matched) || matched < 0
+              || !Number.isInteger(upserted) || upserted < 0
+              || matched + upserted !== batch.length) {
+            throw new Error("paper_ledger_archive_not_confirmed");
           }
-        })), { ordered: false });
-        return { seen: records.length, inserted: result.upsertedCount || 0 };
+          // Confirm only a completely successful batch. A thrown/partial write
+          // remains retryable through the existing idempotent $setOnInsert path.
+          const confirmedAt = Date.now();
+          for (const record of batch) {
+            confirmedPaperLedgerEvents.delete(record.event_id);
+            confirmedPaperLedgerEvents.set(record.event_id, confirmedAt);
+            if (confirmedPaperLedgerEvents.size > MONGO_PAPER_LEDGER_CACHE_LIMIT) {
+              confirmedPaperLedgerEvents.delete(confirmedPaperLedgerEvents.keys().next().value);
+            }
+          }
+          inserted += upserted;
+        }
+        return { seen: records.length, inserted };
+      }
+
+      function archivePaperLedgerMongo(rawState, source = "state-save") {
+        // Serialize cache check/write/confirmation, including concurrent reads.
+        // Backpressure prevents an outage from retaining unbounded queued states.
+        if (paperLedgerArchivePending >= MONGO_PAPER_LEDGER_QUEUE_LIMIT) {
+          return Promise.reject(new Error("paper_ledger_archive_busy_retry"));
+        }
+        paperLedgerArchivePending += 1;
+        const work = paperLedgerArchiveQueue.then(() => archivePaperLedgerMongoBatch(rawState, source));
+        const completed = work.finally(() => { paperLedgerArchivePending -= 1; });
+        paperLedgerArchiveQueue = completed.then(() => undefined, () => undefined);
+        return completed;
       }
 
       async function listPaperLedgerMongo(input = {}) {

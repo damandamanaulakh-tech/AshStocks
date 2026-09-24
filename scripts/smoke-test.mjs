@@ -141,20 +141,34 @@ process.env.REQUIRE_AUTH = "true";
 process.env.REQUIRE_DB = "true";
 process.env.APP_PASSWORD = "smoke-password";
 process.env.APP_SESSION_SECRET = "smoke-session";
-process.env.MONGODB_URI = "mongodb://192.0.2.1:27017/ashstock";
+// Match every runtime URI alias: a failed primary must never fall through to an
+// inherited database. Only the owned loopback stub below is a valid candidate.
+for (const key of ["MONGODB_URI", "MONGO_URI", "MONGO_URL", "DATABASE_URL"]) process.env[key] = "";
 process.env.MONGO_TIMEOUT_MS = "500";
 process.env.DISABLE_DATA_BANK_AUTO_BOOTSTRAP = "true";
 process.env.DISABLE_PAPER_ENGINE_SCHEDULER = "true";
-const { createServer } = await import("./server.js");
-const server = createServer();
-await new Promise((resolve, reject) => {
-  server.once("error", reject);
-  server.listen(0, "127.0.0.1", resolve);
+const { createServer: createTcpServer } = await import("node:net");
+let mongoConnectionAttempts = 0;
+const mongoStub = createTcpServer((socket) => {
+  mongoConnectionAttempts += 1;
+  socket.destroy();
 });
-const port = server.address().port;
-const started = Date.now();
+let server;
 let result;
 try {
+  await new Promise((resolve, reject) => {
+    mongoStub.once("error", reject);
+    mongoStub.listen(0, "127.0.0.1", resolve);
+  });
+  process.env.MONGODB_URI = "mongodb://127.0.0.1:" + mongoStub.address().port + "/ashstock";
+  const { createServer } = await import("./server.js");
+  server = createServer();
+  await new Promise((resolve, reject) => {
+    server.once("error", reject);
+    server.listen(0, "127.0.0.1", resolve);
+  });
+  const port = server.address().port;
+  const started = Date.now();
   const healthResponse = await fetch("http://127.0.0.1:" + port + "/api/health");
   const readyResponse = await fetch("http://127.0.0.1:" + port + "/api/ready");
   result = {
@@ -162,10 +176,12 @@ try {
     healthBody: await healthResponse.json(),
     readyStatus: readyResponse.status,
     readyBody: await readyResponse.json(),
-    elapsedMs: Date.now() - started
+    elapsedMs: Date.now() - started,
+    mongoConnectionAttempts
   };
 } finally {
-  await new Promise((resolve) => server.close(resolve));
+  if (server?.listening) await new Promise((resolve) => server.close(resolve));
+  if (mongoStub.listening) await new Promise((resolve) => mongoStub.close(resolve));
 }
 if (result.healthStatus !== 200) throw new Error("production health should stay live");
 if (result.healthBody.ok !== true) throw new Error("production health should report ok=true");
@@ -174,6 +190,7 @@ if (result.readyStatus !== 503) throw new Error("production readiness must fail 
 if (result.readyBody.ok !== false) throw new Error("failed production readiness should report ok=false");
 if (result.readyBody.storage !== "unconfigured") throw new Error("failed Mongo readiness must not claim file persistence");
 if (result.elapsedMs > 6000) throw new Error("production Mongo failure took too long");
+if (result.mongoConnectionAttempts < 1) throw new Error("production Mongo failure must exercise the real client against the owned loopback stub");
 console.log(JSON.stringify(result));
 `;
 
