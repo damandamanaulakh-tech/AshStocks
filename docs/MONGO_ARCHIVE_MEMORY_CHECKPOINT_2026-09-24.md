@@ -44,7 +44,7 @@ The production-Mongo failure fixture formerly inherited alternate URI aliases an
 
 The final smoke copy used Git-listed files, only seven tracked data fixtures, and `env -i` with only PATH/TMPDIR. It excluded credentials, live data, ignored scratch, runtime output and Git metadata. Provider HTTP is mocked; the Mongo driver failure path uses only the owned localhost stub.
 
-This document accompanies the tested implementation checkpoint. Verify the feature ref/tree before describing it as published; publication is not deployment or a live memory/storage measurement.
+Published and independently fetched implementation: `2781c63e3b7b39b1b40f097b17b5598f37d64d51`, tree `923899d8271dd8258eca03cf070fba60e618d1ee`. The remote tree exactly matched the tested staged source before the existing feature ref was fast-forwarded with `force: false`. The local feature branch was then fast-forwarded to the same commit. Independent review of the actual diff and a repeat of the dedicated guard found no actionable defect. Publication is not deployment or a live memory/storage measurement.
 
 ## Cleanup inventory — no deletion authorized by an exact target yet
 
