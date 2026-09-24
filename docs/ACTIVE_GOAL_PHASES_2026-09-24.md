@@ -18,6 +18,8 @@ Complete the nine phases below in small, reviewed, tested and published batches.
 
 ## Verified starting evidence
 
+Later asset checkpoint: `docs/ROOT_CSV_ASSET_CHECKPOINT_2026-09-24.md` records Phase 1D's full remaining root CSV pass (10 files, 982,154 rows), institutional window/scope limitations and independent workbook-date checks. Finding historical data does not authorize an import or satisfy fresh dashboard requirements.
+
 Public `/api/health` was read on 24 September 2026 without running an import or paper cycle. It returned HTTP 200 and commit `226e1394d5af3f0c380593d58917b8d2ee5c13e8`, not the feature checkpoint. Its storage field was `mongodb-configured-unverified`; `persistent` and `ready` were null. This proves the old code is live, not that Mongo is healthy. Actual Render deployment time/branch/settings and the Mongo alarm still need authenticated evidence.
 
 GitHub feature/main refs were independently read. Main remains `226e1394d5af3f0c380593d58917b8d2ee5c13e8`. The existing code checkpoint records 75 passed package check commands and 57 named smoke checks plus integration suites; those prior tests do not constitute live deployment evidence.

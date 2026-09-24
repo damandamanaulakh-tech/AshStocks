@@ -1,0 +1,1728 @@
+{
+  "schema_version": "ashstocks-root-csv-readonly-audit-v1",
+  "as_of": "2026-09-24",
+  "read_only": true,
+  "database_import_performed": false,
+  "root_csv_files_fully_scanned": 10,
+  "records": [
+    {
+      "file": "Fii.Dii.Trading.activity.csv",
+      "bytes": 218801,
+      "sha256": "28be79b0b78612f4556b25900c0a1cf06943bc8112f448c09f3168c3bc3e317c",
+      "coverage": "all data rows and fields parsed; public evidence excludes raw investor, broker, transaction identifiers and scrip samples",
+      "header_row": 1,
+      "data_rows": 3770,
+      "blank_rows": 0,
+      "malformed_width_rows": 0,
+      "exact_duplicate_rows": 0,
+      "missing_by_column": {},
+      "numeric_by_column": {
+        "FII_Gross_Purchase": {
+          "numeric_count": 3770,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 3722,
+          "min": "5.03",
+          "max": "74741.85"
+        },
+        "FII_Gross_Sales": {
+          "numeric_count": 3770,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 3736,
+          "min": "1.05",
+          "max": "67028.87"
+        },
+        "FII_Net_Purchase/Sales": {
+          "numeric_count": 3770,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 1901,
+          "noninteger_count": 3728,
+          "min": "-9690.84",
+          "max": "28739.17"
+        },
+        "DII_Gross_Purchase": {
+          "numeric_count": 3770,
+          "invalid_count": 0,
+          "zero_count": 9,
+          "negative_count": 0,
+          "noninteger_count": 3723,
+          "min": "0",
+          "max": "14452.42"
+        },
+        "DII_Gross_Sales": {
+          "numeric_count": 3770,
+          "invalid_count": 0,
+          "zero_count": 9,
+          "negative_count": 0,
+          "noninteger_count": 3730,
+          "min": "0",
+          "max": "11632.14"
+        },
+        "DII_Net_Purchase/Sales": {
+          "numeric_count": 3770,
+          "invalid_count": 0,
+          "zero_count": 10,
+          "negative_count": 1652,
+          "noninteger_count": 3719,
+          "min": "-5631.99",
+          "max": "7667.75"
+        }
+      },
+      "date_columns": {
+        "Date": {
+          "format": "%d-%m-%Y",
+          "min": "2007-01-06",
+          "max": "2022-12-08",
+          "distinct_dates": 3770,
+          "invalid_rows": 0,
+          "nonblank_valid_date_rows": 3770,
+          "duplicate_date_rows": 0,
+          "out_of_order_rows": 359,
+          "date_counts_by_year": {
+            "2007": 188,
+            "2008": 246,
+            "2009": 241,
+            "2010": 245,
+            "2011": 244,
+            "2012": 238,
+            "2013": 246,
+            "2014": 239,
+            "2015": 244,
+            "2016": 243,
+            "2017": 246,
+            "2018": 243,
+            "2019": 245,
+            "2020": 251,
+            "2021": 247,
+            "2022": 164
+          },
+          "gaps_over_7_calendar_days": 7,
+          "largest_gaps": [
+            {
+              "from": "2022-09-06",
+              "to": "2022-10-01",
+              "calendar_days": 25
+            },
+            {
+              "from": "2007-01-11",
+              "to": "2007-02-04",
+              "calendar_days": 24
+            },
+            {
+              "from": "2022-10-08",
+              "to": "2022-11-01",
+              "calendar_days": 24
+            },
+            {
+              "from": "2007-03-12",
+              "to": "2007-04-04",
+              "calendar_days": 23
+            },
+            {
+              "from": "2022-11-08",
+              "to": "2022-12-01",
+              "calendar_days": 23
+            },
+            {
+              "from": "2007-02-11",
+              "to": "2007-03-04",
+              "calendar_days": 21
+            },
+            {
+              "from": "2022-08-08",
+              "to": "2022-08-16",
+              "calendar_days": 8
+            }
+          ]
+        }
+      },
+      "candidate_keys": {
+        "Date": {
+          "columns": [
+            "Date"
+          ],
+          "duplicate_rows": 0,
+          "conflicting_rows": 0,
+          "missing_key_rows": 0,
+          "distinct_keys": 3770
+        }
+      },
+      "pinned_size_sha256_match": true,
+      "header": [
+        "Date",
+        "FII_Gross_Purchase",
+        "FII_Gross_Sales",
+        "FII_Net_Purchase/Sales",
+        "DII_Gross_Purchase",
+        "DII_Gross_Sales",
+        "DII_Net_Purchase/Sales"
+      ],
+      "header_whitespace_normalized": false,
+      "header_duplicates": {},
+      "unit": "not stated in headers; do not assume currency scale without provenance",
+      "grain": "market-level FII and DII cash flow",
+      "arithmetic_purchase_minus_sales": {
+        "FII": {
+          "rows_checked": 3770,
+          "nonzero_residuals": 0,
+          "residual_over_0_011": 0,
+          "max_abs_residual": "0"
+        },
+        "DII": {
+          "rows_checked": 3770,
+          "nonzero_residuals": 1,
+          "residual_over_0_011": 1,
+          "max_abs_residual": "27.80"
+        }
+      }
+    },
+    {
+      "file": "Nov.2023.csv",
+      "bytes": 54174058,
+      "sha256": "9b3ad7c1585cb08bdc238959d485f9c9de9577b21e8a4de0e6df60e7706a1c25",
+      "coverage": "all data rows and fields parsed; public evidence excludes raw investor, broker, transaction identifiers and scrip samples",
+      "header_row": 1,
+      "data_rows": 240283,
+      "blank_rows": 0,
+      "malformed_width_rows": 0,
+      "exact_duplicate_rows": 0,
+      "missing_by_column": {
+        "FII": 58949,
+        "SUB_ACC": 42117,
+        "BRKER": 1599
+      },
+      "numeric_by_column": {
+        "RATE": {
+          "numeric_count": 240283,
+          "invalid_count": 0,
+          "zero_count": 405,
+          "negative_count": 0,
+          "noninteger_count": 234861,
+          "min": "0",
+          "max": "112550.6143"
+        },
+        "QUANTITY": {
+          "numeric_count": 240283,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 12,
+          "min": "1",
+          "max": "205613984"
+        },
+        "VALUE (in Rs)": {
+          "numeric_count": 240283,
+          "invalid_count": 0,
+          "zero_count": 405,
+          "negative_count": 0,
+          "noninteger_count": 224823,
+          "min": "0",
+          "max": "12307297176"
+        }
+      },
+      "date_columns": {
+        "RFDE_RPT_DT": {
+          "format": "%d-%m-%Y",
+          "min": "2023-11-03",
+          "max": "2023-12-07",
+          "distinct_dates": 24,
+          "invalid_rows": 0,
+          "nonblank_valid_date_rows": 240283,
+          "duplicate_date_rows": 240259,
+          "out_of_order_rows": 0,
+          "date_counts_by_year": {
+            "2023": 24
+          },
+          "gaps_over_7_calendar_days": 0,
+          "largest_gaps": []
+        },
+        "TR_DATE": {
+          "format": "%d-%m-%Y",
+          "min": "2023-11-01",
+          "max": "2023-11-30",
+          "distinct_dates": 23,
+          "invalid_rows": 0,
+          "nonblank_valid_date_rows": 240283,
+          "duplicate_date_rows": 240260,
+          "out_of_order_rows": 22650,
+          "date_counts_by_year": {
+            "2023": 23
+          },
+          "gaps_over_7_calendar_days": 0,
+          "largest_gaps": []
+        }
+      },
+      "candidate_keys": {
+        "RFDE_CUST_REG_NUM,RFDE_TXN_ID": {
+          "columns": [
+            "RFDE_CUST_REG_NUM",
+            "RFDE_TXN_ID"
+          ],
+          "duplicate_rows": 0,
+          "conflicting_rows": 0,
+          "missing_key_rows": 0,
+          "distinct_keys": 240283
+        },
+        "RFDE_CUST_REG_NUM,RFDE_TXN_ID,RFDE_RPT_DT": {
+          "columns": [
+            "RFDE_CUST_REG_NUM",
+            "RFDE_TXN_ID",
+            "RFDE_RPT_DT"
+          ],
+          "duplicate_rows": 0,
+          "conflicting_rows": 0,
+          "missing_key_rows": 0,
+          "distinct_keys": 240283
+        },
+        "RFDE_CUST_REG_NUM,RFDE_TXN_ID,RFDE_RPT_DT,RFDE_RPT_TYPE,RFDE_AMDMNT_REASON": {
+          "columns": [
+            "RFDE_CUST_REG_NUM",
+            "RFDE_TXN_ID",
+            "RFDE_RPT_DT",
+            "RFDE_RPT_TYPE",
+            "RFDE_AMDMNT_REASON"
+          ],
+          "duplicate_rows": 0,
+          "conflicting_rows": 0,
+          "missing_key_rows": 0,
+          "distinct_keys": 240283
+        }
+      },
+      "pinned_size_sha256_match": true,
+      "header": [
+        "RFDE_CUST_REG_NUM",
+        "RFDE_RPT_DT",
+        "RFDE_TXN_ID",
+        "FII",
+        "SUB_ACC",
+        "BRKER",
+        "SCRIP_NAME",
+        "ISIN",
+        "TR_DATE",
+        "TR_TYPE(*)",
+        "RFDE_SE_REG_NUM",
+        "RFDE_STLD_CODE",
+        "RATE",
+        "QUANTITY",
+        "VALUE (in Rs)",
+        "RFDE_INSTR_TYPE",
+        "RFDE_REASON_DLAY",
+        "RFDE_RPT_TYPE",
+        "RFDE_AMDMNT_REASON"
+      ],
+      "header_whitespace_normalized": false,
+      "header_duplicates": {},
+      "unit": "rate and VALUE labelled rupees; quantity shares/instruments per source row; transaction semantics not independently verified",
+      "grain": "masked FPI transaction report, not candles or holdings",
+      "arithmetic_purchase_minus_sales": {},
+      "distinct_isin_strings": 1673,
+      "transaction_type_counts": {
+        "1": 125019,
+        "2": 688,
+        "3": 62,
+        "4": 114243,
+        "5": 4,
+        "7": 57,
+        "8": 4,
+        "10": 1,
+        "13": 3,
+        "15": 194,
+        "16": 8
+      },
+      "instrument_type_counts": {
+        "REG_DL_INSTR_EQ": 239705,
+        "REG_DL_INSTR_MD": 30,
+        "REG_DL_INSTR_EU": 548
+      },
+      "report_type_counts": {
+        "DL_RPT_TYPE_N": 240283
+      },
+      "zero_value_rows": 405,
+      "negative_value_rows": 0
+    },
+    {
+      "file": "fao_participant_oi_08062026.csv",
+      "bytes": 974,
+      "sha256": "ab1d22c97e959d460f23c1a8907d5daff41526c6a46fe27cbfcf7e370a8b57b9",
+      "coverage": "all data rows and fields parsed; public evidence excludes raw investor, broker, transaction identifiers and scrip samples",
+      "header_row": 2,
+      "data_rows": 5,
+      "blank_rows": 0,
+      "malformed_width_rows": 0,
+      "exact_duplicate_rows": 0,
+      "missing_by_column": {},
+      "numeric_by_column": {
+        "Future Index Long": {
+          "numeric_count": 5,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 0,
+          "min": "24810",
+          "max": "444023"
+        },
+        "Future Index Short": {
+          "numeric_count": 5,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 0,
+          "min": "20337",
+          "max": "444023"
+        },
+        "Future Stock Long": {
+          "numeric_count": 5,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 0,
+          "min": "362502",
+          "max": "8547658"
+        },
+        "Future Stock Short": {
+          "numeric_count": 5,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 0,
+          "min": "225586",
+          "max": "8547658"
+        },
+        "Option Index Call Long": {
+          "numeric_count": 5,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 0,
+          "min": "7899",
+          "max": "5867091"
+        },
+        "Option Index Put Long": {
+          "numeric_count": 5,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 0,
+          "min": "23875",
+          "max": "4616547"
+        },
+        "Option Index Call Short": {
+          "numeric_count": 5,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 0,
+          "min": "30",
+          "max": "5867091"
+        },
+        "Option Index Put Short": {
+          "numeric_count": 5,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 0,
+          "min": "18",
+          "max": "4616547"
+        },
+        "Option Stock Call Long": {
+          "numeric_count": 5,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 0,
+          "min": "394",
+          "max": "3248933"
+        },
+        "Option Stock Put Long": {
+          "numeric_count": 5,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 0,
+          "min": "30893",
+          "max": "1943658"
+        },
+        "Option Stock Call Short": {
+          "numeric_count": 5,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 0,
+          "min": "278223",
+          "max": "3248933"
+        },
+        "Option Stock Put Short": {
+          "numeric_count": 5,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 0,
+          "min": "11246",
+          "max": "1943658"
+        },
+        "Total Long Contracts": {
+          "numeric_count": 5,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 0,
+          "min": "489845",
+          "max": "24667910"
+        },
+        "Total Short Contracts": {
+          "numeric_count": 5,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 0,
+          "min": "4866774",
+          "max": "24667910"
+        }
+      },
+      "date_columns": {},
+      "candidate_keys": {
+        "Client Type": {
+          "columns": [
+            "Client Type"
+          ],
+          "duplicate_rows": 0,
+          "conflicting_rows": 0,
+          "missing_key_rows": 0,
+          "distinct_keys": 5
+        }
+      },
+      "pinned_size_sha256_match": true,
+      "preamble": "\"\"Participant wise Open Interest (no. of contracts) in Equity Derivatives as on Jun 08, 2026\"\",,,,,,,,,,,,,,",
+      "as_of_from_preamble": "2026-06-08",
+      "unit": "contracts",
+      "grain": "participant category / date / derivative field",
+      "preamble_not_rectangular_csv": true,
+      "preamble_strict_csv_parse": "',' expected after '\"'",
+      "header": [
+        "Client Type",
+        "Future Index Long",
+        "Future Index Short",
+        "Future Stock Long",
+        "Future Stock Short",
+        "Option Index Call Long",
+        "Option Index Put Long",
+        "Option Index Call Short",
+        "Option Index Put Short",
+        "Option Stock Call Long",
+        "Option Stock Put Long",
+        "Option Stock Call Short",
+        "Option Stock Put Short",
+        "Total Long Contracts",
+        "Total Short Contracts"
+      ],
+      "header_whitespace_normalized": true,
+      "header_duplicates": {},
+      "arithmetic_purchase_minus_sales": {},
+      "participant_categories": [
+        "Client",
+        "DII",
+        "FII",
+        "Pro",
+        "TOTAL"
+      ],
+      "total_vs_sum_participants_mismatched_columns": [
+        "Option Index Put Short",
+        "Total Long Contracts"
+      ],
+      "row_contract_total_mismatches": [
+        {
+          "category": "Client",
+          "side": "Short"
+        },
+        {
+          "category": "FII",
+          "side": "Short"
+        },
+        {
+          "category": "Pro",
+          "side": "Long"
+        },
+        {
+          "category": "Pro",
+          "side": "Short"
+        }
+      ]
+    },
+    {
+      "file": "fao_participant_vol_08062026.csv",
+      "bytes": 971,
+      "sha256": "023258540f42f31eaf936c73181fe404bca7989fece37e723a8ab7b71c2d2246",
+      "coverage": "all data rows and fields parsed; public evidence excludes raw investor, broker, transaction identifiers and scrip samples",
+      "header_row": 2,
+      "data_rows": 5,
+      "blank_rows": 0,
+      "malformed_width_rows": 0,
+      "exact_duplicate_rows": 0,
+      "missing_by_column": {},
+      "numeric_by_column": {
+        "Future Index Long": {
+          "numeric_count": 5,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 0,
+          "min": "9342",
+          "max": "119052"
+        },
+        "Future Index Short": {
+          "numeric_count": 5,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 0,
+          "min": "2938",
+          "max": "119052"
+        },
+        "Future Stock Long": {
+          "numeric_count": 5,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 0,
+          "min": "62494",
+          "max": "888007"
+        },
+        "Future Stock Short": {
+          "numeric_count": 5,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 0,
+          "min": "63763",
+          "max": "888007"
+        },
+        "Option Index Call Long": {
+          "numeric_count": 5,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 0,
+          "min": "15",
+          "max": "72029538"
+        },
+        "Option Index Put Long": {
+          "numeric_count": 5,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 0,
+          "min": "2236",
+          "max": "66952921"
+        },
+        "Option Index Call Short": {
+          "numeric_count": 5,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 0,
+          "min": "45",
+          "max": "72029538"
+        },
+        "Option Index Put Short": {
+          "numeric_count": 5,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 0,
+          "min": "2219",
+          "max": "66952921"
+        },
+        "Option Stock Call Long": {
+          "numeric_count": 5,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 0,
+          "min": "948",
+          "max": "2963976"
+        },
+        "Option Stock Put Long": {
+          "numeric_count": 5,
+          "invalid_count": 0,
+          "zero_count": 1,
+          "negative_count": 0,
+          "noninteger_count": 0,
+          "min": "0",
+          "max": "1495926"
+        },
+        "Option Stock Call Short": {
+          "numeric_count": 5,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 0,
+          "min": "45546",
+          "max": "2963976"
+        },
+        "Option Stock Put Short": {
+          "numeric_count": 5,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 0,
+          "min": "1642",
+          "max": "1495926"
+        },
+        "Total Long Contracts": {
+          "numeric_count": 5,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 0,
+          "min": "75183",
+          "max": "144449420"
+        },
+        "Total Short Contracts": {
+          "numeric_count": 5,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 0,
+          "min": "116153",
+          "max": "144449420"
+        }
+      },
+      "date_columns": {},
+      "candidate_keys": {
+        "Client Type": {
+          "columns": [
+            "Client Type"
+          ],
+          "duplicate_rows": 0,
+          "conflicting_rows": 0,
+          "missing_key_rows": 0,
+          "distinct_keys": 5
+        }
+      },
+      "pinned_size_sha256_match": true,
+      "preamble": "\"\"Participant wise Trading Volume (no. of contracts) in Equity Derivatives as on Jun 08, 2026\"\",,,,,,,,,,,,,,",
+      "as_of_from_preamble": "2026-06-08",
+      "unit": "contracts",
+      "grain": "participant category / date / derivative field",
+      "preamble_not_rectangular_csv": true,
+      "preamble_strict_csv_parse": "',' expected after '\"'",
+      "header": [
+        "Client Type",
+        "Future Index Long",
+        "Future Index Short",
+        "Future Stock Long",
+        "Future Stock Short",
+        "Option Index Call Long",
+        "Option Index Put Long",
+        "Option Index Call Short",
+        "Option Index Put Short",
+        "Option Stock Call Long",
+        "Option Stock Put Long",
+        "Option Stock Call Short",
+        "Option Stock Put Short",
+        "Total Long Contracts",
+        "Total Short Contracts"
+      ],
+      "header_whitespace_normalized": true,
+      "header_duplicates": {},
+      "arithmetic_purchase_minus_sales": {},
+      "participant_categories": [
+        "Client",
+        "DII",
+        "FII",
+        "Pro",
+        "TOTAL"
+      ],
+      "total_vs_sum_participants_mismatched_columns": [],
+      "row_contract_total_mismatches": []
+    },
+    {
+      "file": "fii-dii-combined-latest.csv",
+      "bytes": 217,
+      "sha256": "18159997d4c544a66edfc0a604fbb5dd84bd74729fe9107da144d3c8805ecd8e",
+      "coverage": "all data rows and fields parsed; public evidence excludes raw investor, broker, transaction identifiers and scrip samples",
+      "header_row": 1,
+      "data_rows": 2,
+      "blank_rows": 0,
+      "malformed_width_rows": 0,
+      "exact_duplicate_rows": 0,
+      "missing_by_column": {},
+      "numeric_by_column": {
+        "BUY VALUE (₹ Crores)": {
+          "numeric_count": 2,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 2,
+          "min": "8842.08",
+          "max": "16683.18"
+        },
+        "SELL VALUE (₹ Crores)": {
+          "numeric_count": 2,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 2,
+          "min": "11517.94",
+          "max": "14397.75"
+        },
+        "NET VALUE (₹ Crores)": {
+          "numeric_count": 2,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 1,
+          "noninteger_count": 2,
+          "min": "-5555.67",
+          "max": "5165.24"
+        }
+      },
+      "date_columns": {
+        "DATE": {
+          "format": "%d-%b-%Y",
+          "min": "2026-06-08",
+          "max": "2026-06-08",
+          "distinct_dates": 1,
+          "invalid_rows": 0,
+          "nonblank_valid_date_rows": 2,
+          "duplicate_date_rows": 1,
+          "out_of_order_rows": 0,
+          "date_counts_by_year": {
+            "2026": 1
+          },
+          "gaps_over_7_calendar_days": 0,
+          "largest_gaps": []
+        }
+      },
+      "candidate_keys": {
+        "CATEGORY,DATE": {
+          "columns": [
+            "CATEGORY",
+            "DATE"
+          ],
+          "duplicate_rows": 0,
+          "conflicting_rows": 0,
+          "missing_key_rows": 0,
+          "distinct_keys": 2
+        }
+      },
+      "pinned_size_sha256_match": true,
+      "header": [
+        "CATEGORY",
+        "DATE",
+        "BUY VALUE (₹ Crores)",
+        "SELL VALUE (₹ Crores)",
+        "NET VALUE (₹ Crores)"
+      ],
+      "header_whitespace_normalized": true,
+      "header_duplicates": {},
+      "unit": "INR crores explicitly labelled",
+      "grain": "category / single trade date",
+      "coverage_label": "combined",
+      "arithmetic_purchase_minus_sales": {
+        "cash": {
+          "rows_checked": 2,
+          "nonzero_residuals": 0,
+          "residual_over_0_011": 0,
+          "max_abs_residual": "0"
+        }
+      },
+      "snapshot_values": {
+        "DII": {
+          "date": "2026-06-08",
+          "buy": "16683.18",
+          "sell": "11517.94",
+          "net": "5165.24"
+        },
+        "FII/FPI": {
+          "date": "2026-06-08",
+          "buy": "8842.08",
+          "sell": "14397.75",
+          "net": "-5555.67"
+        }
+      }
+    },
+    {
+      "file": "fii-dii-nse-latest.csv",
+      "bytes": 216,
+      "sha256": "77df434b9705707d7521607cc52f7f92a50dc685d066e5eb6d3c25cee5ae38dd",
+      "coverage": "all data rows and fields parsed; public evidence excludes raw investor, broker, transaction identifiers and scrip samples",
+      "header_row": 1,
+      "data_rows": 2,
+      "blank_rows": 0,
+      "malformed_width_rows": 0,
+      "exact_duplicate_rows": 0,
+      "missing_by_column": {},
+      "numeric_by_column": {
+        "BUY VALUE (₹ Crores)": {
+          "numeric_count": 2,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 2,
+          "min": "8162.88",
+          "max": "14636.70"
+        },
+        "SELL VALUE (₹ Crores)": {
+          "numeric_count": 2,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 2,
+          "min": "9608.57",
+          "max": "13716.74"
+        },
+        "NET VALUE (₹ Crores)": {
+          "numeric_count": 2,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 1,
+          "noninteger_count": 2,
+          "min": "-5553.86",
+          "max": "5028.13"
+        }
+      },
+      "date_columns": {
+        "DATE": {
+          "format": "%d-%b-%Y",
+          "min": "2026-06-08",
+          "max": "2026-06-08",
+          "distinct_dates": 1,
+          "invalid_rows": 0,
+          "nonblank_valid_date_rows": 2,
+          "duplicate_date_rows": 1,
+          "out_of_order_rows": 0,
+          "date_counts_by_year": {
+            "2026": 1
+          },
+          "gaps_over_7_calendar_days": 0,
+          "largest_gaps": []
+        }
+      },
+      "candidate_keys": {
+        "CATEGORY,DATE": {
+          "columns": [
+            "CATEGORY",
+            "DATE"
+          ],
+          "duplicate_rows": 0,
+          "conflicting_rows": 0,
+          "missing_key_rows": 0,
+          "distinct_keys": 2
+        }
+      },
+      "pinned_size_sha256_match": true,
+      "header": [
+        "CATEGORY",
+        "DATE",
+        "BUY VALUE (₹ Crores)",
+        "SELL VALUE (₹ Crores)",
+        "NET VALUE (₹ Crores)"
+      ],
+      "header_whitespace_normalized": true,
+      "header_duplicates": {},
+      "unit": "INR crores explicitly labelled",
+      "grain": "category / single trade date",
+      "coverage_label": "NSE",
+      "arithmetic_purchase_minus_sales": {
+        "cash": {
+          "rows_checked": 2,
+          "nonzero_residuals": 0,
+          "residual_over_0_011": 0,
+          "max_abs_residual": "0"
+        }
+      },
+      "snapshot_values": {
+        "DII": {
+          "date": "2026-06-08",
+          "buy": "14636.70",
+          "sell": "9608.57",
+          "net": "5028.13"
+        },
+        "FII/FPI": {
+          "date": "2026-06-08",
+          "buy": "8162.88",
+          "sell": "13716.74",
+          "net": "-5553.86"
+        }
+      }
+    },
+    {
+      "file": "fii_daily_aggregate.csv",
+      "bytes": 110093,
+      "sha256": "14028c2fdbac2cde35ebf92bdefec144d6bb102075bec72b3d765f43bf3d0bcf",
+      "coverage": "all data rows and fields parsed; public evidence excludes raw investor, broker, transaction identifiers and scrip samples",
+      "header_row": 1,
+      "data_rows": 905,
+      "blank_rows": 0,
+      "malformed_width_rows": 0,
+      "exact_duplicate_rows": 0,
+      "missing_by_column": {
+        "fii_net_cr_3d": 2,
+        "fii_net_cr_5d": 4,
+        "fii_net_cr_10d": 9,
+        "fii_net_cr_20d": 19,
+        "fii_net_z20": 19,
+        "fii_net_z60": 59
+      },
+      "numeric_by_column": {
+        "fii_buy_cr": {
+          "numeric_count": 905,
+          "invalid_count": 0,
+          "zero_count": 3,
+          "negative_count": 0,
+          "noninteger_count": 892,
+          "min": "0.0",
+          "max": "74658.38"
+        },
+        "fii_sell_cr": {
+          "numeric_count": 905,
+          "invalid_count": 0,
+          "zero_count": 5,
+          "negative_count": 0,
+          "noninteger_count": 893,
+          "min": "0.0",
+          "max": "66828.61"
+        },
+        "fii_net_cr": {
+          "numeric_count": 905,
+          "invalid_count": 0,
+          "zero_count": 3,
+          "negative_count": 400,
+          "noninteger_count": 894,
+          "min": "-3600.08",
+          "max": "7829.77"
+        },
+        "fii_buy_qty_lakh": {
+          "numeric_count": 905,
+          "invalid_count": 0,
+          "zero_count": 2,
+          "negative_count": 0,
+          "noninteger_count": 801,
+          "min": "0.0",
+          "max": "18538.2"
+        },
+        "fii_sell_qty_lakh": {
+          "numeric_count": 905,
+          "invalid_count": 0,
+          "zero_count": 3,
+          "negative_count": 0,
+          "noninteger_count": 817,
+          "min": "0.0",
+          "max": "16504.2"
+        },
+        "fii_net_qty_lakh": {
+          "numeric_count": 905,
+          "invalid_count": 0,
+          "zero_count": 3,
+          "negative_count": 491,
+          "noninteger_count": 811,
+          "min": "-2081.9",
+          "max": "2238.3"
+        },
+        "n_buy_trades": {
+          "numeric_count": 905,
+          "invalid_count": 0,
+          "zero_count": 2,
+          "negative_count": 0,
+          "noninteger_count": 0,
+          "min": "0",
+          "max": "23026"
+        },
+        "n_sell_trades": {
+          "numeric_count": 905,
+          "invalid_count": 0,
+          "zero_count": 2,
+          "negative_count": 0,
+          "noninteger_count": 0,
+          "min": "0",
+          "max": "12471"
+        },
+        "n_unique_scrips": {
+          "numeric_count": 905,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 0,
+          "min": "1",
+          "max": "2423"
+        },
+        "avg_buy_trade_cr": {
+          "numeric_count": 905,
+          "invalid_count": 0,
+          "zero_count": 3,
+          "negative_count": 0,
+          "noninteger_count": 900,
+          "min": "0.0",
+          "max": "7.555"
+        },
+        "avg_sell_trade_cr": {
+          "numeric_count": 905,
+          "invalid_count": 0,
+          "zero_count": 5,
+          "negative_count": 0,
+          "noninteger_count": 898,
+          "min": "0.0",
+          "max": "24.572"
+        },
+        "fii_net_cr_3d": {
+          "numeric_count": 903,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 380,
+          "noninteger_count": 804,
+          "min": "-7758.5",
+          "max": "16567.1"
+        },
+        "fii_net_cr_5d": {
+          "numeric_count": 901,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 362,
+          "noninteger_count": 817,
+          "min": "-11368.9",
+          "max": "25807.1"
+        },
+        "fii_net_cr_10d": {
+          "numeric_count": 896,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 314,
+          "noninteger_count": 791,
+          "min": "-18582.8",
+          "max": "37824.0"
+        },
+        "fii_net_cr_20d": {
+          "numeric_count": 886,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 292,
+          "noninteger_count": 796,
+          "min": "-26534.7",
+          "max": "70367.8"
+        },
+        "fii_net_z20": {
+          "numeric_count": 886,
+          "invalid_count": 0,
+          "zero_count": 8,
+          "negative_count": 462,
+          "noninteger_count": 874,
+          "min": "-2.91",
+          "max": "3.81"
+        },
+        "fii_net_z60": {
+          "numeric_count": 846,
+          "invalid_count": 0,
+          "zero_count": 5,
+          "negative_count": 419,
+          "noninteger_count": 838,
+          "min": "-3.33",
+          "max": "5.63"
+        },
+        "fii_outflow_streak": {
+          "numeric_count": 905,
+          "invalid_count": 0,
+          "zero_count": 505,
+          "negative_count": 0,
+          "noninteger_count": 0,
+          "min": "0",
+          "max": "17"
+        }
+      },
+      "date_columns": {
+        "date": {
+          "format": "%Y-%m-%d",
+          "min": "2009-01-01",
+          "max": "2020-12-31",
+          "distinct_dates": 905,
+          "invalid_rows": 0,
+          "nonblank_valid_date_rows": 905,
+          "duplicate_date_rows": 0,
+          "out_of_order_rows": 0,
+          "date_counts_by_year": {
+            "2009": 247,
+            "2014": 79,
+            "2017": 22,
+            "2018": 224,
+            "2019": 246,
+            "2020": 87
+          },
+          "gaps_over_7_calendar_days": 6,
+          "largest_gaps": [
+            {
+              "from": "2009-12-31",
+              "to": "2014-04-01",
+              "calendar_days": 1552
+            },
+            {
+              "from": "2014-08-28",
+              "to": "2017-05-02",
+              "calendar_days": 978
+            },
+            {
+              "from": "2020-01-31",
+              "to": "2020-10-01",
+              "calendar_days": 244
+            },
+            {
+              "from": "2017-05-31",
+              "to": "2018-01-01",
+              "calendar_days": 215
+            },
+            {
+              "from": "2014-06-30",
+              "to": "2014-08-01",
+              "calendar_days": 32
+            },
+            {
+              "from": "2018-05-31",
+              "to": "2018-07-02",
+              "calendar_days": 32
+            }
+          ]
+        }
+      },
+      "candidate_keys": {
+        "date": {
+          "columns": [
+            "date"
+          ],
+          "duplicate_rows": 0,
+          "conflicting_rows": 0,
+          "missing_key_rows": 0,
+          "distinct_keys": 905
+        }
+      },
+      "pinned_size_sha256_match": true,
+      "header": [
+        "date",
+        "fii_buy_cr",
+        "fii_sell_cr",
+        "fii_net_cr",
+        "fii_buy_qty_lakh",
+        "fii_sell_qty_lakh",
+        "fii_net_qty_lakh",
+        "n_buy_trades",
+        "n_sell_trades",
+        "n_unique_scrips",
+        "avg_buy_trade_cr",
+        "avg_sell_trade_cr",
+        "fii_net_cr_3d",
+        "fii_net_cr_5d",
+        "fii_net_cr_10d",
+        "fii_net_cr_20d",
+        "fii_net_z20",
+        "fii_net_z60",
+        "fii_outflow_streak"
+      ],
+      "header_whitespace_normalized": false,
+      "header_duplicates": {},
+      "unit": "crores and lakh quantities per _cr/_lakh field names; counts per n_ fields; z-scores unitless",
+      "grain": "date / aggregate FII flows with derived rolling fields",
+      "arithmetic_purchase_minus_sales": {
+        "FII cash": {
+          "rows_checked": 905,
+          "nonzero_residuals": 244,
+          "residual_over_0_011": 0,
+          "max_abs_residual": "0.01"
+        },
+        "FII quantity": {
+          "rows_checked": 905,
+          "nonzero_residuals": 221,
+          "residual_over_0_011": 221,
+          "max_abs_residual": "0.1"
+        }
+      }
+    },
+    {
+      "file": "fii_dii_cash_latest_snapshot_2026_06_08.csv",
+      "bytes": 238,
+      "sha256": "b1ea1625fd8d58c2bea9724625f48beae492a69cc7de49f90795ba7a2afb22ba",
+      "coverage": "all data rows and fields parsed; public evidence excludes raw investor, broker, transaction identifiers and scrip samples",
+      "header_row": 1,
+      "data_rows": 2,
+      "blank_rows": 0,
+      "malformed_width_rows": 0,
+      "exact_duplicate_rows": 0,
+      "missing_by_column": {},
+      "numeric_by_column": {
+        "buy_value_cr": {
+          "numeric_count": 2,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 2,
+          "min": "8842.08",
+          "max": "16683.18"
+        },
+        "sell_value_cr": {
+          "numeric_count": 2,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 0,
+          "noninteger_count": 2,
+          "min": "11517.94",
+          "max": "14397.75"
+        },
+        "net_value_cr": {
+          "numeric_count": 2,
+          "invalid_count": 0,
+          "zero_count": 0,
+          "negative_count": 1,
+          "noninteger_count": 2,
+          "min": "-5555.67",
+          "max": "5165.24"
+        }
+      },
+      "date_columns": {
+        "trade_date": {
+          "format": "%Y-%m-%d",
+          "min": "2026-06-08",
+          "max": "2026-06-08",
+          "distinct_dates": 1,
+          "invalid_rows": 0,
+          "nonblank_valid_date_rows": 2,
+          "duplicate_date_rows": 1,
+          "out_of_order_rows": 0,
+          "date_counts_by_year": {
+            "2026": 1
+          },
+          "gaps_over_7_calendar_days": 0,
+          "largest_gaps": []
+        }
+      },
+      "candidate_keys": {
+        "category,trade_date": {
+          "columns": [
+            "category",
+            "trade_date"
+          ],
+          "duplicate_rows": 0,
+          "conflicting_rows": 0,
+          "missing_key_rows": 0,
+          "distinct_keys": 2
+        }
+      },
+      "pinned_size_sha256_match": true,
+      "header": [
+        "category",
+        "trade_date",
+        "buy_value_cr",
+        "sell_value_cr",
+        "net_value_cr",
+        "source_file"
+      ],
+      "header_whitespace_normalized": false,
+      "header_duplicates": {},
+      "unit": "crores per _cr field names",
+      "grain": "category / single trade date; normalized derivative of combined snapshot",
+      "arithmetic_purchase_minus_sales": {
+        "cash": {
+          "rows_checked": 2,
+          "nonzero_residuals": 0,
+          "residual_over_0_011": 0,
+          "max_abs_residual": "0"
+        }
+      },
+      "snapshot_values": {
+        "DII": {
+          "date": "2026-06-08",
+          "buy": "16683.18",
+          "sell": "11517.94",
+          "net": "5165.24",
+          "source_file": "FII.zip:FII/fii-dii-combined-latest.csv"
+        },
+        "FII/FPI": {
+          "date": "2026-06-08",
+          "buy": "8842.08",
+          "sell": "14397.75",
+          "net": "-5555.67",
+          "source_file": "FII.zip:FII/fii-dii-combined-latest.csv"
+        }
+      }
+    },
+    {
+      "file": "fii_entity_daily.csv",
+      "bytes": 21125420,
+      "sha256": "dbfa3d188edd9524920dd5b9ddd88df42e1527c40c4749c28df8db1ab18577ad",
+      "coverage": "all data rows and fields parsed; public evidence excludes raw investor, broker, transaction identifiers and scrip samples",
+      "header_row": 1,
+      "data_rows": 647249,
+      "blank_rows": 0,
+      "malformed_width_rows": 0,
+      "exact_duplicate_rows": 0,
+      "missing_by_column": {},
+      "numeric_by_column": {
+        "net_cr": {
+          "numeric_count": 647249,
+          "invalid_count": 0,
+          "zero_count": 1830,
+          "negative_count": 316844,
+          "noninteger_count": 644957,
+          "min": "-12580.536",
+          "max": "5029.301"
+        }
+      },
+      "date_columns": {
+        "date": {
+          "format": "%Y-%m-%d",
+          "min": "2009-01-01",
+          "max": "2020-12-31",
+          "distinct_dates": 905,
+          "invalid_rows": 0,
+          "nonblank_valid_date_rows": 647249,
+          "duplicate_date_rows": 646344,
+          "out_of_order_rows": 16,
+          "date_counts_by_year": {
+            "2009": 247,
+            "2014": 79,
+            "2017": 22,
+            "2018": 224,
+            "2019": 246,
+            "2020": 87
+          },
+          "gaps_over_7_calendar_days": 6,
+          "largest_gaps": [
+            {
+              "from": "2009-12-31",
+              "to": "2014-04-01",
+              "calendar_days": 1552
+            },
+            {
+              "from": "2014-08-28",
+              "to": "2017-05-02",
+              "calendar_days": 978
+            },
+            {
+              "from": "2020-01-31",
+              "to": "2020-10-01",
+              "calendar_days": 244
+            },
+            {
+              "from": "2017-05-31",
+              "to": "2018-01-01",
+              "calendar_days": 215
+            },
+            {
+              "from": "2014-06-30",
+              "to": "2014-08-01",
+              "calendar_days": 32
+            },
+            {
+              "from": "2018-05-31",
+              "to": "2018-07-02",
+              "calendar_days": 32
+            }
+          ]
+        }
+      },
+      "candidate_keys": {
+        "date,fii_code": {
+          "columns": [
+            "date",
+            "fii_code"
+          ],
+          "duplicate_rows": 0,
+          "conflicting_rows": 0,
+          "missing_key_rows": 0,
+          "distinct_keys": 647249
+        }
+      },
+      "pinned_size_sha256_match": true,
+      "header": [
+        "date",
+        "fii_code",
+        "net_cr"
+      ],
+      "header_whitespace_normalized": false,
+      "header_duplicates": {},
+      "unit": "crores and lakh quantities per _cr/_lakh field names; counts per n_ fields; z-scores unitless",
+      "grain": "date / masked FII code",
+      "arithmetic_purchase_minus_sales": {},
+      "distinct_masked_fii_codes": 101926
+    },
+    {
+      "file": "fii_symbol_daily.csv",
+      "bytes": 4678434,
+      "sha256": "7525ccd9af63db268872742c38e9b63c28794ed25d2088f4c716c482e3e2f819",
+      "coverage": "all data rows and fields parsed; public evidence excludes raw investor, broker, transaction identifiers and scrip samples",
+      "header_row": 1,
+      "data_rows": 89931,
+      "blank_rows": 0,
+      "malformed_width_rows": 0,
+      "exact_duplicate_rows": 0,
+      "missing_by_column": {},
+      "numeric_by_column": {
+        "fii_net_cr": {
+          "numeric_count": 89931,
+          "invalid_count": 0,
+          "zero_count": 108,
+          "negative_count": 43939,
+          "noninteger_count": 89682,
+          "min": "-2343.569",
+          "max": "4640.982"
+        },
+        "fii_net_qty_lakh": {
+          "numeric_count": 89931,
+          "invalid_count": 0,
+          "zero_count": 122,
+          "negative_count": 43938,
+          "noninteger_count": 87883,
+          "min": "-1698.34",
+          "max": "1900.47"
+        }
+      },
+      "date_columns": {
+        "date": {
+          "format": "%Y-%m-%d",
+          "min": "2009-01-01",
+          "max": "2020-12-31",
+          "distinct_dates": 905,
+          "invalid_rows": 0,
+          "nonblank_valid_date_rows": 89931,
+          "duplicate_date_rows": 89026,
+          "out_of_order_rows": 0,
+          "date_counts_by_year": {
+            "2009": 247,
+            "2014": 79,
+            "2017": 22,
+            "2018": 224,
+            "2019": 246,
+            "2020": 87
+          },
+          "gaps_over_7_calendar_days": 6,
+          "largest_gaps": [
+            {
+              "from": "2009-12-31",
+              "to": "2014-04-01",
+              "calendar_days": 1552
+            },
+            {
+              "from": "2014-08-28",
+              "to": "2017-05-02",
+              "calendar_days": 978
+            },
+            {
+              "from": "2020-01-31",
+              "to": "2020-10-01",
+              "calendar_days": 244
+            },
+            {
+              "from": "2017-05-31",
+              "to": "2018-01-01",
+              "calendar_days": 215
+            },
+            {
+              "from": "2014-06-30",
+              "to": "2014-08-01",
+              "calendar_days": 32
+            },
+            {
+              "from": "2018-05-31",
+              "to": "2018-07-02",
+              "calendar_days": 32
+            }
+          ]
+        }
+      },
+      "candidate_keys": {
+        "date,scrip": {
+          "columns": [
+            "date",
+            "scrip"
+          ],
+          "duplicate_rows": 0,
+          "conflicting_rows": 0,
+          "missing_key_rows": 0,
+          "distinct_keys": 89931
+        }
+      },
+      "pinned_size_sha256_match": true,
+      "header": [
+        "date",
+        "scrip",
+        "fii_net_cr",
+        "fii_net_qty_lakh"
+      ],
+      "header_whitespace_normalized": false,
+      "header_duplicates": {},
+      "unit": "crores and lakh quantities per _cr/_lakh field names; counts per n_ fields; z-scores unitless",
+      "grain": "date / scrip-name string",
+      "arithmetic_purchase_minus_sales": {},
+      "distinct_scrip_name_strings": 3388
+    }
+  ],
+  "cross_file_net_sum_reconciliation": [
+    {
+      "file": "fii_symbol_daily.csv",
+      "common_dates": 905,
+      "dates_only_in_aggregate": 0,
+      "dates_only_in_other": 0,
+      "nonzero_sum_differences": 901,
+      "max_abs_sum_difference_cr": "1956.274",
+      "differences_above_rounding_bound": 896,
+      "rounding_bound": "0.005 crore aggregate rounding plus 0.0005 crore per 3-decimal component row",
+      "warning": "Numeric reconciliation does not establish investor classification or transaction completeness."
+    },
+    {
+      "file": "fii_entity_daily.csv",
+      "common_dates": 905,
+      "dates_only_in_aggregate": 0,
+      "dates_only_in_other": 0,
+      "nonzero_sum_differences": 849,
+      "max_abs_sum_difference_cr": "358.397",
+      "differences_above_rounding_bound": 22,
+      "rounding_bound": "0.005 crore aggregate rounding plus 0.0005 crore per 3-decimal component row",
+      "warning": "Numeric reconciliation does not establish investor classification or transaction completeness."
+    }
+  ],
+  "summary": {
+    "all_files_size_sha256_match_pinned_inventory": true,
+    "all_data_rows_parsed": 982154,
+    "root_csv_files": 10,
+    "malformed_data_width_rows": 0,
+    "exact_duplicate_rows": 0,
+    "invalid_numeric_cells": 0,
+    "raw_identifiers_or_transaction_samples_included": false,
+    "asset_bytes_modified": false
+  },
+  "supplemental_checks": {
+    "workbook_epoch_verification_file": "ash-workbook-epoch-checks-2026-09-24.json",
+    "snapshot_comparison": {
+      "trade_date": "2026-06-08",
+      "normalized_snapshot_matches_combined_values": true,
+      "combined_vs_nse_are_distinct_coverage_labels": true,
+      "warning": "Preserve scope in the key; do not merge or sum overlapping combined and NSE reports, and do not label June snapshots current."
+    },
+    "symbol_subset": {
+      "rows_per_date_distribution": {
+        "1": 3,
+        "3": 1,
+        "10": 1,
+        "44": 1,
+        "71": 1,
+        "100": 898
+      },
+      "dates_with_fewer_rows_than_aggregate_scrip_count": 898,
+      "dates_rows_equal_min_100_aggregate_scrips": 905,
+      "dates_sorted_descending_absolute_net": 905,
+      "aggregate_scrip_count_min": 1,
+      "aggregate_scrip_count_max": 2423,
+      "interpretation": "Observed 100-row-per-date cap and absolute-net sorting are consistent with a top-100-style subset. The source is not all-stock coverage and scrip labels are company-name strings, not verified NSE instrument identifiers."
+    },
+    "historical_cash": {
+      "day_month_ambiguous_rows": 1479,
+      "unambiguous_day_first_rows": 2291,
+      "weekend_rows_under_dayfirst_interpretation": 395,
+      "ambiguous_weekend_rows": 392,
+      "unambiguous_weekend_rows": 3,
+      "date_convention_caution": "Date bounds in this report are the dd-mm-yyyy interpretation, not independent upstream date validation. Ambiguous dates require source verification; do not silently swap day and month.",
+      "unit_caution": "This file does not label currency scale in its headers.",
+      "DII_mismatch": {
+        "logical_csv_record": 3380,
+        "source_date": "28-05-2007",
+        "dayfirst_date": "2007-05-28",
+        "purchase": "1077.57",
+        "sales": "1002.83",
+        "net": "46.94",
+        "purchase_minus_sales_minus_net": "27.80"
+      }
+    },
+    "oi_contract_mismatches": {
+      "file": "fao_participant_oi_08062026.csv",
+      "column_residuals": [
+        {
+          "column": "Option Index Put Short",
+          "sum_participants_minus_total": 1
+        },
+        {
+          "column": "Total Long Contracts",
+          "sum_participants_minus_total": -1
+        }
+      ],
+      "row_residuals": [
+        {
+          "participant": "Client",
+          "side": "Short",
+          "sum_components_minus_row_total": 1
+        },
+        {
+          "participant": "FII",
+          "side": "Short",
+          "sum_components_minus_row_total": 1
+        },
+        {
+          "participant": "Pro",
+          "side": "Long",
+          "sum_components_minus_row_total": 1
+        },
+        {
+          "participant": "Pro",
+          "side": "Short",
+          "sum_components_minus_row_total": -1
+        }
+      ],
+      "interpretation": "Contract counts are integers, so exact total checks flag these six mismatches; no correction was applied."
+    },
+    "volume_contract_mismatches": {
+      "file": "fao_participant_vol_08062026.csv",
+      "column_residuals": [],
+      "row_residuals": []
+    },
+    "aggregate_quantity_rounding": {
+      "max_abs_purchase_minus_sales_minus_net_lakh": "0.1",
+      "interpretation": "The quantity fields are displayed to one decimal. The generic 0.011 diagnostic threshold is not a rejection rule; a residual of 0.1 fits combined one-decimal rounding tolerance."
+    },
+    "rolling_gap_checks": {
+      "examples": [
+        {
+          "date": "2014-04-01",
+          "column": "fii_net_cr_3d",
+          "oldest_row_in_window": "2009-12-30",
+          "stored_cr": "1506.5",
+          "sum_available_rows_cr": "1506.50"
+        },
+        {
+          "date": "2014-04-01",
+          "column": "fii_net_cr_5d",
+          "oldest_row_in_window": "2009-12-24",
+          "stored_cr": "2298.8",
+          "sum_available_rows_cr": "2298.85"
+        },
+        {
+          "date": "2017-05-02",
+          "column": "fii_net_cr_3d",
+          "oldest_row_in_window": "2014-08-27",
+          "stored_cr": "-443.6",
+          "sum_available_rows_cr": "-443.64"
+        }
+      ],
+      "interpretation": "These supplied rolling fields span adjacent available rows across multi-year gaps, not consecutive trading sessions. Do not treat the d suffix as a verified session window. Z-scores and streak fields likewise require gap-aware recomputation before strategy use; not recomputed here."
+    },
+    "entity_sum_exceptions": {
+      "dates_beyond_rounding_bound": 22,
+      "date_min": "2014-06-23",
+      "date_max": "2014-08-28",
+      "largest": {
+        "date": "2014-08-13",
+        "aggregate_minus_entity_sum_cr": "358.397",
+        "rounding_bound_cr": "0.2260",
+        "entity_rows": 442
+      },
+      "interpretation": "Do not assume aggregate and entity-level files share complete scope. No cause established or adjustment applied."
+    }
+  },
+  "limitations": [
+    "Exploratory read-only audit, not a production ingestion validator or proof of source authority.",
+    "Missing markers recognized as blank, (null), null, nan, n/a, na; zero numerical values remain distinct.",
+    "Repeated date values in multi-row participant/transaction datasets are expected and are not duplicate-record defects; use candidate compound-key results, not date-only counts.",
+    "No type-code meanings, corporate actions, investor identity, company identity, exchange scope or currency conventions independently verified online.",
+    "Raw transaction identifiers, masked FII codes and broker identifiers were processed only in memory and are excluded from this evidence.",
+    "Candidate key uniqueness is limited to each inspected file and does not prove cross-file deduplication safety.",
+    "Historical data is not current September 2026 provider data and has not been compared with Mongo.",
+    "No supported binary XLS reader found among bundled xlrd, python_calamine, pyexcel, olefile, polars, xlsx or exceljs; the three binary XLS contents remain unread; no installation or native UI used."
+  ]
+}
