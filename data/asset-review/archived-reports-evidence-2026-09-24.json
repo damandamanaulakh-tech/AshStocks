@@ -1,0 +1,2374 @@
+{
+  "schema_version": "ashstocks-archived-reports-evidence-v1",
+  "review_date": "2026-09-24",
+  "baseline_commit": "efb8ca934464551f6db3e32ce31cb94f0ea98cd6",
+  "read_only": true,
+  "source_files_modified": false,
+  "mongo_accessed": false,
+  "provider_calls_performed": false,
+  "runtime_modified": false,
+  "legacy_xls": {
+    "schema_version": "ashstocks-legacy-xls-audit-v1",
+    "review_date": "2026-09-24",
+    "method": "xlrd 2.0.2 stored-cell read and documented BIFF record-count API; Decimal reconciliation",
+    "reader_wheel_sha256": "ea762c3d29f4cca48d82df517b6d89fbce4db3107f9d78713e48cd321d5c9aa9",
+    "originals_modified": false,
+    "workbook_recalculated": false,
+    "mongo_accessed": false,
+    "files": [
+      {
+        "name": "fii_stats_05-Jun-2026.xls",
+        "bytes": 9216,
+        "sha256": "69f845663e636a495c5ff54ce41549f348094332d7b3c8a20e1ef47bce64f8eb",
+        "pin_verified": true,
+        "biff_version": 80,
+        "sheets": [
+          {
+            "name": "sheet1",
+            "range": "A1:G33",
+            "cells_scanned": 231,
+            "nonempty_cells": 117,
+            "cell_type_counts": {
+              "1": 231
+            },
+            "heading": "FII DERIVATIVES STATISTICS FOR 05-Jun-2026",
+            "reported_date": "2026-06-05",
+            "data_rows": 14,
+            "data_excel_rows": [
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              18,
+              20
+            ],
+            "notes_and_textual_formulas": [
+              {
+                "cell": "A25",
+                "text": "Notes:"
+              },
+              {
+                "cell": "A27",
+                "text": "Both buy and sell positions have been considered"
+              },
+              {
+                "cell": "A28",
+                "text": "Options Value (Buy/Sell) = Strike price * Qty"
+              },
+              {
+                "cell": "A29",
+                "text": "Futures Value (Buy/Sell) = Traded Price * Qty"
+              },
+              {
+                "cell": "A31",
+                "text": "Value & Open Interest at the end of day:"
+              },
+              {
+                "cell": "A32",
+                "text": "Options Value (End of day) = Underlying Close Price * Qty"
+              },
+              {
+                "cell": "A33",
+                "text": "Futures Value (End of day) = Closing Futures Price * Qty  (closing price is the daily settlement price of futures contracts)"
+              }
+            ]
+          }
+        ],
+        "biff_record_counts": {
+          "BACKUP": 1,
+          "BOF": 2,
+          "BOOKBOOL": 1,
+          "BOUNDSHEET": 1,
+          "CALCCOUNT": 1,
+          "CALCMODE": 1,
+          "CODEPAGE": 1,
+          "COUNTRY": 1,
+          "DATEMODE": 1,
+          "DBCELL": 2,
+          "DEFAULTROWHEIGHT": 1,
+          "DEFCOLWIDTH": 1,
+          "DELTA": 1,
+          "DIMENSIONS": 1,
+          "DSF": 1,
+          "EOF": 2,
+          "EXTERNSHEET": 1,
+          "EXTSST": 1,
+          "FNGROUPCOUNT": 1,
+          "FONT": 5,
+          "FOOTER": 1,
+          "FORMAT": 8,
+          "GRIDSET": 1,
+          "GUTS": 1,
+          "HCENTER": 1,
+          "HEADER": 1,
+          "HIDEOBJ": 1,
+          "INDEX_B3+": 1,
+          "INTERFACEEND": 1,
+          "INTERFACEHDR": 1,
+          "ITERATION": 1,
+          "LABELSST": 231,
+          "MMS": 1,
+          "PASSWORD": 1,
+          "PASSWORDREV4": 1,
+          "PRECISION": 1,
+          "PRINTGRIDLINES": 1,
+          "PRINTHEADERS": 1,
+          "PROTECT": 1,
+          "PROTECTIONREV4": 1,
+          "REFMODE": 1,
+          "REFRESHALL": 1,
+          "ROW": 33,
+          "SAVERECALC": 1,
+          "SELECTION": 1,
+          "SETUP": 1,
+          "SST": 1,
+          "STYLE": 6,
+          "SUPBOOK": 1,
+          "TABID": 1,
+          "USESELFS": 1,
+          "VCENTER": 1,
+          "WINDOW1": 1,
+          "WINDOW2": 1,
+          "WINDOWPROTECT": 1,
+          "WRITEACCESS": 1,
+          "WSBOOL": 1,
+          "XF": 22
+        },
+        "formula_records": 0,
+        "formula_caveat": "Stored values only; no native Excel rendering or recalculation performed"
+      },
+      {
+        "name": "fii_stats_08-Jun-2026.1.xls",
+        "bytes": 9216,
+        "sha256": "97aca37bc73cc59aa32431e25e06be2608fd7ce035ff8e85e5f2f6757c65ed69",
+        "pin_verified": true,
+        "biff_version": 80,
+        "sheets": [
+          {
+            "name": "sheet1",
+            "range": "A1:G33",
+            "cells_scanned": 231,
+            "nonempty_cells": 117,
+            "cell_type_counts": {
+              "1": 231
+            },
+            "heading": "FII DERIVATIVES STATISTICS FOR 08-Jun-2026",
+            "reported_date": "2026-06-08",
+            "data_rows": 14,
+            "data_excel_rows": [
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              18,
+              20
+            ],
+            "notes_and_textual_formulas": [
+              {
+                "cell": "A25",
+                "text": "Notes:"
+              },
+              {
+                "cell": "A27",
+                "text": "Both buy and sell positions have been considered"
+              },
+              {
+                "cell": "A28",
+                "text": "Options Value (Buy/Sell) = Strike price * Qty"
+              },
+              {
+                "cell": "A29",
+                "text": "Futures Value (Buy/Sell) = Traded Price * Qty"
+              },
+              {
+                "cell": "A31",
+                "text": "Value & Open Interest at the end of day:"
+              },
+              {
+                "cell": "A32",
+                "text": "Options Value (End of day) = Underlying Close Price * Qty"
+              },
+              {
+                "cell": "A33",
+                "text": "Futures Value (End of day) = Closing Futures Price * Qty  (closing price is the daily settlement price of futures contracts)"
+              }
+            ]
+          }
+        ],
+        "biff_record_counts": {
+          "BACKUP": 1,
+          "BOF": 2,
+          "BOOKBOOL": 1,
+          "BOUNDSHEET": 1,
+          "CALCCOUNT": 1,
+          "CALCMODE": 1,
+          "CODEPAGE": 1,
+          "COUNTRY": 1,
+          "DATEMODE": 1,
+          "DBCELL": 2,
+          "DEFAULTROWHEIGHT": 1,
+          "DEFCOLWIDTH": 1,
+          "DELTA": 1,
+          "DIMENSIONS": 1,
+          "DSF": 1,
+          "EOF": 2,
+          "EXTERNSHEET": 1,
+          "EXTSST": 1,
+          "FNGROUPCOUNT": 1,
+          "FONT": 5,
+          "FOOTER": 1,
+          "FORMAT": 8,
+          "GRIDSET": 1,
+          "GUTS": 1,
+          "HCENTER": 1,
+          "HEADER": 1,
+          "HIDEOBJ": 1,
+          "INDEX_B3+": 1,
+          "INTERFACEEND": 1,
+          "INTERFACEHDR": 1,
+          "ITERATION": 1,
+          "LABELSST": 231,
+          "MMS": 1,
+          "PASSWORD": 1,
+          "PASSWORDREV4": 1,
+          "PRECISION": 1,
+          "PRINTGRIDLINES": 1,
+          "PRINTHEADERS": 1,
+          "PROTECT": 1,
+          "PROTECTIONREV4": 1,
+          "REFMODE": 1,
+          "REFRESHALL": 1,
+          "ROW": 33,
+          "SAVERECALC": 1,
+          "SELECTION": 1,
+          "SETUP": 1,
+          "SST": 1,
+          "STYLE": 6,
+          "SUPBOOK": 1,
+          "TABID": 1,
+          "USESELFS": 1,
+          "VCENTER": 1,
+          "WINDOW1": 1,
+          "WINDOW2": 1,
+          "WINDOWPROTECT": 1,
+          "WRITEACCESS": 1,
+          "WSBOOL": 1,
+          "XF": 22
+        },
+        "formula_records": 0,
+        "formula_caveat": "Stored values only; no native Excel rendering or recalculation performed"
+      },
+      {
+        "name": "fii_stats_08-Jun-2026.xls",
+        "bytes": 9216,
+        "sha256": "97aca37bc73cc59aa32431e25e06be2608fd7ce035ff8e85e5f2f6757c65ed69",
+        "pin_verified": true,
+        "biff_version": 80,
+        "sheets": [
+          {
+            "name": "sheet1",
+            "range": "A1:G33",
+            "cells_scanned": 231,
+            "nonempty_cells": 117,
+            "cell_type_counts": {
+              "1": 231
+            },
+            "heading": "FII DERIVATIVES STATISTICS FOR 08-Jun-2026",
+            "reported_date": "2026-06-08",
+            "data_rows": 14,
+            "data_excel_rows": [
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              18,
+              20
+            ],
+            "notes_and_textual_formulas": [
+              {
+                "cell": "A25",
+                "text": "Notes:"
+              },
+              {
+                "cell": "A27",
+                "text": "Both buy and sell positions have been considered"
+              },
+              {
+                "cell": "A28",
+                "text": "Options Value (Buy/Sell) = Strike price * Qty"
+              },
+              {
+                "cell": "A29",
+                "text": "Futures Value (Buy/Sell) = Traded Price * Qty"
+              },
+              {
+                "cell": "A31",
+                "text": "Value & Open Interest at the end of day:"
+              },
+              {
+                "cell": "A32",
+                "text": "Options Value (End of day) = Underlying Close Price * Qty"
+              },
+              {
+                "cell": "A33",
+                "text": "Futures Value (End of day) = Closing Futures Price * Qty  (closing price is the daily settlement price of futures contracts)"
+              }
+            ]
+          }
+        ],
+        "biff_record_counts": {
+          "BACKUP": 1,
+          "BOF": 2,
+          "BOOKBOOL": 1,
+          "BOUNDSHEET": 1,
+          "CALCCOUNT": 1,
+          "CALCMODE": 1,
+          "CODEPAGE": 1,
+          "COUNTRY": 1,
+          "DATEMODE": 1,
+          "DBCELL": 2,
+          "DEFAULTROWHEIGHT": 1,
+          "DEFCOLWIDTH": 1,
+          "DELTA": 1,
+          "DIMENSIONS": 1,
+          "DSF": 1,
+          "EOF": 2,
+          "EXTERNSHEET": 1,
+          "EXTSST": 1,
+          "FNGROUPCOUNT": 1,
+          "FONT": 5,
+          "FOOTER": 1,
+          "FORMAT": 8,
+          "GRIDSET": 1,
+          "GUTS": 1,
+          "HCENTER": 1,
+          "HEADER": 1,
+          "HIDEOBJ": 1,
+          "INDEX_B3+": 1,
+          "INTERFACEEND": 1,
+          "INTERFACEHDR": 1,
+          "ITERATION": 1,
+          "LABELSST": 231,
+          "MMS": 1,
+          "PASSWORD": 1,
+          "PASSWORDREV4": 1,
+          "PRECISION": 1,
+          "PRINTGRIDLINES": 1,
+          "PRINTHEADERS": 1,
+          "PROTECT": 1,
+          "PROTECTIONREV4": 1,
+          "REFMODE": 1,
+          "REFRESHALL": 1,
+          "ROW": 33,
+          "SAVERECALC": 1,
+          "SELECTION": 1,
+          "SETUP": 1,
+          "SST": 1,
+          "STYLE": 6,
+          "SUPBOOK": 1,
+          "TABID": 1,
+          "USESELFS": 1,
+          "VCENTER": 1,
+          "WINDOW1": 1,
+          "WINDOW2": 1,
+          "WINDOWPROTECT": 1,
+          "WRITEACCESS": 1,
+          "WSBOOL": 1,
+          "XF": 22
+        },
+        "formula_records": 0,
+        "formula_caveat": "Stored values only; no native Excel rendering or recalculation performed"
+      }
+    ],
+    "nested_copies": [
+      {
+        "archive": "FII.DII.Nifty.zip",
+        "member": "FII DII Nifty/fii_stats_05-Jun-2026.xls",
+        "bytes": 9216,
+        "sha256": "69f845663e636a495c5ff54ce41549f348094332d7b3c8a20e1ef47bce64f8eb",
+        "crc_read": true,
+        "equals_root": [
+          "fii_stats_05-Jun-2026.xls"
+        ],
+        "content_coverage": "byte-identical to fully read root XLS"
+      },
+      {
+        "archive": "FII.DII.Nifty.zip",
+        "member": "FII DII Nifty/fii_stats_08-Jun-2026.xls",
+        "bytes": 9216,
+        "sha256": "97aca37bc73cc59aa32431e25e06be2608fd7ce035ff8e85e5f2f6757c65ed69",
+        "crc_read": true,
+        "equals_root": [
+          "fii_stats_08-Jun-2026.1.xls",
+          "fii_stats_08-Jun-2026.xls"
+        ],
+        "content_coverage": "byte-identical to fully read root XLS"
+      }
+    ],
+    "derived_csv_checks": [
+      {
+        "archive": "fii_derivatives_cash_review_v0_2_csv_pack.zip",
+        "member": "fii_derivatives_cash_review_v0_2_csv_pack/fii_derivatives_stats_current_clean.csv",
+        "sha256": "36cabe3add2f256f26998ed63254b7da259ef6573f5a473297f69fc3a53217ec",
+        "rows": 28,
+        "all28_unique_keys_match": true,
+        "source_field_comparisons": 168,
+        "mismatches": [],
+        "net_absolute_precision_difference_max": "1.676E-10",
+        "provenance_note": "Numeric source matches verified root XLS; embedded Reports-Daily-Multiple.zip container claim remains unverified"
+      },
+      {
+        "archive": "fii_volume_derivatives_review_v0_3_csv_pack.zip",
+        "member": "fii_volume_derivatives_review_v0_3_csv_pack/fii_derivatives_stats_current_clean.csv",
+        "sha256": "36cabe3add2f256f26998ed63254b7da259ef6573f5a473297f69fc3a53217ec",
+        "rows": 28,
+        "all28_unique_keys_match": true,
+        "source_field_comparisons": 168,
+        "mismatches": [],
+        "net_absolute_precision_difference_max": "1.676E-10",
+        "provenance_note": "Numeric source matches verified root XLS; embedded Reports-Daily-Multiple.zip container claim remains unverified"
+      }
+    ],
+    "hierarchy_checks": [
+      {
+        "date": "2026-06-05",
+        "aggregate": "INDEX FUTURES",
+        "child_count": 5,
+        "aggregate_minus_sum": {
+          "buy_contracts": "0",
+          "buy_value_cr": "0.01",
+          "sell_contracts": "0",
+          "sell_value_cr": "0.00",
+          "open_int_contracts": "0",
+          "open_int_value_cr": "-0.01"
+        },
+        "warning": "Index aggregate includes its five children; summing all14 rows double-counts index observations"
+      },
+      {
+        "date": "2026-06-05",
+        "aggregate": "INDEX OPTIONS",
+        "child_count": 5,
+        "aggregate_minus_sum": {
+          "buy_contracts": "0",
+          "buy_value_cr": "0.00",
+          "sell_contracts": "0",
+          "sell_value_cr": "0.00",
+          "open_int_contracts": "0",
+          "open_int_value_cr": "0.00"
+        },
+        "warning": "Index aggregate includes its five children; summing all14 rows double-counts index observations"
+      },
+      {
+        "date": "2026-06-08",
+        "aggregate": "INDEX FUTURES",
+        "child_count": 5,
+        "aggregate_minus_sum": {
+          "buy_contracts": "0",
+          "buy_value_cr": "0.00",
+          "sell_contracts": "0",
+          "sell_value_cr": "0.01",
+          "open_int_contracts": "0",
+          "open_int_value_cr": "0.00"
+        },
+        "warning": "Index aggregate includes its five children; summing all14 rows double-counts index observations"
+      },
+      {
+        "date": "2026-06-08",
+        "aggregate": "INDEX OPTIONS",
+        "child_count": 5,
+        "aggregate_minus_sum": {
+          "buy_contracts": "0",
+          "buy_value_cr": "0.00",
+          "sell_contracts": "0",
+          "sell_value_cr": "0.00",
+          "open_int_contracts": "0",
+          "open_int_value_cr": "0.00"
+        },
+        "warning": "Index aggregate includes its five children; summing all14 rows double-counts index observations"
+      }
+    ],
+    "summary": {
+      "root_files": 3,
+      "unique_byte_contents": 2,
+      "reported_dates": [
+        "2026-06-05",
+        "2026-06-08"
+      ],
+      "distinct_instrument_rows": 28,
+      "root_stored_cells_read": 693,
+      "root_nonempty_cells": 351,
+      "duplicate_groups": [
+        [
+          "fii_stats_08-Jun-2026.1.xls",
+          "fii_stats_08-Jun-2026.xls"
+        ]
+      ],
+      "cell_formula_records": 0,
+      "usage": "Dated market-wide derivatives snapshots, not current cash flow, stock ownership, OHLCV or an equity universe"
+    }
+  },
+  "sector_html": {
+    "schema_version": "ashstocks-sector-html-audit-v1",
+    "review_date": "2026-09-24",
+    "source": {
+      "name": "NSDL._.Fortnightly.Sector-wise.FII.Investment.data.html",
+      "sha256": "dedc69b6d4d1d5090b760b19bc88228d05ab7731da02df9d27dd7436199d8c06",
+      "bytes": 326457,
+      "pinned_hash_verified": true,
+      "saved_from_url": "https://www.cdslindia.com/publications/FII/FortnightlySecWisePages/May%2031,%202026.html",
+      "document_title": "NSDL : Fortnightly Sector-wise FII Investment data",
+      "provenance_caveat": "NSDL title, saved CDSL URL, and localhost form action coexist; this is an archived local report, not independently fetched current data."
+    },
+    "full_table_content_read": true,
+    "scripts_executed": false,
+    "source_modified": false,
+    "mongo_accessed": false,
+    "table_row_counts": [
+      29,
+      3,
+      12,
+      6,
+      1
+    ],
+    "stored_cell_count": 2688,
+    "main_table": {
+      "header_rows": 4,
+      "sector_rows": 24,
+      "grand_total_rows": 1,
+      "periods": [
+        "AUC as on May 15, 2026",
+        "Net Investment May 01-15, 2026",
+        "Net Investment May 16-31, 2026",
+        "AUC as on May 31, 2026"
+      ],
+      "currency_groups": [
+        "IN INR Cr.",
+        "IN USD Mn",
+        "IN INR Cr.",
+        "IN USD Mn",
+        "IN INR Cr.",
+        "IN USD Mn",
+        "IN INR Cr.",
+        "IN USD Mn"
+      ],
+      "fields_per_currency": [
+        "Equity",
+        "Debt General Limit",
+        "Debt VRR",
+        "Debt-FAR",
+        "Hybrid",
+        "Equity",
+        "Debt General Limit",
+        "Hybrid",
+        "Solution oriented",
+        "Other",
+        "AIF",
+        "Total"
+      ],
+      "numeric_values_read": 2400,
+      "missing_or_unparseable_numeric_cells": 0,
+      "sectors": [
+        "Automobile and Auto Components",
+        "Capital Goods",
+        "Chemicals",
+        "Construction",
+        "Construction Materials",
+        "Consumer Durables",
+        "Consumer Services",
+        "Diversified",
+        "Fast Moving Consumer Goods",
+        "Financial Services",
+        "Forest Materials",
+        "Healthcare",
+        "Information Technology",
+        "Media, Entertainment & Publication",
+        "Metals & Mining",
+        "Oil, Gas & Consumable Fuels",
+        "Power",
+        "Realty",
+        "Services",
+        "Telecommunication",
+        "Textiles",
+        "Utilities",
+        "Sovereign",
+        "Others"
+      ],
+      "grand_total_all_96_values": [
+        "6730039",
+        "181495",
+        "163712",
+        "284238",
+        "61296",
+        "9602",
+        "1141",
+        "221",
+        "0",
+        "3013",
+        "29",
+        "7434786",
+        "701590",
+        "18920",
+        "17067",
+        "29631",
+        "6390",
+        "1001",
+        "119",
+        "23",
+        "0",
+        "314",
+        "3",
+        "775058",
+        "-27048",
+        "-57",
+        "-456",
+        "2943",
+        "931",
+        "125",
+        "-24",
+        "48",
+        "0",
+        "-15",
+        "0",
+        "-23553",
+        "-2820",
+        "-6",
+        "-48",
+        "307",
+        "97",
+        "13",
+        "-2",
+        "5",
+        "0",
+        "-2",
+        "0",
+        "-2456",
+        "-5915",
+        "-43",
+        "-1092",
+        "1462",
+        "54",
+        "42",
+        "-298",
+        "0",
+        "0",
+        "-146",
+        "5",
+        "-5931",
+        "-620",
+        "-4",
+        "-114",
+        "153",
+        "6",
+        "4",
+        "-31",
+        "0",
+        "0",
+        "-15",
+        "1",
+        "-620",
+        "6772783",
+        "180789",
+        "163234",
+        "285905",
+        "61699",
+        "9620",
+        "848",
+        "221",
+        "0",
+        "2639",
+        "33",
+        "7477771",
+        "710051",
+        "18954",
+        "17113",
+        "29974",
+        "6468",
+        "1009",
+        "89",
+        "23",
+        "0",
+        "277",
+        "3",
+        "783961"
+      ],
+      "negative_values": 203,
+      "period_value_note": "AUC is a stock, fortnightly net investment is a flow; their difference is not an ownership-percent change.",
+      "qualified_fields_per_currency": [
+        "direct_equity",
+        "debt_general_limit",
+        "debt_vrr",
+        "debt_far",
+        "direct_hybrid",
+        "mutual_funds_equity",
+        "mutual_funds_debt_general_limit",
+        "mutual_funds_hybrid",
+        "mutual_funds_solution_oriented",
+        "mutual_funds_other",
+        "aif",
+        "total"
+      ]
+    },
+    "reconciliation": {
+      "grand_total_minus_sector_sum": [
+        "1",
+        "-2",
+        "-2",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "-3",
+        "0",
+        "-1",
+        "-1",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "-2",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "-1",
+        "1",
+        "0",
+        "1",
+        "-1",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "4",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "4",
+        "1",
+        "0",
+        "1",
+        "0",
+        "1",
+        "0",
+        "0",
+        "0",
+        "0",
+        "1",
+        "0",
+        "4",
+        "1",
+        "-2",
+        "-1",
+        "0",
+        "0",
+        "0",
+        "1",
+        "0",
+        "0",
+        "0",
+        "0",
+        "-1",
+        "-1",
+        "0",
+        "-1",
+        "0",
+        "-1",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "-3"
+      ],
+      "max_abs_column_total_delta": "4",
+      "nonzero_row_total_deltas": [],
+      "max_abs_row_total_delta": "0",
+      "company_total_minus_component_sums": {
+        "2": "1",
+        "4": "1"
+      },
+      "fx_comparisons": 1200,
+      "max_abs_fx_delta_usd_mn": "1.7991392731523465552579297",
+      "fx_caveat": "Reported inputs are rounded whole INR crore / USD million; these comparisons describe stored report arithmetic, not a currency-quality threshold."
+    },
+    "notes": [
+      "Note: The net investment and AUC of FPIs in Debt VRR segment have been included in the aforesaid report w.e.f. April 30, 2020.",
+      "The AUC of FPIs in Debt-FAR, Mutual Funds and AIF segment have been included in the aforesaid report w.e.f. August 31, 2024.",
+      "The Net investment of FPIs in Debt-FAR, Mutual Funds and AIF segment have been included in the aforesaid report w.e.f. September 15, 2024.",
+      "Note: BSE and NSE vide its Press release dated March 21, 2022 have informed and adopted Common Industry Classification structure for Companies Listed and Traded at NSE and BSE. Accordingly, NSDL has considered the aforesaid new Common Industry Classification structure as provided by BSE in respect of aforesaid report w.e.f. April 30, 2022. For Sector classification, please refer to BSE industry classification as published on its website : https://www.bseindia.com/static/about/Industry_Classification.aspx BSE has classified around 4800 number of issuers into 22 sectors. NSDL has decided to rely on the BSE classification. Any FPI investment outside those 4800 issuers, is classified under 'Others'."
+    ],
+    "fx_table": [
+      [
+        "Note: RBI reference rate is used for conversion from INR to USD"
+      ],
+      [
+        "AUC as on May 15, 2026",
+        "95.9255"
+      ],
+      [
+        "Net Investment May 01-15, 2026",
+        "95.9255"
+      ],
+      [
+        "AUC as on May 31, 2026",
+        "95.3845"
+      ],
+      [
+        "Net Investment May 16-31, 2026",
+        "95.3845"
+      ],
+      [
+        "INR to USD conversion of FPI net Investment details on NSDL website is done on the basis of daily RBI reference rate. However here RBI reference rate of end of period is used for conversion fromINR to USD."
+      ]
+    ],
+    "debt_company_table": [
+      [
+        "Sr. No.",
+        "Companies",
+        "As on May 31, 2026 in INR Cr.",
+        "Companies",
+        "As on May 15, 2026 in INR Cr."
+      ],
+      [
+        "1",
+        "PORTEAST INVESTMENT PRIVATE LIMITED",
+        "25,489",
+        "PORTEAST INVESTMENT PRIVATE LIMITED",
+        "25,677"
+      ],
+      [
+        "2",
+        "MANIPAL HOSPITALS PRIVATE LIMITED",
+        "5,310",
+        "MANIPAL HOSPITALS PRIVATE LIMITED",
+        "5,310"
+      ],
+      [
+        "3",
+        "RELIANCE LOGISTICS AND WAREHOUSE HOLDING GS LIMITED",
+        "5,275",
+        "RELIANCE LOGISTICS AND WAREHOUSE HOLDING GS LIMITED",
+        "5,275"
+      ],
+      [
+        "4",
+        "JSW KALINGA STEEL LIMITED",
+        "4,700",
+        "JSW KALINGA STEEL LIMITED",
+        "4,700"
+      ],
+      [
+        "5",
+        "RELIANCE CAPITAL LIMITED",
+        "3,346",
+        "RELIANCE CAPITAL LIMITED",
+        "3,346"
+      ],
+      [
+        "6",
+        "SIDBI",
+        "2,430",
+        "SIDBI",
+        "2,432"
+      ],
+      [
+        "7",
+        "FULLERTON INDIA CREDIT COMPANY LTD",
+        "2,177",
+        "FULLERTON INDIA CREDIT COMPANY LTD",
+        "2,177"
+      ],
+      [
+        "8",
+        "NABARD",
+        "1,850",
+        "NABARD",
+        "1,851"
+      ],
+      [
+        "9",
+        "BILT GRAPHIC PAPER PRODUCTS LIMITED",
+        "1,849",
+        "BILT GRAPHIC PAPER PRODUCTS LIMITED",
+        "1,849"
+      ],
+      [
+        "10",
+        "CONVENIENT HOSPITALS LIMITED EQ",
+        "1,225",
+        "CONVENIENT HOSPITALS LIMITED EQ",
+        "1,225"
+      ],
+      [
+        "",
+        "Total",
+        "53,652",
+        "Total",
+        "53,843"
+      ]
+    ],
+    "consumer_decision": "Historical sector-level context candidate only. Not daily FII cash, stock ownership, EPS, OHLCV, or current trade authorization. Do not add top debt issuers to equity universe from this report."
+  },
+  "pdf_review": {
+    "schema_version": "ashstocks-root-pdf-review-v1",
+    "review_date": "2026-09-24",
+    "method": "Offline Apple PDFKit render and Vision accurate English OCR, CPU-only; successful outside sandbox after sandbox error; no upload/source alteration.",
+    "ocr_helper_sha256": "22d4c61b7753e5d78ffb5c3670609b0963f97fd979562d1e329399d172020c41",
+    "files": [
+      {
+        "name": "FII.Derivative.Investment.FY.09.pdf",
+        "bytes": 741414,
+        "sha256": "bcf4e932a205db30b61621b0d789639ba8fbfec5d1a68fab362beb983ce68014",
+        "pin_verified": true,
+        "page_count": 5,
+        "pages": [
+          {
+            "page": 1,
+            "native_text_chars": 0,
+            "ocr_lines": 60,
+            "ocr_text_chars": 780,
+            "ocr_text_sha256": "6ce10b43b128b23c38104f3e15b5800dca403d7db17d87ba9f2ff9ab7aafa3e2",
+            "low_confidence_lines_below_0_8": 1,
+            "visually_inspected": true,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 2,
+            "native_text_chars": 0,
+            "ocr_lines": 44,
+            "ocr_text_chars": 788,
+            "ocr_text_sha256": "b06d882de3b4ba2bc21155936f3042db7f33fc5b7c50a55563c501254c652cd2",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 3,
+            "native_text_chars": 0,
+            "ocr_lines": 42,
+            "ocr_text_chars": 898,
+            "ocr_text_sha256": "4beb1d4fb79c04fb9e854111e2941b35bdadf5bc491aef59eeceb0a78cb36e6c",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 4,
+            "native_text_chars": 0,
+            "ocr_lines": 42,
+            "ocr_text_chars": 1011,
+            "ocr_text_sha256": "ea418c7063d2e04125b65f846d38010ea1cf6c3251b98a867925c58870b71287",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 5,
+            "native_text_chars": 0,
+            "ocr_lines": 8,
+            "ocr_text_chars": 403,
+            "ocr_text_sha256": "20e9f9e850ff2c137bcbc5d821bd80325112995037fcfd377d1e01d31ddb393a",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          }
+        ],
+        "ocr_evidence_sha256": "ed47037daa8fd38319c0014030888cd209f072ae35f550b9e947b529c141800c",
+        "content_status": "partial: all-page OCR and document classification; incomplete clipped columns and unvalidated numeric transcription",
+        "scope": "Monthly FPI/FII net investments, calendar year 2009; not a derivatives or fiscal-year table.",
+        "data_pages": [
+          1,
+          2
+        ],
+        "remaining_pages": "website navigation/legal boilerplate in OCR, not additional data tables",
+        "coverage_note": "January-December 2009, printed 9 June 2026",
+        "visually_inspected_pages": [
+          1
+        ],
+        "visible_layout_limit": "Right-hand table columns and some footnotes are clipped in representative inspected layouts. OCR cannot recover absent source pixels."
+      },
+      {
+        "name": "FII.Derivative.Investment.FY.14.pdf",
+        "bytes": 740515,
+        "sha256": "ed32b574beb494ded77fc85567b1a1724c7158ba8adffd1f8aae1e5cd6b7945a",
+        "pin_verified": true,
+        "page_count": 5,
+        "pages": [
+          {
+            "page": 1,
+            "native_text_chars": 0,
+            "ocr_lines": 60,
+            "ocr_text_chars": 798,
+            "ocr_text_sha256": "13884650c4252f1d1980b61ed5bab5cdb862f9c428e191ec998b3c2ec6fc4d16",
+            "low_confidence_lines_below_0_8": 1,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 2,
+            "native_text_chars": 0,
+            "ocr_lines": 44,
+            "ocr_text_chars": 805,
+            "ocr_text_sha256": "f68f46ba4ad05868d704b4d86e5db05d44b244cc41e5392e1f239ed6ab9cb3cf",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 3,
+            "native_text_chars": 0,
+            "ocr_lines": 42,
+            "ocr_text_chars": 898,
+            "ocr_text_sha256": "4beb1d4fb79c04fb9e854111e2941b35bdadf5bc491aef59eeceb0a78cb36e6c",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 4,
+            "native_text_chars": 0,
+            "ocr_lines": 42,
+            "ocr_text_chars": 1011,
+            "ocr_text_sha256": "ea418c7063d2e04125b65f846d38010ea1cf6c3251b98a867925c58870b71287",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 5,
+            "native_text_chars": 0,
+            "ocr_lines": 8,
+            "ocr_text_chars": 403,
+            "ocr_text_sha256": "20e9f9e850ff2c137bcbc5d821bd80325112995037fcfd377d1e01d31ddb393a",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          }
+        ],
+        "ocr_evidence_sha256": "ea79e97a0fac8eb77ff87b267863f09dec22c8abf2ec0a6b8227459a140de357",
+        "content_status": "partial: all-page OCR and document classification; incomplete clipped columns and unvalidated numeric transcription",
+        "scope": "Monthly FPI/FII net investments, calendar year 2014; not a derivatives or fiscal-year table.",
+        "data_pages": [
+          1,
+          2
+        ],
+        "remaining_pages": "website navigation/legal boilerplate in OCR, not additional data tables",
+        "coverage_note": "January-December 2014, printed 9 June 2026",
+        "visually_inspected_pages": [],
+        "visible_layout_limit": "Right-hand table columns and some footnotes are clipped in representative inspected layouts. OCR cannot recover absent source pixels."
+      },
+      {
+        "name": "FII.Derivative.Investment.FY.18.pdf",
+        "bytes": 748439,
+        "sha256": "cd6b46f3525c88b4af2a59e9813f52fdda5f2fadaeaeddb6f79f25ca933ca7ce",
+        "pin_verified": true,
+        "page_count": 5,
+        "pages": [
+          {
+            "page": 1,
+            "native_text_chars": 0,
+            "ocr_lines": 59,
+            "ocr_text_chars": 799,
+            "ocr_text_sha256": "1a82c8cddd0e05e3c9f9ab391209f0f1b405bef07ee88a6c3e54821883738286",
+            "low_confidence_lines_below_0_8": 1,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 2,
+            "native_text_chars": 0,
+            "ocr_lines": 45,
+            "ocr_text_chars": 809,
+            "ocr_text_sha256": "afdf78d6a8ba45d342c40b67e7718bce9ef13d9667954eff9216480d3ac58791",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 3,
+            "native_text_chars": 0,
+            "ocr_lines": 42,
+            "ocr_text_chars": 898,
+            "ocr_text_sha256": "4beb1d4fb79c04fb9e854111e2941b35bdadf5bc491aef59eeceb0a78cb36e6c",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 4,
+            "native_text_chars": 0,
+            "ocr_lines": 42,
+            "ocr_text_chars": 1011,
+            "ocr_text_sha256": "ea418c7063d2e04125b65f846d38010ea1cf6c3251b98a867925c58870b71287",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 5,
+            "native_text_chars": 0,
+            "ocr_lines": 8,
+            "ocr_text_chars": 403,
+            "ocr_text_sha256": "20e9f9e850ff2c137bcbc5d821bd80325112995037fcfd377d1e01d31ddb393a",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          }
+        ],
+        "ocr_evidence_sha256": "9f873fa8b46b92acb1c1eb9d213fd91a94a728bc870181ad9574bfab028e0384",
+        "content_status": "partial: all-page OCR and document classification; incomplete clipped columns and unvalidated numeric transcription",
+        "scope": "Monthly FPI/FII net investments, calendar year 2018; not a derivatives or fiscal-year table.",
+        "data_pages": [
+          1,
+          2
+        ],
+        "remaining_pages": "website navigation/legal boilerplate in OCR, not additional data tables",
+        "coverage_note": "January-December 2018, printed 9 June 2026",
+        "visually_inspected_pages": [],
+        "visible_layout_limit": "Right-hand table columns and some footnotes are clipped in representative inspected layouts. OCR cannot recover absent source pixels."
+      },
+      {
+        "name": "FII.Derivative.Investment.FY.19.pdf",
+        "bytes": 749152,
+        "sha256": "8dc3f13ec9e7dc669cb0ba438a092292c5fb2a415d0963ed6bd5c3c709d00d1e",
+        "pin_verified": true,
+        "page_count": 5,
+        "pages": [
+          {
+            "page": 1,
+            "native_text_chars": 0,
+            "ocr_lines": 60,
+            "ocr_text_chars": 802,
+            "ocr_text_sha256": "461cface8746ee5ed2c5b62611abf631188d947f9cdbe7a48308b3b29dd6325b",
+            "low_confidence_lines_below_0_8": 1,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 2,
+            "native_text_chars": 0,
+            "ocr_lines": 43,
+            "ocr_text_chars": 801,
+            "ocr_text_sha256": "84c749c5f6b699663e898b1a373d8b206e88cf4b0cade95752b4ed0b3e5b72e1",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 3,
+            "native_text_chars": 0,
+            "ocr_lines": 42,
+            "ocr_text_chars": 898,
+            "ocr_text_sha256": "4beb1d4fb79c04fb9e854111e2941b35bdadf5bc491aef59eeceb0a78cb36e6c",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 4,
+            "native_text_chars": 0,
+            "ocr_lines": 42,
+            "ocr_text_chars": 1011,
+            "ocr_text_sha256": "ea418c7063d2e04125b65f846d38010ea1cf6c3251b98a867925c58870b71287",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 5,
+            "native_text_chars": 0,
+            "ocr_lines": 8,
+            "ocr_text_chars": 403,
+            "ocr_text_sha256": "20e9f9e850ff2c137bcbc5d821bd80325112995037fcfd377d1e01d31ddb393a",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          }
+        ],
+        "ocr_evidence_sha256": "2640b738a2f24fbd8f0b3aebe444bd2dc3ccb0e297f97e718afae5d55b813d80",
+        "content_status": "partial: all-page OCR and document classification; incomplete clipped columns and unvalidated numeric transcription",
+        "scope": "Monthly FPI/FII net investments, calendar year 2019; not a derivatives or fiscal-year table.",
+        "data_pages": [
+          1,
+          2
+        ],
+        "remaining_pages": "website navigation/legal boilerplate in OCR, not additional data tables",
+        "coverage_note": "January-December 2019, printed 9 June 2026",
+        "visually_inspected_pages": [],
+        "visible_layout_limit": "Right-hand table columns and some footnotes are clipped in representative inspected layouts. OCR cannot recover absent source pixels."
+      },
+      {
+        "name": "FII.Derivative.Investment.FY.20.pdf",
+        "bytes": 766719,
+        "sha256": "181c244f4ee6415134ff8cfea8a2d450efaf1919edf64118eb34d18db29413ca",
+        "pin_verified": true,
+        "page_count": 5,
+        "pages": [
+          {
+            "page": 1,
+            "native_text_chars": 0,
+            "ocr_lines": 68,
+            "ocr_text_chars": 871,
+            "ocr_text_sha256": "7c2fd9e2b873ff543de2eb09158fe239912d1de2b08c0a45b807ef1a0c5be66c",
+            "low_confidence_lines_below_0_8": 1,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 2,
+            "native_text_chars": 0,
+            "ocr_lines": 49,
+            "ocr_text_chars": 847,
+            "ocr_text_sha256": "6a120fc5760c914645597f6fc311d2daf49f0f5c305952ece95a1d47fd6fe78d",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 3,
+            "native_text_chars": 0,
+            "ocr_lines": 42,
+            "ocr_text_chars": 898,
+            "ocr_text_sha256": "746b3fc543595444dd1c158771248646ae15735ef9fb53f9df817d8d242438c7",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 4,
+            "native_text_chars": 0,
+            "ocr_lines": 42,
+            "ocr_text_chars": 1011,
+            "ocr_text_sha256": "0860afc30bddd5fa7e2726b541beb10ad6018835027e097800d0c57ddcb382e4",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 5,
+            "native_text_chars": 0,
+            "ocr_lines": 8,
+            "ocr_text_chars": 403,
+            "ocr_text_sha256": "2b799a7b0046573811b0503e9be815967b91b08db54e83afc8abec027a3509a4",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          }
+        ],
+        "ocr_evidence_sha256": "72c3a61f9ccef25919ddf7abd07faf53f13265b1fbef2817f19513d05f8843ea",
+        "content_status": "partial: all-page OCR and document classification; incomplete clipped columns and unvalidated numeric transcription",
+        "scope": "Monthly FPI/FII net investments, calendar year 2020; not a derivatives or fiscal-year table.",
+        "data_pages": [
+          1,
+          2
+        ],
+        "remaining_pages": "website navigation/legal boilerplate in OCR, not additional data tables",
+        "coverage_note": "January-December 2020, printed 9 June 2026",
+        "visually_inspected_pages": [],
+        "visible_layout_limit": "Right-hand table columns and some footnotes are clipped in representative inspected layouts. OCR cannot recover absent source pixels."
+      },
+      {
+        "name": "FII.Derivative.Investment.FY.21.pdf",
+        "bytes": 757255,
+        "sha256": "281675cd93501746a5951fb39d62fefc7c140ddc99ce75dd114437d82c1585aa",
+        "pin_verified": true,
+        "page_count": 5,
+        "pages": [
+          {
+            "page": 1,
+            "native_text_chars": 0,
+            "ocr_lines": 68,
+            "ocr_text_chars": 865,
+            "ocr_text_sha256": "ab1f24e4dd49d5083b14a32ffe10bbbb3be70262fc15b885a2a784398a8c7442",
+            "low_confidence_lines_below_0_8": 1,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 2,
+            "native_text_chars": 0,
+            "ocr_lines": 48,
+            "ocr_text_chars": 844,
+            "ocr_text_sha256": "1261c258d63e9d4a0359e2ad769eef271e8ed72eebf4a4f4a4c70b6da0d984c0",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 3,
+            "native_text_chars": 0,
+            "ocr_lines": 42,
+            "ocr_text_chars": 898,
+            "ocr_text_sha256": "746b3fc543595444dd1c158771248646ae15735ef9fb53f9df817d8d242438c7",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 4,
+            "native_text_chars": 0,
+            "ocr_lines": 42,
+            "ocr_text_chars": 1011,
+            "ocr_text_sha256": "0860afc30bddd5fa7e2726b541beb10ad6018835027e097800d0c57ddcb382e4",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 5,
+            "native_text_chars": 0,
+            "ocr_lines": 8,
+            "ocr_text_chars": 403,
+            "ocr_text_sha256": "2b799a7b0046573811b0503e9be815967b91b08db54e83afc8abec027a3509a4",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          }
+        ],
+        "ocr_evidence_sha256": "0e2c0895aaa382bf61ef71e2ee68646861f1ed8b1589923a3d1a90cd8d1145b7",
+        "content_status": "partial: all-page OCR and document classification; incomplete clipped columns and unvalidated numeric transcription",
+        "scope": "Monthly FPI/FII net investments, calendar year 2021; not a derivatives or fiscal-year table.",
+        "data_pages": [
+          1,
+          2
+        ],
+        "remaining_pages": "website navigation/legal boilerplate in OCR, not additional data tables",
+        "coverage_note": "January-December 2021, printed 9 June 2026",
+        "visually_inspected_pages": [],
+        "visible_layout_limit": "Right-hand table columns and some footnotes are clipped in representative inspected layouts. OCR cannot recover absent source pixels."
+      },
+      {
+        "name": "FII.Derivative.Investment.FY.22.pdf",
+        "bytes": 760468,
+        "sha256": "725203aed6b848d11b59f163c5afae9e2a93c6de164af91d321d6be38d5d7f53",
+        "pin_verified": true,
+        "page_count": 5,
+        "pages": [
+          {
+            "page": 1,
+            "native_text_chars": 0,
+            "ocr_lines": 67,
+            "ocr_text_chars": 872,
+            "ocr_text_sha256": "34bae68f3b3298921f499fd312ad2757e3d40bc00e06c0ed0bc18dd8b1624a50",
+            "low_confidence_lines_below_0_8": 1,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 2,
+            "native_text_chars": 0,
+            "ocr_lines": 49,
+            "ocr_text_chars": 848,
+            "ocr_text_sha256": "7bb6aa3b0eab4c8f7195fede2f0508121216fde695cccb3123808427f18e7027",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 3,
+            "native_text_chars": 0,
+            "ocr_lines": 42,
+            "ocr_text_chars": 898,
+            "ocr_text_sha256": "746b3fc543595444dd1c158771248646ae15735ef9fb53f9df817d8d242438c7",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 4,
+            "native_text_chars": 0,
+            "ocr_lines": 42,
+            "ocr_text_chars": 1011,
+            "ocr_text_sha256": "0860afc30bddd5fa7e2726b541beb10ad6018835027e097800d0c57ddcb382e4",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 5,
+            "native_text_chars": 0,
+            "ocr_lines": 8,
+            "ocr_text_chars": 403,
+            "ocr_text_sha256": "2b799a7b0046573811b0503e9be815967b91b08db54e83afc8abec027a3509a4",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          }
+        ],
+        "ocr_evidence_sha256": "dd8f5c403795409e23ad4a0f4d064b36b6ac82fb0f8ade367ad2fde3716a43b2",
+        "content_status": "partial: all-page OCR and document classification; incomplete clipped columns and unvalidated numeric transcription",
+        "scope": "Monthly FPI/FII net investments, calendar year 2022; not a derivatives or fiscal-year table.",
+        "data_pages": [
+          1,
+          2
+        ],
+        "remaining_pages": "website navigation/legal boilerplate in OCR, not additional data tables",
+        "coverage_note": "January-December 2022, printed 9 June 2026",
+        "visually_inspected_pages": [],
+        "visible_layout_limit": "Right-hand table columns and some footnotes are clipped in representative inspected layouts. OCR cannot recover absent source pixels."
+      },
+      {
+        "name": "FII.Derivative.Investment.FY.23.pdf",
+        "bytes": 763806,
+        "sha256": "44814bf7ebf3979dae0e416290594234a22267c754a1ae711eeaf87f8646b89a",
+        "pin_verified": true,
+        "page_count": 5,
+        "pages": [
+          {
+            "page": 1,
+            "native_text_chars": 0,
+            "ocr_lines": 68,
+            "ocr_text_chars": 866,
+            "ocr_text_sha256": "51ea3f49cbad98eadc62d50590cc7bbbb64ae8d2548ba4dcaa1244d0b3ee280d",
+            "low_confidence_lines_below_0_8": 1,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 2,
+            "native_text_chars": 0,
+            "ocr_lines": 48,
+            "ocr_text_chars": 841,
+            "ocr_text_sha256": "79da5d5a28bef29311be91add60e05a49387c7c4bc9c9ce04326dbdd50d70f04",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 3,
+            "native_text_chars": 0,
+            "ocr_lines": 42,
+            "ocr_text_chars": 898,
+            "ocr_text_sha256": "746b3fc543595444dd1c158771248646ae15735ef9fb53f9df817d8d242438c7",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 4,
+            "native_text_chars": 0,
+            "ocr_lines": 42,
+            "ocr_text_chars": 1011,
+            "ocr_text_sha256": "0860afc30bddd5fa7e2726b541beb10ad6018835027e097800d0c57ddcb382e4",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 5,
+            "native_text_chars": 0,
+            "ocr_lines": 8,
+            "ocr_text_chars": 403,
+            "ocr_text_sha256": "2b799a7b0046573811b0503e9be815967b91b08db54e83afc8abec027a3509a4",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          }
+        ],
+        "ocr_evidence_sha256": "f6adb3122f45bb56fbe8a4fc5b0227b055913fda3bbb9300cb68d982f2eba9b7",
+        "content_status": "partial: all-page OCR and document classification; incomplete clipped columns and unvalidated numeric transcription",
+        "scope": "Monthly FPI/FII net investments, calendar year 2023; not a derivatives or fiscal-year table.",
+        "data_pages": [
+          1,
+          2
+        ],
+        "remaining_pages": "website navigation/legal boilerplate in OCR, not additional data tables",
+        "coverage_note": "January-December 2023, printed 9 June 2026",
+        "visually_inspected_pages": [],
+        "visible_layout_limit": "Right-hand table columns and some footnotes are clipped in representative inspected layouts. OCR cannot recover absent source pixels."
+      },
+      {
+        "name": "FII.Derivative.Investment.FY.24.pdf",
+        "bytes": 765104,
+        "sha256": "e32a16d1979cc5e7d27f846ac4bbd7a296d4fde13f791b90210a5b269e2859cf",
+        "pin_verified": true,
+        "page_count": 5,
+        "pages": [
+          {
+            "page": 1,
+            "native_text_chars": 0,
+            "ocr_lines": 68,
+            "ocr_text_chars": 865,
+            "ocr_text_sha256": "a7d0173c99b5c194a9ff4aa50e929174866a2bacdf4897d4b60613da6040b06a",
+            "low_confidence_lines_below_0_8": 1,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 2,
+            "native_text_chars": 0,
+            "ocr_lines": 52,
+            "ocr_text_chars": 852,
+            "ocr_text_sha256": "7383db513e8528432fb5f5c8cc705755effda814deab4433ccb4a9360cb5d183",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 3,
+            "native_text_chars": 0,
+            "ocr_lines": 42,
+            "ocr_text_chars": 899,
+            "ocr_text_sha256": "c79f97e4ee3ff573ad9ec3b3d035458e1e7b0680b92496346aa9fbb668b92453",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 4,
+            "native_text_chars": 0,
+            "ocr_lines": 42,
+            "ocr_text_chars": 1011,
+            "ocr_text_sha256": "f563bb45cb64898f626feca1fd5733afe1e7f9f3bac660664589e381fd7531e0",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 5,
+            "native_text_chars": 0,
+            "ocr_lines": 8,
+            "ocr_text_chars": 403,
+            "ocr_text_sha256": "67266050aa8593d4b2d5b34ab49cc370d32cde03ae5c163a226dfd415cf2dcea",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          }
+        ],
+        "ocr_evidence_sha256": "8ab2a8dd137b4852f7c4b7da9f80cbed1109f753b7588dbe225c309c95108388",
+        "content_status": "partial: all-page OCR and document classification; incomplete clipped columns and unvalidated numeric transcription",
+        "scope": "Monthly FPI/FII net investments, calendar year 2024; not a derivatives or fiscal-year table.",
+        "data_pages": [
+          1,
+          2
+        ],
+        "remaining_pages": "website navigation/legal boilerplate in OCR, not additional data tables",
+        "coverage_note": "January-December 2024, printed 9 June 2026",
+        "visually_inspected_pages": [],
+        "visible_layout_limit": "Right-hand table columns and some footnotes are clipped in representative inspected layouts. OCR cannot recover absent source pixels."
+      },
+      {
+        "name": "FII.Derivative.Investment.FY.25.pdf",
+        "bytes": 769787,
+        "sha256": "7021af33c66ba6fd504d20077c202389fa9d1bbe573a6ddbb59cc244418dd518",
+        "pin_verified": true,
+        "page_count": 5,
+        "pages": [
+          {
+            "page": 1,
+            "native_text_chars": 0,
+            "ocr_lines": 75,
+            "ocr_text_chars": 892,
+            "ocr_text_sha256": "1e199b54d9712ef5dbd5de7f1b7dffa5ab58bf7af58f2818a94132cd12e23a63",
+            "low_confidence_lines_below_0_8": 1,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 2,
+            "native_text_chars": 0,
+            "ocr_lines": 54,
+            "ocr_text_chars": 863,
+            "ocr_text_sha256": "75027e786704412efda884575bb3912d4495a6b5860037b521719daf3695a77e",
+            "low_confidence_lines_below_0_8": 1,
+            "visually_inspected": true,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 3,
+            "native_text_chars": 0,
+            "ocr_lines": 42,
+            "ocr_text_chars": 899,
+            "ocr_text_sha256": "c79f97e4ee3ff573ad9ec3b3d035458e1e7b0680b92496346aa9fbb668b92453",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 4,
+            "native_text_chars": 0,
+            "ocr_lines": 42,
+            "ocr_text_chars": 1011,
+            "ocr_text_sha256": "f563bb45cb64898f626feca1fd5733afe1e7f9f3bac660664589e381fd7531e0",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 5,
+            "native_text_chars": 0,
+            "ocr_lines": 8,
+            "ocr_text_chars": 403,
+            "ocr_text_sha256": "67266050aa8593d4b2d5b34ab49cc370d32cde03ae5c163a226dfd415cf2dcea",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          }
+        ],
+        "ocr_evidence_sha256": "0c1c49804d390a37ea4020d37fecb6e3eb69a7643ac60c6473222768f2bc399a",
+        "content_status": "partial: all-page OCR and document classification; incomplete clipped columns and unvalidated numeric transcription",
+        "scope": "Monthly FPI/FII net investments, calendar year 2025; not a derivatives or fiscal-year table.",
+        "data_pages": [
+          1,
+          2
+        ],
+        "remaining_pages": "website navigation/legal boilerplate in OCR, not additional data tables",
+        "coverage_note": "January-December 2025, printed 9 June 2026",
+        "visually_inspected_pages": [
+          2
+        ],
+        "visible_layout_limit": "Right-hand table columns and some footnotes are clipped in representative inspected layouts. OCR cannot recover absent source pixels."
+      },
+      {
+        "name": "FII.Derivative.Investment.FY.26.pdf",
+        "bytes": 700593,
+        "sha256": "3bfa4370be38846a93c200597790a009fb464324cf791d9d43fe4833a8918a84",
+        "pin_verified": true,
+        "page_count": 4,
+        "pages": [
+          {
+            "page": 1,
+            "native_text_chars": 0,
+            "ocr_lines": 72,
+            "ocr_text_chars": 941,
+            "ocr_text_sha256": "b9fbc0be4a2b5eab4e16f58e84a5ad7923abca3f7ee4391533774584eabbae6b",
+            "low_confidence_lines_below_0_8": 3,
+            "visually_inspected": true,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 2,
+            "native_text_chars": 0,
+            "ocr_lines": 36,
+            "ocr_text_chars": 728,
+            "ocr_text_sha256": "6b8cc6c60a91ea5f32b44753408388763d3bba6fb6bb2f0d566c14497cfe42ca",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 3,
+            "native_text_chars": 0,
+            "ocr_lines": 42,
+            "ocr_text_chars": 933,
+            "ocr_text_sha256": "95237bd91355098d23f39503bdbd17bf812f948595e2b7c3c546b0cd1582da7a",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 4,
+            "native_text_chars": 0,
+            "ocr_lines": 37,
+            "ocr_text_chars": 1048,
+            "ocr_text_sha256": "23cf26b959a176cd3707c54e7fa89c8a37939218aed54f3593b967014c1bb311",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          }
+        ],
+        "ocr_evidence_sha256": "88a92091da4e8df02f104b3a01a26e729b35bb9f047b6d34df856fff4fc00edb",
+        "content_status": "partial: all-page OCR and document classification; incomplete clipped columns and unvalidated numeric transcription",
+        "scope": "Monthly FPI/FII net investments, calendar year 2026; not a derivatives or fiscal-year table.",
+        "data_pages": [
+          1
+        ],
+        "remaining_pages": "website navigation/legal boilerplate in OCR, not additional data tables",
+        "coverage_note": "Partial January-June 2026 snapshot printed 9 June 2026",
+        "visually_inspected_pages": [
+          1
+        ],
+        "visible_layout_limit": "Right-hand table columns and some footnotes are clipped in representative inspected layouts. OCR cannot recover absent source pixels."
+      },
+      {
+        "name": "FII.Derivative.Investment.June25.pdf",
+        "bytes": 4679819,
+        "sha256": "267f041661a6aa5010f4125c5321e2ad7c98c7001c885a85a7268276d8a018ba",
+        "pin_verified": true,
+        "page_count": 20,
+        "pages": [
+          {
+            "page": 1,
+            "native_text_chars": 0,
+            "ocr_lines": 57,
+            "ocr_text_chars": 1115,
+            "ocr_text_sha256": "9778f41db4f5298e94e9d1f2ef3e31cad5b0f40a58829208b8ccf13cc2c2df2d",
+            "low_confidence_lines_below_0_8": 1,
+            "visually_inspected": true,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 2,
+            "native_text_chars": 0,
+            "ocr_lines": 76,
+            "ocr_text_chars": 1063,
+            "ocr_text_sha256": "e261dce211d962d6cb4e74bc16da90841e6ea70aee7b5f97e178d746fb4bc504",
+            "low_confidence_lines_below_0_8": 2,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 3,
+            "native_text_chars": 0,
+            "ocr_lines": 69,
+            "ocr_text_chars": 999,
+            "ocr_text_sha256": "1dde912cf98dd4493f3b4dbd7a181a9a66b2f4653d1f955326d219298a052407",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 4,
+            "native_text_chars": 0,
+            "ocr_lines": 74,
+            "ocr_text_chars": 1049,
+            "ocr_text_sha256": "6dee71e0e10dc2be97e41fcb869950bbb9f63b6ab96a2acddb1272038e80ce36",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 5,
+            "native_text_chars": 0,
+            "ocr_lines": 67,
+            "ocr_text_chars": 984,
+            "ocr_text_sha256": "60f28520efc3014c9587a53660458687174015c124ccf9534bc0f1b08ccc6b19",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 6,
+            "native_text_chars": 0,
+            "ocr_lines": 73,
+            "ocr_text_chars": 1053,
+            "ocr_text_sha256": "fc7670632ac878d40fabad4b96cdedbab0f81fbac324f8ea0df299ce0694815d",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 7,
+            "native_text_chars": 0,
+            "ocr_lines": 69,
+            "ocr_text_chars": 996,
+            "ocr_text_sha256": "e259a164843dddf41b8b7284f2f4fd985421fbc59743b749583ec0d9b4b11d6e",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 8,
+            "native_text_chars": 0,
+            "ocr_lines": 73,
+            "ocr_text_chars": 1046,
+            "ocr_text_sha256": "41996b2deb86793655f7dac6fb86bc8b7128ae35759455564e4fc10cc1f3c237",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 9,
+            "native_text_chars": 0,
+            "ocr_lines": 68,
+            "ocr_text_chars": 993,
+            "ocr_text_sha256": "4f1dbb6302de8fe148b115b488c214b41d2f2364d122e03a322cc5592079be09",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 10,
+            "native_text_chars": 0,
+            "ocr_lines": 73,
+            "ocr_text_chars": 1053,
+            "ocr_text_sha256": "d8785a02bdc60ae11d404df1ed021bf49144bdd696cab7a5db0e9361b1ef08a4",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 11,
+            "native_text_chars": 0,
+            "ocr_lines": 57,
+            "ocr_text_chars": 901,
+            "ocr_text_sha256": "f208749ca578e2f82466bd3b7d93e441fcee3003cef0a79ec6e6f4cb7508bbff",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 12,
+            "native_text_chars": 0,
+            "ocr_lines": 65,
+            "ocr_text_chars": 984,
+            "ocr_text_sha256": "bad87d9d50c1f3ed413b4876882aaaaa92bcca8d841e42cf4bf3fc1012359a01",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 13,
+            "native_text_chars": 0,
+            "ocr_lines": 59,
+            "ocr_text_chars": 924,
+            "ocr_text_sha256": "06e834692c9d321198e9aab1a5dd24d87122e87f0d7bfe4d30e50bfe1535ac55",
+            "low_confidence_lines_below_0_8": 1,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 14,
+            "native_text_chars": 0,
+            "ocr_lines": 46,
+            "ocr_text_chars": 883,
+            "ocr_text_sha256": "d6e7618f24f355956609196fd254d54a15e95d4c8f0869a66041e85951620396",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 15,
+            "native_text_chars": 0,
+            "ocr_lines": 102,
+            "ocr_text_chars": 1184,
+            "ocr_text_sha256": "f6be2a3a24f8c6cb7556b83ed3fc66e6981af8aeed605066015ee729acd50b3f",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 16,
+            "native_text_chars": 0,
+            "ocr_lines": 91,
+            "ocr_text_chars": 1128,
+            "ocr_text_sha256": "abc10c611582716e95cf4b034c6f0144fa6877c721853d33224cdf4d96f23f1a",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 17,
+            "native_text_chars": 0,
+            "ocr_lines": 64,
+            "ocr_text_chars": 967,
+            "ocr_text_sha256": "d3d599e7166a2474e1101a73b9a07947f3805b15c246eb7107b63181ef9b15a9",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 18,
+            "native_text_chars": 0,
+            "ocr_lines": 42,
+            "ocr_text_chars": 805,
+            "ocr_text_sha256": "dcef37bb869c168f1db03203762e6f18721b23393e15b9cb558b5743b391221b",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 19,
+            "native_text_chars": 0,
+            "ocr_lines": 43,
+            "ocr_text_chars": 765,
+            "ocr_text_sha256": "31242e1a7fbc04c6c45c049f045db4f5c2841f25534518438635c5f3feb1186b",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 20,
+            "native_text_chars": 0,
+            "ocr_lines": 12,
+            "ocr_text_chars": 740,
+            "ocr_text_sha256": "0ee33b82b4f7d56d97c2e0e6e0e7de6fc6c8c2935285194afdd071e24ee9807a",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          }
+        ],
+        "ocr_evidence_sha256": "2aac8517065bd964f9275240914a6b23e9cea43cdda0e66e0ab259a5475269c9",
+        "content_status": "partial: all-page OCR and document classification; incomplete clipped columns and unvalidated numeric transcription",
+        "scope": "June 2026 daily reported FPI cash/investment routes (pages1-14) and derivative trades (pages15-17), not June 2025.",
+        "data_pages": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ],
+        "remaining_pages": "website navigation/legal boilerplate in OCR, not additional data tables",
+        "coverage_note": "Reporting dates 1,2,3,4,5,8 June 2026; report-date versus trade-date must be retained.",
+        "visually_inspected_pages": [
+          1
+        ],
+        "visible_layout_limit": "Right-hand table columns and some footnotes are clipped in representative inspected layouts. OCR cannot recover absent source pixels."
+      },
+      {
+        "name": "FII.Derivative.Trades.FY.pdf",
+        "bytes": 832457,
+        "sha256": "518d505e336edff9aa0ab60af0535305944c56b2ad67aa5862de6bb93b4c57b0",
+        "pin_verified": true,
+        "page_count": 5,
+        "pages": [
+          {
+            "page": 1,
+            "native_text_chars": 0,
+            "ocr_lines": 63,
+            "ocr_text_chars": 773,
+            "ocr_text_sha256": "298ef972e43606a2ed14af537b5ceebe8b9ff7eb898428c8a78ef6e85147c8f0",
+            "low_confidence_lines_below_0_8": 1,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 2,
+            "native_text_chars": 0,
+            "ocr_lines": 85,
+            "ocr_text_chars": 928,
+            "ocr_text_sha256": "2cc33caa2513a924998f9208d4dd6cf023045559e82ae0a29be9dd7434715ca6",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": true,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 3,
+            "native_text_chars": 0,
+            "ocr_lines": 37,
+            "ocr_text_chars": 793,
+            "ocr_text_sha256": "53eef94588ce7f3df4373fac097eb0eb99f470741677455f509fbf6bbe5459bc",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 4,
+            "native_text_chars": 0,
+            "ocr_lines": 42,
+            "ocr_text_chars": 862,
+            "ocr_text_sha256": "262f3ac96ba84fb9606a93d8d80e5c3130c0180011b7e7d5245c0359099e3e2e",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 5,
+            "native_text_chars": 0,
+            "ocr_lines": 29,
+            "ocr_text_chars": 988,
+            "ocr_text_sha256": "dcce4d449b480ac0951a751f9ebd4025f3e3ba5c4e8e5938a16d10f2188d1e87",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          }
+        ],
+        "ocr_evidence_sha256": "a2f02c0c8f1d0192efba30f7e150a50ef8fa1c4033ffbed2e0f4f2ca4b2b6d17",
+        "content_status": "partial: all-page OCR and document classification; incomplete clipped columns and unvalidated numeric transcription",
+        "scope": "Financial-year FPI/FII net investments, not derivative-trade statistics.",
+        "data_pages": [
+          1,
+          2
+        ],
+        "remaining_pages": "website navigation/legal boilerplate in OCR, not additional data tables",
+        "coverage_note": "1998-1999 through partial 2026-2027, with 08-Jun-2026 marker; OCR year labels need numeric-table validation.",
+        "visually_inspected_pages": [
+          2
+        ],
+        "visible_layout_limit": "Right-hand table columns and some footnotes are clipped in representative inspected layouts. OCR cannot recover absent source pixels."
+      },
+      {
+        "name": "FII.Derivative.Trades.November.30.2009.pdf",
+        "bytes": 2610368,
+        "sha256": "5443c9552c8cd23df0fa4ca5fad8f9f2d78d1246868da818c267964cbce63bca",
+        "pin_verified": true,
+        "page_count": 13,
+        "pages": [
+          {
+            "page": 1,
+            "native_text_chars": 0,
+            "ocr_lines": 125,
+            "ocr_text_chars": 1416,
+            "ocr_text_sha256": "0a37f9ae3852ea2def36e0f245861ce1babbd041b30711df8ae2bf2909f4120e",
+            "low_confidence_lines_below_0_8": 1,
+            "visually_inspected": true,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 2,
+            "native_text_chars": 0,
+            "ocr_lines": 124,
+            "ocr_text_chars": 1509,
+            "ocr_text_sha256": "4582ab8206bb6ea9eb2df8ffc9dda7da4fedc0f399152cbf24c68985a386010a",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 3,
+            "native_text_chars": 0,
+            "ocr_lines": 124,
+            "ocr_text_chars": 1507,
+            "ocr_text_sha256": "3e48cc31d2e1de108aa13a5414a2f5ba3dad57196485de797382ed6085e16b8b",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 4,
+            "native_text_chars": 0,
+            "ocr_lines": 97,
+            "ocr_text_chars": 1324,
+            "ocr_text_sha256": "6747994ce7dbeb988373f6adce7101a0e1968dfeba063287ae559d187d116b4d",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 5,
+            "native_text_chars": 0,
+            "ocr_lines": 82,
+            "ocr_text_chars": 1434,
+            "ocr_text_sha256": "b3794b3904958c80d9fc4abe8343fd6ebd1c73c76989faf6ecd31693633e972c",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 6,
+            "native_text_chars": 0,
+            "ocr_lines": 98,
+            "ocr_text_chars": 1339,
+            "ocr_text_sha256": "656944fed9c81b3fad6ab0b397978eb2ae3e36a0b7350cbb4928fe46161fee15",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 7,
+            "native_text_chars": 0,
+            "ocr_lines": 96,
+            "ocr_text_chars": 1297,
+            "ocr_text_sha256": "cb996888010505c0aed0b54640f5929ad6ffedd0aab8707c7290fa10914d4521",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 8,
+            "native_text_chars": 0,
+            "ocr_lines": 88,
+            "ocr_text_chars": 1253,
+            "ocr_text_sha256": "b30d9b8d9f64e0459118251ccef7f0e51f987b5a2f326fefeed8c650c07588a3",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 9,
+            "native_text_chars": 0,
+            "ocr_lines": 82,
+            "ocr_text_chars": 1441,
+            "ocr_text_sha256": "3d49adb8dcd44726c2856e7261b7531ffa379a822d17ace058a6b63f60fc5573",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 10,
+            "native_text_chars": 0,
+            "ocr_lines": 40,
+            "ocr_text_chars": 604,
+            "ocr_text_sha256": "b8d4a5352daf65a68f42133cae52836a0beaadc5f5a66932a9469b16f81441fa",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 11,
+            "native_text_chars": 0,
+            "ocr_lines": 44,
+            "ocr_text_chars": 761,
+            "ocr_text_sha256": "51693489af18deee5521ada34405104c4c15ee13ac660cf80c53473b7dbaea23",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 12,
+            "native_text_chars": 0,
+            "ocr_lines": 42,
+            "ocr_text_chars": 895,
+            "ocr_text_sha256": "77e08175ecc08df97f768b1d0099a6238a9422cb3d360c29f760988a05b76209",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 13,
+            "native_text_chars": 0,
+            "ocr_lines": 35,
+            "ocr_text_chars": 1021,
+            "ocr_text_sha256": "a8d45bb126aa1338cc0b0cef886b1f38d1c20b47b0c256fd3f956fc8d52008db",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          }
+        ],
+        "ocr_evidence_sha256": "209f68b1b3f2c84aebbb3b9fafff4da91d1f64811a7356c35d846bcd86bac081",
+        "content_status": "partial: all-page OCR and document classification; incomplete clipped columns and unvalidated numeric transcription",
+        "scope": "November 2009 market-wide derivative tables: index/stock futures/options and interest-rate futures; contracts, buy/sell and end-of-day open interest.",
+        "data_pages": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "remaining_pages": "website navigation/legal boilerplate in OCR, not additional data tables",
+        "coverage_note": "Each report heading is a publication/reporting date; visible notes identify prior trading dates. Never attach the heading date as trade date by assumption.",
+        "visually_inspected_pages": [
+          1
+        ],
+        "visible_layout_limit": "Right-hand table columns and some footnotes are clipped in representative inspected layouts. OCR cannot recover absent source pixels."
+      },
+      {
+        "name": "FII.Derivative.Trades.oct.9.pdf",
+        "bytes": 2622884,
+        "sha256": "d3be4dfb21f0061206912f212b35af31fedef6b5eae578dd547cba62330bf1fb",
+        "pin_verified": true,
+        "page_count": 13,
+        "pages": [
+          {
+            "page": 1,
+            "native_text_chars": 0,
+            "ocr_lines": 119,
+            "ocr_text_chars": 1362,
+            "ocr_text_sha256": "11ac5b95f9e410c6634a3dc6717d14922bb0124dee17563d9bf436b820a66206",
+            "low_confidence_lines_below_0_8": 1,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 2,
+            "native_text_chars": 0,
+            "ocr_lines": 116,
+            "ocr_text_chars": 1451,
+            "ocr_text_sha256": "fcc0cac483ffffaeb42e066a0bb6da5baf53947cc3c61a56794dd006f52e5e6f",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 3,
+            "native_text_chars": 0,
+            "ocr_lines": 112,
+            "ocr_text_chars": 1424,
+            "ocr_text_sha256": "8134fe57573d810190bdb4ceaeb751dabc0120553aadad4230948a8221f5ba33",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 4,
+            "native_text_chars": 0,
+            "ocr_lines": 82,
+            "ocr_text_chars": 1428,
+            "ocr_text_sha256": "d6bd72079093249d5a8de4d9430b3938f87ebd1f25e64a3d5b3e15404ccd5154",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 5,
+            "native_text_chars": 0,
+            "ocr_lines": 78,
+            "ocr_text_chars": 1137,
+            "ocr_text_sha256": "4e3cc95c4a0a8c84f21af7fb3459ec405754d1bb5d33bb5e41cdd95bec11bc7d",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 6,
+            "native_text_chars": 0,
+            "ocr_lines": 93,
+            "ocr_text_chars": 1284,
+            "ocr_text_sha256": "c7776ebb80987b02af3ca19d603ea0be54cabbfa6f89f98c3819df3680856a64",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 7,
+            "native_text_chars": 0,
+            "ocr_lines": 116,
+            "ocr_text_chars": 1434,
+            "ocr_text_sha256": "822115285079f7e13649ea1bffe6bbea32b718d3e0e21ed01d5454a927b35bc6",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 8,
+            "native_text_chars": 0,
+            "ocr_lines": 124,
+            "ocr_text_chars": 1486,
+            "ocr_text_sha256": "889415862f4056b2816bfcb0bed1b0c449b2042c4a7be58c937cc80aa35f5847",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": true,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 9,
+            "native_text_chars": 0,
+            "ocr_lines": 117,
+            "ocr_text_chars": 1437,
+            "ocr_text_sha256": "00b11587cd870fca5e5253ffa3a62c5e387abce13ce4549145f8576e13ca3b2c",
+            "low_confidence_lines_below_0_8": 1,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 10,
+            "native_text_chars": 0,
+            "ocr_lines": 85,
+            "ocr_text_chars": 1133,
+            "ocr_text_sha256": "1ab2df717783fa45f59627d13c638b613f478b51c810da9bbf109bb4feafbffd",
+            "low_confidence_lines_below_0_8": 1,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 11,
+            "native_text_chars": 0,
+            "ocr_lines": 44,
+            "ocr_text_chars": 761,
+            "ocr_text_sha256": "ff997ea3d8aecf400aa1db94212703fb9a9234dc9c63b6494aa5484d73173451",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 12,
+            "native_text_chars": 0,
+            "ocr_lines": 42,
+            "ocr_text_chars": 895,
+            "ocr_text_sha256": "c4259137a475e9ea01943052de4c03ad6320e1d461bad689a21c4936110121f2",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          },
+          {
+            "page": 13,
+            "native_text_chars": 0,
+            "ocr_lines": 35,
+            "ocr_text_chars": 1021,
+            "ocr_text_sha256": "214612c9bade87780f408aa7032881a28241e63a5bba7b109f6edd9349f07280",
+            "low_confidence_lines_below_0_8": 0,
+            "visually_inspected": false,
+            "numeric_transcription_validated": false
+          }
+        ],
+        "ocr_evidence_sha256": "b4b03e134d69e5acadb54b679cb183fb7664edabcb3072231ccf3063219451cd",
+        "content_status": "partial: all-page OCR and document classification; incomplete clipped columns and unvalidated numeric transcription",
+        "scope": "October 2009 market-wide derivative tables: index/stock futures/options and interest-rate futures; contracts, buy/sell and end-of-day open interest.",
+        "data_pages": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "remaining_pages": "website navigation/legal boilerplate in OCR, not additional data tables",
+        "coverage_note": "Each report heading is a publication/reporting date; visible notes identify prior trading dates. Never attach the heading date as trade date by assumption.",
+        "visually_inspected_pages": [
+          8
+        ],
+        "visible_layout_limit": "Right-hand table columns and some footnotes are clipped in representative inspected layouts. OCR cannot recover absent source pixels."
+      }
+    ],
+    "summary": {
+      "files": 15,
+      "pages_ocr": 105,
+      "native_text_chars": 0,
+      "visual_review_pages": 7,
+      "numeric_tables_imported": 0,
+      "full_numeric_content_verified": false
+    },
+    "consumer_decision": "Historical provenance and scope reference only. Do not import OCR numbers or use clipped columns as zero/current ownership. Prefer intact machine-readable source and confirm reporting/trade-date mapping before integration."
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "schema_version": "ashstocks-metadata-closure-v1",
+  "review_date": "2026-09-24",
+  "read_only": true,
+  "cash_metadata": {
+    "name": "fii-and-dii-trading-activity-in-india-metadata.json",
+    "bytes": 6961,
+    "sha256": "df5b7df408dd91791bc07c1100fad50d4009838f517a7eb75ac23e6d2e2e858c",
+    "pinned_hash_verified": true,
+    "all_json_fields_read": true,
+    "top_level_keys": [
+      "@context",
+      "alternateName",
+      "conformsTo",
+      "license",
+      "distribution",
+      "recordSet",
+      "version",
+      "keywords",
+      "isAccessibleForFree",
+      "includedInDataCatalog",
+      "creator",
+      "publisher",
+      "thumbnailUrl",
+      "dateModified",
+      "datePublished",
+      "@type",
+      "name",
+      "url",
+      "description"
+    ],
+    "metadata_schema": "http://mlcommons.org/croissant/1.0",
+    "dataset_name": "FII and DII Trading activity in India",
+    "dataset_url": "https://www.kaggle.com/datasets/arunkumar237/fii-and-dii-trading-activity-in-india/versions/1",
+    "version": 1,
+    "datePublished": "2022-09-12T11:45:56.9",
+    "dateModified": "2022-09-12T11:45:56.9",
+    "license_claim": {
+      "@type": "sc:CreativeWork",
+      "name": "CC BY-SA 4.0",
+      "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+    },
+    "claimed_coverage": [
+      "2007-04-01",
+      "2022-08-31"
+    ],
+    "date_description": "Date of Trading",
+    "units_or_exact_date_format_declared": false,
+    "field_names": [
+      "Date",
+      "FII_Gross_Purchase",
+      "FII_Gross_Sales",
+      "FII_Net_Purchase/Sales",
+      "DII_Gross_Purchase",
+      "DII_Gross_Sales",
+      "DII_Net_Purchase/Sales"
+    ],
+    "matches_root_csv_headers": true,
+    "csv_pinned_sha256": "28be79b0b78612f4556b25900c0a1cf06943bc8112f448c09f3168c3bc3e317c",
+    "csv_rows": 3770,
+    "day_first_interpretation_bounds": [
+      "2007-01-06",
+      "2022-12-08"
+    ],
+    "day_first_rows_before_metadata_start": 15,
+    "day_first_rows_after_metadata_end": 22,
+    "decision": "Metadata links the source and states a historical coverage/license claim. It does not validate the installed CSV bytes against the Kaggle source ZIP or resolve mixed/ambiguous dates and units. Do not change dates or clear provider readiness from metadata."
+  },
+  "backtest_manifest": {
+    "archive": "Back.Test.Claude.zip",
+    "archive_sha256": "885b7fa195ecc4153729915759d04b6b63375ac1e497e6e231c2a4069d8b58b5",
+    "archive_pinned_hash_verified": true,
+    "member": "Back Test Claude/MANIFEST.txt",
+    "bytes": 54,
+    "sha256": "a8551e4dd22b9d2f568c64b06e7061dece828dcab7e3af2f739ef15f7d369f0e",
+    "crc_read": true,
+    "complete_text": "tickers=191\nsource=Mongo ohlcv (Upstox bulk download)\n",
+    "csv_member_count": 191,
+    "count_matches": true,
+    "decision": "The191 count matches the archive. Mongo/Upstox origin is a manifest claim, not a current DB read, authenticated bulk-download proof, adjusted-price validation or fresh universe membership."
+  },
+  "raw_modified": false,
+  "mongo_accessed": false,
+  "network_accessed": false,
+  "import_performed": false
+}

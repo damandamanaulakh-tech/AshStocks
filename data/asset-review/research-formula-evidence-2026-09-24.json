@@ -1,0 +1,2889 @@
+{
+  "schema_version": "ashstocks-five-archive-readonly-audit-v1",
+  "reviewed_at": "2026-09-24",
+  "repository_head": "efb8ca934464551f6db3e32ce31cb94f0ea98cd6",
+  "status": "HISTORICAL_REFERENCE_NO_IMPORT_NO_ACTIVATION",
+  "scope": {
+    "skills_used": [
+      "engineering:code-review",
+      "spreadsheets:Spreadsheets"
+    ],
+    "source_preserved": true,
+    "source_code_executed": false,
+    "repository_edited": false,
+    "network_called": false,
+    "mongo_accessed": false,
+    "production_runtime_verified": false,
+    "csv_parse_complete": true,
+    "xlsx_xml_parse_complete": true,
+    "xlsx_recalculated": false,
+    "native_workbook_features_verified": false,
+    "pngs_visually_reviewed": true,
+    "all_definitions_numerically_validated": false
+  },
+  "counts": {
+    "archive_bytes": 3551836,
+    "uncompressed_bytes": 28643697,
+    "members": 45,
+    "csv_files": 38,
+    "csv_rows": 88298,
+    "csv_cells_excluding_headers": 1528400,
+    "csv_header_cells": 423,
+    "xlsx": 5,
+    "xlsx_sheets": 55,
+    "xlsx_populated_cells": 86105,
+    "xlsx_formula_cells": 0,
+    "xlsx_xml_parts": 146,
+    "external_links": [],
+    "chart_parts": [
+      "xl/drawings/charts/chart1.xml"
+    ]
+  },
+  "archives": [
+    {
+      "name": "PRE.RISE_FALL_TRIGGER_LAYER_CSV_CODE_v0_2.zip",
+      "bytes": 13983,
+      "sha256": "930eb69626320b1ea441576d53440a47ebab73ea9b7eef5c177b59afa894720b",
+      "uncompressed_bytes": 46253,
+      "members": [
+        {
+          "name": "PRE RISE_FALL_TRIGGER_LAYER_CSV_CODE_v0_2/data_extraction_request_v0_2.csv",
+          "bytes": 1132,
+          "sha256": "17cf0a3294524f46d16901a3640f2a53d53f03c51be43a8c958beb1867998417",
+          "format": "CSV",
+          "csv_rows": 9,
+          "csv_cells_excluding_header": 36,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "PRE RISE_FALL_TRIGGER_LAYER_CSV_CODE_v0_2/paper_running_map_v0_2.csv",
+          "bytes": 898,
+          "sha256": "79652a99fc4e4273b2182dbe1869ecd9fa3f65e3d4493836aafa0908e24387aa",
+          "format": "CSV",
+          "csv_rows": 8,
+          "csv_cells_excluding_header": 48,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "PRE RISE_FALL_TRIGGER_LAYER_CSV_CODE_v0_2/proof_gap_ledger_v0_2.csv",
+          "bytes": 712,
+          "sha256": "df1ad8a29607fcab325ccda465a5a123a0c38f62e05678e0a7a935a6b3a39edd",
+          "format": "CSV",
+          "csv_rows": 4,
+          "csv_cells_excluding_header": 24,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "PRE RISE_FALL_TRIGGER_LAYER_CSV_CODE_v0_2/pyramid_insert_map_v0_2.csv",
+          "bytes": 608,
+          "sha256": "f5665633386782c4d0c59d9ca62e5b321caff2fb60e7a368fd2f92dbc3a7701c",
+          "format": "CSV",
+          "csv_rows": 3,
+          "csv_cells_excluding_header": 21,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "PRE RISE_FALL_TRIGGER_LAYER_CSV_CODE_v0_2/reverse_backtest_design_v0_2.csv",
+          "bytes": 1313,
+          "sha256": "6207e2ccfa0d0788985fa978ea0d64a5766b2ef3754ee7bf44ef787a7ecb3f22",
+          "format": "CSV",
+          "csv_rows": 8,
+          "csv_cells_excluding_header": 56,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "PRE RISE_FALL_TRIGGER_LAYER_CSV_CODE_v0_2/trigger_clusters_v0_2.csv",
+          "bytes": 1462,
+          "sha256": "2ebe81b1a5fa5868ea5eca2d2dc787fe9c9166cf0d295d5188cabf38752f31e8",
+          "format": "CSV",
+          "csv_rows": 8,
+          "csv_cells_excluding_header": 56,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "PRE RISE_FALL_TRIGGER_LAYER_CSV_CODE_v0_2/trigger_params_v0_2.csv",
+          "bytes": 38600,
+          "sha256": "ce27b6708aa26d98a5b3fe4e36ec0633f020b8314b8cbff085ac6c46609bc877",
+          "format": "CSV",
+          "csv_rows": 112,
+          "csv_cells_excluding_header": 1904,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "PRE RISE_FALL_TRIGGER_LAYER_CSV_CODE_v0_2/trigger_score_gates_v0_2.csv",
+          "bytes": 1528,
+          "sha256": "396216e95d6c1b0babf8ecc8d5f8729fef170b7b9b418ea6627c751212ee60ca",
+          "format": "CSV",
+          "csv_rows": 8,
+          "csv_cells_excluding_header": 56,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        }
+      ]
+    },
+    {
+      "name": "UNIQUE_TRIGGER_MINER_v0_3_CSV_PACK.zip",
+      "bytes": 988231,
+      "sha256": "45cb2e072cbf238c792755ded7dee1efb1f5c10e6f87e14a5f0afdfd930ab6e3",
+      "uncompressed_bytes": 2863059,
+      "members": [
+        {
+          "name": "UNIQUE_TRIGGER_MINER_v0_3_CSV_PACK/01_file_readiness.csv",
+          "bytes": 498,
+          "sha256": "a80b128d533b7ece155483989b98258efdd90fd418c14d27c571ddec96494ca7",
+          "format": "CSV",
+          "csv_rows": 14,
+          "csv_cells_excluding_header": 28,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "UNIQUE_TRIGGER_MINER_v0_3_CSV_PACK/02_unique_parameters.csv",
+          "bytes": 2891,
+          "sha256": "a92666b2ae369036b42f454687bbfb6c232236df4d3be141950bf2893c1bb4f8",
+          "format": "CSV",
+          "csv_rows": 12,
+          "csv_cells_excluding_header": 84,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "UNIQUE_TRIGGER_MINER_v0_3_CSV_PACK/03_event_fire_matrix.csv",
+          "bytes": 7211,
+          "sha256": "f1110a7166b4c2a569b3e61c859362f13abcca18624822f1056b2a9110d59f8d",
+          "format": "CSV",
+          "csv_rows": 72,
+          "csv_cells_excluding_header": 648,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "UNIQUE_TRIGGER_MINER_v0_3_CSV_PACK/04_signal_summary.csv",
+          "bytes": 827,
+          "sha256": "13501e13409bc1e589f9dc6da003ecc6f4c9b6ea6fef55e5fc6b1181504486db",
+          "format": "CSV",
+          "csv_rows": 12,
+          "csv_cells_excluding_header": 84,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "UNIQUE_TRIGGER_MINER_v0_3_CSV_PACK/05_daily_market_internals.csv",
+          "bytes": 2805759,
+          "sha256": "535cf389150de0cec909da5bc042ee228f22bce7fa7a8e4da267143df7897811",
+          "format": "CSV",
+          "csv_rows": 7162,
+          "csv_cells_excluding_header": 222022,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "UNIQUE_TRIGGER_MINER_v0_3_CSV_PACK/UNIQUE_TRIGGER_MINER_v0_3.xlsx",
+          "bytes": 45873,
+          "sha256": "efd76466bb4f4221ba4ad764010ba44018941d9c58cb31ac75904506eb28e9ee",
+          "format": "XLSX",
+          "sheets": [
+            {
+              "name": "00_Dashboard",
+              "xml_populated_cells": 180,
+              "formula_cells": 0
+            },
+            {
+              "name": "01_File_Readiness",
+              "xml_populated_cells": 30,
+              "formula_cells": 0
+            },
+            {
+              "name": "02_Unique_Params",
+              "xml_populated_cells": 91,
+              "formula_cells": 0
+            },
+            {
+              "name": "03_Event_Fire_Matrix",
+              "xml_populated_cells": 657,
+              "formula_cells": 0
+            },
+            {
+              "name": "04_Signal_Summary",
+              "xml_populated_cells": 91,
+              "formula_cells": 0
+            },
+            {
+              "name": "05_Daily_Trigger_Sample",
+              "xml_populated_cells": 2475,
+              "formula_cells": 0
+            },
+            {
+              "name": "06_Next_Loop",
+              "xml_populated_cells": 28,
+              "formula_cells": 0
+            }
+          ],
+          "review": "All nested XML parts and worksheet cells parsed; no calculation/native-render validation"
+        }
+      ]
+    },
+    {
+      "name": "PYRAMID_RUNNING_MAPS_v0_1.zip",
+      "bytes": 531707,
+      "sha256": "3dba66f804b7c268813995ecd45b1b287752b18ff8dc7f9ebe8fd860384b32ff",
+      "uncompressed_bytes": 9069739,
+      "members": [
+        {
+          "name": "PYRAMID_RUNNING_MAPS_v0_1/mapped_parameters_to_pyramid_full.csv",
+          "bytes": 9010859,
+          "sha256": "e47b5e6c35f127a7410d04ef40e82de93fadcd92f8fe18737c70623b023cfa98",
+          "format": "CSV",
+          "csv_rows": 22891,
+          "csv_cells_excluding_header": 434929,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "PYRAMID_RUNNING_MAPS_v0_1/proof_gap_ledger.csv",
+          "bytes": 523,
+          "sha256": "54791d8b818a4145e2496d4806619e986881e89d1e6bcef8fa57aa1d309b9e66",
+          "format": "CSV",
+          "csv_rows": 3,
+          "csv_cells_excluding_header": 18,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "PYRAMID_RUNNING_MAPS_v0_1/pyramid_sequence_running_map.csv",
+          "bytes": 1903,
+          "sha256": "9a4e1d5e4b411a2d67796ae87129c5e5360452e5ddf9f50872056d33e6a4bd0c",
+          "format": "CSV",
+          "csv_rows": 16,
+          "csv_cells_excluding_header": 80,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "PYRAMID_RUNNING_MAPS_v0_1/sample_paper_trading_running_map.csv",
+          "bytes": 56454,
+          "sha256": "d6132c25b8f658889136848af60a95cf4ca027a19e76fd70b32c611f06f8b80d",
+          "format": "CSV",
+          "csv_rows": 198,
+          "csv_cells_excluding_header": 3366,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        }
+      ]
+    },
+    {
+      "name": "MICRO_SPLIT_CSV_PACK_v0_6.zip",
+      "bytes": 1582903,
+      "sha256": "032a4db0b94a6504f52240193b84751be9397dd1c5f860aa71229521e05d19de",
+      "uncompressed_bytes": 16190990,
+      "members": [
+        {
+          "name": "MICRO_SPLIT_CSV_PACK_v0_6/FINAL_MICRO_SPLIT_ENGINE_v0_6.xlsx",
+          "bytes": 299741,
+          "sha256": "8fb4798ccf70898595efd0fd8e6941c26da186f2f60dbd7dde103f90a2eec2c2",
+          "format": "XLSX",
+          "sheets": [
+            {
+              "name": "00_FINAL_STATUS",
+              "xml_populated_cells": 64,
+              "formula_cells": 0
+            },
+            {
+              "name": "01_SOURCE_FAMILY_COUNTS",
+              "xml_populated_cells": 30,
+              "formula_cells": 0
+            },
+            {
+              "name": "02_MICRO_SPLIT_INDEX",
+              "xml_populated_cells": 119,
+              "formula_cells": 0
+            },
+            {
+              "name": "03_FILE_PILEUP_MAP",
+              "xml_populated_cells": 336,
+              "formula_cells": 0
+            },
+            {
+              "name": "04_PARAM_PILEUP_SAMPLE",
+              "xml_populated_cells": 32016,
+              "formula_cells": 0
+            },
+            {
+              "name": "05_DUPLICATE_SAMPLE",
+              "xml_populated_cells": 5608,
+              "formula_cells": 0
+            },
+            {
+              "name": "06_STOCK_SPLIT_SUMMARY",
+              "xml_populated_cells": 20,
+              "formula_cells": 0
+            },
+            {
+              "name": "07_N200_AVAILABLE",
+              "xml_populated_cells": 5771,
+              "formula_cells": 0
+            },
+            {
+              "name": "08_SOURCEBORN_PICKS",
+              "xml_populated_cells": 459,
+              "formula_cells": 0
+            },
+            {
+              "name": "09_UPSTOX_15Y_SCHEMA",
+              "xml_populated_cells": 120,
+              "formula_cells": 0
+            },
+            {
+              "name": "10_REVERSE_EVENT_SCHEMA",
+              "xml_populated_cells": 154,
+              "formula_cells": 0
+            },
+            {
+              "name": "11_MICRO_EXPORT_PLAN",
+              "xml_populated_cells": 96,
+              "formula_cells": 0
+            },
+            {
+              "name": "12_NEXT_LOOP_CONTROL",
+              "xml_populated_cells": 72,
+              "formula_cells": 0
+            },
+            {
+              "name": "13_ASSET_MASTER_SAMPLE",
+              "xml_populated_cells": 168,
+              "formula_cells": 0
+            },
+            {
+              "name": "14_INDUSTRY_150",
+              "xml_populated_cells": 1510,
+              "formula_cells": 0
+            },
+            {
+              "name": "15_DISTINCT100_SAMPLE",
+              "xml_populated_cells": 6169,
+              "formula_cells": 0
+            },
+            {
+              "name": "16_FILLED_TOP50_SAMPLE",
+              "xml_populated_cells": 1071,
+              "formula_cells": 0
+            }
+          ],
+          "review": "All nested XML parts and worksheet cells parsed; no calculation/native-render validation"
+        },
+        {
+          "name": "MICRO_SPLIT_CSV_PACK_v0_6/micro_01_file_pileup_map.csv",
+          "bytes": 15066,
+          "sha256": "8306a9ef510e071231be848cbf7f5c024efc1aa9573e05292421325512e9b390",
+          "format": "CSV",
+          "csv_rows": 27,
+          "csv_cells_excluding_header": 324,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "MICRO_SPLIT_CSV_PACK_v0_6/micro_02_parameter_pileup_full.csv",
+          "bytes": 7873544,
+          "sha256": "04cd10dc3da95136307b7b55f48d213acc6b626bf3f401cf0bcdd75e6f1d6b7f",
+          "format": "CSV",
+          "csv_rows": 22891,
+          "csv_cells_excluding_header": 366256,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "MICRO_SPLIT_CSV_PACK_v0_6/micro_03_duplicate_groups_full.csv",
+          "bytes": 1712881,
+          "sha256": "ca4b2c161b0b10ef7a88664fad16dfb9858f92dc5cc780e2358f03af9889e4dc",
+          "format": "CSV",
+          "csv_rows": 4046,
+          "csv_cells_excluding_header": 32368,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "MICRO_SPLIT_CSV_PACK_v0_6/micro_04_stock_slots_top.csv",
+          "bytes": 1984875,
+          "sha256": "24540548b97b4dfdbe94a45386d364a5c023c929ff65720c974e759cb195d248",
+          "format": "CSV",
+          "csv_rows": 10000,
+          "csv_cells_excluding_header": 150000,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "MICRO_SPLIT_CSV_PACK_v0_6/micro_05_stock_slots_lower.csv",
+          "bytes": 2047245,
+          "sha256": "2eb381fe20077e6ba36f5c22578ade06e8feda68dcf1d146f498bf3cd4c941e7",
+          "format": "CSV",
+          "csv_rows": 10000,
+          "csv_cells_excluding_header": 150000,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "MICRO_SPLIT_CSV_PACK_v0_6/micro_06_stock_slots_random.csv",
+          "bytes": 2067186,
+          "sha256": "0c69e9e35c74229bd161085f25b71213332b331636434304d3718db30aa0c661",
+          "format": "CSV",
+          "csv_rows": 10000,
+          "csv_cells_excluding_header": 150000,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "MICRO_SPLIT_CSV_PACK_v0_6/micro_07_upstox_schema.csv",
+          "bytes": 1305,
+          "sha256": "776a5438947045542fd49710811dd103549ec4a062c30b8997ed39cf92065b49",
+          "format": "CSV",
+          "csv_rows": 19,
+          "csv_cells_excluding_header": 114,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "MICRO_SPLIT_CSV_PACK_v0_6/micro_08_reverse_event_schema.csv",
+          "bytes": 2045,
+          "sha256": "85572d37f8ac10a76c57c5a70b33bfe90ec36a4aae78a4a094f54eff635b2451",
+          "format": "CSV",
+          "csv_rows": 21,
+          "csv_cells_excluding_header": 147,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "MICRO_SPLIT_CSV_PACK_v0_6/micro_09_n200_available_batch.csv",
+          "bytes": 58696,
+          "sha256": "c6cfadb149d01e47d74cd638539be6548049185efd0a55a3c0404b6f87a73984",
+          "format": "CSV",
+          "csv_rows": 198,
+          "csv_cells_excluding_header": 5742,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "MICRO_SPLIT_CSV_PACK_v0_6/micro_10_sourceborn_picks_sample.csv",
+          "bytes": 8336,
+          "sha256": "5ba007266012b10c3468066f515f749577494657810ce2b5bd3b60609a6ea74f",
+          "format": "CSV",
+          "csv_rows": 50,
+          "csv_cells_excluding_header": 450,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "MICRO_SPLIT_CSV_PACK_v0_6/micro_11_next_loop_control.csv",
+          "bytes": 1432,
+          "sha256": "021478d5350239854ec76aa413019a49e9f208b07171f09b1f278494be390b65",
+          "format": "CSV",
+          "csv_rows": 8,
+          "csv_cells_excluding_header": 64,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "MICRO_SPLIT_CSV_PACK_v0_6/micro_12_asset_master_sample.csv",
+          "bytes": 3858,
+          "sha256": "9a5cbdfbf325a537368d381042dad46e6f6c8bb45da6b48ffa69794f7c904851",
+          "format": "CSV",
+          "csv_rows": 13,
+          "csv_cells_excluding_header": 156,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "MICRO_SPLIT_CSV_PACK_v0_6/micro_13_industry_150.csv",
+          "bytes": 31974,
+          "sha256": "2747d3251b47afdeb45d2c5a79ddbb9809416144f82b0dd46997c4eebe78209d",
+          "format": "CSV",
+          "csv_rows": 150,
+          "csv_cells_excluding_header": 1500,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "MICRO_SPLIT_CSV_PACK_v0_6/micro_14_distinct100_sample.csv",
+          "bytes": 62781,
+          "sha256": "0fa5f050140233bf5571c96ccab0078340fcd2bc6420334521c3e7d97bcceb9e",
+          "format": "CSV",
+          "csv_rows": 198,
+          "csv_cells_excluding_header": 6138,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "MICRO_SPLIT_CSV_PACK_v0_6/micro_15_filled_top50_sample.csv",
+          "bytes": 20025,
+          "sha256": "9488bd6b441cc84bb58759837407538ce846df81c54c1a0bbac9444dd02f40c7",
+          "format": "CSV",
+          "csv_rows": 50,
+          "csv_cells_excluding_header": 1050,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        }
+      ]
+    },
+    {
+      "name": "IFR_Expansion_Check_v0_4_CSV.zip",
+      "bytes": 435012,
+      "sha256": "2a78f497333e78d0c1a2459e0ec3d83cb5847130cd41d374f86ab6cfaed16e30",
+      "uncompressed_bytes": 473656,
+      "members": [
+        {
+          "name": "IFR_Expansion_Check_v0_4_CSV/file_manifest.csv",
+          "bytes": 1378,
+          "sha256": "88b75b67feefc3a7d976b563fd982d14d6a704a0475d76de3f30b6c5ac87cacd",
+          "format": "CSV",
+          "csv_rows": 12,
+          "csv_cells_excluding_header": 72,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "IFR_Expansion_Check_v0_4_CSV/IFR_Expansion_Check_v0_4.xlsx",
+          "bytes": 16081,
+          "sha256": "c40c5d746f599fed069c4752f9dad392b7f748ec24421ce6cdd1c65f6f45bc29",
+          "format": "XLSX",
+          "sheets": [
+            {
+              "name": "01_Dashboard",
+              "xml_populated_cells": 45,
+              "formula_cells": 0
+            },
+            {
+              "name": "02_File_Manifest",
+              "xml_populated_cells": 78,
+              "formula_cells": 0
+            },
+            {
+              "name": "03_Signal_Rank",
+              "xml_populated_cells": 187,
+              "formula_cells": 0
+            },
+            {
+              "name": "04_New_Params",
+              "xml_populated_cells": 136,
+              "formula_cells": 0
+            },
+            {
+              "name": "05_Thresholds",
+              "xml_populated_cells": 90,
+              "formula_cells": 0
+            },
+            {
+              "name": "06_Event_Validation",
+              "xml_populated_cells": 72,
+              "formula_cells": 0
+            },
+            {
+              "name": "07_Top_Pre_Fall",
+              "xml_populated_cells": 105,
+              "formula_cells": 0
+            },
+            {
+              "name": "08_Top_Combos",
+              "xml_populated_cells": 80,
+              "formula_cells": 0
+            }
+          ],
+          "review": "All nested XML parts and worksheet cells parsed; no calculation/native-render validation"
+        },
+        {
+          "name": "IFR_Expansion_Check_v0_4_CSV/IFR_FII_Cash_Stack_Fwd15_Hist_v0_6.png",
+          "bytes": 50028,
+          "sha256": "151bcde33d8b78c8f872bfef7cefe54abfb2cd038d1dad659ae5fcdc0a4c1dc8",
+          "format": "PNG",
+          "review": "Visually inspected from bounded archive bytes; histogram overlap not efficacy proof"
+        },
+        {
+          "name": "IFR_Expansion_Check_v0_4_CSV/IFR_FII_Cash_Stack_Test_v0_6.xlsx",
+          "bytes": 313000,
+          "sha256": "5741b410bb50c0002c4983b598b05ccdf37393bf16e51e83fd54c69663e3b3a2",
+          "format": "XLSX",
+          "sheets": [
+            {
+              "name": "Dashboard",
+              "xml_populated_cells": 62,
+              "formula_cells": 0
+            },
+            {
+              "name": "Strategy_Performance",
+              "xml_populated_cells": 181,
+              "formula_cells": 0
+            },
+            {
+              "name": "Block_Robustness",
+              "xml_populated_cells": 205,
+              "formula_cells": 0
+            },
+            {
+              "name": "Event_Fire_Matrix",
+              "xml_populated_cells": 361,
+              "formula_cells": 0
+            },
+            {
+              "name": "Fwd_Return_Distribution",
+              "xml_populated_cells": 151,
+              "formula_cells": 0
+            },
+            {
+              "name": "Signal_Clusters",
+              "xml_populated_cells": 28,
+              "formula_cells": 0
+            },
+            {
+              "name": "Signal_Correlation",
+              "xml_populated_cells": 170,
+              "formula_cells": 0
+            },
+            {
+              "name": "Parameter_Decisions",
+              "xml_populated_cells": 29,
+              "formula_cells": 0
+            },
+            {
+              "name": "Daily_Signal_Sample",
+              "xml_populated_cells": 5720,
+              "formula_cells": 0
+            },
+            {
+              "name": "Data_Coverage",
+              "xml_populated_cells": 25,
+              "formula_cells": 0
+            },
+            {
+              "name": "Equity_Curves",
+              "xml_populated_cells": 19901,
+              "formula_cells": 0
+            }
+          ],
+          "review": "All nested XML parts and worksheet cells parsed; no calculation/native-render validation"
+        },
+        {
+          "name": "IFR_Expansion_Check_v0_4_CSV/IFR_Fwd15_Histogram_v0_5.png",
+          "bytes": 50396,
+          "sha256": "675a2b701e42934a4c3b6f32c7b6a435ab65018561675ea6a673c15e59337d97",
+          "format": "PNG",
+          "review": "Visually inspected from bounded archive bytes; histogram overlap not efficacy proof"
+        },
+        {
+          "name": "IFR_Expansion_Check_v0_4_CSV/IFR_Validation_Hard_Checks_v0_5.xlsx",
+          "bytes": 30819,
+          "sha256": "5e22580c2bd92edf6d7f6779a1ccf42d60e8b3b8b91963250ab23187b8988a8a",
+          "format": "XLSX",
+          "sheets": [
+            {
+              "name": "README_Status",
+              "xml_populated_cells": 19,
+              "formula_cells": 0
+            },
+            {
+              "name": "01_Verdict",
+              "xml_populated_cells": 24,
+              "formula_cells": 0
+            },
+            {
+              "name": "02_Time_Block",
+              "xml_populated_cells": 95,
+              "formula_cells": 0
+            },
+            {
+              "name": "03_State_Machine",
+              "xml_populated_cells": 48,
+              "formula_cells": 0
+            },
+            {
+              "name": "04_False_Positive_Dist",
+              "xml_populated_cells": 65,
+              "formula_cells": 0
+            },
+            {
+              "name": "05_Histogram_Bins",
+              "xml_populated_cells": 365,
+              "formula_cells": 0
+            },
+            {
+              "name": "06_WalkForward_Best",
+              "xml_populated_cells": 51,
+              "formula_cells": 0
+            },
+            {
+              "name": "07_WalkForward_Orig",
+              "xml_populated_cells": 51,
+              "formula_cells": 0
+            },
+            {
+              "name": "08_Independence_Clusters",
+              "xml_populated_cells": 91,
+              "formula_cells": 0
+            },
+            {
+              "name": "09_Top_Correlations",
+              "xml_populated_cells": 287,
+              "formula_cells": 0
+            },
+            {
+              "name": "10_Thresholds",
+              "xml_populated_cells": 24,
+              "formula_cells": 0
+            },
+            {
+              "name": "00_Decision_Matrix",
+              "xml_populated_cells": 24,
+              "formula_cells": 0
+            }
+          ],
+          "review": "All nested XML parts and worksheet cells parsed; no calculation/native-render validation"
+        },
+        {
+          "name": "IFR_Expansion_Check_v0_4_CSV/new_parameter_definitions.csv",
+          "bytes": 6440,
+          "sha256": "40c172348b9b38110893df72a099decb36c8d7d31dfed091d550d72432c94713",
+          "format": "CSV",
+          "csv_rows": 16,
+          "csv_cells_excluding_header": 128,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "IFR_Expansion_Check_v0_4_CSV/signal_rank.csv",
+          "bytes": 1575,
+          "sha256": "6acefada56cd3026a47a9c7ea8ee47a560d5d71c4bf98ff76d9ca0494083ed9b",
+          "format": "CSV",
+          "csv_rows": 16,
+          "csv_cells_excluding_header": 176,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "IFR_Expansion_Check_v0_4_CSV/thresholds.csv",
+          "bytes": 752,
+          "sha256": "215ea61116b3105292a7d8bef9e3578e73719953aa0848c0ff071f85a41c046e",
+          "format": "CSV",
+          "csv_rows": 8,
+          "csv_cells_excluding_header": 80,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "IFR_Expansion_Check_v0_4_CSV/top_combo_triggers.csv",
+          "bytes": 1415,
+          "sha256": "d6797a499860528880f96349f4fdd5f9744221872f4e08a3271069c4157cfe61",
+          "format": "CSV",
+          "csv_rows": 15,
+          "csv_cells_excluding_header": 75,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        },
+        {
+          "name": "IFR_Expansion_Check_v0_4_CSV/top_pre_fall_triggers.csv",
+          "bytes": 1772,
+          "sha256": "6504ac5d6827fb71e81703e5b7d5b00557aa4929966349f9c7e39c243923be75",
+          "format": "CSV",
+          "csv_rows": 20,
+          "csv_cells_excluding_header": 100,
+          "csv_width_errors": [],
+          "review": "All CSV records/cells parsed"
+        }
+      ]
+    }
+  ],
+  "numeric_reproduction": {
+    "daily": {
+      "rows": 7162,
+      "dates": [
+        "1996-01-02",
+        "2024-07-05"
+      ],
+      "sorted_unique": true,
+      "weekend_rows": 2,
+      "active_minmax": [
+        51,
+        1390
+      ],
+      "yield_valid_dates": [
+        "2016-01-01",
+        "2024-07-05"
+      ],
+      "baseline_product": 442.4591226682639,
+      "columns": {
+        "ret_5d": {
+          "method": "product",
+          "window": 5,
+          "mismatches": 0,
+          "examples": []
+        },
+        "ret_10d": {
+          "method": "product",
+          "window": 10,
+          "mismatches": 0,
+          "examples": []
+        },
+        "up_pct_5d": {
+          "method": "mean",
+          "window": 5,
+          "mismatches": 0,
+          "examples": []
+        },
+        "up_pct_10d": {
+          "method": "mean",
+          "window": 10,
+          "mismatches": 0,
+          "examples": []
+        },
+        "disp_5d": {
+          "method": "mean",
+          "window": 5,
+          "mismatches": 0,
+          "examples": []
+        },
+        "disp_10d": {
+          "method": "mean",
+          "window": 10,
+          "mismatches": 0,
+          "examples": []
+        },
+        "dbi_5d": {
+          "method": "mean",
+          "window": 5,
+          "mismatches": 0,
+          "examples": []
+        },
+        "tail_down3_5d": {
+          "method": "mean",
+          "window": 5,
+          "mismatches": 0,
+          "examples": []
+        },
+        "tail_up3_5d": {
+          "method": "mean",
+          "window": 5,
+          "mismatches": 0,
+          "examples": []
+        }
+      },
+      "dbi_reproduced_formula": "disp / max(abs(ew_ret), 0.0005)",
+      "dbi_ratio_mismatches": 0,
+      "weekend_dates": [
+        "2019-10-27",
+        "2020-11-14"
+      ],
+      "calendar_verification": "Calendar not verified; weekend rows alone are not errors because special sessions are possible."
+    },
+    "thresholds": {
+      "tested": 72,
+      "all_match_full_sample_to_6dp": true,
+      "values": [
+        {
+          "metric": "tail_down3_5d",
+          "quantile": "p10",
+          "archived": 0.035713,
+          "all7162_quantile": 0.03571286047430176,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_down3_5d",
+          "quantile": "p20",
+          "archived": 0.046149,
+          "all7162_quantile": 0.04614936243387632,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_down3_5d",
+          "quantile": "p30",
+          "archived": 0.056571,
+          "all7162_quantile": 0.056571029776674935,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_down3_5d",
+          "quantile": "p50",
+          "archived": 0.08172,
+          "all7162_quantile": 0.08172043010752689,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_down3_5d",
+          "quantile": "p75",
+          "archived": 0.137039,
+          "all7162_quantile": 0.13703859795930937,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_down3_5d",
+          "quantile": "p80",
+          "archived": 0.157266,
+          "all7162_quantile": 0.15726618322841132,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_down3_5d",
+          "quantile": "p85",
+          "archived": 0.181724,
+          "all7162_quantile": 0.1817244572659778,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_down3_5d",
+          "quantile": "p90",
+          "archived": 0.212987,
+          "all7162_quantile": 0.21298701298701297,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_down3_5d",
+          "quantile": "p95",
+          "archived": 0.264174,
+          "all7162_quantile": 0.2641740070881732,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_up3_5d",
+          "quantile": "p10",
+          "archived": 0.058318,
+          "all7162_quantile": 0.05831794648654906,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_up3_5d",
+          "quantile": "p20",
+          "archived": 0.073569,
+          "all7162_quantile": 0.07356929870246579,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_up3_5d",
+          "quantile": "p30",
+          "archived": 0.085346,
+          "all7162_quantile": 0.08534632497646959,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_up3_5d",
+          "quantile": "p50",
+          "archived": 0.110519,
+          "all7162_quantile": 0.11051938049847725,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_up3_5d",
+          "quantile": "p75",
+          "archived": 0.152018,
+          "all7162_quantile": 0.15201843469676324,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_up3_5d",
+          "quantile": "p80",
+          "archived": 0.164623,
+          "all7162_quantile": 0.16462293823141835,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_up3_5d",
+          "quantile": "p85",
+          "archived": 0.179942,
+          "all7162_quantile": 0.17994161902177078,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_up3_5d",
+          "quantile": "p90",
+          "archived": 0.204826,
+          "all7162_quantile": 0.2048262784795356,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_up3_5d",
+          "quantile": "p95",
+          "archived": 0.243309,
+          "all7162_quantile": 0.2433093525179856,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "disp_5d",
+          "quantile": "p10",
+          "archived": 0.022077,
+          "all7162_quantile": 0.022076866788034836,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "disp_5d",
+          "quantile": "p20",
+          "archived": 0.023401,
+          "all7162_quantile": 0.023401176410897114,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "disp_5d",
+          "quantile": "p30",
+          "archived": 0.024578,
+          "all7162_quantile": 0.02457778749720852,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "disp_5d",
+          "quantile": "p50",
+          "archived": 0.02675,
+          "all7162_quantile": 0.02675015617449352,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "disp_5d",
+          "quantile": "p75",
+          "archived": 0.030154,
+          "all7162_quantile": 0.030153638852067163,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "disp_5d",
+          "quantile": "p80",
+          "archived": 0.031471,
+          "all7162_quantile": 0.031471422499901924,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "disp_5d",
+          "quantile": "p85",
+          "archived": 0.033,
+          "all7162_quantile": 0.03300018234832306,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "disp_5d",
+          "quantile": "p90",
+          "archived": 0.035334,
+          "all7162_quantile": 0.03533423265444745,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "disp_5d",
+          "quantile": "p95",
+          "archived": 0.039479,
+          "all7162_quantile": 0.03947922090128015,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_5d",
+          "quantile": "p10",
+          "archived": -0.040519,
+          "all7162_quantile": -0.04051860401389446,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_5d",
+          "quantile": "p20",
+          "archived": -0.022708,
+          "all7162_quantile": -0.0227077730688793,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_5d",
+          "quantile": "p30",
+          "archived": -0.010998,
+          "all7162_quantile": -0.010998395576224031,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_5d",
+          "quantile": "p50",
+          "archived": 0.007616,
+          "all7162_quantile": 0.007616352074820032,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_5d",
+          "quantile": "p75",
+          "archived": 0.027727,
+          "all7162_quantile": 0.027727193288157426,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_5d",
+          "quantile": "p80",
+          "archived": 0.032764,
+          "all7162_quantile": 0.032764026135504484,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_5d",
+          "quantile": "p85",
+          "archived": 0.038467,
+          "all7162_quantile": 0.038467226111837956,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_5d",
+          "quantile": "p90",
+          "archived": 0.046184,
+          "all7162_quantile": 0.04618380545669603,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_5d",
+          "quantile": "p95",
+          "archived": 0.061475,
+          "all7162_quantile": 0.06147467415315978,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_10d",
+          "quantile": "p10",
+          "archived": -0.057921,
+          "all7162_quantile": -0.057921263562902635,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_10d",
+          "quantile": "p20",
+          "archived": -0.032737,
+          "all7162_quantile": -0.032737333148180704,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_10d",
+          "quantile": "p30",
+          "archived": -0.014742,
+          "all7162_quantile": -0.014741509729717484,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_10d",
+          "quantile": "p50",
+          "archived": 0.012728,
+          "all7162_quantile": 0.012727543910316719,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_10d",
+          "quantile": "p75",
+          "archived": 0.044957,
+          "all7162_quantile": 0.04495656224606348,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_10d",
+          "quantile": "p80",
+          "archived": 0.053246,
+          "all7162_quantile": 0.05324625324751168,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_10d",
+          "quantile": "p85",
+          "archived": 0.06215,
+          "all7162_quantile": 0.06214978307388086,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_10d",
+          "quantile": "p90",
+          "archived": 0.074471,
+          "all7162_quantile": 0.07447120716428049,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_10d",
+          "quantile": "p95",
+          "archived": 0.095242,
+          "all7162_quantile": 0.09524163541101362,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "dbi_5d",
+          "quantile": "p10",
+          "archived": 2.540075,
+          "all7162_quantile": 2.540075242075664,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "dbi_5d",
+          "quantile": "p20",
+          "archived": 3.352226,
+          "all7162_quantile": 3.352225515570247,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "dbi_5d",
+          "quantile": "p30",
+          "archived": 4.038777,
+          "all7162_quantile": 4.038776999807571,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "dbi_5d",
+          "quantile": "p50",
+          "archived": 5.87068,
+          "all7162_quantile": 5.870679958966605,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "dbi_5d",
+          "quantile": "p75",
+          "archived": 10.397673,
+          "all7162_quantile": 10.39767285512516,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "dbi_5d",
+          "quantile": "p80",
+          "archived": 11.908921,
+          "all7162_quantile": 11.908920519634192,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "dbi_5d",
+          "quantile": "p85",
+          "archived": 13.282631,
+          "all7162_quantile": 13.28263130903658,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "dbi_5d",
+          "quantile": "p90",
+          "archived": 15.309707,
+          "all7162_quantile": 15.309706526630942,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "dbi_5d",
+          "quantile": "p95",
+          "archived": 18.428953,
+          "all7162_quantile": 18.428952688612075,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "yield_chg_5d",
+          "quantile": "p10",
+          "archived": -0.1064,
+          "all7162_quantile": -0.10640000000000052,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "yield_chg_5d",
+          "quantile": "p20",
+          "archived": -0.059,
+          "all7162_quantile": -0.05900000000000016,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "yield_chg_5d",
+          "quantile": "p30",
+          "archived": -0.035,
+          "all7162_quantile": -0.03500000000000014,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "yield_chg_5d",
+          "quantile": "p50",
+          "archived": -0.001,
+          "all7162_quantile": -0.0009999999999994458,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "yield_chg_5d",
+          "quantile": "p75",
+          "archived": 0.045,
+          "all7162_quantile": 0.04499999999999993,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "yield_chg_5d",
+          "quantile": "p80",
+          "archived": 0.057,
+          "all7162_quantile": 0.056999999999999496,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "yield_chg_5d",
+          "quantile": "p85",
+          "archived": 0.073,
+          "all7162_quantile": 0.07299999999999951,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "yield_chg_5d",
+          "quantile": "p90",
+          "archived": 0.0948,
+          "all7162_quantile": 0.09480000000000005,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "yield_chg_5d",
+          "quantile": "p95",
+          "archived": 0.134,
+          "all7162_quantile": 0.13400000000000006,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "up_pct_5d",
+          "quantile": "p10",
+          "archived": 0.308784,
+          "all7162_quantile": 0.3087842052196953,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "up_pct_5d",
+          "quantile": "p20",
+          "archived": 0.359322,
+          "all7162_quantile": 0.3593220338983051,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "up_pct_5d",
+          "quantile": "p30",
+          "archived": 0.394758,
+          "all7162_quantile": 0.39475765284006353,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "up_pct_5d",
+          "quantile": "p50",
+          "archived": 0.452308,
+          "all7162_quantile": 0.4523076923076923,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "up_pct_5d",
+          "quantile": "p75",
+          "archived": 0.521173,
+          "all7162_quantile": 0.521173352691268,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "up_pct_5d",
+          "quantile": "p80",
+          "archived": 0.537385,
+          "all7162_quantile": 0.5373847441888425,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "up_pct_5d",
+          "quantile": "p85",
+          "archived": 0.555142,
+          "all7162_quantile": 0.5551416190349661,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "up_pct_5d",
+          "quantile": "p90",
+          "archived": 0.577841,
+          "all7162_quantile": 0.5778413923533825,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "up_pct_5d",
+          "quantile": "p95",
+          "archived": 0.61233,
+          "all7162_quantile": 0.6123302511842427,
+          "equal_at_6decimals": true
+        }
+      ]
+    },
+    "missing_to_false": {
+      "PX01": 4,
+      "PX02": 4,
+      "PX05": 5155,
+      "PX06": 5155,
+      "PX12": 5155
+    },
+    "miner_exact_quantile_reproduction": {
+      "quantile_calibration_dates": [
+        "2010-01-01",
+        "2024-07-05"
+      ],
+      "values": {
+        "dbi_q90": 15.550534410247092,
+        "dbi_q75": 11.214668652288434,
+        "disp_q75": 0.027812008105642612,
+        "tail_down_q90": 0.1779328812296467,
+        "yield_change_q10": -0.10640000000000052
+      },
+      "rules": {
+        "PX01": {
+          "eligible_rows": 7158,
+          "mismatches": 0
+        },
+        "PX02": {
+          "eligible_rows": 7158,
+          "mismatches": 0
+        },
+        "PX05": {
+          "eligible_rows": 2007,
+          "mismatches": 0
+        }
+      }
+    },
+    "pre_catalog": {
+      "source_rows": 112,
+      "in_active_catalog": 64,
+      "in_active_catalog_ids": [
+        "T12W_0001",
+        "T12W_0002",
+        "T12W_0003",
+        "T12W_0004",
+        "T12W_0005",
+        "T12W_0006",
+        "T12W_0007",
+        "T12W_0008",
+        "T12W_0009",
+        "T12W_0010",
+        "T12W_0011",
+        "T12W_0012",
+        "T12W_0013",
+        "T12W_0014",
+        "T12W_0015",
+        "T12W_0016",
+        "T12W_0017",
+        "T12W_0018",
+        "T12W_0019",
+        "T12W_0020",
+        "T12W_0021",
+        "T12W_0022",
+        "T12W_0023",
+        "T12W_0024",
+        "T12W_0025",
+        "T12W_0026",
+        "T12W_0027",
+        "T12W_0028",
+        "T12W_0029",
+        "T12W_0030",
+        "T12W_0031",
+        "T12W_0032",
+        "T12W_0051",
+        "T12W_0052",
+        "T12W_0053",
+        "T12W_0054",
+        "T12W_0055",
+        "T12W_0056",
+        "T12W_0063",
+        "T12W_0064",
+        "T12W_0065",
+        "T12W_0066",
+        "T12W_0069",
+        "T12W_0070",
+        "T12W_0071",
+        "T12W_0072",
+        "T12W_0073",
+        "T12W_0074",
+        "T12W_0075",
+        "T12W_0076",
+        "T12W_0077",
+        "T12W_0078",
+        "T12W_0079",
+        "T12W_0080",
+        "T12W_0081",
+        "T12W_0082",
+        "T12W_0083",
+        "T12W_0084",
+        "T12W_0085",
+        "T12W_0086",
+        "T12W_0087",
+        "T12W_0088",
+        "T12W_0100",
+        "T12W_0101"
+      ],
+      "absent_from_active_catalog_ids": [
+        "T12W_0033",
+        "T12W_0034",
+        "T12W_0035",
+        "T12W_0036",
+        "T12W_0037",
+        "T12W_0038",
+        "T12W_0039",
+        "T12W_0040",
+        "T12W_0041",
+        "T12W_0042",
+        "T12W_0043",
+        "T12W_0044",
+        "T12W_0045",
+        "T12W_0046",
+        "T12W_0047",
+        "T12W_0048",
+        "T12W_0049",
+        "T12W_0050",
+        "T12W_0057",
+        "T12W_0058",
+        "T12W_0059",
+        "T12W_0060",
+        "T12W_0061",
+        "T12W_0062",
+        "T12W_0067",
+        "T12W_0068",
+        "T12W_0089",
+        "T12W_0090",
+        "T12W_0091",
+        "T12W_0092",
+        "T12W_0093",
+        "T12W_0094",
+        "T12W_0095",
+        "T12W_0096",
+        "T12W_0097",
+        "T12W_0098",
+        "T12W_0099",
+        "T12W_0102",
+        "T12W_0103",
+        "T12W_0104",
+        "T12W_0105",
+        "T12W_0106",
+        "T12W_0107",
+        "T12W_0108",
+        "T12W_0109",
+        "T12W_0110",
+        "T12W_0111",
+        "T12W_0112"
+      ],
+      "name_mismatches": [],
+      "formula_mismatches": []
+    },
+    "parameters": {
+      "rows": 22891,
+      "unique_names": 5588,
+      "unique_normalized_keys": 5547,
+      "blank_definitions": 9628,
+      "nonblank_distinct_definitions": 1513,
+      "definition_top20": [
+        [
+          "",
+          9628
+        ],
+        [
+          "Do not delete; mark duplicate/merged if replaced",
+          1200
+        ],
+        [
+          "Merged from ARD blocks, technical indicators, risk gates, fundamental fields (N200 CSV), GURU/AM07/Chityy/SYNTHETIC prompts, broker APIs, global Yahoo fields, data quality, gold/commodity, execution rules, scoring weights, etc. Full deduplicated list.",
+          350
+        ],
+        [
+          "Define repeatable pattern behavior",
+          350
+        ],
+        [
+          "Maps industry id across 3-type, 150-industry, and later 30k-stock structure.",
+          80
+        ],
+        [
+          "Maps sector across 3-type, 150-industry, and later 30k-stock structure.",
+          80
+        ],
+        [
+          "Maps theme across 3-type, 150-industry, and later 30k-stock structure.",
+          80
+        ],
+        [
+          "Maps subtheme across 3-type, 150-industry, and later 30k-stock structure.",
+          80
+        ],
+        [
+          "Maps peer rank across 3-type, 150-industry, and later 30k-stock structure.",
+          80
+        ],
+        [
+          "Maps industry momentum across 3-type, 150-industry, and later 30k-stock structure.",
+          80
+        ],
+        [
+          "Maps industry breadth across 3-type, 150-industry, and later 30k-stock structure.",
+          80
+        ],
+        [
+          "Maps theme rotation across 3-type, 150-industry, and later 30k-stock structure.",
+          80
+        ],
+        [
+          "Tags winner pattern so winner, failure and collapse patterns can be learned after enough cases.",
+          80
+        ],
+        [
+          "Tags failure pattern so winner, failure and collapse patterns can be learned after enough cases.",
+          80
+        ],
+        [
+          "Tags collapse driver so winner, failure and collapse patterns can be learned after enough cases.",
+          80
+        ],
+        [
+          "Tags setup repeat so winner, failure and collapse patterns can be learned after enough cases.",
+          80
+        ],
+        [
+          "Tags regime fail so winner, failure and collapse patterns can be learned after enough cases.",
+          80
+        ],
+        [
+          "Tags post-mortem so winner, failure and collapse patterns can be learned after enough cases.",
+          80
+        ],
+        [
+          "Tags pattern tag so winner, failure and collapse patterns can be learned after enough cases.",
+          80
+        ],
+        [
+          "Checks entry reason behavior for paper trade guru stock journal before it enters scoring, backtest, paper trade, or review.",
+          72
+        ]
+      ],
+      "normalized_duplicate_groups": 4046,
+      "declared_duplicate_groups": 4046,
+      "duplicate_group_count_mismatches": 0,
+      "groups_with_conflicting_nonblank_definitions": 53,
+      "conflict_examples": {
+        "industryidentityprimarymetric": [
+          "Core industry classification and identity metric",
+          "Do not delete; mark duplicate/merged if replaced"
+        ],
+        "industryidentitysecondarymetric": [
+          "Do not delete; mark duplicate/merged if replaced",
+          "Secondary classification"
+        ],
+        "marketcapitalization": [
+          "Capture Market capitalization; keep evidence/source before decision.",
+          "Do not delete; mark duplicate/merged if replaced"
+        ],
+        "enterprisevalue": [
+          "Capture Enterprise value; keep evidence/source before decision.",
+          "Do not delete; mark duplicate/merged if replaced",
+          "Enterprise Value"
+        ],
+        "peratio": [
+          "Capture P/E ratio; keep evidence/source before decision.",
+          "Do not delete; mark duplicate/merged if replaced"
+        ],
+        "forwardpe": [
+          "Capture Forward P/E; keep evidence/source before decision.",
+          "Do not delete; mark duplicate/merged if replaced",
+          "Forward P/E"
+        ],
+        "pegratio": [
+          "Capture PEG ratio; keep evidence/source before decision.",
+          "Do not delete; mark duplicate/merged if replaced"
+        ],
+        "dividendyield": [
+          "Capture Dividend yield; keep evidence/source before decision.",
+          "Dividend Yield",
+          "Do not delete; mark duplicate/merged if replaced"
+        ],
+        "debttoequity": [
+          "Capture Debt-to-equity; keep evidence/source before decision.",
+          "Debt to Equity",
+          "Do not delete; mark duplicate/merged if replaced"
+        ],
+        "earningsgrowth": [
+          "Capture Earnings growth; keep evidence/source before decision.",
+          "Do not delete; mark duplicate/merged if replaced",
+          "Earnings Growth"
+        ],
+        "revenuegrowth": [
+          "Capture Revenue growth; keep evidence/source before decision.",
+          "Do not delete; mark duplicate/merged if replaced",
+          "Revenue Growth"
+        ],
+        "profitmargin": [
+          "Capture Profit margin; keep evidence/source before decision.",
+          "Do not delete; mark duplicate/merged if replaced"
+        ]
+      },
+      "pyramid_first16_columns_equal_all_micro_rows": true,
+      "pyramid_layer_counts": {
+        "L01_UNIVERSE_IDENTITY": 1540,
+        "L00_GOVERNANCE_SOURCE_URR": 3130,
+        "L03_DERIVED_TECHNICALS": 431,
+        "L06_RISK_EXECUTION_GOVERNOR": 2064,
+        "L09_OPPORTUNITY_INVENTION": 1299,
+        "L05_PATTERN_FAMILIES": 2598,
+        "L07_SCORING_PYRAMID_ENGINE": 839,
+        "L08_PAPER_TRADING_PROOF": 9924,
+        "L02_RAW_MARKET_DATA": 411,
+        "L04_REVERSE_EVENT_LABELS": 51,
+        "L99_UNMAPPED_REVIEW": 604
+      },
+      "status_counts": {
+        "DATA_NEEDED": 5400,
+        "": 1307,
+        "Ready - awaiting linked data": 8250,
+        "Awaiting Upstox data": 500,
+        "Awaiting 150-industry map": 800,
+        "Placeholder - optional later": 900,
+        "Ready - manual paper entries": 700,
+        "Ready - manual human gate": 450,
+        "Ready - locked separate": 400,
+        "ACTIVE": 3500,
+        "Ready": 259,
+        "Active": 35,
+        "Formula": 28,
+        "Review": 226,
+        "Pending": 14,
+        "ADOPTED": 41,
+        "ADOPT": 13,
+        "LOCKED UNTIL 15Y CASES": 1,
+        "LOCKED": 1,
+        "Auto": 27,
+        "Manual": 33,
+        "Hybrid": 6
+      }
+    },
+    "slots": {
+      "count": 30000,
+      "all_stock_placeholders": true,
+      "unique_symbols": 30000,
+      "real_data_flags": {
+        "USER_BATCH_UNVERIFIED": 30000
+      }
+    },
+    "paper_sample": {
+      "rows": 198,
+      "gate_status": {
+        "PAPER_ENTRY_CANDIDATE": 12,
+        "NEEDS_CONFIRMATION": 101,
+        "LOW_SCORE": 73,
+        "HOLD_MISSING_PRICE": 12
+      },
+      "proof_status": {
+        "SAMPLE_ONLY_NOT_15Y": 198
+      },
+      "real_trade_allowed": {
+        "NO": 198
+      },
+      "actions": {
+        "PAPER_WATCH": 12,
+        "PAPER_HOLD": 101,
+        "PAPER_REJECT": 73,
+        "DATA_HALT": 12
+      }
+    }
+  },
+  "formula_source_rows_file": "data/asset-review/research-formula-source-rows-2026-09-24.json",
+  "raw_profiles": [
+    "/tmp/ash-five-archive-audit-0.json",
+    "/tmp/ash-five-archive-audit-1.json",
+    "/tmp/ash-five-archive-audit-2.json",
+    "/tmp/ash-five-archive-audit-3.json",
+    "/tmp/ash-five-archive-audit-4.json"
+  ],
+  "source_definitions": {
+    "pre_rise_fall": {
+      "rows": 112,
+      "ohlcv_claimed_ready": 79,
+      "external_needed": 33,
+      "evidence_status_all": "REQUIRES_15Y_BACKTEST",
+      "families": 8,
+      "clusters": 8,
+      "gates": 8,
+      "producer_code_members": 0
+    },
+    "miner": {
+      "formula_rows": 12,
+      "data_rows": 7162,
+      "notes": "Close-price internals, not OHLCV. Three reproduced recorded rules use 2010-2024 calibrated quantiles across pre-2010 rows."
+    },
+    "ifr": {
+      "formula_rows": 16,
+      "threshold_values": 72,
+      "notes": "Thresholds reproduce full-sample quantiles; test-result constants not current market evidence. v0.5 reports best-trained q80/k5 OOS CAGR alpha -0.3594299 percentage points, original q90/k5 +0.9135417 points, repair FAIL/HOLD."
+    }
+  },
+  "runtime_findings": [
+    {
+      "id": "FORMULA_ID_DRIFT",
+      "severity": "P1 before trust or promotion",
+      "file": "server-parameter-tunnel-patch.mjs",
+      "lines": [
+        360,
+        369
+      ],
+      "mappings": [
+        {
+          "id": "T12W_0079",
+          "preserved": "3 consecutive up closes with total gain > 8% then CLV weak",
+          "implemented": "close/ma20>1.12 and CLV<0.4",
+          "matches_source_id": "T12W_0080"
+        },
+        {
+          "id": "T12W_0080",
+          "preserved": "close/ma20>1.12 and CLV<0.4",
+          "implemented": "down_volume_5d/total_volume_5d>=0.65",
+          "matches_source_id": "T12W_0083"
+        },
+        {
+          "id": "T12W_0081",
+          "preserved": "sum distribution flags last10 >= threshold",
+          "implemented": "ATR14 rising 3 days and close below 10DMA",
+          "matches_source_id": "T12W_0084"
+        },
+        {
+          "id": "T12W_0084",
+          "preserved": "ATR14 rising 3 days and close below 10DMA",
+          "implemented": "count(open>prior_close and close<open last7)>=3",
+          "matches_source_id": "T12W_0087"
+        },
+        {
+          "id": "T12W_0085",
+          "preserved": "prior strong gain + tight flag + close below flag low",
+          "implemented": "count(upper_wick_ratio>0.45 near resistance last10)>=3",
+          "matches_source_id": "T12W_0088"
+        }
+      ]
+    },
+    {
+      "id": "FORMULA_WARMUP_AND_COMPONENT_PARITY",
+      "file": "server-parameter-tunnel-patch.mjs",
+      "evidence": [
+        {
+          "lines": [
+            264,
+            267
+          ],
+          "id": "T12W_0004",
+          "preserved": "ATR14 percentile over 252 days <=20 AND price above 20D low",
+          "implemented": "Allows126 valid ATR observations; percentile over up to252; omits price above20Dlow"
+        },
+        {
+          "lines": [
+            287,
+            287
+          ],
+          "id": "T12W_0009",
+          "preserved": "bandwidth low + volume_5d_avg < volume_20d_avg*0.75",
+          "implemented": "Only volume ratio; no bandwidth condition"
+        },
+        {
+          "lines": [
+            294,
+            294
+          ],
+          "id": "T12W_0012",
+          "preserved": "bandwidth percentile <=25 and linear_slope(close,10)>0",
+          "implemented": "stdev20/SMA20<0.04 and positive slope; not percentile"
+        },
+        {
+          "lines": [
+            300,
+            300
+          ],
+          "id": "T12W_0018",
+          "preserved": "sum volume strictly up-close days / total seven-day volume >=0.62",
+          "implemented": "totalVolume-downVolume includes unchanged days and first-slice day whose predecessor is omitted; see208-213"
+        }
+      ]
+    },
+    {
+      "id": "CATALOG_EXECUTABLE_WITHOUT_BRANCH",
+      "catalog_source_rows": 64,
+      "total_archived_rows": 112,
+      "implemented_id_branches": 49,
+      "unsupported_declared_executable": [
+        "T12W_0073",
+        "T12W_0078",
+        "T12W_0082",
+        "T12W_0083",
+        "T12W_0086",
+        "T12W_0087",
+        "T12W_0088"
+      ],
+      "source_required_fallback": "server-parameter-tunnel-patch.mjs:436",
+      "notes": "Eight other no-branch catalog rows are correctly defined/external-feed-required;48 archive definitions are absent from current175catalog. Absence is not permission to activate."
+    },
+    {
+      "id": "STATIC_HISTORICAL_TRIGGER_LIFT_IN_REGIME_SCORE",
+      "declarations": "server-data-intelligence-patch.mjs:95-101",
+      "consumer": "server-intelligence-score-patch.mjs:34-40",
+      "paper_weighting": "server-intelligence-score-patch.mjs:52-75",
+      "notes": "Six static precision/recall/lift rows match archival prefall/combo tables; averaged lift enters regimeRisk regardless of whether current triggers fire. Not a live calculation of these source signals."
+    }
+  ],
+  "runtime_call_path": {
+    "wrapper": "server.js:257-281 applies data intelligence, intelligence scoring, institutional and parameter tunnel patches;285-303 generates/imports inner server",
+    "catalog": "server-parameter-tunnel-patch.mjs:1-6 loads175JSON;evaluateParameterTunnel439-463 evaluates nodes;attach466-485 uses70%base/30%evidence unless blocked/missing",
+    "generic_scan": "server-parameter-tunnel-patch.mjs:507-511 attaches before scanner sort; generic runScanner row.score affected; hard-gate decision remains preserved",
+    "upstox_scan": "server-upstox-institutional-patch.mjs:581-582 attaches institutional after runScanner;507-525 restores score and selection_score from base_score, keeps tunnel advisory;541 sorts primary score. Wrong formula states persist, but do not claim Upstox primary rank changed.",
+    "separate_selection_route": "server-stock-selection-patch.mjs:39-45 acceptsPOSTbody into selectTradeInCandidates;lib/stock-selection-engine.mjs:289,309-327 usesmomentum20Percentileprimary;noarchiveCSVadapterfound",
+    "not_production_claim": "Read current feature implementation at localHEAD only; no Render call or app execution."
+  },
+  "limitations": [
+    "All38 CSV tables and5 workbook XML datasets were parsed; only documented selected arithmetic contracts independently reproduced.22,891 parameter occurrences were profiled/compared, not22,891 executable algorithms validated.",
+    "All140 explicit trigger/formula definition rows preserved verbatim in temp provenance registry. Large1513-distinct definition-text pool includes generic prose/blank/duplicate placeholders; canonical semantic approval not done.",
+    "Source close-price matrix per-symbol calculation, adjustments, historical membership/survivorship, gap calendar, producer scripts, exact original split embargo/cost rules not proven by these5packages.",
+    "Zero native XLSX formula cells means outputs are stored values/textual formulas; no independent workbook recalculation/pivot/chart guarantee.",
+    "No runtime edits, code execution from archives, import, network, database, orders, commit, push or deploy performed."
+  ],
+  "next_approval_scope": [
+    "First discuss typed formula-ID parity and minimum warmup/missing-input contracts; preserve original names/definitions and unsupported status separately.",
+    "Then explicit approval for bounded code correction and offline synthetic fixtures of each changedID; no automatic activation of48absentarchive rows or risk threshold changes.",
+    "Research-only replay must use complete point-in-time dates/instrument identity/adjustments; label completeness and confirmation availability timestamps; training-only quantiles, chronological heldout purging/embargo and execution cost model before promotion.",
+    "Retain all22,891 original occurrences and sourcefile/sheet/row;5547normalizedkeys/4046duplicategroups are review candidates, not automaticmerge/deletion authority."
+  ],
+  "independent_arithmetic_checks": {
+    "daily": {
+      "rows": 7162,
+      "dates": [
+        "1996-01-02",
+        "2024-07-05"
+      ],
+      "sorted_unique": true,
+      "weekend_rows": 2,
+      "active_minmax": [
+        51,
+        1390
+      ],
+      "yield_valid_dates": [
+        "2016-01-01",
+        "2024-07-05"
+      ],
+      "baseline_product": 442.4591226682639,
+      "columns": {
+        "ret_5d": {
+          "method": "product",
+          "window": 5,
+          "mismatches": 0,
+          "examples": []
+        },
+        "ret_10d": {
+          "method": "product",
+          "window": 10,
+          "mismatches": 0,
+          "examples": []
+        },
+        "up_pct_5d": {
+          "method": "mean",
+          "window": 5,
+          "mismatches": 0,
+          "examples": []
+        },
+        "up_pct_10d": {
+          "method": "mean",
+          "window": 10,
+          "mismatches": 0,
+          "examples": []
+        },
+        "disp_5d": {
+          "method": "mean",
+          "window": 5,
+          "mismatches": 0,
+          "examples": []
+        },
+        "disp_10d": {
+          "method": "mean",
+          "window": 10,
+          "mismatches": 0,
+          "examples": []
+        },
+        "dbi_5d": {
+          "method": "mean",
+          "window": 5,
+          "mismatches": 0,
+          "examples": []
+        },
+        "tail_down3_5d": {
+          "method": "mean",
+          "window": 5,
+          "mismatches": 0,
+          "examples": []
+        },
+        "tail_up3_5d": {
+          "method": "mean",
+          "window": 5,
+          "mismatches": 0,
+          "examples": []
+        }
+      },
+      "dbi_reproduced_formula": "disp / max(abs(ew_ret), 0.0005)",
+      "dbi_ratio_mismatches": 0,
+      "weekend_dates": [
+        "2019-10-27",
+        "2020-11-14"
+      ],
+      "calendar_verification": "Calendar not verified; weekend rows alone are not errors because special sessions are possible."
+    },
+    "thresholds": {
+      "tested": 72,
+      "all_match_full_sample_to_6dp": true,
+      "values": [
+        {
+          "metric": "tail_down3_5d",
+          "quantile": "p10",
+          "archived": 0.035713,
+          "all7162_quantile": 0.03571286047430176,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_down3_5d",
+          "quantile": "p20",
+          "archived": 0.046149,
+          "all7162_quantile": 0.04614936243387632,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_down3_5d",
+          "quantile": "p30",
+          "archived": 0.056571,
+          "all7162_quantile": 0.056571029776674935,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_down3_5d",
+          "quantile": "p50",
+          "archived": 0.08172,
+          "all7162_quantile": 0.08172043010752689,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_down3_5d",
+          "quantile": "p75",
+          "archived": 0.137039,
+          "all7162_quantile": 0.13703859795930937,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_down3_5d",
+          "quantile": "p80",
+          "archived": 0.157266,
+          "all7162_quantile": 0.15726618322841132,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_down3_5d",
+          "quantile": "p85",
+          "archived": 0.181724,
+          "all7162_quantile": 0.1817244572659778,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_down3_5d",
+          "quantile": "p90",
+          "archived": 0.212987,
+          "all7162_quantile": 0.21298701298701297,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_down3_5d",
+          "quantile": "p95",
+          "archived": 0.264174,
+          "all7162_quantile": 0.2641740070881732,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_up3_5d",
+          "quantile": "p10",
+          "archived": 0.058318,
+          "all7162_quantile": 0.05831794648654906,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_up3_5d",
+          "quantile": "p20",
+          "archived": 0.073569,
+          "all7162_quantile": 0.07356929870246579,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_up3_5d",
+          "quantile": "p30",
+          "archived": 0.085346,
+          "all7162_quantile": 0.08534632497646959,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_up3_5d",
+          "quantile": "p50",
+          "archived": 0.110519,
+          "all7162_quantile": 0.11051938049847725,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_up3_5d",
+          "quantile": "p75",
+          "archived": 0.152018,
+          "all7162_quantile": 0.15201843469676324,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_up3_5d",
+          "quantile": "p80",
+          "archived": 0.164623,
+          "all7162_quantile": 0.16462293823141835,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_up3_5d",
+          "quantile": "p85",
+          "archived": 0.179942,
+          "all7162_quantile": 0.17994161902177078,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_up3_5d",
+          "quantile": "p90",
+          "archived": 0.204826,
+          "all7162_quantile": 0.2048262784795356,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "tail_up3_5d",
+          "quantile": "p95",
+          "archived": 0.243309,
+          "all7162_quantile": 0.2433093525179856,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "disp_5d",
+          "quantile": "p10",
+          "archived": 0.022077,
+          "all7162_quantile": 0.022076866788034836,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "disp_5d",
+          "quantile": "p20",
+          "archived": 0.023401,
+          "all7162_quantile": 0.023401176410897114,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "disp_5d",
+          "quantile": "p30",
+          "archived": 0.024578,
+          "all7162_quantile": 0.02457778749720852,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "disp_5d",
+          "quantile": "p50",
+          "archived": 0.02675,
+          "all7162_quantile": 0.02675015617449352,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "disp_5d",
+          "quantile": "p75",
+          "archived": 0.030154,
+          "all7162_quantile": 0.030153638852067163,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "disp_5d",
+          "quantile": "p80",
+          "archived": 0.031471,
+          "all7162_quantile": 0.031471422499901924,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "disp_5d",
+          "quantile": "p85",
+          "archived": 0.033,
+          "all7162_quantile": 0.03300018234832306,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "disp_5d",
+          "quantile": "p90",
+          "archived": 0.035334,
+          "all7162_quantile": 0.03533423265444745,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "disp_5d",
+          "quantile": "p95",
+          "archived": 0.039479,
+          "all7162_quantile": 0.03947922090128015,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_5d",
+          "quantile": "p10",
+          "archived": -0.040519,
+          "all7162_quantile": -0.04051860401389446,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_5d",
+          "quantile": "p20",
+          "archived": -0.022708,
+          "all7162_quantile": -0.0227077730688793,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_5d",
+          "quantile": "p30",
+          "archived": -0.010998,
+          "all7162_quantile": -0.010998395576224031,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_5d",
+          "quantile": "p50",
+          "archived": 0.007616,
+          "all7162_quantile": 0.007616352074820032,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_5d",
+          "quantile": "p75",
+          "archived": 0.027727,
+          "all7162_quantile": 0.027727193288157426,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_5d",
+          "quantile": "p80",
+          "archived": 0.032764,
+          "all7162_quantile": 0.032764026135504484,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_5d",
+          "quantile": "p85",
+          "archived": 0.038467,
+          "all7162_quantile": 0.038467226111837956,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_5d",
+          "quantile": "p90",
+          "archived": 0.046184,
+          "all7162_quantile": 0.04618380545669603,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_5d",
+          "quantile": "p95",
+          "archived": 0.061475,
+          "all7162_quantile": 0.06147467415315978,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_10d",
+          "quantile": "p10",
+          "archived": -0.057921,
+          "all7162_quantile": -0.057921263562902635,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_10d",
+          "quantile": "p20",
+          "archived": -0.032737,
+          "all7162_quantile": -0.032737333148180704,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_10d",
+          "quantile": "p30",
+          "archived": -0.014742,
+          "all7162_quantile": -0.014741509729717484,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_10d",
+          "quantile": "p50",
+          "archived": 0.012728,
+          "all7162_quantile": 0.012727543910316719,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_10d",
+          "quantile": "p75",
+          "archived": 0.044957,
+          "all7162_quantile": 0.04495656224606348,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_10d",
+          "quantile": "p80",
+          "archived": 0.053246,
+          "all7162_quantile": 0.05324625324751168,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_10d",
+          "quantile": "p85",
+          "archived": 0.06215,
+          "all7162_quantile": 0.06214978307388086,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_10d",
+          "quantile": "p90",
+          "archived": 0.074471,
+          "all7162_quantile": 0.07447120716428049,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "ret_10d",
+          "quantile": "p95",
+          "archived": 0.095242,
+          "all7162_quantile": 0.09524163541101362,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "dbi_5d",
+          "quantile": "p10",
+          "archived": 2.540075,
+          "all7162_quantile": 2.540075242075664,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "dbi_5d",
+          "quantile": "p20",
+          "archived": 3.352226,
+          "all7162_quantile": 3.352225515570247,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "dbi_5d",
+          "quantile": "p30",
+          "archived": 4.038777,
+          "all7162_quantile": 4.038776999807571,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "dbi_5d",
+          "quantile": "p50",
+          "archived": 5.87068,
+          "all7162_quantile": 5.870679958966605,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "dbi_5d",
+          "quantile": "p75",
+          "archived": 10.397673,
+          "all7162_quantile": 10.39767285512516,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "dbi_5d",
+          "quantile": "p80",
+          "archived": 11.908921,
+          "all7162_quantile": 11.908920519634192,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "dbi_5d",
+          "quantile": "p85",
+          "archived": 13.282631,
+          "all7162_quantile": 13.28263130903658,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "dbi_5d",
+          "quantile": "p90",
+          "archived": 15.309707,
+          "all7162_quantile": 15.309706526630942,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "dbi_5d",
+          "quantile": "p95",
+          "archived": 18.428953,
+          "all7162_quantile": 18.428952688612075,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "yield_chg_5d",
+          "quantile": "p10",
+          "archived": -0.1064,
+          "all7162_quantile": -0.10640000000000052,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "yield_chg_5d",
+          "quantile": "p20",
+          "archived": -0.059,
+          "all7162_quantile": -0.05900000000000016,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "yield_chg_5d",
+          "quantile": "p30",
+          "archived": -0.035,
+          "all7162_quantile": -0.03500000000000014,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "yield_chg_5d",
+          "quantile": "p50",
+          "archived": -0.001,
+          "all7162_quantile": -0.0009999999999994458,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "yield_chg_5d",
+          "quantile": "p75",
+          "archived": 0.045,
+          "all7162_quantile": 0.04499999999999993,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "yield_chg_5d",
+          "quantile": "p80",
+          "archived": 0.057,
+          "all7162_quantile": 0.056999999999999496,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "yield_chg_5d",
+          "quantile": "p85",
+          "archived": 0.073,
+          "all7162_quantile": 0.07299999999999951,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "yield_chg_5d",
+          "quantile": "p90",
+          "archived": 0.0948,
+          "all7162_quantile": 0.09480000000000005,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "yield_chg_5d",
+          "quantile": "p95",
+          "archived": 0.134,
+          "all7162_quantile": 0.13400000000000006,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "up_pct_5d",
+          "quantile": "p10",
+          "archived": 0.308784,
+          "all7162_quantile": 0.3087842052196953,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "up_pct_5d",
+          "quantile": "p20",
+          "archived": 0.359322,
+          "all7162_quantile": 0.3593220338983051,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "up_pct_5d",
+          "quantile": "p30",
+          "archived": 0.394758,
+          "all7162_quantile": 0.39475765284006353,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "up_pct_5d",
+          "quantile": "p50",
+          "archived": 0.452308,
+          "all7162_quantile": 0.4523076923076923,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "up_pct_5d",
+          "quantile": "p75",
+          "archived": 0.521173,
+          "all7162_quantile": 0.521173352691268,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "up_pct_5d",
+          "quantile": "p80",
+          "archived": 0.537385,
+          "all7162_quantile": 0.5373847441888425,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "up_pct_5d",
+          "quantile": "p85",
+          "archived": 0.555142,
+          "all7162_quantile": 0.5551416190349661,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "up_pct_5d",
+          "quantile": "p90",
+          "archived": 0.577841,
+          "all7162_quantile": 0.5778413923533825,
+          "equal_at_6decimals": true
+        },
+        {
+          "metric": "up_pct_5d",
+          "quantile": "p95",
+          "archived": 0.61233,
+          "all7162_quantile": 0.6123302511842427,
+          "equal_at_6decimals": true
+        }
+      ]
+    },
+    "missing_to_false": {
+      "PX01": 4,
+      "PX02": 4,
+      "PX05": 5155,
+      "PX06": 5155,
+      "PX12": 5155
+    },
+    "miner_exact_quantile_reproduction": {
+      "quantile_calibration_dates": [
+        "2010-01-01",
+        "2024-07-05"
+      ],
+      "values": {
+        "dbi_q90": 15.550534410247092,
+        "dbi_q75": 11.214668652288434,
+        "disp_q75": 0.027812008105642612,
+        "tail_down_q90": 0.1779328812296467,
+        "yield_change_q10": -0.10640000000000052
+      },
+      "rules": {
+        "PX01": {
+          "eligible_rows": 7158,
+          "mismatches": 0
+        },
+        "PX02": {
+          "eligible_rows": 7158,
+          "mismatches": 0
+        },
+        "PX05": {
+          "eligible_rows": 2007,
+          "mismatches": 0
+        }
+      }
+    },
+    "pre_catalog": {
+      "source_rows": 112,
+      "in_active_catalog": 64,
+      "in_active_catalog_ids": [
+        "T12W_0001",
+        "T12W_0002",
+        "T12W_0003",
+        "T12W_0004",
+        "T12W_0005",
+        "T12W_0006",
+        "T12W_0007",
+        "T12W_0008",
+        "T12W_0009",
+        "T12W_0010",
+        "T12W_0011",
+        "T12W_0012",
+        "T12W_0013",
+        "T12W_0014",
+        "T12W_0015",
+        "T12W_0016",
+        "T12W_0017",
+        "T12W_0018",
+        "T12W_0019",
+        "T12W_0020",
+        "T12W_0021",
+        "T12W_0022",
+        "T12W_0023",
+        "T12W_0024",
+        "T12W_0025",
+        "T12W_0026",
+        "T12W_0027",
+        "T12W_0028",
+        "T12W_0029",
+        "T12W_0030",
+        "T12W_0031",
+        "T12W_0032",
+        "T12W_0051",
+        "T12W_0052",
+        "T12W_0053",
+        "T12W_0054",
+        "T12W_0055",
+        "T12W_0056",
+        "T12W_0063",
+        "T12W_0064",
+        "T12W_0065",
+        "T12W_0066",
+        "T12W_0069",
+        "T12W_0070",
+        "T12W_0071",
+        "T12W_0072",
+        "T12W_0073",
+        "T12W_0074",
+        "T12W_0075",
+        "T12W_0076",
+        "T12W_0077",
+        "T12W_0078",
+        "T12W_0079",
+        "T12W_0080",
+        "T12W_0081",
+        "T12W_0082",
+        "T12W_0083",
+        "T12W_0084",
+        "T12W_0085",
+        "T12W_0086",
+        "T12W_0087",
+        "T12W_0088",
+        "T12W_0100",
+        "T12W_0101"
+      ],
+      "absent_from_active_catalog_ids": [
+        "T12W_0033",
+        "T12W_0034",
+        "T12W_0035",
+        "T12W_0036",
+        "T12W_0037",
+        "T12W_0038",
+        "T12W_0039",
+        "T12W_0040",
+        "T12W_0041",
+        "T12W_0042",
+        "T12W_0043",
+        "T12W_0044",
+        "T12W_0045",
+        "T12W_0046",
+        "T12W_0047",
+        "T12W_0048",
+        "T12W_0049",
+        "T12W_0050",
+        "T12W_0057",
+        "T12W_0058",
+        "T12W_0059",
+        "T12W_0060",
+        "T12W_0061",
+        "T12W_0062",
+        "T12W_0067",
+        "T12W_0068",
+        "T12W_0089",
+        "T12W_0090",
+        "T12W_0091",
+        "T12W_0092",
+        "T12W_0093",
+        "T12W_0094",
+        "T12W_0095",
+        "T12W_0096",
+        "T12W_0097",
+        "T12W_0098",
+        "T12W_0099",
+        "T12W_0102",
+        "T12W_0103",
+        "T12W_0104",
+        "T12W_0105",
+        "T12W_0106",
+        "T12W_0107",
+        "T12W_0108",
+        "T12W_0109",
+        "T12W_0110",
+        "T12W_0111",
+        "T12W_0112"
+      ],
+      "name_mismatches": [],
+      "formula_mismatches": []
+    },
+    "parameters": {
+      "rows": 22891,
+      "unique_names": 5588,
+      "unique_normalized_keys": 5547,
+      "blank_definitions": 9628,
+      "nonblank_distinct_definitions": 1513,
+      "definition_top20": [
+        [
+          "",
+          9628
+        ],
+        [
+          "Do not delete; mark duplicate/merged if replaced",
+          1200
+        ],
+        [
+          "Merged from ARD blocks, technical indicators, risk gates, fundamental fields (N200 CSV), GURU/AM07/Chityy/SYNTHETIC prompts, broker APIs, global Yahoo fields, data quality, gold/commodity, execution rules, scoring weights, etc. Full deduplicated list.",
+          350
+        ],
+        [
+          "Define repeatable pattern behavior",
+          350
+        ],
+        [
+          "Maps industry id across 3-type, 150-industry, and later 30k-stock structure.",
+          80
+        ],
+        [
+          "Maps sector across 3-type, 150-industry, and later 30k-stock structure.",
+          80
+        ],
+        [
+          "Maps theme across 3-type, 150-industry, and later 30k-stock structure.",
+          80
+        ],
+        [
+          "Maps subtheme across 3-type, 150-industry, and later 30k-stock structure.",
+          80
+        ],
+        [
+          "Maps peer rank across 3-type, 150-industry, and later 30k-stock structure.",
+          80
+        ],
+        [
+          "Maps industry momentum across 3-type, 150-industry, and later 30k-stock structure.",
+          80
+        ],
+        [
+          "Maps industry breadth across 3-type, 150-industry, and later 30k-stock structure.",
+          80
+        ],
+        [
+          "Maps theme rotation across 3-type, 150-industry, and later 30k-stock structure.",
+          80
+        ],
+        [
+          "Tags winner pattern so winner, failure and collapse patterns can be learned after enough cases.",
+          80
+        ],
+        [
+          "Tags failure pattern so winner, failure and collapse patterns can be learned after enough cases.",
+          80
+        ],
+        [
+          "Tags collapse driver so winner, failure and collapse patterns can be learned after enough cases.",
+          80
+        ],
+        [
+          "Tags setup repeat so winner, failure and collapse patterns can be learned after enough cases.",
+          80
+        ],
+        [
+          "Tags regime fail so winner, failure and collapse patterns can be learned after enough cases.",
+          80
+        ],
+        [
+          "Tags post-mortem so winner, failure and collapse patterns can be learned after enough cases.",
+          80
+        ],
+        [
+          "Tags pattern tag so winner, failure and collapse patterns can be learned after enough cases.",
+          80
+        ],
+        [
+          "Checks entry reason behavior for paper trade guru stock journal before it enters scoring, backtest, paper trade, or review.",
+          72
+        ]
+      ],
+      "normalized_duplicate_groups": 4046,
+      "declared_duplicate_groups": 4046,
+      "duplicate_group_count_mismatches": 0,
+      "groups_with_conflicting_nonblank_definitions": 53,
+      "conflict_examples": {
+        "industryidentityprimarymetric": [
+          "Core industry classification and identity metric",
+          "Do not delete; mark duplicate/merged if replaced"
+        ],
+        "industryidentitysecondarymetric": [
+          "Do not delete; mark duplicate/merged if replaced",
+          "Secondary classification"
+        ],
+        "marketcapitalization": [
+          "Capture Market capitalization; keep evidence/source before decision.",
+          "Do not delete; mark duplicate/merged if replaced"
+        ],
+        "enterprisevalue": [
+          "Capture Enterprise value; keep evidence/source before decision.",
+          "Do not delete; mark duplicate/merged if replaced",
+          "Enterprise Value"
+        ],
+        "peratio": [
+          "Capture P/E ratio; keep evidence/source before decision.",
+          "Do not delete; mark duplicate/merged if replaced"
+        ],
+        "forwardpe": [
+          "Capture Forward P/E; keep evidence/source before decision.",
+          "Do not delete; mark duplicate/merged if replaced",
+          "Forward P/E"
+        ],
+        "pegratio": [
+          "Capture PEG ratio; keep evidence/source before decision.",
+          "Do not delete; mark duplicate/merged if replaced"
+        ],
+        "dividendyield": [
+          "Capture Dividend yield; keep evidence/source before decision.",
+          "Dividend Yield",
+          "Do not delete; mark duplicate/merged if replaced"
+        ],
+        "debttoequity": [
+          "Capture Debt-to-equity; keep evidence/source before decision.",
+          "Debt to Equity",
+          "Do not delete; mark duplicate/merged if replaced"
+        ],
+        "earningsgrowth": [
+          "Capture Earnings growth; keep evidence/source before decision.",
+          "Do not delete; mark duplicate/merged if replaced",
+          "Earnings Growth"
+        ],
+        "revenuegrowth": [
+          "Capture Revenue growth; keep evidence/source before decision.",
+          "Do not delete; mark duplicate/merged if replaced",
+          "Revenue Growth"
+        ],
+        "profitmargin": [
+          "Capture Profit margin; keep evidence/source before decision.",
+          "Do not delete; mark duplicate/merged if replaced"
+        ]
+      },
+      "pyramid_first16_columns_equal_all_micro_rows": true,
+      "pyramid_layer_counts": {
+        "L01_UNIVERSE_IDENTITY": 1540,
+        "L00_GOVERNANCE_SOURCE_URR": 3130,
+        "L03_DERIVED_TECHNICALS": 431,
+        "L06_RISK_EXECUTION_GOVERNOR": 2064,
+        "L09_OPPORTUNITY_INVENTION": 1299,
+        "L05_PATTERN_FAMILIES": 2598,
+        "L07_SCORING_PYRAMID_ENGINE": 839,
+        "L08_PAPER_TRADING_PROOF": 9924,
+        "L02_RAW_MARKET_DATA": 411,
+        "L04_REVERSE_EVENT_LABELS": 51,
+        "L99_UNMAPPED_REVIEW": 604
+      },
+      "status_counts": {
+        "DATA_NEEDED": 5400,
+        "": 1307,
+        "Ready - awaiting linked data": 8250,
+        "Awaiting Upstox data": 500,
+        "Awaiting 150-industry map": 800,
+        "Placeholder - optional later": 900,
+        "Ready - manual paper entries": 700,
+        "Ready - manual human gate": 450,
+        "Ready - locked separate": 400,
+        "ACTIVE": 3500,
+        "Ready": 259,
+        "Active": 35,
+        "Formula": 28,
+        "Review": 226,
+        "Pending": 14,
+        "ADOPTED": 41,
+        "ADOPT": 13,
+        "LOCKED UNTIL 15Y CASES": 1,
+        "LOCKED": 1,
+        "Auto": 27,
+        "Manual": 33,
+        "Hybrid": 6
+      }
+    },
+    "slots": {
+      "count": 30000,
+      "all_stock_placeholders": true,
+      "unique_symbols": 30000,
+      "real_data_flags": {
+        "USER_BATCH_UNVERIFIED": 30000
+      }
+    },
+    "paper_sample": {
+      "rows": 198,
+      "gate_status": {
+        "PAPER_ENTRY_CANDIDATE": 12,
+        "NEEDS_CONFIRMATION": 101,
+        "LOW_SCORE": 73,
+        "HOLD_MISSING_PRICE": 12
+      },
+      "proof_status": {
+        "SAMPLE_ONLY_NOT_15Y": 198
+      },
+      "real_trade_allowed": {
+        "NO": 198
+      },
+      "actions": {
+        "PAPER_WATCH": 12,
+        "PAPER_HOLD": 101,
+        "PAPER_REJECT": 73,
+        "DATA_HALT": 12
+      }
+    }
+  },
+  "publication_note": "This read-only subtask output was subsequently saved to the feature branch; scope.repository_edited=false describes the audit itself, not later evidence publication. raw_profiles paths refer to local exploratory evidence, not committed files."
+}

@@ -1,0 +1,658 @@
+{
+  "schema_version": "ashstocks-content-coverage-progress-v1",
+  "review_date": "2026-09-24",
+  "baseline_commit": "efb8ca934464551f6db3e32ce31cb94f0ea98cd6",
+  "baseline_file": "data/asset-review/remaining-content-baseline-2026-09-24.json",
+  "baseline_file_sha256": "ee04b8138113febb39e6323a2048a3c78c9b11c3ace96653fb1ad2080de1bf52",
+  "definition": "Reviewed is full serialized table/cell/text read with documented scope, not complete formula validity, currentness, source authority, Mongo coverage, or permission to trade. PDFs remain partial after all-page OCR.",
+  "accepted_evidence": [
+    {
+      "file": "data/asset-review/archived-reports-evidence-2026-09-24.json",
+      "sha256": "15d4e04b506832d9b071be54683d7cef2bb38b215efcf2f3a5d6467612f42845"
+    },
+    {
+      "file": "data/asset-review/ifr-cash-research-evidence-2026-09-24.json",
+      "sha256": "7484e17ce61516f7fe01e53cf7183228468bf5d5c83dd6a411eeb88887b0b5fd"
+    },
+    {
+      "file": "data/asset-review/research-formula-evidence-2026-09-24.json",
+      "sha256": "587cd79a0a3a1a5ce6718fc784fe1bcdb06cd4327ac6241f3f0dbbc81a47c893"
+    },
+    {
+      "file": "data/asset-review/india10y-evidence-2026-09-24.json",
+      "sha256": "4ec012b620524e7011a4bca86e41928f5001866729d239170ec19908a3a704e6"
+    },
+    {
+      "file": "data/asset-review/metadata-closure-evidence-2026-09-24.json",
+      "sha256": "db8c74dc10e5442eb1b4b4bfdb0e2a4426f35485161b172b4a7c2547ab0c7ac1"
+    }
+  ],
+  "updates": [
+    {
+      "asset": "AM.07.Parameter.Files.zip",
+      "from": "partial",
+      "to": "partial",
+      "evidence": null,
+      "member_updates": [
+        {
+          "member": "AM 07 Parameter Files/India 10-Year Bond Yield Historical Data.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/india10y-evidence-2026-09-24.json"
+        }
+      ]
+    },
+    {
+      "asset": "Back.Test.Claude.zip",
+      "from": "partial",
+      "to": "reviewed",
+      "evidence": "data/asset-review/metadata-closure-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "Back Test Claude/MANIFEST.txt",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/metadata-closure-evidence-2026-09-24.json"
+        }
+      ]
+    },
+    {
+      "asset": "fii-and-dii-trading-activity-in-india-metadata.json",
+      "from": "unread",
+      "to": "reviewed",
+      "evidence": "data/asset-review/metadata-closure-evidence-2026-09-24.json",
+      "member_updates": []
+    },
+    {
+      "asset": "FII.Derivative.Investment.FY.09.pdf",
+      "from": "unread",
+      "to": "partial",
+      "evidence": "data/asset-review/archived-reports-evidence-2026-09-24.json",
+      "member_updates": []
+    },
+    {
+      "asset": "FII.Derivative.Investment.FY.14.pdf",
+      "from": "unread",
+      "to": "partial",
+      "evidence": "data/asset-review/archived-reports-evidence-2026-09-24.json",
+      "member_updates": []
+    },
+    {
+      "asset": "FII.Derivative.Investment.FY.18.pdf",
+      "from": "unread",
+      "to": "partial",
+      "evidence": "data/asset-review/archived-reports-evidence-2026-09-24.json",
+      "member_updates": []
+    },
+    {
+      "asset": "FII.Derivative.Investment.FY.19.pdf",
+      "from": "unread",
+      "to": "partial",
+      "evidence": "data/asset-review/archived-reports-evidence-2026-09-24.json",
+      "member_updates": []
+    },
+    {
+      "asset": "FII.Derivative.Investment.FY.20.pdf",
+      "from": "unread",
+      "to": "partial",
+      "evidence": "data/asset-review/archived-reports-evidence-2026-09-24.json",
+      "member_updates": []
+    },
+    {
+      "asset": "FII.Derivative.Investment.FY.21.pdf",
+      "from": "unread",
+      "to": "partial",
+      "evidence": "data/asset-review/archived-reports-evidence-2026-09-24.json",
+      "member_updates": []
+    },
+    {
+      "asset": "FII.Derivative.Investment.FY.22.pdf",
+      "from": "unread",
+      "to": "partial",
+      "evidence": "data/asset-review/archived-reports-evidence-2026-09-24.json",
+      "member_updates": []
+    },
+    {
+      "asset": "FII.Derivative.Investment.FY.23.pdf",
+      "from": "unread",
+      "to": "partial",
+      "evidence": "data/asset-review/archived-reports-evidence-2026-09-24.json",
+      "member_updates": []
+    },
+    {
+      "asset": "FII.Derivative.Investment.FY.24.pdf",
+      "from": "unread",
+      "to": "partial",
+      "evidence": "data/asset-review/archived-reports-evidence-2026-09-24.json",
+      "member_updates": []
+    },
+    {
+      "asset": "FII.Derivative.Investment.FY.25.pdf",
+      "from": "unread",
+      "to": "partial",
+      "evidence": "data/asset-review/archived-reports-evidence-2026-09-24.json",
+      "member_updates": []
+    },
+    {
+      "asset": "FII.Derivative.Investment.FY.26.pdf",
+      "from": "unread",
+      "to": "partial",
+      "evidence": "data/asset-review/archived-reports-evidence-2026-09-24.json",
+      "member_updates": []
+    },
+    {
+      "asset": "FII.Derivative.Investment.June25.pdf",
+      "from": "unread",
+      "to": "partial",
+      "evidence": "data/asset-review/archived-reports-evidence-2026-09-24.json",
+      "member_updates": []
+    },
+    {
+      "asset": "FII.Derivative.Trades.FY.pdf",
+      "from": "unread",
+      "to": "partial",
+      "evidence": "data/asset-review/archived-reports-evidence-2026-09-24.json",
+      "member_updates": []
+    },
+    {
+      "asset": "FII.Derivative.Trades.November.30.2009.pdf",
+      "from": "unread",
+      "to": "partial",
+      "evidence": "data/asset-review/archived-reports-evidence-2026-09-24.json",
+      "member_updates": []
+    },
+    {
+      "asset": "FII.Derivative.Trades.oct.9.pdf",
+      "from": "unread",
+      "to": "partial",
+      "evidence": "data/asset-review/archived-reports-evidence-2026-09-24.json",
+      "member_updates": []
+    },
+    {
+      "asset": "FII.DII.Nifty.zip",
+      "from": "partial",
+      "to": "reviewed",
+      "evidence": "data/asset-review/archived-reports-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "FII DII Nifty/fii_stats_05-Jun-2026.xls",
+          "from": "unread",
+          "to": "reviewed",
+          "evidence": "data/asset-review/archived-reports-evidence-2026-09-24.json"
+        },
+        {
+          "member": "FII DII Nifty/fii_stats_08-Jun-2026.xls",
+          "from": "unread",
+          "to": "reviewed",
+          "evidence": "data/asset-review/archived-reports-evidence-2026-09-24.json"
+        }
+      ]
+    },
+    {
+      "asset": "fii_stats_05-Jun-2026.xls",
+      "from": "unread",
+      "to": "reviewed",
+      "evidence": "data/asset-review/archived-reports-evidence-2026-09-24.json",
+      "member_updates": []
+    },
+    {
+      "asset": "fii_stats_08-Jun-2026.1.xls",
+      "from": "unread",
+      "to": "reviewed",
+      "evidence": "data/asset-review/archived-reports-evidence-2026-09-24.json",
+      "member_updates": []
+    },
+    {
+      "asset": "fii_stats_08-Jun-2026.xls",
+      "from": "unread",
+      "to": "reviewed",
+      "evidence": "data/asset-review/archived-reports-evidence-2026-09-24.json",
+      "member_updates": []
+    },
+    {
+      "asset": "IFR_Expansion_Check_v0_4_CSV.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "IFR_Expansion_Check_v0_4_CSV/file_manifest.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "IFR_Expansion_Check_v0_4_CSV/IFR_Expansion_Check_v0_4.xlsx",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "IFR_Expansion_Check_v0_4_CSV/IFR_FII_Cash_Stack_Fwd15_Hist_v0_6.png",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "IFR_Expansion_Check_v0_4_CSV/IFR_FII_Cash_Stack_Test_v0_6.xlsx",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "IFR_Expansion_Check_v0_4_CSV/IFR_Fwd15_Histogram_v0_5.png",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "IFR_Expansion_Check_v0_4_CSV/IFR_Validation_Hard_Checks_v0_5.xlsx",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "IFR_Expansion_Check_v0_4_CSV/new_parameter_definitions.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "IFR_Expansion_Check_v0_4_CSV/signal_rank.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "IFR_Expansion_Check_v0_4_CSV/thresholds.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "IFR_Expansion_Check_v0_4_CSV/top_combo_triggers.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "IFR_Expansion_Check_v0_4_CSV/top_pre_fall_triggers.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        }
+      ]
+    },
+    {
+      "asset": "ifr_fii_cash_stack_test_v0_6.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/ifr-cash-research-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "ifr_fii_cash_stack_test_v0_6/block_robustness.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/ifr-cash-research-evidence-2026-09-24.json"
+        },
+        {
+          "member": "ifr_fii_cash_stack_test_v0_6/daily_joined_ifr_fii_cash_signals.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/ifr-cash-research-evidence-2026-09-24.json"
+        },
+        {
+          "member": "ifr_fii_cash_stack_test_v0_6/equity_curves_selected.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/ifr-cash-research-evidence-2026-09-24.json"
+        },
+        {
+          "member": "ifr_fii_cash_stack_test_v0_6/event_fire_matrix.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/ifr-cash-research-evidence-2026-09-24.json"
+        },
+        {
+          "member": "ifr_fii_cash_stack_test_v0_6/signal_independence_clusters.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/ifr-cash-research-evidence-2026-09-24.json"
+        },
+        {
+          "member": "ifr_fii_cash_stack_test_v0_6/strategy_performance.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/ifr-cash-research-evidence-2026-09-24.json"
+        }
+      ]
+    },
+    {
+      "asset": "IFR_FII_Cash_Stack_Test_v0_6_CSV.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/ifr-cash-research-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/block_robustness.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/ifr-cash-research-evidence-2026-09-24.json"
+        },
+        {
+          "member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/daily_joined_ifr_fii_cash_signals.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/ifr-cash-research-evidence-2026-09-24.json"
+        },
+        {
+          "member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/equity_curves_selected.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/ifr-cash-research-evidence-2026-09-24.json"
+        },
+        {
+          "member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/event_fire_matrix.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/ifr-cash-research-evidence-2026-09-24.json"
+        },
+        {
+          "member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/parameter_decisions.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/ifr-cash-research-evidence-2026-09-24.json"
+        },
+        {
+          "member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/signal_correlation_matrix.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/ifr-cash-research-evidence-2026-09-24.json"
+        },
+        {
+          "member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/signal_forward_return_distribution.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/ifr-cash-research-evidence-2026-09-24.json"
+        },
+        {
+          "member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/signal_independence_clusters.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/ifr-cash-research-evidence-2026-09-24.json"
+        },
+        {
+          "member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/strategy_performance.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/ifr-cash-research-evidence-2026-09-24.json"
+        }
+      ]
+    },
+    {
+      "asset": "MICRO_SPLIT_CSV_PACK_v0_6.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "MICRO_SPLIT_CSV_PACK_v0_6/FINAL_MICRO_SPLIT_ENGINE_v0_6.xlsx",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "MICRO_SPLIT_CSV_PACK_v0_6/micro_01_file_pileup_map.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "MICRO_SPLIT_CSV_PACK_v0_6/micro_02_parameter_pileup_full.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "MICRO_SPLIT_CSV_PACK_v0_6/micro_03_duplicate_groups_full.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "MICRO_SPLIT_CSV_PACK_v0_6/micro_04_stock_slots_top.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "MICRO_SPLIT_CSV_PACK_v0_6/micro_05_stock_slots_lower.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "MICRO_SPLIT_CSV_PACK_v0_6/micro_06_stock_slots_random.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "MICRO_SPLIT_CSV_PACK_v0_6/micro_07_upstox_schema.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "MICRO_SPLIT_CSV_PACK_v0_6/micro_08_reverse_event_schema.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "MICRO_SPLIT_CSV_PACK_v0_6/micro_09_n200_available_batch.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "MICRO_SPLIT_CSV_PACK_v0_6/micro_10_sourceborn_picks_sample.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "MICRO_SPLIT_CSV_PACK_v0_6/micro_11_next_loop_control.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "MICRO_SPLIT_CSV_PACK_v0_6/micro_12_asset_master_sample.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "MICRO_SPLIT_CSV_PACK_v0_6/micro_13_industry_150.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "MICRO_SPLIT_CSV_PACK_v0_6/micro_14_distinct100_sample.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "MICRO_SPLIT_CSV_PACK_v0_6/micro_15_filled_top50_sample.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        }
+      ]
+    },
+    {
+      "asset": "NSDL._.Fortnightly.Sector-wise.FII.Investment.data.html",
+      "from": "unread",
+      "to": "reviewed",
+      "evidence": "data/asset-review/archived-reports-evidence-2026-09-24.json",
+      "member_updates": []
+    },
+    {
+      "asset": "PRE.RISE_FALL_TRIGGER_LAYER_CSV_CODE_v0_2.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "PRE RISE_FALL_TRIGGER_LAYER_CSV_CODE_v0_2/data_extraction_request_v0_2.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "PRE RISE_FALL_TRIGGER_LAYER_CSV_CODE_v0_2/paper_running_map_v0_2.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "PRE RISE_FALL_TRIGGER_LAYER_CSV_CODE_v0_2/proof_gap_ledger_v0_2.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "PRE RISE_FALL_TRIGGER_LAYER_CSV_CODE_v0_2/pyramid_insert_map_v0_2.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "PRE RISE_FALL_TRIGGER_LAYER_CSV_CODE_v0_2/reverse_backtest_design_v0_2.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "PRE RISE_FALL_TRIGGER_LAYER_CSV_CODE_v0_2/trigger_clusters_v0_2.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "PRE RISE_FALL_TRIGGER_LAYER_CSV_CODE_v0_2/trigger_params_v0_2.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "PRE RISE_FALL_TRIGGER_LAYER_CSV_CODE_v0_2/trigger_score_gates_v0_2.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        }
+      ]
+    },
+    {
+      "asset": "PYRAMID_RUNNING_MAPS_v0_1.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "PYRAMID_RUNNING_MAPS_v0_1/mapped_parameters_to_pyramid_full.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "PYRAMID_RUNNING_MAPS_v0_1/proof_gap_ledger.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "PYRAMID_RUNNING_MAPS_v0_1/pyramid_sequence_running_map.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "PYRAMID_RUNNING_MAPS_v0_1/sample_paper_trading_running_map.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        }
+      ]
+    },
+    {
+      "asset": "UNIQUE_TRIGGER_MINER_v0_3_CSV_PACK.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "UNIQUE_TRIGGER_MINER_v0_3_CSV_PACK/01_file_readiness.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "UNIQUE_TRIGGER_MINER_v0_3_CSV_PACK/02_unique_parameters.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "UNIQUE_TRIGGER_MINER_v0_3_CSV_PACK/03_event_fire_matrix.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "UNIQUE_TRIGGER_MINER_v0_3_CSV_PACK/04_signal_summary.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "UNIQUE_TRIGGER_MINER_v0_3_CSV_PACK/05_daily_market_internals.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        },
+        {
+          "member": "UNIQUE_TRIGGER_MINER_v0_3_CSV_PACK/UNIQUE_TRIGGER_MINER_v0_3.xlsx",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/research-formula-evidence-2026-09-24.json"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "assets": 171,
+    "asset_status_counts": {
+      "reviewed": 54,
+      "partial": 22,
+      "inventory_only": 94,
+      "corrupt": 1
+    },
+    "members": 592,
+    "member_status_counts": {
+      "reviewed": 369,
+      "partial": 6,
+      "inventory_only": 217
+    },
+    "member_status_upgrades": 64,
+    "corrupt_archive": "2021_06.zip",
+    "corrupt_archive_member_count": null
+  },
+  "excluded_promotions": "Five duplicate-reuse candidates retain their baseline status pending context confirmation. Disguised XLS signatures prove format only. No remaining monthly transaction data is declared reviewed here.",
+  "mongo_accessed": false,
+  "imported": false,
+  "runtime_modified": false
+}

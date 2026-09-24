@@ -1,0 +1,2660 @@
+{
+  "schema_version": "ashstocks-ifr-cash-stack-readonly-audit-v1",
+  "date": "2026-09-24",
+  "archives": [
+    {
+      "name": "IFR_FII_Cash_Stack_Test_v0_6_CSV.zip",
+      "bytes": 410449,
+      "sha256": "2008f4036bdb44e068779ad648785b4433609442e406efd87ad834ea6664d9f7",
+      "members": [
+        {
+          "member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/block_robustness.csv",
+          "bytes": 2998,
+          "sha256": "af6e100f6ab3bb4f9d2b02ca6abcf4eac9da1b605f38788f01d78d8de70b6304",
+          "crc_checked": true,
+          "content_status": "all CSV rows/cells parsed",
+          "data_rows": 16
+        },
+        {
+          "member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/daily_joined_ifr_fii_cash_signals.csv",
+          "bytes": 712860,
+          "sha256": "54853fbf3f42526bfc2367d1e9b31ba95f75c00f07ea28d02002768785597cf8",
+          "crc_checked": true,
+          "content_status": "all CSV rows/cells parsed",
+          "data_rows": 3315
+        },
+        {
+          "member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/equity_curves_selected.csv",
+          "bytes": 345286,
+          "sha256": "0b08888c8a21971bcc7758cc38e775be7d1743691b85b6c58e0a59ee42b24860",
+          "crc_checked": true,
+          "content_status": "all CSV rows/cells parsed",
+          "data_rows": 3315
+        },
+        {
+          "member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/event_fire_matrix.csv",
+          "bytes": 2542,
+          "sha256": "3269b0b9f0f802319d5a323dd4dc592937f263901ac59f4b9410adb88b4df653",
+          "crc_checked": true,
+          "content_status": "all CSV rows/cells parsed",
+          "data_rows": 11
+        },
+        {
+          "member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/parameter_decisions.csv",
+          "bytes": 1115,
+          "sha256": "cacfe7b4492d3f0901124ba64310df829cf7476068120b3ed5c41e2ba98b0cb0",
+          "crc_checked": true,
+          "content_status": "all CSV rows/cells parsed",
+          "data_rows": 6
+        },
+        {
+          "member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/signal_correlation_matrix.csv",
+          "bytes": 2934,
+          "sha256": "d6f2db92665d14e8f34d6888cc46a629309e322ac6a18d639cd2659f2e57a8fb",
+          "crc_checked": true,
+          "content_status": "all CSV rows/cells parsed",
+          "data_rows": 12
+        },
+        {
+          "member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/signal_forward_return_distribution.csv",
+          "bytes": 2354,
+          "sha256": "595e3cbebbb05e98945832c8cda3b216a325dd50e78b9985e3f7125f3d03cb85",
+          "crc_checked": true,
+          "content_status": "all CSV rows/cells parsed",
+          "data_rows": 14
+        },
+        {
+          "member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/signal_independence_clusters.csv",
+          "bytes": 229,
+          "sha256": "bb3b6ec2374d95d7bc74c544973fcd8b37923b1ce19bdfd54a029d62f8dc253b",
+          "crc_checked": true,
+          "content_status": "all CSV rows/cells parsed",
+          "data_rows": 8
+        },
+        {
+          "member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/strategy_performance.csv",
+          "bytes": 2960,
+          "sha256": "0aa0e7130e33dc306815186eb3957b2cbb7702837f79a351ee0539ab6d750909",
+          "crc_checked": true,
+          "content_status": "all CSV rows/cells parsed",
+          "data_rows": 11
+        }
+      ],
+      "pinned_size_sha256_match": true
+    },
+    {
+      "name": "ifr_fii_cash_stack_test_v0_6.zip",
+      "bytes": 406689,
+      "sha256": "fd75e0939860eae2335bd2516c8d57aee8de12e7886de8b9124acd5ab6c49bb4",
+      "members": [
+        {
+          "member": "ifr_fii_cash_stack_test_v0_6/block_robustness.csv",
+          "bytes": 2998,
+          "sha256": "af6e100f6ab3bb4f9d2b02ca6abcf4eac9da1b605f38788f01d78d8de70b6304",
+          "crc_checked": true,
+          "content_status": "all CSV rows/cells parsed",
+          "data_rows": 16
+        },
+        {
+          "member": "ifr_fii_cash_stack_test_v0_6/daily_joined_ifr_fii_cash_signals.csv",
+          "bytes": 712860,
+          "sha256": "54853fbf3f42526bfc2367d1e9b31ba95f75c00f07ea28d02002768785597cf8",
+          "crc_checked": true,
+          "content_status": "all CSV rows/cells parsed",
+          "data_rows": 3315
+        },
+        {
+          "member": "ifr_fii_cash_stack_test_v0_6/equity_curves_selected.csv",
+          "bytes": 345286,
+          "sha256": "0b08888c8a21971bcc7758cc38e775be7d1743691b85b6c58e0a59ee42b24860",
+          "crc_checked": true,
+          "content_status": "all CSV rows/cells parsed",
+          "data_rows": 3315
+        },
+        {
+          "member": "ifr_fii_cash_stack_test_v0_6/event_fire_matrix.csv",
+          "bytes": 2542,
+          "sha256": "3269b0b9f0f802319d5a323dd4dc592937f263901ac59f4b9410adb88b4df653",
+          "crc_checked": true,
+          "content_status": "all CSV rows/cells parsed",
+          "data_rows": 11
+        },
+        {
+          "member": "ifr_fii_cash_stack_test_v0_6/signal_independence_clusters.csv",
+          "bytes": 229,
+          "sha256": "bb3b6ec2374d95d7bc74c544973fcd8b37923b1ce19bdfd54a029d62f8dc253b",
+          "crc_checked": true,
+          "content_status": "all CSV rows/cells parsed",
+          "data_rows": 8
+        },
+        {
+          "member": "ifr_fii_cash_stack_test_v0_6/strategy_performance.csv",
+          "bytes": 2960,
+          "sha256": "0aa0e7130e33dc306815186eb3957b2cbb7702837f79a351ee0539ab6d750909",
+          "crc_checked": true,
+          "content_status": "all CSV rows/cells parsed",
+          "data_rows": 11
+        }
+      ],
+      "pinned_size_sha256_match": true
+    }
+  ],
+  "summary": {
+    "archive_count": 2,
+    "member_instances": 15,
+    "unique_contents": 9,
+    "unique_csv_data_rows": 6708,
+    "daily_rows": 3315,
+    "dates_min": "2007-01-08",
+    "dates_max": "2022-12-08",
+    "date_duplicates": 0,
+    "ascending": true,
+    "weekend_dates": 1,
+    "rows_by_year": {
+      "2007": 169,
+      "2008": 220,
+      "2009": 213,
+      "2010": 215,
+      "2011": 213,
+      "2012": 208,
+      "2013": 218,
+      "2014": 210,
+      "2015": 210,
+      "2016": 215,
+      "2017": 212,
+      "2018": 219,
+      "2019": 214,
+      "2020": 223,
+      "2021": 217,
+      "2022": 139
+    },
+    "calendar_gaps_over_seven_days": [
+      {
+        "previous": "2007-01-11",
+        "next": "2007-02-07",
+        "calendar_days": 27
+      },
+      {
+        "previous": "2007-02-08",
+        "next": "2007-03-05",
+        "calendar_days": 25
+      },
+      {
+        "previous": "2007-03-12",
+        "next": "2007-04-04",
+        "calendar_days": 23
+      },
+      {
+        "previous": "2018-03-28",
+        "next": "2018-04-05",
+        "calendar_days": 8
+      },
+      {
+        "previous": "2022-05-05",
+        "next": "2022-05-13",
+        "calendar_days": 8
+      },
+      {
+        "previous": "2022-08-08",
+        "next": "2022-08-16",
+        "calendar_days": 8
+      },
+      {
+        "previous": "2022-09-06",
+        "next": "2022-10-03",
+        "calendar_days": 27
+      },
+      {
+        "previous": "2022-10-06",
+        "next": "2022-11-01",
+        "calendar_days": 26
+      },
+      {
+        "previous": "2022-11-07",
+        "next": "2022-12-01",
+        "calendar_days": 24
+      }
+    ],
+    "daily_equity_date_order_equal": true,
+    "input_return_range": [
+      -0.1077424276894654,
+      0.0756376280253673
+    ],
+    "weekend_date_labels": [
+      "2019-10-27"
+    ],
+    "all_selected_member_numeric_and_text_fields_consumed": true,
+    "selected_member_uncompressed_bytes": 2140153,
+    "selected_member_formula_like_cells": 0,
+    "all_selected_members_width_valid": true,
+    "source_formats": [
+      "CSV only: no generator source, native workbook cells or executable formula nodes in these two archives"
+    ],
+    "member_instance_data_rows": 13384
+  },
+  "duplicates": [
+    [
+      "IFR_FII_Cash_Stack_Test_v0_6_CSV.zip::IFR_FII_Cash_Stack_Test_v0_6_CSV/block_robustness.csv",
+      "ifr_fii_cash_stack_test_v0_6.zip::ifr_fii_cash_stack_test_v0_6/block_robustness.csv"
+    ],
+    [
+      "IFR_FII_Cash_Stack_Test_v0_6_CSV.zip::IFR_FII_Cash_Stack_Test_v0_6_CSV/daily_joined_ifr_fii_cash_signals.csv",
+      "ifr_fii_cash_stack_test_v0_6.zip::ifr_fii_cash_stack_test_v0_6/daily_joined_ifr_fii_cash_signals.csv"
+    ],
+    [
+      "IFR_FII_Cash_Stack_Test_v0_6_CSV.zip::IFR_FII_Cash_Stack_Test_v0_6_CSV/equity_curves_selected.csv",
+      "ifr_fii_cash_stack_test_v0_6.zip::ifr_fii_cash_stack_test_v0_6/equity_curves_selected.csv"
+    ],
+    [
+      "IFR_FII_Cash_Stack_Test_v0_6_CSV.zip::IFR_FII_Cash_Stack_Test_v0_6_CSV/event_fire_matrix.csv",
+      "ifr_fii_cash_stack_test_v0_6.zip::ifr_fii_cash_stack_test_v0_6/event_fire_matrix.csv"
+    ],
+    [
+      "IFR_FII_Cash_Stack_Test_v0_6_CSV.zip::IFR_FII_Cash_Stack_Test_v0_6_CSV/signal_independence_clusters.csv",
+      "ifr_fii_cash_stack_test_v0_6.zip::ifr_fii_cash_stack_test_v0_6/signal_independence_clusters.csv"
+    ],
+    [
+      "IFR_FII_Cash_Stack_Test_v0_6_CSV.zip::IFR_FII_Cash_Stack_Test_v0_6_CSV/strategy_performance.csv",
+      "ifr_fii_cash_stack_test_v0_6.zip::ifr_fii_cash_stack_test_v0_6/strategy_performance.csv"
+    ]
+  ],
+  "daily_field_summary": {
+    "ew_ret": {
+      "missing": 0,
+      "distinct": 3315,
+      "min": -0.1077424276894654,
+      "max": 0.0756376280253673,
+      "sum": 2.2019049739832357
+    },
+    "tail_down3_5d": {
+      "missing": 0,
+      "distinct": 3260,
+      "min": 0.0116469981028903,
+      "max": 0.6437025796661608,
+      "sum": 347.2781961205086
+    },
+    "disp_5d": {
+      "missing": 0,
+      "distinct": 3315,
+      "min": 0.0183836246932764,
+      "max": 0.0650576956027453,
+      "sum": 90.60423428475842
+    },
+    "DAMAGE_CLUSTER_COUNT_10D": {
+      "missing": 0,
+      "distinct": 11,
+      "min": 0.0,
+      "max": 10.0,
+      "sum": 2988.0
+    },
+    "DAMAGE_CLUSTER_5IN10": {
+      "missing": 0,
+      "distinct": 2,
+      "min": 0.0,
+      "max": 1.0,
+      "sum": 253.0
+    },
+    "fii_net_cr": {
+      "missing": 0,
+      "distinct": 3299,
+      "min": -8295.17,
+      "max": 28739.17,
+      "sum": -204256.22999999998
+    },
+    "dii_net_cr": {
+      "missing": 0,
+      "distinct": 3285,
+      "min": -5631.99,
+      "max": 7667.75,
+      "sum": 560888.96
+    },
+    "fii_5d_net_cr": {
+      "missing": 1,
+      "distinct": 3314,
+      "min": -25782.63,
+      "max": 27298.699999999997,
+      "sum": -799161.4200000025
+    },
+    "fii_10d_net_cr": {
+      "missing": 3,
+      "distinct": 3312,
+      "min": -40838.36,
+      "max": 35834.63999999999,
+      "sum": -1618044.390000009
+    },
+    "FII_CASH_STRESS_Q10": {
+      "missing": 0,
+      "distinct": 2,
+      "min": 0.0,
+      "max": 1.0,
+      "sum": 341.0
+    },
+    "FII_SELL_CLUSTER_7IN10": {
+      "missing": 0,
+      "distinct": 2,
+      "min": 0.0,
+      "max": 1.0,
+      "sum": 1064.0
+    },
+    "FII_DII_DIVERGENCE_5D": {
+      "missing": 0,
+      "distinct": 2,
+      "min": 0.0,
+      "max": 1.0,
+      "sum": 1480.0
+    },
+    "FII_ANY_CONFIRM": {
+      "missing": 0,
+      "distinct": 2,
+      "min": 0.0,
+      "max": 1.0,
+      "sum": 1614.0
+    },
+    "IFR_FII_STRICT_CONFIRM": {
+      "missing": 0,
+      "distinct": 2,
+      "min": 0.0,
+      "max": 1.0,
+      "sum": 207.0
+    },
+    "REPAIR_AFTER_DAMAGE_CANDIDATE": {
+      "missing": 0,
+      "distinct": 2,
+      "min": 0.0,
+      "max": 1.0,
+      "sum": 520.0
+    },
+    "STATE_MACHINE_STATUS": {
+      "counts": {
+        "NORMAL": 2990,
+        "DEFENSIVE": 325
+      }
+    },
+    "fwd_15d": {
+      "missing": 0,
+      "distinct": 3315,
+      "min": -0.3849899794489652,
+      "max": 0.5044394071147167,
+      "sum": 37.97737908940783
+    },
+    "fwd_30d": {
+      "missing": 0,
+      "distinct": 3315,
+      "min": -0.4316270755186612,
+      "max": 0.613171937647317,
+      "sum": 76.88570704330353
+    }
+  },
+  "equity_curve_diagnostics": {
+    "Baseline 100%": {
+      "final_equity": 6.629926270396818,
+      "missing_or_nonpositive": 0,
+      "implied_exposure_min": 0.9999999999897685,
+      "implied_exposure_max": 1.0000000000187574,
+      "implied_exposure_rounded_counts": {
+        "1.0": 3315
+      },
+      "baseline_check": {
+        "compared": 3315,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 1.9895196601282805e-13,
+        "first_mismatch_indices": []
+      },
+      "max_drawdown_pct": -70.42554868965111,
+      "annualization_252_cagr_pct": 15.464779368582992,
+      "calendar_cagr_pct": 12.620669908057192,
+      "sharpe_252_ddof1_zero_rf": 0.7745813519546512
+    },
+    "IFR damage cluster: 50% next day": {
+      "final_equity": 9.641589512711576,
+      "missing_or_nonpositive": 0,
+      "implied_exposure_min": 0.4999999999996122,
+      "implied_exposure_max": 1.0000000000164857,
+      "implied_exposure_rounded_counts": {
+        "0.5": 253,
+        "1.0": 3062
+      },
+      "baseline_check": null,
+      "max_drawdown_pct": -53.303068227903275,
+      "annualization_252_cagr_pct": 18.79908866977631,
+      "calendar_cagr_pct": 15.30212495539207,
+      "sharpe_252_ddof1_zero_rf": 0.9922207036729035
+    },
+    "IFR + any FII confirm: 50% next day": {
+      "final_equity": 9.875829833262976,
+      "missing_or_nonpositive": 0,
+      "implied_exposure_min": 0.49999999999975175,
+      "implied_exposure_max": 1.0000000000187574,
+      "implied_exposure_rounded_counts": {
+        "0.5": 207,
+        "1.0": 3108
+      },
+      "baseline_check": null,
+      "max_drawdown_pct": -54.993589971452714,
+      "annualization_252_cagr_pct": 19.016067083201428,
+      "calendar_cagr_pct": 15.476163274587762,
+      "sharpe_252_ddof1_zero_rf": 0.9877853965031682
+    },
+    "Adaptive IFR+FII cash stack (25-100% exposure)": {
+      "final_equity": 9.385737180136267,
+      "missing_or_nonpositive": 0,
+      "implied_exposure_min": 0.24999999999992534,
+      "implied_exposure_max": 1.000000000064696,
+      "implied_exposure_rounded_counts": {
+        "0.25": 51,
+        "0.4": 127,
+        "0.5": 242,
+        "0.6": 26,
+        "0.7": 612,
+        "0.8": 123,
+        "0.9": 478,
+        "1.0": 1656
+      },
+      "baseline_check": null,
+      "max_drawdown_pct": -44.66291028093522,
+      "annualization_252_cagr_pct": 18.556453352291058,
+      "calendar_cagr_pct": 15.107441929065146,
+      "sharpe_252_ddof1_zero_rf": 1.1011170222175448
+    },
+    "2-state machine: IFR+FII enter, repair exit": {
+      "final_equity": 9.499530726540296,
+      "missing_or_nonpositive": 0,
+      "implied_exposure_min": 0.4999999999995197,
+      "implied_exposure_max": 1.0000000000187574,
+      "implied_exposure_rounded_counts": {
+        "0.5": 324,
+        "1.0": 2991
+      },
+      "baseline_check": null,
+      "max_drawdown_pct": -54.79713575115035,
+      "annualization_252_cagr_pct": 18.66511364897727,
+      "calendar_cagr_pct": 15.194636104690918,
+      "sharpe_252_ddof1_zero_rf": 0.9915192310268213
+    }
+  },
+  "textual_parameter_proposals": [
+    {
+      "parameter": "DAMAGE_CLUSTER_5IN10",
+      "decision": "KEEP_CONDITIONAL",
+      "reason": "Strong drawdown throttle but not complete standalone edge. Needs institutional confirmation and regime routing.",
+      "next_action": "Use as first-stage internal damage trigger."
+    },
+    {
+      "parameter": "FII_CASH_STRESS_Q10",
+      "decision": "KEEP_AS_CONFIRMATION",
+      "reason": "Captures severe 5D foreign cash selling. Useful with IFR, not sufficient alone.",
+      "next_action": "Combine with damage cluster and volume/delivery."
+    },
+    {
+      "parameter": "FII_SELL_CLUSTER_7IN10",
+      "decision": "KEEP_AS_CONFIRMATION",
+      "reason": "Persistent foreign selling. Strong during 2008/2022 windows but can be frequent.",
+      "next_action": "Use as severity add-on, not as full exit."
+    },
+    {
+      "parameter": "FII_DII_DIVERGENCE_5D",
+      "decision": "WATCH",
+      "reason": "Often means DII cushion rather than pure panic. Not always bearish.",
+      "next_action": "Route separately as cushioned sell pressure."
+    },
+    {
+      "parameter": "IFR_FII_STRICT_CONFIRM",
+      "decision": "HOLD_FOR_MORE_EVENTS",
+      "reason": "Very few overlapping event windows; 2024 derivatives/cash history missing.",
+      "next_action": "Run again after 2024 FII/PWOI history lands."
+    },
+    {
+      "parameter": "Adaptive IFR+FII cash stack",
+      "decision": "KEEP_FOR_PAPER",
+      "reason": "More realistic than binary signal; reduces exposure by stacked severity. Needs volume/delivery confirmation.",
+      "next_action": "Paper-only until 200+ stock volume/delivery and FII derivative history added."
+    }
+  ],
+  "limitations": [
+    "No original files edited, no extraction, no imports, network, Mongo or strategy activation.",
+    "CSV tables contain static results, not executable formulas or generator code. Reproduction assumptions are separate from source claims.",
+    "Full row reads are not proof of source/provider authority, exact NSE trading-session completeness, stock membership survivorship or adjusted price correctness.",
+    "The full cash-sample Q10/Q05 thresholds and full IFR-source damage quantile exactly reproduce supplied flags. These are retrospective calibrations unless an earlier independent threshold specification is supplied.",
+    "The two-state transition and adaptive exposure equations were independently inferred and checked, not approved as production algorithms.",
+    "Repair candidate export is read, counted and used as an input; its generation formula was not independently established. A similarly named expansion rule does not reproduce it.",
+    "Three correlation inputs are absent in the two selected archives. The9-signal81-cell submatrix is recomputed directly; source cash Q05 and source IFR TD95 permit an extended11-signal121-cell check. STRUCT_FRACTURE definition remains unresolved.",
+    "Forward-return distributions reproduce exported labels, including shortened incomplete tail horizons. This is not verification of complete15/30 trading-session outcomes.",
+    "Counts of signal days describe same-row signal/status flags, not necessarily executed reduced-exposure days; a terminal signal has no subsequent return row.",
+    "Event counts match the supplied windows. One event absent from joineddata uses a window ending before an additional available pre-event row; the lead_trading_days label is not a verified exchange-session count.",
+    "All thresholds, PASS/KEEP_FOR_PAPER recommendations and suggested next actions remain source claims. No algorithm was activated, raw data altered or Mongo queried."
+  ],
+  "adaptive_exposure_signal_groups": [
+    {
+      "IFR_DAMAGE": 0,
+      "FII_Q10": 0,
+      "FII_SELL_CLUSTER": 0,
+      "FII_DII_DIV": 0,
+      "exposures": [
+        1.0
+      ],
+      "rows": 1656
+    },
+    {
+      "IFR_DAMAGE": 0,
+      "FII_Q10": 0,
+      "FII_SELL_CLUSTER": 0,
+      "FII_DII_DIV": 1,
+      "exposures": [
+        0.9
+      ],
+      "rows": 478
+    },
+    {
+      "IFR_DAMAGE": 0,
+      "FII_Q10": 0,
+      "FII_SELL_CLUSTER": 1,
+      "FII_DII_DIV": 0,
+      "exposures": [
+        0.8
+      ],
+      "rows": 120
+    },
+    {
+      "IFR_DAMAGE": 0,
+      "FII_Q10": 0,
+      "FII_SELL_CLUSTER": 1,
+      "FII_DII_DIV": 1,
+      "exposures": [
+        0.7
+      ],
+      "rows": 530
+    },
+    {
+      "IFR_DAMAGE": 0,
+      "FII_Q10": 1,
+      "FII_SELL_CLUSTER": 0,
+      "FII_DII_DIV": 0,
+      "exposures": [
+        0.8
+      ],
+      "rows": 3
+    },
+    {
+      "IFR_DAMAGE": 0,
+      "FII_Q10": 1,
+      "FII_SELL_CLUSTER": 0,
+      "FII_DII_DIV": 1,
+      "exposures": [
+        0.7
+      ],
+      "rows": 36
+    },
+    {
+      "IFR_DAMAGE": 0,
+      "FII_Q10": 1,
+      "FII_SELL_CLUSTER": 1,
+      "FII_DII_DIV": 0,
+      "exposures": [
+        0.6
+      ],
+      "rows": 4
+    },
+    {
+      "IFR_DAMAGE": 0,
+      "FII_Q10": 1,
+      "FII_SELL_CLUSTER": 1,
+      "FII_DII_DIV": 1,
+      "exposures": [
+        0.5
+      ],
+      "rows": 235
+    },
+    {
+      "IFR_DAMAGE": 1,
+      "FII_Q10": 0,
+      "FII_SELL_CLUSTER": 0,
+      "FII_DII_DIV": 0,
+      "exposures": [
+        0.7
+      ],
+      "rows": 46
+    },
+    {
+      "IFR_DAMAGE": 1,
+      "FII_Q10": 0,
+      "FII_SELL_CLUSTER": 0,
+      "FII_DII_DIV": 1,
+      "exposures": [
+        0.6
+      ],
+      "rows": 22
+    },
+    {
+      "IFR_DAMAGE": 1,
+      "FII_Q10": 0,
+      "FII_SELL_CLUSTER": 1,
+      "FII_DII_DIV": 0,
+      "exposures": [
+        0.5
+      ],
+      "rows": 7
+    },
+    {
+      "IFR_DAMAGE": 1,
+      "FII_Q10": 0,
+      "FII_SELL_CLUSTER": 1,
+      "FII_DII_DIV": 1,
+      "exposures": [
+        0.4
+      ],
+      "rows": 116
+    },
+    {
+      "IFR_DAMAGE": 1,
+      "FII_Q10": 1,
+      "FII_SELL_CLUSTER": 0,
+      "FII_DII_DIV": 1,
+      "exposures": [
+        0.4
+      ],
+      "rows": 11
+    },
+    {
+      "IFR_DAMAGE": 1,
+      "FII_Q10": 1,
+      "FII_SELL_CLUSTER": 1,
+      "FII_DII_DIV": 1,
+      "exposures": [
+        0.25
+      ],
+      "rows": 51
+    }
+  ],
+  "adaptive_exposure_inferred_formula": {
+    "formula": "clip(1 - .30*IFR_DAMAGE - .20*FII_Q10 - .20*FII_SELL_CLUSTER - .10*FII_DII_DIV, .25, 1), shifted by one retained joined row; first exposure1",
+    "authority": "Inferred by independent pattern comparison, not a supplied or approved formula definition",
+    "check": {
+      "compared": 3315,
+      "missingness_mismatch": 0,
+      "mismatch_rows": 0,
+      "maximum_absolute_error": 6.469602631398175e-11,
+      "first_mismatch_indices": []
+    }
+  },
+  "reproduced_performance": [
+    {
+      "strategy": "Baseline 100%",
+      "reconstruction_basis": "next retained joined-row exposure 1 or 0.5 from exported signal/status; no costs/cash yield",
+      "claimed_signal_days": 0,
+      "actual_reduced_exposure_days": 0,
+      "curve_check": {
+        "compared": 3315,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 1.9895196601282805e-13,
+        "first_mismatch_indices": []
+      },
+      "claimed_metrics": {
+        "rows": 3315.0,
+        "final_equity_x": 6.629926270396818,
+        "total_return_pct": 562.9926270396818,
+        "cagr_pct": 15.464779368582992,
+        "sharpe": 0.7745813519546486,
+        "max_drawdown_pct": -70.42554868965111,
+        "avg_exposure": 1.0,
+        "cagr_alpha_vs_baseline_pct": 0.0,
+        "dd_improvement_vs_baseline_pts": 0.0,
+        "final_equity_delta_vs_baseline_pct": 0.0
+      },
+      "reproduced_metric_count": 10,
+      "metric_mismatch_count": 0,
+      "maximum_absolute_metric_error": 1.978150976356119e-11
+    },
+    {
+      "strategy": "IFR damage cluster: 50% next day",
+      "reconstruction_basis": "next retained joined-row exposure 1 or 0.5 from exported signal/status; no costs/cash yield",
+      "claimed_signal_days": 253,
+      "actual_reduced_exposure_days": 253,
+      "curve_check": {
+        "compared": 3315,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 2.646771690706373e-13,
+        "first_mismatch_indices": []
+      },
+      "claimed_metrics": {
+        "rows": 3315.0,
+        "final_equity_x": 9.641589512711576,
+        "total_return_pct": 864.1589512711575,
+        "cagr_pct": 18.79908866977631,
+        "sharpe": 0.9922207036729036,
+        "max_drawdown_pct": -53.303068227903275,
+        "avg_exposure": 0.96184012066365,
+        "cagr_alpha_vs_baseline_pct": 3.3343093011933185,
+        "dd_improvement_vs_baseline_pts": 17.122480461747834,
+        "final_equity_delta_vs_baseline_pct": 45.42529010861085
+      },
+      "reproduced_metric_count": 10,
+      "metric_mismatch_count": 0,
+      "maximum_absolute_metric_error": 2.6261659513693303e-11
+    },
+    {
+      "strategy": "FII any cash confirm: 50% next day",
+      "reconstruction_basis": "next retained joined-row exposure 1 or 0.5 from exported signal/status; no costs/cash yield",
+      "claimed_signal_days": 1614,
+      "actual_reduced_exposure_days": 1613,
+      "curve_check": null,
+      "claimed_metrics": {
+        "rows": 3315.0,
+        "final_equity_x": 8.792830434867628,
+        "total_return_pct": 779.2830434867628,
+        "cagr_pct": 17.96980712255687,
+        "sharpe": 1.124210599282783,
+        "max_drawdown_pct": -46.99413732463462,
+        "avg_exposure": 0.7567119155354449,
+        "cagr_alpha_vs_baseline_pct": 2.5050277539738772,
+        "dd_improvement_vs_baseline_pts": 23.431411365016487,
+        "final_equity_delta_vs_baseline_pct": 32.62335169741419
+      },
+      "reproduced_metric_count": 10,
+      "metric_mismatch_count": 0,
+      "maximum_absolute_metric_error": 1.5916157281026244e-11
+    },
+    {
+      "strategy": "FII 5D cash stress Q10: 50% next day",
+      "reconstruction_basis": "next retained joined-row exposure 1 or 0.5 from exported signal/status; no costs/cash yield",
+      "claimed_signal_days": 341,
+      "actual_reduced_exposure_days": 340,
+      "curve_check": null,
+      "claimed_metrics": {
+        "rows": 3315.0,
+        "final_equity_x": 5.654870089190832,
+        "total_return_pct": 465.4870089190832,
+        "cagr_pct": 14.07690727353781,
+        "sharpe": 0.7595754620675985,
+        "max_drawdown_pct": -69.45336333003263,
+        "avg_exposure": 0.9487179487179488,
+        "cagr_alpha_vs_baseline_pct": -1.3878720950451822,
+        "dd_improvement_vs_baseline_pts": 0.9721853596184786,
+        "final_equity_delta_vs_baseline_pct": -14.706893281146938
+      },
+      "reproduced_metric_count": 10,
+      "metric_mismatch_count": 0,
+      "maximum_absolute_metric_error": 1.4267698134062812e-11
+    },
+    {
+      "strategy": "FII 10D sell cluster: 50% next day",
+      "reconstruction_basis": "next retained joined-row exposure 1 or 0.5 from exported signal/status; no costs/cash yield",
+      "claimed_signal_days": 1064,
+      "actual_reduced_exposure_days": 1063,
+      "curve_check": null,
+      "claimed_metrics": {
+        "rows": 3315.0,
+        "final_equity_x": 8.600120810129903,
+        "total_return_pct": 760.0120810129903,
+        "cagr_pct": 17.771243348704658,
+        "sharpe": 1.0260769006642436,
+        "max_drawdown_pct": -52.0580631571727,
+        "avg_exposure": 0.8396681749622926,
+        "cagr_alpha_vs_baseline_pct": 2.3064639801216664,
+        "dd_improvement_vs_baseline_pts": 18.367485532478412,
+        "final_equity_delta_vs_baseline_pct": 29.716688532875104
+      },
+      "reproduced_metric_count": 10,
+      "metric_mismatch_count": 0,
+      "maximum_absolute_metric_error": 1.6484591469634324e-11
+    },
+    {
+      "strategy": "IFR + any FII confirm: 50% next day",
+      "reconstruction_basis": "next retained joined-row exposure 1 or 0.5 from exported signal/status; no costs/cash yield",
+      "claimed_signal_days": 207,
+      "actual_reduced_exposure_days": 207,
+      "curve_check": {
+        "compared": 3315,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 2.398081733190338e-13,
+        "first_mismatch_indices": []
+      },
+      "claimed_metrics": {
+        "rows": 3315.0,
+        "final_equity_x": 9.875829833262976,
+        "total_return_pct": 887.5829833262975,
+        "cagr_pct": 19.016067083201428,
+        "sharpe": 0.9877853965031672,
+        "max_drawdown_pct": -54.993589971452714,
+        "avg_exposure": 0.9687782805429864,
+        "cagr_alpha_vs_baseline_pct": 3.551287714618436,
+        "dd_improvement_vs_baseline_pts": 15.431958718198397,
+        "final_equity_delta_vs_baseline_pct": 48.95836590761786
+      },
+      "reproduced_metric_count": 10,
+      "metric_mismatch_count": 0,
+      "maximum_absolute_metric_error": 2.3874235921539366e-11
+    },
+    {
+      "strategy": "IFR + FII cash stress Q10: 50% next day",
+      "reconstruction_basis": "next retained joined-row exposure 1 or 0.5 from exported signal/status; no costs/cash yield",
+      "claimed_signal_days": 62,
+      "actual_reduced_exposure_days": 62,
+      "curve_check": null,
+      "claimed_metrics": {
+        "rows": 3315.0,
+        "final_equity_x": 6.607900524050534,
+        "total_return_pct": 560.7900524050534,
+        "cagr_pct": 15.435574453758829,
+        "sharpe": 0.795570985308779,
+        "max_drawdown_pct": -69.0852101214732,
+        "avg_exposure": 0.9906485671191554,
+        "cagr_alpha_vs_baseline_pct": -0.0292049148241648,
+        "dd_improvement_vs_baseline_pts": 1.3403385681779127,
+        "final_equity_delta_vs_baseline_pct": -0.3322170631765653
+      },
+      "reproduced_metric_count": 10,
+      "metric_mismatch_count": 0,
+      "maximum_absolute_metric_error": 1.7053025658242404e-11
+    },
+    {
+      "strategy": "IFR + FII sell cluster: 50% next day",
+      "reconstruction_basis": "next retained joined-row exposure 1 or 0.5 from exported signal/status; no costs/cash yield",
+      "claimed_signal_days": 174,
+      "actual_reduced_exposure_days": 174,
+      "curve_check": null,
+      "claimed_metrics": {
+        "rows": 3315.0,
+        "final_equity_x": 9.783790802674702,
+        "total_return_pct": 878.3790802674702,
+        "cagr_pct": 18.931383715326433,
+        "sharpe": 0.9708541686831816,
+        "max_drawdown_pct": -59.44934716506487,
+        "avg_exposure": 0.9737556561085972,
+        "cagr_alpha_vs_baseline_pct": 3.4666043467434413,
+        "dd_improvement_vs_baseline_pts": 10.976201524586235,
+        "final_equity_delta_vs_baseline_pct": 47.57012979707114
+      },
+      "reproduced_metric_count": 10,
+      "metric_mismatch_count": 0,
+      "maximum_absolute_metric_error": 2.660272002685815e-11
+    },
+    {
+      "strategy": "IFR + FII/DII divergence: 50% next day",
+      "reconstruction_basis": "next retained joined-row exposure 1 or 0.5 from exported signal/status; no costs/cash yield",
+      "claimed_signal_days": 200,
+      "actual_reduced_exposure_days": 200,
+      "curve_check": null,
+      "claimed_metrics": {
+        "rows": 3315.0,
+        "final_equity_x": 9.837937145630734,
+        "total_return_pct": 883.7937145630734,
+        "cagr_pct": 18.981291416269652,
+        "sharpe": 0.9842488031408982,
+        "max_drawdown_pct": -54.993589971452714,
+        "avg_exposure": 0.9698340874811464,
+        "cagr_alpha_vs_baseline_pct": 3.5165120476866605,
+        "dd_improvement_vs_baseline_pts": 15.431958718198397,
+        "final_equity_delta_vs_baseline_pct": 48.38682580163758
+      },
+      "reproduced_metric_count": 10,
+      "metric_mismatch_count": 0,
+      "maximum_absolute_metric_error": 2.1259438653942198e-11
+    },
+    {
+      "strategy": "Adaptive IFR+FII cash stack (25-100% exposure)",
+      "reconstruction_basis": "independently recomputed inferred .30/.20/.20/.10 weighted signal rule with floor .25; definition not supplied",
+      "claimed_signal_days": 1660,
+      "actual_reduced_exposure_days": 1659,
+      "curve_check": {
+        "compared": 3315,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 1.8829382497642655e-13,
+        "first_mismatch_indices": []
+      },
+      "claimed_metrics": {
+        "rows": 3315.0,
+        "final_equity_x": 9.385737180136267,
+        "total_return_pct": 838.5737180136267,
+        "cagr_pct": 18.556453352291054,
+        "sharpe": 1.1011170222175457,
+        "max_drawdown_pct": -44.66291028093522,
+        "avg_exposure": 0.8486123680241328,
+        "cagr_alpha_vs_baseline_pct": 3.0916739837080662,
+        "dd_improvement_vs_baseline_pts": 25.762638408715887,
+        "final_equity_delta_vs_baseline_pct": 41.56623765251173
+      },
+      "reproduced_metric_count": 10,
+      "metric_mismatch_count": 0,
+      "maximum_absolute_metric_error": 1.864464138634503e-11
+    },
+    {
+      "strategy": "2-state machine: IFR+FII enter, repair exit",
+      "reconstruction_basis": "next retained joined-row exposure 1 or 0.5 from exported signal/status; no costs/cash yield",
+      "claimed_signal_days": 325,
+      "actual_reduced_exposure_days": 324,
+      "curve_check": {
+        "compared": 3315,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 2.4158453015843406e-13,
+        "first_mismatch_indices": []
+      },
+      "claimed_metrics": {
+        "rows": 3315.0,
+        "final_equity_x": 9.499530726540296,
+        "total_return_pct": 849.9530726540296,
+        "cagr_pct": 18.66511364897727,
+        "sharpe": 0.9915192310268184,
+        "max_drawdown_pct": -54.79713575115035,
+        "avg_exposure": 0.951131221719457,
+        "cagr_alpha_vs_baseline_pct": 3.20033428039428,
+        "dd_improvement_vs_baseline_pts": 15.62841293850076,
+        "final_equity_delta_vs_baseline_pct": 43.28259982251244
+      },
+      "reproduced_metric_count": 10,
+      "metric_mismatch_count": 0,
+      "maximum_absolute_metric_error": 2.4101609596982598e-11
+    }
+  ],
+  "logical_signal_checks": {
+    "damage_count_threshold_5": {
+      "compared": 3315,
+      "missingness_mismatch": 0,
+      "mismatch_rows": 0,
+      "maximum_absolute_error": 0.0,
+      "first_mismatch_indices": []
+    },
+    "FII_ANY_is_OR_of_three_exported_cash_signals": {
+      "compared": 3315,
+      "missingness_mismatch": 0,
+      "mismatch_rows": 0,
+      "maximum_absolute_error": 0.0,
+      "first_mismatch_indices": []
+    },
+    "IFR_STRICT_is_AND_damage_cashANY": {
+      "compared": 3315,
+      "missingness_mismatch": 0,
+      "mismatch_rows": 0,
+      "maximum_absolute_error": 0.0,
+      "first_mismatch_indices": []
+    }
+  },
+  "forward_returns_vs_next_joined_rows": {
+    "15": {
+      "compared": 3300,
+      "missingness_mismatch": 0,
+      "mismatch_rows": 0,
+      "maximum_absolute_error": 2.1649348980190553e-15,
+      "first_mismatch_indices": []
+    },
+    "30": {
+      "compared": 3285,
+      "missingness_mismatch": 0,
+      "mismatch_rows": 0,
+      "maximum_absolute_error": 3.1086244689504383e-15,
+      "first_mismatch_indices": []
+    }
+  },
+  "forward_window_tail": {
+    "15": {
+      "incomplete_window_rows": 15,
+      "incomplete_window_values_all_populated": true,
+      "last_row_forward_return": 0.0,
+      "all_rows_match_truncated_remaining_window": {
+        "compared": 3315,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 2.1649348980190553e-15,
+        "first_mismatch_indices": []
+      },
+      "full_window_calendar_day_range": [
+        95
+      ],
+      "calendar_day_span_min": 21,
+      "calendar_day_span_max": 103
+    },
+    "30": {
+      "incomplete_window_rows": 30,
+      "incomplete_window_values_all_populated": true,
+      "last_row_forward_return": 0.0,
+      "all_rows_match_truncated_remaining_window": {
+        "compared": 3315,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 3.1086244689504383e-15,
+        "first_mismatch_indices": []
+      },
+      "full_window_calendar_day_range": [
+        123
+      ],
+      "calendar_day_span_min": 43,
+      "calendar_day_span_max": 133
+    }
+  },
+  "forward_distribution_reproduced_from_exported_forward_values": [
+    {
+      "signal": "IFR_DAMAGE",
+      "group": "FIRED",
+      "check": {
+        "compared": 8,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 7.105427357601002e-15,
+        "first_mismatch_indices": []
+      }
+    },
+    {
+      "signal": "IFR_DAMAGE",
+      "group": "NOT_FIRED",
+      "check": {
+        "compared": 8,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 5.329070518200751e-15,
+        "first_mismatch_indices": []
+      }
+    },
+    {
+      "signal": "FII_Q10",
+      "group": "FIRED",
+      "check": {
+        "compared": 8,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 7.993605777301127e-15,
+        "first_mismatch_indices": []
+      }
+    },
+    {
+      "signal": "FII_Q10",
+      "group": "NOT_FIRED",
+      "check": {
+        "compared": 8,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 6.217248937900877e-15,
+        "first_mismatch_indices": []
+      }
+    },
+    {
+      "signal": "FII_SELL_CLUSTER",
+      "group": "FIRED",
+      "check": {
+        "compared": 8,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 3.552713678800501e-15,
+        "first_mismatch_indices": []
+      }
+    },
+    {
+      "signal": "FII_SELL_CLUSTER",
+      "group": "NOT_FIRED",
+      "check": {
+        "compared": 8,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 7.105427357601002e-15,
+        "first_mismatch_indices": []
+      }
+    },
+    {
+      "signal": "FII_DII_DIVERGENCE",
+      "group": "FIRED",
+      "check": {
+        "compared": 8,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 8.881784197001252e-15,
+        "first_mismatch_indices": []
+      }
+    },
+    {
+      "signal": "FII_DII_DIVERGENCE",
+      "group": "NOT_FIRED",
+      "check": {
+        "compared": 8,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 7.105427357601002e-15,
+        "first_mismatch_indices": []
+      }
+    },
+    {
+      "signal": "FII_ANY",
+      "group": "FIRED",
+      "check": {
+        "compared": 8,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 7.993605777301127e-15,
+        "first_mismatch_indices": []
+      }
+    },
+    {
+      "signal": "FII_ANY",
+      "group": "NOT_FIRED",
+      "check": {
+        "compared": 8,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 8.881784197001252e-15,
+        "first_mismatch_indices": []
+      }
+    },
+    {
+      "signal": "IFR_FII_STRICT",
+      "group": "FIRED",
+      "check": {
+        "compared": 8,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 8.215650382226158e-15,
+        "first_mismatch_indices": []
+      }
+    },
+    {
+      "signal": "IFR_FII_STRICT",
+      "group": "NOT_FIRED",
+      "check": {
+        "compared": 8,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 7.105427357601002e-15,
+        "first_mismatch_indices": []
+      }
+    },
+    {
+      "signal": "ADAPTIVE_STACK_TRIGGER",
+      "group": "FIRED",
+      "check": {
+        "compared": 8,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 7.105427357601002e-15,
+        "first_mismatch_indices": []
+      }
+    },
+    {
+      "signal": "ADAPTIVE_STACK_TRIGGER",
+      "group": "NOT_FIRED",
+      "check": {
+        "compared": 8,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 7.105427357601002e-15,
+        "first_mismatch_indices": []
+      }
+    }
+  ],
+  "correlation": {
+    "all_144_cells_finite_in_minus1_plus1": true,
+    "symmetry_max_error": 0.0,
+    "diagonal_all_one": true,
+    "independently_recomputed_submatrix_signals": [
+      "IFR_DAMAGE",
+      "FII_Q10",
+      "FII_SELL_CLUSTER",
+      "FII_DII_DIV",
+      "FII_ANY",
+      "IFR_FII_STRICT",
+      "IFR_FII_Q10",
+      "IFR_FII_SELL",
+      "IFR_FII_DIV"
+    ],
+    "81_cell_check": {
+      "compared": 81,
+      "missingness_mismatch": 0,
+      "mismatch_rows": 0,
+      "maximum_absolute_error": 4.9960036108132044e-15,
+      "first_mismatch_indices": []
+    },
+    "unavailable_daily_signal_inputs": [
+      "TD95_SHOCK",
+      "STRUCT_FRACTURE",
+      "FII_Q05"
+    ],
+    "cross_source_extended_submatrix_signals": [
+      "IFR_DAMAGE",
+      "FII_Q10",
+      "FII_SELL_CLUSTER",
+      "FII_DII_DIV",
+      "FII_ANY",
+      "IFR_FII_STRICT",
+      "IFR_FII_Q10",
+      "IFR_FII_SELL",
+      "IFR_FII_DIV",
+      "FII_Q05",
+      "TD95_SHOCK"
+    ],
+    "121_cell_extended_check": {
+      "compared": 121,
+      "missingness_mismatch": 0,
+      "mismatch_rows": 0,
+      "maximum_absolute_error": 4.9960036108132044e-15,
+      "first_mismatch_indices": []
+    },
+    "cross_source_bases": {
+      "FII_Q05": "Byte-hashed source clean cash table, date aligned",
+      "TD95_SHOCK": "Full7162 IFR-source tail_down3_5d95th-percentile threshold, date aligned; full-sample calibration"
+    },
+    "remaining_unrecomputed_signal": "STRUCT_FRACTURE: exact signal definition not present in selected CSVs"
+  },
+  "cluster_cross_correlations_over_0_7": [
+    {
+      "left": "FII_DII_DIV",
+      "right": "FII_ANY",
+      "left_cluster": "C07",
+      "right_cluster": "C06",
+      "correlation": 0.9219624111427444
+    }
+  ],
+  "event_reproduction": [
+    {
+      "event": "2008_GFC_ENTRY",
+      "coverage": "READY",
+      "prior_joined_rows": 15,
+      "window_start_equal": true,
+      "window_end_equal": true,
+      "checks": [
+        {
+          "signal": "IFR_DAMAGE",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 1,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_Q10",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 1,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_SELL_CLUSTER",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 1,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_DII_DIVERGENCE",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 1,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_ANY",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 1,
+          "lead_equal": true
+        },
+        {
+          "signal": "IFR_FII_STRICT",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 1,
+          "lead_equal": true
+        }
+      ]
+    },
+    {
+      "event": "2008_GFC_BOTTOM",
+      "coverage": "READY",
+      "prior_joined_rows": 15,
+      "window_start_equal": true,
+      "window_end_equal": true,
+      "checks": [
+        {
+          "signal": "IFR_DAMAGE",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 1,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_Q10",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 10,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_SELL_CLUSTER",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 1,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_DII_DIVERGENCE",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 1,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_ANY",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 1,
+          "lead_equal": true
+        },
+        {
+          "signal": "IFR_FII_STRICT",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 1,
+          "lead_equal": true
+        }
+      ]
+    },
+    {
+      "event": "2011_DOWNGRADE",
+      "coverage": "READY",
+      "prior_joined_rows": 15,
+      "window_start_equal": true,
+      "window_end_equal": true,
+      "checks": [
+        {
+          "signal": "IFR_DAMAGE",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": null,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_Q10",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": null,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_SELL_CLUSTER",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": null,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_DII_DIVERGENCE",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 1,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_ANY",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 1,
+          "lead_equal": true
+        },
+        {
+          "signal": "IFR_FII_STRICT",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": null,
+          "lead_equal": true
+        }
+      ]
+    },
+    {
+      "event": "2013_TAPER",
+      "coverage": "READY",
+      "prior_joined_rows": 15,
+      "window_start_equal": true,
+      "window_end_equal": true,
+      "checks": [
+        {
+          "signal": "IFR_DAMAGE",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 8,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_Q10",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 4,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_SELL_CLUSTER",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 1,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_DII_DIVERGENCE",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 1,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_ANY",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 1,
+          "lead_equal": true
+        },
+        {
+          "signal": "IFR_FII_STRICT",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": null,
+          "lead_equal": true
+        }
+      ]
+    },
+    {
+      "event": "2016_DEMON",
+      "coverage": "READY",
+      "prior_joined_rows": 15,
+      "window_start_equal": false,
+      "window_end_equal": false,
+      "checks": [
+        {
+          "signal": "IFR_DAMAGE",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": null,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_Q10",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": null,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_SELL_CLUSTER",
+          "fires_equal": false,
+          "last_date_equal": false,
+          "lead_joined_row_count": 1,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_DII_DIVERGENCE",
+          "fires_equal": false,
+          "last_date_equal": true,
+          "lead_joined_row_count": 2,
+          "lead_equal": false
+        },
+        {
+          "signal": "FII_ANY",
+          "fires_equal": true,
+          "last_date_equal": false,
+          "lead_joined_row_count": 1,
+          "lead_equal": true
+        },
+        {
+          "signal": "IFR_FII_STRICT",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": null,
+          "lead_equal": true
+        }
+      ]
+    },
+    {
+      "event": "2018_NBFC",
+      "coverage": "READY",
+      "prior_joined_rows": 15,
+      "window_start_equal": true,
+      "window_end_equal": true,
+      "checks": [
+        {
+          "signal": "IFR_DAMAGE",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": null,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_Q10",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": null,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_SELL_CLUSTER",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 1,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_DII_DIVERGENCE",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 1,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_ANY",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 1,
+          "lead_equal": true
+        },
+        {
+          "signal": "IFR_FII_STRICT",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": null,
+          "lead_equal": true
+        }
+      ]
+    },
+    {
+      "event": "COVID_CRASH_START",
+      "coverage": "READY",
+      "prior_joined_rows": 15,
+      "window_start_equal": true,
+      "window_end_equal": true,
+      "checks": [
+        {
+          "signal": "IFR_DAMAGE",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": null,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_Q10",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 11,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_SELL_CLUSTER",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 9,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_DII_DIVERGENCE",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 11,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_ANY",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 9,
+          "lead_equal": true
+        },
+        {
+          "signal": "IFR_FII_STRICT",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": null,
+          "lead_equal": true
+        }
+      ]
+    },
+    {
+      "event": "COVID_BOTTOM",
+      "coverage": "READY",
+      "prior_joined_rows": 15,
+      "window_start_equal": true,
+      "window_end_equal": true,
+      "checks": [
+        {
+          "signal": "IFR_DAMAGE",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 1,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_Q10",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 1,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_SELL_CLUSTER",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 1,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_DII_DIVERGENCE",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 1,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_ANY",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 1,
+          "lead_equal": true
+        },
+        {
+          "signal": "IFR_FII_STRICT",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 1,
+          "lead_equal": true
+        }
+      ]
+    },
+    {
+      "event": "2022_CORRECTION",
+      "coverage": "READY",
+      "prior_joined_rows": 15,
+      "window_start_equal": true,
+      "window_end_equal": true,
+      "checks": [
+        {
+          "signal": "IFR_DAMAGE",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": null,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_Q10",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 2,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_SELL_CLUSTER",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 1,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_DII_DIVERGENCE",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 1,
+          "lead_equal": true
+        },
+        {
+          "signal": "FII_ANY",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": 1,
+          "lead_equal": true
+        },
+        {
+          "signal": "IFR_FII_STRICT",
+          "fires_equal": true,
+          "last_date_equal": true,
+          "lead_joined_row_count": null,
+          "lead_equal": true
+        }
+      ]
+    },
+    {
+      "event": "2024_ELECTION",
+      "coverage": "OUTSIDE_FII_CASH_OVERLAP",
+      "recomputed": false
+    },
+    {
+      "event": "2024_ELECTION_REC",
+      "coverage": "OUTSIDE_FII_CASH_OVERLAP",
+      "recomputed": false
+    }
+  ],
+  "block_reproduction": [
+    {
+      "block": "2007-2010",
+      "strategy": "IFR damage cluster",
+      "check": {
+        "compared": 8,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 4.689582056016661e-13,
+        "first_mismatch_indices": []
+      },
+      "differences": {},
+      "claimed_signal_days": 149,
+      "actual_reduced_exposure_days": 149,
+      "verdict": "PASS"
+    },
+    {
+      "block": "2007-2010",
+      "strategy": "IFR+FII strict",
+      "check": {
+        "compared": 8,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 4.405364961712621e-13,
+        "first_mismatch_indices": []
+      },
+      "differences": {},
+      "claimed_signal_days": 124,
+      "actual_reduced_exposure_days": 124,
+      "verdict": "PASS"
+    },
+    {
+      "block": "2007-2010",
+      "strategy": "Adaptive IFR+FII stack",
+      "check": {
+        "compared": 8,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 4.192202140984591e-13,
+        "first_mismatch_indices": []
+      },
+      "differences": {},
+      "claimed_signal_days": 417,
+      "actual_reduced_exposure_days": 417,
+      "verdict": "PASS"
+    },
+    {
+      "block": "2007-2010",
+      "strategy": "2-state machine",
+      "check": {
+        "compared": 8,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 4.192202140984591e-13,
+        "first_mismatch_indices": []
+      },
+      "differences": {},
+      "claimed_signal_days": 140,
+      "actual_reduced_exposure_days": 140,
+      "verdict": "PASS"
+    },
+    {
+      "block": "2011-2014",
+      "strategy": "IFR damage cluster",
+      "check": {
+        "compared": 8,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 2.4424906541753444e-13,
+        "first_mismatch_indices": []
+      },
+      "differences": {},
+      "claimed_signal_days": 18,
+      "actual_reduced_exposure_days": 18,
+      "verdict": "FAIL_OR_MIXED"
+    },
+    {
+      "block": "2011-2014",
+      "strategy": "IFR+FII strict",
+      "check": {
+        "compared": 8,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 2.4424906541753444e-13,
+        "first_mismatch_indices": []
+      },
+      "differences": {},
+      "claimed_signal_days": 5,
+      "actual_reduced_exposure_days": 5,
+      "verdict": "FAIL_OR_MIXED"
+    },
+    {
+      "block": "2011-2014",
+      "strategy": "Adaptive IFR+FII stack",
+      "check": {
+        "compared": 8,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 2.220446049250313e-13,
+        "first_mismatch_indices": []
+      },
+      "differences": {},
+      "claimed_signal_days": 237,
+      "actual_reduced_exposure_days": 236,
+      "verdict": "PASS"
+    },
+    {
+      "block": "2011-2014",
+      "strategy": "2-state machine",
+      "check": {
+        "compared": 8,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 2.6645352591003757e-13,
+        "first_mismatch_indices": []
+      },
+      "differences": {},
+      "claimed_signal_days": 10,
+      "actual_reduced_exposure_days": 10,
+      "verdict": "FAIL_OR_MIXED"
+    },
+    {
+      "block": "2015-2018",
+      "strategy": "IFR damage cluster",
+      "check": {
+        "compared": 8,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 1.1013412404281553e-13,
+        "first_mismatch_indices": []
+      },
+      "differences": {},
+      "claimed_signal_days": 43,
+      "actual_reduced_exposure_days": 43,
+      "verdict": "PASS"
+    },
+    {
+      "block": "2015-2018",
+      "strategy": "IFR+FII strict",
+      "check": {
+        "compared": 8,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 1.1013412404281553e-13,
+        "first_mismatch_indices": []
+      },
+      "differences": {},
+      "claimed_signal_days": 42,
+      "actual_reduced_exposure_days": 42,
+      "verdict": "PASS"
+    },
+    {
+      "block": "2015-2018",
+      "strategy": "Adaptive IFR+FII stack",
+      "check": {
+        "compared": 8,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 1.6697754290362354e-13,
+        "first_mismatch_indices": []
+      },
+      "differences": {},
+      "claimed_signal_days": 554,
+      "actual_reduced_exposure_days": 554,
+      "verdict": "FAIL_OR_MIXED"
+    },
+    {
+      "block": "2015-2018",
+      "strategy": "2-state machine",
+      "check": {
+        "compared": 8,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 1.1013412404281553e-13,
+        "first_mismatch_indices": []
+      },
+      "differences": {},
+      "claimed_signal_days": 74,
+      "actual_reduced_exposure_days": 74,
+      "verdict": "PASS"
+    },
+    {
+      "block": "2019-2022",
+      "strategy": "IFR damage cluster",
+      "check": {
+        "compared": 8,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 1.9895196601282805e-13,
+        "first_mismatch_indices": []
+      },
+      "differences": {},
+      "claimed_signal_days": 43,
+      "actual_reduced_exposure_days": 43,
+      "verdict": "PASS"
+    },
+    {
+      "block": "2019-2022",
+      "strategy": "IFR+FII strict",
+      "check": {
+        "compared": 8,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 2.2026824808563106e-13,
+        "first_mismatch_indices": []
+      },
+      "differences": {},
+      "claimed_signal_days": 36,
+      "actual_reduced_exposure_days": 36,
+      "verdict": "PASS"
+    },
+    {
+      "block": "2019-2022",
+      "strategy": "Adaptive IFR+FII stack",
+      "check": {
+        "compared": 8,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 2.4158453015843406e-13,
+        "first_mismatch_indices": []
+      },
+      "differences": {},
+      "claimed_signal_days": 452,
+      "actual_reduced_exposure_days": 451,
+      "verdict": "FAIL_OR_MIXED"
+    },
+    {
+      "block": "2019-2022",
+      "strategy": "2-state machine",
+      "check": {
+        "compared": 8,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 1.9895196601282805e-13,
+        "first_mismatch_indices": []
+      },
+      "differences": {},
+      "claimed_signal_days": 101,
+      "actual_reduced_exposure_days": 100,
+      "verdict": "FAIL_OR_MIXED"
+    }
+  ],
+  "cash_source_reconciliation": {
+    "archive": "volume_derivatives_review_v0_3.zip",
+    "member": "volume_derivatives_review_v0_3/fii_dii_cash_full_history_clean.csv",
+    "sha256": "78dd9152a24422ef851cf755535b85af4169efe2edbcbe2a4e976c722e56b368",
+    "headers": [
+      "date",
+      "fii_gross_purchase_cr",
+      "fii_gross_sales_cr",
+      "fii_net_cr",
+      "dii_gross_purchase_cr",
+      "dii_gross_sales_cr",
+      "dii_net_cr",
+      "source_file",
+      "fii_5d_net_cr",
+      "fii_10d_net_cr",
+      "dii_5d_net_cr",
+      "dii_10d_net_cr",
+      "fii_minus_dii_5d_cr",
+      "fii_negative_day",
+      "fii_negative_days_10d",
+      "FII_CASH_STRESS_Q10",
+      "FII_CASH_STRESS_Q05",
+      "FII_SELL_CLUSTER_7IN10",
+      "FII_DII_DIVERGENCE_5D"
+    ],
+    "rows": 3770,
+    "joined_rows_missing_source": 0,
+    "source_date_order_ascending": true,
+    "source_only_dates": 455,
+    "shared_field_checks": {
+      "fii_net_cr": {
+        "compared": 3315,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 0.0,
+        "first_mismatch_indices": []
+      },
+      "dii_net_cr": {
+        "compared": 3315,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 0.0,
+        "first_mismatch_indices": []
+      },
+      "fii_5d_net_cr": {
+        "compared": 3314,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 0.0,
+        "first_mismatch_indices": []
+      },
+      "fii_10d_net_cr": {
+        "compared": 3312,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 0.0,
+        "first_mismatch_indices": []
+      },
+      "FII_CASH_STRESS_Q10": {
+        "compared": 3315,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 0.0,
+        "first_mismatch_indices": []
+      },
+      "FII_SELL_CLUSTER_7IN10": {
+        "compared": 3315,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 0.0,
+        "first_mismatch_indices": []
+      },
+      "FII_DII_DIVERGENCE_5D": {
+        "compared": 3315,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 0.0,
+        "first_mismatch_indices": []
+      }
+    },
+    "full_cash_date_range": [
+      "2007-01-06",
+      "2022-12-08"
+    ],
+    "inherited_issue": "Clean source reproduces root Fii.Dii.Trading.activity.csv under unresolved day-first dates; previously found date/weekend and DII arithmetic defects remain unresolved."
+  },
+  "cash_formula_diagnostics": {
+    "rolling_5d_matching_min_periods": [
+      3
+    ],
+    "cash_join_retains_upstream_5row_window_not_joined_window": {
+      "compared": 3314,
+      "missingness_mismatch": 1,
+      "mismatch_rows": 1151,
+      "maximum_absolute_error": 23735.399999999998,
+      "first_mismatch_indices": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "rolling_10d_matching_min_periods": [
+      5
+    ],
+    "cash_join_retains_upstream_10row_window_not_joined_window": {
+      "compared": 3312,
+      "missingness_mismatch": 3,
+      "mismatch_rows": 2061,
+      "maximum_absolute_error": 28280.639999999996,
+      "first_mismatch_indices": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "sell_cluster_from_upstream_negative_10row_count": {
+      "compared": 3770,
+      "missingness_mismatch": 0,
+      "mismatch_rows": 0,
+      "maximum_absolute_error": 0.0,
+      "first_mismatch_indices": []
+    },
+    "divergence_from_5day_foreign_negative_domestic_positive": {
+      "compared": 3770,
+      "missingness_mismatch": 0,
+      "mismatch_rows": 0,
+      "maximum_absolute_error": 0.0,
+      "first_mismatch_indices": []
+    },
+    "q10_full_sample_five_row_sum_quantile": {
+      "threshold": -4559.828999999999,
+      "check": {
+        "compared": 3770,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 0.0,
+        "first_mismatch_indices": []
+      }
+    },
+    "q05_full_sample_five_row_sum_quantile": {
+      "threshold": -7226.143999999998,
+      "check": {
+        "compared": 3770,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 0.0,
+        "first_mismatch_indices": []
+      }
+    },
+    "q10_expanding_past_only_comparison": {
+      "compared": 3770,
+      "missingness_mismatch": 0,
+      "mismatch_rows": 235,
+      "maximum_absolute_error": 1.0,
+      "first_mismatch_indices": [
+        71,
+        90,
+        91,
+        92,
+        93
+      ]
+    }
+  },
+  "state_machine_reconstruction": {
+    "assumed_rule": "same-row state enters DEFENSIVE on IFR_FII_STRICT, otherwise exits on REPAIR; prior-row state supplies next-row .5 exposure",
+    "check": {
+      "compared": 3315,
+      "missingness_mismatch": 0,
+      "mismatch_rows": 34,
+      "maximum_absolute_error": 1.0,
+      "first_mismatch_indices": [
+        187,
+        193,
+        199,
+        227,
+        270
+      ]
+    },
+    "simultaneous_enter_repair_rows": 46,
+    "two_state_transition_rule": "If NORMAL and strict-enter, enter DEFENSIVE. Else if DEFENSIVE and repair, exit NORMAL. Thus simultaneous enter/repair switches according to prior state.",
+    "two_state_transition_check": {
+      "compared": 3315,
+      "missingness_mismatch": 0,
+      "mismatch_rows": 0,
+      "maximum_absolute_error": 0.0,
+      "first_mismatch_indices": []
+    }
+  },
+  "ifr_internals_source_reconciliation": {
+    "archive": "UNIQUE_TRIGGER_MINER_v0_3_CSV_PACK.zip",
+    "member": "UNIQUE_TRIGGER_MINER_v0_3_CSV_PACK/05_daily_market_internals.csv",
+    "sha256": "535cf389150de0cec909da5bc042ee228f22bce7fa7a8e4da267143df7897811",
+    "rows": 7162,
+    "date_range": [
+      "1996-01-02",
+      "2024-07-05"
+    ],
+    "joined_rows_missing_source": 0,
+    "shared_fields": {
+      "ew_ret": {
+        "compared": 3315,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 0.0,
+        "first_mismatch_indices": []
+      },
+      "tail_down3_5d": {
+        "compared": 3315,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 0.0,
+        "first_mismatch_indices": []
+      },
+      "disp_5d": {
+        "compared": 3315,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 0.0,
+        "first_mismatch_indices": []
+      }
+    },
+    "within_joined_date_range_source_rows": 3926,
+    "within_joined_date_range_source_dates_excluded": 611,
+    "source_rows_by_year_in_join_range": {
+      "2007": 244,
+      "2008": 246,
+      "2009": 243,
+      "2010": 250,
+      "2011": 246,
+      "2012": 245,
+      "2013": 248,
+      "2014": 244,
+      "2015": 246,
+      "2016": 246,
+      "2017": 248,
+      "2018": 246,
+      "2019": 243,
+      "2020": 251,
+      "2021": 248,
+      "2022": 232
+    },
+    "full_source_date_span_compound_ew_return": 16.23381549118016,
+    "joined_date_span_compound_ew_return": 6.62992627039662,
+    "excluded_source_return_compound": 2.4485665193089567
+  },
+  "damage_threshold_diagnostics": [
+    {
+      "threshold_basis": "rounded_definition_0.213",
+      "threshold": 0.213,
+      "count_check": {
+        "compared": 3315,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 0.0,
+        "first_mismatch_indices": []
+      },
+      "signal_check": {
+        "compared": 3315,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 0.0,
+        "first_mismatch_indices": []
+      }
+    },
+    {
+      "threshold_basis": "reported_threshold_0.212987",
+      "threshold": 0.212987,
+      "count_check": {
+        "compared": 3315,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 0.0,
+        "first_mismatch_indices": []
+      },
+      "signal_check": {
+        "compared": 3315,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 0.0,
+        "first_mismatch_indices": []
+      }
+    },
+    {
+      "threshold_basis": "full_source_q90",
+      "threshold": 0.2129870129870129,
+      "count_check": {
+        "compared": 3315,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 0.0,
+        "first_mismatch_indices": []
+      },
+      "signal_check": {
+        "compared": 3315,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 0,
+        "maximum_absolute_error": 0.0,
+        "first_mismatch_indices": []
+      }
+    },
+    {
+      "threshold_basis": "joined_q90",
+      "threshold": 0.20921390018643043,
+      "count_check": {
+        "compared": 3315,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 234,
+        "maximum_absolute_error": 2.0,
+        "first_mismatch_indices": [
+          91,
+          92,
+          93,
+          94,
+          95
+        ]
+      },
+      "signal_check": {
+        "compared": 3315,
+        "missingness_mismatch": 0,
+        "mismatch_rows": 23,
+        "maximum_absolute_error": 1.0,
+        "first_mismatch_indices": [
+          228,
+          266,
+          571,
+          619,
+          620
+        ]
+      }
+    },
+    {
+      "threshold_basis": "source rows strictly before joined history first date, diagnostic only",
+      "threshold": 0.22807228097189824
+    }
+  ],
+  "repair_source_formula_check": {
+    "formula": "max(last10 source tail_down3_5d)>.264 AND tail_up3_5d/tail_down3_5d>1.2 AND up_pct_5d>.452",
+    "definition_origin": "Peer-reviewed IFR_Expansion_Check_v0_4_CSV/new_parameter_definitions.csv; rounded descriptive thresholds",
+    "check": {
+      "compared": 3315,
+      "missingness_mismatch": 0,
+      "mismatch_rows": 442,
+      "maximum_absolute_error": 1.0,
+      "first_mismatch_indices": [
+        13,
+        14,
+        15,
+        16,
+        99
+      ]
+    }
+  },
+  "event_claimed_window_checks": [
+    {
+      "event": "2008_GFC_ENTRY",
+      "event_date_in_joined_data": true,
+      "claimed_window_start": "2007-12-27",
+      "claimed_window_end": "2008-01-18",
+      "claimed_window_rows": 15,
+      "all_counts_match_claimed_window": true,
+      "joined_dates_between_claimed_window_end_and_event": 0
+    },
+    {
+      "event": "2008_GFC_BOTTOM",
+      "event_date_in_joined_data": true,
+      "claimed_window_start": "2008-09-30",
+      "claimed_window_end": "2008-10-23",
+      "claimed_window_rows": 15,
+      "all_counts_match_claimed_window": true,
+      "joined_dates_between_claimed_window_end_and_event": 0
+    },
+    {
+      "event": "2011_DOWNGRADE",
+      "event_date_in_joined_data": true,
+      "claimed_window_start": "2011-07-14",
+      "claimed_window_end": "2011-08-04",
+      "claimed_window_rows": 15,
+      "all_counts_match_claimed_window": true,
+      "joined_dates_between_claimed_window_end_and_event": 0
+    },
+    {
+      "event": "2013_TAPER",
+      "event_date_in_joined_data": true,
+      "claimed_window_start": "2013-08-01",
+      "claimed_window_end": "2013-08-27",
+      "claimed_window_rows": 15,
+      "all_counts_match_claimed_window": true,
+      "joined_dates_between_claimed_window_end_and_event": 0
+    },
+    {
+      "event": "2016_DEMON",
+      "event_date_in_joined_data": false,
+      "claimed_window_start": "2016-10-14",
+      "claimed_window_end": "2016-11-07",
+      "claimed_window_rows": 15,
+      "all_counts_match_claimed_window": true,
+      "joined_dates_between_claimed_window_end_and_event": 1
+    },
+    {
+      "event": "2018_NBFC",
+      "event_date_in_joined_data": true,
+      "claimed_window_start": "2018-08-27",
+      "claimed_window_end": "2018-09-19",
+      "claimed_window_rows": 15,
+      "all_counts_match_claimed_window": true,
+      "joined_dates_between_claimed_window_end_and_event": 0
+    },
+    {
+      "event": "COVID_CRASH_START",
+      "event_date_in_joined_data": true,
+      "claimed_window_start": "2020-01-28",
+      "claimed_window_end": "2020-02-20",
+      "claimed_window_rows": 15,
+      "all_counts_match_claimed_window": true,
+      "joined_dates_between_claimed_window_end_and_event": 0
+    },
+    {
+      "event": "COVID_BOTTOM",
+      "event_date_in_joined_data": true,
+      "claimed_window_start": "2020-02-28",
+      "claimed_window_end": "2020-03-23",
+      "claimed_window_rows": 15,
+      "all_counts_match_claimed_window": true,
+      "joined_dates_between_claimed_window_end_and_event": 0
+    },
+    {
+      "event": "2022_CORRECTION",
+      "event_date_in_joined_data": true,
+      "claimed_window_start": "2021-12-21",
+      "claimed_window_end": "2022-01-17",
+      "claimed_window_rows": 15,
+      "all_counts_match_claimed_window": true,
+      "joined_dates_between_claimed_window_end_and_event": 0
+    }
+  ],
+  "block_method": {
+    "matching_assumptions": [
+      "Each block resets first exposure to1 and compounds selected block rows",
+      "Drawdown includes initial capital1 as possible peak",
+      "CAGR uses252/row_count, Sharpe uses mean/stdev(ddof1)*sqrt252 and zero risk-free return",
+      "No transaction costs, slippage or return on uninvested cash in matching arithmetic"
+    ],
+    "interpretation": "Four date blocks reuse precomputed full-sample signals. Matching PASS/FAIL results do not establish walk-forward or out-of-sample validity."
+  },
+  "current_reuse_decision": {
+    "eligible_now": "Read-only historical method references and regression fixtures with the documented dates, lineage, duplication and limitations",
+    "not_eligible": "Automatic buy/risk gates, validated performance claims, new stock-universe membership, current provider evidence or duplicate raw cash import",
+    "approval_required_next": "Resolve date convention, rebuild complete calendar-aligned return path, adopt predeclared point-in-time threshold estimation and unavailable-forward-window policy, then review cost-aware out-of-sample tests before any persistence or activation"
+  },
+  "reproducibility": {
+    "helper": "ash-ifr-cash-audit.py",
+    "runtime": {
+      "python": "3.12.14",
+      "pandas": "2.2.3",
+      "numpy": "2.3.5"
+    },
+    "method": "In-memory ZIP CRC/SHA checks, full selected CSV parsing, pandas/numpy independent arithmetic; output JSON only, never writes or extracts sources",
+    "boundaries": "Selected members each <=2 MB, <20000 rows, <100 columns; auxiliary IFR source <=4 MB; exploratory assertions stop on unsupported layouts, not a production ingestion validator",
+    "recalculation_tolerance": "numeric np.isclose rtol=1e-10, atol=1e-10; identity/date and signal counts exact",
+    "financial_metrics": "252-observation annualization, sample-standard-deviation Sharpe with zero risk-free return, initial-equity1 drawdown; no costs, slippage, funding or cash-interest terms",
+    "publication": "--compact removes duplicate schema/zero-blank entries and reduces repeated metrics to maximum difference plus claims; retains every member hash/status and all diagnostics. Markdown interpretation is separately authored from this JSON."
+  },
+  "distinct_csv_profiles": {
+    "af6e100f6ab3bb4f9d2b02ca6abcf4eac9da1b605f38788f01d78d8de70b6304": {
+      "example_member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/block_robustness.csv",
+      "data_rows": 16,
+      "columns": [
+        "block",
+        "strategy",
+        "rows",
+        "baseline_cagr_pct",
+        "strategy_cagr_pct",
+        "cagr_alpha_pct",
+        "baseline_mdd_pct",
+        "strategy_mdd_pct",
+        "dd_improvement_pts",
+        "strategy_sharpe",
+        "signal_days",
+        "verdict"
+      ],
+      "width_mismatch_rows": 0,
+      "exact_duplicate_rows": 0,
+      "blank_counts": {},
+      "formula_like_cells": 0
+    },
+    "54853fbf3f42526bfc2367d1e9b31ba95f75c00f07ea28d02002768785597cf8": {
+      "example_member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/daily_joined_ifr_fii_cash_signals.csv",
+      "data_rows": 3315,
+      "columns": [
+        "date",
+        "ew_ret",
+        "tail_down3_5d",
+        "disp_5d",
+        "DAMAGE_CLUSTER_COUNT_10D",
+        "DAMAGE_CLUSTER_5IN10",
+        "fii_net_cr",
+        "dii_net_cr",
+        "fii_5d_net_cr",
+        "fii_10d_net_cr",
+        "FII_CASH_STRESS_Q10",
+        "FII_SELL_CLUSTER_7IN10",
+        "FII_DII_DIVERGENCE_5D",
+        "FII_ANY_CONFIRM",
+        "IFR_FII_STRICT_CONFIRM",
+        "REPAIR_AFTER_DAMAGE_CANDIDATE",
+        "STATE_MACHINE_STATUS",
+        "fwd_15d",
+        "fwd_30d"
+      ],
+      "width_mismatch_rows": 0,
+      "exact_duplicate_rows": 0,
+      "blank_counts": {
+        "fii_5d_net_cr": 1,
+        "fii_10d_net_cr": 3
+      },
+      "formula_like_cells": 0
+    },
+    "0b08888c8a21971bcc7758cc38e775be7d1743691b85b6c58e0a59ee42b24860": {
+      "example_member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/equity_curves_selected.csv",
+      "data_rows": 3315,
+      "columns": [
+        "date",
+        "Baseline 100%",
+        "IFR damage cluster: 50% next day",
+        "IFR + any FII confirm: 50% next day",
+        "Adaptive IFR+FII cash stack (25-100% exposure)",
+        "2-state machine: IFR+FII enter, repair exit"
+      ],
+      "width_mismatch_rows": 0,
+      "exact_duplicate_rows": 0,
+      "blank_counts": {},
+      "formula_like_cells": 0
+    },
+    "3269b0b9f0f802319d5a323dd4dc592937f263901ac59f4b9410adb88b4df653": {
+      "example_member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/event_fire_matrix.csv",
+      "data_rows": 11,
+      "columns": [
+        "event",
+        "event_date",
+        "type",
+        "coverage",
+        "window_start",
+        "window_end",
+        "IFR_DAMAGE_fires",
+        "IFR_DAMAGE_last_fire",
+        "IFR_DAMAGE_lead_trading_days",
+        "IFR_DAMAGE_lead_status",
+        "FII_Q10_fires",
+        "FII_Q10_last_fire",
+        "FII_Q10_lead_trading_days",
+        "FII_Q10_lead_status",
+        "FII_SELL_CLUSTER_fires",
+        "FII_SELL_CLUSTER_last_fire",
+        "FII_SELL_CLUSTER_lead_trading_days",
+        "FII_SELL_CLUSTER_lead_status",
+        "FII_DII_DIVERGENCE_fires",
+        "FII_DII_DIVERGENCE_last_fire",
+        "FII_DII_DIVERGENCE_lead_trading_days",
+        "FII_DII_DIVERGENCE_lead_status",
+        "FII_ANY_fires",
+        "FII_ANY_last_fire",
+        "FII_ANY_lead_trading_days",
+        "FII_ANY_lead_status",
+        "IFR_FII_STRICT_fires",
+        "IFR_FII_STRICT_last_fire",
+        "IFR_FII_STRICT_lead_trading_days",
+        "IFR_FII_STRICT_lead_status"
+      ],
+      "width_mismatch_rows": 0,
+      "exact_duplicate_rows": 0,
+      "blank_counts": {
+        "window_start": 2,
+        "window_end": 2,
+        "IFR_DAMAGE_fires": 2,
+        "IFR_DAMAGE_last_fire": 7,
+        "IFR_DAMAGE_lead_trading_days": 7,
+        "IFR_DAMAGE_lead_status": 2,
+        "FII_Q10_fires": 2,
+        "FII_Q10_last_fire": 5,
+        "FII_Q10_lead_trading_days": 5,
+        "FII_Q10_lead_status": 2,
+        "FII_SELL_CLUSTER_fires": 2,
+        "FII_SELL_CLUSTER_last_fire": 3,
+        "FII_SELL_CLUSTER_lead_trading_days": 3,
+        "FII_SELL_CLUSTER_lead_status": 2,
+        "FII_DII_DIVERGENCE_fires": 2,
+        "FII_DII_DIVERGENCE_last_fire": 2,
+        "FII_DII_DIVERGENCE_lead_trading_days": 2,
+        "FII_DII_DIVERGENCE_lead_status": 2,
+        "FII_ANY_fires": 2,
+        "FII_ANY_last_fire": 2,
+        "FII_ANY_lead_trading_days": 2,
+        "FII_ANY_lead_status": 2,
+        "IFR_FII_STRICT_fires": 2,
+        "IFR_FII_STRICT_last_fire": 8,
+        "IFR_FII_STRICT_lead_trading_days": 8,
+        "IFR_FII_STRICT_lead_status": 2
+      },
+      "formula_like_cells": 0
+    },
+    "cacfe7b4492d3f0901124ba64310df829cf7476068120b3ed5c41e2ba98b0cb0": {
+      "example_member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/parameter_decisions.csv",
+      "data_rows": 6,
+      "columns": [
+        "parameter",
+        "decision",
+        "reason",
+        "next_action"
+      ],
+      "width_mismatch_rows": 0,
+      "exact_duplicate_rows": 0,
+      "blank_counts": {},
+      "formula_like_cells": 0
+    },
+    "d6f2db92665d14e8f34d6888cc46a629309e322ac6a18d639cd2659f2e57a8fb": {
+      "example_member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/signal_correlation_matrix.csv",
+      "data_rows": 12,
+      "columns": [
+        "signal",
+        "IFR_DAMAGE",
+        "TD95_SHOCK",
+        "STRUCT_FRACTURE",
+        "FII_Q10",
+        "FII_Q05",
+        "FII_SELL_CLUSTER",
+        "FII_DII_DIV",
+        "FII_ANY",
+        "IFR_FII_STRICT",
+        "IFR_FII_Q10",
+        "IFR_FII_SELL",
+        "IFR_FII_DIV"
+      ],
+      "width_mismatch_rows": 0,
+      "exact_duplicate_rows": 0,
+      "blank_counts": {},
+      "formula_like_cells": 0
+    },
+    "595e3cbebbb05e98945832c8cda3b216a325dd50e78b9985e3f7125f3d03cb85": {
+      "example_member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/signal_forward_return_distribution.csv",
+      "data_rows": 14,
+      "columns": [
+        "signal",
+        "group",
+        "count",
+        "mean_fwd15_pct",
+        "median_fwd15_pct",
+        "p05_fwd15_pct",
+        "p25_fwd15_pct",
+        "p75_fwd15_pct",
+        "p95_fwd15_pct",
+        "negative_fwd15_pct"
+      ],
+      "width_mismatch_rows": 0,
+      "exact_duplicate_rows": 0,
+      "blank_counts": {},
+      "formula_like_cells": 0
+    },
+    "bb3b6ec2374d95d7bc74c544973fcd8b37923b1ce19bdfd54a029d62f8dc253b": {
+      "example_member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/signal_independence_clusters.csv",
+      "data_rows": 8,
+      "columns": [
+        "cluster_id",
+        "signals",
+        "count"
+      ],
+      "width_mismatch_rows": 0,
+      "exact_duplicate_rows": 0,
+      "blank_counts": {},
+      "formula_like_cells": 0
+    },
+    "0aa0e7130e33dc306815186eb3957b2cbb7702837f79a351ee0539ab6d750909": {
+      "example_member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/strategy_performance.csv",
+      "data_rows": 11,
+      "columns": [
+        "strategy",
+        "rows",
+        "start_date",
+        "end_date",
+        "final_equity_x",
+        "total_return_pct",
+        "cagr_pct",
+        "sharpe",
+        "max_drawdown_pct",
+        "avg_exposure",
+        "signal_days",
+        "signal_day_pct",
+        "cagr_alpha_vs_baseline_pct",
+        "dd_improvement_vs_baseline_pts",
+        "final_equity_delta_vs_baseline_pct"
+      ],
+      "width_mismatch_rows": 0,
+      "exact_duplicate_rows": 0,
+      "blank_counts": {},
+      "formula_like_cells": 0
+    }
+  }
+}

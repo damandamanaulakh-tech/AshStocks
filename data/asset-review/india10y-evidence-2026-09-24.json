@@ -1,0 +1,406 @@
+{
+  "as_of": "2026-09-24",
+  "change_percent_reconciliation": {
+    "adjacent_observation_pairs_checked": 2550,
+    "exact_two_decimal_rounding_mismatches": 0,
+    "formula": "100 * (current Price / previous available Price - 1)",
+    "max_absolute_residual_percentage_points": "0.00500",
+    "nonoverlapping_rounding_intervals": 0,
+    "nonoverlapping_rounding_intervals_sample": [],
+    "oldest_observation_not_checkable_without_previous_history": "2016-01-01",
+    "rounding_interval_assumption": "Each Price may be rounded to nearest 0.001 and each reported Change % to nearest 0.01 percentage points; this is a tolerance diagnostic, not provenance proof."
+  },
+  "coverage": {
+    "calendar_gaps_over_3_days": 82,
+    "date_max": "2026-06-08",
+    "date_min": "2016-01-01",
+    "day_first_alternative_invalid_rows": 1538,
+    "day_first_alternative_valid_but_different_dates": 924,
+    "day_first_alternative_valid_rows": 1013,
+    "days_stale_at_audit": 108,
+    "distinct_dates": 2551,
+    "duplicate_date_rows": 0,
+    "exact_duplicate_rows": 0,
+    "largest_gaps": [
+      {
+        "calendar_days": 6,
+        "from": "2018-03-28",
+        "to": "2018-04-03"
+      },
+      {
+        "calendar_days": 5,
+        "from": "2016-03-23",
+        "to": "2016-03-28"
+      },
+      {
+        "calendar_days": 5,
+        "from": "2016-04-13",
+        "to": "2016-04-18"
+      },
+      {
+        "calendar_days": 5,
+        "from": "2017-10-18",
+        "to": "2017-10-23"
+      },
+      {
+        "calendar_days": 5,
+        "from": "2018-04-27",
+        "to": "2018-05-02"
+      },
+      {
+        "calendar_days": 5,
+        "from": "2021-03-31",
+        "to": "2021-04-05"
+      },
+      {
+        "calendar_days": 5,
+        "from": "2021-11-03",
+        "to": "2021-11-08"
+      },
+      {
+        "calendar_days": 5,
+        "from": "2022-04-13",
+        "to": "2022-04-18"
+      },
+      {
+        "calendar_days": 5,
+        "from": "2022-08-12",
+        "to": "2022-08-17"
+      },
+      {
+        "calendar_days": 5,
+        "from": "2024-03-28",
+        "to": "2024-04-02"
+      },
+      {
+        "calendar_days": 5,
+        "from": "2025-03-28",
+        "to": "2025-04-02"
+      },
+      {
+        "calendar_days": 4,
+        "from": "2016-02-18",
+        "to": "2016-02-22"
+      }
+    ],
+    "missing_weekday_warning": "weekdays are not verified India bond-market sessions; holidays/benchmark gaps must not be labelled outages automatically",
+    "missing_weekdays_by_year": {
+      "2016": 20,
+      "2017": 18,
+      "2018": 21,
+      "2019": 19,
+      "2020": 17,
+      "2021": 20,
+      "2022": 17,
+      "2023": 18,
+      "2024": 22,
+      "2025": 11
+    },
+    "missing_weekdays_within_bounds": 183,
+    "out_of_descending_order_steps": 0,
+    "rows_by_year": {
+      "2016": 247,
+      "2017": 246,
+      "2018": 240,
+      "2019": 242,
+      "2020": 245,
+      "2021": 241,
+      "2022": 243,
+      "2023": 243,
+      "2024": 240,
+      "2025": 251,
+      "2026": 113
+    },
+    "weekend_dates": [
+      "2016-05-28",
+      "2016-08-06",
+      "2016-08-13",
+      "2016-09-17",
+      "2016-09-24",
+      "2016-10-15",
+      "2017-03-18",
+      "2017-04-22",
+      "2017-07-01",
+      "2017-12-16",
+      "2023-02-04",
+      "2025-05-04"
+    ],
+    "weekend_rows": 12
+  },
+  "database_import_performed": false,
+  "decision": "historical macro-reference candidate; do not import or use for LIVE/current readiness without explicit provenance/unit/instrument/session review and existing-database reconciliation",
+  "macro_overlay_candidate": {
+    "bond_dates_not_in_macro": 19,
+    "bond_dates_not_in_macro_sample": [
+      "2016-05-28",
+      "2016-08-06",
+      "2016-08-13",
+      "2016-09-17",
+      "2016-09-24",
+      "2016-10-15",
+      "2017-03-18",
+      "2017-04-22",
+      "2017-07-01",
+      "2017-07-11",
+      "2017-11-16",
+      "2017-12-16"
+    ],
+    "eligibility": "date overlap candidate only; no source field written, no join persisted, no forward-fill, units/instrument/benchmark/session provenance unresolved",
+    "exact_date_intersection": 2532,
+    "macro_dates_without_bond": 1373,
+    "macro_distinct_dates": 3905,
+    "macro_in10y_missing_rows": 3905,
+    "macro_rows": 3905,
+    "reference": {
+      "archive": "FO.Gold.COmm.zip",
+      "archive_bytes": 650231,
+      "archive_sha256": "91ec88fc88e461ab7eaa15b345fdaa15a0804c09a64e5afe1761e861549f8378",
+      "member": "FO Gold COmm/feed9_fx_commodity_daily_15Y.csv",
+      "member_bytes": 227019,
+      "member_crc_read_completed": true,
+      "member_sha256": "a957871dd21c29f6d3b0b0b964a408d2ec9626e8a97974db2403b4eb955beb34",
+      "pinned_archive_hash_size_match": true,
+      "utf8_bom": false
+    },
+    "unmatched_macro_after_bond_max": 0,
+    "unmatched_macro_before_bond_min": 1191,
+    "unmatched_macro_within_bond_bounds": 182
+  },
+  "method": "all CSV rows and fields strictly decoded and parsed, finite Decimal values; bounded in-memory ZIP reads with pinned top-level hashes and EOF CRC",
+  "mongo_accessed": false,
+  "network_accessed": false,
+  "production_activation_performed": false,
+  "provenance_limits": [
+    "Filename and release hash establish local identity, not upstream publisher or original download time.",
+    "No URL, ISIN, issuer, maturity, benchmark-roll methodology, timezone, unit declaration or provider observation timestamp appears as a CSV field.",
+    "Never equate this OHLC-shaped yield series with stock OHLCV, bond total returns, execution quotes or a current September 2026 feed.",
+    "Flat OHLC and 22 range violations require source-convention review, not automatic repair; adjacent-observation Change % does reconcile.",
+    "No official holiday, instrument authority or online-source validation was performed."
+  ],
+  "quality": {
+    "consecutive_identical_ohlc_rows_at_start_of_history": 435,
+    "identical_ohlc_by_year": {
+      "2016": 247,
+      "2017": 189,
+      "2022": 1,
+      "2023": 1,
+      "2024": 2,
+      "2025": 6,
+      "2026": 10
+    },
+    "identical_ohlc_first_date": "2016-01-01",
+    "identical_ohlc_last_date": "2026-05-28",
+    "identical_price_open_high_low_rows": 456,
+    "initial_identical_ohlc_period_end": "2017-10-05",
+    "invalid_by_column": {},
+    "malformed_width_rows": 0,
+    "missing_by_column": {},
+    "numeric_columns": {
+      "Change %": {
+        "count": 2551,
+        "decimal_places": {
+          "2": 2551
+        },
+        "max": "4.91",
+        "min": "-3.90",
+        "negatives": 1231,
+        "zeros": 72
+      },
+      "High": {
+        "count": 2551,
+        "decimal_places": {
+          "3": 2551
+        },
+        "max": "8.231",
+        "min": "5.775",
+        "negatives": 0,
+        "zeros": 0
+      },
+      "Low": {
+        "count": 2551,
+        "decimal_places": {
+          "3": 2551
+        },
+        "max": "8.155",
+        "min": "5.747",
+        "negatives": 0,
+        "zeros": 0
+      },
+      "Open": {
+        "count": 2551,
+        "decimal_places": {
+          "3": 2551
+        },
+        "max": "8.218",
+        "min": "5.764",
+        "negatives": 0,
+        "zeros": 0
+      },
+      "Price": {
+        "count": 2551,
+        "decimal_places": {
+          "3": 2551
+        },
+        "max": "8.182",
+        "min": "5.760",
+        "negatives": 0,
+        "zeros": 0
+      }
+    },
+    "ohlc_bound_violation_date_max": "2025-07-03",
+    "ohlc_bound_violation_date_min": "2025-03-07",
+    "ohlc_bound_violation_reasons": {
+      "Price_below_Low": 22
+    },
+    "ohlc_bound_violation_rows": 22,
+    "ohlc_bound_violation_sample": [
+      {
+        "date": "2025-07-03",
+        "reasons": [
+          "Price_below_Low"
+        ],
+        "row": 244
+      },
+      {
+        "date": "2025-07-02",
+        "reasons": [
+          "Price_below_Low"
+        ],
+        "row": 245
+      },
+      {
+        "date": "2025-06-30",
+        "reasons": [
+          "Price_below_Low"
+        ],
+        "row": 247
+      },
+      {
+        "date": "2025-06-24",
+        "reasons": [
+          "Price_below_Low"
+        ],
+        "row": 251
+      },
+      {
+        "date": "2025-06-23",
+        "reasons": [
+          "Price_below_Low"
+        ],
+        "row": 252
+      },
+      {
+        "date": "2025-06-18",
+        "reasons": [
+          "Price_below_Low"
+        ],
+        "row": 255
+      },
+      {
+        "date": "2025-06-17",
+        "reasons": [
+          "Price_below_Low"
+        ],
+        "row": 256
+      },
+      {
+        "date": "2025-06-16",
+        "reasons": [
+          "Price_below_Low"
+        ],
+        "row": 257
+      },
+      {
+        "date": "2025-06-13",
+        "reasons": [
+          "Price_below_Low"
+        ],
+        "row": 258
+      },
+      {
+        "date": "2025-06-05",
+        "reasons": [
+          "Price_below_Low"
+        ],
+        "row": 264
+      },
+      {
+        "date": "2025-06-03",
+        "reasons": [
+          "Price_below_Low"
+        ],
+        "row": 266
+      },
+      {
+        "date": "2025-05-28",
+        "reasons": [
+          "Price_below_Low"
+        ],
+        "row": 270
+      }
+    ],
+    "ohlc_max_outside_distance_in_source_units": "0.011"
+  },
+  "read_only": true,
+  "runtime_mapping": [
+    {
+      "path": "server-data-intelligence-patch.mjs",
+      "scope": "DRIVE_DATA_CATALOG.available_domains and REQUIRED_VALIDATION_FEEDS contain India 10Y/yields labels; static metadata, not a loader"
+    },
+    {
+      "path": "server-market-context-patch.mjs",
+      "scope": "MARKET_CONTEXT_SYMBOLS has index/VIX/USDINR/gold cards; no India10Y symbol or historical CSV adapter in this module"
+    },
+    {
+      "path": "docs/ashstocks-drive-file-ledger-v1.md",
+      "scope": "prior MANIFEST_ONLY entry can be superseded for this exact archived CSV after accepted audit; no runtime activation follows"
+    }
+  ],
+  "schema": {
+    "columns": [
+      "Date",
+      "Price",
+      "Open",
+      "High",
+      "Low",
+      "Change %"
+    ],
+    "data_rows": 2551,
+    "date_format": "%m/%d/%Y",
+    "declared_date_format_present": false,
+    "grain": "one observed date per row; filename identifies India10Y yield history but no explicit instrument/source field",
+    "units": {
+      "Change %": "explicit percent-labelled column; observed relative change in Price, not yield basis-point change",
+      "Price_Open_High_Low": "not stated in CSV headers; likely yield percent based on filename and magnitude, inference only"
+    },
+    "volume_field_present": false,
+    "width": 6
+  },
+  "schema_version": "ash-india10y-content-audit-v1",
+  "source": {
+    "archive": "AM.07.Parameter.Files.zip",
+    "archive_bytes": 10303731,
+    "archive_sha256": "652be4ddb2b40915543ad848b2bfa10d011c6c2c5723a6e6a3480a85ddb2e2e5",
+    "member": "AM 07 Parameter Files/India 10-Year Bond Yield Historical Data.csv",
+    "member_bytes": 136482,
+    "member_crc_read_completed": true,
+    "member_sha256": "f8900835eb99d042f0452672518d6e3e274b6a1cddcb3d37b054c5985903923a",
+    "pinned_archive_hash_size_match": true,
+    "utf8_bom": true
+  },
+  "source_assets_modified": false,
+  "independent_verification": {
+    "method": "Separate bundled pandas CSV/date/numeric recount, not the Decimal audit implementation",
+    "result": "PASS",
+    "rows": 2551,
+    "distinct_dates": 2551,
+    "date_min": "2016-01-01",
+    "date_max": "2026-06-08",
+    "duplicate_dates": 0,
+    "missing_cells": 0,
+    "weekend_rows": 12,
+    "ohlc_bound_violations": 22,
+    "identical_price_open_high_low_rows": 456,
+    "scope_limit": "Recount confirms these structural metrics only; not upstream authority, unit meaning, holidays or runtime readiness"
+  }
+}
