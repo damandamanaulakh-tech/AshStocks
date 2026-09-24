@@ -13,7 +13,7 @@ The user reports working real-time stock/index prices and requests code fixes, d
 1. **Backend selection pipeline — implemented and tested.** Scheduled/manual runs now use persisted universe rotation. The engine reuses only a trusted, current, unconsumed committed batch. Nested mutation locks are avoided, and the final paper-state save retains the committed cursor. Holding history comes from the provider before selection, not from missing persisted candle fields. Every non-self holding must also have a finite comparison using the existing correlation helper.
 2. **Dashboard outcome reporting — implemented and tested.** The browser displays the exact engine scan and separates SELECT, buy tickets, fills, rejections and pending counts. It observes scheduled results at startup and every 60 seconds, even with no local SELECT rows. A persistent outcome card shows blockers and failures without replacing manual-action notices. No second UI-only buy rule is added.
 3. **Regression verification — passed.** All 72 commands in the package `check` script passed against the final frozen source using the Node-only runner. The final isolated smoke passed all 57 named checks, followed by passing rotation, valuation-integration and official-NSE unit/runtime suites. Sources matched before and after the run.
-4. **Release handoff — in progress.** Save the final tested implementation, publish only the existing feature branch without force, verify the remote ref, and record the exact commit/tree. Deployment, live universe import and actual paper fills remain separate milestones.
+4. **Release handoff — published and verified.** Implementation commit `d40a8ee2a3e5eece421cdf897053a53ea7ce3930` is on the existing feature branch. Its tree `7a62748bed0b3c84418c5969cd9cbdbbf2b07fc2` exactly matches the tested local checkpoint. Deployment, live universe import and actual paper fills remain separate milestones.
 
 ## Confirmed defects at the starting commit
 
@@ -69,7 +69,11 @@ The smoke fixture now seeds a persisted fixture universe and mocks instrument-sp
 
 Before publication on 24 September, GitHub's feature ref was verified at the starting commit above and remote `main` at `226e1394d5af3f0c380593d58917b8d2ee5c13e8`. Local `main`, `origin/main` and `V01-2026-09-07` also resolve to that baseline. The exact remote V01 tag was not returned by `ls-remote`; this phase does not claim V01 release-asset publication.
 
-Final implementation and smoke proof are complete. The implementation commit and verified publication will be recorded in a documentation-only follow-up after the feature push succeeds; no deployment is implied.
+Final implementation and smoke proof are complete. Published implementation: `d40a8ee2a3e5eece421cdf897053a53ea7ce3930`; exact verified tree: `7a62748bed0b3c84418c5969cd9cbdbbf2b07fc2`. The GitHub integration published individually reviewed blobs after explicit user approval for smaller uploads. Every returned blob SHA matched the committed source, and the complete remote tree matched local implementation commit `d1a0a168ae1ad64fa6bf00b0d78617e8bfd6db5a` before the feature ref was fast-forwarded with `force: false`.
+
+The fetched remote ref/tree were independently verified, then the local feature branch was aligned to the identical published implementation. Original local commits, including blocked-publication checkpoint `e8590c62d000eccf1c4ec8e18f4c821a8f9a980b`, remain recoverable on `codex/paper-flow-local-2026-09-24`. No main/V01 history was changed. Terminal Git write authentication remains unavailable; connector write access was sufficient. This publication is not deployment.
+
+The user's subsequent Mongo-memory/cleanup request is a separate bounded follow-up: investigate actual code behavior, preserve all paper history and data, and require specific targets before deleting ambiguous files. It does not weaken this phase's selection rules or authorize production changes.
 
 ## Remaining release boundary
 

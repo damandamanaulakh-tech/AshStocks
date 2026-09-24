@@ -12,6 +12,7 @@ The user requested small phases that are verified and pushed before proceeding, 
 | 2 | Fresh official NSE/suspension imports, dated reference data, provenance, validation and import/rotation tests | Published commit `b44db8c67ec55053d495964b69d66da252aafe29` |
 | 3 | Sell Targets UI, storage and audit, explicit paper-target activation, manual/automatic exits, regression tests | Published commit `3cde3cd8930f3207de6840e350b8025df6a85db6` |
 | 4 | Fresh NSE company-list membership, exact Upstox identity matching, stock-only EQ replacement | Published and verified commit `2b998afef33c95e2c202b709a41fe57a2cbd9b16`; implementation, BRICS evidence and live release gap described in `NSE_REPLACEMENT_CHECKPOINT_2026-09-14.md` |
+| Paper-flow follow-up, 24 September | Persisted engine rotation, complete holding-history inputs, truthful manual/scheduled dashboard outcomes | Published and verified implementation `d40a8ee2a3e5eece421cdf897053a53ea7ce3930`; 72 check commands and 57 smoke checks plus integration suites passed. Read `PAPER_FLOW_GOAL_CHECKPOINT_2026-09-21.md` for exact tree and recovery refs. |
 | 5 | V01 release-asset publication and production rollout | Separate outstanding items; not completed by these feature commits |
 
 ## Verified implementation state
