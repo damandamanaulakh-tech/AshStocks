@@ -60,6 +60,11 @@ const state = {
 };
 
 const institutionalPendingSymbols = new Set();
+const INSTITUTIONAL_RETRY_MS = 30_000;
+const INSTITUTIONAL_STOCK_TTL_MS = 6 * 60 * 60_000;
+const INSTITUTIONAL_MARKET_TTL_MS = 15 * 60_000;
+let institutionalRequest = null;
+let institutionalRevision = 0;
 
 const indexKeys = [
   { label: "NIFTY 50", key: "NSE_INDEX|Nifty 50" },
@@ -519,15 +524,8 @@ function applyPaperEngineScan(scan) {
     || sortedRows().find((row) => ["SELECT", "WATCH"].includes(row.decision)) || sortedRows()[0] || null;
   state.selectedQuoteRequest += 1;
   state.selectedQuote = null;
-  if (scan.institutional?.market) state.institutional.market = scan.institutional.market;
-  for (const stock of scan.institutional?.stocks || []) {
-    if (nseSymbol(stock)) state.institutional.stocks[nseSymbol(stock)] = stock;
-  }
-  if (scan.institutional) {
-    state.institutional.status = scan.institutional.ok ? "ready" : "data_needed";
-    state.institutional.asOf = scan.institutional.as_of || null;
-    state.institutional.version = scan.institutional.version || null;
-  }
+  institutionalRevision += 1;
+  if (scan.institutional) acceptInstitutionalPayload(scan.institutional, state.rows);
   return `Radar synchronized to engine scan ${isoDate(scan.asOf)}`;
 }
 
@@ -735,6 +733,7 @@ async function api(path, options = {}) {
     headers: { accept: "application/json", ...(options.headers || {}) },
     credentials: "same-origin"
   };
+  if (options.signal) init.signal = options.signal;
   if (options.body !== undefined) {
     init.headers["content-type"] = "application/json";
     init.body = JSON.stringify(options.body);
@@ -1114,18 +1113,100 @@ function signalState(value) {
   return { className: "needed", label: "DATA NEEDED", icon: "circle-help" };
 }
 
+function institutionalNumeric(value) {
+  if (typeof value !== "number" || !Number.isFinite(value)) return null;
+  return value;
+}
+
+function institutionalTime(value) {
+  return typeof value === "string" && value.trim() ? Date.parse(value) : NaN;
+}
+
+function institutionalDeadline(evidence, positive, ceiling) {
+  const now = Date.now();
+  const receipt = evidence?._received_at;
+  if (!Number.isFinite(receipt) || receipt > now) return 0;
+  const fetched = institutionalTime(evidence?.fetched_at);
+  const expires = institutionalTime(evidence?.cache_expires_at);
+  if (positive && (!Number.isFinite(fetched) || fetched > now || !Number.isFinite(expires))) return 0;
+  const ttl = positive ? ceiling : INSTITUTIONAL_RETRY_MS;
+  return Math.min(receipt + ttl, Number.isFinite(fetched) ? fetched + ttl : Infinity,
+    Number.isFinite(expires) ? expires : Infinity);
+}
+
+function institutionalFresh(evidence, positive, ceiling) {
+  return Date.now() < institutionalDeadline(evidence, positive, ceiling);
+}
+
+function institutionalReported(evidence) {
+  const holding = institutionalNumeric(evidence?.fii_holding_pct);
+  return evidence?.status === "REPORTED" && holding !== null && holding >= 0 && holding <= 100;
+}
+
 function institutionalFor(row) {
-  return state.institutional.stocks[nseSymbol(row)] || null;
+  const evidence = state.institutional.stocks[nseSymbol(row)];
+  if (!row?.instrument_key || evidence?.instrument_key !== row.instrument_key) return null;
+  return institutionalFresh(evidence, institutionalReported(evidence), INSTITUTIONAL_STOCK_TTL_MS) ? evidence : null;
+}
+
+function institutionalCurrent(evidence) {
+  // A quarterly report is never a live quote. Recheck the quarter locally too,
+  // so an open dashboard cannot carry a current signal across a quarter boundary.
+  const ist = new Date(Date.now() + 330 * 60_000);
+  const expectedEnd = new Date(Date.UTC(ist.getUTCFullYear(), Math.floor(ist.getUTCMonth() / 3) * 3, 0)).toISOString().slice(0, 10);
+  return institutionalReported(evidence) && evidence.current_evidence_eligible === true
+    && evidence.as_of === expectedEnd && evidence.comparison_status === "ADJACENT_QUARTER";
+}
+
+function institutionalMarketValue(feed, window = "5d") {
+  const market = state.institutional.market;
+  const detail = market?.feeds?.[feed];
+  if (!institutionalFresh(market, ["READY", "PARTIAL"].includes(market?.status), INSTITUTIONAL_MARKET_TTL_MS)
+    || market?.calendar?.status !== "VERIFIED" || detail?.status !== "READY"
+    || !institutionalFresh({ ...market.calendar, _received_at: market._received_at }, true, INSTITUTIONAL_MARKET_TTL_MS)
+    || !institutionalFresh({ ...detail, _received_at: market._received_at }, true, INSTITUTIONAL_MARKET_TTL_MS)) return null;
+  const dates = market.calendar.expected_session_dates;
+  if (!Array.isArray(dates) || dates.length !== 5 || new Set(dates).size !== 5
+    || detail.observed_date !== dates[0] || !Number.isInteger(detail.days_available) || detail.days_available < 5
+    || JSON.stringify(detail.window_dates) !== JSON.stringify(dates)) return null;
+  return institutionalNumeric(market[`${feed}_cash_${window}_net_cr`]);
+}
+
+function acceptInstitutionalPayload(payload, rows = [], requireAll = false) {
+  if (!payload || typeof payload !== "object") return;
+  const receivedAt = Date.now();
+  const stocks = Array.isArray(payload.stocks) ? payload.stocks : [];
+  for (const row of rows) {
+    const symbol = nseSymbol(row);
+    if (!symbol || !row.instrument_key) continue;
+    const matching = stocks.filter((stock) => nseSymbol(stock) === symbol && stock.instrument_key === row.instrument_key);
+    if (matching.length === 1) {
+      state.institutional.stocks[symbol] = { ...matching[0], _received_at: receivedAt };
+    } else if (requireAll || matching.length > 1) {
+      state.institutional.stocks[symbol] = { symbol, instrument_key: row.instrument_key,
+        status: "DATA_NEEDED", reason: "Shareholding response missing or ambiguous; retry scheduled", _received_at: receivedAt };
+    }
+  }
+  if (payload.market && typeof payload.market === "object") {
+    state.institutional.market = { ...payload.market, _received_at: receivedAt };
+  } else if (requireAll) {
+    state.institutional.market = { status: "DATA_NEEDED", reason: "Market response missing; retry scheduled", _received_at: receivedAt };
+  }
+  state.institutional.status = institutionalMarketValue("fii") !== null || institutionalMarketValue("dii") !== null
+    || rows.some((row) => institutionalReported(institutionalFor(row))) ? "ready" : "data_needed";
+  state.institutional.asOf = payload.as_of || null;
+  state.institutional.version = payload.version || null;
 }
 
 function renderFiiHoldingCell(row) {
   const evidence = institutionalFor(row);
   const symbol = nseSymbol(row);
-  if (evidence?.status === "LIVE" && numberValue(evidence.fii_holding_pct) !== null) {
-    const change = numberValue(evidence.fii_change_pp);
-    const tone = change === null || change === 0 ? "watch" : change > 0 ? "positive" : "negative";
-    const delta = change === null ? "first quarter" : `${change >= 0 ? "+" : ""}${fmtNumber(change, 2)} pp`;
-    const title = `${evidence.source} · ${evidence.fii_period} · previous ${evidence.fii_previous_period || "not returned"}`;
+  if (institutionalReported(evidence)) {
+    const change = institutionalNumeric(evidence.fii_change_pp);
+    const current = institutionalCurrent(evidence);
+    const tone = !current || change === null || change === 0 ? "watch" : change > 0 ? "positive" : "negative";
+    const delta = change === null ? "prior quarter not returned" : `${change >= 0 ? "+" : ""}${fmtNumber(change, 2)} pp (reported)`;
+    const title = `${evidence.source} · ${evidence.fii_period} · previous ${evidence.fii_previous_period || "not returned"} · ${current ? "latest completed quarter" : "historical / current comparison unavailable"}`;
     return `<span class="fii-holding-cell ${tone}" title="${escapeHtml(title)}"><strong>${fmtNumber(evidence.fii_holding_pct, 2)}%</strong><small>${escapeHtml(delta)}</small></span>`;
   }
   if (institutionalPendingSymbols.has(symbol)) return `<span class="data-needed fii-loading">UPSTOX…</span>`;
@@ -1133,17 +1214,33 @@ function renderFiiHoldingCell(row) {
 }
 
 async function loadInstitutionalEvidence(rows = []) {
-  const candidates = rows
-    .filter((row) => row?.instrument_key && !institutionalFor(row) && !institutionalPendingSymbols.has(nseSymbol(row)))
+  if (institutionalRequest) return institutionalRequest;
+  const unique = new Map(rows.filter((row) => row?.instrument_key && nseSymbol(row)).map((row) => [nseSymbol(row), row]));
+  const candidates = [...unique.values()]
+    .filter((row) => !institutionalFor(row))
+    .sort((a, b) => {
+      const attempt = (row) => {
+        const cached = state.institutional.stocks[nseSymbol(row)];
+        return cached?.instrument_key === row.instrument_key && Number.isFinite(cached._received_at) ? cached._received_at : 0;
+      };
+      return attempt(a) - attempt(b);
+    })
     .slice(0, 12);
-  if (!candidates.length && state.institutional.market) return;
+  const market = state.institutional.market;
+  if (!candidates.length && institutionalFresh(market, market?.status === "READY", INSTITUTIONAL_MARKET_TTL_MS)) return;
+  const revision = institutionalRevision;
   candidates.forEach((row) => institutionalPendingSymbols.add(nseSymbol(row)));
   state.institutional.status = "loading";
   renderSignalDashboard();
-  try {
-    const payload = await api("/api/upstox/institutional-flow", {
+  institutionalRequest = Promise.resolve().then(async () => {
+   const controller = new AbortController();
+   let timeout;
+   try {
+    const request = api("/api/upstox/institutional-flow", {
       method: "POST",
+      signal: controller.signal,
       body: {
+        market_only: candidates.length === 0,
         instruments: candidates.map((row) => ({
           symbol: nseSymbol(row),
           instrument_key: row.instrument_key,
@@ -1151,24 +1248,30 @@ async function loadInstitutionalEvidence(rows = []) {
         }))
       }
     });
-    state.institutional.market = payload.market || state.institutional.market;
-    for (const stock of payload.stocks || []) {
-      const symbol = nseSymbol(stock) || candidates.find((row) => String(row.instrument_key) === String(stock.instrument_key))?.symbol;
-      if (symbol) state.institutional.stocks[symbol] = stock;
-    }
-    state.institutional.status = payload.ok ? "ready" : "data_needed";
-    state.institutional.asOf = payload.as_of || null;
-    state.institutional.version = payload.version || null;
-  } catch (error) {
-    state.institutional.status = "data_needed";
-    state.institutional.market = { status: "DATA_NEEDED", reason: error.message, source: "Upstox FII/DII Activity API" };
-    candidates.forEach((row) => {
-      state.institutional.stocks[nseSymbol(row)] = { status: "DATA_NEEDED", reason: error.message, source: "Upstox Share Holdings API" };
-    });
-  } finally {
+    const payload = await Promise.race([request, new Promise((_, reject) => {
+      timeout = setTimeout(() => { controller.abort(); reject(new Error("Institutional request timed out")); }, 50_000);
+    })]);
+    if (!payload || payload.ok !== true) throw new Error("Invalid institutional response");
+    if (revision === institutionalRevision) acceptInstitutionalPayload(payload, candidates, true);
+   } catch {
+    if (revision === institutionalRevision) acceptInstitutionalPayload({
+      market: { status: "DATA_NEEDED", reason: "Institutional feed unavailable; retry scheduled", source: "Upstox FII/DII Activity API" },
+      stocks: []
+    }, candidates, true);
+   } finally {
+    clearTimeout(timeout);
+    controller.abort();
     candidates.forEach((row) => institutionalPendingSymbols.delete(nseSymbol(row)));
+    institutionalRequest = null;
     renderSignalDashboard();
-  }
+   }
+  });
+  return institutionalRequest;
+}
+
+function refreshInstitutionalEvidence() {
+  if (!state.ready?.ok || state.scanInFlight || state.fullScanRunning || state.masterLoading || document.hidden) return;
+  return loadInstitutionalEvidence([state.selected, ...sortedRows()].filter(Boolean));
 }
 
 function renderSignalDashboard() {
@@ -1243,7 +1346,7 @@ function renderSignalDashboard() {
   const breadthPct = breadthTotal ? (numberValue(breadth.advancing) || 0) / breadthTotal * 100 : null;
   const confidence = Math.max(0, Math.min(100, numberValue(insight.confidence) || 0));
   const institutionalMarket = state.institutional.market || {};
-  const fiiCash5d = numberValue(institutionalMarket.fii_cash_5d_net_cr);
+  const fiiCash5d = institutionalMarketValue("fii");
   const topSectors = [...state.rows.reduce((map, row) => {
     if (row.decision === "SELECT") map.set(row.sector || "Unmapped", (map.get(row.sector || "Unmapped") || 0) + 1);
     return map;
@@ -1255,7 +1358,7 @@ function renderSignalDashboard() {
       <div class="regime-facts">
         <div><span>Trend (NIFTY 50)</span><strong class="${numberValue(contextByKey.nifty50?.change_pct) >= 0 ? "positive" : "negative"}">${contextByKey.nifty50?.price === null || contextByKey.nifty50?.price === undefined ? "DATA NEEDED" : `${fmtNumber(contextByKey.nifty50.price)} · ${fmtPct(contextByKey.nifty50.change_pct)}`}</strong></div>
         <div><span>Market breadth</span><strong>${breadthPct === null ? "DATA NEEDED" : `${fmtNumber(breadthPct, 1)}% advance`}</strong></div>
-        <div><span>FII cash flow (5D)</span><strong class="${fiiCash5d === null ? "data-needed" : fiiCash5d >= 0 ? "positive" : "negative"}" title="${escapeHtml(institutionalMarket.source || institutionalMarket.reason || "Upstox FII Activity API")}">${fiiCash5d === null ? (state.institutional.status === "loading" ? "UPSTOX…" : "DATA NEEDED") : `${fiiCash5d >= 0 ? "+" : ""}${fmtNumber(fiiCash5d, 2)} Cr`}</strong></div>
+        <div><span>FII cash flow (5D)</span><strong class="${fiiCash5d === null ? "data-needed" : fiiCash5d >= 0 ? "positive" : "negative"}" title="${escapeHtml(institutionalMarket.feeds?.fii?.reason || institutionalMarket.calendar?.reason || institutionalMarket.reason || institutionalMarket.source || "Upstox FII Activity API")}">${fiiCash5d === null ? (state.institutional.status === "loading" ? "UPSTOX…" : "DATA NEEDED") : `${fiiCash5d >= 0 ? "+" : ""}${fmtNumber(fiiCash5d, 2)} Cr`}</strong></div>
         <div><span>Volatility (India VIX)</span><strong>${contextByKey.indiavix?.price === null || contextByKey.indiavix?.price === undefined ? "DATA NEEDED" : `${fmtNumber(contextByKey.indiavix.price)} · ${fmtPct(contextByKey.indiavix.change_pct)}`}</strong></div>
         <div><span>SELECT sector strength</span><strong>${escapeHtml(topSectors || "No SELECT sectors")}</strong></div>
       </div>
@@ -1275,10 +1378,10 @@ function renderSignalDashboard() {
       const proof = row.parameter_tunnel?.summary || {};
       const selectedVolumeEvidence = tunnelEvidence(row, [/volume.*20/i, /volume confirmation/i, /volume expansion/i]);
       const stockInstitutional = institutionalFor(row);
-      const stockFiiChange = numberValue(stockInstitutional?.fii_change_pp);
-      const stockFiiStatus = stockInstitutional?.status !== "LIVE" ? "SOURCE_REQUIRED" : stockFiiChange === null || stockFiiChange === 0 ? "WATCH" : stockFiiChange > 0 ? "HIT" : "RISK";
-      const stockFiiText = stockInstitutional?.status === "LIVE"
-        ? `${fmtNumber(stockInstitutional.fii_holding_pct, 2)}% in ${stockInstitutional.fii_period}${stockFiiChange === null ? "" : ` · ${stockFiiChange >= 0 ? "+" : ""}${fmtNumber(stockFiiChange, 2)} pp QoQ`} · Upstox reported shareholding`
+      const stockFiiChange = institutionalNumeric(stockInstitutional?.fii_change_pp);
+      const stockFiiStatus = !institutionalCurrent(stockInstitutional) || stockFiiChange === null ? "SOURCE_REQUIRED" : stockFiiChange === 0 ? "WATCH" : stockFiiChange > 0 ? "HIT" : "RISK";
+      const stockFiiText = institutionalReported(stockInstitutional)
+        ? `${fmtNumber(stockInstitutional.fii_holding_pct, 2)}% in ${stockInstitutional.fii_period}${stockFiiChange === null ? " · prior quarter not returned" : ` · ${stockFiiChange >= 0 ? "+" : ""}${fmtNumber(stockFiiChange, 2)} pp QoQ`} · Upstox reported shareholding${institutionalCurrent(stockInstitutional) ? "" : " · historical / current comparison unavailable"}`
         : stockInstitutional?.reason || (institutionalPendingSymbols.has(nseSymbol(row)) ? "Loading Upstox shareholding" : "Upstox shareholding not returned");
       const evidenceRows = [
         ["FII Holding", stockFiiStatus, stockFiiText],
@@ -2456,16 +2559,8 @@ async function refreshScan(options = {}) {
       state.rows = Array.isArray(scan.rows) ? scan.rows : [];
       state.scanBasket = state.rows;
       state.rotation = scan.rotation || null;
-      if (scan.institutional?.market) state.institutional.market = scan.institutional.market;
-      for (const stock of scan.institutional?.stocks || []) {
-        const symbol = nseSymbol(stock);
-        if (symbol) state.institutional.stocks[symbol] = stock;
-      }
-      if (scan.institutional) {
-        state.institutional.status = scan.institutional.ok ? "ready" : "data_needed";
-        state.institutional.asOf = scan.institutional.as_of || null;
-        state.institutional.version = scan.institutional.version || null;
-      }
+      institutionalRevision += 1;
+      if (scan.institutional) acceptInstitutionalPayload(scan.institutional, state.rows);
       const summary = scan.summary || {};
       const failures = Array.isArray(scan.failures) ? scan.failures.length : 0;
       const coverage = state.rotation;
@@ -3121,4 +3216,5 @@ document.addEventListener("DOMContentLoaded", async () => {
   await refreshPaperEngineStatus();
   window.setInterval(refreshPaperEngineStatus, 60_000);
   window.setInterval(maybeAutoStartPaperPortfolio, 60_000);
+  window.setInterval(refreshInstitutionalEvidence, 60_000);
 });

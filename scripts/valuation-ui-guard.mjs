@@ -8,7 +8,7 @@ const css = await fs.readFile(new URL("../styles.css", import.meta.url), "utf8")
 const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
 assert.equal(ids.length, new Set(ids).size, "Existing element IDs must remain unique");
 for (const id of ["valuationSection", "valuationAssumptionForm", "valuationActivationForm", "valuationReviewed", "valuationActivationConfirm", "valuationFormulaCatalog", "nseMasterBtn", "scanAllBtn", "quickTradeForm"]) assert.ok(ids.includes(id), `${id} remains mounted`);
-assert.match(html, /app\.js\?v=20260924\.1/);
+assert.match(html, /app\.js\?v=20260924\.2/);
 assert.match(html, /styles\.css\?v=20260909\.1/);
 assert.doesNotMatch(html.match(/<input id="valuationReviewed"[^>]+>/)[0], /\schecked(?:\s|=|\/|>)/);
 assert.doesNotMatch(html.match(/<input id="valuationActivationConfirm"[^>]+>/)[0], /\schecked(?:\s|=|\/|>)/);

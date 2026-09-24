@@ -82,7 +82,7 @@ for (const asset of ["./broker-shell.css", "./app-broker-shell.js", "./app-broke
 }
 
 mustLoad("index.html", "./styles.css?v=20260909.1");
-mustLoad("index.html", "./app.js?v=20260924.1");
+mustLoad("index.html", "./app.js?v=20260924.2");
 mustInclude("index.html", "Legacy broker workspace loaders remain", "legacy-loader isolation explanation");
 
 for (const asset of [
@@ -128,7 +128,7 @@ mustMatch("server-upstox-quote-patch.mjs", /writeSseEvent[\s\S]*event: [\s\S]*da
 mustMatch("server-upstox-quote-patch.mjs", /\/api\/upstox\/quote[\s\S]*GET[\s\S]*POST/, "Upstox quote GET/POST route");
 mustMatch("server-upstox-quote-patch.mjs", /paper_only: true[\s\S]*live_orders: false[\s\S]*broker_write_enabled: false/, "Upstox quote safety lock");
 mustMatch("server-upstox-institutional-patch.mjs", /fetchUpstoxShareHolding[\s\S]*UPSTOX_SHARE_HOLDINGS_URL[\s\S]*normalizeShareHoldings/, "stock-specific Upstox shareholding fetch");
-mustMatch("server-upstox-institutional-patch.mjs", /fetchUpstoxInstitutionalMarket[\s\S]*UPSTOX_FII_ACTIVITY_URL[\s\S]*UPSTOX_DII_ACTIVITY_URL[\s\S]*institutionalNetCr/, "market-wide Upstox FII and DII activity fetch");
+mustMatch("server-upstox-institutional-patch.mjs", /institutionalFeedView[\s\S]*institutionalNetCr[\s\S]*fetchUpstoxInstitutionalMarket[\s\S]*UPSTOX_FII_ACTIVITY_URL[\s\S]*UPSTOX_DII_ACTIVITY_URL[\s\S]*institutionalFeedView/, "market-wide Upstox FII and DII activity fetch and verified window conversion");
 mustMatch("server-upstox-institutional-patch.mjs", /attachUpstoxInstitutionalEvidence[\s\S]*NO03[\s\S]*NO04[\s\S]*NO05[\s\S]*NO08[\s\S]*hard_gate_decision_preserved: true/, "Upstox FII and DII parameter overlay");
 mustMatch("server-upstox-institutional-patch.mjs", /attachUpstoxInstitutionalScan[\s\S]*upstoxInstitutionalResponse[\s\S]*scan\.institutional = institutional/, "scanner institutional evidence attachment");
 mustMatch("server.js", /applyUpstoxInstitutionalPatches[\s\S]*output = applyUpstoxInstitutionalPatches/, "Upstox institutional patch wiring");

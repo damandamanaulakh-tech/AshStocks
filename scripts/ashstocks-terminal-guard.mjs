@@ -68,7 +68,7 @@ for (const text of [
   'id="railBuild"',
   'id="helpSection" data-panel="help"',
   'styles.css?v=20260909.1',
-  'app.js?v=20260924.1',
+  'app.js?v=20260924.2',
   'FII Holding / Δ',
   'Legacy broker workspace loaders remain'
 ]) {
@@ -112,7 +112,7 @@ for (const text of [
   "function renderFiiHoldingCell(row)",
   "async function loadInstitutionalEvidence(rows = [])",
   'api("/api/upstox/institutional-flow"',
-  "fii_cash_5d_net_cr",
+  'institutionalMarketValue("fii")',
   "Upstox reported shareholding",
   'state.health = await api(`/api/health',
   'renderPortfolioDashboard();'

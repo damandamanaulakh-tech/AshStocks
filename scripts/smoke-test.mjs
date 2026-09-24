@@ -1118,30 +1118,51 @@ async function main() {
     assert(upstoxStatusAfter.body.status.token_source === "manual_paste", "Upstox status should read token from store");
 
     const institutionalNativeFetch = globalThis.fetch;
+    // This is an explicit mocked exchange calendar, not a weekday inference in
+    // production. Real five-session coverage comes from the timings endpoint.
+    const institutionalNow = Date.now();
+    const institutionalToday = new Date(institutionalNow + 330 * 60_000).toISOString().slice(0, 10);
+    const institutionalSessions = [];
+    const institutionalTimings = new Map();
+    for (let index = 0; index < 14; index += 1) {
+      const day = new Date(Date.parse(institutionalToday + "T00:00:00Z") - index * 86_400_000).toISOString().slice(0, 10);
+      const weekday = new Date(day + "T00:00:00Z").getUTCDay();
+      const data = weekday === 0 || weekday === 6 ? [] : [{ exchange: "NSE", start_time: Date.parse(day + "T03:45:00Z"), end_time: Date.parse(day + "T10:00:00Z") }];
+      institutionalTimings.set(day, data);
+      if (data.length && data[0].end_time <= institutionalNow) institutionalSessions.push(day);
+    }
+    const currentQuarterStart = Date.UTC(Number(institutionalToday.slice(0, 4)), Math.floor((Number(institutionalToday.slice(5, 7)) - 1) / 3) * 3, 1);
+    const quarterLabel = (offset) => {
+      const date = new Date(currentQuarterStart);
+      date.setUTCMonth(date.getUTCMonth() - offset * 3); date.setUTCDate(0);
+      return `${["Mar", "Jun", "Sep", "Dec"][Math.floor(date.getUTCMonth() / 3)]} ${date.getUTCFullYear()}`;
+    };
+    const holdingHistory = (current, previous) => [{ period: quarterLabel(0), value: current }, { period: quarterLabel(1), value: previous }];
     globalThis.fetch = async (input, init) => {
       const target = String(input);
+      if (target.includes("/v2/market/timings/")) {
+        const day = new URL(target).pathname.split("/").at(-1);
+        assert(institutionalTimings.has(day), "institutional timing fixture date must be bounded");
+        return new Response(JSON.stringify({ status: "success", data: institutionalTimings.get(day) }), { status: 200, headers: { "content-type": "application/json" } });
+      }
       if (target.includes("/v2/historical-candle/NSE_EQ%7CINE002A01018/")) {
         const candles = proofCandles().map((candle) => [candle.date, candle.open, candle.high, candle.low, candle.close, candle.volume]);
         return new Response(JSON.stringify({ status: "success", data: { candles } }), { status: 200, headers: { "content-type": "application/json" } });
       }
       if (target.includes("/v2/fundamentals/INE002A01018/share-holdings")) {
         return new Response(JSON.stringify({ status: "success", data: [
-          { category: "fii", history: [{ period: "Mar 2026", value: 18.67 }, { period: "Dec 2025", value: 19.09 }] },
-          { category: "other_dii", history: [{ period: "Mar 2026", value: 10.77 }, { period: "Dec 2025", value: 10.66 }] },
-          { category: "mutual_funds", history: [{ period: "Mar 2026", value: 2.25 }, { period: "Dec 2025", value: 2.1 }] }
+          { category: "fii", history: holdingHistory(18.67, 19.09) },
+          { category: "other_dii", history: holdingHistory(10.77, 10.66) },
+          { category: "mutual_funds", history: holdingHistory(2.25, 2.1) }
         ] }), { status: 200, headers: { "content-type": "application/json" } });
       }
       if (target.includes("/v2/market/fii")) {
-        return new Response(JSON.stringify({ status: "success", data: { "NSE_EQ|CASH": [
-          { time_stamp: 1777500000000, buy_amount: 20000000000, sell_amount: 15000000000 },
-          { time_stamp: 1777413600000, buy_amount: 12000000000, sell_amount: 13000000000 }
-        ] } }), { status: 200, headers: { "content-type": "application/json" } });
+        return new Response(JSON.stringify({ status: "success", data: { "NSE_EQ|CASH": institutionalSessions.slice(0, 5).map((day) =>
+          ({ time_stamp: Date.parse(day + "T10:00:00Z"), buy_amount: 10_800_000_000, sell_amount: 10_000_000_000 })) } }), { status: 200, headers: { "content-type": "application/json" } });
       }
       if (target.includes("/v2/market/dii")) {
-        return new Response(JSON.stringify({ status: "success", data: { "NSE_EQ|CASH": [
-          { time_stamp: 1777500000000, buy_amount: 15000000000, sell_amount: 10000000000 },
-          { time_stamp: 1777413600000, buy_amount: 11000000000, sell_amount: 9000000000 }
-        ] } }), { status: 200, headers: { "content-type": "application/json" } });
+        return new Response(JSON.stringify({ status: "success", data: { "NSE_EQ|CASH": institutionalSessions.slice(0, 5).map((day) =>
+          ({ time_stamp: Date.parse(day + "T10:00:00Z"), buy_amount: 11_400_000_000, sell_amount: 10_000_000_000 })) } }), { status: 200, headers: { "content-type": "application/json" } });
       }
       return institutionalNativeFetch(input, init);
     };
@@ -1151,7 +1172,9 @@ async function main() {
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ instruments: [{ symbol: "RELIANCE", instrument_key: "NSE_EQ|INE002A01018" }] })
       });
-      assert(institutional.response.status === 200 && institutional.body.ok === true, "Upstox institutional endpoint should return live evidence");
+      assert(institutional.response.status === 200 && institutional.body.ok === true, "Upstox institutional endpoint should return structured evidence");
+      assert(institutional.body.stocks[0].status === "REPORTED" && institutional.body.stocks[0].current_evidence_eligible === true, "quarterly report must be labelled as reported, with explicit currentness");
+      assert(institutional.body.market.calendar.status === "VERIFIED" && institutional.body.market.feeds.fii.days_available === 5, "five-day flow requires five verified completed sessions");
       assert(institutional.body.stocks[0].fii_holding_pct === 18.67, "stock FII holding should come from Upstox share holdings");
       assert(institutional.body.stocks[0].fii_change_pp === -0.42, "stock FII quarter change should retain exact percentage points");
       assert(institutional.body.stocks[0].dii_holding_pct === 13.02, "stock DII holding should include other DII and mutual funds");
@@ -1167,9 +1190,9 @@ async function main() {
       const fiiHoldingNode = institutionalRow?.parameter_tunnel?.results?.find((item) => item.id === "NO03");
       const fiiMarketNode = institutionalRow?.parameter_tunnel?.results?.find((item) => item.id === "NO08");
       assert(institutionalScan.response.status === 200 && institutionalRow?.fii_holding_pct === 18.67, "Upstox scanner row should carry stock FII holding evidence");
-      assert(fiiHoldingNode?.state === "MISS" && fiiHoldingNode?.value === -0.42, "FII holding parameter should evaluate the live quarter change");
-      assert(fiiMarketNode?.state === "HIT" && fiiMarketNode?.value === 400, "FII market regime parameter should evaluate the live five-day flow");
-      assert(institutionalRow?.parameter_selection_effect?.institutional_overlay === "ashstocks-upstox-institutional-v0.1", "scanner score proof should identify the Upstox institutional overlay");
+      assert(fiiHoldingNode?.state === "MISS" && fiiHoldingNode?.value === -0.42, "FII holding parameter should evaluate the eligible reported quarter change");
+      assert(fiiMarketNode?.state === "HIT" && fiiMarketNode?.value === 400, "FII market regime parameter should evaluate the verified five-session flow");
+      assert(institutionalRow?.parameter_selection_effect?.institutional_overlay === "ashstocks-upstox-institutional-v0.2", "scanner score proof should identify the Upstox institutional overlay");
       assert(institutionalRow?.score === institutionalRow?.selection_score, "institutional evidence must preserve the primary scanner rank");
       assert(institutionalRow?.parameter_selection_effect?.status === "ADVISORY_ONLY", "institutional score must remain an advisory challenger");
     } finally {
