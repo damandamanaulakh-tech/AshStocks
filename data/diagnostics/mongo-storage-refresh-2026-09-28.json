@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "kind": "read_only_atlas_and_render_observation",
+  "observation_window_utc": {"start": "2026-09-28T18:06:40Z", "end": "2026-09-28T18:11:03Z"},
+  "feature_source_commit": "5904d6b57e6fb801a5585ba8f450ec7fe4ba30b6",
+  "deployed_commit": "226e1394d5af3f0c380593d58917b8d2ee5c13e8",
+  "authority": "Diagnosis and aggregate-only audit publication; no production mutation or cleanup authorization",
+  "cluster_ui": {
+    "tier": "Free", "version": "8.0.32", "region": "AWS Mumbai ap-south-1", "replica_nodes": 3,
+    "displayed_data_size_mb": 333.58, "displayed_limit_mb": 512, "displayed_usage_percent": 65,
+    "connections": 12, "connection_limit": 500, "backups": "Inactive",
+    "banner": "Nearing Storage Limit (65%)", "displayed_30_day_chart_peak_mb": 513.13,
+    "platform_status_is_project_alert_clearance": false
+  },
+  "visible_database_inventory": ["AM07", "G07", "admin", "ashstock", "local", "site_control", "sourceborn", "sourceborn_sburr", "test"],
+  "sample_mflix": {"visible_in_inventory": false, "absence_cause_known": false, "deleted_by_this_work": false, "last_use_or_repository_attribution_established": false},
+  "ashstock_database_ui": {"logical_data": "316.15 MB", "allocated_storage": "72.42 MB", "collections": 4, "indexes": 9},
+  "collections_ui": [
+    {"name": "app_state", "logical_data": "8.88 MB", "allocated_storage": "5.11 MB", "documents_display": "1", "indexes": 2, "index_size": "73.73 kB", "preserve": true},
+    {"name": "paper_ledger", "logical_data": "555.32 kB", "allocated_storage": "253.95 kB", "documents_display": "219", "indexes": 3, "index_size": "184.32 kB", "preserve": true},
+    {"name": "scan_ledger", "logical_data": "306.71 MB", "allocated_storage": "67.02 MB", "documents_display": "2.1K", "indexes": 2, "index_size": "184.32 kB", "preserve_until_verified_archive_and_explicit_approval": true},
+    {"name": "upstox_auth", "logical_data": "664.00 B", "allocated_storage": "36.86 kB", "documents_display": "1", "indexes": 2, "index_size": "73.73 kB", "preserve": true}
+  ],
+  "scan_ledger_aggregate": {
+    "execution": {"maxTimeMS": 15000, "automatic_preview": false, "explicit_runs_this_turn": 1, "saved_pipeline": false, "write_stages": false},
+    "pipeline": [
+      {"$project": {"_id": 0, "bytes": {"$bsonSize": "$$ROOT"}, "createdAt": {"$convert": {"input": "$createdAtDate", "to": "date", "onError": null, "onNull": null}}, "createdAtTextDate": {"$convert": {"input": "$createdAt", "to": "date", "onError": null, "onNull": null}}, "createdAtType": {"$type": "$createdAtDate"}, "rows": {"$cond": [{"$isArray": "$rows"}, {"$size": "$rows"}, null]}}},
+      {"$facet": {
+        "totals": [{"$group": {"_id": null, "documents": {"$sum": 1}, "bson_bytes": {"$sum": "$bytes"}, "oldest": {"$min": "$createdAt"}, "newest": {"$max": "$createdAt"}, "largest_document_bytes": {"$max": "$bytes"}, "rows_min": {"$min": "$rows"}, "rows_max": {"$max": "$rows"}, "invalid_dates": {"$sum": {"$cond": [{"$eq": ["$createdAt", null]}, 1, 0]}}, "creation_date_mismatches": {"$sum": {"$cond": [{"$eq": ["$createdAt", "$createdAtTextDate"]}, 0, 1]}}}}, {"$project": {"_id": 0}}],
+        "months": [{"$group": {"_id": {"$dateToString": {"date": "$createdAt", "format": "%Y-%m", "timezone": "UTC", "onNull": "INVALID"}}, "documents": {"$sum": 1}, "bson_bytes": {"$sum": "$bytes"}}}, {"$sort": {"_id": 1}}],
+        "date_types": [{"$group": {"_id": "$createdAtType", "documents": {"$sum": 1}}}]
+      }}
+    ],
+    "result": {
+      "totals": [{"documents": 2057, "bson_bytes": 306714502, "oldest": {"$date": "2026-07-13T00:40:39.682Z"}, "newest": {"$date": "2026-09-21T09:40:11.424Z"}, "largest_document_bytes": 176313, "rows_min": 60, "rows_max": 75, "invalid_dates": 0, "creation_date_mismatches": 0}],
+      "months": [{"_id": "2026-07", "documents": 270, "bson_bytes": 32238134}, {"_id": "2026-08", "documents": 1091, "bson_bytes": 168592829}, {"_id": "2026-09", "documents": 696, "bson_bytes": 105883539}],
+      "date_types": [{"_id": "date", "documents": 2057}]
+    },
+    "indexes_observed": [{"name": "_id_", "key": {"_id": 1}, "type": "REGULAR", "properties": ["UNIQUE"], "status": "READY"}, {"name": "createdAt_-1", "key": {"createdAt": -1}, "type": "REGULAR", "status": "READY"}],
+    "ttl_index_shown": false
+  },
+  "comparison_to_2026_09_24": {
+    "source": "docs/MONGO_STORAGE_DIAGNOSIS_2026-09-24.md",
+    "previous_documents": 2059, "previous_bson_bytes": 306852328,
+    "net_documents_change": -2, "net_bson_bytes_change": -137826, "net_change_month": "2026-07",
+    "specific_changed_records_or_actor_identified": false
+  },
+  "conditional_archive_discussion": {
+    "namespace": "ashstock.scan_ledger", "scope": "Stored createdAtDate in July and August 2026 UTC",
+    "documents_at_observation": 1361, "bson_bytes_at_observation": 200830963,
+    "remaining_september_documents": 696, "remaining_september_bson_bytes": 105883539,
+    "guaranteed_quota_reclamation": null, "backup_verified": false, "isolated_restore_verified": false, "deletion_approved": false,
+    "latest_250_response_preservation_proven": false
+  },
+  "render_observation": {
+    "authenticated": true, "service": "AshStocks", "branch": "main", "runtime": "Node", "tier": "Free",
+    "last_successfully_deployed_commit": "226e1394d5af3f0c380593d58917b8d2ee5c13e8", "latest_deploy_trigger": "Manual", "latest_deploy_age_display": "12h ago",
+    "log_search": {"type": "Application logs", "range": "Last 7 days", "query": "failed", "completed_visible_results": 3, "exhaustive_all_errors_claim": false},
+    "failures": [
+      {"date": "2026-09-28", "display_time_ist": "14:54:41", "utc": "2026-09-28T09:24:41Z", "message_redacted": "Upstox OAuth paper-engine run failed: connection 12 to [Mongo endpoint]:27017 timed out"},
+      {"date": "2026-09-28", "display_time_ist": "17:44:28", "utc": "2026-09-28T12:14:28Z", "message_redacted": "Upstox OAuth paper-engine run failed: connection 4 to [Mongo endpoint]:27017 timed out"},
+      {"date": "2026-09-28", "display_time_ist": "23:32:31", "utc": "2026-09-28T18:02:31Z", "message_redacted": "Upstox OAuth paper-engine run failed: connection 18 to [Mongo endpoint]:27017 timed out"}
+    ],
+    "source_interpretation": "The deployed OAuth callback schedules runPaperEngineOnce after exchangeUpstoxOAuthCode resolves. This prefix identifies a rejected paper-engine invocation, not an upstream Upstox exchange error. Without a stack or operation tag it does not identify the failing Mongo operation or whether monitoring/orders had already run.",
+    "source_references_at_deployed_commit": ["server-upstox-oauth-patch.mjs:251-260", "server-paper-engine-autobuy-patch.mjs:335-361", "server-paper-engine-autobuy-patch.mjs:521", "server-paper-ledger-retention-patch.mjs:293-299", "vendor/base-server-37a9e9ceacabd33bc5a2085ad621e368f8fc0cd8.mjs:587-649"],
+    "quota_rejection_observed_in_these_messages": false, "ram_exhaustion_observed_in_these_messages": false, "recovery_proven": false
+  },
+  "local_backup_access": {"mongo_uri_env_presence": {"MONGODB_URI": false, "MONGODB_URL": false, "MONGO_URI": false, "MONGO_URL": false}, "mongosh_in_path": false, "mongodump_in_path": false, "mongorestore_in_path": false, "scoped_to_current_process_and_path": true},
+  "limitations": [
+    "UI measurements are rounded and sampled; database/cluster totals are not a consistent snapshot and are not exactly reconciled.",
+    "BSON document bytes exclude index bytes and are not allocated/compressed storage or a guaranteed quota decrement.",
+    "Creation timestamps are not last access or last attempted write. No raw per-record comparison against September 24 was available.",
+    "The log search is bounded to the chosen term and retained visible results, not a complete production trace. The timeout cause remains unresolved.",
+    "No authentication document body, credential, raw scan payload or Mongo endpoint is included in this evidence.",
+    "No Mongo backup, restore, write, delete, index change, TTL, import, scheduler pause, credential/security change, deployment or trade was performed."
+  ],
+  "primary_references": ["https://www.mongodb.com/docs/manual/reference/operator/aggregation/bsonsize/", "https://www.mongodb.com/docs/atlas/reference/free-shared-limitations/", "https://www.mongodb.com/docs/database-tools/mongodump/"]
+}
