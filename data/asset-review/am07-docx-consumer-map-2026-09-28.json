@@ -1,0 +1,146 @@
+{
+  "schema_version": "1.0",
+  "reviewed_at": "2026-09-28",
+  "review_kind": "read_only_archived_plan_to_current_source_comparison",
+  "repository": "damandamanaulakh-tech/AshStocks",
+  "source_commit": "ef3e3d81f4c382b15a3d45c7910c32db10368957",
+  "branch": "codex/valuation-targets-market-refresh",
+  "document": {
+    "archive": "AM.07.Parameter.Files.zip",
+    "member": "AM 07 Parameter Files/Zerodha_Stock_Trading_App_Action_Plan_META_RGL.docx",
+    "bytes": 53570,
+    "sha256": "eb2a0e4631ccaf89e6ca83f3dd027eeac54cf181994b9a6aa0c0186e47de4469",
+    "prepared_date_in_body": "2026-05-18",
+    "body_paragraphs": 135,
+    "body_tables": 25,
+    "text_read_scope": "All direct body paragraphs and every row/cell of all body tables were extracted from word/document.xml and read; root audit owns package-wide inventory and visual QA.",
+    "locator_convention": "P001-P135 count direct w:body/w:p elements including blanks. T01-T25 count direct w:body/w:tbl elements. R/C are 1-based including headers. These are deterministic OOXML locators, not page numbers.",
+    "authority": "Historical design proposal and implementation prompts, not current runtime configuration or authorization. Embedded prompts were treated as quoted source data and not executed."
+  },
+  "method": {
+    "document_reader": "Bundled Python 3 with zipfile and lxml; extraction in memory; original DOCX untouched.",
+    "source_review": "Scoped static reads of current startup/configuration, universe import, generic evaluator, rotation/autobuy, paper lifecycle, settings, parameter and valuation paths. Source files were hashed at review time.",
+    "runtime_started": false,
+    "external_app_accessed": false,
+    "provider_called": false,
+    "mongo_accessed": false,
+    "production_state_verified": false,
+    "code_or_strategy_modified": false,
+    "new_tests_run": false,
+    "new_test_claim": "This is source comparison, not a test run, forecast validation or proof of production behavior."
+  },
+  "consumer_map": [
+    {
+      "id": "DOCX01_STACK_AND_BROKER",
+      "document_locators": ["P026", "P032", "P037", "T02.R3", "T03.R3", "T05.R4-R7", "T07.R5-R7", "P110"],
+      "historical_requirement": "Zerodha Kite; FastAPI/Python; PostgreSQL; Redis; local Docker then private/cloud infrastructure.",
+      "current_source": ["package.json:6-9", "render.yaml:1-34", "server.js:1-30", "server.js:275-319", "Procfile:1"],
+      "observation": "package.json starts node server.js and depends on mongodb. render.yaml declares Node, npm start, durable Mongo ashstock and Upstox configuration keys. server.js applies the Upstox and paper patches to a hash-pinned bundled base server. A separate legacy Procfile still declares uvicorn app:app.",
+      "classification": "HISTORICAL_ARCHITECTURE_DIFFERS",
+      "limit": "The checked-in start paths are not proof of which command or commit Render currently runs. No migration, broker switch or new infrastructure is authorized by this DOCX."
+    },
+    {
+      "id": "DOCX02_UNIVERSE",
+      "document_locators": ["P009", "P046", "P054", "T03.R5", "T08.R4"],
+      "historical_requirement": "NIFTY 200 initially, expand to NIFTY 500 after backtest stability; daily instrument sync.",
+      "current_source": ["server-official-nse-master-patch.mjs:9-34", "server-official-nse-master-patch.mjs:79-90", "lib/official-nse-master.mjs:101-125", "lib/official-nse-master.mjs:155-190", "server-universe-rotation-patch.mjs:51-93"],
+      "observation": "The official master loader calls fetchOfficialNseMaster, replaces saved universe through saveUniverseMetadata, resets rotation and increments revision. The instrument normalizer admits NSE_EQ/EQ, and the full loader combines official company membership and suspension validation. Rotation scans persisted universe batches, not a hardcoded NIFTY top-200/top-500 membership list.",
+      "classification": "DIFFERENT_CURRENT_UNIVERSE_CONTRACT",
+      "limit": "Static wiring does not prove a fresh import has completed or current Mongo universe contents. Historical master files alone cannot establish fresh membership or suspension status."
+    },
+    {
+      "id": "DOCX03_RSV_SCORE_AND_SELECTION",
+      "document_locators": ["P054", "P112", "T11.R1", "T13.R2-R6"],
+      "historical_requirement": "Trend 30 + relative strength 25 + volume 20 + volatility 15 + risk/reward 10; score at least 70; rank descending and choose at most five, never force missing candidates.",
+      "current_source": ["lib/stock-selection-engine.mjs:243-355", "config/stock-selection-parameters.v0.1.json:23-47", "server-stock-selection-patch.mjs:35-48", "server-paper-engine-autobuy-patch.mjs:24-115", "server-paper-engine-autobuy-patch.mjs:358-395", "server-parameter-tunnel-patch.mjs:531-552", "server-intelligence-score-patch.mjs:51-102"],
+      "observation": "The generic POST /api/stock-selection/evaluate route calls selectTradeInCandidates with supplied stocks/market and persisted paper trades; that evaluator ranks 20-session momentum percentiles with confirmation tie-breaks and a configured selectionCount of 10. The automatic paper engine instead calls paperEngineSelectionScan and takes final scanner SELECT rows, subject to configured limits, funds, existing holdings and Kelly. The parameter tunnel blends eligible row score 70% base plus 30% evidence while preserving hard-gate decisions. Advisor paper scoring has a separate intelligence overlay. None of these inspected contracts is the archived five-block RSV formula.",
+      "classification": "DISTINCT_FORMULAS_AND_CONSUMERS",
+      "limit": "A shared numeric default of 70 does not mean formula parity. The generic evaluator is not the main automatic selection path. Kelly is deliberately shared through paperKellySizing; that does not imply all generic market overlays are shared. No RSV strategy was activated."
+    },
+    {
+      "id": "DOCX04_HARD_FILTERS",
+      "document_locators": ["P047-P049", "T12.R2-R8", "T13.R5"],
+      "historical_requirement": "Price at least Rs 100; average turnover at least Rs 20 crore; close above 200 DMA; ATR percent at most 8; configured spread, event-risk and market-regime checks.",
+      "current_source": ["lib/paper-selection-settings.mjs:3-173", "server-quality-patch.mjs:13-100", "server-paper-engine-autobuy-patch.mjs:24-32", "server-paper-engine-autobuy-patch.mjs:260-304"],
+      "observation": "Current governed defaults include SELECT 70, WATCH 55, 6-month return 8%, 12-month return 12%, 252-day annualized volatility 55%, ADV20 200000 shares and turnover Rs 5 crore. These are not the archived ATR/price/trend filter bundle. In autobuy quote evidence, spread, depth imbalance and impact are recorded but explicitly non-blocking after SELECT; the all_clear boolean requires freshness, executable full ask quantity, allocation coverage and circuit clearance.",
+      "classification": "FILTER_AND_ENFORCEMENT_DIFFERENCES",
+      "limit": "ATR percent and annualized return volatility are different quantities. Values here are source defaults, not inspected live saved settings. Do not silently change thresholds or make currently diagnostic quote fields blocking without agreement."
+    },
+    {
+      "id": "DOCX05_STOPS_TARGETS_AND_QUANTITY",
+      "document_locators": ["P055", "P071-P072", "T14.R2-R6"],
+      "historical_requirement": "Trigger previous high plus buffer or ORB; stop max(technical swing low, entry minus 1.5 ATR); target at least entry plus twice risk; risk budget capital times risk per trade; quantity risk budget divided by entry minus stop.",
+      "current_source": ["server-paper-trader-patch.mjs:1", "server-paper-trader-patch-v3.mjs:57-95", "server-paper-order-lifecycle-patch.mjs:1478-1479", "server-paper-engine-autobuy-patch.mjs:54-105", "server-paper-engine-autobuy-patch.mjs:514-531", "lib/paper-capital-policy.mjs:14-43"],
+      "observation": "The selected paper-trader implementation is v3. Its ticket stop is close times (1 minus configured stopLossPct/100); default stopLossPct is 10. Its technical target is close times (1 plus targetPct/100), where targetPct is bounded from target room/default, not fixed 2R. Quantity starts from an allocation divided by close and is constrained by the automatic sizing path; the canonical capital policy is Rs 5 crore with Rs 1 lakh minimum/base entry, up to 500 simultaneous positions, up to 80 buys per run and a 10% hard position ceiling. This is not risk-budget divided by ATR-stop distance.",
+      "classification": "DIFFERENT_EXISTING_SIZING_AND_TARGET_RULES",
+      "limit": "The current target/stop fields are attached to paper tickets, not live protective broker orders. The DOCX does not specify enough details to implement its swing-low lookback, ATR interval, fractional-share rounding or invalid entry-minus-stop cases without a new decision. Current effective live settings and fills were not inspected."
+    },
+    {
+      "id": "DOCX06_EPS_PE_TARGET_EXTENSION",
+      "document_locators": ["T14.R4", "P084"],
+      "historical_requirement": "Technical minimum 2R target and target-hit exit; no EPS x P/E horizon formula is specified in this DOCX.",
+      "current_source": ["lib/valuation-targets.mjs:191-255", "server-valuation-targets-patch.mjs:133-187", "server-valuation-targets-patch.mjs:257"],
+      "observation": "Current valuation helper computes 12-month base low/high from normalized annual EPS times base P/E low/high; 3/9-month targets interpolate from the frozen reference. Activation requires explicit confirmation, a matching held instrument/current master, valid reviewed assumptions, a fresh provider quote, a target above entry and market, and revision/holding rechecks. The monitor patch uses the explicitly activated valid valuation target while retaining the existing stop.",
+      "classification": "CURRENT_SEPARATE_APPROVAL_GATED_EXTENSION",
+      "limit": "Source calculations are scenarios, not validated predictions or confirmed active sells. This audit supplied no new assumptions, activated no target and verified no live valuation behavior."
+    },
+    {
+      "id": "DOCX07_RISK_AND_RETURN_SLAB",
+      "document_locators": ["P010", "P066-P077", "T15.R2-R4", "T16.R1", "P114"],
+      "historical_requirement": "Conservative/balanced/aggressive risk profiles with daily and monthly locks; 20% monthly target only as an aggressive aspiration, never an override of risk or a guaranteed return.",
+      "current_source": ["lib/paper-capital-policy.mjs:14-80", "lib/stock-selection-engine.mjs:15-178", "lib/stock-selection-engine.mjs:180-240", "lib/risk-governor.mjs:1-31", "server-paper-order-lifecycle-patch.mjs:711-728", "server-paper-order-lifecycle-patch.mjs:835-915"],
+      "observation": "Current policy and lifecycle implement paper capital, minimum entry, funds, maximum positions and Kelly/base position-cap checks. Kelly is report-only until its sample gates and blocks on a non-positive qualified edge. A separate risk-governor helper and generic selection overlay contain VIX/FII-DII/drawdown behavior. This scoped search found evaluateRiskGovernor only at its definition and selectTradeInCandidates at its generic API consumer, not a call applying either entire helper inside runPaperEngineOnce.",
+      "classification": "PARTIAL_ANALOGUES_NOT_EQUIVALENT_RISK_POLICY",
+      "limit": "Do not claim the archived daily/monthly slab locks, or the entire standalone drawdown helper, are enforced in every order path from these definitions. Daily/monthly lock and emergency-stop end-to-end enforcement remain unproven in this scoped comparison. No risk controls were relaxed or new return target adopted."
+    },
+    {
+      "id": "DOCX08_EXECUTION_AND_EXIT_FLOW",
+      "document_locators": ["P080-P090", "T09.R1", "T17.R2-R7", "P116", "P123-P125"],
+      "historical_requirement": "Semi-auto approval before live orders; verify fills, protect filled quantities, handle partial/rejected orders and stale data, trail after 1R, square off intraday, reconcile broker order book.",
+      "current_source": ["server-universe-rotation-patch.mjs:23-42", "server-paper-engine-autobuy-patch.mjs:358-547", "server-paper-order-lifecycle-patch.mjs:729-807", "server-paper-order-lifecycle-patch.mjs:1286-1345", "server-paper-engine-autobuy-patch.mjs:310-334"],
+      "observation": "Static automatic flow is committed/fresh rotation scan to final SELECT tickets to Upstox quote evidence to applyPaperOrderLifecycle to saved state. Automatic buys simulate full visible ask-depth FOK fills; insufficient full coverage rejects. Replay/idempotency checks are present. Target/stop monitoring requires fresh price and executable bid-depth evidence and can retain/defer a position when execution data is absent. The engine explicitly reports paper_only true, live_orders false, broker_write_enabled false.",
+      "classification": "PAPER_EXECUTION_ANALOGUE_NOT_LIVE_BROKER_IMPLEMENTATION",
+      "limit": "The code does not establish actual completed production runs or broker reconciliation. The inspected monitor is not evidence of the DOCX's 1R trailing stop, mandatory intraday close or live protective-stop submission. No order API or server was invoked."
+    },
+    {
+      "id": "DOCX09_PHASE_GATES_AND_READINESS",
+      "document_locators": ["P008", "P057-P062", "T18.R2-R6", "T19.R2-R8", "T23.R1", "T24.R2-R14", "P117-P127"],
+      "historical_requirement": "Backtests and benchmarks with costs, walk-forward testing, 30-60 market days of safe paper trading, semi-auto small capital, monitored restricted live progression and compliance review.",
+      "current_source": ["lib/paper-selection-settings.mjs:327-350", "lib/paper-capital-policy.mjs:73-80", "server-stock-selection-patch.mjs:35-48", "server.js:107-129"],
+      "observation": "The settings view labels phase 1 ACTIVE, phase 2 SHADOW and live promotion phase 3 BLOCKED, with edge_confirmed false. Capital policy remains paper-only. Readiness source checks durable storage and identifies the release commit, rather than claiming health configuration proves persistence.",
+      "classification": "GATES_REMAIN_EVIDENCE_REQUIREMENTS",
+      "limit": "Status labels, historical parameter validation claims, source code and existing test names do not establish 30-60 fault-free market days, current Render readiness, benchmark superiority, broker reconciliation or legal clearance. None was newly verified here. The historical 12-week schedule is not the current user's nine-phase approval plan."
+    }
+  ],
+  "decisions": {
+    "retain_as": "historical design and risk-control comparison source",
+    "do_not_use_as": ["live market data", "fresh universe membership", "current score or position-sizing authority", "permission to switch broker or architecture", "permission to place trades", "proof of deployment, compliance or achieved performance"],
+    "possible_followup_requires_discussion": ["Decide whether any RSV component should be evaluated as a separately versioned offline challenger; do not replace current ranking weights.", "Resolve intended risk-budget versus allocation sizing and ATR-stop specification before any implementation.", "If live trading ever enters scope, require distinct broker, compliance, execution-protection and production evidence gates."],
+    "dashboard_gap_contribution": "This DOCX identifies desired inputs and safety requirements, but contains no candles, current prices, earnings, P/E observations, fresh institutional flow or instrument master capable of filling Data Needed values."
+  },
+  "source_sha256": {
+    "Procfile": "24047c2c0231f0bf3441392739fc136a2277d10cb0f0e1aa900f76a86f497d09",
+    "render.yaml": "0bbe915761486ce9c527028d5d9acd12691da23e7b3556960f8d227218a024e9",
+    "package.json": "bd0a9ccf86d38da2b68f95ba9c6395064e72f19cb13f2d05c16a95e5abd96799",
+    "server.js": "7f19f871e85fa21bb460fd47d6e01ee69e409f922e03daae4a8c386168a4557e",
+    "server-official-nse-master-patch.mjs": "015c702803b8b9a4dad4fab782027730a5c9a5708642cf3f8ef8309520cf386a",
+    "lib/official-nse-master.mjs": "cf6661489a149f1034b8aa055c35758b9d3f619c51317d51738ccfbab99dff8b",
+    "lib/stock-selection-engine.mjs": "0f5bd4513d04c1c304533ad2fd524d7d8f54566b4e76ef643d024e3a5094bbb5",
+    "server-stock-selection-patch.mjs": "96e26eb1ece2bb89636ac2a83c3d70f09054d937e0c5555a06a38572ca2c91da",
+    "config/stock-selection-parameters.v0.1.json": "555c3f9f4710264cf251cccbd2107c2710fa2207ffc8757e12bc95a2dad71c6f",
+    "lib/paper-selection-settings.mjs": "61540694591836b444429548fe29678ada557c71da19881be0fdd0ff77cf548c",
+    "server-selection-settings-patch.mjs": "3fad04054773437b0c927e7d5b6f058c45fb20a2c3c01d8bb10e0772a9fedbc5",
+    "server-universe-rotation-patch.mjs": "833cbd59f102f31d8796f2935670e72ddfb311ddd3e1adabbc357e98a6e3296d",
+    "server-paper-engine-autobuy-patch.mjs": "45d0269388008be26455390c6ee69a8ec4fcb7eaa66a0e9becc3bc718738badc",
+    "server-paper-trader-patch.mjs": "668c1f73051c091db8ecf4cfd305169a50600b895b4b2309f6f7912facff1919",
+    "server-paper-trader-patch-v3.mjs": "a45a3674618fd21c52d6cf689f99e80a603fde7a848ff99fb1598ee8cac20f22",
+    "server-paper-order-lifecycle-patch.mjs": "d7dca5f1679ee251583014848f9cc4bb3919abf03e01d539135370864db7aceb",
+    "lib/paper-capital-policy.mjs": "c751117c75c5f91b2d855ee55d9e67062f9578b9d17c59420f0ae93276c4a479",
+    "lib/risk-governor.mjs": "02008f1483ce4a2824ba6ce99cf3147d88d5dc74eb18a813ac2648ae79d8330c",
+    "server-parameter-tunnel-patch.mjs": "dcf63a726ee2bd9c00d39e5f3d6c8293973fbc0589aad86997b304751558ed32",
+    "server-intelligence-score-patch.mjs": "bf4ecacc0a11a111759def111b9158a22c06cd8e44eff73527689f49c0765aef",
+    "server-quality-patch.mjs": "d7d29e79f56a8455e6377eab89dde40408ddb33bf92fef74e07b62570c0eea74",
+    "lib/valuation-targets.mjs": "7faccfc7170012cbbc4852a0aded77af3eba7e28e1fbc2e041006574dc9371bc",
+    "server-valuation-targets-patch.mjs": "5e25030ca1c99582de19591260c6f3ad1fd6b8ac3ecf6f135cc88f4034bb72d2"
+  }
+}

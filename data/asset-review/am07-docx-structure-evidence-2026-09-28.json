@@ -1,0 +1,949 @@
+{
+  "schema_version": 1,
+  "audit_date": "2026-09-28",
+  "scope": "Read-only independent package-integrity and full stored-text review. Visual page review and current-runtime mapping are separate root-agent evidence.",
+  "source": {
+    "archive": "AM.07.Parameter.Files.zip",
+    "archive_bytes": 10303731,
+    "archive_sha256": "652be4ddb2b40915543ad848b2bfa10d011c6c2c5723a6e6a3480a85ddb2e2e5",
+    "member": "AM 07 Parameter Files/Zerodha_Stock_Trading_App_Action_Plan_META_RGL.docx",
+    "bytes": 53570,
+    "sha256": "eb2a0e4631ccaf89e6ca83f3dd027eeac54cf181994b9a6aa0c0186e47de4469",
+    "archive_member_crc32": "fddd7f62",
+    "archive_member_timestamp_without_timezone": [
+      2026,
+      7,
+      30,
+      16,
+      54,
+      50
+    ],
+    "archive_member_bytes_match_extracted_copy": true
+  },
+  "parts": [
+    {
+      "path": "[Content_Types].xml",
+      "bytes": 1994,
+      "compressed_bytes": 424,
+      "crc32": "00e1172e",
+      "crc_valid": true,
+      "sha256": "479ad1a2258771db93540fbde6ad43e861d8d39dd2559e3f6db17286b11cc6ab",
+      "xml_valid": true,
+      "text_node_characters": 0,
+      "word_text_nodes": 0,
+      "paragraph_count": 0
+    },
+    {
+      "path": "_rels/.rels",
+      "bytes": 734,
+      "compressed_bytes": 248,
+      "crc32": "404b2679",
+      "crc_valid": true,
+      "sha256": "a9ae57efe9186f07d48303bcac5d54c7e359bf3f503939c03ad2954e5c59a5c4",
+      "xml_valid": true,
+      "text_node_characters": 0,
+      "word_text_nodes": 0,
+      "paragraph_count": 0
+    },
+    {
+      "path": "docProps/core.xml",
+      "bytes": 721,
+      "compressed_bytes": 361,
+      "crc32": "530b8688",
+      "crc_valid": true,
+      "sha256": "d14be8284e406d14dc2a576b19f15e7f637b955f9e27a3d9ed871ec99606f7ba",
+      "xml_valid": true,
+      "text_node_characters": 76,
+      "word_text_nodes": 0,
+      "paragraph_count": 0
+    },
+    {
+      "path": "docProps/app.xml",
+      "bytes": 1132,
+      "compressed_bytes": 491,
+      "crc32": "17dbdbf4",
+      "crc_valid": true,
+      "sha256": "be664981c3141cddfc59362beb287ebf20d0773660e2dd6faac5968a5930a081",
+      "xml_valid": true,
+      "text_node_characters": 216,
+      "word_text_nodes": 0,
+      "paragraph_count": 0
+    },
+    {
+      "path": "word/document.xml",
+      "bytes": 150418,
+      "compressed_bytes": 16075,
+      "crc32": "f5208f88",
+      "crc_valid": true,
+      "sha256": "18c66278068f4b4d0e24a0b407d990bee5a730288ec7de2d5bf7653c0e260267",
+      "xml_valid": true,
+      "text_node_characters": 25030,
+      "word_text_nodes": 733,
+      "paragraph_count": 637
+    },
+    {
+      "path": "word/_rels/document.xml.rels",
+      "bytes": 1484,
+      "compressed_bytes": 329,
+      "crc32": "fd533323",
+      "crc_valid": true,
+      "sha256": "157ed86827865b095c9c6b39e7c3451315a4b0d6127daa8636026684d8b9df89",
+      "xml_valid": true,
+      "text_node_characters": 0,
+      "word_text_nodes": 0,
+      "paragraph_count": 0
+    },
+    {
+      "path": "word/styles.xml",
+      "bytes": 349967,
+      "compressed_bytes": 12356,
+      "crc32": "59bd9c94",
+      "crc_valid": true,
+      "sha256": "a16bde3006930f41733595483d92667def82c4cdc8a96a5d9f980f0a26279a9c",
+      "xml_valid": true,
+      "text_node_characters": 0,
+      "word_text_nodes": 0,
+      "paragraph_count": 0
+    },
+    {
+      "path": "word/stylesWithEffects.xml",
+      "bytes": 438131,
+      "compressed_bytes": 13625,
+      "crc32": "d3827960",
+      "crc_valid": true,
+      "sha256": "463ae0928cf0d84775dbf8cf18d6c3029f6707c81bf590f6d6dd8757a5e93f15",
+      "xml_valid": true,
+      "text_node_characters": 88986,
+      "word_text_nodes": 0,
+      "paragraph_count": 0
+    },
+    {
+      "path": "word/settings.xml",
+      "bytes": 2535,
+      "compressed_bytes": 959,
+      "crc32": "5f463fa3",
+      "crc_valid": true,
+      "sha256": "51a0d348fe85965c66e4748a03c3c0d055d78455514f03cb121c334af7d73689",
+      "xml_valid": true,
+      "text_node_characters": 0,
+      "word_text_nodes": 0,
+      "paragraph_count": 0
+    },
+    {
+      "path": "word/webSettings.xml",
+      "bytes": 438,
+      "compressed_bytes": 256,
+      "crc32": "53e55ae8",
+      "crc_valid": true,
+      "sha256": "349d36de7434d09f86987ff671d8814964a0588c1e630c06e562cda7e75e9f95",
+      "xml_valid": true,
+      "text_node_characters": 7,
+      "word_text_nodes": 0,
+      "paragraph_count": 0
+    },
+    {
+      "path": "word/fontTable.xml",
+      "bytes": 2811,
+      "compressed_bytes": 611,
+      "crc32": "73a039fb",
+      "crc_valid": true,
+      "sha256": "79385fb7f60247507ecaffc292e9ebd52ea0657b8634f629ba6fccc54011d6bb",
+      "xml_valid": true,
+      "text_node_characters": 259,
+      "word_text_nodes": 0,
+      "paragraph_count": 0
+    },
+    {
+      "path": "word/theme/theme1.xml",
+      "bytes": 10939,
+      "compressed_bytes": 1734,
+      "crc32": "b8224194",
+      "crc_valid": true,
+      "sha256": "e3a8ab7db9ca7afca56f5f2820a56e8b660016c647773555b060b0a02ac76941",
+      "xml_valid": true,
+      "text_node_characters": 3296,
+      "word_text_nodes": 0,
+      "paragraph_count": 0
+    },
+    {
+      "path": "customXml/item1.xml",
+      "bytes": 262,
+      "compressed_bytes": 167,
+      "crc32": "d73a809e",
+      "crc_valid": true,
+      "sha256": "a86086ffc5d8e83ebd6c71a55d1d2efaa31b137977f5f3a752366e1023612144",
+      "xml_valid": true,
+      "text_node_characters": 0,
+      "word_text_nodes": 0,
+      "paragraph_count": 0
+    },
+    {
+      "path": "customXml/_rels/item1.xml.rels",
+      "bytes": 295,
+      "compressed_bytes": 189,
+      "crc32": "d5e5ca3e",
+      "crc_valid": true,
+      "sha256": "1ca6c9a64edcebe24ee703a54403611b322d96da33371779e742d2d3f7ed7a6c",
+      "xml_valid": true,
+      "text_node_characters": 0,
+      "word_text_nodes": 0,
+      "paragraph_count": 0
+    },
+    {
+      "path": "customXml/itemProps1.xml",
+      "bytes": 354,
+      "compressed_bytes": 225,
+      "crc32": "4d4cbbb5",
+      "crc_valid": true,
+      "sha256": "c542307b13ec29a8b546217bb37936ab4822e044b265d2952985ec3d6afed24e",
+      "xml_valid": true,
+      "text_node_characters": 12,
+      "word_text_nodes": 0,
+      "paragraph_count": 0
+    },
+    {
+      "path": "word/numbering.xml",
+      "bytes": 5513,
+      "compressed_bytes": 875,
+      "crc32": "8987d090",
+      "crc_valid": true,
+      "sha256": "70976f19cbcd896e51890859fe6ecb3467a5a7ad0c040160fedc5a1993cb09ce",
+      "xml_valid": true,
+      "text_node_characters": 0,
+      "word_text_nodes": 0,
+      "paragraph_count": 0
+    },
+    {
+      "path": "word/header1.xml",
+      "bytes": 1465,
+      "compressed_bytes": 468,
+      "crc32": "25414908",
+      "crc_valid": true,
+      "sha256": "0d4b891c5a4f05624cda6534d83224db74c6b372ba351774a63da025fabc0ff6",
+      "xml_valid": true,
+      "text_node_characters": 67,
+      "word_text_nodes": 1,
+      "paragraph_count": 1
+    },
+    {
+      "path": "word/footer1.xml",
+      "bytes": 1513,
+      "compressed_bytes": 500,
+      "crc32": "5c9f219a",
+      "crc_valid": true,
+      "sha256": "891a5370941d71210057a7e041aa87a609bffbfb51ea12cc3f0a3efcb647b14d",
+      "xml_valid": true,
+      "text_node_characters": 118,
+      "word_text_nodes": 1,
+      "paragraph_count": 1
+    },
+    {
+      "path": "docProps/thumbnail.jpeg",
+      "bytes": 8324,
+      "compressed_bytes": 1469,
+      "crc32": "67d6c8a2",
+      "crc_valid": true,
+      "sha256": "96367138dc44ce09bf2c8f0f8e49348a1478d2c5c0af69bbc2bbc38b63cdcead"
+    }
+  ],
+  "relationships": [
+    {
+      "part": "_rels/.rels",
+      "Id": "rId3",
+      "Type": "http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties",
+      "Target": "docProps/core.xml",
+      "resolved_path": "docProps/core.xml",
+      "target_present": true
+    },
+    {
+      "part": "_rels/.rels",
+      "Id": "rId4",
+      "Type": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties",
+      "Target": "docProps/app.xml",
+      "resolved_path": "docProps/app.xml",
+      "target_present": true
+    },
+    {
+      "part": "_rels/.rels",
+      "Id": "rId1",
+      "Type": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument",
+      "Target": "word/document.xml",
+      "resolved_path": "word/document.xml",
+      "target_present": true
+    },
+    {
+      "part": "_rels/.rels",
+      "Id": "rId2",
+      "Type": "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail",
+      "Target": "docProps/thumbnail.jpeg",
+      "resolved_path": "docProps/thumbnail.jpeg",
+      "target_present": true
+    },
+    {
+      "part": "word/_rels/document.xml.rels",
+      "Id": "rId3",
+      "Type": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles",
+      "Target": "styles.xml",
+      "resolved_path": "word/styles.xml",
+      "target_present": true
+    },
+    {
+      "part": "word/_rels/document.xml.rels",
+      "Id": "rId4",
+      "Type": "http://schemas.microsoft.com/office/2007/relationships/stylesWithEffects",
+      "Target": "stylesWithEffects.xml",
+      "resolved_path": "word/stylesWithEffects.xml",
+      "target_present": true
+    },
+    {
+      "part": "word/_rels/document.xml.rels",
+      "Id": "rId5",
+      "Type": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings",
+      "Target": "settings.xml",
+      "resolved_path": "word/settings.xml",
+      "target_present": true
+    },
+    {
+      "part": "word/_rels/document.xml.rels",
+      "Id": "rId6",
+      "Type": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/webSettings",
+      "Target": "webSettings.xml",
+      "resolved_path": "word/webSettings.xml",
+      "target_present": true
+    },
+    {
+      "part": "word/_rels/document.xml.rels",
+      "Id": "rId7",
+      "Type": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable",
+      "Target": "fontTable.xml",
+      "resolved_path": "word/fontTable.xml",
+      "target_present": true
+    },
+    {
+      "part": "word/_rels/document.xml.rels",
+      "Id": "rId8",
+      "Type": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme",
+      "Target": "theme/theme1.xml",
+      "resolved_path": "word/theme/theme1.xml",
+      "target_present": true
+    },
+    {
+      "part": "word/_rels/document.xml.rels",
+      "Id": "rId1",
+      "Type": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/customXml",
+      "Target": "../customXml/item1.xml",
+      "resolved_path": "customXml/item1.xml",
+      "target_present": true
+    },
+    {
+      "part": "word/_rels/document.xml.rels",
+      "Id": "rId2",
+      "Type": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering",
+      "Target": "numbering.xml",
+      "resolved_path": "word/numbering.xml",
+      "target_present": true
+    },
+    {
+      "part": "word/_rels/document.xml.rels",
+      "Id": "rId9",
+      "Type": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/header",
+      "Target": "header1.xml",
+      "resolved_path": "word/header1.xml",
+      "target_present": true
+    },
+    {
+      "part": "word/_rels/document.xml.rels",
+      "Id": "rId10",
+      "Type": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer",
+      "Target": "footer1.xml",
+      "resolved_path": "word/footer1.xml",
+      "target_present": true
+    },
+    {
+      "part": "customXml/_rels/item1.xml.rels",
+      "Id": "rId1",
+      "Type": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/customXmlProps",
+      "Target": "itemProps1.xml",
+      "resolved_path": "customXml/itemProps1.xml",
+      "target_present": true
+    }
+  ],
+  "metadata": {
+    "docProps/core.xml": {
+      "title": null,
+      "subject": null,
+      "creator": "python-docx",
+      "keywords": null,
+      "description": "generated by python-docx",
+      "lastModifiedBy": null,
+      "revision": "1",
+      "created": "2013-12-23T23:15:00Z",
+      "modified": "2013-12-23T23:15:00Z",
+      "category": null
+    },
+    "docProps/app.xml": {
+      "Template": "Normal.dotm",
+      "TotalTime": "0",
+      "Pages": "1",
+      "Words": "0",
+      "Characters": "0",
+      "Application": "Microsoft Macintosh Word",
+      "DocSecurity": "0",
+      "Lines": "0",
+      "Paragraphs": "0",
+      "ScaleCrop": "false",
+      "Manager": null,
+      "Company": null,
+      "LinksUpToDate": "false",
+      "CharactersWithSpaces": "0",
+      "SharedDoc": "false",
+      "HyperlinkBase": null,
+      "HyperlinksChanged": "false",
+      "AppVersion": "14.0000"
+    }
+  },
+  "diagnostics": {
+    "all_package_element_counts": {
+      "tbl": 25,
+      "tr": 166,
+      "tc": 495,
+      "ins": 0,
+      "del": 0,
+      "moveFrom": 0,
+      "moveTo": 0,
+      "comment": 0,
+      "commentRangeStart": 0,
+      "commentReference": 0,
+      "footnote": 0,
+      "endnote": 0,
+      "hyperlink": 0,
+      "fldSimple": 0,
+      "fldChar": 0,
+      "instrText": 0,
+      "drawing": 0,
+      "pict": 0,
+      "object": 0,
+      "altChunk": 0,
+      "txbxContent": 0,
+      "sdt": 0,
+      "vanish": 0,
+      "webHidden": 0,
+      "oMath": 0,
+      "oMathPara": 0,
+      "delText": 0,
+      "lastRenderedPageBreak": 0
+    },
+    "all_xml_part_count": 18,
+    "non_xml_parts": [
+      "docProps/thumbnail.jpeg"
+    ],
+    "duplicate_zip_names": 0,
+    "external_relationships": [],
+    "broken_internal_relationships": [],
+    "namespace_texts_outside_word_paragraphs": {
+      "[Content_Types].xml": [],
+      "_rels/.rels": [],
+      "docProps/core.xml": [
+        {
+          "element": "creator",
+          "text": "python-docx"
+        },
+        {
+          "element": "description",
+          "text": "generated by python-docx"
+        },
+        {
+          "element": "revision",
+          "text": "1"
+        },
+        {
+          "element": "created",
+          "text": "2013-12-23T23:15:00Z"
+        },
+        {
+          "element": "modified",
+          "text": "2013-12-23T23:15:00Z"
+        }
+      ],
+      "docProps/app.xml": [
+        {
+          "element": "Template",
+          "text": "Normal.dotm"
+        },
+        {
+          "element": "TotalTime",
+          "text": "0"
+        },
+        {
+          "element": "Pages",
+          "text": "1"
+        },
+        {
+          "element": "Words",
+          "text": "0"
+        },
+        {
+          "element": "Characters",
+          "text": "0"
+        },
+        {
+          "element": "Application",
+          "text": "Microsoft Macintosh Word"
+        },
+        {
+          "element": "DocSecurity",
+          "text": "0"
+        },
+        {
+          "element": "Lines",
+          "text": "0"
+        },
+        {
+          "element": "Paragraphs",
+          "text": "0"
+        },
+        {
+          "element": "ScaleCrop",
+          "text": "false"
+        },
+        {
+          "element": "lpstr",
+          "text": "Title"
+        },
+        {
+          "element": "i4",
+          "text": "1"
+        },
+        {
+          "element": "LinksUpToDate",
+          "text": "false"
+        },
+        {
+          "element": "CharactersWithSpaces",
+          "text": "0"
+        },
+        {
+          "element": "SharedDoc",
+          "text": "false"
+        },
+        {
+          "element": "HyperlinksChanged",
+          "text": "false"
+        },
+        {
+          "element": "AppVersion",
+          "text": "14.0000"
+        }
+      ],
+      "word/document.xml": [],
+      "word/_rels/document.xml.rels": [],
+      "word/styles.xml": [],
+      "word/stylesWithEffects.xml": [],
+      "word/settings.xml": [],
+      "word/webSettings.xml": [],
+      "word/fontTable.xml": [],
+      "word/theme/theme1.xml": [],
+      "customXml/item1.xml": [],
+      "customXml/_rels/item1.xml.rels": [],
+      "customXml/itemProps1.xml": [],
+      "word/numbering.xml": [],
+      "word/header1.xml": [],
+      "word/footer1.xml": []
+    },
+    "document_text_sha256": "df7739e8d9fc53b2d6bc950d3ba2a27f657a20db2a4b8f9023aebf1dfe82b769",
+    "stored_paragraphs_total": 639,
+    "nonempty_stored_paragraphs_total": 614,
+    "body_physical_cells_with_multiple_paragraphs": 7,
+    "content_types": [
+      {
+        "Extension": "jpeg",
+        "ContentType": "image/jpeg"
+      },
+      {
+        "Extension": "rels",
+        "ContentType": "application/vnd.openxmlformats-package.relationships+xml"
+      },
+      {
+        "Extension": "xml",
+        "ContentType": "application/xml"
+      },
+      {
+        "PartName": "/customXml/itemProps1.xml",
+        "ContentType": "application/vnd.openxmlformats-officedocument.customXmlProperties+xml"
+      },
+      {
+        "PartName": "/docProps/app.xml",
+        "ContentType": "application/vnd.openxmlformats-officedocument.extended-properties+xml"
+      },
+      {
+        "PartName": "/docProps/core.xml",
+        "ContentType": "application/vnd.openxmlformats-package.core-properties+xml"
+      },
+      {
+        "PartName": "/word/document.xml",
+        "ContentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"
+      },
+      {
+        "PartName": "/word/fontTable.xml",
+        "ContentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.fontTable+xml"
+      },
+      {
+        "PartName": "/word/footer1.xml",
+        "ContentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml"
+      },
+      {
+        "PartName": "/word/header1.xml",
+        "ContentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml"
+      },
+      {
+        "PartName": "/word/numbering.xml",
+        "ContentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.numbering+xml"
+      },
+      {
+        "PartName": "/word/settings.xml",
+        "ContentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml"
+      },
+      {
+        "PartName": "/word/styles.xml",
+        "ContentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"
+      },
+      {
+        "PartName": "/word/stylesWithEffects.xml",
+        "ContentType": "application/vnd.ms-word.stylesWithEffects+xml"
+      },
+      {
+        "PartName": "/word/theme/theme1.xml",
+        "ContentType": "application/vnd.openxmlformats-officedocument.theme+xml"
+      },
+      {
+        "PartName": "/word/webSettings.xml",
+        "ContentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.webSettings+xml"
+      }
+    ],
+    "section_properties": {
+      "headerReference": {
+        "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type": "default",
+        "{http://schemas.openxmlformats.org/officeDocument/2006/relationships}id": "rId9"
+      },
+      "footerReference": {
+        "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}type": "default",
+        "{http://schemas.openxmlformats.org/officeDocument/2006/relationships}id": "rId10"
+      },
+      "pgSz": {
+        "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}w": "11909",
+        "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}h": "16834"
+      },
+      "pgMar": {
+        "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}top": "835",
+        "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}right": "893",
+        "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bottom": "835",
+        "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}left": "893",
+        "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}header": "720",
+        "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}footer": "720",
+        "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}gutter": "0"
+      },
+      "cols": {
+        "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}space": "720"
+      },
+      "docGrid": {
+        "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}linePitch": "360"
+      }
+    },
+    "custom_xml_raw": {
+      "customXml/item1.xml": "<b:Sources xmlns:b=\"http://schemas.openxmlformats.org/officeDocument/2006/bibliography\" xmlns=\"http://schemas.openxmlformats.org/officeDocument/2006/bibliography\" SelectedStyle=\"/APA.XSL\" StyleName=\"APA\"/>",
+      "customXml/_rels/item1.xml.rels": "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\"><Relationship Id=\"rId1\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/customXmlProps\" Target=\"itemProps1.xml\"/></Relationships>",
+      "customXml/itemProps1.xml": "<ds:datastoreItem xmlns:ds=\"http://schemas.openxmlformats.org/officeDocument/2006/customXml\" ds:itemID=\"{EF278816-EC6F-A645-907D-7F25AECB1D4A}\">\n  <ds:schemaRefs>\n    <ds:schemaRef ds:uri=\"http://schemas.openxmlformats.org/officeDocument/2006/bibliography\"/>\n  </ds:schemaRefs>\n</ds:datastoreItem>"
+    }
+  },
+  "python_docx_reconciliation": {
+    "paragraph_count": 135,
+    "table_count": 25,
+    "section_count": 1,
+    "inline_shape_count": 0,
+    "all_body_paragraphs_exact_match": true,
+    "xml_body_paragraph_count": 135,
+    "mismatches": [],
+    "tables": [
+      {
+        "table_ordinal": 1,
+        "rows": 1,
+        "physical_cells": 1,
+        "xml_python_docx_all_cell_paragraphs_exact_match": true,
+        "paragraph_count": 2,
+        "cell_text_sha256": "0d199de3c9e072dc206a227271b543f1ae1d8399206a16d4d4b320d061c676bd"
+      },
+      {
+        "table_ordinal": 2,
+        "rows": 6,
+        "physical_cells": 18,
+        "xml_python_docx_all_cell_paragraphs_exact_match": true,
+        "paragraph_count": 18,
+        "cell_text_sha256": "dc9eb074138f0fc43d8a2f2bfe8f72a4e3cda8c74c1ea4dbdd2bce0eb9e2f525"
+      },
+      {
+        "table_ordinal": 3,
+        "rows": 10,
+        "physical_cells": 30,
+        "xml_python_docx_all_cell_paragraphs_exact_match": true,
+        "paragraph_count": 30,
+        "cell_text_sha256": "06b428cd7dfb582a89d1c41d2bab5820a47aaae82c874d805da9d51a257bb3d7"
+      },
+      {
+        "table_ordinal": 4,
+        "rows": 1,
+        "physical_cells": 1,
+        "xml_python_docx_all_cell_paragraphs_exact_match": true,
+        "paragraph_count": 2,
+        "cell_text_sha256": "7bdd008279658853f8e72b870647ef96546947f7edd1cab81171d52f78045d81"
+      },
+      {
+        "table_ordinal": 5,
+        "rows": 10,
+        "physical_cells": 30,
+        "xml_python_docx_all_cell_paragraphs_exact_match": true,
+        "paragraph_count": 30,
+        "cell_text_sha256": "b3f688c0d8be67d5683849078ed436cddcf6691807036567409846317fa7ba01"
+      },
+      {
+        "table_ordinal": 6,
+        "rows": 1,
+        "physical_cells": 1,
+        "xml_python_docx_all_cell_paragraphs_exact_match": true,
+        "paragraph_count": 2,
+        "cell_text_sha256": "69565f394eb21d0de9de9f1b8255d7195e2fddae84e30e5f055e9e29ffca536f"
+      },
+      {
+        "table_ordinal": 7,
+        "rows": 11,
+        "physical_cells": 33,
+        "xml_python_docx_all_cell_paragraphs_exact_match": true,
+        "paragraph_count": 33,
+        "cell_text_sha256": "a3c7fb807ee67694087f816fa5e20f555ad7746a143fdcd93476bb715ebd4e9d"
+      },
+      {
+        "table_ordinal": 8,
+        "rows": 10,
+        "physical_cells": 30,
+        "xml_python_docx_all_cell_paragraphs_exact_match": true,
+        "paragraph_count": 30,
+        "cell_text_sha256": "9cc1415eac5096bc717c63b31adf83926ea0b2f8e575f2ce0bc46a26af2116d3"
+      },
+      {
+        "table_ordinal": 9,
+        "rows": 1,
+        "physical_cells": 1,
+        "xml_python_docx_all_cell_paragraphs_exact_match": true,
+        "paragraph_count": 2,
+        "cell_text_sha256": "a740300bbccb811600ae5827a92d36531a4e1c8331256cbb4847140933fa8198"
+      },
+      {
+        "table_ordinal": 10,
+        "rows": 10,
+        "physical_cells": 40,
+        "xml_python_docx_all_cell_paragraphs_exact_match": true,
+        "paragraph_count": 40,
+        "cell_text_sha256": "230f6ad54a17d54308625a350fa03d949b93849940b534cb73d3049fc5275eee"
+      },
+      {
+        "table_ordinal": 11,
+        "rows": 1,
+        "physical_cells": 1,
+        "xml_python_docx_all_cell_paragraphs_exact_match": true,
+        "paragraph_count": 2,
+        "cell_text_sha256": "4f74f8e733e9aa842194a595cac9ae807f070fa125a6b774a9f92c35b26a0796"
+      },
+      {
+        "table_ordinal": 12,
+        "rows": 8,
+        "physical_cells": 24,
+        "xml_python_docx_all_cell_paragraphs_exact_match": true,
+        "paragraph_count": 24,
+        "cell_text_sha256": "acdbb4061c9a90474a8b55480e15e1cfd6996f8759aa38a7a45de149413940ee"
+      },
+      {
+        "table_ordinal": 13,
+        "rows": 6,
+        "physical_cells": 18,
+        "xml_python_docx_all_cell_paragraphs_exact_match": true,
+        "paragraph_count": 18,
+        "cell_text_sha256": "d5ad8888aa532cf26e8e94068006cc002ce793f337dc0b89b5810a2268731edf"
+      },
+      {
+        "table_ordinal": 14,
+        "rows": 6,
+        "physical_cells": 18,
+        "xml_python_docx_all_cell_paragraphs_exact_match": true,
+        "paragraph_count": 18,
+        "cell_text_sha256": "6169dedda3553f36324a7af85fe04c7e6819f427d70927972de0ba1440fbef13"
+      },
+      {
+        "table_ordinal": 15,
+        "rows": 4,
+        "physical_cells": 24,
+        "xml_python_docx_all_cell_paragraphs_exact_match": true,
+        "paragraph_count": 24,
+        "cell_text_sha256": "f98b5e6a51b4c6672e3996b4d19e3874ad13b8f24539be475b38c7737c4b10bb"
+      },
+      {
+        "table_ordinal": 16,
+        "rows": 1,
+        "physical_cells": 1,
+        "xml_python_docx_all_cell_paragraphs_exact_match": true,
+        "paragraph_count": 2,
+        "cell_text_sha256": "3ca695b737a5de04f7254e4244e8f7cbeeecd13e6b3a4135efd553ee8d495d22"
+      },
+      {
+        "table_ordinal": 17,
+        "rows": 7,
+        "physical_cells": 21,
+        "xml_python_docx_all_cell_paragraphs_exact_match": true,
+        "paragraph_count": 21,
+        "cell_text_sha256": "2d0a39ff6faa6a9a75c2605d3b0653facac9b9ed18e19b7474410f5ee77a8d79"
+      },
+      {
+        "table_ordinal": 18,
+        "rows": 6,
+        "physical_cells": 18,
+        "xml_python_docx_all_cell_paragraphs_exact_match": true,
+        "paragraph_count": 18,
+        "cell_text_sha256": "c66b54f3346139dccc0c7946f648e8aeee9b00fda5f4005b19da29fd3bc59c87"
+      },
+      {
+        "table_ordinal": 19,
+        "rows": 8,
+        "physical_cells": 16,
+        "xml_python_docx_all_cell_paragraphs_exact_match": true,
+        "paragraph_count": 16,
+        "cell_text_sha256": "c69ef5a1d626a0769e7e75149919a20eae8bca272d3e69d431f9756ce0d03832"
+      },
+      {
+        "table_ordinal": 20,
+        "rows": 8,
+        "physical_cells": 16,
+        "xml_python_docx_all_cell_paragraphs_exact_match": true,
+        "paragraph_count": 16,
+        "cell_text_sha256": "fd08734f0e36f203bf9d4be35b494f90147897c2dfda1601865f73f7a84eb575"
+      },
+      {
+        "table_ordinal": 21,
+        "rows": 13,
+        "physical_cells": 39,
+        "xml_python_docx_all_cell_paragraphs_exact_match": true,
+        "paragraph_count": 39,
+        "cell_text_sha256": "5e8d1ad2d25826715bc482bf80a01fe90263a59e3964583a282b6a650cc74bb8"
+      },
+      {
+        "table_ordinal": 22,
+        "rows": 9,
+        "physical_cells": 18,
+        "xml_python_docx_all_cell_paragraphs_exact_match": true,
+        "paragraph_count": 18,
+        "cell_text_sha256": "1ffb9ed7ae277b45b0f2f9ac49e4fca31cdeb4c832f8be7911ad4e27520bc6e2"
+      },
+      {
+        "table_ordinal": 23,
+        "rows": 1,
+        "physical_cells": 1,
+        "xml_python_docx_all_cell_paragraphs_exact_match": true,
+        "paragraph_count": 2,
+        "cell_text_sha256": "be431501b56afce462ab30d9e2219054bcbcca3c12a19f54c9e51465d7fd16b7"
+      },
+      {
+        "table_ordinal": 24,
+        "rows": 14,
+        "physical_cells": 56,
+        "xml_python_docx_all_cell_paragraphs_exact_match": true,
+        "paragraph_count": 56,
+        "cell_text_sha256": "03da311752f1bbc81126d600063e882d9d79606e030ca79c4b05e3fb24de5522"
+      },
+      {
+        "table_ordinal": 25,
+        "rows": 13,
+        "physical_cells": 39,
+        "xml_python_docx_all_cell_paragraphs_exact_match": true,
+        "paragraph_count": 39,
+        "cell_text_sha256": "235ba9c44597e3536f2b17ce4987a3e4312063555bfb0f6a666016264afb5225"
+      }
+    ],
+    "all_tables_exact_match": true,
+    "headers_and_footers": {
+      "word/header1.xml": {
+        "paragraphs": [
+          "Zerodha Stock Trading Tool - Infrastructure & Execution Action Plan"
+        ],
+        "exact_match": true
+      },
+      "word/footer1.xml": {
+        "paragraphs": [
+          "Technical architecture plan. Not investment advice. Live trading requires broker, exchange, and regulatory compliance."
+        ],
+        "exact_match": true
+      }
+    }
+  },
+  "review_complete_for_this_scope": true,
+  "review_findings": [
+    {
+      "id": "complete_stored_text",
+      "finding": "All 639 stored paragraphs were read in three bounded text passes: body ordinals 1-220, 221-440 and 441-637, plus the header and footer. The 637 body paragraphs comprise 135 outside tables and 502 inside 495 physical cells across 25 tables.",
+      "scope_limit": "Stored-text completeness does not itself prove rendered layout or implementation."
+    },
+    {
+      "id": "package_integrity",
+      "finding": "All 19 package parts decompressed with valid CRCs, all 18 XML/rels parts parsed, and all 15 internal relationship targets exist. No duplicate ZIP names, broken internal relationships or external relationships were found.",
+      "scope_limit": "This is package integrity, not a security certification."
+    },
+    {
+      "id": "source_dates",
+      "finding": "Body paragraph 4 claims Prepared: 18 May 2026 | Timezone: Asia/Kolkata. The archive member timestamp is 2026-07-30 16:54:50 without a timezone. Both core-created and core-modified metadata are 2013-12-23T23:15:00Z.",
+      "scope_limit": "The core dates are inconsistent with the explicit 2026 content and must not be treated as verified creation/freshness dates. ZIP timestamp is packaging metadata, not market-data or preparation provenance. The body date is a document claim, not independently verified."
+    },
+    {
+      "id": "cached_statistics_not_authoritative",
+      "finding": "docProps/app.xml stores Pages=1, Words=0 and Paragraphs=0 despite 639 stored paragraphs.",
+      "scope_limit": "Do not use cached app properties as real page/text counts. Actual page count belongs to fresh rendering."
+    },
+    {
+      "id": "no_extra_content_channels",
+      "finding": "No comments, tracked insertions/deletions/moves, footnotes, endnotes, hidden-text flags, text boxes, embedded objects, content controls, hyperlink elements, field instructions or native OMML equations were found. The formulas and implementation prompts are plain stored text.",
+      "scope_limit": "Formula prose is a design proposal, not an executable implementation or an instruction to this audit."
+    },
+    {
+      "id": "thumbnail",
+      "finding": "The sole binary part docProps/thumbnail.jpeg is a valid 395 by 512 JPEG with SHA256 96367138dc44ce09bf2c8f0f8e49348a1478d2c5c0af69bbc2bbc38b63cdcead. Decoded and visually inspected; it is blank white with no readable content.",
+      "scope_limit": "The thumbnail is not a rendered preview of the document."
+    },
+    {
+      "id": "bibliography",
+      "finding": "customXml/item1.xml is an empty Word bibliography Sources element using APA; document section 19 has seven prose reference bullets without hyperlinks.",
+      "scope_limit": "Referenced broker, regulatory and product claims were not externally verified in this structural audit."
+    },
+    {
+      "id": "not_market_data_or_backup",
+      "finding": "The source is an architecture/action-plan document containing proposed fields and examples, not OHLCV observations, live broker data, current universe membership, actual fills or a Mongo backup.",
+      "scope_limit": "Do not import document examples as measurements or count the plan as a deployed implementation."
+    }
+  ],
+  "authority_boundaries": {
+    "source_modified": false,
+    "runtime_code_modified": false,
+    "strategy_thresholds_adopted": false,
+    "provider_requests": false,
+    "mongo_access": false,
+    "mongo_writes": false,
+    "trades": false,
+    "render_performed_by_this_agent": false,
+    "source_instructions_executed": false
+  },
+  "reproduction": {
+    "runtime": "Bundled Python 3.12 from Codex dependencies 26.915.20218; zipfile, zlib, lxml and python-docx",
+    "script": "import hashlib, json, posixpath, zipfile, zlib, sys\nfrom pathlib import Path\nfrom lxml import etree\nfrom docx import Document\nfrom docx.table import _Cell\n\nsource = Path('/private/tmp/ash-am07-docx-Z3J4B4/Zerodha_Stock_Trading_App_Action_Plan_META_RGL.docx')\narchive = Path('/Users/sourceborn/Documents/ChatGPT/Ash/V01-2026-09-07/payload/raw-assets/AM.07.Parameter.Files.zip')\nmember = 'AM 07 Parameter Files/Zerodha_Stock_Trading_App_Action_Plan_META_RGL.docx'\nsha = lambda b: hashlib.sha256(b).hexdigest()\nraw = source.read_bytes()\nassert sha(raw) == 'eb2a0e4631ccaf89e6ca83f3dd027eeac54cf181994b9a6aa0c0186e47de4469'\nassert sha(archive.read_bytes()) == '652be4ddb2b40915543ad848b2bfa10d011c6c2c5723a6e6a3480a85ddb2e2e5'\nwith zipfile.ZipFile(archive) as outer:\n    assert outer.read(member) == raw\n    source_info = outer.getinfo(member)\nns = {'w':'http://schemas.openxmlformats.org/wordprocessingml/2006/main', 'm':'http://schemas.openxmlformats.org/officeDocument/2006/math', 'a':'http://schemas.openxmlformats.org/drawingml/2006/main'}\nresult = {'schema_version':1, 'audit_date':'2026-09-28', 'scope':'Read-only OOXML package integrity and complete stored text; no rendered-layout or runtime-adoption claim',\n          'source':{'archive':'AM.07.Parameter.Files.zip','archive_bytes':archive.stat().st_size,'archive_sha256':sha(archive.read_bytes()),'member':member,'bytes':len(raw),'sha256':sha(raw),'archive_member_crc32':f'{source_info.CRC:08x}','archive_member_timestamp_without_timezone':list(source_info.date_time)},\n          'parts':[], 'relationships':[], 'stored_paragraphs':[], 'metadata':{}, 'diagnostics':{}}\ntrees={}\nwith zipfile.ZipFile(source) as package:\n    assert package.testzip() is None\n    names=package.namelist()\n    for item in package.infolist():\n        data=package.read(item.filename)\n        info={'path':item.filename,'bytes':len(data),'compressed_bytes':item.compress_size,'crc32':f'{item.CRC:08x}','crc_valid':zlib.crc32(data)==item.CRC,'sha256':sha(data)}\n        if item.filename.endswith(('.xml','.rels')):\n            root=etree.fromstring(data,parser=etree.XMLParser(resolve_entities=False,no_network=True))\n            trees[item.filename]=root\n            info['xml_valid']=True\n            info['text_node_characters']=sum(len(t) for t in root.itertext())\n            info['word_text_nodes']=len(root.xpath('//w:t',namespaces=ns))\n            info['paragraph_count']=len(root.xpath('//w:p',namespaces=ns))\n            for ordinal,p in enumerate(root.xpath('//w:p',namespaces=ns),1):\n                chunks=[]\n                for e in p.iter():\n                    lname=etree.QName(e).localname\n                    if lname in ('t','delText','instrText'): chunks.append(e.text or '')\n                    elif lname=='tab': chunks.append('\\t')\n                    elif lname=='br': chunks.append('\\n')\n                result['stored_paragraphs'].append({'part':item.filename,'ordinal':ordinal,'style':p.xpath('string(w:pPr/w:pStyle/@w:val)',namespaces=ns),'text':''.join(chunks),'in_table':bool(p.xpath('ancestor::w:tbl',namespaces=ns))})\n            if item.filename.endswith('.rels'):\n                source_dir='' if item.filename=='_rels/.rels' else posixpath.dirname(posixpath.dirname(item.filename))\n                for rel in root:\n                    r={'part':item.filename,**dict(rel.attrib)}\n                    if rel.get('TargetMode')!='External':\n                        r['resolved_path']=posixpath.normpath(posixpath.join(source_dir,rel.get('Target','')))\n                        r['target_present']=r['resolved_path'] in names\n                    result['relationships'].append(r)\n            if item.filename.startswith('docProps/'):\n                result['metadata'][item.filename]={etree.QName(e).localname:e.text for e in root if not len(e)}\n        result['parts'].append(info)\n    counts={}\n    tags=['tbl','tr','tc','ins','del','moveFrom','moveTo','comment','commentRangeStart','commentReference','footnote','endnote','hyperlink','fldSimple','fldChar','instrText','drawing','pict','object','altChunk','txbxContent','sdt','vanish','webHidden','oMath','oMathPara','delText','lastRenderedPageBreak']\n    for tag in tags:\n        counts[tag]=sum(len(root.xpath('//*[local-name()=$name]',name=tag)) for root in trees.values())\n    result['diagnostics']['all_package_element_counts']=counts\n    result['diagnostics']['all_xml_part_count']=len(trees)\n    result['diagnostics']['non_xml_parts']=[i['path'] for i in result['parts'] if 'xml_valid' not in i]\n    result['diagnostics']['duplicate_zip_names']=len(names)-len(set(names))\n    result['diagnostics']['external_relationships']=[r for r in result['relationships'] if r.get('TargetMode')=='External']\n    result['diagnostics']['broken_internal_relationships']=[r for r in result['relationships'] if r.get('target_present') is False]\n    result['diagnostics']['namespace_texts_outside_word_paragraphs']={name:[{'element':etree.QName(e).localname,'text':e.text} for e in root.iter() if e.text and e.text.strip() and not e.xpath('ancestor-or-self::w:p',namespaces=ns)] for name,root in trees.items()}\ndoc=Document(source)\nxml_paras=[i['text'] for i in result['stored_paragraphs'] if i['part']=='word/document.xml' and not i['in_table']]\npython_paras=[p.text for p in doc.paragraphs]\nresult['python_docx_reconciliation']={'paragraph_count':len(doc.paragraphs),'table_count':len(doc.tables),'section_count':len(doc.sections),'inline_shape_count':len(doc.inline_shapes),'all_body_paragraphs_exact_match':xml_paras==python_paras,'xml_body_paragraph_count':len(xml_paras),'mismatches':[{'ordinal':i+1,'xml':a,'python_docx':b} for i,(a,b) in enumerate(zip(xml_paras,python_paras)) if a!=b]}\ndef paragraph_text(p):\n    return ''.join((e.text or '') if etree.QName(e).localname in ('t','delText','instrText') else '\\t' if etree.QName(e).localname=='tab' else '\\n' if etree.QName(e).localname=='br' else '' for e in p.iter())\ntable_checks=[]\nfor index,table in enumerate(doc.tables,1):\n    xml_rows=[]\n    py_rows=[]\n    physical_cells=0\n    for row in table._tbl.tr_lst:\n        xml_cells=[]\n        py_cells=[]\n        for cell in row.tc_lst:\n            physical_cells+=1\n            xml_cells.append([paragraph_text(p) for p in cell.p_lst])\n            py_cells.append([p.text for p in _Cell(cell,table).paragraphs])\n        xml_rows.append(xml_cells)\n        py_rows.append(py_cells)\n    table_checks.append({'table_ordinal':index,'rows':len(xml_rows),'physical_cells':physical_cells,'xml_python_docx_all_cell_paragraphs_exact_match':xml_rows==py_rows,'paragraph_count':sum(len(c) for row in xml_rows for c in row),'cell_text_sha256':sha(json.dumps(xml_rows,ensure_ascii=False,separators=(',',':')).encode())})\nresult['python_docx_reconciliation']['tables']=table_checks\nresult['python_docx_reconciliation']['all_tables_exact_match']=all(x['xml_python_docx_all_cell_paragraphs_exact_match'] for x in table_checks)\nresult['python_docx_reconciliation']['headers_and_footers']={name:{'paragraphs':[p.text for p in obj.paragraphs],'exact_match':[p.text for p in obj.paragraphs]==[p['text'] for p in result['stored_paragraphs'] if p['part']==name]} for name,obj in [('word/header1.xml',doc.sections[0].header),('word/footer1.xml',doc.sections[0].footer)]}\nresult['diagnostics']['document_text_sha256']=sha('\\n'.join(p['text'] for p in result['stored_paragraphs']).encode())\nresult['diagnostics']['stored_paragraphs_total']=len(result['stored_paragraphs'])\nresult['diagnostics']['nonempty_stored_paragraphs_total']=sum(bool(p['text']) for p in result['stored_paragraphs'])\nresult['diagnostics']['body_physical_cells_with_multiple_paragraphs']=sum(len(c.p_lst)>1 for t in doc.tables for r in t._tbl.tr_lst for c in r.tc_lst)\nresult['diagnostics']['content_types']=[dict(e.attrib) for e in trees['[Content_Types].xml']]\nresult['diagnostics']['section_properties']={etree.QName(e).localname:dict(e.attrib) for e in trees['word/document.xml'].find('w:body/w:sectPr',ns)}\nresult['diagnostics']['custom_xml_raw']={name:etree.tostring(tree,encoding='unicode') for name,tree in trees.items() if name.startswith('customXml/')}\nresult['body_structure']=[{'element':etree.QName(el).localname,'text':''.join(el.xpath('.//w:t/text()',namespaces=ns))} for el in trees['word/document.xml'].find('w:body',ns)]\nif len(sys.argv)>1 and sys.argv[1]=='summary':\n    result.pop('stored_paragraphs')\n    result.pop('body_structure')\nelif len(sys.argv)>1 and sys.argv[1]=='text':\n    start=int(sys.argv[2]) if len(sys.argv)>2 else 1\n    end=int(sys.argv[3]) if len(sys.argv)>3 else 1000\n    for p in result['stored_paragraphs']:\n        if start<=p['ordinal']<=end:\n            print(f\"{p['part']}:{p['ordinal']} {'TABLE ' if p['in_table'] else ''}{p['style']} {p['text']}\")\n    sys.exit(0)\nprint(json.dumps(result,ensure_ascii=False,indent=2))\n",
+    "invocation": "python3 structure_audit.py summary",
+    "text_review_invocations": [
+      "python3 structure_audit.py text 1 220",
+      "python3 structure_audit.py text 221 440",
+      "python3 structure_audit.py text 441 700"
+    ],
+    "limitations": "Script paths identify the source and temporary extracted copy used during this audit. XML and python-docx are separate text APIs over the same OOXML bytes, not independent source provenance."
+  }
+}

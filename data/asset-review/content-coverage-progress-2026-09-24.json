@@ -65,6 +65,18 @@
     {
       "file": "data/asset-review/am07-instrument-master-evidence-2026-09-28.json",
       "sha256": "54e862baf1e51907013c30842133fe6956cdc32ced3fa1af80d23b35641a910e"
+    },
+    {
+      "file": "data/asset-review/am07-docx-structure-evidence-2026-09-28.json",
+      "sha256": "03ff9a920f2319be2b3829252990da05f1b14853805888d9103426369273e863"
+    },
+    {
+      "file": "data/asset-review/am07-docx-consumer-map-2026-09-28.json",
+      "sha256": "c6cd7647bbce427e6f93ce56d5af266885db9f734e92078b2636a2b0e23b8936"
+    },
+    {
+      "file": "data/asset-review/am07-docx-content-evidence-2026-09-28.json",
+      "sha256": "a57ea1df70c50a7b695a7f24af6fc797a5c01811034e2d4df3ab5e4baddc3f00"
     }
   ],
   "updates": [
@@ -1515,35 +1527,54 @@
         "partial": 0,
         "inventory_only": 1
       }
+    },
+    {
+      "asset": "AM.07.Parameter.Files.zip",
+      "from": "partial",
+      "to": "reviewed",
+      "evidence": "data/asset-review/am07-docx-content-evidence-2026-09-28.json",
+      "member_updates": [
+        {
+          "member": "AM 07 Parameter Files/Zerodha_Stock_Trading_App_Action_Plan_META_RGL.docx",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/am07-docx-content-evidence-2026-09-28.json"
+        }
+      ],
+      "remaining_member_status_counts": {
+        "reviewed": 44,
+        "partial": 0,
+        "inventory_only": 0
+      }
     }
   ],
   "summary": {
     "assets": 171,
     "asset_status_counts": {
-      "reviewed": 80,
-      "partial": 21,
+      "reviewed": 81,
+      "partial": 20,
       "inventory_only": 69,
       "corrupt": 1
     },
     "members": 592,
     "member_status_counts": {
-      "reviewed": 462,
+      "reviewed": 463,
       "partial": 4,
-      "inventory_only": 126
+      "inventory_only": 125
     },
-    "member_status_upgrades": 157,
+    "member_status_upgrades": 158,
     "corrupt_archive": "2021_06.zip",
     "corrupt_archive_member_count": null
   },
-  "excluded_promotions": "Only the fourteen named AM07 members are upgraded: ten CSVs, one binary XLS and three gzip JSON masters. Two instrument masters advance from partial, twelve other members from inventory-only. Historical content review and duplicate-context checks do not establish current company membership, feed readiness, imports, formula authority or runtime approval. AM07 remains partial with one unread DOCX. No other archive siblings, PDFs or corrupt contents are promoted.",
+  "excluded_promotions": "Only the final AM07 DOCX member advances from inventory-only to reviewed in this batch; AM07 becomes fully reviewed with 44/44 immediate members. All ten rendered pages and stored text were read with package/reader reconciliation. No other source, PDF or corrupt archive gains content coverage. Historical design, formulas and implementation prompts are not adopted as current policy, market data or production evidence.",
   "mongo_accessed": false,
   "imported": false,
   "runtime_modified": false,
   "latest_batch": {
-    "id": "am07-structured-content-2026-09-28",
-    "checkpoint": "docs/AM07_STRUCTURED_CONTENT_CHECKPOINT_2026-09-28.md",
-    "reviewed_against_commit": "910c72f1ab6fdf014c081746626f38e2fe029759",
-    "previous_progress_sha256": "282cf67c6297d2bf5476a08cc2a9ee5e4756998a002c92ef344bbf9c8f9f80aa",
+    "id": "am07-docx-closure-2026-09-28",
+    "checkpoint": "docs/AM07_ARCHIVE_CLOSURE_2026-09-28.md",
+    "reviewed_against_commit": "ef3e3d81f4c382b15a3d45c7910c32db10368957",
+    "previous_progress_sha256": "343bf38ba4c4c373f0788d58a6eff0b639fd02ff955fa81893c92f9cff32cc9a",
     "previous_summary": {
       "assets": 171,
       "asset_status_counts": {
@@ -1554,21 +1585,18 @@
       },
       "members": 592,
       "member_status_counts": {
-        "reviewed": 448,
-        "partial": 6,
-        "inventory_only": 138
+        "reviewed": 462,
+        "partial": 4,
+        "inventory_only": 126
       },
-      "member_status_upgrades": 143,
+      "member_status_upgrades": 157,
       "corrupt_archive": "2021_06.zip",
       "corrupt_archive_member_count": null
     },
-    "new_member_status_upgrades": 14,
-    "direct_csv_member_upgrades": 10,
-    "binary_xls_member_upgrades": 1,
-    "gzip_json_member_upgrades": 3,
-    "newly_reviewed_archives": 0,
+    "new_member_status_upgrades": 1,
+    "docx_member_upgrades": 1,
+    "newly_reviewed_archives": 1,
     "newly_partial_archives": 0,
-    "update_application": "Apply every updates entry in array order to the immutable baseline; repeated asset entries are sequential member-level progress, not duplicate assets.",
-    "historical_digest_note": "Evidence proposals retain their pre-acceptance scope and individually proposed counts. This integrated overlay records accepted combined coverage."
+    "update_application": "Apply every updates entry in array order to the immutable baseline; repeated asset entries are sequential member-level progress, not duplicate assets."
   }
 }

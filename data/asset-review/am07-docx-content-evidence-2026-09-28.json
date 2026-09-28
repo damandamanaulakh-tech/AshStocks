@@ -1,0 +1,444 @@
+{
+  "schema_version": "ashstocks-am07-docx-content-v1",
+  "review_date": "2026-09-28",
+  "reviewed_against_commit": "ef3e3d81f4c382b15a3d45c7910c32db10368957",
+  "source": {
+    "asset": "AM.07.Parameter.Files.zip",
+    "archive_sha256": "652be4ddb2b40915543ad848b2bfa10d011c6c2c5723a6e6a3480a85ddb2e2e5",
+    "member": "AM 07 Parameter Files/Zerodha_Stock_Trading_App_Action_Plan_META_RGL.docx",
+    "bytes": 53570,
+    "sha256": "eb2a0e4631ccaf89e6ca83f3dd027eeac54cf181994b9a6aa0c0186e47de4469",
+    "crc32": "fddd7f62",
+    "prepared_date_claim": "2026-05-18"
+  },
+  "coverage": {
+    "all_rendered_pages_read": true,
+    "all_body_text_read": true,
+    "body_paragraphs_including_table_cells": 637,
+    "body_top_level_paragraphs": 135,
+    "body_tables": 25,
+    "header_and_footer_paragraphs": 2,
+    "definition": "All source text and all ten rendered pages inspected. Package structure and independent readers are separately pinned; this does not certify all design rules, source references, or current runtime implementation."
+  },
+  "render": {
+    "page_count": 10,
+    "pages": [
+      {
+        "page": 1,
+        "png_sha256": "2e4f0a73f5ee64f18bb28935a87bf5cc8b13e2dfa2f87747ed3a3889e655283d"
+      },
+      {
+        "page": 2,
+        "png_sha256": "b19f1d9561ac48348ee9a9909378375eb8486631a1ef64c925abbfb1aade9334"
+      },
+      {
+        "page": 3,
+        "png_sha256": "1fd5834c996adb662cd95dad70212ded46df9ceda8dcf95e0e19243d81a56484"
+      },
+      {
+        "page": 4,
+        "png_sha256": "7ed6ceb56b41214df23bcbc020f63bb2d58e8ceb11cdcd3d3c713ca8681405ff"
+      },
+      {
+        "page": 5,
+        "png_sha256": "9a60c6cfee75e864789cc723967fa15e20d832b8c239aab379d79f85a84f7289"
+      },
+      {
+        "page": 6,
+        "png_sha256": "8dabc0d3a03bd7bcf3b19730877dc4b59919b8e414615835e0dbae0ef6582e9a"
+      },
+      {
+        "page": 7,
+        "png_sha256": "9dea5493a04aa03d0a47daa99172fa91faca93a6a5311599d2e72262bacdc619"
+      },
+      {
+        "page": 8,
+        "png_sha256": "173454e157ef233b278fde383088438d84a65b5bc4f0022dc202d04c28e60b09"
+      },
+      {
+        "page": 9,
+        "png_sha256": "a2a9769a8e2909682729b5c646f71150a7b58c7055c0dfc8684cb29eab00e032"
+      },
+      {
+        "page": 10,
+        "png_sha256": "03b8fc8713224cc72c0f113583830488edebb68b9472aee58ccb829f58a73ebc"
+      }
+    ],
+    "pdf_sha256": "2de0bc7e55ee3e61db33153c9d2138984064d00c85b76534dfe4671e739f716f",
+    "renderer": "documents/26.915.20218/skills/documents/render_docx.py",
+    "soffice": "/Users/sourceborn/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override/soffice",
+    "exit_code": 0,
+    "pdfinfo_pages": 10,
+    "page_size": "A4",
+    "native_docx_modified": false,
+    "qa_artifacts_committed": false,
+    "warning": "Fontconfig emitted cache-directory warnings; conversion returned zero and all ten page PNGs were produced and inspected.",
+    "observations": [
+      "All ten pages are readable; mathematical examples and tables are visible.",
+      "The ASCII production-network sketch continues from page 3 to page 4. The risk-profile and database tables continue on subsequent pages with repeated headers.",
+      "Tables are dense and some rows have tight spacing. No source layout correction was requested or performed.",
+      "Cached DOCX metadata claiming one page/zero words is contradicted by this ten-page render; use render count for this audit only."
+    ]
+  },
+  "rendered_page_topics": [
+    {
+      "page": 1,
+      "sections": [
+        "Point Zero",
+        "Build Decision",
+        "Document Map"
+      ]
+    },
+    {
+      "page": 2,
+      "sections": [
+        "Target Architecture",
+        "Local MVP"
+      ]
+    },
+    {
+      "page": 3,
+      "sections": [
+        "Local folder layout",
+        "Cloud production",
+        "Network sketch start"
+      ]
+    },
+    {
+      "page": 4,
+      "sections": [
+        "Network sketch end",
+        "Kite integration",
+        "Data pipeline",
+        "Stock universe"
+      ]
+    },
+    {
+      "page": 5,
+      "sections": [
+        "Hard filters",
+        "Scoring",
+        "Selection",
+        "Entry stop target quantity",
+        "Benchmarks",
+        "Conservative risk profile"
+      ]
+    },
+    {
+      "page": 6,
+      "sections": [
+        "Other risk profiles",
+        "Risk gate checklist",
+        "Semi-auto full-auto flow",
+        "Auto exits"
+      ]
+    },
+    {
+      "page": 7,
+      "sections": [
+        "Failure handling",
+        "Backtest and paper gate",
+        "Metrics",
+        "Dashboard",
+        "Database start"
+      ]
+    },
+    {
+      "page": 8,
+      "sections": [
+        "Database continuation",
+        "Security and compliance",
+        "Phases 0 to 12"
+      ]
+    },
+    {
+      "page": 9,
+      "sections": [
+        "12-week timeline",
+        "Four implementation prompts"
+      ]
+    },
+    {
+      "page": 10,
+      "sections": [
+        "Definition of done",
+        "Seven prose references"
+      ]
+    }
+  ],
+  "historical_rules": {
+    "universe": "NIFTY 200 initially; NIFTY 500 only after stability. Not current official-NSE all-company membership.",
+    "hard_filters": {
+      "minimum_price_inr": 100,
+      "minimum_average_turnover_inr_crore": 20,
+      "long_trend": "close above 200 DMA",
+      "maximum_atr_percent": 8,
+      "spread": "configured threshold, numeric value absent",
+      "event_risk": "avoid uncertain major events unless event strategy enabled",
+      "market_regime": "NIFTY risk-off threshold, numeric value absent"
+    },
+    "score": {
+      "total": 100,
+      "minimum_selection": 70,
+      "maximum_selected": 5,
+      "trend": {
+        "weight": 30,
+        "components": [
+          [
+            "close > 200 DMA",
+            8
+          ],
+          [
+            "close > 50 DMA",
+            7
+          ],
+          [
+            "20 DMA > 50 DMA",
+            5
+          ],
+          [
+            "50 DMA > 200 DMA",
+            5
+          ],
+          [
+            "close near 52-week high",
+            5
+          ]
+        ]
+      },
+      "relative_strength": {
+        "weight": 25,
+        "components": [
+          [
+            "one month versus NIFTY",
+            10
+          ],
+          [
+            "three months versus NIFTY",
+            10
+          ],
+          [
+            "six months versus NIFTY",
+            5
+          ]
+        ]
+      },
+      "volume": {
+        "weight": 20,
+        "components": [
+          [
+            "volume > 1.5 times 20-day average",
+            10
+          ],
+          [
+            "strong delivery/participation",
+            5
+          ],
+          [
+            "breakout volume",
+            5
+          ]
+        ]
+      },
+      "volatility": {
+        "weight": 15,
+        "source_intervals": [
+          [
+            "ATR 1.5-3 percent",
+            15
+          ],
+          [
+            "ATR 3-5 percent",
+            12
+          ],
+          [
+            "ATR 5-8 percent",
+            6
+          ],
+          [
+            "above 8 percent",
+            "reject"
+          ]
+        ]
+      },
+      "risk_reward": {
+        "weight": 10,
+        "minimum": 2,
+        "source_points": [
+          [
+            2,
+            6
+          ],
+          [
+            2.5,
+            8
+          ],
+          [
+            "3 or greater",
+            10
+          ]
+        ]
+      },
+      "selection": "Rank passing scores descending; take up to five; fewer valid candidates means fewer selections, never forced trades"
+    },
+    "trade_math": {
+      "entry": "previous day high plus small buffer OR opening range breakout",
+      "stop": "max(technical swing low, entry - 1.5 * ATR)",
+      "minimum_target": "entry + 2 * (entry - stop)",
+      "risk_budget": "capital * risk_per_trade",
+      "quantity": "risk_budget / (entry - stop)",
+      "trail_start": "after favorable move of at least 1R, subsequent trailing formula absent"
+    },
+    "profiles": [
+      {
+        "name": "Conservative",
+        "risk_per_trade_percent": [
+          0.25,
+          0.5
+        ],
+        "maximum_trades": [
+          1,
+          2
+        ],
+        "daily_loss_lock_percent": 1,
+        "monthly_loss_lock_percent": [
+          3,
+          5
+        ]
+      },
+      {
+        "name": "Balanced",
+        "risk_per_trade_percent": [
+          0.5,
+          1
+        ],
+        "maximum_trades": [
+          2,
+          3
+        ],
+        "daily_loss_lock_percent": 2,
+        "monthly_loss_lock_percent": [
+          6,
+          8
+        ]
+      },
+      {
+        "name": "Aggressive",
+        "risk_per_trade_percent": [
+          1,
+          1.5
+        ],
+        "maximum_trades": [
+          3,
+          5
+        ],
+        "daily_loss_lock_percent": 3,
+        "monthly_loss_lock_percent": [
+          10,
+          12
+        ]
+      }
+    ],
+    "return_target": "20 percent monthly aggressive aspiration only, explicitly not guaranteed and never an override of risk limits",
+    "acceptance": "3+ years daily data; 1+ year intraday if available; walk-forward and cost/slippage benchmarks; 30-60 safe paper market days; controlled semi-auto before restricted live; source performance thresholds are proposed gates, not achieved results",
+    "reference_policy": "The seven prose references identify sources but provide no active URLs or attached publications. Current broker/regulatory validity was not checked and no legal-compliance conclusion is made."
+  },
+  "source_example_rechecks": [
+    {
+      "source_page": 5,
+      "equation": "30+25+20+15+10",
+      "computed": 100,
+      "expected": 100
+    },
+    {
+      "source_page": 5,
+      "equation": "8+7+5+5+5",
+      "computed": 30,
+      "expected": 30
+    },
+    {
+      "source_page": 5,
+      "equation": "500-1.5*12",
+      "computed": 482,
+      "expected": 482,
+      "limit": "ATR branch only; example supplies no swing low to test the full max rule"
+    },
+    {
+      "source_page": 5,
+      "equation": "500+2*(500-480)",
+      "computed": 540,
+      "expected": 540
+    },
+    {
+      "source_page": 5,
+      "equation": "100000*0.01",
+      "computed": 1000,
+      "expected": 1000
+    },
+    {
+      "source_page": 5,
+      "equation": "1000/(500-480)",
+      "computed": 50,
+      "expected": 50
+    }
+  ],
+  "unresolved_formula_contracts": [
+    {
+      "id": "DOCX_ATR_BANDS",
+      "page": 5,
+      "issue": "The stated intervals meet at 3 and 5 without inclusivity rules; ATR below 1.5 percent has no score. No branch order or default is inferred."
+    },
+    {
+      "id": "DOCX_RR_POINTS",
+      "page": 5,
+      "issue": "RR 2, 2.5 and 3+ score points are specified but intermediate values have no interpolation or bucket rule."
+    },
+    {
+      "id": "DOCX_INDICATORS",
+      "page": 5,
+      "issue": "ATR lookback/smoothing/timeframe, swing-low lookback, 52-week-near threshold, relative-strength comparison details, strong delivery and breakout-volume definitions are incomplete."
+    },
+    {
+      "id": "DOCX_EXECUTION_MATH",
+      "page": 5,
+      "issue": "Buffer, exchange tick/lot rounding, nonpositive stop distance, cash/margin capacity and transaction-cost sizing are not fully specified. Arithmetic examples do not resolve these."
+    },
+    {
+      "id": "DOCX_RISK_STATE",
+      "page": 6,
+      "issue": "Risk-profile ranges do not select exact runtime settings; loss-lock basis/reset/recovery and trailing-stop formula require a governing contract."
+    },
+    {
+      "id": "DOCX_SEQUENCE",
+      "page": 8,
+      "issue": "The historical table places paper trading before its risk-engine phase; the intro and live gate require risk controls before live execution. This schedule is not adopted and does not replace the user's nine-phase order."
+    }
+  ],
+  "authority": {
+    "role": "historical architecture and strategy specification",
+    "embedded_prompts_executed": false,
+    "broker_switch_authorized": false,
+    "strategy_adopted": false,
+    "current_data_contribution": 0,
+    "eps_pe_observations": 0,
+    "ohlcv_observations": 0,
+    "live_safety_or_performance_proven": false
+  },
+  "boundaries": {
+    "raw_sources_modified": false,
+    "runtime_modified": false,
+    "mongo_accessed": false,
+    "render_deployed": false,
+    "trades_executed": false,
+    "provider_data_requested": false
+  },
+  "validation_limits": [
+    "Read-only package, text, render and arithmetic review only; application regression suites were not rerun.",
+    "Optional PyMuPDF import was unavailable; page count was verified with bundled pdfinfo instead. No missing dependency was installed.",
+    "Source math and desired controls were recorded without selecting new thresholds or changing allocation/ranking/execution rules."
+  ],
+  "related_evidence": [
+    "data/asset-review/am07-docx-structure-evidence-2026-09-28.json",
+    "data/asset-review/am07-docx-consumer-map-2026-09-28.json"
+  ]
+}
