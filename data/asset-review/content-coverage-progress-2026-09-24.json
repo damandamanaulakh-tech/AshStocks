@@ -41,6 +41,14 @@
     {
       "file": "data/asset-review/bhavcopy-content-evidence-2026-09-24.json",
       "sha256": "942e4450789c02ab767baeb3110cc68f877bd68a406c6111752df76b7755f277"
+    },
+    {
+      "file": "data/asset-review/fo-report-content-evidence-2026-09-24.json",
+      "sha256": "af49885257111d459edc9fb7cb57c12446fcfcef41ecf738726df2a6d3bb3ce5"
+    },
+    {
+      "file": "data/asset-review/am07-text-spec-evidence-2026-09-24.json",
+      "sha256": "5ea615a18e034619707ddb02936a353599d4d6cae904b048e3ea291edfc2c377"
     }
   ],
   "updates": [
@@ -1256,58 +1264,198 @@
       "remaining_member_status_counts": {
         "reviewed": 6
       }
+    },
+    {
+      "asset": "FO.Gold.COmm.zip",
+      "from": "partial",
+      "to": "reviewed",
+      "evidence": "data/asset-review/fo-report-content-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "FO Gold COmm/fo03062026 (2).csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/fo-report-content-evidence-2026-09-24.json"
+        },
+        {
+          "member": "FO Gold COmm/fo03062026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/fo-report-content-evidence-2026-09-24.json"
+        },
+        {
+          "member": "FO Gold COmm/fo_03062026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/fo-report-content-evidence-2026-09-24.json"
+        },
+        {
+          "member": "FO Gold COmm/fo_options_pcr_oi_by_symbol_2026_06_03.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/fo-report-content-evidence-2026-09-24.json"
+        },
+        {
+          "member": "FO Gold COmm/futidx03062026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/fo-report-content-evidence-2026-09-24.json"
+        },
+        {
+          "member": "FO Gold COmm/futivx03062026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/fo-report-content-evidence-2026-09-24.json"
+        },
+        {
+          "member": "FO Gold COmm/futstk03062026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/fo-report-content-evidence-2026-09-24.json"
+        },
+        {
+          "member": "FO Gold COmm/op03062026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/fo-report-content-evidence-2026-09-24.json"
+        },
+        {
+          "member": "FO Gold COmm/optidx03062026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/fo-report-content-evidence-2026-09-24.json"
+        },
+        {
+          "member": "FO Gold COmm/optstk03062026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/fo-report-content-evidence-2026-09-24.json"
+        },
+        {
+          "member": "FO Gold COmm/ttfut03062026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/fo-report-content-evidence-2026-09-24.json"
+        },
+        {
+          "member": "FO Gold COmm/ttopt03062026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/fo-report-content-evidence-2026-09-24.json"
+        },
+        {
+          "member": "FO Gold COmm/fo_pos_of_clients.xls",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/fo-report-content-evidence-2026-09-24.json"
+        }
+      ],
+      "remaining_member_status_counts": {
+        "reviewed": 15
+      }
+    },
+    {
+      "asset": "AM.07.Parameter.Files.zip",
+      "from": "partial",
+      "to": "partial",
+      "evidence": "data/asset-review/am07-text-spec-evidence-2026-09-24.json",
+      "member_updates": [
+        {
+          "member": "AM 07 Parameter Files/06_EARLY_WARNING.md",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/am07-text-spec-evidence-2026-09-24.json"
+        },
+        {
+          "member": "AM 07 Parameter Files/07_DATA_FORMATS.md",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/am07-text-spec-evidence-2026-09-24.json"
+        },
+        {
+          "member": "AM 07 Parameter Files/C_CATG_JUN2026.T01",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/am07-text-spec-evidence-2026-09-24.json"
+        },
+        {
+          "member": "AM 07 Parameter Files/parameter_registry.json",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/am07-text-spec-evidence-2026-09-24.json"
+        },
+        {
+          "member": "AM 07 Parameter Files/pasted-text.txt",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/am07-text-spec-evidence-2026-09-24.json"
+        },
+        {
+          "member": "AM 07 Parameter Files/PROJECT_FILE_LIST_THIS_PART.txt",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/am07-text-spec-evidence-2026-09-24.json"
+        }
+      ],
+      "remaining_member_status_counts": {
+        "reviewed": 29,
+        "partial": 2,
+        "inventory_only": 13
+      }
     }
   ],
   "summary": {
     "assets": 171,
     "asset_status_counts": {
-      "reviewed": 79,
-      "partial": 22,
+      "reviewed": 80,
+      "partial": 21,
       "inventory_only": 69,
       "corrupt": 1
     },
     "members": 592,
     "member_status_counts": {
-      "reviewed": 429,
+      "reviewed": 448,
       "partial": 6,
-      "inventory_only": 157
+      "inventory_only": 138
     },
-    "member_status_upgrades": 124,
+    "member_status_upgrades": 143,
     "corrupt_archive": "2021_06.zip",
     "corrupt_archive_member_count": null
   },
-  "excluded_promotions": "Only explicitly evidenced members are upgraded. This batch completes the six bhavcopy archive CSVs, not FO.Gold.COmm, monthly transaction or AM07 siblings. Historical reading/corporate-action arithmetic does not certify source authority, units, current membership, runtime readiness or import permission. No duplicate deletion or activation is authorized.",
+  "excluded_promotions": "Only thirteen new FO.Gold.COmm members and six named AM07 members are upgraded in this batch. Two previously reviewed FO CSVs were reread without double counting. AM07 remains partial; monthly/other archive siblings are not promoted. Historical reading, arithmetic agreement and diagnostic fixtures do not establish current data, authority, imports or production safety. No source deletion or strategy activation.",
   "mongo_accessed": false,
   "imported": false,
   "runtime_modified": false,
   "latest_batch": {
-    "id": "bhavcopy-content-2026-09-24",
-    "checkpoint": "docs/BHAVCOPY_CONTENT_CHECKPOINT_2026-09-24.md",
-    "reviewed_against_commit": "edc22309d60311e46b115a7bc60103dbd1016e51",
-    "previous_progress_sha256": "7501e460aaa88ba8fac9a405b86222dd4fca1d7de1f550c648ee297564742d69",
+    "id": "fo-report-am07-content-2026-09-24",
+    "checkpoint": "docs/FO_REPORT_AND_AM07_CHECKPOINT_2026-09-24.md",
+    "reviewed_against_commit": "611c1c26aad6beebac2ba5473a52333efa5e3220",
+    "previous_progress_sha256": "ae08397aefbc053f1031fe8100c54f126f2337581ff6fa83fb010be825098f9b",
     "previous_summary": {
       "assets": 171,
       "asset_status_counts": {
-        "reviewed": 78,
+        "reviewed": 79,
         "partial": 22,
-        "inventory_only": 70,
+        "inventory_only": 69,
         "corrupt": 1
       },
       "members": 592,
       "member_status_counts": {
-        "reviewed": 423,
+        "reviewed": 429,
         "partial": 6,
-        "inventory_only": 163
+        "inventory_only": 157
       },
-      "member_status_upgrades": 118,
+      "member_status_upgrades": 124,
       "corrupt_archive": "2021_06.zip",
       "corrupt_archive_member_count": null
     },
-    "new_member_status_upgrades": 6,
-    "direct_csv_member_upgrades": 6,
+    "new_member_status_upgrades": 19,
+    "direct_csv_member_upgrades": 12,
+    "binary_xls_member_upgrades": 1,
+    "text_spec_member_upgrades": 6,
     "newly_reviewed_archives": 1,
     "newly_partial_archives": 0,
     "update_application": "Apply every updates entry in array order to the immutable baseline; repeated asset entries are sequential member-level progress, not duplicate assets.",
-    "historical_digest_note": "Bhavcopy evidence records the pre-acceptance progress digest as historical input, not the digest of this updated overlay."
+    "historical_digest_note": "FO evidence records the pre-acceptance progress digest as historical input, not the digest of this updated overlay."
   }
 }

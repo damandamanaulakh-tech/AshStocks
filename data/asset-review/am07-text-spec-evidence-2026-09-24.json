@@ -1,0 +1,3231 @@
+{
+  "schema_version": "ash-am07-text-spec-evidence-v1",
+  "as_of": "2026-09-24",
+  "repository_commit": "611c1c26aad6beebac2ba5473a52333efa5e3220",
+  "scope": "six named AM07 members; source content and current source-code references only",
+  "read_only_source_audit": true,
+  "archive": {
+    "asset": "AM.07.Parameter.Files.zip",
+    "bytes": 10303731,
+    "sha256": "652be4ddb2b40915543ad848b2bfa10d011c6c2c5723a6e6a3480a85ddb2e2e5",
+    "pinned_hash_matches": true
+  },
+  "members": [
+    {
+      "member": "AM 07 Parameter Files/06_EARLY_WARNING.md",
+      "bytes": 14186,
+      "sha256": "845b88f6b58c8f9eb621cbc8c3d14384d329172488ccddfb90f99e158e49c810",
+      "crc32": "8c0c97f9",
+      "crc32_recomputed_matches": true,
+      "utf8_decoded_to_eof": true,
+      "line_count": 265,
+      "proposed_content_status": "reviewed",
+      "content_read_basis": "Full prose read; all defined warning sections or feed tables parsed and retained."
+    },
+    {
+      "member": "AM 07 Parameter Files/07_DATA_FORMATS.md",
+      "bytes": 8497,
+      "sha256": "65c42547899c3381f17dc6558974768dc66d5bc076bff95cdd9423d1e1e2a3c4",
+      "crc32": "15fe3c8c",
+      "crc32_recomputed_matches": true,
+      "utf8_decoded_to_eof": true,
+      "line_count": 239,
+      "proposed_content_status": "reviewed",
+      "content_read_basis": "Full prose read; all defined warning sections or feed tables parsed and retained."
+    },
+    {
+      "member": "AM 07 Parameter Files/C_CATG_JUN2026.T01",
+      "bytes": 431875,
+      "sha256": "8ebb7e2ba7c2a59308f35066bd7386c647139ffbc871b8e9fd843e82abe8234d",
+      "crc32": "b0cbc8f0",
+      "crc32_recomputed_matches": true,
+      "utf8_decoded_to_eof": true,
+      "line_count": 13788,
+      "proposed_content_status": "reviewed",
+      "content_read_basis": "Header and all 13787 six-field records parsed; declared count, row keys, identity shape, categories, series and unlabelled numeric values checked."
+    },
+    {
+      "member": "AM 07 Parameter Files/parameter_registry.json",
+      "bytes": 1642163,
+      "sha256": "dc9864b74edceb59ac01e463657d3d6e8b95f7452664669d7557cdd8ef077495",
+      "crc32": "1a0ed5eb",
+      "crc32_recomputed_matches": true,
+      "utf8_decoded_to_eof": true,
+      "line_count": 46847,
+      "proposed_content_status": "reviewed",
+      "content_read_basis": "All 1500 records and all 26 fields parsed and recursively traversed; IDs, source/status/threshold/formula templates reconciled; 24 specific contract rows retained."
+    },
+    {
+      "member": "AM 07 Parameter Files/pasted-text.txt",
+      "bytes": 145471,
+      "sha256": "d97ec137abf3c8b35dfe89af8f22cdda7e0d4ba67f540a2c74679847f433b941",
+      "crc32": "7c9f432a",
+      "crc32_recomputed_matches": true,
+      "utf8_decoded_to_eof": true,
+      "line_count": 4831,
+      "proposed_content_status": "reviewed",
+      "content_read_basis": "Entire valid JSON parsed to EOF; all 1608 seven-position candles validated structurally with unknown instrument identity retained."
+    },
+    {
+      "member": "AM 07 Parameter Files/PROJECT_FILE_LIST_THIS_PART.txt",
+      "bytes": 6234,
+      "sha256": "26263e63c45274374deb00028a60563206ef704b7ca8e16b8f006a21ac03f980",
+      "crc32": "12839820",
+      "crc32_recomputed_matches": true,
+      "utf8_decoded_to_eof": true,
+      "line_count": 88,
+      "proposed_content_status": "reviewed",
+      "content_read_basis": "All 88 unique historical paths read and counted; filenames are not availability or import proof."
+    }
+  ],
+  "member_bytes_consumed": 2248426,
+  "registry": {
+    "top_level_settings_as_source_not_authority": {
+      "profile_name": "Custom",
+      "paper_mode": "paper-only",
+      "max_position_pct": 5,
+      "max_open_positions": 20,
+      "intraday_enabled": true,
+      "swing_enabled": true,
+      "universe_default": "all_available",
+      "entry_score_minimum": 70,
+      "exit_score_minimum": 60,
+      "risk_max_allowed": 40,
+      "no_deletion_status_values": [
+        "ACTIVE",
+        "REVIEW",
+        "DUPLICATE-MERGED",
+        "UNSAFE-BLOCKED",
+        "DATA-NEEDED",
+        "FUTURE-STAGE"
+      ]
+    },
+    "record_count": 1500,
+    "record_field_counts": {
+      "26": 1500
+    },
+    "recursive_leaf_type_counts": {
+      "str": 25793,
+      "int": 4537,
+      "bool": 6010,
+      "float": 1507,
+      "NoneType": 2976
+    },
+    "all_records_canonical_sha256": "acc1c24ccd9f3e824c0aab90deefdaae3c8e303d7a70cf3ba8c6b5751f774db5",
+    "unique_parameter_ids": 1500,
+    "duplicate_ids": {},
+    "duplicate_names": {},
+    "id_sequence_exact_0001_through_1500": true,
+    "field_names": [
+      "parameter_id",
+      "name",
+      "display_name",
+      "group",
+      "subgroup",
+      "enabled",
+      "weight",
+      "source_file_or_api",
+      "data_source",
+      "formula",
+      "value_field",
+      "threshold_operator",
+      "threshold_value",
+      "current_value",
+      "hit_status",
+      "points_if_hit",
+      "points_if_fail",
+      "max_points",
+      "direction",
+      "applies_to",
+      "timeframe",
+      "reason_template",
+      "evidence_required",
+      "editable",
+      "editable_from_ui",
+      "status"
+    ],
+    "field_value_counts": {
+      "status": {
+        "\"ACTIVE\"": 138,
+        "\"DATA_NEEDED\"": 186,
+        "\"FUTURE-STAGE\"": 1176
+      },
+      "enabled": {
+        "false": 1365,
+        "true": 135
+      },
+      "weight": {
+        "0.0": 1176,
+        "1.0": 324
+      },
+      "source_file_or_api": {
+        "\"DATA_NEEDED\"": 1476,
+        "\"sample/upload/API\"": 24
+      },
+      "data_source": {
+        "\"DATA_NEEDED\"": 1476,
+        "\"sample/upload/API\"": 24
+      },
+      "threshold_operator": {
+        "\"<=\"": 3,
+        "\"==\"": 8,
+        "\">\"": 1,
+        "\">=\"": 1,
+        "\"DATA_NEEDED\"": 1176,
+        "\"bands\"": 9,
+        "\"configured\"": 300,
+        "\"logic\"": 2
+      },
+      "current_value": {
+        "null": 1500
+      },
+      "hit_status": {
+        "\"NOT_EVALUATED\"": 1500
+      },
+      "direction": {
+        "\"audit\"": 2,
+        "\"bearish/risk\"": 1,
+        "\"breakout\"": 1,
+        "\"bullish\"": 3,
+        "\"bullish/bearish/risk\"": 2,
+        "\"decision\"": 1,
+        "\"delivery\"": 1,
+        "\"entry_gate\"": 1,
+        "\"exit\"": 1,
+        "\"exit/profit\"": 1,
+        "\"institutional\"": 2,
+        "\"momentum\"": 2,
+        "\"neutral\"": 1476,
+        "\"risk\"": 2,
+        "\"risk/block\"": 1,
+        "\"support/risk\"": 2,
+        "\"volume\"": 1
+      },
+      "timeframe": {
+        "\"both\"": 1500
+      },
+      "group": {
+        "\"Asset Layer\"": 7,
+        "\"Backtest Review\"": 13,
+        "\"Breakout\"": 10,
+        "\"Connected OI Risk\"": 8,
+        "\"DII Support\"": 4,
+        "\"Data Quality\"": 398,
+        "\"Delivery\"": 8,
+        "\"Election\"": 11,
+        "\"Entry\"": 11,
+        "\"Event / News\"": 10,
+        "\"Exit / Sell\"": 14,
+        "\"FII Derivatives\"": 11,
+        "\"Gap\"": 9,
+        "\"IFR / Internal Fracture\"": 7,
+        "\"Index Regime\"": 11,
+        "\"Institutional Cash\"": 13,
+        "\"Liquidity\"": 10,
+        "\"Macro / Policy\"": 9,
+        "\"Market Breadth\"": 8,
+        "\"Momentum\"": 11,
+        "\"Opportunity Discovery\"": 402,
+        "\"Participant OI / PWOI\"": 11,
+        "\"Price Action\"": 12,
+        "\"Report / ProofLedger\"": 10,
+        "\"Results / Earnings\"": 8,
+        "\"Reversal\"": 11,
+        "\"Risk\"": 12,
+        "\"Sector FII Flow\"": 10,
+        "\"Sourceborn / URR Status\"": 398,
+        "\"Trend\"": 12,
+        "\"Universe\"": 12,
+        "\"Volatility\"": 9,
+        "\"Volume\"": 10
+      }
+    },
+    "formula_class_counts": {
+      "aggregate_without_child_normalization_contract": 36,
+      "field_check_without_input_contract": 15,
+      "metric_named_without_algorithm": 36,
+      "reserved_future_slot": 1176,
+      "risk_named_without_algorithm": 25,
+      "specific_formula_or_operational_rule": 24,
+      "undefined_formula_slot": 188
+    },
+    "enabled_formula_class_counts": {
+      "aggregate_without_child_normalization_contract": 9,
+      "field_check_without_input_contract": 9,
+      "metric_named_without_algorithm": 19,
+      "risk_named_without_algorithm": 12,
+      "specific_formula_or_operational_rule": 21,
+      "undefined_formula_slot": 65
+    },
+    "enabled_with_data_needed_source": 114,
+    "active_with_placeholder_formula": [
+      "G07_0002_UNIVERSE_NSE_EQUITY",
+      "G07_0003_UNIVERSE_NSE_FO",
+      "G07_0004_UNIVERSE_NIFTY_500",
+      "G07_0005_UNIVERSE_CUSTOM_UPLOAD",
+      "G07_0006_UNIVERSE_WATCHLIST_ONLY",
+      "G07_0014_AVG_DAILY_TURNOVER_20D",
+      "G07_0015_MIN_TRADE_VALUE_FILTER",
+      "G07_0016_BID_ASK_SPREAD_FILTER",
+      "G07_0018_ILLIQUID_STOCK_PENALTY",
+      "G07_0019_PRICE_ABOVE_MINIMUM_FILTER",
+      "G07_0020_PENNY_STOCK_EXCLUSION",
+      "G07_0027_CLOSE_NEAR_HIGH",
+      "G07_0028_CLOSE_NEAR_LOW",
+      "G07_0029_HIGHER_HIGH_STRUCTURE",
+      "G07_0030_LOWER_LOW_STRUCTURE",
+      "G07_0031_CONSOLIDATION_BREAK",
+      "G07_0032_FAILED_BREAKOUT_PATTERN",
+      "G07_0033_NARROW_RANGE_BREAKOUT",
+      "G07_0034_WIDE_RANGE_EXHAUSTION",
+      "G07_0035_EMA_20_TREND",
+      "G07_0036_EMA_50_TREND",
+      "G07_0037_EMA_200_TREND",
+      "G07_0040_PRICE_ABOVE_200EMA",
+      "G07_0044_TREND_AGE_DAYS",
+      "G07_0048_RSI_CROSS_50",
+      "G07_0050_RSI_OVERSOLD_REVERSAL",
+      "G07_0052_MACD_HISTOGRAM_RISING",
+      "G07_0053_ROC_10",
+      "G07_0054_ROC_20",
+      "G07_0055_STOCHASTIC_REVERSAL",
+      "G07_0056_MOMENTUM_DIVERGENCE",
+      "G07_0071_DELIVERY_PRICE_CONFIRMATION",
+      "G07_0072_HIGH_DELIVERY_ACCUMULATION",
+      "G07_0074_DELIVERY_BREAKOUT_CONFIRMATION",
+      "G07_0116_FII_CASH_NET_3D",
+      "G07_0118_FII_CASH_NET_10D",
+      "G07_0120_FII_CASH_SELLING_CLUSTER",
+      "G07_0121_FII_CASH_BUYING_CLUSTER",
+      "G07_0123_DII_CASH_NET_3D",
+      "G07_0124_DII_CASH_SUPPORT_AGAINST_FII",
+      "G07_0126_FII_DII_CONFIRMATION",
+      "G07_0238_MAX_OPEN_POSITIONS",
+      "G07_0239_MAX_DAILY_TRADES",
+      "G07_0241_VOLATILITY_ADJUSTED_POSITION",
+      "G07_0249_ENTRY_SECTOR_CONFIRM_REQUIRED",
+      "G07_0250_ENTRY_FII_CONFIRM_REQUIRED",
+      "G07_0251_ENTRY_TECHNICAL_CONFIRM_REQUIRED",
+      "G07_0254_ENTRY_INTRADAY_ALLOWED",
+      "G07_0255_ENTRY_SWING_ALLOWED",
+      "G07_0256_ENTRY_REASON_REQUIRED",
+      "G07_0257_ENTRY_POSITION_SIZE_CALCULATED",
+      "G07_0261_TRAILING_STOP_HIT",
+      "G07_0262_TIME_STOP_HIT",
+      "G07_0263_TECHNICAL_BREAKDOWN_EXIT",
+      "G07_0264_SECTOR_PRESSURE_EXIT",
+      "G07_0265_FII_PRESSURE_EXIT",
+      "G07_0266_INDEX_REGIME_EXIT",
+      "G07_0269_DELIVERY_WEAKNESS_EXIT",
+      "G07_0270_MOMENTUM_FAILURE_EXIT",
+      "G07_0271_MANUAL_EXIT",
+      "G07_0289_GAP_TABLE_ITEM",
+      "G07_0290_REASON_TEXT_COMPLETE",
+      "G07_0292_ENTRY_EVIDENCE_SAVED",
+      "G07_0293_EXIT_EVIDENCE_SAVED",
+      "G07_0294_REPORT_DOWNLOAD_READY"
+    ],
+    "active_but_disabled_ids": [
+      "G07_0096_20D_HIGH_BREAKOUT",
+      "G07_0128_FII_INDEX_FUTURES_NET",
+      "G07_0139_DII_SUPPORT_5D"
+    ],
+    "statuses_not_in_own_allowed_values": [
+      "DATA_NEEDED"
+    ],
+    "all_null_thresholds": 1476,
+    "specific_contracts_original_rows": [
+      {
+        "parameter_id": "G07_0038_PRICE_ABOVE_20EMA",
+        "name": "price_above_20ema",
+        "display_name": "Price Above 20 EMA",
+        "group": "Trend",
+        "subgroup": "Trend",
+        "enabled": true,
+        "weight": 1,
+        "source_file_or_api": "sample/upload/API",
+        "data_source": "sample/upload/API",
+        "formula": "close > ema20",
+        "value_field": "price_above_20ema",
+        "threshold_operator": "==",
+        "threshold_value": true,
+        "current_value": null,
+        "hit_status": "NOT_EVALUATED",
+        "points_if_hit": 3,
+        "points_if_fail": -3,
+        "max_points": 3,
+        "direction": "bullish",
+        "applies_to": [
+          "entry",
+          "exit"
+        ],
+        "timeframe": "both",
+        "reason_template": "Close vs EMA20 result was {current_value}; impact {points}.",
+        "evidence_required": true,
+        "editable": true,
+        "editable_from_ui": true,
+        "status": "ACTIVE"
+      },
+      {
+        "parameter_id": "G07_0039_PRICE_ABOVE_50EMA",
+        "name": "price_above_50ema",
+        "display_name": "Price Above 50 EMA",
+        "group": "Trend",
+        "subgroup": "Trend",
+        "enabled": true,
+        "weight": 1,
+        "source_file_or_api": "sample/upload/API",
+        "data_source": "sample/upload/API",
+        "formula": "close > ema50",
+        "value_field": "price_above_50ema",
+        "threshold_operator": "==",
+        "threshold_value": true,
+        "current_value": null,
+        "hit_status": "NOT_EVALUATED",
+        "points_if_hit": 4,
+        "points_if_fail": -4,
+        "max_points": 4,
+        "direction": "bullish",
+        "applies_to": [
+          "entry",
+          "exit"
+        ],
+        "timeframe": "both",
+        "reason_template": "Close vs EMA50 result was {current_value}; impact {points}.",
+        "evidence_required": true,
+        "editable": true,
+        "editable_from_ui": true,
+        "status": "ACTIVE"
+      },
+      {
+        "parameter_id": "G07_0041_EMA_STACK_BULLISH",
+        "name": "ema_stack_bullish",
+        "display_name": "EMA Stack Bullish",
+        "group": "Trend",
+        "subgroup": "Trend",
+        "enabled": true,
+        "weight": 1,
+        "source_file_or_api": "sample/upload/API",
+        "data_source": "sample/upload/API",
+        "formula": "ema20 > ema50 > ema200",
+        "value_field": "ema_stack_bullish",
+        "threshold_operator": "==",
+        "threshold_value": true,
+        "current_value": null,
+        "hit_status": "NOT_EVALUATED",
+        "points_if_hit": 8,
+        "points_if_fail": 0,
+        "max_points": 8,
+        "direction": "bullish",
+        "applies_to": [
+          "entry"
+        ],
+        "timeframe": "both",
+        "reason_template": "EMA stack bullish={current_value}; impact {points}.",
+        "evidence_required": true,
+        "editable": true,
+        "editable_from_ui": true,
+        "status": "ACTIVE"
+      },
+      {
+        "parameter_id": "G07_0042_EMA_STACK_BEARISH",
+        "name": "ema_stack_bearish",
+        "display_name": "EMA Stack Bearish",
+        "group": "Trend",
+        "subgroup": "Trend",
+        "enabled": true,
+        "weight": 1,
+        "source_file_or_api": "sample/upload/API",
+        "data_source": "sample/upload/API",
+        "formula": "ema20 < ema50 < ema200",
+        "value_field": "ema_stack_bearish",
+        "threshold_operator": "==",
+        "threshold_value": true,
+        "current_value": null,
+        "hit_status": "NOT_EVALUATED",
+        "points_if_hit": -8,
+        "points_if_fail": 0,
+        "max_points": 8,
+        "direction": "bearish/risk",
+        "applies_to": [
+          "risk",
+          "exit"
+        ],
+        "timeframe": "both",
+        "reason_template": "EMA stack bearish={current_value}; impact {points}.",
+        "evidence_required": true,
+        "editable": true,
+        "editable_from_ui": true,
+        "status": "ACTIVE"
+      },
+      {
+        "parameter_id": "G07_0047_RSI_14",
+        "name": "rsi_14",
+        "display_name": "RSI 14",
+        "group": "Momentum",
+        "subgroup": "Momentum",
+        "enabled": true,
+        "weight": 1,
+        "source_file_or_api": "sample/upload/API",
+        "data_source": "sample/upload/API",
+        "formula": "RSI(close, 14)",
+        "value_field": "rsi_14",
+        "threshold_operator": "bands",
+        "threshold_value": {
+          "bullish_low": 45,
+          "bullish_high": 60,
+          "positive_high": 70,
+          "overbought": 75,
+          "oversold": 30
+        },
+        "current_value": null,
+        "hit_status": "NOT_EVALUATED",
+        "points_if_hit": 4,
+        "points_if_fail": -4,
+        "max_points": 4,
+        "direction": "momentum",
+        "applies_to": [
+          "entry",
+          "risk",
+          "exit"
+        ],
+        "timeframe": "both",
+        "reason_template": "RSI14 was {current_value}; band impact {points}.",
+        "evidence_required": true,
+        "editable": true,
+        "editable_from_ui": true,
+        "status": "ACTIVE"
+      },
+      {
+        "parameter_id": "G07_0051_MACD_SIGNAL_CROSS",
+        "name": "macd_signal_cross",
+        "display_name": "MACD Signal Cross",
+        "group": "Momentum",
+        "subgroup": "Momentum",
+        "enabled": true,
+        "weight": 1,
+        "source_file_or_api": "sample/upload/API",
+        "data_source": "sample/upload/API",
+        "formula": "macd_line crosses signal_line",
+        "value_field": "macd_signal_cross",
+        "threshold_operator": "logic",
+        "threshold_value": "bullish/bearish cross",
+        "current_value": null,
+        "hit_status": "NOT_EVALUATED",
+        "points_if_hit": 5,
+        "points_if_fail": -5,
+        "max_points": 5,
+        "direction": "momentum",
+        "applies_to": [
+          "entry",
+          "exit"
+        ],
+        "timeframe": "both",
+        "reason_template": "MACD signal cross {current_value}; impact {points}.",
+        "evidence_required": true,
+        "editable": true,
+        "editable_from_ui": true,
+        "status": "ACTIVE"
+      },
+      {
+        "parameter_id": "G07_0058_VOLUME_VS_20D_AVG",
+        "name": "volume_vs_20d_avg",
+        "display_name": "Volume vs 20D Avg",
+        "group": "Volume",
+        "subgroup": "Volume",
+        "enabled": true,
+        "weight": 1,
+        "source_file_or_api": "sample/upload/API",
+        "data_source": "sample/upload/API",
+        "formula": "today_volume / avg_volume_20d",
+        "value_field": "volume_vs_20d_avg",
+        "threshold_operator": "bands",
+        "threshold_value": {
+          "strong": 2,
+          "good": 1.5,
+          "ok": 1,
+          "weak": 0.7
+        },
+        "current_value": null,
+        "hit_status": "NOT_EVALUATED",
+        "points_if_hit": 6,
+        "points_if_fail": -3,
+        "max_points": 6,
+        "direction": "volume",
+        "applies_to": [
+          "entry",
+          "risk"
+        ],
+        "timeframe": "both",
+        "reason_template": "Volume ratio was {current_value}; threshold {threshold_value}; impact {points}.",
+        "evidence_required": true,
+        "editable": true,
+        "editable_from_ui": true,
+        "status": "ACTIVE"
+      },
+      {
+        "parameter_id": "G07_0069_DELIVERY_PCT_VS_AVG",
+        "name": "delivery_pct_vs_avg",
+        "display_name": "Delivery % vs Avg",
+        "group": "Delivery",
+        "subgroup": "Delivery",
+        "enabled": true,
+        "weight": 1,
+        "source_file_or_api": "sample/upload/API",
+        "data_source": "sample/upload/API",
+        "formula": "delivery_pct_today - avg_delivery_pct_20d",
+        "value_field": "delivery_pct_vs_avg",
+        "threshold_operator": "bands",
+        "threshold_value": {
+          "accumulation": 10,
+          "mild": 5,
+          "weak": -10
+        },
+        "current_value": null,
+        "hit_status": "NOT_EVALUATED",
+        "points_if_hit": 6,
+        "points_if_fail": -5,
+        "max_points": 6,
+        "direction": "delivery",
+        "applies_to": [
+          "entry",
+          "risk"
+        ],
+        "timeframe": "both",
+        "reason_template": "Delivery delta was {current_value} percentage points; impact {points}.",
+        "evidence_required": true,
+        "editable": true,
+        "editable_from_ui": true,
+        "status": "ACTIVE"
+      },
+      {
+        "parameter_id": "G07_0096_20D_HIGH_BREAKOUT",
+        "name": "20d_high_breakout",
+        "display_name": "20D High Breakout",
+        "group": "Breakout",
+        "subgroup": "Breakout",
+        "enabled": false,
+        "weight": 1,
+        "source_file_or_api": "sample/upload/API",
+        "data_source": "sample/upload/API",
+        "formula": "close > highest_high_20d; volume confirms if volume_ratio >= 1.5",
+        "value_field": "breakout_20d_high",
+        "threshold_operator": ">",
+        "threshold_value": "highest_high_20d",
+        "current_value": null,
+        "hit_status": "NOT_EVALUATED",
+        "points_if_hit": 8,
+        "points_if_fail": -8,
+        "max_points": 8,
+        "direction": "breakout",
+        "applies_to": [
+          "entry"
+        ],
+        "timeframe": "both",
+        "reason_template": "20D high breakout={current_value}; impact {points}.",
+        "evidence_required": true,
+        "editable": true,
+        "editable_from_ui": true,
+        "status": "ACTIVE"
+      },
+      {
+        "parameter_id": "G07_0115_FII_CASH_NET_DAILY",
+        "name": "fii_cash_net_daily",
+        "display_name": "FII Cash Net Daily",
+        "group": "Institutional Cash",
+        "subgroup": "Institutional Cash",
+        "enabled": true,
+        "weight": 1,
+        "source_file_or_api": "sample/upload/API",
+        "data_source": "sample/upload/API",
+        "formula": "fii_buy_value - fii_sell_value OR sample field fii_cash_net",
+        "value_field": "fii_cash_net",
+        "threshold_operator": "bands",
+        "threshold_value": {
+          "strong_bullish": 1000,
+          "bullish": 250,
+          "neutral_low": -250,
+          "bearish": -250,
+          "strong_bearish": -1000
+        },
+        "current_value": null,
+        "hit_status": "NOT_EVALUATED",
+        "points_if_hit": 8,
+        "points_if_fail": -8,
+        "max_points": 8,
+        "direction": "bullish/bearish/risk",
+        "applies_to": [
+          "entry",
+          "risk"
+        ],
+        "timeframe": "both",
+        "reason_template": "FII cash net was {current_value} cr against configured bands; score impact {points}.",
+        "evidence_required": true,
+        "editable": true,
+        "editable_from_ui": true,
+        "status": "ACTIVE"
+      },
+      {
+        "parameter_id": "G07_0117_FII_CASH_NET_5D",
+        "name": "fii_cash_net_5d",
+        "display_name": "FII Cash 5D Cluster",
+        "group": "Institutional Cash",
+        "subgroup": "Institutional Cash",
+        "enabled": true,
+        "weight": 1,
+        "source_file_or_api": "sample/upload/API",
+        "data_source": "sample/upload/API",
+        "formula": "sum(fii_cash_net over last 5 sessions)",
+        "value_field": "fii_cash_net_5d",
+        "threshold_operator": "bands",
+        "threshold_value": {
+          "bullish": 3000,
+          "bearish": -3000,
+          "extreme_bearish": -5000
+        },
+        "current_value": null,
+        "hit_status": "NOT_EVALUATED",
+        "points_if_hit": 8,
+        "points_if_fail": -12,
+        "max_points": 12,
+        "direction": "institutional",
+        "applies_to": [
+          "entry",
+          "risk"
+        ],
+        "timeframe": "both",
+        "reason_template": "FII 5-day cash cluster {current_value} cr; threshold {threshold_value}; impact {points}.",
+        "evidence_required": true,
+        "editable": true,
+        "editable_from_ui": true,
+        "status": "ACTIVE"
+      },
+      {
+        "parameter_id": "G07_0122_DII_CASH_NET_DAILY",
+        "name": "dii_cash_net_daily",
+        "display_name": "DII Cash Net Daily",
+        "group": "Institutional Cash",
+        "subgroup": "Institutional Cash",
+        "enabled": true,
+        "weight": 1,
+        "source_file_or_api": "sample/upload/API",
+        "data_source": "sample/upload/API",
+        "formula": "dii_buy_value - dii_sell_value OR sample field dii_cash_net",
+        "value_field": "dii_cash_net",
+        "threshold_operator": "bands",
+        "threshold_value": {
+          "strong_support": 1000,
+          "support": 250,
+          "neutral_low": -250,
+          "risk": -1000
+        },
+        "current_value": null,
+        "hit_status": "NOT_EVALUATED",
+        "points_if_hit": 6,
+        "points_if_fail": -5,
+        "max_points": 6,
+        "direction": "support/risk",
+        "applies_to": [
+          "entry",
+          "risk"
+        ],
+        "timeframe": "both",
+        "reason_template": "DII cash net was {current_value} cr; support/risk points {points}.",
+        "evidence_required": true,
+        "editable": true,
+        "editable_from_ui": true,
+        "status": "ACTIVE"
+      },
+      {
+        "parameter_id": "G07_0125_FII_DII_DIVERGENCE",
+        "name": "fii_dii_divergence",
+        "display_name": "FII DII Divergence",
+        "group": "Institutional Cash",
+        "subgroup": "Institutional Cash",
+        "enabled": true,
+        "weight": 1,
+        "source_file_or_api": "sample/upload/API",
+        "data_source": "sample/upload/API",
+        "formula": "fii_cash_net_daily - dii_cash_net_daily",
+        "value_field": "fii_dii_divergence",
+        "threshold_operator": "logic",
+        "threshold_value": "fii/dii sign logic",
+        "current_value": null,
+        "hit_status": "NOT_EVALUATED",
+        "points_if_hit": 8,
+        "points_if_fail": -10,
+        "max_points": 10,
+        "direction": "institutional",
+        "applies_to": [
+          "entry",
+          "risk"
+        ],
+        "timeframe": "both",
+        "reason_template": "FII/DII divergence value {current_value}; institutional regime impact {points}.",
+        "evidence_required": true,
+        "editable": true,
+        "editable_from_ui": true,
+        "status": "ACTIVE"
+      },
+      {
+        "parameter_id": "G07_0128_FII_INDEX_FUTURES_NET",
+        "name": "fii_index_futures_net",
+        "display_name": "FII Index Futures Net",
+        "group": "FII Derivatives",
+        "subgroup": "FII Derivatives",
+        "enabled": false,
+        "weight": 1,
+        "source_file_or_api": "sample/upload/API",
+        "data_source": "sample/upload/API",
+        "formula": "index_futures_buy_value - index_futures_sell_value",
+        "value_field": "fii_index_futures_net",
+        "threshold_operator": "bands",
+        "threshold_value": {
+          "bullish": 500,
+          "mild_bullish": 100,
+          "neutral_low": -100,
+          "mild_bearish": -100,
+          "bearish": -500
+        },
+        "current_value": null,
+        "hit_status": "NOT_EVALUATED",
+        "points_if_hit": 7,
+        "points_if_fail": -8,
+        "max_points": 8,
+        "direction": "bullish/bearish/risk",
+        "applies_to": [
+          "entry",
+          "risk"
+        ],
+        "timeframe": "both",
+        "reason_template": "FII index futures net {current_value} cr vs threshold {threshold_value}; impact {points}.",
+        "evidence_required": true,
+        "editable": true,
+        "editable_from_ui": true,
+        "status": "ACTIVE"
+      },
+      {
+        "parameter_id": "G07_0139_DII_SUPPORT_5D",
+        "name": "dii_support_5d",
+        "display_name": "DII Support 5D",
+        "group": "DII Support",
+        "subgroup": "DII Support",
+        "enabled": false,
+        "weight": 1,
+        "source_file_or_api": "sample/upload/API",
+        "data_source": "sample/upload/API",
+        "formula": "sum(dii_cash_net over last 5 sessions)",
+        "value_field": "dii_cash_net_5d",
+        "threshold_operator": "bands",
+        "threshold_value": {
+          "support": 3000,
+          "risk": -3000
+        },
+        "current_value": null,
+        "hit_status": "NOT_EVALUATED",
+        "points_if_hit": 6,
+        "points_if_fail": -6,
+        "max_points": 6,
+        "direction": "support/risk",
+        "applies_to": [
+          "entry",
+          "risk"
+        ],
+        "timeframe": "both",
+        "reason_template": "DII 5-day support {current_value} cr; score impact {points}.",
+        "evidence_required": true,
+        "editable": true,
+        "editable_from_ui": true,
+        "status": "ACTIVE"
+      },
+      {
+        "parameter_id": "G07_0236_MAX_POSITION_PCT",
+        "name": "max_position_pct",
+        "display_name": "Max Position %",
+        "group": "Risk",
+        "subgroup": "Risk",
+        "enabled": true,
+        "weight": 1,
+        "source_file_or_api": "sample/upload/API",
+        "data_source": "sample/upload/API",
+        "formula": "position_value <= capital * max_position_pct",
+        "value_field": "position_pct",
+        "threshold_operator": "<=",
+        "threshold_value": 0.05,
+        "current_value": null,
+        "hit_status": "NOT_EVALUATED",
+        "points_if_hit": 0,
+        "points_if_fail": -100,
+        "max_points": 100,
+        "direction": "risk/block",
+        "applies_to": [
+          "risk",
+          "entry"
+        ],
+        "timeframe": "both",
+        "reason_template": "Position size {current_value} vs max {threshold_value}.",
+        "evidence_required": true,
+        "editable": true,
+        "editable_from_ui": true,
+        "status": "ACTIVE"
+      },
+      {
+        "parameter_id": "G07_0237_PORTFOLIO_HEAT",
+        "name": "portfolio_heat",
+        "display_name": "Portfolio Heat",
+        "group": "Risk",
+        "subgroup": "Risk",
+        "enabled": true,
+        "weight": 1,
+        "source_file_or_api": "sample/upload/API",
+        "data_source": "sample/upload/API",
+        "formula": "sum(open_risk) / capital",
+        "value_field": "portfolio_heat",
+        "threshold_operator": "<=",
+        "threshold_value": 0.15,
+        "current_value": null,
+        "hit_status": "NOT_EVALUATED",
+        "points_if_hit": 0,
+        "points_if_fail": -10,
+        "max_points": 10,
+        "direction": "risk",
+        "applies_to": [
+          "risk"
+        ],
+        "timeframe": "both",
+        "reason_template": "Portfolio heat was {current_value}; max allowed {threshold_value}.",
+        "evidence_required": true,
+        "editable": true,
+        "editable_from_ui": true,
+        "status": "ACTIVE"
+      },
+      {
+        "parameter_id": "G07_0243_SECTOR_CONCENTRATION_RISK",
+        "name": "sector_concentration_risk",
+        "display_name": "Sector Concentration Risk",
+        "group": "Risk",
+        "subgroup": "Risk",
+        "enabled": true,
+        "weight": 1,
+        "source_file_or_api": "sample/upload/API",
+        "data_source": "sample/upload/API",
+        "formula": "sector_exposure / capital",
+        "value_field": "sector_exposure_pct",
+        "threshold_operator": "<=",
+        "threshold_value": 0.25,
+        "current_value": null,
+        "hit_status": "NOT_EVALUATED",
+        "points_if_hit": 0,
+        "points_if_fail": -10,
+        "max_points": 10,
+        "direction": "risk",
+        "applies_to": [
+          "risk"
+        ],
+        "timeframe": "both",
+        "reason_template": "Sector exposure {current_value}; threshold {threshold_value}.",
+        "evidence_required": true,
+        "editable": true,
+        "editable_from_ui": true,
+        "status": "ACTIVE"
+      },
+      {
+        "parameter_id": "G07_0248_ENTRY_SCORE_MINIMUM",
+        "name": "entry_score_minimum",
+        "display_name": "Entry Score Minimum",
+        "group": "Entry",
+        "subgroup": "Entry",
+        "enabled": true,
+        "weight": 1,
+        "source_file_or_api": "sample/upload/API",
+        "data_source": "sample/upload/API",
+        "formula": "entry_total_score >= configured threshold",
+        "value_field": "entry_total_score",
+        "threshold_operator": ">=",
+        "threshold_value": 70,
+        "current_value": null,
+        "hit_status": "NOT_EVALUATED",
+        "points_if_hit": 0,
+        "points_if_fail": -100,
+        "max_points": 100,
+        "direction": "entry_gate",
+        "applies_to": [
+          "entry"
+        ],
+        "timeframe": "both",
+        "reason_template": "Entry score {current_value}; minimum {threshold_value}.",
+        "evidence_required": true,
+        "editable": true,
+        "editable_from_ui": true,
+        "status": "ACTIVE"
+      },
+      {
+        "parameter_id": "G07_0258_ENTRY_SCORE_TOTAL",
+        "name": "entry_score_total",
+        "display_name": "Entry Score Total",
+        "group": "Entry",
+        "subgroup": "Entry",
+        "enabled": true,
+        "weight": 1,
+        "source_file_or_api": "sample/upload/API",
+        "data_source": "sample/upload/API",
+        "formula": "technical_score + institutional_score + sector_score + volume_delivery_score + event_score - risk_score",
+        "value_field": "entry_total_score",
+        "threshold_operator": "bands",
+        "threshold_value": {
+          "strong_select": 80,
+          "select_small": 70,
+          "watchlist": 60,
+          "reject": 59
+        },
+        "current_value": null,
+        "hit_status": "NOT_EVALUATED",
+        "points_if_hit": 0,
+        "points_if_fail": 0,
+        "max_points": 100,
+        "direction": "decision",
+        "applies_to": [
+          "entry",
+          "report"
+        ],
+        "timeframe": "both",
+        "reason_template": "Total score {current_value}; decision band applied.",
+        "evidence_required": true,
+        "editable": true,
+        "editable_from_ui": true,
+        "status": "ACTIVE"
+      },
+      {
+        "parameter_id": "G07_0259_STOP_LOSS_HIT",
+        "name": "stop_loss_hit",
+        "display_name": "Stop Loss Hit",
+        "group": "Exit / Sell",
+        "subgroup": "Exit / Sell",
+        "enabled": true,
+        "weight": 1,
+        "source_file_or_api": "sample/upload/API",
+        "data_source": "sample/upload/API",
+        "formula": "current_price <= stop_loss",
+        "value_field": "stop_loss_hit",
+        "threshold_operator": "==",
+        "threshold_value": true,
+        "current_value": null,
+        "hit_status": "NOT_EVALUATED",
+        "points_if_hit": -100,
+        "points_if_fail": 0,
+        "max_points": 100,
+        "direction": "exit",
+        "applies_to": [
+          "exit"
+        ],
+        "timeframe": "both",
+        "reason_template": "Stop loss hit={current_value}.",
+        "evidence_required": true,
+        "editable": true,
+        "editable_from_ui": true,
+        "status": "ACTIVE"
+      },
+      {
+        "parameter_id": "G07_0260_TARGET_HIT",
+        "name": "target_hit",
+        "display_name": "Target Hit",
+        "group": "Exit / Sell",
+        "subgroup": "Exit / Sell",
+        "enabled": true,
+        "weight": 1,
+        "source_file_or_api": "sample/upload/API",
+        "data_source": "sample/upload/API",
+        "formula": "current_price >= target",
+        "value_field": "target_hit",
+        "threshold_operator": "==",
+        "threshold_value": true,
+        "current_value": null,
+        "hit_status": "NOT_EVALUATED",
+        "points_if_hit": 100,
+        "points_if_fail": 0,
+        "max_points": 100,
+        "direction": "exit/profit",
+        "applies_to": [
+          "exit"
+        ],
+        "timeframe": "both",
+        "reason_template": "Target hit={current_value}.",
+        "evidence_required": true,
+        "editable": true,
+        "editable_from_ui": true,
+        "status": "ACTIVE"
+      },
+      {
+        "parameter_id": "G07_0286_PROOF_SOURCE_AVAILABLE",
+        "name": "proof_source_available",
+        "display_name": "Proof Source Available",
+        "group": "Report / ProofLedger",
+        "subgroup": "Report / ProofLedger",
+        "enabled": true,
+        "weight": 1,
+        "source_file_or_api": "sample/upload/API",
+        "data_source": "sample/upload/API",
+        "formula": "evidence source exists for each used parameter",
+        "value_field": "proof_source_available",
+        "threshold_operator": "==",
+        "threshold_value": true,
+        "current_value": null,
+        "hit_status": "NOT_EVALUATED",
+        "points_if_hit": 0,
+        "points_if_fail": -100,
+        "max_points": 100,
+        "direction": "audit",
+        "applies_to": [
+          "report",
+          "risk"
+        ],
+        "timeframe": "both",
+        "reason_template": "Proof source available={current_value}; missing source means DATA_NEEDED.",
+        "evidence_required": true,
+        "editable": true,
+        "editable_from_ui": true,
+        "status": "ACTIVE"
+      },
+      {
+        "parameter_id": "G07_0291_PARAMETER_SNAPSHOT_SAVED",
+        "name": "parameter_snapshot_saved",
+        "display_name": "Parameter Snapshot Saved",
+        "group": "Report / ProofLedger",
+        "subgroup": "Report / ProofLedger",
+        "enabled": true,
+        "weight": 1,
+        "source_file_or_api": "sample/upload/API",
+        "data_source": "sample/upload/API",
+        "formula": "save exact parameter values, weights, thresholds at scan/trade time",
+        "value_field": "parameter_snapshot_saved",
+        "threshold_operator": "==",
+        "threshold_value": true,
+        "current_value": null,
+        "hit_status": "NOT_EVALUATED",
+        "points_if_hit": 0,
+        "points_if_fail": -100,
+        "max_points": 100,
+        "direction": "audit",
+        "applies_to": [
+          "report"
+        ],
+        "timeframe": "both",
+        "reason_template": "Parameter snapshot saved={current_value}.",
+        "evidence_required": true,
+        "editable": true,
+        "editable_from_ui": true,
+        "status": "ACTIVE"
+      }
+    ],
+    "existing_catalog_count": 175,
+    "existing_catalog_exact_id_overlap": [],
+    "existing_catalog_id_prefix_counts": {
+      "B02": 4,
+      "B15": 3,
+      "B19": 3,
+      "B22": 13,
+      "NBX01": 1,
+      "NBX02": 1,
+      "NBX03": 1,
+      "NBX04": 1,
+      "NBX05": 1,
+      "NBX06": 1,
+      "NBX07": 1,
+      "NBX08": 1,
+      "NG01": 1,
+      "NG02": 1,
+      "NG03": 1,
+      "NG04": 1,
+      "NG05": 1,
+      "NG06": 1,
+      "NG07": 1,
+      "NG08": 1,
+      "NG09": 1,
+      "NG10": 1,
+      "NL01": 1,
+      "NL02": 1,
+      "NL03": 1,
+      "NL04": 1,
+      "NL05": 1,
+      "NL06": 1,
+      "NL07": 1,
+      "NL08": 1,
+      "NMS01": 1,
+      "NMS02": 1,
+      "NMS03": 1,
+      "NMS04": 1,
+      "NMS05": 1,
+      "NMS06": 1,
+      "NMS07": 1,
+      "NO01": 1,
+      "NO02": 1,
+      "NO03": 1,
+      "NO04": 1,
+      "NO05": 1,
+      "NO06": 1,
+      "NO07": 1,
+      "NO08": 1,
+      "NO09": 1,
+      "NO10": 1,
+      "NQ01": 1,
+      "NQ02": 1,
+      "NQ03": 1,
+      "NQ04": 1,
+      "NQ05": 1,
+      "NQ06": 1,
+      "NQ07": 1,
+      "NQ08": 1,
+      "NQ09": 1,
+      "NQ10": 1,
+      "NQ11": 1,
+      "NQ12": 1,
+      "NT01": 1,
+      "NT02": 1,
+      "NT03": 1,
+      "NT04": 1,
+      "NT05": 1,
+      "NT06": 1,
+      "NTS01": 1,
+      "NTS02": 1,
+      "NTS03": 1,
+      "NTS04": 1,
+      "NTS05": 1,
+      "NTS06": 1,
+      "NTV01": 1,
+      "NTV02": 1,
+      "NTV03": 1,
+      "NTV04": 1,
+      "NU01": 1,
+      "NU02": 1,
+      "NU03": 1,
+      "NU04": 1,
+      "NU05": 1,
+      "NU06": 1,
+      "NU07": 1,
+      "NU08": 1,
+      "NU09": 1,
+      "NV01": 1,
+      "NV02": 1,
+      "NV03": 1,
+      "NV04": 1,
+      "NV05": 1,
+      "NV06": 1,
+      "NV07": 1,
+      "NV08": 1,
+      "T12W": 64
+    },
+    "existing_catalog_version": "ashstocks-parameter-tunnel-v1.1-175-formula-parity",
+    "existing_catalog_sha256": "38e608f9f8d2823c9691258d0d655336b76ee40e5ea970012665f05e16f1ebe2"
+  },
+  "t01": {
+    "header_original": [
+      "10",
+      "JUN",
+      "2026",
+      "013787"
+    ],
+    "data_rows": 13787,
+    "declared_count_matches": true,
+    "record_type_counts": {
+      "10": 1,
+      "20": 13787
+    },
+    "row_field_counts": {
+      "4": 1,
+      "6": 13787
+    },
+    "all_rows_canonical_sha256": "ce5c8ff5c4d7b0aa7614f05216f6a44539b817a6c82d896fef12c3ee181b0588",
+    "observed_field_layout_not_official_dictionary": [
+      "record_type",
+      "symbol",
+      "series",
+      "isin",
+      "category_code",
+      "unlabelled_numeric_or_blank"
+    ],
+    "period": "2026-06",
+    "period_basis": "JUN,2026 header; no exact observation/publication day in content",
+    "category_counts": {
+      "1": 2261,
+      "2": 533,
+      "3": 10993
+    },
+    "series_counts": {
+      "10": 1,
+      "11": 1,
+      "12": 1,
+      "13": 1,
+      "14": 1,
+      "15": 2,
+      "16": 2,
+      "17": 2,
+      "18": 2,
+      "19": 3,
+      "1A": 1,
+      "1B": 1,
+      "1C": 2,
+      "1D": 1,
+      "1E": 1,
+      "1F": 2,
+      "1G": 1,
+      "1H": 1,
+      "1I": 2,
+      "1J": 1,
+      "1K": 1,
+      "1L": 2,
+      "1M": 2,
+      "1N": 2,
+      "1O": 1,
+      "1P": 1,
+      "1Q": 1,
+      "1R": 1,
+      "1S": 1,
+      "1T": 1,
+      "1Y": 1,
+      "1Z": 1,
+      "AK": 1,
+      "AL": 1,
+      "AM": 1,
+      "AN": 1,
+      "AU": 1,
+      "AV": 1,
+      "AW": 1,
+      "AX": 1,
+      "AY": 1,
+      "AZ": 1,
+      "BA": 1,
+      "BC": 1,
+      "BE": 2693,
+      "BR": 1,
+      "BS": 1,
+      "BU": 1,
+      "BV": 1,
+      "BW": 1,
+      "BX": 1,
+      "BZ": 162,
+      "D1": 2,
+      "E1": 7,
+      "EQ": 3365,
+      "GB": 45,
+      "GS": 134,
+      "ID": 21,
+      "IT": 4,
+      "IV": 21,
+      "IZ": 1,
+      "L1": 1,
+      "M1": 3,
+      "M8": 2,
+      "M9": 3,
+      "MB": 3,
+      "MF": 161,
+      "MG": 1,
+      "ML": 2,
+      "MM": 1,
+      "MP": 1,
+      "MR": 1,
+      "MS": 3,
+      "MT": 2,
+      "MU": 1,
+      "MV": 1,
+      "MW": 2,
+      "MX": 1,
+      "MY": 1,
+      "N0": 861,
+      "N1": 109,
+      "N2": 39,
+      "N3": 32,
+      "N4": 19,
+      "N5": 25,
+      "N6": 26,
+      "N7": 23,
+      "N8": 18,
+      "N9": 20,
+      "NA": 22,
+      "NB": 18,
+      "NC": 20,
+      "ND": 20,
+      "NE": 17,
+      "NF": 12,
+      "NG": 11,
+      "NH": 11,
+      "NI": 7,
+      "NJ": 8,
+      "NK": 9,
+      "NL": 10,
+      "NM": 11,
+      "NN": 9,
+      "NO": 9,
+      "NP": 6,
+      "NQ": 5,
+      "NR": 6,
+      "NS": 7,
+      "NT": 4,
+      "NU": 4,
+      "NV": 4,
+      "NW": 4,
+      "NX": 5,
+      "NY": 4,
+      "NZ": 4,
+      "P1": 2,
+      "RO": 6,
+      "RR": 6,
+      "RT": 6,
+      "SE": 31,
+      "SF": 31,
+      "SG": 4228,
+      "SM": 568,
+      "ST": 568,
+      "SZ": 16,
+      "TB": 93,
+      "W1": 1,
+      "X1": 7,
+      "Y0": 2,
+      "Y1": 3,
+      "Y2": 2,
+      "Y3": 1,
+      "Y4": 1,
+      "Y5": 1,
+      "Y6": 2,
+      "Y7": 2,
+      "Y8": 2,
+      "Y9": 3,
+      "YA": 3,
+      "YB": 3,
+      "YC": 3,
+      "YD": 1,
+      "YG": 1,
+      "YH": 1,
+      "YI": 2,
+      "YJ": 1,
+      "YK": 1,
+      "YL": 2,
+      "YM": 1,
+      "YP": 1,
+      "YQ": 1,
+      "YR": 1,
+      "YS": 3,
+      "YT": 2,
+      "YU": 1,
+      "YV": 1,
+      "YW": 2,
+      "YX": 1,
+      "YY": 1,
+      "YZ": 2,
+      "Z0": 1,
+      "Z1": 1,
+      "Z2": 1,
+      "Z3": 1,
+      "Z4": 1,
+      "Z5": 2,
+      "Z6": 2,
+      "Z7": 2,
+      "Z8": 2,
+      "Z9": 3,
+      "ZA": 1,
+      "ZB": 1,
+      "ZC": 2,
+      "ZD": 1,
+      "ZE": 1,
+      "ZF": 2,
+      "ZG": 1,
+      "ZH": 1,
+      "ZI": 2,
+      "ZJ": 1,
+      "ZK": 1,
+      "ZL": 2,
+      "ZM": 2,
+      "ZN": 2,
+      "ZO": 1,
+      "ZP": 1,
+      "ZQ": 1,
+      "ZR": 1,
+      "ZS": 1,
+      "ZT": 1,
+      "ZY": 1,
+      "ZZ": 1
+    },
+    "last_field_blank_by_category": {
+      "1": 3,
+      "3": 10151
+    },
+    "last_field_nonblank_by_category": {
+      "1": 2258,
+      "2": 533,
+      "3": 842
+    },
+    "last_field_numeric_count": 3633,
+    "last_field_numeric_min": 0.01,
+    "last_field_numeric_max": 20.31,
+    "unique_symbols": 10190,
+    "unique_symbol_series": 13787,
+    "unique_isins": 10217,
+    "duplicate_exact_rows": {},
+    "duplicate_symbol_series": {},
+    "invalid_isin_format_rows": [],
+    "first_record": [
+      "20",
+      "0IRFC35",
+      "N0",
+      "INE053F08536",
+      "3",
+      ""
+    ],
+    "last_record": [
+      "20",
+      "ZYDUSWELL",
+      "EQ",
+      "INE768C01028",
+      "1",
+      "0.09"
+    ],
+    "meaning_limits": [
+      "No column labels or official category/unit dictionary in the six members.",
+      "Header record marker 10 is not interpreted as June 10.",
+      "Neither OHLCV observations nor flow/OI/turnover values are present as labelled fields.",
+      "Category codes and final-field units are unresolved. Do not use as buy/sell sizing or current EQ eligibility."
+    ]
+  },
+  "pasted_candle_json": {
+    "parsed_json_to_eof": true,
+    "top_level_keys": [
+      "status",
+      "data"
+    ],
+    "data_keys": [
+      "candles"
+    ],
+    "status_as_source": "success",
+    "candle_count": 1608,
+    "array_length_counts": {
+      "7": 1608
+    },
+    "all_candles_canonical_sha256": "bba1b6d4f7fef50971c89b9cf1fdcc9000f2234c3c63ae4ee504f920428c99b7",
+    "recursive_leaf_type_counts": {
+      "str": 1609,
+      "float": 6349,
+      "int": 3299
+    },
+    "date_min": "2018-01-01",
+    "date_max": "2024-07-01",
+    "strict_descending_timestamps": true,
+    "duplicate_timestamps": {},
+    "duplicate_calendar_dates": {},
+    "counts_by_year": {
+      "2018": 246,
+      "2019": 244,
+      "2020": 252,
+      "2021": 248,
+      "2022": 248,
+      "2023": 246,
+      "2024": 124
+    },
+    "time_components": {
+      "00:00:00+05:30": 1382,
+      "09:15:00+05:30": 224,
+      "09:51:00+05:30": 1,
+      "17:30:00+05:30": 1
+    },
+    "numeric_invalid_rows_1_based": [],
+    "ohlc_envelope_invalid_rows_1_based_under_positional_interpretation": [],
+    "positions_5_and_6_all_zero": true,
+    "first_record": [
+      "2024-07-01T00:00:00+05:30",
+      13.8,
+      14.23,
+      13.79,
+      13.83,
+      0,
+      0
+    ],
+    "last_record": [
+      "2018-01-01T09:15:00+05:30",
+      12.67,
+      13.61,
+      12.54,
+      13.35,
+      0,
+      0
+    ],
+    "instrument_identity_declared": false,
+    "meaning_limits": [
+      "Seven-position candle shape resembles provider historical OHLCV/OI but no instrument key, symbol, exchange, request URL or attribution exists in this JSON.",
+      "Identity must be independently established before assigning to India VIX or any stock.",
+      "Final two zero fields are not proof of observed exchange volume/OI; do not use them for liquidity or volume-derived rules.",
+      "Historical 2018–2024 observations are not current quotes and no trading-session completeness is claimed."
+    ]
+  },
+  "early_warning": {
+    "hypothesis_count": 30,
+    "definitions": [
+      {
+        "number": 1,
+        "name": "Dispersion Breakdown Index (DBI)",
+        "line_start": 12,
+        "section_sha256": "b2ac18193ab98da58c59b342cc1fe4375c2b93854ae8c9520543df65e9a50c39",
+        "formula": [
+          "`DBI = stdev(stock_returns) / |index_return|` rolling 5-day average."
+        ],
+        "trigger": [
+          "DBI > 3.0 sustained 5+ days while Nifty range < 1% = **regime change within 2 weeks (78% historical hit-rate, COVID + 2022 + 2024-election all had this signature)**."
+        ],
+        "source_claim": [
+          "NSE bhavcopy daily."
+        ]
+      },
+      {
+        "number": 2,
+        "name": "Volume Herfindahl Index (Concentration)",
+        "line_start": 19,
+        "section_sha256": "63c90e6058a72b090e14fc570bd533ba643762cf5b0f319ab0558e3b2f0b468b",
+        "formula": [
+          "`HHI = sum((vol_stock_i / total_vol)^2)` across Nifty 200."
+        ],
+        "trigger": [
+          "HHI rises > 0.04 (top 5 stocks doing > 40% of volume) for 10+ days → correction setup."
+        ],
+        "source_claim": [
+          "NSE bhavcopy."
+        ]
+      },
+      {
+        "number": 3,
+        "name": "Up-Volume to Down-Volume Decay",
+        "line_start": 26,
+        "section_sha256": "1add04d3c51634aa69aab1efba10cc6e158acaa7f75493567b9a5767b62066d0",
+        "formula": [
+          "`(sum vol on up days) / (sum vol on down days)` rolling 10d."
+        ],
+        "trigger": [
+          "Ratio drops > 40% in 10 days while Nifty within 2% of high → top forming."
+        ],
+        "source_claim": [
+          "NSE bhavcopy."
+        ]
+      },
+      {
+        "number": 4,
+        "name": "FII Index Futures Net Position Shift",
+        "line_start": 37,
+        "section_sha256": "6562c2460c8d790ce9684c5047acd33982f8a4fbd9980d853fd31204e7a2eed4",
+        "formula": [
+          "`FII_net_fut = FII_long_contracts - FII_short_contracts` (sum across Nifty + BankNifty futures)."
+        ],
+        "trigger": [
+          "Drop > 40% from 30d high in FII net long → correction within 10 days (high hit rate historically)."
+        ],
+        "source_claim": [
+          "NSE FII/DII derivatives stats (daily, free)."
+        ]
+      },
+      {
+        "number": 5,
+        "name": "Put-Call Ratio (PCR) Skew Shift",
+        "line_start": 44,
+        "section_sha256": "961b2ffe83ff63395979ef7e1331b9b77c27698b774f7bee819182024b8d67cb",
+        "formula": [
+          "`PCR_OI = total_put_OI / total_call_OI` Nifty monthly."
+        ],
+        "trigger": [
+          "PCR jumps > 30% from 20d average WITHOUT corresponding VIX rise = stealth hedging."
+        ],
+        "source_claim": [
+          "NSE option chain."
+        ]
+      },
+      {
+        "number": 6,
+        "name": "Nifty Futures Basis Anomaly",
+        "line_start": 51,
+        "section_sha256": "e11437ed2fb236631fba93a191f9b733d6eac68fa6ac6c0472184626f23b0fab",
+        "formula": [
+          "`basis = (futures_price - spot) / spot * 100`. Rolling 20-day vs current."
+        ],
+        "trigger": [
+          "Basis turns negative for 3+ days when historically positive = institutional unwind. Lead time ~7 days."
+        ],
+        "source_claim": [
+          "NSE F&O bhavcopy."
+        ]
+      },
+      {
+        "number": 7,
+        "name": "F&O Ban List Size Expansion",
+        "line_start": 58,
+        "section_sha256": "7c9164f460c95f5cb398530097fb21a0371eb54871946b289d46da0705e1addc",
+        "formula": [],
+        "trigger": [
+          "Ban list > 12 stocks (vs typical 3-6) → mid-cap correction within 2 weeks."
+        ],
+        "source_claim": [
+          "NSE published daily."
+        ]
+      },
+      {
+        "number": 8,
+        "name": "Triple Safe-Haven Rally",
+        "line_start": 68,
+        "section_sha256": "5795dc3b40a607301188f12c6d47f04dbc1b7bc2a2e565599195674d51258e15",
+        "formula": [],
+        "trigger": [
+          "All 3 conditions true for 5+ days simultaneously: gold +2%, USDINR +1%, 10Y yield -10bps."
+        ],
+        "source_claim": [
+          "yfinance + RBI."
+        ]
+      },
+      {
+        "number": 9,
+        "name": "USD/INR 50DMA Breakout (with confirmation)",
+        "line_start": 74,
+        "section_sha256": "652d70866fb84114c31ac82dd15b521e478727fc40ced13984f3e0e306c7ec9b",
+        "formula": [],
+        "trigger": [
+          "Breakout + 3-day hold + FX volume confirmation."
+        ],
+        "source_claim": []
+      },
+      {
+        "number": 10,
+        "name": "Cross-Asset Correlation Spike",
+        "line_start": 79,
+        "section_sha256": "b2f34119c353c01147caaf91bfdf534098d1a71344345a8c264fcc51dc71f1ac",
+        "formula": [],
+        "trigger": [
+          "20-day correlation rises > 0.6 from typical < 0.4."
+        ],
+        "source_claim": []
+      },
+      {
+        "number": 11,
+        "name": "GST Collection Trend",
+        "line_start": 88,
+        "section_sha256": "cb0c2fdb9ea58dec0bb85ec9be2613507f72b862f88146693ce8ff70c1d9a724",
+        "formula": [],
+        "trigger": [
+          "Monthly GST collection < 95% of 6m avg for 2 consecutive months → CORRECTION setup."
+        ],
+        "source_claim": [
+          "GSTN portal (gstn.gov.in monthly)."
+        ]
+      },
+      {
+        "number": 12,
+        "name": "Bank Credit Growth Deceleration",
+        "line_start": 94,
+        "section_sha256": "3d48d31bc486fef9e183188b26cc4f602dfbaca55922fb69a3af664edca89053",
+        "formula": [],
+        "trigger": [
+          "Credit growth rate falls > 200bps month-on-month → defensive shift."
+        ],
+        "source_claim": [
+          "RBI weekly statistical supplement."
+        ]
+      },
+      {
+        "number": 13,
+        "name": "RBI G-Sec Auction Devolvement",
+        "line_start": 100,
+        "section_sha256": "1f03d01599b008859e9f9b181b942a4a591c2f13e00acdc062083c2c394df39f",
+        "formula": [],
+        "trigger": [
+          "Any auction devolvement event after 6+ months of clean auctions → liquidity warning."
+        ],
+        "source_claim": [
+          "RBI auction results page."
+        ]
+      },
+      {
+        "number": 14,
+        "name": "MTF (Margin Trading Facility) Outstanding",
+        "line_start": 106,
+        "section_sha256": "50e9248f0698393bcf233fd5e32f4a5da7bd45b87e1d9b5861e09a3a52b3c9e2",
+        "formula": [],
+        "trigger": [
+          "MTF balance up > 15% MoM and at all-time highs → bubble warning."
+        ],
+        "source_claim": [
+          "SEBI monthly bulletin."
+        ]
+      },
+      {
+        "number": 15,
+        "name": "Promoter Pledge Increase Cluster",
+        "line_start": 116,
+        "section_sha256": "76cd530780fc7480c156c51537bd1d3f0898c0cff34291565daba434cbf59bd8",
+        "formula": [],
+        "trigger": [
+          "> 20 companies with > 5% pledge increase in same 30d window → narrow risk-off."
+        ],
+        "source_claim": [
+          "SEBI bulk deal + pledge disclosures."
+        ]
+      },
+      {
+        "number": 16,
+        "name": "Insider Sell-to-Buy Ratio (Sectoral)",
+        "line_start": 122,
+        "section_sha256": "920daf1eaf04259564f0e3a9ecbf7f45d23c5a2c79567e6ca23f112f928210ac",
+        "formula": [],
+        "trigger": [
+          "Ratio > 4.0 in any sector for 30 days → that sector is exhausted, even if price still rising."
+        ],
+        "source_claim": [
+          "SEBI insider trading bulletin."
+        ]
+      },
+      {
+        "number": 17,
+        "name": "Promoter Fresh Buying Cluster (Bullish)",
+        "line_start": 128,
+        "section_sha256": "37fec85541a267cfd18a6eafa6858b4757561eccf81e09a72f5e6de28adc5352",
+        "formula": [],
+        "trigger": [
+          "> 10 such transactions in 60d during a correction → bottom-fishing signal."
+        ],
+        "source_claim": []
+      },
+      {
+        "number": 18,
+        "name": "SIP Net Inflow Trend",
+        "line_start": 137,
+        "section_sha256": "9533e52ac9d7923e7a0997854df7bed1655c523ecccbcb282f6f1c2a9c24713c",
+        "formula": [],
+        "trigger": [
+          "Monthly SIP inflow drops > 10% MoM after 12+ months of growth → late-cycle."
+        ],
+        "source_claim": [
+          "AMFI monthly data."
+        ]
+      },
+      {
+        "number": 19,
+        "name": "Smart Beta Outflow",
+        "line_start": 143,
+        "section_sha256": "9b0c3e563141bb2e9e46680ae37d54acfbc2f38707804b68990cd855176c6fda",
+        "formula": [],
+        "trigger": [
+          "Low-vol ETF inflows > growth ETF inflows for 4 consecutive weeks during rally → defensive rotation."
+        ],
+        "source_claim": []
+      },
+      {
+        "number": 20,
+        "name": "FII Sectoral Flow Concentration",
+        "line_start": 148,
+        "section_sha256": "9dc6a09f44df6e1fb5758e183ac5905adea23ee1f8f938f3030e3f3df8fcb6c0",
+        "formula": [],
+        "trigger": [
+          "Concentration > 70% for 2 consecutive weeks → setup for sector-rotation crash."
+        ],
+        "source_claim": []
+      },
+      {
+        "number": 21,
+        "name": "Pre-Result Bias Signal",
+        "line_start": 157,
+        "section_sha256": "07e69cc770ce08ed49d3cbfe7be9d5cfd1f9077129a7e2c7b329180c8b355f6b",
+        "formula": [],
+        "trigger": [
+          "Stock fell > 2% on each of last 3 beat-quarters → exhausted, AVOID."
+        ],
+        "source_claim": []
+      },
+      {
+        "number": 22,
+        "name": "Budget / RBI MPC Drift",
+        "line_start": 162,
+        "section_sha256": "b43e60f922b402ad0b2469773f80964e690d8d01aee53939ce1eda1f890b4a95",
+        "formula": [],
+        "trigger": [
+          "10d pre-event return > +3% → reduce exposure; < -3% → opportunity."
+        ],
+        "source_claim": []
+      },
+      {
+        "number": 23,
+        "name": "Retail Volume Share Spike",
+        "line_start": 171,
+        "section_sha256": "6f91a55bd6cd141665f50eecbd88202e55c47c63cc7176aa648b45a93c1c38f6",
+        "formula": [],
+        "trigger": [
+          "Retail share > 60% for 10 days → distribution; < 35% in correction → bottom near."
+        ],
+        "source_claim": [
+          "NSE retail-institutional split (monthly published)."
+        ]
+      },
+      {
+        "number": 24,
+        "name": "New Demat Account Velocity",
+        "line_start": 177,
+        "section_sha256": "1d6bf48df108e5d22bb4494c467dd077dc5c7d97b4dfd1b2f6e171d99e699843",
+        "formula": [],
+        "trigger": [
+          "New accounts > 130% of trailing avg → top-of-cycle warning."
+        ],
+        "source_claim": [
+          "CDSL/NSDL monthly."
+        ]
+      },
+      {
+        "number": 25,
+        "name": "Social Media Stock Mention Velocity",
+        "line_start": 183,
+        "section_sha256": "dffae29cb7833597b8c4160ebd167e9564f2141c88337c7f8b4b1d0b86b8b4a9",
+        "formula": [],
+        "trigger": [
+          "Mention volume > 2 standard deviations above 90-day average → late-cycle."
+        ],
+        "source_claim": [
+          "Google Trends, Twitter API (or proxy via news mentions)."
+        ]
+      },
+      {
+        "number": 26,
+        "name": "NSE-BSE Volume Divergence",
+        "line_start": 193,
+        "section_sha256": "774942d963c1089060be96eb00b8facce74a17dcecff8162bded7e7ae1e5c588",
+        "formula": [],
+        "trigger": [
+          "BSE share rises > 25% of total combined volume → late mid-cap cycle."
+        ],
+        "source_claim": []
+      },
+      {
+        "number": 27,
+        "name": "SME IPO Listing-Day Pop Distribution",
+        "line_start": 198,
+        "section_sha256": "73cfd23fa02fd7f555585303b7bdcfc8641279f922df3c2e7391b8f84507c91a",
+        "formula": [],
+        "trigger": [
+          "30d avg SME pop > 75% = top; falling below 30% = early correction signal."
+        ],
+        "source_claim": [
+          "NSE/BSE SME data."
+        ]
+      },
+      {
+        "number": 28,
+        "name": "Sub-Broker / Algo Account Growth",
+        "line_start": 204,
+        "section_sha256": "0bc78d6d6623143787c2fa1b8eb2ca2e5002a233be7e9877f95f01de3b7580f4",
+        "formula": [],
+        "trigger": [
+          "AP registrations > 150% of 12m average → late-cycle."
+        ],
+        "source_claim": [
+          "SEBI Annual Report."
+        ]
+      },
+      {
+        "number": 29,
+        "name": "CPSE/PSU Disinvestment Pipeline Activation",
+        "line_start": 210,
+        "section_sha256": "cf8a57346d689ccc25967f70280f717c36d513d3422909567f208ac8bc2c5dd5",
+        "formula": [],
+        "trigger": [
+          "3+ OFS announcements in 30 days → reduce PSU exposure."
+        ],
+        "source_claim": []
+      },
+      {
+        "number": 30,
+        "name": "Mutual Fund Cash Allocation",
+        "line_start": 215,
+        "section_sha256": "96e688b60547970aa712e94f0d555cde25ea14e12ad7bc5dd169ae7b4d93d6aa",
+        "formula": [],
+        "trigger": [
+          "Cash > 6% across top 20 schemes → MF expecting drawdown."
+        ],
+        "source_claim": [
+          "AMFI monthly portfolio disclosures."
+        ]
+      }
+    ],
+    "authority": "Source explicitly describes hypotheses requiring validation. Statements such as78% hit rate are unverified source claims, not results established by these members.",
+    "adoption_pass_criteria": [
+      "lead time>5 trading days",
+      "true positive rate>60%",
+      "false positive rate<30%",
+      "validated across at least 3 distinct events"
+    ],
+    "archive_rule_source": "Failing 2 of 4 criteria becomes ARCHIVED_NO_EDGE, without deletion."
+  },
+  "data_formats": {
+    "feed_count": 10,
+    "feeds": [
+      {
+        "number": 1,
+        "name": "NSE Bhavcopy (Daily EQ)",
+        "line_start": 9,
+        "section_sha256": "6587182515b10240dab0c881529e292280936d3d1bcf5d4a0d976bbf19ef65cf",
+        "source_fields_type_example_notes": [
+          [
+            "trade_date",
+            "date",
+            "2024-06-04",
+            "YYYY-MM-DD"
+          ],
+          [
+            "symbol",
+            "str",
+            "RELIANCE",
+            "NSE symbol, no `.NS`"
+          ],
+          [
+            "series",
+            "str",
+            "EQ",
+            "EQ / BE / BZ etc."
+          ],
+          [
+            "open",
+            "float",
+            "2950.50",
+            "rupees"
+          ],
+          [
+            "high",
+            "float",
+            "2978.00",
+            ""
+          ],
+          [
+            "low",
+            "float",
+            "2872.00",
+            ""
+          ],
+          [
+            "close",
+            "float",
+            "2890.20",
+            ""
+          ],
+          [
+            "last",
+            "float",
+            "2891.00",
+            "last traded"
+          ],
+          [
+            "prev_close",
+            "float",
+            "2965.00",
+            ""
+          ],
+          [
+            "tot_traded_qty",
+            "int",
+            "12450000",
+            "shares"
+          ],
+          [
+            "tot_traded_value",
+            "float",
+            "35820000000",
+            "rupees, no commas"
+          ],
+          [
+            "total_trades",
+            "int",
+            "145320",
+            ""
+          ],
+          [
+            "deliv_qty",
+            "int",
+            "4520000",
+            "shares (delivery)"
+          ],
+          [
+            "deliv_perc",
+            "float",
+            "36.30",
+            "% delivery"
+          ]
+        ],
+        "period_requirement": [
+          "2018-01-01 to today (8 years minimum)"
+        ]
+      },
+      {
+        "number": 2,
+        "name": "NSE FII Derivatives Daily",
+        "line_start": 34,
+        "section_sha256": "ab7bb147495afc2bf005b2a43555a4f372cdbd2190c2b1f9fe97f0309ee051c5",
+        "source_fields_type_example_notes": [
+          [
+            "trade_date",
+            "date",
+            "2024-06-04",
+            ""
+          ],
+          [
+            "instrument",
+            "str",
+            "INDEX_FUTURES",
+            "INDEX_FUTURES / INDEX_OPTIONS / STOCK_FUTURES / STOCK_OPTIONS"
+          ],
+          [
+            "buy_contracts",
+            "int",
+            "45200",
+            ""
+          ],
+          [
+            "buy_value_cr",
+            "float",
+            "8542.30",
+            "₹ crore"
+          ],
+          [
+            "sell_contracts",
+            "int",
+            "51800",
+            ""
+          ],
+          [
+            "sell_value_cr",
+            "float",
+            "9720.50",
+            "₹ crore"
+          ],
+          [
+            "net_contracts",
+            "int",
+            "-6600",
+            "sell - buy convention"
+          ],
+          [
+            "net_value_cr",
+            "float",
+            "-1178.20",
+            ""
+          ],
+          [
+            "open_int_contracts",
+            "int",
+            "285000",
+            "end-of-day OI"
+          ],
+          [
+            "open_int_value_cr",
+            "float",
+            "52800.00",
+            ""
+          ]
+        ],
+        "period_requirement": [
+          "2018-01-01 to today"
+        ]
+      },
+      {
+        "number": 3,
+        "name": "NSE F&O Bhavcopy (Daily Options + Futures)",
+        "line_start": 55,
+        "section_sha256": "72188b9209455c4fea41bd2d93f7c9b30e37fcda456191f30879131f38f6a204",
+        "source_fields_type_example_notes": [
+          [
+            "trade_date",
+            "date",
+            "2024-06-04",
+            ""
+          ],
+          [
+            "symbol",
+            "str",
+            "NIFTY",
+            "underlying"
+          ],
+          [
+            "instrument",
+            "str",
+            "FUTIDX",
+            "FUTIDX / FUTSTK / OPTIDX / OPTSTK"
+          ],
+          [
+            "expiry",
+            "date",
+            "2024-06-27",
+            ""
+          ],
+          [
+            "strike",
+            "float",
+            "23000",
+            "0 for futures"
+          ],
+          [
+            "option_type",
+            "str",
+            "CE",
+            "CE / PE / blank for futures"
+          ],
+          [
+            "open",
+            "float",
+            "145.20",
+            ""
+          ],
+          [
+            "high",
+            "float",
+            "165.00",
+            ""
+          ],
+          [
+            "low",
+            "float",
+            "132.50",
+            ""
+          ],
+          [
+            "close",
+            "float",
+            "142.10",
+            ""
+          ],
+          [
+            "settle_price",
+            "float",
+            "142.10",
+            ""
+          ],
+          [
+            "contracts",
+            "int",
+            "125400",
+            "volume"
+          ],
+          [
+            "value_cr",
+            "float",
+            "1820.50",
+            "turnover ₹Cr"
+          ],
+          [
+            "open_int",
+            "int",
+            "5200000",
+            "open interest"
+          ],
+          [
+            "chg_in_oi",
+            "int",
+            "250000",
+            "change vs prev day"
+          ]
+        ],
+        "period_requirement": [
+          "2020-01-01 onwards (5 years)"
+        ]
+      },
+      {
+        "number": 4,
+        "name": "GST Monthly Collection",
+        "line_start": 81,
+        "section_sha256": "6f2d84ec2b573ce47137bb873136ef1d28880db3ed84de52ac0f0cfc186043b3",
+        "source_fields_type_example_notes": [
+          [
+            "month",
+            "str",
+            "2024-05",
+            "YYYY-MM"
+          ],
+          [
+            "total_collection_cr",
+            "float",
+            "173000",
+            "total GST ₹Cr"
+          ],
+          [
+            "cgst_cr",
+            "float",
+            "32400",
+            ""
+          ],
+          [
+            "sgst_cr",
+            "float",
+            "40500",
+            ""
+          ],
+          [
+            "igst_cr",
+            "float",
+            "87100",
+            ""
+          ],
+          [
+            "cess_cr",
+            "float",
+            "12800",
+            ""
+          ],
+          [
+            "yoy_growth_pct",
+            "float",
+            "11.2",
+            "reported YoY %"
+          ]
+        ],
+        "period_requirement": [
+          "2017-07-01 (GST launch) onwards"
+        ]
+      },
+      {
+        "number": 5,
+        "name": "AMFI Monthly SIP + Equity MF Flow",
+        "line_start": 99,
+        "section_sha256": "b89f8fef6f92c687146ca3068dd9f2a4dd23e195de8393d7917f77ee5907dc91",
+        "source_fields_type_example_notes": [
+          [
+            "month",
+            "str",
+            "2024-05",
+            ""
+          ],
+          [
+            "sip_inflow_cr",
+            "float",
+            "20905",
+            "gross SIP for month"
+          ],
+          [
+            "sip_active_accounts_cr",
+            "float",
+            "8.7",
+            "crore (count of accounts in crores)"
+          ],
+          [
+            "equity_net_inflow_cr",
+            "float",
+            "34697",
+            "net inflow to equity MFs"
+          ],
+          [
+            "equity_aum_cr",
+            "float",
+            "2745000",
+            "end-of-month equity AUM"
+          ],
+          [
+            "debt_net_inflow_cr",
+            "float",
+            "-10949",
+            "(negative = outflow)"
+          ],
+          [
+            "hybrid_net_inflow_cr",
+            "float",
+            "5430",
+            ""
+          ],
+          [
+            "total_mf_aum_cr",
+            "float",
+            "5870000",
+            ""
+          ]
+        ],
+        "period_requirement": [
+          "2015-04-01 onwards"
+        ]
+      },
+      {
+        "number": 6,
+        "name": "CDSL/NSDL Demat Account Stats",
+        "line_start": 118,
+        "section_sha256": "f34f237c421dfe5d6629bd6883a7bcadd77ed53e73c7924fb6012d4dc628ff05",
+        "source_fields_type_example_notes": [
+          [
+            "month",
+            "str",
+            "2024-05",
+            ""
+          ],
+          [
+            "cdsl_total_accounts_cr",
+            "float",
+            "12.4",
+            "end-of-month, crores"
+          ],
+          [
+            "cdsl_new_added_lakh",
+            "float",
+            "32.5",
+            "new in month, lakhs"
+          ],
+          [
+            "nsdl_total_accounts_cr",
+            "float",
+            "3.6",
+            ""
+          ],
+          [
+            "nsdl_new_added_lakh",
+            "float",
+            "4.8",
+            ""
+          ],
+          [
+            "total_new_lakh",
+            "float",
+            "37.3",
+            "sum of both"
+          ]
+        ],
+        "period_requirement": [
+          "2015-01 onwards"
+        ]
+      },
+      {
+        "number": 7,
+        "name": "NSE/BSE SME IPO Listings",
+        "line_start": 135,
+        "section_sha256": "a88b5571f22123c46f18b9e842045ba89591372187d086c7d4191cc62a60a188",
+        "source_fields_type_example_notes": [
+          [
+            "issue_date",
+            "date",
+            "2024-05-20",
+            "open date of IPO"
+          ],
+          [
+            "listing_date",
+            "date",
+            "2024-05-28",
+            "first trading day"
+          ],
+          [
+            "symbol",
+            "str",
+            "XYZTECH",
+            ""
+          ],
+          [
+            "exchange",
+            "str",
+            "NSE_SME",
+            "NSE_SME / BSE_SME"
+          ],
+          [
+            "issue_size_cr",
+            "float",
+            "18.5",
+            ""
+          ],
+          [
+            "issue_price",
+            "float",
+            "95",
+            ""
+          ],
+          [
+            "listing_price",
+            "float",
+            "165",
+            "open price on listing day"
+          ],
+          [
+            "listing_day_close",
+            "float",
+            "188",
+            "close on listing day"
+          ],
+          [
+            "listing_gain_pct",
+            "float",
+            "97.9",
+            "(close/issue - 1) * 100"
+          ],
+          [
+            "subscribed_times",
+            "float",
+            "142.5",
+            "overall subscription"
+          ]
+        ],
+        "period_requirement": [
+          "2020-01 onwards"
+        ]
+      },
+      {
+        "number": 8,
+        "name": "INDIA VIX + Nifty + Sensex Daily",
+        "line_start": 156,
+        "section_sha256": "cf59c1d2ae2c77213660094fadbd66ab866f2ac549ab6dd00dacb2029ecafc6c",
+        "source_fields_type_example_notes": [
+          [
+            "trade_date",
+            "date",
+            "2024-06-04",
+            ""
+          ],
+          [
+            "nifty_open",
+            "float",
+            "23200.05",
+            ""
+          ],
+          [
+            "nifty_high",
+            "float",
+            "23320.00",
+            ""
+          ],
+          [
+            "nifty_low",
+            "float",
+            "21895.00",
+            ""
+          ],
+          [
+            "nifty_close",
+            "float",
+            "21884.50",
+            ""
+          ],
+          [
+            "nifty_volume",
+            "int",
+            "0",
+            "NSE doesn't publish; leave 0"
+          ],
+          [
+            "sensex_close",
+            "float",
+            "72079.05",
+            ""
+          ],
+          [
+            "bank_nifty_close",
+            "float",
+            "46928.60",
+            ""
+          ],
+          [
+            "india_vix_close",
+            "float",
+            "26.74",
+            ""
+          ],
+          [
+            "advances",
+            "int",
+            "380",
+            "NSE advances"
+          ],
+          [
+            "declines",
+            "int",
+            "1620",
+            "NSE declines"
+          ],
+          [
+            "unchanged",
+            "int",
+            "50",
+            ""
+          ]
+        ],
+        "period_requirement": [
+          "2018-01-01 onwards"
+        ]
+      },
+      {
+        "number": 9,
+        "name": "USD/INR + Gold + Crude Daily",
+        "line_start": 179,
+        "section_sha256": "912bf45df004dcfa72538885883b7a020ccea2812322943c37c73b096a27ddd2",
+        "source_fields_type_example_notes": [
+          [
+            "trade_date",
+            "date",
+            "2024-06-04",
+            ""
+          ],
+          [
+            "usdinr",
+            "float",
+            "83.45",
+            "RBI reference rate close"
+          ],
+          [
+            "eurinr",
+            "float",
+            "90.55",
+            ""
+          ],
+          [
+            "gold_inr_per_10g",
+            "float",
+            "72200",
+            "MCX gold close"
+          ],
+          [
+            "silver_inr_per_kg",
+            "float",
+            "89800",
+            ""
+          ],
+          [
+            "brent_usd",
+            "float",
+            "78.40",
+            "brent crude close USD/bbl"
+          ],
+          [
+            "wti_usd",
+            "float",
+            "74.20",
+            ""
+          ],
+          [
+            "in10y_gsec_yield",
+            "float",
+            "7.02",
+            "India 10Y G-Sec yield %"
+          ],
+          [
+            "us10y_yield",
+            "float",
+            "4.32",
+            "US 10Y yield %"
+          ]
+        ],
+        "period_requirement": [
+          "2018-01-01 onwards"
+        ]
+      },
+      {
+        "number": 10,
+        "name": "SEBI Insider Trading Disclosures (optional, harder)",
+        "line_start": 199,
+        "section_sha256": "c494571aadf8feca4ddfb4f69ea6f8981e93ffc8d2ba026e076ee0481b99c2c1",
+        "source_fields_type_example_notes": [
+          [
+            "disclosure_date",
+            "date",
+            "2024-05-20",
+            ""
+          ],
+          [
+            "symbol",
+            "str",
+            "TCS",
+            ""
+          ],
+          [
+            "insider_name",
+            "str",
+            "XYZ",
+            "optional"
+          ],
+          [
+            "insider_category",
+            "str",
+            "PROMOTER",
+            "PROMOTER / KMP / DESIGNATED"
+          ],
+          [
+            "transaction_type",
+            "str",
+            "SELL",
+            "BUY / SELL / PLEDGE / REVOKE"
+          ],
+          [
+            "qty",
+            "int",
+            "25000",
+            "shares"
+          ],
+          [
+            "value_cr",
+            "float",
+            "90.5",
+            "₹Cr"
+          ],
+          [
+            "pct_of_shareholding",
+            "float",
+            "0.05",
+            "% of total holding"
+          ]
+        ],
+        "period_requirement": [
+          "2020 onwards"
+        ]
+      }
+    ]
+  },
+  "historical_manifest": {
+    "nonempty_path_count": 88,
+    "blank_lines": 0,
+    "unique_path_count": 88,
+    "duplicate_paths": {},
+    "path_prefix_counts": {
+      "ALL_AVAILABLE_PROJECT_FILES": 81,
+      "HANDOFF": 7
+    },
+    "current_archive_exact_basename_match_count": 5,
+    "all_paths": [
+      "HANDOFF/PROJECT_FILE_MANIFEST_ALL_AVAILABLE.csv",
+      "HANDOFF/NEW_CHAT_CONTINUATION_PROMPT.txt",
+      "HANDOFF/README_UPLOAD_TO_DRIVE.txt",
+      "HANDOFF/docs/01_Project_Master_Summary_What_You_Want.docx",
+      "HANDOFF/docs/02_System_Architecture_Sourceborn_URR_Chityy_IFR.docx",
+      "HANDOFF/docs/03_Data_File_Status_And_Validation_Report.docx",
+      "HANDOFF/docs/04_New_Chat_Continuation_Prompt_And_Next_Loop.docx",
+      "ALL_AVAILABLE_PROJECT_FILES/Jul_2023.zip",
+      "ALL_AVAILABLE_PROJECT_FILES/Mar_2023.zip",
+      "ALL_AVAILABLE_PROJECT_FILES/Feb_2022.zip",
+      "ALL_AVAILABLE_PROJECT_FILES/Jan_2022.zip",
+      "ALL_AVAILABLE_PROJECT_FILES/nse_all_stock_data (1).csv.zip",
+      "ALL_AVAILABLE_PROJECT_FILES/Oct_2023.zip",
+      "ALL_AVAILABLE_PROJECT_FILES/Apr_2023.zip",
+      "ALL_AVAILABLE_PROJECT_FILES/Nov_2023.zip",
+      "ALL_AVAILABLE_PROJECT_FILES/sourceborn_validation_data.zip.zip",
+      "ALL_AVAILABLE_PROJECT_FILES/Chityy_Sourceborn_PYRAMID_PAPER_ENGINE_CODE_v0_1.zip",
+      "ALL_AVAILABLE_PROJECT_FILES/sourceborn_volume_delivery_batch_check_v0_1.zip",
+      "ALL_AVAILABLE_PROJECT_FILES/Chityy_Sourceborn_MICRO_SPLIT_CSV_PACK_v0_6.zip",
+      "ALL_AVAILABLE_PROJECT_FILES/BhavCopy_NSE_FO_0_0_0_20260603_F_0000.csv.zip",
+      "ALL_AVAILABLE_PROJECT_FILES/Chityy_Sourceborn_MICRO_SPLIT_CSV_PACK_v0_5.zip",
+      "ALL_AVAILABLE_PROJECT_FILES/05_daily_market_internals.csv",
+      "ALL_AVAILABLE_PROJECT_FILES/archive.zip",
+      "ALL_AVAILABLE_PROJECT_FILES/ARD_Opportunity_Stock_Parameter_Master_v0_6.xlsx",
+      "ALL_AVAILABLE_PROJECT_FILES/sourceborn_fii_derivatives_cash_review_v0_2/pwoi_participant_oi_wide_2012_2023.csv",
+      "ALL_AVAILABLE_PROJECT_FILES/fo03062026.zip",
+      "ALL_AVAILABLE_PROJECT_FILES/ARD_Opportunity_Stock_Asset_Master_v0_8_COPILOT_FILLED_v2_DISTINCT100.xlsx",
+      "ALL_AVAILABLE_PROJECT_FILES/ARD_Opportunity_Stock_Asset_Master_v0_8_COPILOT_FILLED-1.xlsx",
+      "ALL_AVAILABLE_PROJECT_FILES/image.png",
+      "ALL_AVAILABLE_PROJECT_FILES/Chityy_Sourceborn_IFR_FII_Cash_Stack_Test_v0_6.xlsx",
+      "ALL_AVAILABLE_PROJECT_FILES/Chityy_Sourceborn_FINAL_MICRO_SPLIT_ENGINE_v0_6.xlsx",
+      "ALL_AVAILABLE_PROJECT_FILES/sourceborn_ifr_fii_cash_stack_test_v0_6/daily_joined_ifr_fii_cash_signals.csv",
+      "ALL_AVAILABLE_PROJECT_FILES/Chityy_all_copilot_filled_v2_DISTINCT100.xlsx",
+      "ALL_AVAILABLE_PROJECT_FILES/sourceborn_fii_volume_derivatives_review_v0_3/fii_dii_cash_full_history_clean.csv",
+      "ALL_AVAILABLE_PROJECT_FILES/Chityy_all_filled (1).xlsx",
+      "ALL_AVAILABLE_PROJECT_FILES/Chityy_Sourceborn_FINAL_MICRO_SPLIT_ENGINE_v0_5.xlsx",
+      "ALL_AVAILABLE_PROJECT_FILES/02-02-2016-TO-01-02-2021-SBIN-ALL-N.csv",
+      "ALL_AVAILABLE_PROJECT_FILES/sourceborn_ifr_fii_cash_stack_test_v0_6/equity_curves_selected.csv",
+      "ALL_AVAILABLE_PROJECT_FILES/Chityy_Stock_Master_Parameter_Workbook_v0_1_COPILOT_FILLED_v2_DISTINCT100.xlsx",
+      "ALL_AVAILABLE_PROJECT_FILES/sourceborn_fii_derivatives_cash_review_v0_2/pwoi_fii_derivatives_features_2012_2023.csv",
+      "ALL_AVAILABLE_PROJECT_FILES/Reports-Monthly-Multiple.zip",
+      "ALL_AVAILABLE_PROJECT_FILES/Chityy_Stock_Master_Parameter_Workbook_v0_1.xlsx",
+      "ALL_AVAILABLE_PROJECT_FILES/SB & URR.docx",
+      "ALL_AVAILABLE_PROJECT_FILES/02-02-2016-TO-01-02-2021-RELIANCE-ALL-N.csv",
+      "ALL_AVAILABLE_PROJECT_FILES/Chityy_Sourceborn_PYRAMID_SEQUENCE_PAPER_TEST_v0_1.xlsx",
+      "ALL_AVAILABLE_PROJECT_FILES/ARD_Google_Live_Stock_Fill_v1.xlsx",
+      "ALL_AVAILABLE_PROJECT_FILES/n200_live_report (1).csv",
+      "ALL_AVAILABLE_PROJECT_FILES/sourceborn_fii_derivatives_cash_review_v0_2/fii_dii_cash_flow_2012_2023.csv",
+      "ALL_AVAILABLE_PROJECT_FILES/Sourceborn Sequence Review - done.docx",
+      "ALL_AVAILABLE_PROJECT_FILES/URR Source samples DS RAW THOUGHTS.docx",
+      "ALL_AVAILABLE_PROJECT_FILES/Chityy_Sourceborn_IFR_Fwd15_Histogram_v0_5.png",
+      "ALL_AVAILABLE_PROJECT_FILES/Chityy_Sourceborn_IFR_FII_Cash_Stack_Fwd15_Hist_v0_6.png",
+      "ALL_AVAILABLE_PROJECT_FILES/India 10-Year Bond Yield Historical Data.csv",
+      "ALL_AVAILABLE_PROJECT_FILES/Chityy_Sourceborn_IFR_Validation_Hard_Checks_v0_5.xlsx",
+      "ALL_AVAILABLE_PROJECT_FILES/sourceborn_fii_volume_derivatives_review_v0_3/fo_futures_bhavcopy_2026_06_03_sample.csv",
+      "ALL_AVAILABLE_PROJECT_FILES/Tool initiation rule.docx",
+      "ALL_AVAILABLE_PROJECT_FILES/DS ARD -1.docx",
+      "ALL_AVAILABLE_PROJECT_FILES/Chityy_Sourceborn_PRE_RISE_FALL_TRIGGER_LAYER_CSV_CODE_v0_2.zip",
+      "ALL_AVAILABLE_PROJECT_FILES/Chityy_Sourceborn_IFR_Expansion_Check_v0_4.xlsx",
+      "ALL_AVAILABLE_PROJECT_FILES/sourceborn_validation_readiness_check_v0_1.xlsx",
+      "ALL_AVAILABLE_PROJECT_FILES/sourceborn_fii_derivatives_cash_review_v0_2.xlsx",
+      "ALL_AVAILABLE_PROJECT_FILES/SB + URR.docx",
+      "ALL_AVAILABLE_PROJECT_FILES/sourceborn_volume_delivery_batch_check_v0_1/mini_delivery_trigger_counts_16stocks.csv",
+      "ALL_AVAILABLE_PROJECT_FILES/06_EARLY_WARNING.md",
+      "ALL_AVAILABLE_PROJECT_FILES/Chityy_Sourceborn_IFR_Expansion_Check_v0_4_CSV.zip",
+      "ALL_AVAILABLE_PROJECT_FILES/Site control.txt",
+      "ALL_AVAILABLE_PROJECT_FILES/Reports-Daily-Multiple.zip",
+      "ALL_AVAILABLE_PROJECT_FILES/07_DATA_FORMATS.md",
+      "ALL_AVAILABLE_PROJECT_FILES/sourceborn_fii_volume_derivatives_review_v0_3/fpi_monthly_net_investments_parsed.csv",
+      "ALL_AVAILABLE_PROJECT_FILES/sourceborn_ifr_fii_cash_stack_test_v0_6/strategy_performance.csv",
+      "ALL_AVAILABLE_PROJECT_FILES/gemini-code-1780429992436.txt",
+      "ALL_AVAILABLE_PROJECT_FILES/sourceborn_ifr_fii_cash_stack_test_v0_6/block_robustness.csv",
+      "ALL_AVAILABLE_PROJECT_FILES/sourceborn_today_picks.csv",
+      "ALL_AVAILABLE_PROJECT_FILES/deepseek_text_20260530_031414.txt",
+      "ALL_AVAILABLE_PROJECT_FILES/URR Core.txt",
+      "ALL_AVAILABLE_PROJECT_FILES/top_pre_fall_triggers.csv",
+      "ALL_AVAILABLE_PROJECT_FILES/gemini-code-1780193071322.txt",
+      "ALL_AVAILABLE_PROJECT_FILES/sourceborn_ifr_fii_cash_stack_test_v0_6/event_fire_matrix.csv",
+      "ALL_AVAILABLE_PROJECT_FILES/sourceborn_fii_volume_derivatives_review_v0_3/readiness_status.csv",
+      "ALL_AVAILABLE_PROJECT_FILES/top_combo_triggers.csv",
+      "ALL_AVAILABLE_PROJECT_FILES/sourceborn_fii_volume_derivatives_review_v0_3/participantwise_oi_latest_clean.csv",
+      "ALL_AVAILABLE_PROJECT_FILES/sourceborn_fii_volume_derivatives_review_v0_3/README_SUMMARY.txt",
+      "ALL_AVAILABLE_PROJECT_FILES/sourceborn_volume_delivery_batch_check_v0_1/symbol_coverage_summary.csv",
+      "ALL_AVAILABLE_PROJECT_FILES/event_validation.csv",
+      "ALL_AVAILABLE_PROJECT_FILES/sourceborn_fii_derivatives_cash_review_v0_2/event_coverage_new_data.csv",
+      "ALL_AVAILABLE_PROJECT_FILES/sourceborn_fii_derivatives_cash_review_v0_2/file_inventory_new_batch.csv",
+      "ALL_AVAILABLE_PROJECT_FILES/sourceborn_ifr_fii_cash_stack_test_v0_6/signal_independence_clusters.csv",
+      "ALL_AVAILABLE_PROJECT_FILES/fii-dii-combined-latest.csv"
+    ],
+    "meaning_limit": "Historical handoff path claims only; not proof every referenced file is present, read, current, imported or implemented."
+  },
+  "mutation_boundary": {
+    "raw_modified": false,
+    "runtime_modified": false,
+    "coverage_overlay_modified": false,
+    "network_accessed": false,
+    "mongo_accessed": false,
+    "providers_accessed": false,
+    "supplied_code_executed": false,
+    "current_authority_promoted": false
+  },
+  "method": {
+    "skills_used": [
+      "engineering:code-review",
+      "spreadsheets:Spreadsheets"
+    ],
+    "byte_read_scope": "All 2,248,426 uncompressed bytes of the six named members decoded as strict UTF-8 to EOF. Entire 10,303,731-byte archive SHA-256 freshly matched preserved manifest. CRC32 independently recomputed for every scoped member.",
+    "structured_read_scope": "Strict JSON parsing rejected duplicate object keys and nonstandard numeric constants; recursively visited every registry and candle leaf; parsed all T01 records and fields with CSV parser. This is full serialized-content processing, not a claim that every named hypothetical formula was numerically backtested.",
+    "prose_read_scope": "Both Markdown documents and all 88 manifest paths read completely. All 30 warning definitions and 10 feed tables preserved below.",
+    "formula_classification_rule": "Deterministic text-template classification across every registry record. The 24 specific formula/operational-rule rows are preserved verbatim as objects; 'specific' does not mean executable, fully specified, validated or approved.",
+    "preserved_originals": "Original ZIP and member bytes untouched; no supplied code executed. No runtime or coverage-overlay modifications.",
+    "numerical_checks": "Candle timestamp ordering, duplicate dates, finite positional numerics, positive OHLC envelope; T01 count/width/identity format/duplicate keys/numeric last-field checks. These establish internal structure, not upstream market authenticity or complete session coverage."
+  },
+  "findings": [
+    {
+      "id": "AM07-REGISTRY-AUTHORITY",
+      "classification": "archival_schema_not_current_authority",
+      "source": "parameter_registry.json#/parameters; current data/parameter-catalog-175.json",
+      "detail": "1500 unique sequential G07 IDs, 324 non-future rows and 1176 reserved future rows. Current catalog has 175 IDs with zero exact overlap. Runtime loads the 175 catalog, not this archived registry. Source status ACTIVE and enabled=true do not establish a computation or approval."
+    },
+    {
+      "id": "AM07-REGISTRY-INCOMPLETE",
+      "classification": "source_contract_incomplete",
+      "source": "parameter_registry.json all1500 records",
+      "detail": "All current_value fields are null and all hit_status values are NOT_EVALUATED. 1476 thresholds are null. 114 of 135 enabled rows have DATA_NEEDED sources, including 65 enabled undefined formula slots. 24 specific formula/operational rows use the generic source label sample/upload/API, not an identified current feed. Even those need units, warm-up/seed, zero-denominator, missing-data and exact band-boundary contracts."
+    },
+    {
+      "id": "AM07-STATUS-SPELLING",
+      "classification": "source_schema_inconsistency",
+      "source": "parameter_registry.json#/no_deletion_status_values and /parameters/*/status",
+      "detail": "The declared allowed value is DATA-NEEDED, but 186 records use DATA_NEEDED. Three ACTIVE rows are disabled: G07_0096, G07_0128 and G07_0139. Preserve both source facts rather than normalizing or activating them silently."
+    },
+    {
+      "id": "AM07-POLICY-DIFFERENCE",
+      "classification": "different_source_policy_not_instruction_to_replace",
+      "source": "parameter_registry.json:4-5,7565-7595; config/ash-stock-parameters.v2.2.json:17-31; lib/paper-capital-policy.mjs:14-28,50-72",
+      "detail": "Archived profile max_position_pct 5 and max_open_positions 20 differs from current source policy maxPositionPct 10 and maxOpenPositions 500. Archived heat threshold 0.15 differs from current maxPortfolioHeatPct 25. G07_0236 embeds capital*max_position_pct but also carries threshold 0.05: percent-point versus fraction conversion and whether the formula returns a Boolean or a ratio require an explicit contract. Do not adopt source values or infer production state."
+    },
+    {
+      "id": "AM07-FII-NET-SIGN",
+      "classification": "arithmetic_contract_conflict",
+      "source": "07_DATA_FORMATS.md:44-48",
+      "detail": "Example buy_contracts 45200 and sell_contracts 51800 gives buy-minus-sell=-6600, matching the supplied net_contracts example. The note says sell-minus-buy, which would be +6600. Import must not choose or reverse the sign without resolving this source contradiction.",
+      "arithmetic": {
+        "buy_contracts": 45200,
+        "sell_contracts": 51800,
+        "buy_minus_sell": -6600,
+        "sell_minus_buy": 6600,
+        "source_net_contracts": -6600
+      }
+    },
+    {
+      "id": "AM07-FUTURES-SCOPE",
+      "classification": "distinct_quantities_not_equivalent_formulas",
+      "source": "06_EARLY_WARNING.md:40; parameter_registry.json G07_0128; current catalog NO09",
+      "detail": "Warning 4 defines FII long-contracts minus short-contracts positions across Nifty/BankNifty. G07_0128 defines futures buy-value minus sell-value transaction flow, with 500/100 bands whose currency unit is unstated in that row. Current NO09 instead specifies a 60-day z-score of net-position change and has no matching evaluator branch here. Transaction values, buy/sell contract flow and long/short open positions must not be substituted."
+    },
+    {
+      "id": "AM07-EARLY-WARNING-EVIDENCE",
+      "classification": "hypotheses_not_validated_results",
+      "source": "06_EARLY_WARNING.md:16,241-265",
+      "detail": "The 78% DBI hit-rate statement has no supporting observations/test output in these six members. The document ends by calling all 30 hypotheses and requires lead>5 sessions, true-positive rate>60%, false-positive rate<30% and 3+ events before adoption. DBI zero/near-zero index-return behavior, exact range construction, point-in-time constituents, release-time alignment and unseen-period validation are not fully specified."
+    },
+    {
+      "id": "AM07-HHI-PARENTHETICAL",
+      "classification": "mathematical_non_equivalence",
+      "source": "06_EARLY_WARNING.md:22-23",
+      "detail": "HHI>0.04 is not equivalent to top-five volume share>40%. Counterexample: 20 names each carry 5% of volume and the other 180 carry0%; HHI=0.05 while top-five share=25%. Preserve the original trigger but do not treat its parenthetical as a proven identity.",
+      "counterexample": {
+        "constituents": 200,
+        "positive_volume_shares": 20,
+        "share_each": 0.05,
+        "hhi": 0.05,
+        "top_five_share": 0.25
+      }
+    },
+    {
+      "id": "AM07-FEED-SUFFICIENCY",
+      "classification": "source_requirements_not_fulfilled_by_schema",
+      "source": "06_EARLY_WARNING.md warnings9,10,18,23; 07_DATA_FORMATS.md feeds5,8,9",
+      "detail": "SIP warning 18 asks for net inflow but feed 5 provides gross SIP. FX breakout warning 9 requires FX volume absent from feed 9; warning 10 needs S&P500 returns absent from feeds 8/9. A 10-day retail-share trigger is not established by the monthly publication frequency described in warning 23. Feed 8's instructed zero nifty_volume must remain an unavailable-volume sentinel rather than measured liquidity. Yield 7.02 is percentage points; a 10 bp move is 0.10 percentage point, not 10 raw units. Macroeconomic period and actual release dates need separate fields to prevent look-ahead."
+    },
+    {
+      "id": "AM07-T01-UNITS",
+      "classification": "historical_structured_source_with_unknown_dictionary",
+      "source": "C_CATG_JUN2026.T01 entire file",
+      "detail": "13787 security-series records, not 13787 unique stocks or daily observations. Only 3365 rows carry EQ. Symbol+series is unique; symbols and ISINs repeat across series. Header declares JUN 2026 and count 013787, not a verified day-of-month. Category codes 1/2/3 and the final numeric field have no authoritative meaning/unit dictionary in scope.10154 final fields are blank and must not become zero. No price/volume/turnover/position unit or action sizing can safely be inferred."
+    },
+    {
+      "id": "AM07-UNLABELLED-CANDLES",
+      "classification": "historical_identity_unresolved",
+      "source": "pasted-text.txt entire JSON",
+      "detail": "1608 unique descending seven-position candles span 2018-01-01 to 2024-07-01. Numeric OHLC envelopes pass positional checks, but no instrument identity or request provenance is stored. All final two fields are zero. Mixed timestamp times include 2018-11-07T17:30 and 2018-07-23T09:51; preserve originals, do not classify as invalid non-trading days without a calendar. No import as IndiaVIX, equity OHLCV, current quote or liquidity evidence is approved."
+    },
+    {
+      "id": "AM07-NU08-CURRENT-CODE",
+      "classification": "current_source_formula_implementation_drift",
+      "source": "data/parameter-catalog-175.json NU08; server-parameter-tunnel-patch.mjs:499-502; registry G07_0243",
+      "detail": "Current NU08 catalog describes sector_value_after/portfolio_value_after<=0.25, but its evaluator uses (same-sector holding count+1)/(total holding count+1). Archived G07_0243 also describes value/capital, not counts. Three existing other-sector positions valued 100 each and a new-sector candidate valued 900 produce 25% by count versus 75% by value. The node contributes to tunnel evidence aggregation; this is a source-level mismatch, not proof of production execution, a primary-ranking change or a portfolio hard-gate bypass. Correction requires separate user discussion/approval.",
+      "counterexample": {
+        "existing_positions": 3,
+        "existing_value_each": 100,
+        "candidate_value": 900,
+        "same_sector_existing_positions": 0,
+        "count_share": 0.25,
+        "value_share": 0.75
+      }
+    }
+  ],
+  "runtime_mapping": [
+    {
+      "source": "parameter_registry.json",
+      "current_source": "server-parameter-tunnel-patch.mjs:1-10,508-531",
+      "relationship": "No direct registry consumer found in scoped JS/MJS/Python/JSON runtime search. The evaluator loads data/parameter-catalog-175.json;1500 G07 rows are not automatically 1500 runtime calculations."
+    },
+    {
+      "source": "06_EARLY_WARNING.md and07_DATA_FORMATS.md",
+      "current_source": "server-data-intelligence-patch.mjs:14-17,63-113,189-223; server-framework-patch.mjs:80-86,147-152",
+      "relationship": "Hard-coded 30-name warning list, feed roadmap and adoption criteria. Framework explicitly describes hypotheses and not-yet-active macro early warning. Displayed names/counts do not evaluate 30 warning formulas."
+    },
+    {
+      "source": "G07_0117 sumFII five sessions",
+      "current_source": "server-upstox-institutional-patch.mjs:297-299,345-361,495-502",
+      "relationship": "Conceptually related NO08 uses independently fetched market-wide cash activity, INR-to-crore conversion and five verified completed sessions; current threshold is >0, not archived 3000 bands. It is not an exact G07 mapping or stock-specific ownership evidence."
+    },
+    {
+      "source": "G07_0058 volume ratio; warning3 up/down decay",
+      "current_source": "server-parameter-tunnel-patch.mjs:292-299,360-366,498",
+      "relationship": "B15_P015 latest volume>SMA20; B15_P016 twenty-session up/down comparison counts flat closes as up; T12W_0018 strict seven-session up-volume/total>=0.62; NMS07 fifty-day ratio>=1.5. Different windows, denominators, flat-day policies and thresholds; none is the full warning 3 ten-day40% ratio-decay rule."
+    },
+    {
+      "source": "G07_0096 breakout",
+      "current_source": "server-parameter-tunnel-patch.mjs:287",
+      "relationship": "B22_P010 checks close above prior 20-session high. The archived rule additionally mentions volume confirmation>=1.5 and is disabled despiteACTIVE status; do not alias them as an exact contract."
+    },
+    {
+      "source": "C_CATG_JUN2026.T01 and pasted-text.txt",
+      "current_source": "Scoped source search of current JS/MJS/Python/JSON excluding asset-review and dependency directories",
+      "relationship": "No direct consumer found. Existing app.js:74 declares explicit NSE_INDEX|India VIX identity for its separate provider path; it does not establish identity of unlabeled archived candles."
+    },
+    {
+      "source": "G07_0243 sector concentration",
+      "current_source": "server-parameter-tunnel-patch.mjs:499-502,508-553",
+      "relationship": "Current NU08 count/value drift documented separately. Its positive helper produces HIT/MISS, not a BLOCK decision. Node results feed tunnel evidence summary; generic attachParameterTunnel blends row.score at 70/30 while preserving the incoming decision. The Upstox institutional attachment separately restores score and selection_score to baseScore, retaining the blend only as institutional_advisory_score (server-upstox-institutional-patch.mjs:505-525). This audit does not claim production execution or that any separate portfolio hard gate is bypassed."
+    }
+  ],
+  "runtime_source_sha256": {
+    "server-parameter-tunnel-patch.mjs": "dcf63a726ee2bd9c00d39e5f3d6c8293973fbc0589aad86997b304751558ed32",
+    "server-upstox-institutional-patch.mjs": "97c583f00f5e6b4daee5ba7ce694f3aa1374a1e25aeb6b76b797a88cb3598777",
+    "server-data-intelligence-patch.mjs": "84bae920306261373c556cca87bdd0db38996ce211488ba373640aeb4426c7c0",
+    "server-framework-patch.mjs": "f7e9f20ac737dcf608f54c49a6ec5859cb33c21bcc50edf189fb86aca8af1b04",
+    "lib/paper-capital-policy.mjs": "c751117c75c5f91b2d855ee55d9e67062f9578b9d17c59420f0ae93276c4a479",
+    "config/ash-stock-parameters.v2.2.json": "e5e1af09a6d387af700893a6b1b87c8f789a8232e8a5dd1a2440e28c0dc9f240"
+  },
+  "proof_limits": [
+    "Content reviewed means full textual/record consumption and documented internal checks, not complete numerical implementation or backtesting of every named metric.",
+    "Source claims of data availability, accuracy, historical hit rate, adoption status or prior approval are not independently verified authority.",
+    "Archive timestamps and June2026/category labels do not establish current NSE eligibility, current quotes or exact publication date.",
+    "Direct-consumer negative search is scoped to current local source files, not every external service/deployment/configuration.",
+    "No live system, provider, Mongo data or production render behavior was observed.",
+    "No source formula, policy, current threshold, rank or hard gate was changed; no source record imported.",
+    "Other 38 non-directory members of this 44-member archive are outside this six-member audit; other evidence may cover them but is not claimed here."
+  ],
+  "proposed_member_upgrades": [
+    {
+      "asset": "AM.07.Parameter.Files.zip",
+      "member": "AM 07 Parameter Files/06_EARLY_WARNING.md",
+      "proposed_content_status": "reviewed",
+      "evidence_locator": "/members/0",
+      "content_read_basis": "Full prose read; all defined warning sections or feed tables parsed and retained.",
+      "authority_promoted": false
+    },
+    {
+      "asset": "AM.07.Parameter.Files.zip",
+      "member": "AM 07 Parameter Files/07_DATA_FORMATS.md",
+      "proposed_content_status": "reviewed",
+      "evidence_locator": "/members/1",
+      "content_read_basis": "Full prose read; all defined warning sections or feed tables parsed and retained.",
+      "authority_promoted": false
+    },
+    {
+      "asset": "AM.07.Parameter.Files.zip",
+      "member": "AM 07 Parameter Files/C_CATG_JUN2026.T01",
+      "proposed_content_status": "reviewed",
+      "evidence_locator": "/members/2",
+      "content_read_basis": "Header and all 13787 six-field records parsed; declared count, row keys, identity shape, categories, series and unlabelled numeric values checked.",
+      "authority_promoted": false
+    },
+    {
+      "asset": "AM.07.Parameter.Files.zip",
+      "member": "AM 07 Parameter Files/parameter_registry.json",
+      "proposed_content_status": "reviewed",
+      "evidence_locator": "/members/3",
+      "content_read_basis": "All 1500 records and all 26 fields parsed and recursively traversed; IDs, source/status/threshold/formula templates reconciled; 24 specific contract rows retained.",
+      "authority_promoted": false
+    },
+    {
+      "asset": "AM.07.Parameter.Files.zip",
+      "member": "AM 07 Parameter Files/pasted-text.txt",
+      "proposed_content_status": "reviewed",
+      "evidence_locator": "/members/4",
+      "content_read_basis": "Entire valid JSON parsed to EOF; all 1608 seven-position candles validated structurally with unknown instrument identity retained.",
+      "authority_promoted": false
+    },
+    {
+      "asset": "AM.07.Parameter.Files.zip",
+      "member": "AM 07 Parameter Files/PROJECT_FILE_LIST_THIS_PART.txt",
+      "proposed_content_status": "reviewed",
+      "evidence_locator": "/members/5",
+      "content_read_basis": "All 88 unique historical paths read and counted; filenames are not availability or import proof.",
+      "authority_promoted": false
+    }
+  ],
+  "nu08_offline_reproduction": {
+    "evidence": {
+      "schema_version": "ashstocks.nu08-offline-diagnostic.v1",
+      "review_date": "2026-09-24",
+      "source_review_commit": "611c1c26aad6beebac2ba5473a52333efa5e3220",
+      "scope": "Read-only audit evidence, not a correction. Runtime entry points and production modules are never imported.",
+      "source_pins": [
+        {
+          "file": "server-parameter-tunnel-patch.mjs",
+          "bytes": 43887,
+          "sha256": "dcf63a726ee2bd9c00d39e5f3d6c8293973fbc0589aad86997b304751558ed32",
+          "pin_matches": true
+        },
+        {
+          "file": "data/parameter-catalog-175.json",
+          "bytes": 144314,
+          "sha256": "38e608f9f8d2823c9691258d0d655336b76ee40e5ea970012665f05e16f1ebe2",
+          "pin_matches": true
+        },
+        {
+          "file": "vendor/base-server-37a9e9ceacabd33bc5a2085ad621e368f8fc0cd8.mjs",
+          "bytes": 79564,
+          "sha256": "156db2e19447e47c5b642a66f6b74f4809763d386d6cc40430b3dd98d264f324",
+          "pin_matches": true
+        },
+        {
+          "file": "server-upstox-institutional-patch.mjs",
+          "bytes": 34993,
+          "sha256": "97c583f00f5e6b4daee5ba7ce694f3aa1374a1e25aeb6b76b797a88cb3598777",
+          "pin_matches": true
+        }
+      ],
+      "extracted_helper_pins": [
+        {
+          "name": "numericValue",
+          "origin": "vendor/base-server-37a9e9ceacabd33bc5a2085ad621e368f8fc0cd8.mjs",
+          "sha256": "dd0328330ce6be09c336fe235faa4ec5e0a30f92cd753c35c9112ba373df8845"
+        },
+        {
+          "name": "clamp",
+          "origin": "vendor/base-server-37a9e9ceacabd33bc5a2085ad621e368f8fc0cd8.mjs",
+          "sha256": "cedc4a849d3178ba26fa0cc54314cf3a927086fc896b76868ce95feb0ec71786"
+        },
+        {
+          "name": "round",
+          "origin": "vendor/base-server-37a9e9ceacabd33bc5a2085ad621e368f8fc0cd8.mjs",
+          "sha256": "39a3b14d6b5097a3ff3b45850bd4fc795439795b6c0924bef708b8a27fbf348b"
+        },
+        {
+          "name": "unique",
+          "origin": "vendor/base-server-37a9e9ceacabd33bc5a2085ad621e368f8fc0cd8.mjs",
+          "sha256": "71b7f392958df92ad9aceda267a7e611100c0e2ee729ed9b15a44ec7eec93936"
+        },
+        {
+          "name": "applyPortfolio",
+          "origin": "vendor/base-server-37a9e9ceacabd33bc5a2085ad621e368f8fc0cd8.mjs",
+          "sha256": "dce941d0c071dd646e8735d8ac48639deee110c9b6f265fa68f9e25ceea8c61d"
+        },
+        {
+          "name": "normalizeCandles (actual patched wrapper)",
+          "origin": "vendor/base-server-37a9e9ceacabd33bc5a2085ad621e368f8fc0cd8.mjs + server-parameter-tunnel-patch.mjs",
+          "sha256": "82f600fba2a4a1291bca0a1e3caea551caa620f7ee129a9aad38e2555e87e769"
+        },
+        {
+          "name": "PARAMETER_TUNNEL_FUNCTIONS raw template",
+          "origin": "server-parameter-tunnel-patch.mjs",
+          "sha256": "8c73af1671f4d5c4f7efa85935487d0c742dd2d4b9bc8e5f3d7b30fa5361c0c6"
+        },
+        {
+          "name": "PARAMETER_TUNNEL_FUNCTIONS composed with pinned catalog",
+          "origin": "server-parameter-tunnel-patch.mjs + data/parameter-catalog-175.json",
+          "sha256": "90dc890d81c0c6f6aacbfecfb229709243ad5ef2babe8b6a1fbe1b6e0a77ea4f"
+        }
+      ],
+      "script": {
+        "path": "/private/tmp/ash-fo-am07-audit-kryJu5/nu08-offline-audit.mjs",
+        "sha256": "016aabd5e07f6c082557759d3ab7b3d8b8efef556e93de69377fe110e40081e3",
+        "output": "JSON stdout only; script performs no file writes"
+      },
+      "formula": {
+        "catalog_location": "data/parameter-catalog-175.json:3042",
+        "catalog": "sector_value_after / portfolio_value_after <= 0.25",
+        "evaluator_location": "server-parameter-tunnel-patch.mjs:499",
+        "actual": "(same-sector holding count + 1) / (all holding count + 1) <= 0.25",
+        "declared_required_input": "position values and sector map",
+        "counterexample_denominator": "Sum of marked/supplied position values after entry. Cash/NAV treatment remains an unresolved contract; no particular production valuation is asserted."
+      },
+      "scenarios": [
+        {
+          "name": "False HIT relative to the value-ratio contract",
+          "currency_for_synthetic_values": "INR",
+          "holdings": [
+            {
+              "sector": "Bank",
+              "value": 250000
+            },
+            {
+              "sector": "Other",
+              "value": 125000
+            },
+            {
+              "sector": "Other",
+              "value": 125000
+            },
+            {
+              "sector": "Other",
+              "value": 125000
+            },
+            {
+              "sector": "Other",
+              "value": 125000
+            },
+            {
+              "sector": "Other",
+              "value": 125000
+            },
+            {
+              "sector": "Other",
+              "value": 125000
+            }
+          ],
+          "proposed_sector": "Bank",
+          "proposed_value": 10000,
+          "sector_value_before": 250000,
+          "portfolio_position_value_before": 1000000,
+          "sector_value_after": 260000,
+          "portfolio_position_value_after": 1010000,
+          "position_value_ratio_after": 0.25742574257425743,
+          "value_contract_condition": false,
+          "node_result": {
+            "state": "HIT",
+            "value": "25%",
+            "evidence": "Sector count share after proposed paper entry"
+          },
+          "original_decision": "SELECT",
+          "attached_decision": "SELECT",
+          "original_portfolio_cap_gate": true,
+          "attached_portfolio_cap_gate": true,
+          "inputs_unchanged": true
+        },
+        {
+          "name": "False MISS relative to the value-ratio contract",
+          "currency_for_synthetic_values": "INR",
+          "holdings": [
+            {
+              "sector": "Bank",
+              "value": 1000
+            },
+            {
+              "sector": "Other",
+              "value": 49000
+            },
+            {
+              "sector": "Other",
+              "value": 49000
+            }
+          ],
+          "proposed_sector": "Bank",
+          "proposed_value": 1000,
+          "sector_value_before": 1000,
+          "portfolio_position_value_before": 99000,
+          "sector_value_after": 2000,
+          "portfolio_position_value_after": 100000,
+          "position_value_ratio_after": 0.02,
+          "value_contract_condition": true,
+          "node_result": {
+            "state": "MISS",
+            "value": "50%",
+            "evidence": "Sector count share after proposed paper entry"
+          },
+          "original_decision": "SELECT",
+          "attached_decision": "SELECT",
+          "original_portfolio_cap_gate": true,
+          "attached_portfolio_cap_gate": true,
+          "inputs_unchanged": true
+        }
+      ],
+      "separate_scanner_batch_cap": {
+        "location": "vendor/base-server-37a9e9ceacabd33bc5a2085ad621e368f8fc0cd8.mjs:1073",
+        "settings": {
+          "startingCapital": 1000000,
+          "maxPositionPct": 0.01,
+          "regimeMultiplier": 1,
+          "ifrMultiplier": 1,
+          "drawdownMultiplier": 1,
+          "maxSectorExposurePct": 25,
+          "maxSectorPositions": 500,
+          "maxPositions": 500
+        },
+        "formula": "sector planned allocation + candidate planned allocation <= startingCapital * maxSectorExposurePct / 100",
+        "candidate_rows": 26,
+        "per_candidate_planned_value": 10000,
+        "sector_cap_value": 250000,
+        "select_rows": 25,
+        "blocked_rows": 1,
+        "last_row": {
+          "decision": "BLOCKED",
+          "portfolio_cap_gate": false,
+          "order_status": "SKIPPED",
+          "reason": "synthetic fixture; max sector exposure reached"
+        },
+        "original_nested_gate_objects_mutated": true,
+        "mutation_scope": "Only in-memory synthetic fixtures; no real state or storage.",
+        "limit": "Maps initialize empty; no holdings argument. This proves the existing batch allocation cap, not current-portfolio NAV or every-fill sector enforcement."
+      },
+      "role_and_enforcement": {
+        "node_state_semantics": "HIT/MISS positive evidence, not an execution BLOCKED decision.",
+        "generic_path": "applyPortfolio runs before attachParameterTunnel; attachment preserves decisions/gates and applies generic70/30 score blending.",
+        "generic_locations": [
+          "server-parameter-tunnel-patch.mjs:535",
+          "server-parameter-tunnel-patch.mjs:585"
+        ],
+        "upstox_path_static_check": "Pinned source restores base score and marks evidence advisory-only; this script does not execute the Upstox overlay.",
+        "upstox_location": "server-upstox-institutional-patch.mjs:507",
+        "production_bypass_demonstrated": false,
+        "fill_path_tested": false,
+        "conclusion": "Confirmed value-vs-count node mismatch. Separate approval and valuation/input contract are needed for a correction; no production execution bypass claim."
+      },
+      "limits": [
+        "Pure-helper fixtures are not an assembled scanner/server integration test.",
+        "No real holdings or prices were queried; synthetic INR values are explicit assumptions.",
+        "Current portfolio and sequential-fill sector enforcement require a separate bounded review/test.",
+        "No provider, database, trade, file-store or order lifecycle function is executed."
+      ],
+      "validation": {
+        "scenarios_passed": 2,
+        "batch_cap_probe_passed": true,
+        "forbidden_external_calls": 0,
+        "source_hashes_match": true
+      },
+      "actions": {
+        "runtime_imported": false,
+        "production_modules_imported": false,
+        "repository_modified": false,
+        "network_accessed": false,
+        "database_accessed": false,
+        "orders_submitted": false,
+        "files_written_by_script": false,
+        "correction_implemented": false
+      }
+    },
+    "script_text": "import assert from \"node:assert/strict\";\nimport { createHash } from \"node:crypto\";\nimport { readFileSync } from \"node:fs\";\nimport path from \"node:path\";\nimport { fileURLToPath } from \"node:url\";\nimport vm from \"node:vm\";\n\n// Audit only. Read source text; never import the server or its patch modules.\n// Execute extracted pure functions in a sandbox; emit JSON to stdout only.\nconst repo = process.argv[2] || \"/Users/sourceborn/Documents/ChatGPT/Ash/AshStocks\";\nconst sha = (value) => createHash(\"sha256\").update(value).digest(\"hex\");\nconst expected = {\n  \"server-parameter-tunnel-patch.mjs\": \"dcf63a726ee2bd9c00d39e5f3d6c8293973fbc0589aad86997b304751558ed32\",\n  \"data/parameter-catalog-175.json\": \"38e608f9f8d2823c9691258d0d655336b76ee40e5ea970012665f05e16f1ebe2\",\n  \"vendor/base-server-37a9e9ceacabd33bc5a2085ad621e368f8fc0cd8.mjs\": \"156db2e19447e47c5b642a66f6b74f4809763d386d6cc40430b3dd98d264f324\",\n  \"server-upstox-institutional-patch.mjs\": \"97c583f00f5e6b4daee5ba7ce694f3aa1374a1e25aeb6b76b797a88cb3598777\"\n};\nconst source = new Map();\nconst pins = Object.entries(expected).map(([file, digest]) => {\n  const bytes = readFileSync(path.join(repo, file));\n  assert.equal(sha(bytes), digest, \"Audit source changed; review before updating pin: \" + file);\n  source.set(file, bytes.toString(\"utf8\"));\n  return { file, bytes: bytes.length, sha256: digest, pin_matches: true };\n});\nconst basePath = \"vendor/base-server-37a9e9ceacabd33bc5a2085ad621e368f8fc0cd8.mjs\";\nconst base = source.get(basePath);\nconst patch = source.get(\"server-parameter-tunnel-patch.mjs\");\nconst catalog = JSON.parse(source.get(\"data/parameter-catalog-175.json\"));\nfunction named(name) {\n  const start = base.indexOf(\"\\nfunction \" + name + \"(\");\n  assert(start >= 0, \"Missing base function: \" + name);\n  const tail = base.slice(start + 1);\n  const end = tail.search(/\\n(?:async )?function /);\n  assert(end > 0, \"Missing function boundary: \" + name);\n  return tail.slice(0, end);\n}\nconst marker = \"const PARAMETER_TUNNEL_FUNCTIONS = String.raw`\";\nconst begin = patch.indexOf(marker);\nassert(begin >= 0 && patch.indexOf(marker, begin + 1) < 0);\nconst end = patch.indexOf(\"\\n`;\\n\\nexport function applyParameterTunnelPatches\", begin);\nassert(end > begin);\nconst rawHelpers = patch.slice(begin + marker.length, end);\nassert.equal((rawHelpers.match(/\\$\\{/g) || []).length, 1, \"Unexpected template interpolation\");\nassert(rawHelpers.includes(\"${catalogJson}\"));\nconst helpers = rawHelpers.replace(\"${catalogJson}\", JSON.stringify(catalog));\n\n// Read the actual normalizer replacement literal rather than invent a stub.\nconst replacementLine = patch.split(\"\\n\").find((line) => line.startsWith('    \"function normalizeCandles(candles) {\\\\n'));\nassert(replacementLine?.trim().endsWith(\",\"));\nconst replacement = JSON.parse(replacementLine.trim().slice(0, -1));\nconst normalizationAnchor = \"function normalizeCandles(candles) {\";\nassert(named(\"normalizeCandles\").includes(normalizationAnchor));\nconst normalizer = named(\"normalizeCandles\").replace(normalizationAnchor, replacement);\nconst names = [\"numericValue\", \"clamp\", \"round\", \"unique\", \"applyPortfolio\"];\nconst helperPins = names.map((name) => ({ name, origin: basePath, sha256: sha(named(name)) }));\nhelperPins.push(\n  { name: \"normalizeCandles (actual patched wrapper)\", origin: basePath + \" + server-parameter-tunnel-patch.mjs\", sha256: sha(normalizer) },\n  { name: \"PARAMETER_TUNNEL_FUNCTIONS raw template\", origin: \"server-parameter-tunnel-patch.mjs\", sha256: sha(rawHelpers) },\n  { name: \"PARAMETER_TUNNEL_FUNCTIONS composed with pinned catalog\", origin: \"server-parameter-tunnel-patch.mjs + data/parameter-catalog-175.json\", sha256: sha(helpers) }\n);\nlet forbiddenCalls = 0;\nconst forbidden = () => { forbiddenCalls += 1; throw new Error(\"Offline audit forbids external access\"); };\nconst sandbox = vm.createContext({ fetch: forbidden, getStore: forbidden, currentUpstoxAccessToken: forbidden }, {\n  codeGeneration: { strings: false, wasm: false }\n});\nvm.runInContext(names.map(named).join(\"\\n\") + \"\\n\" + normalizer + \"\\n\" + helpers + `\nglobalThis.subject = {\n  data: parameterTunnelData, context: buildParameterTunnelContext,\n  node: evaluateParameterTunnelNode, attach: attachParameterTunnel,\n  portfolio: applyPortfolio,\n  parameter: PARAMETER_TUNNEL_CATALOG.parameters.find((p) => p.id === \"NU08\")\n};`, sandbox, { timeout: 5000 });\nconst x = sandbox.subject;\nassert.equal(x.parameter.formula, \"sector_value_after / portfolio_value_after <= 0.25\");\nconst candle = { date: \"2026-09-23\", open: 100, high: 101, low: 99, close: 100, volume: 100 };\nfunction scenario(name, holdings, proposal, expectedState, expectedValueCondition) {\n  const row = { symbol: \"SYNTHETIC_CANDIDATE\", sector: \"Bank\", candles: [candle], score: 80,\n    decision: \"SELECT\", gates: { portfolio_caps: true }, proposed_value: proposal };\n  const before = JSON.stringify({ row, holdings });\n  const context = x.context([row], holdings);\n  const node = x.node(x.parameter, row, x.data(row), context);\n  const valueBefore = holdings.reduce((sum, h) => sum + h.value, 0);\n  const sectorBefore = holdings.filter((h) => h.sector === row.sector).reduce((sum, h) => sum + h.value, 0);\n  const valueRatio = (sectorBefore + proposal) / (valueBefore + proposal);\n  const attached = x.attach(row, {}, context);\n  assert.equal(node.state, expectedState);\n  assert.equal(valueRatio <= 0.25, expectedValueCondition);\n  assert.equal(attached.decision, row.decision);\n  assert.equal(attached.gates.portfolio_caps, row.gates.portfolio_caps);\n  assert.equal(JSON.stringify({ row, holdings }), before);\n  return { name, currency_for_synthetic_values: \"INR\", holdings, proposed_sector: row.sector,\n    proposed_value: proposal, sector_value_before: sectorBefore, portfolio_position_value_before: valueBefore,\n    sector_value_after: sectorBefore + proposal, portfolio_position_value_after: valueBefore + proposal,\n    position_value_ratio_after: valueRatio, value_contract_condition: valueRatio <= 0.25,\n    node_result: { state: node.state, value: node.value, evidence: node.evidence },\n    original_decision: row.decision, attached_decision: attached.decision,\n    original_portfolio_cap_gate: true, attached_portfolio_cap_gate: attached.gates.portfolio_caps,\n    inputs_unchanged: true };\n}\nconst cases = [\n  scenario(\"False HIT relative to the value-ratio contract\", [\n    { sector: \"Bank\", value: 250000 }, ...Array.from({ length: 6 }, () => ({ sector: \"Other\", value: 125000 }))\n  ], 10000, \"HIT\", false),\n  scenario(\"False MISS relative to the value-ratio contract\", [\n    { sector: \"Bank\", value: 1000 }, { sector: \"Other\", value: 49000 }, { sector: \"Other\", value: 49000 }\n  ], 1000, \"MISS\", true)\n];\n\n// Separate existing value-based scanner allocator, not the NU08 node.\nconst rows = Array.from({ length: 26 }, (_, i) => ({ symbol: \"SYNTHETIC\" + String(i).padStart(2, \"0\"),\n  sector: \"Bank\", score: 100 - i, close: 100, decision: \"SELECT\", gates: {}, reason: \"synthetic fixture\" }));\nconst settings = { startingCapital: 1000000, maxPositionPct: 0.01, regimeMultiplier: 1,\n  ifrMultiplier: 1, drawdownMultiplier: 1, maxSectorExposurePct: 25, maxSectorPositions: 500, maxPositions: 500 };\nconst beforeRows = JSON.stringify(rows);\nconst allocated = x.portfolio(rows, settings);\nassert.equal(allocated.filter((r) => r.decision === \"SELECT\").length, 25);\nassert.equal(allocated.at(-1).decision, \"BLOCKED\");\nassert.equal(allocated.at(-1).gates.portfolio_caps, false);\nassert(allocated.at(-1).reason.includes(\"max sector exposure reached\"));\n// applyPortfolio shallow-copies rows; its nested gate objects mutate the input.\n// This known helper behavior is observed, not repaired, in this offline fixture.\nassert.equal(forbiddenCalls, 0);\nconst institutional = source.get(\"server-upstox-institutional-patch.mjs\");\nassert(institutional.includes(\"score: baseScore\") && institutional.includes('\"ADVISORY_ONLY\"')\n  && institutional.includes(\"primary_rank_preserved: true\"));\nconst self = fileURLToPath(import.meta.url);\nconst report = {\n  schema_version: \"ashstocks.nu08-offline-diagnostic.v1\", review_date: \"2026-09-24\",\n  source_review_commit: \"611c1c26aad6beebac2ba5473a52333efa5e3220\",\n  scope: \"Read-only audit evidence, not a correction. Runtime entry points and production modules are never imported.\",\n  source_pins: pins, extracted_helper_pins: helperPins,\n  script: { path: self, sha256: sha(readFileSync(self)), output: \"JSON stdout only; script performs no file writes\" },\n  formula: { catalog_location: \"data/parameter-catalog-175.json:3042\", catalog: x.parameter.formula,\n    evaluator_location: \"server-parameter-tunnel-patch.mjs:499\",\n    actual: \"(same-sector holding count + 1) / (all holding count + 1) <= 0.25\",\n    declared_required_input: x.parameter.required,\n    counterexample_denominator: \"Sum of marked/supplied position values after entry. Cash/NAV treatment remains an unresolved contract; no particular production valuation is asserted.\" },\n  scenarios: cases,\n  separate_scanner_batch_cap: { location: basePath + \":1073\", settings,\n    formula: \"sector planned allocation + candidate planned allocation <= startingCapital * maxSectorExposurePct / 100\",\n    candidate_rows: 26, per_candidate_planned_value: 10000, sector_cap_value: 250000,\n    select_rows: allocated.filter((r) => r.decision === \"SELECT\").length,\n    blocked_rows: allocated.filter((r) => r.decision === \"BLOCKED\").length,\n    last_row: { decision: allocated.at(-1).decision, portfolio_cap_gate: allocated.at(-1).gates.portfolio_caps,\n      order_status: allocated.at(-1).paper_order.status, reason: allocated.at(-1).reason },\n    original_nested_gate_objects_mutated: JSON.stringify(rows) !== beforeRows,\n    mutation_scope: \"Only in-memory synthetic fixtures; no real state or storage.\",\n    limit: \"Maps initialize empty; no holdings argument. This proves the existing batch allocation cap, not current-portfolio NAV or every-fill sector enforcement.\" },\n  role_and_enforcement: {\n    node_state_semantics: \"HIT/MISS positive evidence, not an execution BLOCKED decision.\",\n    generic_path: \"applyPortfolio runs before attachParameterTunnel; attachment preserves decisions/gates and applies generic70/30 score blending.\",\n    generic_locations: [\"server-parameter-tunnel-patch.mjs:535\", \"server-parameter-tunnel-patch.mjs:585\"],\n    upstox_path_static_check: \"Pinned source restores base score and marks evidence advisory-only; this script does not execute the Upstox overlay.\",\n    upstox_location: \"server-upstox-institutional-patch.mjs:507\",\n    production_bypass_demonstrated: false,\n    fill_path_tested: false,\n    conclusion: \"Confirmed value-vs-count node mismatch. Separate approval and valuation/input contract are needed for a correction; no production execution bypass claim.\" },\n  limits: [\"Pure-helper fixtures are not an assembled scanner/server integration test.\",\n    \"No real holdings or prices were queried; synthetic INR values are explicit assumptions.\",\n    \"Current portfolio and sequential-fill sector enforcement require a separate bounded review/test.\",\n    \"No provider, database, trade, file-store or order lifecycle function is executed.\"],\n  validation: { scenarios_passed: cases.length, batch_cap_probe_passed: true,\n    forbidden_external_calls: forbiddenCalls, source_hashes_match: true },\n  actions: { runtime_imported: false, production_modules_imported: false, repository_modified: false,\n    network_accessed: false, database_accessed: false, orders_submitted: false, files_written_by_script: false,\n    correction_implemented: false }\n};\nconsole.log(JSON.stringify(report, null, 2));\n",
+    "script_preservation": "Stored as audit text only; not imported or wired into the application. Extract to a temporary .mjs file and pass a repository path to reproduce the pinned pure-helper diagnostic. The output script.path changes if saved at a different path."
+  }
+}

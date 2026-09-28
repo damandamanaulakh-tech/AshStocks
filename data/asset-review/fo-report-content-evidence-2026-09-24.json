@@ -1,0 +1,5094 @@
+{
+  "schema_version": "ash-fo-report-content-evidence-v1",
+  "review_date": "2026-09-24",
+  "reviewed_against_commit": "611c1c26aad6beebac2ba5473a52333efa5e3220",
+  "scope": "Full serialized content of FO.Gold.COmm.zip: fourteen CSVs plus one binary XLS. Thirteen new member upgrades; two previously reviewed CSVs reread.",
+  "archive": {
+    "asset": "FO.Gold.COmm.zip",
+    "bytes": 650231,
+    "sha256": "91ec88fc88e461ab7eaa15b345fdaa15a0804c09a64e5afe1761e861549f8378",
+    "source_preserved": true
+  },
+  "previous_progress_sha256": "ae08397aefbc053f1031fe8100c54f126f2337581ff6fa83fb010be825098f9b",
+  "methods": {
+    "primary": "Workbook.fromCSV + getUsedRange().values; every cell consumed; raw shape independently checked separately",
+    "independent": "Python csv.reader(strict=True), UTF-8 decode to EOF, exact Decimal reconciliation and ZIP CRC verification; preambles/footers excluded from data counts but retained. xlrd 2.0.2 fallback covers unsupported binary XLS; complete cell and BIFF inventory.",
+    "agreement": "All fourteen CSV member digests, data-row counts and column counts agree; no data-row width errors.",
+    "numeric_limits": "Primary JavaScript profile sums use binary floating point; exact financial reconciliations use independently parsed Decimal strings. Scientific notation/rounding and observed inconsistencies are retained, not silently repaired.",
+    "interpretation": "Reviewed means entire serialized source content was processed and its schema, internal arithmetic and consumer limits assessed. It does not mean each source value is correct or ready for production."
+  },
+  "totals": {
+    "csv_members": 14,
+    "csv_data_rows": 18744,
+    "csv_data_fields": 246112,
+    "new_csv_members": 12,
+    "new_csv_data_rows": 14837,
+    "new_csv_data_fields": 210955,
+    "new_xls_members": 1,
+    "xls_data_records": 12,
+    "xls_data_fields": 48,
+    "xls_stored_cells": 64,
+    "member_status_upgrades": 13
+  },
+  "members": [
+    {
+      "member": "FO Gold COmm/feed9_fx_commodity_daily_15Y.csv",
+      "bytes": 227019,
+      "sha256": "a957871dd21c29f6d3b0b0b964a408d2ec9626e8a97974db2403b4eb955beb34",
+      "all_used_cells_consumed": true,
+      "worksheet_rows": 3906,
+      "rectangular_field_count": 35154,
+      "header_row": 1,
+      "headers": [
+        "trade_date",
+        "usdinr",
+        "eurinr",
+        "gold_usd",
+        "silver_usd",
+        "brent_usd",
+        "wti_usd",
+        "us10y_yield",
+        "in10y_gsec_yield"
+      ],
+      "data_rows": 3905,
+      "columns": 9,
+      "preamble": [],
+      "footers": [],
+      "blank_by_column": {
+        "trade_date": 0,
+        "usdinr": 0,
+        "eurinr": 0,
+        "gold_usd": 139,
+        "silver_usd": 139,
+        "brent_usd": 164,
+        "wti_usd": 138,
+        "us10y_yield": 139,
+        "in10y_gsec_yield": 3905
+      },
+      "numeric_profiles": {
+        "usdinr": {
+          "observed": 3905,
+          "min": 44.01,
+          "max": 96.5658,
+          "sum": 274767.87149999983,
+          "zero": 0,
+          "negative": 0
+        },
+        "eurinr": {
+          "observed": 3905,
+          "min": 62.216,
+          "max": 112.486,
+          "sum": 318055.5226000008,
+          "zero": 0,
+          "negative": 0
+        },
+        "gold_usd": {
+          "observed": 3766,
+          "min": 1050.8,
+          "max": 5318.3999,
+          "sum": 6736059.595699993,
+          "zero": 0,
+          "negative": 0
+        },
+        "silver_usd": {
+          "observed": 3766,
+          "min": 11.735,
+          "max": 115.08,
+          "sum": 92816.85400000021,
+          "zero": 0,
+          "negative": 0
+        },
+        "brent_usd": {
+          "observed": 3741,
+          "min": 19.33,
+          "max": 127.98,
+          "sum": 286829.76000000024,
+          "zero": 0,
+          "negative": 0
+        },
+        "wti_usd": {
+          "observed": 3767,
+          "min": -37.63,
+          "max": 123.7,
+          "sum": 265826.1999999996,
+          "zero": 0,
+          "negative": 1
+        },
+        "us10y_yield": {
+          "observed": 3766,
+          "min": 0.499,
+          "max": 4.988,
+          "sum": 9757.449,
+          "zero": 0,
+          "negative": 0
+        }
+      },
+      "categorical_profiles": {
+        "in10y_gsec_yield": {
+          "": 3905
+        }
+      },
+      "independent_shape": {
+        "member": "FO Gold COmm/feed9_fx_commodity_daily_15Y.csv",
+        "sha256": "a957871dd21c29f6d3b0b0b964a408d2ec9626e8a97974db2403b4eb955beb34",
+        "crc32": "bba9af80",
+        "crc_verified_to_eof": true,
+        "raw_rows": 3906,
+        "raw_fields": 35154,
+        "data_rows": 3905,
+        "data_fields": 35145,
+        "columns": 9,
+        "data_width_errors": 0,
+        "raw_width_distribution": {
+          "9": 3906
+        },
+        "preamble_rows": [],
+        "footers": [],
+        "blank_physical_rows": 0
+      },
+      "proposed_content_status": "reviewed",
+      "new_coverage": false
+    },
+    {
+      "member": "FO Gold COmm/fo03062026 (2).csv",
+      "bytes": 106751,
+      "sha256": "909e6246d00e86d9221c00ba11940c76893386ee5b9ffee629ba458f119e7f93",
+      "all_used_cells_consumed": true,
+      "worksheet_rows": 626,
+      "rectangular_field_count": 7512,
+      "header_row": 1,
+      "headers": [
+        "INSTRUMENT",
+        "SYMBOL",
+        "EXP_DATE",
+        "OPEN_PRICE",
+        "HI_PRICE",
+        "LO_PRICE",
+        "CLOSE_PRICE",
+        "OPEN_INT*",
+        "TRD_VAL",
+        "TRD_QTY",
+        "NO_OF_CONT",
+        "NO_OF_TRADE"
+      ],
+      "data_rows": 624,
+      "columns": 12,
+      "preamble": [],
+      "footers": [
+        [
+          "* - OPEN_INT as available in the trading system at the end of trading hours.",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      ],
+      "blank_by_column": {
+        "INSTRUMENT": 0,
+        "SYMBOL": 0,
+        "EXP_DATE": 0,
+        "OPEN_PRICE": 0,
+        "HI_PRICE": 0,
+        "LO_PRICE": 0,
+        "CLOSE_PRICE": 0,
+        "OPEN_INT*": 0,
+        "TRD_VAL": 0,
+        "TRD_QTY": 0,
+        "NO_OF_CONT": 0,
+        "NO_OF_TRADE": 0
+      },
+      "numeric_profiles": {
+        "OPEN_PRICE": {
+          "observed": 624,
+          "min": 14.38,
+          "max": 70300,
+          "sum": 2044040.7100000014,
+          "zero": 0,
+          "negative": 0
+        },
+        "HI_PRICE": {
+          "observed": 624,
+          "min": 15.22,
+          "max": 70804.2,
+          "sum": 2066392.3099999987,
+          "zero": 0,
+          "negative": 0
+        },
+        "LO_PRICE": {
+          "observed": 624,
+          "min": 14.15,
+          "max": 69804.2,
+          "sum": 2018366.3200000008,
+          "zero": 0,
+          "negative": 0
+        },
+        "CLOSE_PRICE": {
+          "observed": 624,
+          "min": 15,
+          "max": 70704.2,
+          "sum": 2047321.0699999982,
+          "zero": 0,
+          "negative": 0
+        },
+        "OPEN_INT*": {
+          "observed": 624,
+          "min": 120,
+          "max": 5320813425,
+          "sum": 16819757779,
+          "zero": 0,
+          "negative": 0
+        },
+        "TRD_VAL": {
+          "observed": 624,
+          "min": 480900,
+          "max": 198560806808,
+          "sum": 1099638359462.55,
+          "zero": 0,
+          "negative": 0
+        },
+        "TRD_QTY": {
+          "observed": 624,
+          "min": 20,
+          "max": 894581100,
+          "sum": 2652014574,
+          "zero": 0,
+          "negative": 0
+        },
+        "NO_OF_CONT": {
+          "observed": 624,
+          "min": 1,
+          "max": 130568,
+          "sum": 1439024,
+          "zero": 0,
+          "negative": 0
+        },
+        "NO_OF_TRADE": {
+          "observed": 624,
+          "min": 1,
+          "max": 69135,
+          "sum": 1121796,
+          "zero": 0,
+          "negative": 0
+        }
+      },
+      "categorical_profiles": {
+        "INSTRUMENT": {
+          "FUTIDX": 12,
+          "FUTSTK": 612
+        },
+        "EXP_DATE": {
+          "30/06/2026": 216,
+          "28/07/2026": 214,
+          "25/08/2026": 194
+        }
+      },
+      "key": [
+        "instrument",
+        "symbol",
+        "expiry"
+      ],
+      "duplicate_key_rows": 0,
+      "symbols": [
+        "360ONE",
+        "ABB",
+        "ABCAPITAL",
+        "ADANIENSOL",
+        "ADANIENT",
+        "ADANIGREEN",
+        "ADANIPORTS",
+        "ADANIPOWER",
+        "ALKEM",
+        "AMBER",
+        "AMBUJACEM",
+        "ANGELONE",
+        "APLAPOLLO",
+        "APOLLOHOSP",
+        "ASHOKLEY",
+        "ASIANPAINT",
+        "ASTRAL",
+        "AUBANK",
+        "AUROPHARMA",
+        "AXISBANK",
+        "BAJAJ-AUTO",
+        "BAJAJFINSV",
+        "BAJAJHLDNG",
+        "BAJFINANCE",
+        "BANDHANBNK",
+        "BANKBARODA",
+        "BANKINDIA",
+        "BANKNIFTY",
+        "BDL",
+        "BEL",
+        "BHARATFORG",
+        "BHARTIARTL",
+        "BHEL",
+        "BIOCON",
+        "BLUESTARCO",
+        "BOSCHLTD",
+        "BPCL",
+        "BRITANNIA",
+        "BSE",
+        "CAMS",
+        "CANBK",
+        "CDSL",
+        "CGPOWER",
+        "CHOLAFIN",
+        "CIPLA",
+        "COALINDIA",
+        "COCHINSHIP",
+        "COFORGE",
+        "COLPAL",
+        "CONCOR",
+        "CROMPTON",
+        "CUMMINSIND",
+        "DABUR",
+        "DALBHARAT",
+        "DELHIVERY",
+        "DIVISLAB",
+        "DIXON",
+        "DLF",
+        "DMART",
+        "DRREDDY",
+        "EICHERMOT",
+        "ETERNAL",
+        "EXIDEIND",
+        "FEDERALBNK",
+        "FINNIFTY",
+        "FORCEMOT",
+        "FORTIS",
+        "GAIL",
+        "GLENMARK",
+        "GMRAIRPORT",
+        "GODFRYPHLP",
+        "GODREJCP",
+        "GODREJPROP",
+        "GRASIM",
+        "GVT&D",
+        "HAL",
+        "HAVELLS",
+        "HCLTECH",
+        "HDFCAMC",
+        "HDFCBANK",
+        "HDFCLIFE",
+        "HEROMOTOCO",
+        "HINDALCO",
+        "HINDPETRO",
+        "HINDUNILVR",
+        "HINDZINC",
+        "HYUNDAI",
+        "ICICIBANK",
+        "ICICIGI",
+        "ICICIPRULI",
+        "IDEA",
+        "IDFCFIRSTB",
+        "IEX",
+        "INDHOTEL",
+        "INDIANB",
+        "INDIGO",
+        "INDUSINDBK",
+        "INDUSTOWER",
+        "INFY",
+        "INOXWIND",
+        "IOC",
+        "IREDA",
+        "IRFC",
+        "ITC",
+        "JINDALSTEL",
+        "JIOFIN",
+        "JSWENERGY",
+        "JSWSTEEL",
+        "JUBLFOOD",
+        "KALYANKJIL",
+        "KAYNES",
+        "KEI",
+        "KFINTECH",
+        "KOTAKBANK",
+        "KPITTECH",
+        "LAURUSLABS",
+        "LICHSGFIN",
+        "LICI",
+        "LODHA",
+        "LT",
+        "LTF",
+        "LTM",
+        "LUPIN",
+        "M&M",
+        "MANAPPURAM",
+        "MANKIND",
+        "MARICO",
+        "MARUTI",
+        "MAXHEALTH",
+        "MAZDOCK",
+        "MCX",
+        "MFSL",
+        "MIDCPNIFTY",
+        "MOTHERSON",
+        "MOTILALOFS",
+        "MPHASIS",
+        "MUTHOOTFIN",
+        "NAM-INDIA",
+        "NATIONALUM",
+        "NAUKRI",
+        "NBCC",
+        "NESTLEIND",
+        "NHPC",
+        "NIFTY",
+        "NIFTYNXT50",
+        "NMDC",
+        "NTPC",
+        "NUVAMA",
+        "NYKAA",
+        "OBEROIRLTY",
+        "OFSS",
+        "OIL",
+        "ONGC",
+        "PAGEIND",
+        "PATANJALI",
+        "PAYTM",
+        "PERSISTENT",
+        "PETRONET",
+        "PFC",
+        "PGEL",
+        "PHOENIXLTD",
+        "PIDILITIND",
+        "PIIND",
+        "PNB",
+        "PNBHOUSING",
+        "POLICYBZR",
+        "POLYCAB",
+        "POWERGRID",
+        "POWERINDIA",
+        "PREMIERENE",
+        "PRESTIGE",
+        "RADICO",
+        "RBLBANK",
+        "RECLTD",
+        "RELIANCE",
+        "RVNL",
+        "SAIL",
+        "SAMMAANCAP",
+        "SBICARD",
+        "SBILIFE",
+        "SBIN",
+        "SHREECEM",
+        "SHRIRAMFIN",
+        "SIEMENS",
+        "SOLARINDS",
+        "SONACOMS",
+        "SRF",
+        "SUNPHARMA",
+        "SUPREMEIND",
+        "SUZLON",
+        "SWIGGY",
+        "TATACONSUM",
+        "TATAELXSI",
+        "TATAPOWER",
+        "TATASTEEL",
+        "TCS",
+        "TECHM",
+        "TIINDIA",
+        "TITAN",
+        "TMPV",
+        "TORNTPHARM",
+        "TRENT",
+        "TVSMOTOR",
+        "ULTRACEMCO",
+        "UNIONBANK",
+        "UNITDSPR",
+        "UNOMINDA",
+        "UPL",
+        "VBL",
+        "VEDL",
+        "VMM",
+        "VOLTAS",
+        "WAAREEENER",
+        "WIPRO",
+        "YESBANK",
+        "ZYDUSLIFE"
+      ],
+      "independent_shape": {
+        "member": "FO Gold COmm/fo03062026 (2).csv",
+        "sha256": "909e6246d00e86d9221c00ba11940c76893386ee5b9ffee629ba458f119e7f93",
+        "crc32": "660966fa",
+        "crc_verified_to_eof": true,
+        "raw_rows": 626,
+        "raw_fields": 7501,
+        "data_rows": 624,
+        "data_fields": 7488,
+        "columns": 12,
+        "data_width_errors": 0,
+        "raw_width_distribution": {
+          "1": 1,
+          "12": 625
+        },
+        "preamble_rows": [],
+        "footers": [
+          [
+            "* - OPEN_INT as available in the trading system at the end of trading hours."
+          ]
+        ],
+        "blank_physical_rows": 0
+      },
+      "proposed_content_status": "reviewed",
+      "new_coverage": true
+    },
+    {
+      "member": "FO Gold COmm/fo03062026.csv",
+      "bytes": 57190,
+      "sha256": "f011b2611c0a97b64e26b5f2361d9303028ef75f03a83ab32424f3b767ffbb3b",
+      "all_used_cells_consumed": true,
+      "worksheet_rows": 626,
+      "rectangular_field_count": 7512,
+      "header_row": 1,
+      "headers": [
+        "INSTRUMENT",
+        "SYMBOL",
+        "EXP_DATE",
+        "OPEN_PRICE",
+        "HI_PRICE",
+        "LO_PRICE",
+        "CLOSE_PRICE",
+        "OPEN_INT*",
+        "TRD_VAL",
+        "TRD_QTY",
+        "NO_OF_CONT",
+        "NO_OF_TRADE"
+      ],
+      "data_rows": 624,
+      "columns": 12,
+      "preamble": [],
+      "footers": [
+        [
+          "* - OPEN_INT as available in the trading system at the end of trading hours.",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      ],
+      "blank_by_column": {
+        "INSTRUMENT": 0,
+        "SYMBOL": 0,
+        "EXP_DATE": 0,
+        "OPEN_PRICE": 0,
+        "HI_PRICE": 0,
+        "LO_PRICE": 0,
+        "CLOSE_PRICE": 0,
+        "OPEN_INT*": 0,
+        "TRD_VAL": 0,
+        "TRD_QTY": 0,
+        "NO_OF_CONT": 0,
+        "NO_OF_TRADE": 0
+      },
+      "numeric_profiles": {
+        "OPEN_PRICE": {
+          "observed": 624,
+          "min": 14.38,
+          "max": 70300,
+          "sum": 2044040.7100000014,
+          "zero": 0,
+          "negative": 0
+        },
+        "HI_PRICE": {
+          "observed": 624,
+          "min": 15.22,
+          "max": 70804.2,
+          "sum": 2066392.3099999987,
+          "zero": 0,
+          "negative": 0
+        },
+        "LO_PRICE": {
+          "observed": 624,
+          "min": 14.15,
+          "max": 69804.2,
+          "sum": 2018366.3200000008,
+          "zero": 0,
+          "negative": 0
+        },
+        "CLOSE_PRICE": {
+          "observed": 624,
+          "min": 15,
+          "max": 70704.2,
+          "sum": 2047321.0699999982,
+          "zero": 0,
+          "negative": 0
+        },
+        "OPEN_INT*": {
+          "observed": 624,
+          "min": 120,
+          "max": 5320813425,
+          "sum": 16819757779,
+          "zero": 0,
+          "negative": 0
+        },
+        "TRD_VAL": {
+          "observed": 624,
+          "min": 480900,
+          "max": 198561000000,
+          "sum": 1099638552677.0005,
+          "zero": 0,
+          "negative": 0
+        },
+        "TRD_QTY": {
+          "observed": 624,
+          "min": 20,
+          "max": 894581100,
+          "sum": 2652014574,
+          "zero": 0,
+          "negative": 0
+        },
+        "NO_OF_CONT": {
+          "observed": 624,
+          "min": 1,
+          "max": 130568,
+          "sum": 1439024,
+          "zero": 0,
+          "negative": 0
+        },
+        "NO_OF_TRADE": {
+          "observed": 624,
+          "min": 1,
+          "max": 69135,
+          "sum": 1121796,
+          "zero": 0,
+          "negative": 0
+        }
+      },
+      "categorical_profiles": {
+        "INSTRUMENT": {
+          "FUTIDX": 12,
+          "FUTSTK": 612
+        },
+        "EXP_DATE": {
+          "30-06-2026": 216,
+          "28-07-2026": 214,
+          "25-08-2026": 194
+        }
+      },
+      "key": [
+        "instrument",
+        "symbol",
+        "expiry"
+      ],
+      "duplicate_key_rows": 0,
+      "symbols": [
+        "360ONE",
+        "ABB",
+        "ABCAPITAL",
+        "ADANIENSOL",
+        "ADANIENT",
+        "ADANIGREEN",
+        "ADANIPORTS",
+        "ADANIPOWER",
+        "ALKEM",
+        "AMBER",
+        "AMBUJACEM",
+        "ANGELONE",
+        "APLAPOLLO",
+        "APOLLOHOSP",
+        "ASHOKLEY",
+        "ASIANPAINT",
+        "ASTRAL",
+        "AUBANK",
+        "AUROPHARMA",
+        "AXISBANK",
+        "BAJAJ-AUTO",
+        "BAJAJFINSV",
+        "BAJAJHLDNG",
+        "BAJFINANCE",
+        "BANDHANBNK",
+        "BANKBARODA",
+        "BANKINDIA",
+        "BANKNIFTY",
+        "BDL",
+        "BEL",
+        "BHARATFORG",
+        "BHARTIARTL",
+        "BHEL",
+        "BIOCON",
+        "BLUESTARCO",
+        "BOSCHLTD",
+        "BPCL",
+        "BRITANNIA",
+        "BSE",
+        "CAMS",
+        "CANBK",
+        "CDSL",
+        "CGPOWER",
+        "CHOLAFIN",
+        "CIPLA",
+        "COALINDIA",
+        "COCHINSHIP",
+        "COFORGE",
+        "COLPAL",
+        "CONCOR",
+        "CROMPTON",
+        "CUMMINSIND",
+        "DABUR",
+        "DALBHARAT",
+        "DELHIVERY",
+        "DIVISLAB",
+        "DIXON",
+        "DLF",
+        "DMART",
+        "DRREDDY",
+        "EICHERMOT",
+        "ETERNAL",
+        "EXIDEIND",
+        "FEDERALBNK",
+        "FINNIFTY",
+        "FORCEMOT",
+        "FORTIS",
+        "GAIL",
+        "GLENMARK",
+        "GMRAIRPORT",
+        "GODFRYPHLP",
+        "GODREJCP",
+        "GODREJPROP",
+        "GRASIM",
+        "GVT&D",
+        "HAL",
+        "HAVELLS",
+        "HCLTECH",
+        "HDFCAMC",
+        "HDFCBANK",
+        "HDFCLIFE",
+        "HEROMOTOCO",
+        "HINDALCO",
+        "HINDPETRO",
+        "HINDUNILVR",
+        "HINDZINC",
+        "HYUNDAI",
+        "ICICIBANK",
+        "ICICIGI",
+        "ICICIPRULI",
+        "IDEA",
+        "IDFCFIRSTB",
+        "IEX",
+        "INDHOTEL",
+        "INDIANB",
+        "INDIGO",
+        "INDUSINDBK",
+        "INDUSTOWER",
+        "INFY",
+        "INOXWIND",
+        "IOC",
+        "IREDA",
+        "IRFC",
+        "ITC",
+        "JINDALSTEL",
+        "JIOFIN",
+        "JSWENERGY",
+        "JSWSTEEL",
+        "JUBLFOOD",
+        "KALYANKJIL",
+        "KAYNES",
+        "KEI",
+        "KFINTECH",
+        "KOTAKBANK",
+        "KPITTECH",
+        "LAURUSLABS",
+        "LICHSGFIN",
+        "LICI",
+        "LODHA",
+        "LT",
+        "LTF",
+        "LTM",
+        "LUPIN",
+        "M&M",
+        "MANAPPURAM",
+        "MANKIND",
+        "MARICO",
+        "MARUTI",
+        "MAXHEALTH",
+        "MAZDOCK",
+        "MCX",
+        "MFSL",
+        "MIDCPNIFTY",
+        "MOTHERSON",
+        "MOTILALOFS",
+        "MPHASIS",
+        "MUTHOOTFIN",
+        "NAM-INDIA",
+        "NATIONALUM",
+        "NAUKRI",
+        "NBCC",
+        "NESTLEIND",
+        "NHPC",
+        "NIFTY",
+        "NIFTYNXT50",
+        "NMDC",
+        "NTPC",
+        "NUVAMA",
+        "NYKAA",
+        "OBEROIRLTY",
+        "OFSS",
+        "OIL",
+        "ONGC",
+        "PAGEIND",
+        "PATANJALI",
+        "PAYTM",
+        "PERSISTENT",
+        "PETRONET",
+        "PFC",
+        "PGEL",
+        "PHOENIXLTD",
+        "PIDILITIND",
+        "PIIND",
+        "PNB",
+        "PNBHOUSING",
+        "POLICYBZR",
+        "POLYCAB",
+        "POWERGRID",
+        "POWERINDIA",
+        "PREMIERENE",
+        "PRESTIGE",
+        "RADICO",
+        "RBLBANK",
+        "RECLTD",
+        "RELIANCE",
+        "RVNL",
+        "SAIL",
+        "SAMMAANCAP",
+        "SBICARD",
+        "SBILIFE",
+        "SBIN",
+        "SHREECEM",
+        "SHRIRAMFIN",
+        "SIEMENS",
+        "SOLARINDS",
+        "SONACOMS",
+        "SRF",
+        "SUNPHARMA",
+        "SUPREMEIND",
+        "SUZLON",
+        "SWIGGY",
+        "TATACONSUM",
+        "TATAELXSI",
+        "TATAPOWER",
+        "TATASTEEL",
+        "TCS",
+        "TECHM",
+        "TIINDIA",
+        "TITAN",
+        "TMPV",
+        "TORNTPHARM",
+        "TRENT",
+        "TVSMOTOR",
+        "ULTRACEMCO",
+        "UNIONBANK",
+        "UNITDSPR",
+        "UNOMINDA",
+        "UPL",
+        "VBL",
+        "VEDL",
+        "VMM",
+        "VOLTAS",
+        "WAAREEENER",
+        "WIPRO",
+        "YESBANK",
+        "ZYDUSLIFE"
+      ],
+      "independent_shape": {
+        "member": "FO Gold COmm/fo03062026.csv",
+        "sha256": "f011b2611c0a97b64e26b5f2361d9303028ef75f03a83ab32424f3b767ffbb3b",
+        "crc32": "6908fa32",
+        "crc_verified_to_eof": true,
+        "raw_rows": 626,
+        "raw_fields": 7512,
+        "data_rows": 624,
+        "data_fields": 7488,
+        "columns": 12,
+        "data_width_errors": 0,
+        "raw_width_distribution": {
+          "12": 626
+        },
+        "preamble_rows": [],
+        "footers": [
+          [
+            "* - OPEN_INT as available in the trading system at the end of trading hours.",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        ],
+        "blank_physical_rows": 0
+      },
+      "proposed_content_status": "reviewed",
+      "new_coverage": true
+    },
+    {
+      "member": "FO Gold COmm/fo_03062026.csv",
+      "bytes": 487,
+      "sha256": "2faa606c6ce543607e0459e5577d3bbe83899f428119e27b3e3b5fd34705e9fb",
+      "all_used_cells_consumed": true,
+      "worksheet_rows": 8,
+      "rectangular_field_count": 24,
+      "header_row": 2,
+      "headers": [
+        "Product",
+        "No of Contracts",
+        "Traded Value (Rs. Crs.)"
+      ],
+      "data_rows": 6,
+      "columns": 3,
+      "preamble": [
+        [
+          "Total volume summary of Futures and Options by product type:",
+          "",
+          ""
+        ]
+      ],
+      "footers": [],
+      "blank_by_column": {
+        "Product": 0,
+        "No of Contracts": 0,
+        "Traded Value (Rs. Crs.)": 0
+      },
+      "numeric_profiles": {
+        "No of Contracts": {
+          "observed": 6,
+          "min": 0,
+          "max": 73305562,
+          "sum": 146611124,
+          "zero": 1,
+          "negative": 0
+        },
+        "Traded Value (Rs. Crs.)": {
+          "observed": 6,
+          "min": 0,
+          "max": 10653561.93,
+          "sum": 21307123.86,
+          "zero": 1,
+          "negative": 0
+        }
+      },
+      "categorical_profiles": {
+        "Product": {
+          "Index Futures": 1,
+          "Stock Futures": 1,
+          "Index Options": 1,
+          "Stock Options": 1,
+          "Vol Futures": 1,
+          "F&O Total": 1
+        }
+      },
+      "all_data_rows": [
+        [
+          "Index Futures",
+          "209664",
+          "32596.54"
+        ],
+        [
+          "Stock Futures",
+          "1229360",
+          "77367.30"
+        ],
+        [
+          "Index Options",
+          "66321024",
+          "10182389.19"
+        ],
+        [
+          "Stock Options",
+          "5545514",
+          "361208.90"
+        ],
+        [
+          "Vol Futures",
+          "000",
+          "0.00"
+        ],
+        [
+          "F&O Total",
+          "73305562",
+          "10653561.93"
+        ]
+      ],
+      "independent_shape": {
+        "member": "FO Gold COmm/fo_03062026.csv",
+        "sha256": "2faa606c6ce543607e0459e5577d3bbe83899f428119e27b3e3b5fd34705e9fb",
+        "crc32": "61c36a5f",
+        "crc_verified_to_eof": true,
+        "raw_rows": 8,
+        "raw_fields": 22,
+        "data_rows": 6,
+        "data_fields": 18,
+        "columns": 3,
+        "data_width_errors": 0,
+        "raw_width_distribution": {
+          "1": 1,
+          "3": 7
+        },
+        "preamble_rows": [
+          [
+            "Total volume summary of Futures and Options by product type:"
+          ]
+        ],
+        "footers": [],
+        "blank_physical_rows": 0
+      },
+      "proposed_content_status": "reviewed",
+      "new_coverage": true
+    },
+    {
+      "member": "FO Gold COmm/fo_options_pcr_oi_by_symbol_2026_06_03.csv",
+      "bytes": 6100,
+      "sha256": "ef4b71541b843c604277a91ff16566b31343d570bae7d404701c3d8eba219a4a",
+      "all_used_cells_consumed": true,
+      "worksheet_rows": 217,
+      "rectangular_field_count": 651,
+      "header_row": 1,
+      "headers": [
+        "SYMBOL",
+        "CE",
+        "PE"
+      ],
+      "data_rows": 216,
+      "columns": 3,
+      "preamble": [],
+      "footers": [],
+      "blank_by_column": {
+        "SYMBOL": 0,
+        "CE": 0,
+        "PE": 0
+      },
+      "numeric_profiles": {
+        "CE": {
+          "observed": 216,
+          "min": 2250,
+          "max": 1425211500,
+          "sum": 5166098181,
+          "zero": 0,
+          "negative": 0
+        },
+        "PE": {
+          "observed": 216,
+          "min": 275,
+          "max": 758492700,
+          "sum": 3123953636,
+          "zero": 0,
+          "negative": 0
+        }
+      },
+      "categorical_profiles": {},
+      "independent_shape": {
+        "member": "FO Gold COmm/fo_options_pcr_oi_by_symbol_2026_06_03.csv",
+        "sha256": "ef4b71541b843c604277a91ff16566b31343d570bae7d404701c3d8eba219a4a",
+        "crc32": "ba130b5c",
+        "crc_verified_to_eof": true,
+        "raw_rows": 217,
+        "raw_fields": 651,
+        "data_rows": 216,
+        "data_fields": 648,
+        "columns": 3,
+        "data_width_errors": 0,
+        "raw_width_distribution": {
+          "3": 217
+        },
+        "preamble_rows": [],
+        "footers": [],
+        "blank_physical_rows": 0
+      },
+      "proposed_content_status": "reviewed",
+      "new_coverage": true
+    },
+    {
+      "member": "FO Gold COmm/fo_report_pack_summary_2026_06_03.csv",
+      "bytes": 177,
+      "sha256": "0a1a4fa71cebbe681f34efc8400d140f4ec7a4ecdd2244f62b1faec9e926975e",
+      "all_used_cells_consumed": true,
+      "worksheet_rows": 3,
+      "rectangular_field_count": 18,
+      "header_row": 1,
+      "headers": [
+        "file",
+        "rows",
+        "unique_symbols",
+        "unique_instruments",
+        "status",
+        "notes"
+      ],
+      "data_rows": 2,
+      "columns": 6,
+      "preamble": [],
+      "footers": [],
+      "blank_by_column": {
+        "file": 0,
+        "rows": 0,
+        "unique_symbols": 0,
+        "unique_instruments": 0,
+        "status": 0,
+        "notes": 0
+      },
+      "numeric_profiles": {
+        "rows": {
+          "observed": 2,
+          "min": 625,
+          "max": 12887,
+          "sum": 13512,
+          "zero": 0,
+          "negative": 0
+        },
+        "unique_symbols": {
+          "observed": 2,
+          "min": 216,
+          "max": 216,
+          "sum": 432,
+          "zero": 0,
+          "negative": 0
+        },
+        "unique_instruments": {
+          "observed": 2,
+          "min": 3,
+          "max": 3,
+          "sum": 6,
+          "zero": 0,
+          "negative": 0
+        }
+      },
+      "categorical_profiles": {
+        "file": {
+          "fo03062026.csv": 1,
+          "op03062026.csv": 1
+        },
+        "status": {
+          "USED": 2
+        },
+        "notes": {
+          "Futures bhavcopy detail file": 1,
+          "Options bhavcopy detail file": 1
+        }
+      },
+      "all_data_rows": [
+        [
+          "fo03062026.csv",
+          "625",
+          "216",
+          "3",
+          "USED",
+          "Futures bhavcopy detail file"
+        ],
+        [
+          "op03062026.csv",
+          "12887",
+          "216",
+          "3",
+          "USED",
+          "Options bhavcopy detail file"
+        ]
+      ],
+      "independent_shape": {
+        "member": "FO Gold COmm/fo_report_pack_summary_2026_06_03.csv",
+        "sha256": "0a1a4fa71cebbe681f34efc8400d140f4ec7a4ecdd2244f62b1faec9e926975e",
+        "crc32": "c2a8e9dd",
+        "crc_verified_to_eof": true,
+        "raw_rows": 3,
+        "raw_fields": 18,
+        "data_rows": 2,
+        "data_fields": 12,
+        "columns": 6,
+        "data_width_errors": 0,
+        "raw_width_distribution": {
+          "6": 3
+        },
+        "preamble_rows": [],
+        "footers": [],
+        "blank_physical_rows": 0
+      },
+      "proposed_content_status": "reviewed",
+      "new_coverage": false
+    },
+    {
+      "member": "FO Gold COmm/futidx03062026.csv",
+      "bytes": 653,
+      "sha256": "7bb0785704147205e742b6221efbfe84bd49f8377803a9495946db313d70329f",
+      "all_used_cells_consumed": true,
+      "worksheet_rows": 7,
+      "rectangular_field_count": 35,
+      "header_row": 2,
+      "headers": [
+        "Symbol",
+        "No of Contracts Traded",
+        "Traded Quantity",
+        "Total Traded Value (Rs. In Crs.)",
+        "Open interest (Qty.) as at end of trading hrs."
+      ],
+      "data_rows": 5,
+      "columns": 5,
+      "preamble": [
+        [
+          "Index Futures",
+          "",
+          "",
+          "",
+          ""
+        ]
+      ],
+      "footers": [],
+      "blank_by_column": {
+        "Symbol": 0,
+        "No of Contracts Traded": 0,
+        "Traded Quantity": 0,
+        "Total Traded Value (Rs. In Crs.)": 0,
+        "Open interest (Qty.) as at end of trading hrs.": 0
+      },
+      "numeric_profiles": {
+        "No of Contracts Traded": {
+          "observed": 5,
+          "min": 251,
+          "max": 143517,
+          "sum": 209664,
+          "zero": 0,
+          "negative": 0
+        },
+        "Traded Quantity": {
+          "observed": 5,
+          "min": 6275,
+          "max": 9328605,
+          "sum": 11740430,
+          "zero": 0,
+          "negative": 0
+        },
+        "Total Traded Value (Rs. In Crs.)": {
+          "observed": 5,
+          "min": 38.24,
+          "max": 21834.22,
+          "sum": 32596.54,
+          "zero": 0,
+          "negative": 0
+        },
+        "Open interest (Qty.) as at end of trading hrs.": {
+          "observed": 5,
+          "min": 20600,
+          "max": 21181940,
+          "sum": 26119660,
+          "zero": 0,
+          "negative": 0
+        }
+      },
+      "categorical_profiles": {
+        "Symbol": {
+          "BANKNIFTY": 1,
+          "FINNIFTY": 1,
+          "MIDCPNIFTY": 1,
+          "NIFTYNXT50": 1,
+          "NIFTY": 1
+        }
+      },
+      "all_data_rows": [
+        [
+          "BANKNIFTY",
+          "60963",
+          "1828890",
+          "9882.80",
+          "000000002710380"
+        ],
+        [
+          "FINNIFTY",
+          "255",
+          "15300",
+          "38.24",
+          "000000000040140"
+        ],
+        [
+          "MIDCPNIFTY",
+          "4678",
+          "561360",
+          "797.27",
+          "000000002166600"
+        ],
+        [
+          "NIFTYNXT50",
+          "251",
+          "6275",
+          "44.01",
+          "000000000020600"
+        ],
+        [
+          "NIFTY",
+          "143517",
+          "9328605",
+          "21834.22",
+          "000000021181940"
+        ]
+      ],
+      "independent_shape": {
+        "member": "FO Gold COmm/futidx03062026.csv",
+        "sha256": "7bb0785704147205e742b6221efbfe84bd49f8377803a9495946db313d70329f",
+        "crc32": "2c266cfa",
+        "crc_verified_to_eof": true,
+        "raw_rows": 7,
+        "raw_fields": 31,
+        "data_rows": 5,
+        "data_fields": 25,
+        "columns": 5,
+        "data_width_errors": 0,
+        "raw_width_distribution": {
+          "1": 1,
+          "5": 6
+        },
+        "preamble_rows": [
+          [
+            "Index Futures"
+          ]
+        ],
+        "footers": [],
+        "blank_physical_rows": 0
+      },
+      "proposed_content_status": "reviewed",
+      "new_coverage": true
+    },
+    {
+      "member": "FO Gold COmm/futivx03062026.csv",
+      "bytes": 210,
+      "sha256": "d305f649f90e469aaccc1dc6fea2c411019de11af9f14192856ddaa6599f507a",
+      "all_used_cells_consumed": true,
+      "worksheet_rows": 2,
+      "rectangular_field_count": 8,
+      "header_row": 2,
+      "headers": [
+        "S No",
+        "Symbol",
+        "Traded Value (Rs.)",
+        "No of Contracts"
+      ],
+      "data_rows": 0,
+      "columns": 4,
+      "preamble": [
+        [
+          "Vol Futures",
+          "",
+          "",
+          ""
+        ]
+      ],
+      "footers": [],
+      "blank_by_column": {
+        "S No": 0,
+        "Symbol": 0,
+        "Traded Value (Rs.)": 0,
+        "No of Contracts": 0
+      },
+      "numeric_profiles": {},
+      "categorical_profiles": {},
+      "all_data_rows": [],
+      "independent_shape": {
+        "member": "FO Gold COmm/futivx03062026.csv",
+        "sha256": "d305f649f90e469aaccc1dc6fea2c411019de11af9f14192856ddaa6599f507a",
+        "crc32": "bfcba00c",
+        "crc_verified_to_eof": true,
+        "raw_rows": 2,
+        "raw_fields": 5,
+        "data_rows": 0,
+        "data_fields": 0,
+        "columns": 4,
+        "data_width_errors": 0,
+        "raw_width_distribution": {
+          "1": 1,
+          "4": 1
+        },
+        "preamble_rows": [
+          [
+            "Vol Futures"
+          ]
+        ],
+        "footers": [],
+        "blank_physical_rows": 0
+      },
+      "proposed_content_status": "reviewed",
+      "new_coverage": true
+    },
+    {
+      "member": "FO Gold COmm/futstk03062026.csv",
+      "bytes": 12659,
+      "sha256": "a846ee3fea7a902ad14561440ef6388b5a1d3813556f936f613a09959a52221a",
+      "all_used_cells_consumed": true,
+      "worksheet_rows": 213,
+      "rectangular_field_count": 852,
+      "header_row": 2,
+      "headers": [
+        "S No",
+        "Symbol",
+        "Traded Value (Rs.)",
+        "No of Contracts"
+      ],
+      "data_rows": 211,
+      "columns": 4,
+      "preamble": [
+        [
+          "Futures on individual securities",
+          "",
+          "",
+          ""
+        ]
+      ],
+      "footers": [],
+      "blank_by_column": {
+        "S No": 0,
+        "Symbol": 0,
+        "Traded Value (Rs.)": 0,
+        "No of Contracts": 0
+      },
+      "numeric_profiles": {
+        "S No": {
+          "observed": 211,
+          "min": 1,
+          "max": 211,
+          "sum": 22366,
+          "zero": 0,
+          "negative": 0
+        },
+        "Traded Value (Rs.)": {
+          "observed": 211,
+          "min": 99019995,
+          "max": 41451820573,
+          "sum": 773672961872,
+          "zero": 0,
+          "negative": 0
+        },
+        "No of Contracts": {
+          "observed": 211,
+          "min": 189,
+          "max": 100864,
+          "sum": 1229360,
+          "zero": 0,
+          "negative": 0
+        }
+      },
+      "categorical_profiles": {},
+      "independent_shape": {
+        "member": "FO Gold COmm/futstk03062026.csv",
+        "sha256": "a846ee3fea7a902ad14561440ef6388b5a1d3813556f936f613a09959a52221a",
+        "crc32": "6d4397ad",
+        "crc_verified_to_eof": true,
+        "raw_rows": 213,
+        "raw_fields": 849,
+        "data_rows": 211,
+        "data_fields": 844,
+        "columns": 4,
+        "data_width_errors": 0,
+        "raw_width_distribution": {
+          "1": 1,
+          "4": 212
+        },
+        "preamble_rows": [
+          [
+            "Futures on individual securities"
+          ]
+        ],
+        "footers": [],
+        "blank_physical_rows": 0
+      },
+      "proposed_content_status": "reviewed",
+      "new_coverage": true
+    },
+    {
+      "member": "FO Gold COmm/op03062026.csv",
+      "bytes": 2706771,
+      "sha256": "3a1c744322274c8fe78c8e322b68bcc7e2f0cb0992233f63d6a3b0b5088701e2",
+      "all_used_cells_consumed": true,
+      "worksheet_rows": 12888,
+      "rectangular_field_count": 193320,
+      "header_row": 1,
+      "headers": [
+        "INSTRUMENT",
+        "SYMBOL",
+        "EXP_DATE",
+        "STR_PRICE",
+        "OPT_TYPE",
+        "OPEN_PRICE",
+        "HI_PRICE",
+        "LO_PRICE",
+        "CLOSE_PRICE",
+        "OPEN_INT*",
+        "TRD_QTY",
+        "NO_OF_CONT",
+        "NO_OF_TRADE",
+        "NOTION_VAL",
+        "PR_VAL"
+      ],
+      "data_rows": 12886,
+      "columns": 15,
+      "preamble": [],
+      "footers": [
+        [
+          "* - OPEN_INT as available in the trading system at the end of trading hours.",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      ],
+      "blank_by_column": {
+        "INSTRUMENT": 0,
+        "SYMBOL": 0,
+        "EXP_DATE": 0,
+        "STR_PRICE": 0,
+        "OPT_TYPE": 0,
+        "OPEN_PRICE": 0,
+        "HI_PRICE": 0,
+        "LO_PRICE": 0,
+        "CLOSE_PRICE": 0,
+        "OPEN_INT*": 0,
+        "TRD_QTY": 0,
+        "NO_OF_CONT": 0,
+        "NO_OF_TRADE": 0,
+        "NOTION_VAL": 0,
+        "PR_VAL": 0
+      },
+      "numeric_profiles": {
+        "STR_PRICE": {
+          "observed": 12886,
+          "min": 8,
+          "max": 74400,
+          "sum": 86679455.85000005,
+          "zero": 0,
+          "negative": 0
+        },
+        "OPEN_PRICE": {
+          "observed": 12886,
+          "min": 0.01,
+          "max": 14000,
+          "sum": 2181132.2299999967,
+          "zero": 0,
+          "negative": 0
+        },
+        "HI_PRICE": {
+          "observed": 12886,
+          "min": 0.01,
+          "max": 14221.2,
+          "sum": 2453155.3999999994,
+          "zero": 0,
+          "negative": 0
+        },
+        "LO_PRICE": {
+          "observed": 12886,
+          "min": 0.01,
+          "max": 14000,
+          "sum": 1976809.5399999972,
+          "zero": 0,
+          "negative": 0
+        },
+        "CLOSE_PRICE": {
+          "observed": 12886,
+          "min": 0.01,
+          "max": 14000,
+          "sum": 2198825.650000001,
+          "zero": 0,
+          "negative": 0
+        },
+        "OPEN_INT*": {
+          "observed": 12886,
+          "min": 0,
+          "max": 286400325,
+          "sum": 8290051817,
+          "zero": 38,
+          "negative": 0
+        },
+        "TRD_QTY": {
+          "observed": 12886,
+          "min": 15,
+          "max": 628908525,
+          "sum": 14052285561,
+          "zero": 0,
+          "negative": 0
+        },
+        "NO_OF_CONT": {
+          "observed": 12886,
+          "min": 1,
+          "max": 3167616,
+          "sum": 71866538,
+          "zero": 0,
+          "negative": 0
+        },
+        "NO_OF_TRADE": {
+          "observed": 12886,
+          "min": 1,
+          "max": 1899580,
+          "sum": 37285677,
+          "zero": 0,
+          "negative": 0
+        },
+        "NOTION_VAL": {
+          "observed": 12886,
+          "min": 288900,
+          "max": 4833475953081.75,
+          "sum": 105435980940417.66,
+          "zero": 0,
+          "negative": 0
+        },
+        "PR_VAL": {
+          "observed": 12886,
+          "min": 70,
+          "max": 38237993231.75,
+          "sum": 602422994540.15,
+          "zero": 0,
+          "negative": 0
+        }
+      },
+      "categorical_profiles": {
+        "INSTRUMENT": {
+          "OPTIDX": 1981,
+          "OPTSTK": 10905
+        },
+        "EXP_DATE": {
+          "30/06/2026": 9930,
+          "28/07/2026": 2068,
+          "25/08/2026": 246,
+          "29/09/2026": 42,
+          "09/06/2026": 180,
+          "16/06/2026": 196,
+          "23/06/2026": 153,
+          "07/07/2026": 9,
+          "29/12/2026": 43,
+          "30/03/2027": 2,
+          "28/12/2027": 13,
+          "26/12/2028": 2,
+          "31/12/2030": 1,
+          "24/12/2029": 1
+        },
+        "OPT_TYPE": {
+          "PE": 6212,
+          "CE": 6674
+        }
+      },
+      "key": [
+        "instrument",
+        "symbol",
+        "expiry",
+        "strike",
+        "option_type"
+      ],
+      "duplicate_key_rows": 0,
+      "symbols": [
+        "360ONE",
+        "ABB",
+        "ABCAPITAL",
+        "ADANIENSOL",
+        "ADANIENT",
+        "ADANIGREEN",
+        "ADANIPORTS",
+        "ADANIPOWER",
+        "ALKEM",
+        "AMBER",
+        "AMBUJACEM",
+        "ANGELONE",
+        "APLAPOLLO",
+        "APOLLOHOSP",
+        "ASHOKLEY",
+        "ASIANPAINT",
+        "ASTRAL",
+        "AUBANK",
+        "AUROPHARMA",
+        "AXISBANK",
+        "BAJAJ-AUTO",
+        "BAJAJFINSV",
+        "BAJAJHLDNG",
+        "BAJFINANCE",
+        "BANDHANBNK",
+        "BANKBARODA",
+        "BANKINDIA",
+        "BANKNIFTY",
+        "BDL",
+        "BEL",
+        "BHARATFORG",
+        "BHARTIARTL",
+        "BHEL",
+        "BIOCON",
+        "BLUESTARCO",
+        "BOSCHLTD",
+        "BPCL",
+        "BRITANNIA",
+        "BSE",
+        "CAMS",
+        "CANBK",
+        "CDSL",
+        "CGPOWER",
+        "CHOLAFIN",
+        "CIPLA",
+        "COALINDIA",
+        "COCHINSHIP",
+        "COFORGE",
+        "COLPAL",
+        "CONCOR",
+        "CROMPTON",
+        "CUMMINSIND",
+        "DABUR",
+        "DALBHARAT",
+        "DELHIVERY",
+        "DIVISLAB",
+        "DIXON",
+        "DLF",
+        "DMART",
+        "DRREDDY",
+        "EICHERMOT",
+        "ETERNAL",
+        "EXIDEIND",
+        "FEDERALBNK",
+        "FINNIFTY",
+        "FORCEMOT",
+        "FORTIS",
+        "GAIL",
+        "GLENMARK",
+        "GMRAIRPORT",
+        "GODFRYPHLP",
+        "GODREJCP",
+        "GODREJPROP",
+        "GRASIM",
+        "GVT&D",
+        "HAL",
+        "HAVELLS",
+        "HCLTECH",
+        "HDFCAMC",
+        "HDFCBANK",
+        "HDFCLIFE",
+        "HEROMOTOCO",
+        "HINDALCO",
+        "HINDPETRO",
+        "HINDUNILVR",
+        "HINDZINC",
+        "HYUNDAI",
+        "ICICIBANK",
+        "ICICIGI",
+        "ICICIPRULI",
+        "IDEA",
+        "IDFCFIRSTB",
+        "IEX",
+        "INDHOTEL",
+        "INDIANB",
+        "INDIGO",
+        "INDUSINDBK",
+        "INDUSTOWER",
+        "INFY",
+        "INOXWIND",
+        "IOC",
+        "IREDA",
+        "IRFC",
+        "ITC",
+        "JINDALSTEL",
+        "JIOFIN",
+        "JSWENERGY",
+        "JSWSTEEL",
+        "JUBLFOOD",
+        "KALYANKJIL",
+        "KAYNES",
+        "KEI",
+        "KFINTECH",
+        "KOTAKBANK",
+        "KPITTECH",
+        "LAURUSLABS",
+        "LICHSGFIN",
+        "LICI",
+        "LODHA",
+        "LT",
+        "LTF",
+        "LTM",
+        "LUPIN",
+        "M&M",
+        "MANAPPURAM",
+        "MANKIND",
+        "MARICO",
+        "MARUTI",
+        "MAXHEALTH",
+        "MAZDOCK",
+        "MCX",
+        "MFSL",
+        "MIDCPNIFTY",
+        "MOTHERSON",
+        "MOTILALOFS",
+        "MPHASIS",
+        "MUTHOOTFIN",
+        "NAM-INDIA",
+        "NATIONALUM",
+        "NAUKRI",
+        "NBCC",
+        "NESTLEIND",
+        "NHPC",
+        "NIFTY",
+        "NIFTYNXT50",
+        "NMDC",
+        "NTPC",
+        "NUVAMA",
+        "NYKAA",
+        "OBEROIRLTY",
+        "OFSS",
+        "OIL",
+        "ONGC",
+        "PAGEIND",
+        "PATANJALI",
+        "PAYTM",
+        "PERSISTENT",
+        "PETRONET",
+        "PFC",
+        "PGEL",
+        "PHOENIXLTD",
+        "PIDILITIND",
+        "PIIND",
+        "PNB",
+        "PNBHOUSING",
+        "POLICYBZR",
+        "POLYCAB",
+        "POWERGRID",
+        "POWERINDIA",
+        "PREMIERENE",
+        "PRESTIGE",
+        "RADICO",
+        "RBLBANK",
+        "RECLTD",
+        "RELIANCE",
+        "RVNL",
+        "SAIL",
+        "SAMMAANCAP",
+        "SBICARD",
+        "SBILIFE",
+        "SBIN",
+        "SHREECEM",
+        "SHRIRAMFIN",
+        "SIEMENS",
+        "SOLARINDS",
+        "SONACOMS",
+        "SRF",
+        "SUNPHARMA",
+        "SUPREMEIND",
+        "SUZLON",
+        "SWIGGY",
+        "TATACONSUM",
+        "TATAELXSI",
+        "TATAPOWER",
+        "TATASTEEL",
+        "TCS",
+        "TECHM",
+        "TIINDIA",
+        "TITAN",
+        "TMPV",
+        "TORNTPHARM",
+        "TRENT",
+        "TVSMOTOR",
+        "ULTRACEMCO",
+        "UNIONBANK",
+        "UNITDSPR",
+        "UNOMINDA",
+        "UPL",
+        "VBL",
+        "VEDL",
+        "VMM",
+        "VOLTAS",
+        "WAAREEENER",
+        "WIPRO",
+        "YESBANK",
+        "ZYDUSLIFE"
+      ],
+      "independent_shape": {
+        "member": "FO Gold COmm/op03062026.csv",
+        "sha256": "3a1c744322274c8fe78c8e322b68bcc7e2f0cb0992233f63d6a3b0b5088701e2",
+        "crc32": "c52763af",
+        "crc_verified_to_eof": true,
+        "raw_rows": 12888,
+        "raw_fields": 193306,
+        "data_rows": 12886,
+        "data_fields": 193290,
+        "columns": 15,
+        "data_width_errors": 0,
+        "raw_width_distribution": {
+          "1": 1,
+          "15": 12887
+        },
+        "preamble_rows": [],
+        "footers": [
+          [
+            "* - OPEN_INT as available in the trading system at the end of trading hours."
+          ]
+        ],
+        "blank_physical_rows": 0
+      },
+      "proposed_content_status": "reviewed",
+      "new_coverage": true
+    },
+    {
+      "member": "FO Gold COmm/optidx03062026.csv",
+      "bytes": 2211,
+      "sha256": "48d6013855123f62e8eace44234a544575606be632a3de33c8e229f891180d69",
+      "all_used_cells_consumed": true,
+      "worksheet_rows": 26,
+      "rectangular_field_count": 130,
+      "header_row": 2,
+      "headers": [
+        "Symbol",
+        "No of Contracts Traded",
+        "Traded Quantity",
+        "Total Traded Value (Rs. In Crs.)",
+        "Open interest (Qty.) as at end of trading hrs."
+      ],
+      "data_rows": 24,
+      "columns": 5,
+      "preamble": [
+        [
+          "Index Options",
+          "",
+          "",
+          "",
+          ""
+        ]
+      ],
+      "footers": [],
+      "blank_by_column": {
+        "Symbol": 0,
+        "No of Contracts Traded": 0,
+        "Traded Quantity": 0,
+        "Total Traded Value (Rs. In Crs.)": 0,
+        "Open interest (Qty.) as at end of trading hrs.": 0
+      },
+      "numeric_profiles": {
+        "No of Contracts Traded": {
+          "observed": 24,
+          "min": 7,
+          "max": 11381777,
+          "sum": 66321024,
+          "zero": 0,
+          "negative": 0
+        },
+        "Traded Quantity": {
+          "observed": 24,
+          "min": 175,
+          "max": 739815505,
+          "sum": 4235138820,
+          "zero": 0,
+          "negative": 0
+        },
+        "Total Traded Value (Rs. In Crs.)": {
+          "observed": 24,
+          "min": 1.27,
+          "max": 1745012,
+          "sum": 10182389.18,
+          "zero": 0,
+          "negative": 0
+        },
+        "Open interest (Qty.) as at end of trading hrs.": {
+          "observed": 24,
+          "min": 125,
+          "max": 67468455,
+          "sum": 447704485,
+          "zero": 0,
+          "negative": 0
+        }
+      },
+      "categorical_profiles": {
+        "Symbol": {
+          "BANKNIFTY": 2,
+          "FINNIFTY": 7,
+          "MIDCPNIFTY": 4,
+          "NIFTYNXT50": 4,
+          "NIFTY": 7
+        }
+      },
+      "all_data_rows": [
+        [
+          "BANKNIFTY",
+          "916359",
+          "27490770",
+          "151470.78",
+          "000000008665770"
+        ],
+        [
+          "BANKNIFTY",
+          "1529884",
+          "45896520",
+          "253298.64",
+          "000000021607740"
+        ],
+        [
+          "FINNIFTY",
+          "731",
+          "43860",
+          "109.42",
+          "000000000035520"
+        ],
+        [
+          "FINNIFTY",
+          "1231",
+          "73860",
+          "190.33",
+          "000000000043500"
+        ],
+        [
+          "FINNIFTY",
+          "2218",
+          "133080",
+          "340.20",
+          "000000000093480"
+        ],
+        [
+          "FINNIFTY",
+          "1892",
+          "113520",
+          "288.22",
+          "000000000072240"
+        ],
+        [
+          "FINNIFTY",
+          "1148",
+          "68880",
+          "175.68",
+          "000000000053520"
+        ],
+        [
+          "FINNIFTY",
+          "1035",
+          "62100",
+          "161.11",
+          "000000000053280"
+        ],
+        [
+          "FINNIFTY",
+          "1522",
+          "91320",
+          "224.90",
+          "000000000069540"
+        ],
+        [
+          "MIDCPNIFTY",
+          "3552",
+          "426240",
+          "614.84",
+          "000000000198360"
+        ],
+        [
+          "MIDCPNIFTY",
+          "11451",
+          "1374120",
+          "1986.57",
+          "000000000394320"
+        ],
+        [
+          "MIDCPNIFTY",
+          "3871",
+          "464520",
+          "670.90",
+          "000000000183960"
+        ],
+        [
+          "MIDCPNIFTY",
+          "161940",
+          "19432800",
+          "28144.65",
+          "000000009379440"
+        ],
+        [
+          "NIFTYNXT50",
+          "011",
+          "275",
+          "2.01",
+          "000000000000225"
+        ],
+        [
+          "NIFTYNXT50",
+          "032",
+          "800",
+          "5.83",
+          "000000000000625"
+        ],
+        [
+          "NIFTYNXT50",
+          "007",
+          "175",
+          "1.27",
+          "000000000000125"
+        ],
+        [
+          "NIFTY",
+          "7861793",
+          "511016545",
+          "1207641.09",
+          "000000049972020"
+        ],
+        [
+          "NIFTY",
+          "8572089",
+          "557185785",
+          "1312696.41",
+          "000000057308955"
+        ],
+        [
+          "NIFTY",
+          "9033502",
+          "587177630",
+          "1374615.62",
+          "000000067468455"
+        ],
+        [
+          "NIFTY",
+          "8951934",
+          "581875710",
+          "1370761.57",
+          "000000062483880"
+        ],
+        [
+          "NIFTY",
+          "11381777",
+          "739815505",
+          "1745012.00",
+          "000000064427710"
+        ],
+        [
+          "NIFTY",
+          "8951684",
+          "581859460",
+          "1365142.15",
+          "000000048441860"
+        ],
+        [
+          "NIFTY",
+          "8931283",
+          "580533395",
+          "1368820.79",
+          "000000056748410"
+        ],
+        [
+          "NIFTYNXT50",
+          "078",
+          "1950",
+          "14.20",
+          "000000000001550"
+        ]
+      ],
+      "independent_shape": {
+        "member": "FO Gold COmm/optidx03062026.csv",
+        "sha256": "48d6013855123f62e8eace44234a544575606be632a3de33c8e229f891180d69",
+        "crc32": "d713e9fa",
+        "crc_verified_to_eof": true,
+        "raw_rows": 26,
+        "raw_fields": 126,
+        "data_rows": 24,
+        "data_fields": 120,
+        "columns": 5,
+        "data_width_errors": 0,
+        "raw_width_distribution": {
+          "1": 1,
+          "5": 25
+        },
+        "preamble_rows": [
+          [
+            "Index Options"
+          ]
+        ],
+        "footers": [],
+        "blank_physical_rows": 0
+      },
+      "proposed_content_status": "reviewed",
+      "new_coverage": true
+    },
+    {
+      "member": "FO Gold COmm/optstk03062026.csv",
+      "bytes": 12616,
+      "sha256": "44b85c2609155639252c8c1bf4504537c34da2832cfb97942f0a042cdab24b03",
+      "all_used_cells_consumed": true,
+      "worksheet_rows": 213,
+      "rectangular_field_count": 852,
+      "header_row": 2,
+      "headers": [
+        "S No",
+        "Symbol",
+        "No of Cont",
+        "Notional Value (Rs.)"
+      ],
+      "data_rows": 211,
+      "columns": 4,
+      "preamble": [
+        [
+          "Options on individual securities",
+          "",
+          "",
+          ""
+        ]
+      ],
+      "footers": [],
+      "blank_by_column": {
+        "S No": 0,
+        "Symbol": 0,
+        "No of Cont": 0,
+        "Notional Value (Rs.)": 0
+      },
+      "numeric_profiles": {
+        "S No": {
+          "observed": 211,
+          "min": 1,
+          "max": 211,
+          "sum": 22366,
+          "zero": 0,
+          "negative": 0
+        },
+        "No of Cont": {
+          "observed": 211,
+          "min": 432,
+          "max": 706383,
+          "sum": 5545514,
+          "zero": 0,
+          "negative": 0
+        },
+        "Notional Value (Rs.)": {
+          "observed": 211,
+          "min": 272002225,
+          "max": 294341490275,
+          "sum": 3612089033720,
+          "zero": 0,
+          "negative": 0
+        }
+      },
+      "categorical_profiles": {},
+      "independent_shape": {
+        "member": "FO Gold COmm/optstk03062026.csv",
+        "sha256": "44b85c2609155639252c8c1bf4504537c34da2832cfb97942f0a042cdab24b03",
+        "crc32": "ce77adec",
+        "crc_verified_to_eof": true,
+        "raw_rows": 213,
+        "raw_fields": 849,
+        "data_rows": 211,
+        "data_fields": 844,
+        "columns": 4,
+        "data_width_errors": 0,
+        "raw_width_distribution": {
+          "1": 1,
+          "4": 212
+        },
+        "preamble_rows": [
+          [
+            "Options on individual securities"
+          ]
+        ],
+        "footers": [],
+        "blank_physical_rows": 0
+      },
+      "proposed_content_status": "reviewed",
+      "new_coverage": true
+    },
+    {
+      "member": "FO Gold COmm/ttfut03062026.csv",
+      "bytes": 1374,
+      "sha256": "e2144ac84e3c0cee74a08cc8a927fa2253cae42082af10003605d5c6463886bb",
+      "all_used_cells_consumed": true,
+      "worksheet_rows": 13,
+      "rectangular_field_count": 65,
+      "header_row": 2,
+      "headers": [
+        "S No",
+        "Symbol",
+        "Exp Date",
+        "Traded Value (Rs.)",
+        "No of Contracts"
+      ],
+      "data_rows": 10,
+      "columns": 5,
+      "preamble": [
+        [
+          "The top 10 futures contracts on individual securities traded are as under:",
+          "",
+          "",
+          "",
+          ""
+        ]
+      ],
+      "footers": [
+        [
+          "The top ten contracts contributed to around  22% of the total traded volume in Futures on individual securities.TCS was the most active future contracts on individual securities traded today with 100864 contracts and HDFCBANK was the next most active futures contracts with 53526 contracts being traded.",
+          "",
+          "",
+          "",
+          ""
+        ]
+      ],
+      "blank_by_column": {
+        "S No": 0,
+        "Symbol": 0,
+        "Exp Date": 0,
+        "Traded Value (Rs.)": 0,
+        "No of Contracts": 0
+      },
+      "numeric_profiles": {
+        "S No": {
+          "observed": 10,
+          "min": 1,
+          "max": 10,
+          "sum": 55,
+          "zero": 0,
+          "negative": 0
+        },
+        "Traded Value (Rs.)": {
+          "observed": 10,
+          "min": 4529831360,
+          "max": 35814190738,
+          "sum": 168820702696,
+          "zero": 0,
+          "negative": 0
+        },
+        "No of Contracts": {
+          "observed": 10,
+          "min": 14407,
+          "max": 89839,
+          "sum": 336792,
+          "zero": 0,
+          "negative": 0
+        }
+      },
+      "categorical_profiles": {
+        "Symbol": {
+          "TCS": 1,
+          "HDFCBANK": 1,
+          "INFY": 1,
+          "SBIN": 1,
+          "RELIANCE": 1,
+          "NHPC": 1,
+          "WIPRO": 1,
+          "ICICIBANK": 1,
+          "HCLTECH": 1,
+          "TMPV": 1
+        },
+        "Exp Date": {
+          "30/06/2026": 10
+        }
+      },
+      "all_data_rows": [
+        [
+          "1",
+          "TCS",
+          "30/06/2026",
+          "35814190738.00",
+          "89839"
+        ],
+        [
+          "2",
+          "HDFCBANK",
+          "30/06/2026",
+          "20836674925.00",
+          "51098"
+        ],
+        [
+          "3",
+          "INFY",
+          "30/06/2026",
+          "20083111880.00",
+          "40987"
+        ],
+        [
+          "4",
+          "SBIN",
+          "30/06/2026",
+          "21631756313.00",
+          "29942"
+        ],
+        [
+          "5",
+          "RELIANCE",
+          "30/06/2026",
+          "17561134000.00",
+          "26725"
+        ],
+        [
+          "6",
+          "NHPC",
+          "30/06/2026",
+          "12076734080.00",
+          "24931"
+        ],
+        [
+          "7",
+          "WIPRO",
+          "30/06/2026",
+          "12492507360.00",
+          "22552"
+        ],
+        [
+          "8",
+          "ICICIBANK",
+          "30/06/2026",
+          "16555937370.00",
+          "19028"
+        ],
+        [
+          "9",
+          "HCLTECH",
+          "30/06/2026",
+          "7238824670.00",
+          "17283"
+        ],
+        [
+          "10",
+          "TMPV",
+          "30/06/2026",
+          "4529831360.00",
+          "14407"
+        ]
+      ],
+      "independent_shape": {
+        "member": "FO Gold COmm/ttfut03062026.csv",
+        "sha256": "e2144ac84e3c0cee74a08cc8a927fa2253cae42082af10003605d5c6463886bb",
+        "crc32": "030a32c1",
+        "crc_verified_to_eof": true,
+        "raw_rows": 13,
+        "raw_fields": 57,
+        "data_rows": 10,
+        "data_fields": 50,
+        "columns": 5,
+        "data_width_errors": 0,
+        "raw_width_distribution": {
+          "1": 2,
+          "5": 11
+        },
+        "preamble_rows": [
+          [
+            "The top 10 futures contracts on individual securities traded are as under:"
+          ]
+        ],
+        "footers": [
+          [
+            "The top ten contracts contributed to around  22% of the total traded volume in Futures on individual securities.TCS was the most active future contracts on individual securities traded today with 100864 contracts and HDFCBANK was the next most active futures contracts with 53526 contracts being traded."
+          ]
+        ],
+        "blank_physical_rows": 0
+      },
+      "proposed_content_status": "reviewed",
+      "new_coverage": true
+    },
+    {
+      "member": "FO Gold COmm/ttopt03062026.csv",
+      "bytes": 2519,
+      "sha256": "14025a2c07672a79cf45f9d2f54fc11501cc5cfd78677f836eff0838357e3771",
+      "all_used_cells_consumed": true,
+      "worksheet_rows": 23,
+      "rectangular_field_count": 161,
+      "header_row": 2,
+      "headers": [
+        "S No",
+        "Symbol",
+        "Exp Date",
+        "Str Price",
+        "Opt Type",
+        "No of Cont",
+        "Notional Value (Rs.)"
+      ],
+      "data_rows": 20,
+      "columns": 7,
+      "preamble": [
+        [
+          "The top 20 option contracts on individual securities traded are as under:",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      ],
+      "footers": [
+        [
+          "The top twenty contracts contributed to around   7% of the total traded volume in Options on individual securities.TCS was the most active option contracts on individual securities traded today with 706383 contracts and HDFCBANK was the next most active options contracts with 261202 contracts being traded.",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      ],
+      "blank_by_column": {
+        "S No": 0,
+        "Symbol": 0,
+        "Exp Date": 0,
+        "Str Price": 0,
+        "Opt Type": 0,
+        "No of Cont": 0,
+        "Notional Value (Rs.)": 0
+      },
+      "numeric_profiles": {
+        "S No": {
+          "observed": 20,
+          "min": 1,
+          "max": 20,
+          "sum": 210,
+          "zero": 0,
+          "negative": 0
+        },
+        "Str Price": {
+          "observed": 20,
+          "min": 210,
+          "max": 2600,
+          "sum": 34350,
+          "zero": 0,
+          "negative": 0
+        },
+        "No of Cont": {
+          "observed": 20,
+          "min": 18301,
+          "max": 60112,
+          "sum": 580810,
+          "zero": 0,
+          "negative": 0
+        },
+        "Notional Value (Rs.)": {
+          "observed": 20,
+          "min": 6707073118,
+          "max": 24774026603,
+          "sum": 257022947047,
+          "zero": 0,
+          "negative": 0
+        }
+      },
+      "categorical_profiles": {
+        "Symbol": {
+          "TCS": 12,
+          "HDFCBANK": 2,
+          "SBIN": 1,
+          "TMPV": 1,
+          "INFY": 3,
+          "WIPRO": 1
+        },
+        "Exp Date": {
+          "30/06/2026": 20
+        },
+        "Opt Type": {
+          "CE": 12,
+          "PE": 8
+        }
+      },
+      "all_data_rows": [
+        [
+          "1",
+          "TCS",
+          "30/06/2026",
+          "00002300.00",
+          "CE",
+          "60112",
+          "24774026603.00"
+        ],
+        [
+          "2",
+          "TCS",
+          "30/06/2026",
+          "00002400.00",
+          "CE",
+          "54713",
+          "23226539893.00"
+        ],
+        [
+          "3",
+          "TCS",
+          "30/06/2026",
+          "00002500.00",
+          "CE",
+          "44792",
+          "19679175084.00"
+        ],
+        [
+          "4",
+          "TCS",
+          "30/06/2026",
+          "00002300.00",
+          "PE",
+          "43340",
+          "18013328550.00"
+        ],
+        [
+          "5",
+          "TCS",
+          "30/06/2026",
+          "00002200.00",
+          "PE",
+          "39728",
+          "15620907435.00"
+        ],
+        [
+          "6",
+          "HDFCBANK",
+          "30/06/2026",
+          "00000750.00",
+          "CE",
+          "36083",
+          "15201151790.00"
+        ],
+        [
+          "7",
+          "TCS",
+          "30/06/2026",
+          "00002100.00",
+          "PE",
+          "26287",
+          "9762357124.00"
+        ],
+        [
+          "8",
+          "SBIN",
+          "30/06/2026",
+          "00001000.00",
+          "CE",
+          "26146",
+          "19848972975.00"
+        ],
+        [
+          "9",
+          "TCS",
+          "30/06/2026",
+          "00002260.00",
+          "PE",
+          "24787",
+          "10102507004.00"
+        ],
+        [
+          "10",
+          "TCS",
+          "30/06/2026",
+          "00002260.00",
+          "CE",
+          "22590",
+          "9201346700.00"
+        ],
+        [
+          "11",
+          "HDFCBANK",
+          "30/06/2026",
+          "00000800.00",
+          "CE",
+          "22543",
+          "9975407888.00"
+        ],
+        [
+          "12",
+          "TMPV",
+          "30/06/2026",
+          "00000400.00",
+          "CE",
+          "21659",
+          "7115411600.00"
+        ],
+        [
+          "13",
+          "TCS",
+          "30/06/2026",
+          "00002240.00",
+          "PE",
+          "21087",
+          "8509941230.00"
+        ],
+        [
+          "14",
+          "INFY",
+          "30/06/2026",
+          "00001300.00",
+          "CE",
+          "20881",
+          "10935021500.00"
+        ],
+        [
+          "15",
+          "TCS",
+          "30/06/2026",
+          "00002600.00",
+          "CE",
+          "20049",
+          "9139473009.00"
+        ],
+        [
+          "16",
+          "INFY",
+          "30/06/2026",
+          "00001200.00",
+          "PE",
+          "20009",
+          "9803732260.00"
+        ],
+        [
+          "17",
+          "INFY",
+          "30/06/2026",
+          "00001250.00",
+          "CE",
+          "19537",
+          "9944861980.00"
+        ],
+        [
+          "18",
+          "TCS",
+          "30/06/2026",
+          "00002280.00",
+          "PE",
+          "19092",
+          "7857874684.00"
+        ],
+        [
+          "19",
+          "TCS",
+          "30/06/2026",
+          "00002000.00",
+          "PE",
+          "19074",
+          "6707073118.00"
+        ],
+        [
+          "20",
+          "WIPRO",
+          "30/06/2026",
+          "00000210.00",
+          "CE",
+          "18301",
+          "11603836620.00"
+        ]
+      ],
+      "independent_shape": {
+        "member": "FO Gold COmm/ttopt03062026.csv",
+        "sha256": "14025a2c07672a79cf45f9d2f54fc11501cc5cfd78677f836eff0838357e3771",
+        "crc32": "47cc7c21",
+        "crc_verified_to_eof": true,
+        "raw_rows": 23,
+        "raw_fields": 149,
+        "data_rows": 20,
+        "data_fields": 140,
+        "columns": 7,
+        "data_width_errors": 0,
+        "raw_width_distribution": {
+          "1": 2,
+          "7": 21
+        },
+        "preamble_rows": [
+          [
+            "The top 20 option contracts on individual securities traded are as under:"
+          ]
+        ],
+        "footers": [
+          [
+            "The top twenty contracts contributed to around   7% of the total traded volume in Options on individual securities.TCS was the most active option contracts on individual securities traded today with 706383 contracts and HDFCBANK was the next most active options contracts with 261202 contracts being traded."
+          ]
+        ],
+        "blank_physical_rows": 0
+      },
+      "proposed_content_status": "reviewed",
+      "new_coverage": true
+    }
+  ],
+  "client_positions_xls": {
+    "schema_version": "ashstocks.fo-client-position-content-evidence.v1",
+    "review_date": "2026-09-24",
+    "reviewed_against_commit": "611c1c26aad6beebac2ba5473a52333efa5e3220",
+    "scope": "Only FO Gold COmm/fo_pos_of_clients.xls; all serialized stored cells plus BIFF record counts. No sibling coverage implied.",
+    "source_integrity": {
+      "asset": "FO.Gold.COmm.zip",
+      "asset_bytes": 650231,
+      "asset_sha256": "91ec88fc88e461ab7eaa15b345fdaa15a0804c09a64e5afe1761e861549f8378",
+      "asset_release_pin_matches": true,
+      "release_inventory_file": "data/asset-review/backenddata-release-inventory-2026-09-24.json",
+      "release_inventory_sha256": "12845723602d01fcc30b8af89a46514a177f1c848b78c8aed56657725ff96d45",
+      "member": "FO Gold COmm/fo_pos_of_clients.xls",
+      "member_bytes": 40448,
+      "member_sha256": "9e17944715cbc296c423a33aa64dccd0ad307ba90bafa6fdf163ca21abdc2153",
+      "member_crc32": "53fa493c",
+      "member_read_to_eof_crc_verified": true,
+      "extracted_copy_exact_byte_match": true
+    },
+    "method": {
+      "reader": "xlrd",
+      "reader_version": "2.0.2",
+      "reader_location": "Trusted pre-existing temporary vendor; no library installation performed.",
+      "reader_load": "open_workbook(file_contents=raw, formatting_info=True)",
+      "biff_record_method": "xlrd.count_records on verified byte-identical temporary copy",
+      "full_cell_scan": "Iterated every cell in every sheet from 0..nrows-1 and 0..ncols-1. Data dates decoded using workbook datemode. Decimal used for arithmetic diagnostics.",
+      "temporary_source_path": "/private/tmp/ash-fo-am07-audit-kryJu5/fo_pos_of_clients.xls",
+      "read_only": true,
+      "macros_or_supplied_code_executed": false,
+      "native_recalculation_performed": false
+    },
+    "workbook": {
+      "format": "OLE compound / BIFF8 (biff_version80)",
+      "date_mode": 0,
+      "date_epoch": "Excel1900",
+      "sheets": 1,
+      "sheet": "Sheet1",
+      "sheet_visibility": "visible",
+      "used_range": "A1:D16",
+      "row_count": 16,
+      "column_count": 4,
+      "stored_rectangular_cells_read": 64,
+      "nonempty_cells": 54,
+      "cell_type_counts": {
+        "0": 8,
+        "1": 30,
+        "2": 12,
+        "3": 12,
+        "6": 2
+      },
+      "cell_type_legend": {
+        "0": "empty",
+        "1": "text",
+        "2": "number",
+        "3": "date",
+        "4": "boolean",
+        "5": "error",
+        "6": "format-only blank"
+      },
+      "merged_ranges": [],
+      "defined_name_count": 0,
+      "biff_record_counts": {
+        "BACKUP": 1,
+        "BOF": 2,
+        "BOOKBOOL": 1,
+        "BOTTOMMARGIN": 1,
+        "BOUNDSHEET": 1,
+        "CALCCOUNT": 1,
+        "CALCMODE": 1,
+        "CODEPAGE": 1,
+        "COLINFO": 4,
+        "COUNTRY": 1,
+        "DATEMODE": 1,
+        "DBCELL": 1,
+        "DEFAULTROWHEIGHT": 1,
+        "DEFCOLWIDTH": 1,
+        "DELTA": 1,
+        "DIMENSIONS": 1,
+        "DSF": 1,
+        "EOF": 2,
+        "EXTERNSHEET": 1,
+        "EXTSST": 1,
+        "FNGROUPCOUNT": 1,
+        "FONT": 28,
+        "FOOTER": 1,
+        "FORMAT": 45,
+        "GRIDSET": 1,
+        "GUTS": 1,
+        "HCENTER": 1,
+        "HEADER": 1,
+        "HIDEOBJ": 1,
+        "INDEX_B3+": 1,
+        "INTERFACEEND": 1,
+        "INTERFACEHDR": 1,
+        "ITERATION": 1,
+        "LABELSST": 30,
+        "LEFTMARGIN": 1,
+        "MMS": 1,
+        "MULBLANK": 1,
+        "PASSWORD": 1,
+        "PASSWORDREV4": 1,
+        "PHONETIC": 1,
+        "PLS": 1,
+        "PRECISION": 1,
+        "PRINTGRIDLINES": 1,
+        "PRINTHEADERS": 1,
+        "PROTECT": 1,
+        "PROTECTIONREV4": 1,
+        "RECALCID": 1,
+        "REFMODE": 1,
+        "REFRESHALL": 1,
+        "RIGHTMARGIN": 1,
+        "RK": 24,
+        "ROW": 16,
+        "SAVERECALC": 1,
+        "SELECTION": 1,
+        "SETUP": 1,
+        "SHEETPROTECTION": 1,
+        "SORT": 1,
+        "SST": 1,
+        "STYLE": 49,
+        "SUPBOOK": 1,
+        "TABID": 1,
+        "TOPMARGIN": 1,
+        "USESELFS": 1,
+        "Unknown_0x0863": 1,
+        "Unknown_0x0874": 1,
+        "Unknown_0x087C": 1,
+        "Unknown_0x087D": 73,
+        "Unknown_0x088B": 1,
+        "Unknown_0x088C": 1,
+        "Unknown_0x088E": 1,
+        "Unknown_0x0892": 49,
+        "Unknown_0x0896": 1,
+        "Unknown_0x089A": 1,
+        "Unknown_0x089B": 1,
+        "Unknown_0x089C": 1,
+        "Unknown_0x08A3": 1,
+        "VCENTER": 1,
+        "WINDOW1": 1,
+        "WINDOW2": 1,
+        "WINDOWPROTECT": 1,
+        "WRITEACCESS": 1,
+        "WSBOOL": 1,
+        "XF": 73,
+        "XL9FILE": 1
+      },
+      "formula_record_count": 0,
+      "formula_errors": 0,
+      "all_stored_rows": [
+        [
+          "Positions of Connected Entities in Equity Derivatives Segment of the Exchange",
+          "",
+          "",
+          ""
+        ],
+        [
+          "Trade Date",
+          "Symbol",
+          "Group No.",
+          "Percentage (%) of Group's Open Interest (OI) to Gross Open Interest (OI) of the Scrip"
+        ],
+        [
+          46174,
+          "DALBHARAT",
+          "Group 1",
+          15.26
+        ],
+        [
+          46174,
+          "BHEL",
+          "Group 2",
+          8.58
+        ],
+        [
+          46174,
+          "PATANJALI",
+          "Group 3",
+          7.49
+        ],
+        [
+          46174,
+          "ADANIENSOL",
+          "Group 4",
+          7.02
+        ],
+        [
+          46174,
+          "IEX",
+          "Group 5",
+          6.7
+        ],
+        [
+          46174,
+          "SAIL",
+          "Group 6",
+          6.45
+        ],
+        [
+          46174,
+          "IEX",
+          "Group 7",
+          6.44
+        ],
+        [
+          46174,
+          "RBLBANK",
+          "Group 8",
+          6.27
+        ],
+        [
+          46174,
+          "EXIDEIND",
+          "Group 9",
+          5.92
+        ],
+        [
+          46174,
+          "EXIDEIND",
+          "Group 10",
+          5.8
+        ],
+        [
+          46174,
+          "AMBUJACEM",
+          "Group 11",
+          5.47
+        ],
+        [
+          46174,
+          "AMBER",
+          "Group 12",
+          5.08
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "Note: The percentage of Group's Open Interest is calculated on gross basis i.e. after taking into account both long position and short position at individual scrip level.",
+          "",
+          "",
+          ""
+        ]
+      ],
+      "binary_feature_limit": "All stored cell values and countable BIFF records were read, not every non-cell native feature interpreted. Unknown BIFF records remain uninterpreted. No claim of native visual/formula/link/macro behavior."
+    },
+    "data": {
+      "heading": "Positions of Connected Entities in Equity Derivatives Segment of the Exchange",
+      "headers": [
+        "Trade Date",
+        "Symbol",
+        "Group No.",
+        "Percentage (%) of Group's Open Interest (OI) to Gross Open Interest (OI) of the Scrip"
+      ],
+      "data_rows": [
+        {
+          "excel_row": 3,
+          "trade_date": "2026-06-01",
+          "symbol": "DALBHARAT",
+          "source_group_label": "Group 1",
+          "group_gross_oi_percent": "15.26"
+        },
+        {
+          "excel_row": 4,
+          "trade_date": "2026-06-01",
+          "symbol": "BHEL",
+          "source_group_label": "Group 2",
+          "group_gross_oi_percent": "8.58"
+        },
+        {
+          "excel_row": 5,
+          "trade_date": "2026-06-01",
+          "symbol": "PATANJALI",
+          "source_group_label": "Group 3",
+          "group_gross_oi_percent": "7.49"
+        },
+        {
+          "excel_row": 6,
+          "trade_date": "2026-06-01",
+          "symbol": "ADANIENSOL",
+          "source_group_label": "Group 4",
+          "group_gross_oi_percent": "7.02"
+        },
+        {
+          "excel_row": 7,
+          "trade_date": "2026-06-01",
+          "symbol": "IEX",
+          "source_group_label": "Group 5",
+          "group_gross_oi_percent": "6.7"
+        },
+        {
+          "excel_row": 8,
+          "trade_date": "2026-06-01",
+          "symbol": "SAIL",
+          "source_group_label": "Group 6",
+          "group_gross_oi_percent": "6.45"
+        },
+        {
+          "excel_row": 9,
+          "trade_date": "2026-06-01",
+          "symbol": "IEX",
+          "source_group_label": "Group 7",
+          "group_gross_oi_percent": "6.44"
+        },
+        {
+          "excel_row": 10,
+          "trade_date": "2026-06-01",
+          "symbol": "RBLBANK",
+          "source_group_label": "Group 8",
+          "group_gross_oi_percent": "6.27"
+        },
+        {
+          "excel_row": 11,
+          "trade_date": "2026-06-01",
+          "symbol": "EXIDEIND",
+          "source_group_label": "Group 9",
+          "group_gross_oi_percent": "5.92"
+        },
+        {
+          "excel_row": 12,
+          "trade_date": "2026-06-01",
+          "symbol": "EXIDEIND",
+          "source_group_label": "Group 10",
+          "group_gross_oi_percent": "5.8"
+        },
+        {
+          "excel_row": 13,
+          "trade_date": "2026-06-01",
+          "symbol": "AMBUJACEM",
+          "source_group_label": "Group 11",
+          "group_gross_oi_percent": "5.47"
+        },
+        {
+          "excel_row": 14,
+          "trade_date": "2026-06-01",
+          "symbol": "AMBER",
+          "source_group_label": "Group 12",
+          "group_gross_oi_percent": "5.08"
+        }
+      ],
+      "data_records": 12,
+      "data_fields": 48,
+      "symbols": 10,
+      "group_labels": 12,
+      "trade_dates": [
+        "2026-06-01"
+      ],
+      "source_note": "Note: The percentage of Group's Open Interest is calculated on gross basis i.e. after taking into account both long position and short position at individual scrip level.",
+      "trade_date_excel_serial": 46174,
+      "age_calendar_days_at_review": 115,
+      "interpretation": "Connected entities group gross equity-derivatives OI as a percentage of gross OI for that scrip. Footnote expressly includes long and short positions.",
+      "units": "Percentage points on0–100scale, not contract count, currency, net position, trading flow or equity ownership percentage."
+    },
+    "checks": {
+      "complete_data_rows": 12,
+      "missing_data_fields": 0,
+      "numeric_percent_outside_0_to_100": 0,
+      "percent_min": "5.08",
+      "percent_max": "15.26",
+      "percent_rows_sorted_descending": true,
+      "duplicate_date_symbol_group_rows": 0,
+      "duplicate_date_symbol_rows": 2,
+      "repeated_symbols": {
+        "IEX": {
+          "rows": 2,
+          "distinct_group_labels": 2,
+          "arithmetic_sum_of_published_row_percentages": "13.14"
+        },
+        "EXIDEIND": {
+          "rows": 2,
+          "distinct_group_labels": 2,
+          "arithmetic_sum_of_published_row_percentages": "11.72"
+        }
+      },
+      "arithmetic_sum_limit": "IEX and EXIDEIND paired row sums are arithmetic diagnostics only. Group membership/disjointness and completeness are not supplied; these are not verified unique combined exposure totals.",
+      "published_total_row_present": false,
+      "gross_oi_numerator_or_denominator_counts_present": false,
+      "source_percentage_recalculation_possible": false,
+      "cross_symbol_percentage_sum_performed": false
+    },
+    "source_required_limits": [
+      "Source Trade Date is2026-06-01. Do not substitute June3 from neighboring archive/summary context, ZIP timestamps or filenames.",
+      "Gross basis combines longs and shorts. Percentage alone does not establish bullish demand, bearish direction, fresh buying or FII identity.",
+      "Rows are date+symbol+group observations. Repeated symbols with distinct groups are not duplicate transactions; date+symbol is an unsuitable unique key.",
+      "Only group numbers are shown; no disclosed entity membership, FII/DII category, persistence of group identity across dates or grouping methodology.",
+      "No contract expiry, strike, option side, underlying ISIN, price, absolute OI or historical OI change fields. Source symbols are not verified current universe identity.",
+      "All12percentages are above5, but no selection threshold or completeness contract is supplied; absence of another group/symbol is not zero concentration.",
+      "No published total or source numerator/denominator enables percentage recomputation. Do not sum percentages across different scrip denominators.",
+      "Single historical snapshot does not establish current coverage or provider authority. No online verification or import authorization obtained by this audit."
+    ],
+    "consumer_mapping": [
+      {
+        "consumer": "Historical derivatives concentration context",
+        "decision": "Potential dated descriptive fixture after identity/source validation; no automatic trading action or score proposed."
+      },
+      {
+        "consumer": "NO10 PCR and Open-Interest Confirmation",
+        "source": "data/parameter-catalog-175.json:2585",
+        "contract": "price_up and OI_up and0.8<=PCR<=1.3",
+        "decision": "Cannot satisfy: no price changes, absolute/history OI or separate put/call fields."
+      },
+      {
+        "consumer": "NO03/NO04/NO05 stock ownership, NO08 cash flow, NO09 FII futures shift",
+        "decision": "Cannot satisfy: connected-group gross OI percentage is not equity ownership, cash net flows or FII-labeled long/short contract history."
+      }
+    ],
+    "named_runtime_reference_search": {
+      "files": [
+        "server-parameter-tunnel-patch.mjs",
+        "server-upstox-institutional-patch.mjs",
+        "lib"
+      ],
+      "terms": [
+        "fo_pos_of_clients",
+        "Positions of Connected"
+      ],
+      "matches": 0,
+      "limit": "Bounded name search only; no global generic-loader proof."
+    },
+    "coverage_decision": {
+      "member_from": "inventory_only",
+      "member_to": "reviewed",
+      "full_serialized_content_coverage_justified": true,
+      "basis": "Every cell of sole16x4sheet consumed, complete12rowtable and note preserved, source/member hashes and CRC verified; no unread data rows/sheets.",
+      "archive_whole_coverage_claimed": false,
+      "formula_correctness_or_business_acceptance_claimed": false,
+      "coverage_overlay_changed": false
+    },
+    "actions": {
+      "raw_sources_modified": false,
+      "repository_files_modified": false,
+      "runtime_modified": false,
+      "mongo_accessed": false,
+      "network_accessed": false,
+      "import_performed": false,
+      "deployed": false,
+      "committed": false,
+      "native_workbook_modified": false
+    }
+  },
+  "cross_report_reconciliation": {
+    "futures_copy_semantic_mismatch_count": 66,
+    "futures_copy_comparison": {
+      "keys_identical": true,
+      "row_mismatches": 66,
+      "field_mismatch_counts": {
+        "TRD_VAL": 66
+      },
+      "examples": [
+        {
+          "key": [
+            "FUTSTK",
+            "MCX",
+            "2026-06-30",
+            "",
+            ""
+          ],
+          "field": "TRD_VAL",
+          "copy_2_minus_plain": "-0.50",
+          "plain_value": "10727973188",
+          "copy_2_value": "10727973187.50"
+        },
+        {
+          "key": [
+            "FUTSTK",
+            "TCS",
+            "2026-06-30",
+            "",
+            ""
+          ],
+          "field": "TRD_VAL",
+          "copy_2_minus_plain": "-0.50",
+          "plain_value": "35814190738",
+          "copy_2_value": "35814190737.50"
+        },
+        {
+          "key": [
+            "FUTSTK",
+            "TCS",
+            "2026-07-28",
+            "",
+            ""
+          ],
+          "field": "TRD_VAL",
+          "copy_2_minus_plain": "-0.50",
+          "plain_value": "4769841758",
+          "copy_2_value": "4769841757.50"
+        },
+        {
+          "key": [
+            "FUTIDX",
+            "NIFTY",
+            "2026-06-30",
+            "",
+            ""
+          ],
+          "field": "TRD_VAL",
+          "copy_2_minus_plain": "-193192.00",
+          "plain_value": "1.98561E+11",
+          "copy_2_value": "198560806808.00"
+        }
+      ],
+      "max_absolute_difference": "193192.00",
+      "copy_2_turnover_bhavcopy_mismatches": 0,
+      "interpretation": "Same keys and other values after date/numeric normalization, but 66 TRD_VAL values differ. Scientific notation in plain-file NIFTY value loses precision. Sources are not semantically identical and neither is deleted/replaced."
+    },
+    "bhavcopy_source_member": "BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv/BhavCopy_NSE_FO_0_0_0_20260603_F_0000.csv",
+    "bhavcopy_source_sha256": "2e18991b2c6c6c252a61592ff2f115e4791092c6b472762006193509aa0975bd",
+    "bhavcopy_comparison": {
+      "futures": {
+        "report_rows": 624,
+        "bhavcopy_rows": 644,
+        "bhavcopy_active_rows": 624,
+        "missing_keys": [],
+        "key_set_exactly_active_bhavcopy": true,
+        "fields": {
+          "OPEN_PRICE": {
+            "mismatches": 0,
+            "max_absolute_difference": "0",
+            "examples": []
+          },
+          "HI_PRICE": {
+            "mismatches": 0,
+            "max_absolute_difference": "0",
+            "examples": []
+          },
+          "LO_PRICE": {
+            "mismatches": 0,
+            "max_absolute_difference": "0",
+            "examples": []
+          },
+          "CLOSE_PRICE": {
+            "mismatches": 0,
+            "max_absolute_difference": "0",
+            "examples": []
+          },
+          "OPEN_INT*": {
+            "mismatches": 171,
+            "max_absolute_difference": "5146200",
+            "examples": [
+              {
+                "key": [
+                  "FUTIDX",
+                  "BANKNIFTY",
+                  "2026-06-30",
+                  "",
+                  ""
+                ],
+                "source": "2521500",
+                "bhavcopy": "2517750"
+              },
+              {
+                "key": [
+                  "FUTSTK",
+                  "AMBER",
+                  "2026-06-30",
+                  "",
+                  ""
+                ],
+                "source": "2725400",
+                "bhavcopy": "2719200"
+              },
+              {
+                "key": [
+                  "FUTSTK",
+                  "HAL",
+                  "2026-06-30",
+                  "",
+                  ""
+                ],
+                "source": "6239550",
+                "bhavcopy": "6239400"
+              }
+            ]
+          },
+          "NO_OF_CONT": {
+            "mismatches": 0,
+            "max_absolute_difference": "0",
+            "examples": []
+          },
+          "NO_OF_TRADE": {
+            "mismatches": 0,
+            "max_absolute_difference": "0",
+            "examples": []
+          }
+        },
+        "traded_quantity_vs_contracts_times_lot_mismatches": 0,
+        "turnover_field_vs_bhavcopy_mismatches": {
+          "TRD_VAL": {
+            "mismatches": 66,
+            "max_absolute_difference": "193192.00",
+            "examples": [
+              {
+                "key": [
+                  "FUTSTK",
+                  "MCX",
+                  "2026-06-30",
+                  "",
+                  ""
+                ],
+                "delta": "0.50"
+              },
+              {
+                "key": [
+                  "FUTSTK",
+                  "TCS",
+                  "2026-06-30",
+                  "",
+                  ""
+                ],
+                "delta": "0.50"
+              },
+              {
+                "key": [
+                  "FUTSTK",
+                  "TCS",
+                  "2026-07-28",
+                  "",
+                  ""
+                ],
+                "delta": "0.50"
+              },
+              {
+                "key": [
+                  "FUTIDX",
+                  "NIFTY",
+                  "2026-06-30",
+                  "",
+                  ""
+                ],
+                "delta": "193192.00"
+              }
+            ]
+          }
+        },
+        "excluded_rows": 20,
+        "excluded_rows_nonzero_oi": 15,
+        "excluded_oi_sum": "164735"
+      },
+      "options": {
+        "report_rows": 12886,
+        "bhavcopy_rows": 38471,
+        "bhavcopy_active_rows": 12886,
+        "missing_keys": [],
+        "key_set_exactly_active_bhavcopy": true,
+        "fields": {
+          "OPEN_PRICE": {
+            "mismatches": 0,
+            "max_absolute_difference": "0",
+            "examples": []
+          },
+          "HI_PRICE": {
+            "mismatches": 0,
+            "max_absolute_difference": "0",
+            "examples": []
+          },
+          "LO_PRICE": {
+            "mismatches": 0,
+            "max_absolute_difference": "0",
+            "examples": []
+          },
+          "CLOSE_PRICE": {
+            "mismatches": 0,
+            "max_absolute_difference": "0",
+            "examples": []
+          },
+          "OPEN_INT*": {
+            "mismatches": 278,
+            "max_absolute_difference": "4288500",
+            "examples": [
+              {
+                "key": [
+                  "OPTIDX",
+                  "BANKNIFTY",
+                  "2026-06-30",
+                  "49500.00",
+                  "PE"
+                ],
+                "source": "000000000279660",
+                "bhavcopy": "279630"
+              },
+              {
+                "key": [
+                  "OPTIDX",
+                  "BANKNIFTY",
+                  "2026-06-30",
+                  "50500.00",
+                  "PE"
+                ],
+                "source": "000000000234510",
+                "bhavcopy": "232950"
+              },
+              {
+                "key": [
+                  "OPTIDX",
+                  "BANKNIFTY",
+                  "2026-06-30",
+                  "51500.00",
+                  "PE"
+                ],
+                "source": "000000000294480",
+                "bhavcopy": "294390"
+              }
+            ]
+          },
+          "NO_OF_CONT": {
+            "mismatches": 0,
+            "max_absolute_difference": "0",
+            "examples": []
+          },
+          "NO_OF_TRADE": {
+            "mismatches": 0,
+            "max_absolute_difference": "0",
+            "examples": []
+          }
+        },
+        "traded_quantity_vs_contracts_times_lot_mismatches": 0,
+        "turnover_field_vs_bhavcopy_mismatches": {
+          "NOTION_VAL": {
+            "mismatches": 0,
+            "max_absolute_difference": "0",
+            "examples": []
+          },
+          "PR_VAL": {
+            "mismatches": 12886,
+            "max_absolute_difference": "4797354432000.00",
+            "examples": [
+              {
+                "key": [
+                  "OPTIDX",
+                  "BANKNIFTY",
+                  "2026-06-30",
+                  "43500.00",
+                  "PE"
+                ],
+                "delta": "-1713465000.00"
+              },
+              {
+                "key": [
+                  "OPTIDX",
+                  "BANKNIFTY",
+                  "2026-06-30",
+                  "44500.00",
+                  "PE"
+                ],
+                "delta": "-610095000.00"
+              },
+              {
+                "key": [
+                  "OPTIDX",
+                  "BANKNIFTY",
+                  "2026-06-30",
+                  "45300.00",
+                  "PE"
+                ],
+                "delta": "-96489000.00"
+              },
+              {
+                "key": [
+                  "OPTIDX",
+                  "BANKNIFTY",
+                  "2026-06-30",
+                  "45500.00",
+                  "PE"
+                ],
+                "delta": "-801255000.00"
+              },
+              {
+                "key": [
+                  "OPTIDX",
+                  "BANKNIFTY",
+                  "2026-06-30",
+                  "45700.00",
+                  "PE"
+                ],
+                "delta": "-23307000.00"
+              },
+              {
+                "key": [
+                  "OPTIDX",
+                  "BANKNIFTY",
+                  "2026-06-30",
+                  "45900.00",
+                  "PE"
+                ],
+                "delta": "-111537000.00"
+              },
+              {
+                "key": [
+                  "OPTIDX",
+                  "BANKNIFTY",
+                  "2026-06-30",
+                  "46100.00",
+                  "PE"
+                ],
+                "delta": "-53937000.00"
+              },
+              {
+                "key": [
+                  "OPTIDX",
+                  "BANKNIFTY",
+                  "2026-06-30",
+                  "46300.00",
+                  "PE"
+                ],
+                "delta": "-86118000.00"
+              }
+            ]
+          }
+        },
+        "excluded_rows": 25585,
+        "excluded_rows_nonzero_oi": 5146,
+        "excluded_oi_sum": "160202974"
+      }
+    },
+    "pcr_reconciliation": {
+      "symbols": 216,
+      "matches_active_report_sums": 216,
+      "matches_full_bhavcopy_sums": 0,
+      "saved_zero_ce_denominators": 0,
+      "full_zero_ce_denominators": 0,
+      "saved_total_oi": {
+        "CE": "5166098181",
+        "PE": "3123953636"
+      },
+      "full_total_oi": {
+        "CE": "5201735388",
+        "PE": "3242201863"
+      },
+      "examples": [
+        {
+          "symbol": "360ONE",
+          "saved": {
+            "CE": "760000",
+            "PE": "288000"
+          },
+          "report_active_oi": {
+            "CE": "760000",
+            "PE": "288000"
+          },
+          "full_bhavcopy_oi": {
+            "CE": "767000",
+            "PE": "353000"
+          },
+          "matches_active": true,
+          "matches_full": false,
+          "saved_ratio_pe_ce": "0.3789473684210526315789473684",
+          "full_ratio_pe_ce": "0.4602346805736636245110821382"
+        },
+        {
+          "symbol": "BANKNIFTY",
+          "saved": {
+            "CE": "16218930",
+            "PE": "14054580"
+          },
+          "report_active_oi": {
+            "CE": "16218930",
+            "PE": "14054580"
+          },
+          "full_bhavcopy_oi": {
+            "CE": "16118790",
+            "PE": "14050980"
+          },
+          "matches_active": true,
+          "matches_full": false,
+          "saved_ratio_pe_ce": "0.8665540821743481228416424511",
+          "full_ratio_pe_ce": "0.8717143160249621714781320434"
+        },
+        {
+          "symbol": "GODFRYPHLP",
+          "saved": {
+            "CE": "757350",
+            "PE": "333575"
+          },
+          "report_active_oi": {
+            "CE": "757350",
+            "PE": "333575"
+          },
+          "full_bhavcopy_oi": {
+            "CE": "764775",
+            "PE": "397375"
+          },
+          "matches_active": true,
+          "matches_full": false,
+          "saved_ratio_pe_ce": "0.4404502541757443718228031954",
+          "full_ratio_pe_ce": "0.5195972671700827040632865876"
+        },
+        {
+          "symbol": "IEX",
+          "saved": {
+            "CE": "26001750",
+            "PE": "13068600"
+          },
+          "report_active_oi": {
+            "CE": "26001750",
+            "PE": "13068600"
+          },
+          "full_bhavcopy_oi": {
+            "CE": "27454200",
+            "PE": "15834750"
+          },
+          "matches_active": true,
+          "matches_full": false,
+          "saved_ratio_pe_ce": "0.5026046323805128500966281116",
+          "full_ratio_pe_ce": "0.5767696745853093515746224621"
+        },
+        {
+          "symbol": "NIFTY",
+          "saved": {
+            "CE": "201889000",
+            "PE": "204962290"
+          },
+          "report_active_oi": {
+            "CE": "201889000",
+            "PE": "204962290"
+          },
+          "full_bhavcopy_oi": {
+            "CE": "201634075",
+            "PE": "204934705"
+          },
+          "matches_active": true,
+          "matches_full": false,
+          "saved_ratio_pe_ce": "1.015222671864242232117648807",
+          "full_ratio_pe_ce": "1.016369405815956454780770562"
+        },
+        {
+          "symbol": "RELIANCE",
+          "saved": {
+            "CE": "60622500",
+            "PE": "38847000"
+          },
+          "report_active_oi": {
+            "CE": "60622500",
+            "PE": "38847000"
+          },
+          "full_bhavcopy_oi": {
+            "CE": "60949000",
+            "PE": "40061000"
+          },
+          "matches_active": true,
+          "matches_full": false,
+          "saved_ratio_pe_ce": "0.6408016825436100457750835086",
+          "full_ratio_pe_ce": "0.6572872401516021591822671414"
+        }
+      ],
+      "limitations": "File contains CE/PE OI columns, not a stored PCR ratio. Ratios are audit calculations only. Active-report and full-bhavcopy bases differ in coverage and overlapping OI values; neither is promoted to live signal authority."
+    },
+    "summary_rows_include_footer": true,
+    "summary_instrument_count_includes_footer": true,
+    "report_checks": [
+      {
+        "file": "futstk03062026.csv",
+        "rows": 211,
+        "mismatches": [
+          {
+            "symbol": "ABB",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "ADANIENT",
+            "field": "Traded Value (Rs.)",
+            "delta": "-0.80"
+          },
+          {
+            "symbol": "ADANIPORTS",
+            "field": "Traded Value (Rs.)",
+            "delta": "-0.50"
+          },
+          {
+            "symbol": "ADANIPOWER",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "ALKEM",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "APOLLOHOSP",
+            "field": "Traded Value (Rs.)",
+            "delta": "-0.50"
+          },
+          {
+            "symbol": "ASTRAL",
+            "field": "Traded Value (Rs.)",
+            "delta": "-0.50"
+          },
+          {
+            "symbol": "BAJFINANCE",
+            "field": "Traded Value (Rs.)",
+            "delta": "-0.50"
+          },
+          {
+            "symbol": "BDL",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "BEL",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "BHARTIARTL",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "BHEL",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.75"
+          },
+          {
+            "symbol": "BPCL",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "BRITANNIA",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "CAMS",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "CDSL",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "CHOLAFIN",
+            "field": "Traded Value (Rs.)",
+            "delta": "-0.50"
+          },
+          {
+            "symbol": "CIPLA",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "COALINDIA",
+            "field": "Traded Value (Rs.)",
+            "delta": "-0.50"
+          },
+          {
+            "symbol": "COFORGE",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "DABUR",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "DALBHARAT",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "DELHIVERY",
+            "field": "Traded Value (Rs.)",
+            "delta": "-0.75"
+          },
+          {
+            "symbol": "DRREDDY",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "ETERNAL",
+            "field": "Traded Value (Rs.)",
+            "delta": "-0.30"
+          },
+          {
+            "symbol": "FORTIS",
+            "field": "Traded Value (Rs.)",
+            "delta": "-0.25"
+          },
+          {
+            "symbol": "GAIL",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "GLENMARK",
+            "field": "Traded Value (Rs.)",
+            "delta": "-0.50"
+          },
+          {
+            "symbol": "GMRAIRPORT",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "GODFRYPHLP",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "GODREJPROP",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "HINDPETRO",
+            "field": "Traded Value (Rs.)",
+            "delta": "-0.50"
+          },
+          {
+            "symbol": "HINDZINC",
+            "field": "Traded Value (Rs.)",
+            "delta": "-0.30"
+          },
+          {
+            "symbol": "HYUNDAI",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "ICICIPRULI",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.20"
+          },
+          {
+            "symbol": "IDEA",
+            "field": "Traded Value (Rs.)",
+            "delta": "-0.60"
+          },
+          {
+            "symbol": "IDFCFIRSTB",
+            "field": "Traded Value (Rs.)",
+            "delta": "-0.05"
+          },
+          {
+            "symbol": "IOC",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "IREDA",
+            "field": "Traded Value (Rs.)",
+            "delta": "-0.05"
+          },
+          {
+            "symbol": "IRFC",
+            "field": "Traded Value (Rs.)",
+            "delta": "-0.25"
+          },
+          {
+            "symbol": "JSWENERGY",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "KEI",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "KFINTECH",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "KPITTECH",
+            "field": "Traded Value (Rs.)",
+            "delta": "-0.55"
+          },
+          {
+            "symbol": "LODHA",
+            "field": "Traded Value (Rs.)",
+            "delta": "-0.25"
+          },
+          {
+            "symbol": "LT",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "LUPIN",
+            "field": "Traded Value (Rs.)",
+            "delta": "-0.50"
+          },
+          {
+            "symbol": "MAXHEALTH",
+            "field": "Traded Value (Rs.)",
+            "delta": "-0.50"
+          },
+          {
+            "symbol": "MAZDOCK",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "MOTHERSON",
+            "field": "Traded Value (Rs.)",
+            "delta": "-0.50"
+          },
+          {
+            "symbol": "MOTILALOFS",
+            "field": "Traded Value (Rs.)",
+            "delta": "-0.05"
+          },
+          {
+            "symbol": "NATIONALUM",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "NAUKRI",
+            "field": "Traded Value (Rs.)",
+            "delta": "-0.50"
+          },
+          {
+            "symbol": "NYKAA",
+            "field": "Traded Value (Rs.)",
+            "delta": "-0.25"
+          },
+          {
+            "symbol": "PATANJALI",
+            "field": "Traded Value (Rs.)",
+            "delta": "-0.25"
+          },
+          {
+            "symbol": "RBLBANK",
+            "field": "Traded Value (Rs.)",
+            "delta": "-0.25"
+          },
+          {
+            "symbol": "RECLTD",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "RVNL",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "SBIN",
+            "field": "Traded Value (Rs.)",
+            "delta": "-0.50"
+          },
+          {
+            "symbol": "SHRIRAMFIN",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.75"
+          },
+          {
+            "symbol": "SIEMENS",
+            "field": "Traded Value (Rs.)",
+            "delta": "-0.50"
+          },
+          {
+            "symbol": "SONACOMS",
+            "field": "Traded Value (Rs.)",
+            "delta": "-0.75"
+          },
+          {
+            "symbol": "SUPREMEIND",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "SWIGGY",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "TATAELXSI",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "TATASTEEL",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "TCS",
+            "field": "Traded Value (Rs.)",
+            "delta": "-0.50"
+          },
+          {
+            "symbol": "TORNTPHARM",
+            "field": "Traded Value (Rs.)",
+            "delta": "-0.50"
+          },
+          {
+            "symbol": "UNIONBANK",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "UPL",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "VBL",
+            "field": "Traded Value (Rs.)",
+            "delta": "-0.50"
+          },
+          {
+            "symbol": "VEDL",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "VMM",
+            "field": "Traded Value (Rs.)",
+            "delta": "0.50"
+          }
+        ]
+      },
+      {
+        "file": "optstk03062026.csv",
+        "rows": 211,
+        "mismatches": [
+          {
+            "symbol": "ABB",
+            "field": "Notional Value (Rs.)",
+            "delta": "-0.25"
+          },
+          {
+            "symbol": "ADANIENT",
+            "field": "Notional Value (Rs.)",
+            "delta": "-0.40"
+          },
+          {
+            "symbol": "ADANIPORTS",
+            "field": "Notional Value (Rs.)",
+            "delta": "-0.25"
+          },
+          {
+            "symbol": "APLAPOLLO",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "APOLLOHOSP",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "ASIANPAINT",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "AXISBANK",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "BAJAJFINSV",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "BAJFINANCE",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "BANKBARODA",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "BDL",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "BEL",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "BLUESTARCO",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "BOSCHLTD",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "BPCL",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "BRITANNIA",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "BSE",
+            "field": "Notional Value (Rs.)",
+            "delta": "-0.25"
+          },
+          {
+            "symbol": "CAMS",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "CDSL",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "CGPOWER",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "CHOLAFIN",
+            "field": "Notional Value (Rs.)",
+            "delta": "-0.25"
+          },
+          {
+            "symbol": "COALINDIA",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "COFORGE",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "COLPAL",
+            "field": "Notional Value (Rs.)",
+            "delta": "-0.25"
+          },
+          {
+            "symbol": "CROMPTON",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "DALBHARAT",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "DELHIVERY",
+            "field": "Notional Value (Rs.)",
+            "delta": "-0.25"
+          },
+          {
+            "symbol": "DIXON",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "DRREDDY",
+            "field": "Notional Value (Rs.)",
+            "delta": "-0.25"
+          },
+          {
+            "symbol": "ETERNAL",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "FORCEMOT",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "GAIL",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "GLENMARK",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "GMRAIRPORT",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "GODFRYPHLP",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "HINDPETRO",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "HYUNDAI",
+            "field": "Notional Value (Rs.)",
+            "delta": "-0.25"
+          },
+          {
+            "symbol": "ICICIGI",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "ICICIPRULI",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "IDEA",
+            "field": "Notional Value (Rs.)",
+            "delta": "-0.25"
+          },
+          {
+            "symbol": "IDFCFIRSTB",
+            "field": "Notional Value (Rs.)",
+            "delta": "-0.25"
+          },
+          {
+            "symbol": "INDIGO",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "INOXWIND",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "IOC",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "IREDA",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "IRFC",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "ITC",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "JINDALSTEL",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "JIOFIN",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "JSWENERGY",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "JSWSTEEL",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "JUBLFOOD",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "KALYANKJIL",
+            "field": "Notional Value (Rs.)",
+            "delta": "-0.25"
+          },
+          {
+            "symbol": "KEI",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "LAURUSLABS",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "LT",
+            "field": "Notional Value (Rs.)",
+            "delta": "-0.25"
+          },
+          {
+            "symbol": "LTF",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "MANKIND",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "MAXHEALTH",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "MAZDOCK",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "MCX",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "MOTHERSON",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "MOTILALOFS",
+            "field": "Notional Value (Rs.)",
+            "delta": "-0.25"
+          },
+          {
+            "symbol": "MPHASIS",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "MUTHOOTFIN",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "NAM-INDIA",
+            "field": "Notional Value (Rs.)",
+            "delta": "-0.25"
+          },
+          {
+            "symbol": "NHPC",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "NYKAA",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "OFSS",
+            "field": "Notional Value (Rs.)",
+            "delta": "-0.25"
+          },
+          {
+            "symbol": "PATANJALI",
+            "field": "Notional Value (Rs.)",
+            "delta": "-0.25"
+          },
+          {
+            "symbol": "PAYTM",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "PERSISTENT",
+            "field": "Notional Value (Rs.)",
+            "delta": "-0.25"
+          },
+          {
+            "symbol": "PIIND",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "PNBHOUSING",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "PREMIERENE",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "RADICO",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "RBLBANK",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "RECLTD",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "RVNL",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "SBILIFE",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "SHREECEM",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "SHRIRAMFIN",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "SIEMENS",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "SONACOMS",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "SUPREMEIND",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "TATAELXSI",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "TATAPOWER",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "TATASTEEL",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "TITAN",
+            "field": "Notional Value (Rs.)",
+            "delta": "-0.25"
+          },
+          {
+            "symbol": "TORNTPHARM",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "TVSMOTOR",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "ULTRACEMCO",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "UNIONBANK",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          },
+          {
+            "symbol": "VMM",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "VOLTAS",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.50"
+          },
+          {
+            "symbol": "WAAREEENER",
+            "field": "Notional Value (Rs.)",
+            "delta": "0.25"
+          }
+        ]
+      },
+      {
+        "file": "futidx03062026.csv",
+        "rows": 5,
+        "mismatches": [
+          {
+            "symbol": "NIFTY",
+            "field": "crore value",
+            "delta": "-0.0216551"
+          }
+        ]
+      }
+    ],
+    "option_index_symbol_checks": [
+      {
+        "symbol": "BANKNIFTY",
+        "report_rows": 2,
+        "contract_delta": "0",
+        "quantity_delta": "0",
+        "oi_delta": "0",
+        "notional_cr_delta": "-0.0067017"
+      },
+      {
+        "symbol": "FINNIFTY",
+        "report_rows": 7,
+        "contract_delta": "0",
+        "quantity_delta": "0",
+        "oi_delta": "0",
+        "notional_cr_delta": "0.0046722"
+      },
+      {
+        "symbol": "MIDCPNIFTY",
+        "report_rows": 4,
+        "contract_delta": "0",
+        "quantity_delta": "0",
+        "oi_delta": "0",
+        "notional_cr_delta": "0.0023754"
+      },
+      {
+        "symbol": "NIFTYNXT50",
+        "report_rows": 4,
+        "contract_delta": "0",
+        "quantity_delta": "0",
+        "oi_delta": "0",
+        "notional_cr_delta": "0.000077"
+      },
+      {
+        "symbol": "NIFTY",
+        "report_rows": 7,
+        "contract_delta": "0",
+        "quantity_delta": "0",
+        "oi_delta": "0",
+        "notional_cr_delta": "-0.011095175"
+      }
+    ],
+    "option_index_rows_inferred_expiries": [
+      {
+        "data_row": 1,
+        "symbol": "BANKNIFTY",
+        "volume_matching_expiries": [],
+        "additional_checks": []
+      },
+      {
+        "data_row": 2,
+        "symbol": "BANKNIFTY",
+        "volume_matching_expiries": [],
+        "additional_checks": []
+      },
+      {
+        "data_row": 3,
+        "symbol": "FINNIFTY",
+        "volume_matching_expiries": [],
+        "additional_checks": []
+      },
+      {
+        "data_row": 4,
+        "symbol": "FINNIFTY",
+        "volume_matching_expiries": [],
+        "additional_checks": []
+      },
+      {
+        "data_row": 5,
+        "symbol": "FINNIFTY",
+        "volume_matching_expiries": [],
+        "additional_checks": []
+      },
+      {
+        "data_row": 6,
+        "symbol": "FINNIFTY",
+        "volume_matching_expiries": [],
+        "additional_checks": []
+      },
+      {
+        "data_row": 7,
+        "symbol": "FINNIFTY",
+        "volume_matching_expiries": [],
+        "additional_checks": []
+      },
+      {
+        "data_row": 8,
+        "symbol": "FINNIFTY",
+        "volume_matching_expiries": [],
+        "additional_checks": []
+      },
+      {
+        "data_row": 9,
+        "symbol": "FINNIFTY",
+        "volume_matching_expiries": [],
+        "additional_checks": []
+      },
+      {
+        "data_row": 10,
+        "symbol": "MIDCPNIFTY",
+        "volume_matching_expiries": [],
+        "additional_checks": []
+      },
+      {
+        "data_row": 11,
+        "symbol": "MIDCPNIFTY",
+        "volume_matching_expiries": [],
+        "additional_checks": []
+      },
+      {
+        "data_row": 12,
+        "symbol": "MIDCPNIFTY",
+        "volume_matching_expiries": [],
+        "additional_checks": []
+      },
+      {
+        "data_row": 13,
+        "symbol": "MIDCPNIFTY",
+        "volume_matching_expiries": [],
+        "additional_checks": []
+      },
+      {
+        "data_row": 14,
+        "symbol": "NIFTYNXT50",
+        "volume_matching_expiries": [],
+        "additional_checks": []
+      },
+      {
+        "data_row": 15,
+        "symbol": "NIFTYNXT50",
+        "volume_matching_expiries": [],
+        "additional_checks": []
+      },
+      {
+        "data_row": 16,
+        "symbol": "NIFTYNXT50",
+        "volume_matching_expiries": [],
+        "additional_checks": []
+      },
+      {
+        "data_row": 17,
+        "symbol": "NIFTY",
+        "volume_matching_expiries": [],
+        "additional_checks": []
+      },
+      {
+        "data_row": 18,
+        "symbol": "NIFTY",
+        "volume_matching_expiries": [],
+        "additional_checks": []
+      },
+      {
+        "data_row": 19,
+        "symbol": "NIFTY",
+        "volume_matching_expiries": [],
+        "additional_checks": []
+      },
+      {
+        "data_row": 20,
+        "symbol": "NIFTY",
+        "volume_matching_expiries": [],
+        "additional_checks": []
+      },
+      {
+        "data_row": 21,
+        "symbol": "NIFTY",
+        "volume_matching_expiries": [],
+        "additional_checks": []
+      },
+      {
+        "data_row": 22,
+        "symbol": "NIFTY",
+        "volume_matching_expiries": [],
+        "additional_checks": []
+      },
+      {
+        "data_row": 23,
+        "symbol": "NIFTY",
+        "volume_matching_expiries": [],
+        "additional_checks": []
+      },
+      {
+        "data_row": 24,
+        "symbol": "NIFTYNXT50",
+        "volume_matching_expiries": [],
+        "additional_checks": []
+      }
+    ],
+    "top_contract_checks": [
+      {
+        "file": "ttfut03062026.csv",
+        "rows": 10,
+        "mismatch_keys": [],
+        "matches_top_contract_volume_order": true,
+        "share_of_contracts_percent": "27.39571809722131840957896792",
+        "share_of_value_percent": "21.82068018615898042017007364"
+      },
+      {
+        "file": "ttopt03062026.csv",
+        "rows": 20,
+        "mismatch_keys": [
+          {
+            "key": [
+              "OPTSTK",
+              "TCS",
+              "2026-06-30",
+              "2300.00",
+              "CE"
+            ],
+            "contract_delta": "0",
+            "value_delta": "0.50"
+          },
+          {
+            "key": [
+              "OPTSTK",
+              "TCS",
+              "2026-06-30",
+              "2400.00",
+              "CE"
+            ],
+            "contract_delta": "0",
+            "value_delta": "0.50"
+          },
+          {
+            "key": [
+              "OPTSTK",
+              "TCS",
+              "2026-06-30",
+              "2500.00",
+              "CE"
+            ],
+            "contract_delta": "0",
+            "value_delta": "0.25"
+          },
+          {
+            "key": [
+              "OPTSTK",
+              "TCS",
+              "2026-06-30",
+              "2100.00",
+              "PE"
+            ],
+            "contract_delta": "0",
+            "value_delta": "0.25"
+          },
+          {
+            "key": [
+              "OPTSTK",
+              "TCS",
+              "2026-06-30",
+              "2260.00",
+              "PE"
+            ],
+            "contract_delta": "0",
+            "value_delta": "0.25"
+          },
+          {
+            "key": [
+              "OPTSTK",
+              "HDFCBANK",
+              "2026-06-30",
+              "800.00",
+              "CE"
+            ],
+            "contract_delta": "0",
+            "value_delta": "0.50"
+          },
+          {
+            "key": [
+              "OPTSTK",
+              "TCS",
+              "2026-06-30",
+              "2600.00",
+              "CE"
+            ],
+            "contract_delta": "0",
+            "value_delta": "0.25"
+          },
+          {
+            "key": [
+              "OPTSTK",
+              "TCS",
+              "2026-06-30",
+              "2280.00",
+              "PE"
+            ],
+            "contract_delta": "0",
+            "value_delta": "0.25"
+          },
+          {
+            "key": [
+              "OPTSTK",
+              "TCS",
+              "2026-06-30",
+              "2000.00",
+              "PE"
+            ],
+            "contract_delta": "0",
+            "value_delta": "0.50"
+          }
+        ],
+        "matches_top_contract_volume_order": true,
+        "share_of_contracts_percent": "10.47351066104963399244867112",
+        "share_of_value_percent": "7.115631554099167088015819900"
+      }
+    ],
+    "product_summary_checks": [
+      {
+        "product": "Index Futures",
+        "contract_delta": "0",
+        "value_cr_delta": "-0.0190809"
+      },
+      {
+        "product": "Stock Futures",
+        "contract_delta": "0",
+        "value_cr_delta": "0.0038132"
+      },
+      {
+        "product": "Index Options",
+        "contract_delta": "0",
+        "value_cr_delta": "-0.000672275"
+      },
+      {
+        "product": "Stock Options",
+        "contract_delta": "0",
+        "value_cr_delta": "-0.00336949"
+      }
+    ],
+    "source_arrays_not_written": true
+  },
+  "findings": [
+    {
+      "id": "FO-ACTIVE-CONTRACT-SUBSET",
+      "detail": "June 3 detail tables contain 624 futures and 12886 options, exactly the positive-volume contract subsets of the full June 3 bhavcopy. All matched OHLC, contract volumes and trade counts agree; traded quantity equals volume times dated lot size. Inactive contracts are absent, not zero-OI evidence."
+    },
+    {
+      "id": "FO-FUTURES-COPY-PRECISION",
+      "detail": "The two futures files share keys and all other normalized fields, but 66 TRD_VAL values differ. Plain fo03062026.csv stores the NIFTY June30 turnover as 1.98561E+11 versus 198560806808.00 in copy (2), a 193192 difference. Copy (2) turnover matches all 624 bhavcopy values; preserve both originals and do not call them semantically identical."
+    },
+    {
+      "id": "FO-OI-BASES",
+      "detail": "Against full bhavcopy, overlapping OI differs for 171 futures and 278 options. The report footnote identifies trading-system end-of-hours OI but does not resolve causation or which basis each consumer requires. Excluded inactive contracts include 15 futures and 5146 options with nonzero OI. No basis is silently substituted."
+    },
+    {
+      "id": "FO-PCR-INCOMPLETE-UNIVERSE",
+      "detail": "The PCR-named file stores SYMBOL/CE/PE, not a ratio. All 216 CE/PE pairs reproduce active report sums; none equals full-bhavcopy sums. Coverage and overlapping OI differences both matter. PE/CE examples are audit calculations, not live signals or validated complete-market PCR."
+    },
+    {
+      "id": "FO-VALUE-UNITS",
+      "detail": "Option NOTION_VAL empirically matches bhavcopy TtlTrfVal for all12886 overlap rows; premium PR_VAL does not. Contracts, quantity, rupees and crore fields remain distinct. This dated empirical mapping is not a general official schema/unit contract."
+    },
+    {
+      "id": "FO-SUMMARY-GRAINS",
+      "detail": "Saved pack-summary row/type counts include footnotes: actual data counts are624/12886 with2 instrument types each. Twenty-four option-index rows contain5 symbols; grouped contract/quantity/OI totals reconcile but a single-expiry interpretation could not be established. Do not deduplicate on symbol alone. The empty volatility-futures table is source absence, not a current no-market declaration."
+    },
+    {
+      "id": "FO-SMALL-REPORT-ROUNDING",
+      "detail": "Stock summary and top-option differences are small fractional-rupee values; index/product crore totals have unresolved differences, so not all discrepancies are dismissed as one rounding step. Top10/20 contracts match contract-volume order; footers22%/7% align with value shares about21.82%/7.12%, not contract shares27.40%/10.47%."
+    },
+    {
+      "id": "FO-CLIENT-POSITION-SCOPE",
+      "detail": "Binary XLS contains12 connected-entity group records datedJune1, notJune3: grossOI percentage is neither ownership nor FII net flow, and unknown group membership prevents unique-client aggregation. No numerator/denominator exists to recompute source percentages."
+    },
+    {
+      "id": "FO-MACRO-MISSINGNESS",
+      "detail": "Reread3905 macro rows,2011-06-08 through2026-06-08. All3905 India10Y cells are blank, and other macro series have gaps. The negative WTI value on2020-04-20 is preserved pending exact series/contract semantics. Historical last date is108calendar days before review, not a fresh feed."
+    }
+  ],
+  "consumer_mapping": [
+    {
+      "consumer": "L06 PWOI/derivatives, F05 F&O and catalog NO10",
+      "files": [
+        "server-framework-patch.mjs",
+        "data/parameter-catalog-175.json"
+      ],
+      "status": "SOURCE_CONTRACT_AND_CURRENT_FEED_REQUIRED",
+      "limit": "Framework explicitly says DATA_NEEDED_TO_WIRE. NO10 price/OI/PCR semantics require compatible dated bases, prior observations, identities and freshness; one active-contract snapshot is insufficient."
+    },
+    {
+      "consumer": "L08 macro warnings and F07 macro history",
+      "files": [
+        "server-framework-patch.mjs",
+        "server-market-context-patch.mjs"
+      ],
+      "status": "HISTORICAL_CANDIDATE_NOT_CURRENT_RUNTIME_FEED",
+      "limit": "Current market-context card code fetches a separate Yahoo chart path and does not consume this archive. Static availability labels and zero-weight annotations do not prove data ingestion or evaluate archived warning formulas."
+    },
+    {
+      "consumer": "ashstocks/data/nse_fo_bhavcopy.py",
+      "status": "UDIFF_SCHEMA_NOT_DIRECT_LEGACY_REPORT_ADAPTER",
+      "limit": "Existing parser expects a different column contract; no evidence in this batch of these legacy-report files being imported, attached to Mongo or activated."
+    }
+  ],
+  "proof_limits": [
+    "No online provider, Mongo or production runtime request was made for this source batch.",
+    "No historical source, runtime, strategy threshold, ranking weight or portfolio gate was changed.",
+    "All sample data remains dated and source identity/units/authority requirements remain open.",
+    "Full archive reading is not a backtest, a data import, current NSE membership, production deployment or permission to trade."
+  ],
+  "proposed_member_updates": [
+    {
+      "member": "FO Gold COmm/fo03062026 (2).csv",
+      "from": "inventory_only",
+      "to": "reviewed"
+    },
+    {
+      "member": "FO Gold COmm/fo03062026.csv",
+      "from": "inventory_only",
+      "to": "reviewed"
+    },
+    {
+      "member": "FO Gold COmm/fo_03062026.csv",
+      "from": "inventory_only",
+      "to": "reviewed"
+    },
+    {
+      "member": "FO Gold COmm/fo_options_pcr_oi_by_symbol_2026_06_03.csv",
+      "from": "inventory_only",
+      "to": "reviewed"
+    },
+    {
+      "member": "FO Gold COmm/futidx03062026.csv",
+      "from": "inventory_only",
+      "to": "reviewed"
+    },
+    {
+      "member": "FO Gold COmm/futivx03062026.csv",
+      "from": "inventory_only",
+      "to": "reviewed"
+    },
+    {
+      "member": "FO Gold COmm/futstk03062026.csv",
+      "from": "inventory_only",
+      "to": "reviewed"
+    },
+    {
+      "member": "FO Gold COmm/op03062026.csv",
+      "from": "inventory_only",
+      "to": "reviewed"
+    },
+    {
+      "member": "FO Gold COmm/optidx03062026.csv",
+      "from": "inventory_only",
+      "to": "reviewed"
+    },
+    {
+      "member": "FO Gold COmm/optstk03062026.csv",
+      "from": "inventory_only",
+      "to": "reviewed"
+    },
+    {
+      "member": "FO Gold COmm/ttfut03062026.csv",
+      "from": "inventory_only",
+      "to": "reviewed"
+    },
+    {
+      "member": "FO Gold COmm/ttopt03062026.csv",
+      "from": "inventory_only",
+      "to": "reviewed"
+    },
+    {
+      "member": "FO Gold COmm/fo_pos_of_clients.xls",
+      "from": "inventory_only",
+      "to": "reviewed"
+    }
+  ],
+  "actions": {
+    "raw_sources_modified": false,
+    "runtime_modified": false,
+    "mongo_accessed": false,
+    "imported": false,
+    "deployed": false,
+    "trades_placed": false
+  }
+}
