@@ -1,0 +1,2456 @@
+{
+  "schema_version": "ashstocks-am07-instrument-content-v1",
+  "audit_date": "2026-09-28",
+  "review_commit": "910c72f1ab6fdf014c081746626f38e2fe029759",
+  "archive": {
+    "path": "/Users/sourceborn/Documents/ChatGPT/Ash/V01-2026-09-07/payload/raw-assets/AM.07.Parameter.Files.zip",
+    "bytes": 10303731,
+    "sha256": "652be4ddb2b40915543ad848b2bfa10d011c6c2c5723a6e6a3480a85ddb2e2e5"
+  },
+  "method": {
+    "full_gzip_decode": true,
+    "full_json_parse": true,
+    "all_records_and_fields_visited": true,
+    "raw_modified": false,
+    "provider_fetches": 0,
+    "mongo_operations": 0,
+    "app_runtime_executed": false
+  },
+  "members": [
+    {
+      "member": "AM 07 Parameter Files/NSE.json.gz",
+      "bytes": 2114922,
+      "sha256": "ff1660b9630d8f0f39a869fdb187a10b756ba8b015114bd75400ea3b1a7dec12",
+      "uncompressed_bytes": 42253982,
+      "uncompressed_sha256": "93c8263ad22e830779be297035ab2a53970de0bb969a841013ba89017f61e79a",
+      "root_type": "array",
+      "records": 86140,
+      "field_value_count": 1715422,
+      "fields": {
+        "weekly": {
+          "present": 45082,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "boolean": 45082
+          },
+          "absent": 41058
+        },
+        "segment": {
+          "present": 86140,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 86140
+          },
+          "absent": 0
+        },
+        "name": {
+          "present": 86140,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 86140
+          },
+          "absent": 0
+        },
+        "exchange": {
+          "present": 86140,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 86140
+          },
+          "absent": 0
+        },
+        "expiry": {
+          "present": 76579,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "number": 76579
+          },
+          "absent": 9561
+        },
+        "instrument_type": {
+          "present": 86140,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 86140
+          },
+          "absent": 0
+        },
+        "asset_symbol": {
+          "present": 76579,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 76579
+          },
+          "absent": 9561
+        },
+        "underlying_symbol": {
+          "present": 76579,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 76579
+          },
+          "absent": 9561
+        },
+        "instrument_key": {
+          "present": 86140,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 86140
+          },
+          "absent": 0
+        },
+        "lot_size": {
+          "present": 86001,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "number": 86001
+          },
+          "absent": 139
+        },
+        "freeze_quantity": {
+          "present": 86001,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "number": 86001
+          },
+          "absent": 139
+        },
+        "exchange_token": {
+          "present": 86140,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 86140
+          },
+          "absent": 0
+        },
+        "minimum_lot": {
+          "present": 45082,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "number": 45082
+          },
+          "absent": 41058
+        },
+        "tick_size": {
+          "present": 86001,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "number": 86001
+          },
+          "absent": 139
+        },
+        "asset_type": {
+          "present": 76579,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 76579
+          },
+          "absent": 9561
+        },
+        "underlying_type": {
+          "present": 76579,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 76579
+          },
+          "absent": 9561
+        },
+        "trading_symbol": {
+          "present": 86140,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 86140
+          },
+          "absent": 0
+        },
+        "strike_price": {
+          "present": 76606,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "number": 76606
+          },
+          "absent": 9534
+        },
+        "qty_multiplier": {
+          "present": 86001,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "number": 86001
+          },
+          "absent": 139
+        },
+        "isin": {
+          "present": 9395,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 9395
+          },
+          "absent": 76745
+        },
+        "security_type": {
+          "present": 9395,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 9395
+          },
+          "absent": 76745
+        },
+        "short_name": {
+          "present": 2017,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 2017
+          },
+          "absent": 84123
+        },
+        "asset_key": {
+          "present": 67473,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 67473
+          },
+          "absent": 18667
+        },
+        "underlying_key": {
+          "present": 67473,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 67473
+          },
+          "absent": 18667
+        },
+        "last_trading_date": {
+          "present": 31497,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "number": 31497
+          },
+          "absent": 54643
+        },
+        "price_quote_unit": {
+          "present": 31523,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 31523
+          },
+          "absent": 54617
+        }
+      },
+      "segment_counts": {
+        "NCD_FO": 9106,
+        "NSE_COM": 31524,
+        "NSE_EQ": 9395,
+        "NSE_FO": 35976,
+        "NSE_INDEX": 139
+      },
+      "exchange_counts": {
+        "NSE": 86140
+      },
+      "segment_instrument_type_counts": {
+        "NCD_FO/CE": 4507,
+        "NCD_FO/FUT": 92,
+        "NCD_FO/PE": 4507,
+        "NSE_COM/CE": 15681,
+        "NSE_COM/COM": 27,
+        "NSE_COM/FUT": 135,
+        "NSE_COM/PE": 15681,
+        "NSE_EQ/AK": 1,
+        "NSE_EQ/AL": 1,
+        "NSE_EQ/AM": 1,
+        "NSE_EQ/AN": 1,
+        "NSE_EQ/AU": 1,
+        "NSE_EQ/AV": 1,
+        "NSE_EQ/AW": 1,
+        "NSE_EQ/AX": 1,
+        "NSE_EQ/AY": 1,
+        "NSE_EQ/AZ": 1,
+        "NSE_EQ/BA": 1,
+        "NSE_EQ/BC": 1,
+        "NSE_EQ/BE": 307,
+        "NSE_EQ/BR": 1,
+        "NSE_EQ/BS": 1,
+        "NSE_EQ/BU": 1,
+        "NSE_EQ/BV": 1,
+        "NSE_EQ/BW": 1,
+        "NSE_EQ/BX": 1,
+        "NSE_EQ/BZ": 27,
+        "NSE_EQ/D1": 2,
+        "NSE_EQ/E1": 4,
+        "NSE_EQ/EQ": 2376,
+        "NSE_EQ/GB": 45,
+        "NSE_EQ/GS": 129,
+        "NSE_EQ/IT": 2,
+        "NSE_EQ/IV": 21,
+        "NSE_EQ/N0": 938,
+        "NSE_EQ/N1": 107,
+        "NSE_EQ/N2": 37,
+        "NSE_EQ/N3": 30,
+        "NSE_EQ/N4": 19,
+        "NSE_EQ/N5": 24,
+        "NSE_EQ/N6": 24,
+        "NSE_EQ/N7": 20,
+        "NSE_EQ/N8": 15,
+        "NSE_EQ/N9": 17,
+        "NSE_EQ/NA": 19,
+        "NSE_EQ/NB": 16,
+        "NSE_EQ/NC": 19,
+        "NSE_EQ/ND": 20,
+        "NSE_EQ/NE": 17,
+        "NSE_EQ/NF": 12,
+        "NSE_EQ/NG": 11,
+        "NSE_EQ/NH": 11,
+        "NSE_EQ/NI": 7,
+        "NSE_EQ/NJ": 8,
+        "NSE_EQ/NK": 9,
+        "NSE_EQ/NL": 10,
+        "NSE_EQ/NM": 11,
+        "NSE_EQ/NN": 9,
+        "NSE_EQ/NO": 9,
+        "NSE_EQ/NP": 6,
+        "NSE_EQ/NQ": 5,
+        "NSE_EQ/NR": 6,
+        "NSE_EQ/NS": 7,
+        "NSE_EQ/NT": 4,
+        "NSE_EQ/NU": 4,
+        "NSE_EQ/NV": 3,
+        "NSE_EQ/NW": 3,
+        "NSE_EQ/NX": 4,
+        "NSE_EQ/NY": 3,
+        "NSE_EQ/NZ": 4,
+        "NSE_EQ/P1": 2,
+        "NSE_EQ/RR": 6,
+        "NSE_EQ/SG": 4259,
+        "NSE_EQ/SM": 368,
+        "NSE_EQ/ST": 187,
+        "NSE_EQ/SZ": 1,
+        "NSE_EQ/TB": 81,
+        "NSE_EQ/W1": 1,
+        "NSE_EQ/Y0": 2,
+        "NSE_EQ/Y1": 2,
+        "NSE_EQ/Y2": 2,
+        "NSE_EQ/Y3": 1,
+        "NSE_EQ/Y4": 1,
+        "NSE_EQ/Y5": 1,
+        "NSE_EQ/Y6": 2,
+        "NSE_EQ/Y7": 2,
+        "NSE_EQ/Y8": 2,
+        "NSE_EQ/Y9": 3,
+        "NSE_EQ/YA": 3,
+        "NSE_EQ/YB": 3,
+        "NSE_EQ/YC": 3,
+        "NSE_EQ/YD": 1,
+        "NSE_EQ/YG": 1,
+        "NSE_EQ/YH": 1,
+        "NSE_EQ/YI": 2,
+        "NSE_EQ/YJ": 1,
+        "NSE_EQ/YK": 1,
+        "NSE_EQ/YL": 2,
+        "NSE_EQ/YM": 1,
+        "NSE_EQ/YP": 1,
+        "NSE_EQ/YQ": 1,
+        "NSE_EQ/YR": 1,
+        "NSE_EQ/YS": 3,
+        "NSE_EQ/YT": 2,
+        "NSE_EQ/YU": 1,
+        "NSE_EQ/YV": 1,
+        "NSE_EQ/YW": 2,
+        "NSE_EQ/YX": 1,
+        "NSE_EQ/YY": 1,
+        "NSE_EQ/YZ": 2,
+        "NSE_EQ/Z0": 1,
+        "NSE_EQ/Z1": 1,
+        "NSE_EQ/Z2": 1,
+        "NSE_EQ/Z3": 1,
+        "NSE_EQ/Z4": 1,
+        "NSE_EQ/Z5": 2,
+        "NSE_EQ/Z6": 2,
+        "NSE_EQ/Z7": 2,
+        "NSE_EQ/Z8": 2,
+        "NSE_EQ/Z9": 3,
+        "NSE_EQ/ZC": 1,
+        "NSE_EQ/ZF": 1,
+        "NSE_EQ/ZG": 1,
+        "NSE_EQ/ZH": 1,
+        "NSE_EQ/ZI": 2,
+        "NSE_EQ/ZJ": 1,
+        "NSE_EQ/ZK": 1,
+        "NSE_EQ/ZL": 2,
+        "NSE_EQ/ZM": 2,
+        "NSE_EQ/ZN": 2,
+        "NSE_EQ/ZO": 1,
+        "NSE_EQ/ZP": 1,
+        "NSE_EQ/ZQ": 1,
+        "NSE_EQ/ZR": 1,
+        "NSE_EQ/ZS": 1,
+        "NSE_EQ/ZT": 1,
+        "NSE_EQ/ZY": 1,
+        "NSE_EQ/ZZ": 1,
+        "NSE_FO/CE": 17560,
+        "NSE_FO/FUT": 640,
+        "NSE_FO/PE": 17776,
+        "NSE_INDEX/INDEX": 139
+      },
+      "numeric": {
+        "lot_size": {
+          "present": 86001,
+          "finite_numbers": 86001,
+          "non_numeric": 0,
+          "zero": 0,
+          "negative": 0,
+          "min": 1,
+          "max": 71475
+        },
+        "freeze_quantity": {
+          "present": 86001,
+          "finite_numbers": 86001,
+          "non_numeric": 0,
+          "zero": 0,
+          "negative": 0,
+          "min": 10,
+          "max": 1429500
+        },
+        "minimum_lot": {
+          "present": 45082,
+          "finite_numbers": 45082,
+          "non_numeric": 0,
+          "zero": 0,
+          "negative": 0,
+          "min": 1,
+          "max": 71475
+        },
+        "tick_size": {
+          "present": 86001,
+          "finite_numbers": 86001,
+          "non_numeric": 0,
+          "zero": 0,
+          "negative": 0,
+          "min": 0.25,
+          "max": 500
+        },
+        "qty_multiplier": {
+          "present": 86001,
+          "finite_numbers": 86001,
+          "non_numeric": 0,
+          "zero": 0,
+          "negative": 0,
+          "min": 1,
+          "max": 5000
+        },
+        "strike_price": {
+          "present": 76606,
+          "finite_numbers": 76606,
+          "non_numeric": 0,
+          "zero": 894,
+          "negative": 0,
+          "min": 0,
+          "max": 411250
+        },
+        "expiry": {
+          "present": 76579,
+          "finite_numbers": 76579,
+          "non_numeric": 0,
+          "zero": 0,
+          "negative": 0,
+          "min": 1783621799000,
+          "max": 1940092199000,
+          "diagnostic_unix_ms_range": [
+            "2026-07-09T18:29:59.000Z",
+            "2031-06-24T18:29:59.000Z"
+          ]
+        },
+        "last_trading_date": {
+          "present": 31497,
+          "finite_numbers": 31497,
+          "non_numeric": 0,
+          "zero": 0,
+          "negative": 0,
+          "min": 1783621799000,
+          "max": 1814812199000,
+          "diagnostic_unix_ms_range": [
+            "2026-07-09T18:29:59.000Z",
+            "2027-07-05T18:29:59.000Z"
+          ]
+        }
+      },
+      "instrument_keys": {
+        "unique": 86140,
+        "duplicate_groups": 0,
+        "excess_records": 0,
+        "examples": []
+      },
+      "segment_exchange_tokens": {
+        "unique": 86140,
+        "duplicate_groups": 0,
+        "excess_records": 0,
+        "examples": []
+      },
+      "malformed_key_prefix": {
+        "count": 0,
+        "examples": []
+      },
+      "isin_syntax_and_luhn": {
+        "present": 9395,
+        "valid": 9394,
+        "invalid": 1,
+        "prefix_counts": {
+          "IN0": 255,
+          "IN1": 1570,
+          "IN2": 1252,
+          "IN3": 1007,
+          "IN4": 430,
+          "IN9": 6,
+          "INE": 4547,
+          "INF": 328
+        },
+        "invalid_examples": [
+          {
+            "segment": "NSE_EQ",
+            "name": "SDL GJ 6.1% 2028",
+            "exchange": "NSE",
+            "isin": "IN1520250085",
+            "instrument_type": "SG",
+            "instrument_key": "NSE_EQ|IN1520250085",
+            "lot_size": 100,
+            "freeze_quantity": 100000,
+            "exchange_token": "757559",
+            "tick_size": 1,
+            "trading_symbol": "61GJ28",
+            "qty_multiplier": 1,
+            "security_type": "NORMAL"
+          }
+        ],
+        "authority": "Diagnostic syntax/check-digit only; not proof of listing or company membership"
+      },
+      "cash_identity": {
+        "records": 9395,
+        "key_isin_mismatches": 0,
+        "mismatch_examples": [],
+        "symbols": {
+          "unique": 9389,
+          "duplicate_groups": 5,
+          "excess_records": 6,
+          "examples": [
+            {
+              "key": "CHOLAFIN",
+              "count": 2,
+              "records": [
+                {
+                  "segment": "NSE_EQ",
+                  "name": "CHOLAMANDALAM IN & FIN CO",
+                  "exchange": "NSE",
+                  "isin": "INE121A01024",
+                  "instrument_type": "EQ",
+                  "instrument_key": "NSE_EQ|INE121A01024",
+                  "lot_size": 1,
+                  "freeze_quantity": 100000,
+                  "exchange_token": "685",
+                  "tick_size": 10,
+                  "trading_symbol": "CHOLAFIN",
+                  "short_name": "Cholamandalam In & Fin Co",
+                  "qty_multiplier": 1,
+                  "security_type": "NORMAL"
+                },
+                {
+                  "segment": "NSE_EQ",
+                  "name": "CHOLAMANDALAM IN & FIN CO",
+                  "exchange": "NSE",
+                  "isin": "INE121A08PJ0",
+                  "instrument_type": "D1",
+                  "instrument_key": "NSE_EQ|INE121A08PJ0",
+                  "lot_size": 1,
+                  "freeze_quantity": 100000,
+                  "exchange_token": "19257",
+                  "tick_size": 5,
+                  "trading_symbol": "CHOLAFIN",
+                  "qty_multiplier": 1,
+                  "security_type": "NORMAL"
+                }
+              ]
+            },
+            {
+              "key": "AARTISURF",
+              "count": 2,
+              "records": [
+                {
+                  "segment": "NSE_EQ",
+                  "name": "AARTI SURFACTANTS LIMITED",
+                  "exchange": "NSE",
+                  "isin": "INE09EO01013",
+                  "instrument_type": "EQ",
+                  "instrument_key": "NSE_EQ|INE09EO01013",
+                  "lot_size": 1,
+                  "freeze_quantity": 100000,
+                  "exchange_token": "19233",
+                  "tick_size": 5,
+                  "trading_symbol": "AARTISURF",
+                  "short_name": "Aarti Surfactants",
+                  "qty_multiplier": 1,
+                  "security_type": "NORMAL"
+                },
+                {
+                  "segment": "NSE_EQ",
+                  "name": "AARTI SURFACTANTS LIMITED",
+                  "exchange": "NSE",
+                  "isin": "INE09EO04017",
+                  "instrument_type": "P1",
+                  "instrument_key": "NSE_EQ|INE09EO04017",
+                  "lot_size": 1,
+                  "freeze_quantity": 100000,
+                  "exchange_token": "12121",
+                  "tick_size": 5,
+                  "trading_symbol": "AARTISURF",
+                  "short_name": "AARTI SURFACTANTS",
+                  "qty_multiplier": 1,
+                  "security_type": "NORMAL"
+                }
+              ]
+            },
+            {
+              "key": "ELECTCAST",
+              "count": 2,
+              "records": [
+                {
+                  "segment": "NSE_EQ",
+                  "name": "ELECTCAST WARRANTS",
+                  "exchange": "NSE",
+                  "isin": "INE086A13016",
+                  "instrument_type": "W1",
+                  "instrument_key": "NSE_EQ|INE086A13016",
+                  "lot_size": 33340,
+                  "freeze_quantity": 100000,
+                  "exchange_token": "18116",
+                  "tick_size": 5,
+                  "trading_symbol": "ELECTCAST",
+                  "short_name": "ELECTROSTEEL CASTING",
+                  "qty_multiplier": 1,
+                  "security_type": "NORMAL"
+                },
+                {
+                  "segment": "NSE_EQ",
+                  "name": "ELECTROSTEEL CASTINGS LTD",
+                  "exchange": "NSE",
+                  "isin": "INE086A01029",
+                  "instrument_type": "EQ",
+                  "instrument_key": "NSE_EQ|INE086A01029",
+                  "lot_size": 1,
+                  "freeze_quantity": 100000,
+                  "exchange_token": "928",
+                  "tick_size": 1,
+                  "trading_symbol": "ELECTCAST",
+                  "short_name": "Electrosteel Castings",
+                  "qty_multiplier": 1,
+                  "security_type": "NORMAL"
+                }
+              ]
+            },
+            {
+              "key": "MOTHERSON",
+              "count": 2,
+              "records": [
+                {
+                  "segment": "NSE_EQ",
+                  "name": "SAMVARDHANA MOTHERSON INT",
+                  "exchange": "NSE",
+                  "isin": "INE775A08105",
+                  "instrument_type": "D1",
+                  "instrument_key": "NSE_EQ|INE775A08105",
+                  "lot_size": 1,
+                  "freeze_quantity": 100000,
+                  "exchange_token": "25510",
+                  "tick_size": 5,
+                  "trading_symbol": "MOTHERSON",
+                  "qty_multiplier": 1,
+                  "security_type": "NORMAL"
+                },
+                {
+                  "segment": "NSE_EQ",
+                  "name": "SAMVRDHNA MTHRSN INTL LTD",
+                  "exchange": "NSE",
+                  "isin": "INE775A01035",
+                  "instrument_type": "EQ",
+                  "instrument_key": "NSE_EQ|INE775A01035",
+                  "lot_size": 1,
+                  "freeze_quantity": 100000,
+                  "exchange_token": "4204",
+                  "tick_size": 1,
+                  "trading_symbol": "MOTHERSON",
+                  "short_name": "Samvardhana Motherson Intl",
+                  "qty_multiplier": 1,
+                  "security_type": "NORMAL"
+                }
+              ]
+            },
+            {
+              "key": "IMC1",
+              "count": 3,
+              "records": [
+                {
+                  "segment": "NSE_EQ",
+                  "name": "SEC RE NCGB 8.25% STRPP B",
+                  "exchange": "NSE",
+                  "isin": "INE00QS24043",
+                  "instrument_type": "N1",
+                  "instrument_key": "NSE_EQ|INE00QS24043",
+                  "lot_size": 1,
+                  "freeze_quantity": 100000,
+                  "exchange_token": "14219",
+                  "tick_size": 1,
+                  "trading_symbol": "IMC1",
+                  "qty_multiplier": 1,
+                  "security_type": "NORMAL"
+                },
+                {
+                  "segment": "NSE_EQ",
+                  "name": "SEC RE NCGB 8.25% STRPP C",
+                  "exchange": "NSE",
+                  "isin": "INE00QS24027",
+                  "instrument_type": "N2",
+                  "instrument_key": "NSE_EQ|INE00QS24027",
+                  "lot_size": 1,
+                  "freeze_quantity": 100000,
+                  "exchange_token": "14224",
+                  "tick_size": 1,
+                  "trading_symbol": "IMC1",
+                  "qty_multiplier": 1,
+                  "security_type": "NORMAL"
+                },
+                {
+                  "segment": "NSE_EQ",
+                  "name": "SEC RE NCGB 8.25% STRPP D",
+                  "exchange": "NSE",
+                  "isin": "INE00QS24035",
+                  "instrument_type": "N3",
+                  "instrument_key": "NSE_EQ|INE00QS24035",
+                  "lot_size": 1,
+                  "freeze_quantity": 100000,
+                  "exchange_token": "14228",
+                  "tick_size": 1,
+                  "trading_symbol": "IMC1",
+                  "qty_multiplier": 1,
+                  "security_type": "NORMAL"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "diagnostic_dates_are_not_fetch_dates": true,
+      "requested_stocks": [
+        {
+          "requested_symbol": "BBL",
+          "matches": [
+            {
+              "instrument_key": "NSE_EQ|INE464A01036",
+              "isin": "INE464A01036",
+              "trading_symbol": "BBL",
+              "name": "BHARAT BIJLEE LTD",
+              "instrument_type": "EQ",
+              "lot_size": 1,
+              "tick_size": 10
+            }
+          ]
+        },
+        {
+          "requested_symbol": "LATENTVIEW",
+          "matches": [
+            {
+              "instrument_key": "NSE_EQ|INE0I7C01011",
+              "isin": "INE0I7C01011",
+              "trading_symbol": "LATENTVIEW",
+              "name": "LATENT VIEW ANALYTICS LTD",
+              "short_name": "Latent View Analytics",
+              "instrument_type": "EQ",
+              "lot_size": 1,
+              "tick_size": 5
+            }
+          ]
+        },
+        {
+          "requested_symbol": "JWL",
+          "matches": [
+            {
+              "instrument_key": "NSE_EQ|INE209L01016",
+              "isin": "INE209L01016",
+              "trading_symbol": "JWL",
+              "name": "JUPITER WAGONS LIMITED",
+              "short_name": "Jupiter Wagons",
+              "instrument_type": "EQ",
+              "lot_size": 1,
+              "tick_size": 5
+            }
+          ]
+        },
+        {
+          "requested_symbol": "RAILTEL",
+          "matches": [
+            {
+              "instrument_key": "NSE_EQ|INE0DD101019",
+              "isin": "INE0DD101019",
+              "trading_symbol": "RAILTEL",
+              "name": "RAILTEL CORP OF IND LTD",
+              "short_name": "Railtel Corp of India",
+              "instrument_type": "EQ",
+              "lot_size": 1,
+              "tick_size": 5
+            }
+          ]
+        },
+        {
+          "requested_symbol": "KEC",
+          "matches": [
+            {
+              "instrument_key": "NSE_EQ|INE389H01022",
+              "isin": "INE389H01022",
+              "trading_symbol": "KEC",
+              "name": "KEC INTL. LIMITED",
+              "short_name": "KEC International",
+              "instrument_type": "EQ",
+              "lot_size": 1,
+              "tick_size": 5
+            }
+          ]
+        },
+        {
+          "requested_symbol": "TRANSRAILL",
+          "matches": [
+            {
+              "instrument_key": "NSE_EQ|INE454P01035",
+              "isin": "INE454P01035",
+              "trading_symbol": "TRANSRAILL",
+              "name": "TRANSRAIL LIGHTING LTD",
+              "instrument_type": "EQ",
+              "lot_size": 1,
+              "tick_size": 5
+            }
+          ]
+        },
+        {
+          "requested_symbol": "GODFRYPHLP",
+          "matches": [
+            {
+              "instrument_key": "NSE_EQ|INE260B01028",
+              "isin": "INE260B01028",
+              "trading_symbol": "GODFRYPHLP",
+              "name": "GODFREY PHILLIPS INDIA LT",
+              "short_name": "Godfrey Phillips",
+              "instrument_type": "EQ",
+              "lot_size": 1,
+              "tick_size": 10
+            }
+          ]
+        },
+        {
+          "requested_symbol": "BSOFT",
+          "matches": [
+            {
+              "instrument_key": "NSE_EQ|INE836A01035",
+              "isin": "INE836A01035",
+              "trading_symbol": "BSOFT",
+              "name": "BIRLASOFT LIMITED",
+              "short_name": "Birlasoft",
+              "instrument_type": "EQ",
+              "lot_size": 1,
+              "tick_size": 5
+            }
+          ]
+        },
+        {
+          "requested_symbol": "ZENSARTECH",
+          "matches": [
+            {
+              "instrument_key": "NSE_EQ|INE520A01027",
+              "isin": "INE520A01027",
+              "trading_symbol": "ZENSARTECH",
+              "name": "ZENSAR TECHNOLOGIES  LTD",
+              "short_name": "Zensar Technologies",
+              "instrument_type": "EQ",
+              "lot_size": 1,
+              "tick_size": 5
+            }
+          ]
+        },
+        {
+          "requested_symbol": "RHIM",
+          "matches": [
+            {
+              "instrument_key": "NSE_EQ|INE743M01012",
+              "isin": "INE743M01012",
+              "trading_symbol": "RHIM",
+              "name": "RHI MAGNESITA INDIA LTD",
+              "short_name": "RHI Magnesita India",
+              "instrument_type": "EQ",
+              "lot_size": 1,
+              "tick_size": 5
+            }
+          ]
+        },
+        {
+          "requested_symbol": "SURYAROSNI",
+          "matches": [
+            {
+              "instrument_key": "NSE_EQ|INE335A01020",
+              "isin": "INE335A01020",
+              "trading_symbol": "SURYAROSNI",
+              "name": "SURYA ROSHNI LTD",
+              "instrument_type": "EQ",
+              "lot_size": 1,
+              "tick_size": 5
+            }
+          ]
+        },
+        {
+          "requested_symbol": "THERMAX",
+          "matches": [
+            {
+              "instrument_key": "NSE_EQ|INE152A01029",
+              "isin": "INE152A01029",
+              "trading_symbol": "THERMAX",
+              "name": "THERMAX LTD",
+              "short_name": "Thermax",
+              "instrument_type": "EQ",
+              "lot_size": 1,
+              "tick_size": 50
+            }
+          ]
+        }
+      ],
+      "crc32": "29889e1a"
+    },
+    {
+      "member": "AM 07 Parameter Files/BSE.json.gz",
+      "bytes": 765574,
+      "sha256": "b8cca24a12d9b78880b79153e689f4e52c5535040925c1919352c9d249181e32",
+      "uncompressed_bytes": 10133603,
+      "uncompressed_sha256": "8c07ffb895d3ce75193e5e88da00697f739320f9606ae75730bcb00cf134720a",
+      "root_type": "array",
+      "records": 27089,
+      "field_value_count": 432070,
+      "fields": {
+        "segment": {
+          "present": 27089,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 27089
+          },
+          "absent": 0
+        },
+        "name": {
+          "present": 27089,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 27089
+          },
+          "absent": 0
+        },
+        "exchange": {
+          "present": 27089,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 27089
+          },
+          "absent": 0
+        },
+        "isin": {
+          "present": 12584,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 12584
+          },
+          "absent": 14505
+        },
+        "instrument_type": {
+          "present": 27089,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 27089
+          },
+          "absent": 0
+        },
+        "instrument_key": {
+          "present": 27089,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 27089
+          },
+          "absent": 0
+        },
+        "lot_size": {
+          "present": 27016,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "number": 27016
+          },
+          "absent": 73
+        },
+        "freeze_quantity": {
+          "present": 27016,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "number": 27016
+          },
+          "absent": 73
+        },
+        "exchange_token": {
+          "present": 27089,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 27089
+          },
+          "absent": 0
+        },
+        "tick_size": {
+          "present": 27016,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "number": 27016
+          },
+          "absent": 73
+        },
+        "trading_symbol": {
+          "present": 27089,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 27089
+          },
+          "absent": 0
+        },
+        "qty_multiplier": {
+          "present": 22246,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "number": 22246
+          },
+          "absent": 4843
+        },
+        "weekly": {
+          "present": 14432,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "boolean": 14432
+          },
+          "absent": 12657
+        },
+        "expiry": {
+          "present": 14432,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "number": 14432
+          },
+          "absent": 12657
+        },
+        "asset_symbol": {
+          "present": 14432,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 14432
+          },
+          "absent": 12657
+        },
+        "underlying_symbol": {
+          "present": 14432,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 14432
+          },
+          "absent": 12657
+        },
+        "minimum_lot": {
+          "present": 14432,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "number": 14432
+          },
+          "absent": 12657
+        },
+        "asset_key": {
+          "present": 4770,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 4770
+          },
+          "absent": 22319
+        },
+        "underlying_key": {
+          "present": 4770,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 4770
+          },
+          "absent": 22319
+        },
+        "asset_type": {
+          "present": 14432,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 14432
+          },
+          "absent": 12657
+        },
+        "underlying_type": {
+          "present": 14432,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 14432
+          },
+          "absent": 12657
+        },
+        "strike_price": {
+          "present": 14432,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "number": 14432
+          },
+          "absent": 12657
+        },
+        "short_name": {
+          "present": 1573,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 1573
+          },
+          "absent": 25516
+        }
+      },
+      "segment_counts": {
+        "BCD_FO": 9662,
+        "BSE_EQ": 12584,
+        "BSE_FO": 4770,
+        "BSE_INDEX": 73
+      },
+      "exchange_counts": {
+        "BSE": 27089
+      },
+      "segment_instrument_type_counts": {
+        "BCD_FO/CE": 4785,
+        "BCD_FO/FUT": 92,
+        "BCD_FO/PE": 4785,
+        "BSE_EQ/A": 722,
+        "BSE_EQ/B": 1566,
+        "BSE_EQ/E": 40,
+        "BSE_EQ/F": 6489,
+        "BSE_EQ/G": 1108,
+        "BSE_EQ/IF": 27,
+        "BSE_EQ/M": 319,
+        "BSE_EQ/MS": 5,
+        "BSE_EQ/MT": 178,
+        "BSE_EQ/P": 56,
+        "BSE_EQ/R": 3,
+        "BSE_EQ/T": 289,
+        "BSE_EQ/TS": 6,
+        "BSE_EQ/X": 1210,
+        "BSE_EQ/XT": 494,
+        "BSE_EQ/Z": 67,
+        "BSE_EQ/ZP": 5,
+        "BSE_FO/CE": 2379,
+        "BSE_FO/FUT": 12,
+        "BSE_FO/PE": 2379,
+        "BSE_INDEX/INDEX": 73
+      },
+      "numeric": {
+        "lot_size": {
+          "present": 27016,
+          "finite_numbers": 27016,
+          "non_numeric": 0,
+          "zero": 0,
+          "negative": 0,
+          "min": 1,
+          "max": 10000000
+        },
+        "freeze_quantity": {
+          "present": 27016,
+          "finite_numbers": 27016,
+          "non_numeric": 0,
+          "zero": 0,
+          "negative": 0,
+          "min": 500,
+          "max": 10000000
+        },
+        "minimum_lot": {
+          "present": 14432,
+          "finite_numbers": 14432,
+          "non_numeric": 0,
+          "zero": 0,
+          "negative": 0,
+          "min": 1,
+          "max": 75
+        },
+        "tick_size": {
+          "present": 27016,
+          "finite_numbers": 27016,
+          "non_numeric": 0,
+          "zero": 0,
+          "negative": 0,
+          "min": 0.25,
+          "max": 100
+        },
+        "qty_multiplier": {
+          "present": 22246,
+          "finite_numbers": 22246,
+          "non_numeric": 0,
+          "zero": 0,
+          "negative": 0,
+          "min": 1,
+          "max": 2000
+        },
+        "strike_price": {
+          "present": 14432,
+          "finite_numbers": 14432,
+          "non_numeric": 0,
+          "zero": 104,
+          "negative": 0,
+          "min": 0,
+          "max": 91000
+        },
+        "expiry": {
+          "present": 14432,
+          "finite_numbers": 14432,
+          "non_numeric": 0,
+          "zero": 0,
+          "negative": 0,
+          "min": 1783621799000,
+          "max": 1940264999000,
+          "diagnostic_unix_ms_range": [
+            "2026-07-09T18:29:59.000Z",
+            "2031-06-26T18:29:59.000Z"
+          ]
+        }
+      },
+      "instrument_keys": {
+        "unique": 27089,
+        "duplicate_groups": 0,
+        "excess_records": 0,
+        "examples": []
+      },
+      "segment_exchange_tokens": {
+        "unique": 27089,
+        "duplicate_groups": 0,
+        "excess_records": 0,
+        "examples": []
+      },
+      "malformed_key_prefix": {
+        "count": 0,
+        "examples": []
+      },
+      "isin_syntax_and_luhn": {
+        "present": 12584,
+        "valid": 12583,
+        "invalid": 1,
+        "prefix_counts": {
+          "IN0": 563,
+          "IN1": 244,
+          "IN2": 180,
+          "IN3": 97,
+          "IN4": 21,
+          "IN9": 12,
+          "INE": 10846,
+          "INF": 619,
+          "INY": 2
+        },
+        "invalid_examples": [
+          {
+            "segment": "BSE_EQ",
+            "name": "703RJSDL36",
+            "exchange": "BSE",
+            "isin": "IN2920200698",
+            "instrument_type": "G",
+            "instrument_key": "BSE_EQ|IN2920200698",
+            "lot_size": 1,
+            "freeze_quantity": 100000,
+            "exchange_token": "810692",
+            "tick_size": 1,
+            "trading_symbol": "703RJSDL36",
+            "qty_multiplier": 1
+          }
+        ],
+        "authority": "Diagnostic syntax/check-digit only; not proof of listing or company membership"
+      },
+      "cash_identity": {
+        "records": 12584,
+        "key_isin_mismatches": 0,
+        "mismatch_examples": [],
+        "symbols": {
+          "unique": 12584,
+          "duplicate_groups": 0,
+          "excess_records": 0,
+          "examples": []
+        }
+      },
+      "diagnostic_dates_are_not_fetch_dates": true,
+      "requested_stocks": [
+        {
+          "requested_symbol": "BBL",
+          "matches": [
+            {
+              "instrument_key": "BSE_EQ|INE464A01036",
+              "isin": "INE464A01036",
+              "trading_symbol": "BBL",
+              "name": "BHARAT BIJLEE LTD.",
+              "instrument_type": "A",
+              "lot_size": 1,
+              "tick_size": 5
+            }
+          ]
+        },
+        {
+          "requested_symbol": "LATENTVIEW",
+          "matches": [
+            {
+              "instrument_key": "BSE_EQ|INE0I7C01011",
+              "isin": "INE0I7C01011",
+              "trading_symbol": "LATENTVIEW",
+              "name": "Latent View Analytics Limited",
+              "short_name": "Latent View Analytics",
+              "instrument_type": "A",
+              "lot_size": 1,
+              "tick_size": 5
+            }
+          ]
+        },
+        {
+          "requested_symbol": "JWL",
+          "matches": [
+            {
+              "instrument_key": "BSE_EQ|INE209L01016",
+              "isin": "INE209L01016",
+              "trading_symbol": "JWL",
+              "name": "JUPITER WAGONS LIMITED",
+              "short_name": "Commercial Engineers",
+              "instrument_type": "A",
+              "lot_size": 1,
+              "tick_size": 5
+            }
+          ]
+        },
+        {
+          "requested_symbol": "RAILTEL",
+          "matches": [
+            {
+              "instrument_key": "BSE_EQ|INE0DD101019",
+              "isin": "INE0DD101019",
+              "trading_symbol": "RAILTEL",
+              "name": "RailTel Corporation of India L",
+              "short_name": "RAILTEL CORPORATION",
+              "instrument_type": "A",
+              "lot_size": 1,
+              "tick_size": 5
+            }
+          ]
+        },
+        {
+          "requested_symbol": "KEC",
+          "matches": [
+            {
+              "instrument_key": "BSE_EQ|INE389H01022",
+              "isin": "INE389H01022",
+              "trading_symbol": "KEC",
+              "name": "KEC INTERNATIONAL LTD.",
+              "short_name": "KEC INTERNATIONAL",
+              "instrument_type": "A",
+              "lot_size": 1,
+              "tick_size": 5
+            }
+          ]
+        },
+        {
+          "requested_symbol": "TRANSRAILL",
+          "matches": [
+            {
+              "instrument_key": "BSE_EQ|INE454P01035",
+              "isin": "INE454P01035",
+              "trading_symbol": "TRANSRAILL",
+              "name": "Transrail Lighting Limited",
+              "instrument_type": "A",
+              "lot_size": 1,
+              "tick_size": 5
+            }
+          ]
+        },
+        {
+          "requested_symbol": "GODFRYPHLP",
+          "matches": [
+            {
+              "instrument_key": "BSE_EQ|INE260B01028",
+              "isin": "INE260B01028",
+              "trading_symbol": "GODFRYPHLP",
+              "name": "GODFREY PHILLIPS INDIA LTD.",
+              "short_name": "GODFREY PHILLIPS",
+              "instrument_type": "A",
+              "lot_size": 1,
+              "tick_size": 5
+            }
+          ]
+        },
+        {
+          "requested_symbol": "BSOFT",
+          "matches": [
+            {
+              "instrument_key": "BSE_EQ|INE836A01035",
+              "isin": "INE836A01035",
+              "trading_symbol": "BSOFT",
+              "name": "BIRLASOFT LIMITED",
+              "short_name": "BIRLASOFT",
+              "instrument_type": "A",
+              "lot_size": 1,
+              "tick_size": 5
+            }
+          ]
+        },
+        {
+          "requested_symbol": "ZENSARTECH",
+          "matches": [
+            {
+              "instrument_key": "BSE_EQ|INE520A01027",
+              "isin": "INE520A01027",
+              "trading_symbol": "ZENSARTECH",
+              "name": "ZENSAR TECHNOLOGIES LTD.",
+              "short_name": "ZENSAR TECHNOLOGIES",
+              "instrument_type": "A",
+              "lot_size": 1,
+              "tick_size": 5
+            }
+          ]
+        },
+        {
+          "requested_symbol": "RHIM",
+          "matches": [
+            {
+              "instrument_key": "BSE_EQ|INE743M01012",
+              "isin": "INE743M01012",
+              "trading_symbol": "RHIM",
+              "name": "RHI MAGNESITA INDIA LIMITED",
+              "short_name": "RHI Magnesita India",
+              "instrument_type": "A",
+              "lot_size": 1,
+              "tick_size": 5
+            }
+          ]
+        },
+        {
+          "requested_symbol": "SURYAROSNI",
+          "matches": [
+            {
+              "instrument_key": "BSE_EQ|INE335A01020",
+              "isin": "INE335A01020",
+              "trading_symbol": "SURYAROSNI",
+              "name": "SURYA ROSHNI LTD.",
+              "instrument_type": "A",
+              "lot_size": 1,
+              "tick_size": 5
+            }
+          ]
+        },
+        {
+          "requested_symbol": "THERMAX",
+          "matches": [
+            {
+              "instrument_key": "BSE_EQ|INE152A01029",
+              "isin": "INE152A01029",
+              "trading_symbol": "THERMAX",
+              "name": "THERMAX LTD.",
+              "short_name": "THERMAX",
+              "instrument_type": "A",
+              "lot_size": 1,
+              "tick_size": 5
+            }
+          ]
+        }
+      ],
+      "crc32": "756e889f"
+    },
+    {
+      "member": "AM 07 Parameter Files/BSE_MIS.json.gz",
+      "bytes": 52614,
+      "sha256": "1b30f9bd3b937508b88655c81facf570a44028b3059017983f5ea49527ca603c",
+      "uncompressed_bytes": 513458,
+      "uncompressed_sha256": "79328bd6d7a1ecb10b917195499db0cf6b8d1accc61e05cdb997715ce3d37afd",
+      "root_type": "array",
+      "records": 1458,
+      "field_value_count": 21358,
+      "fields": {
+        "segment": {
+          "present": 1458,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 1458
+          },
+          "absent": 0
+        },
+        "name": {
+          "present": 1458,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 1458
+          },
+          "absent": 0
+        },
+        "exchange": {
+          "present": 1458,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 1458
+          },
+          "absent": 0
+        },
+        "isin": {
+          "present": 1458,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 1458
+          },
+          "absent": 0
+        },
+        "instrument_type": {
+          "present": 1458,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 1458
+          },
+          "absent": 0
+        },
+        "instrument_key": {
+          "present": 1458,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 1458
+          },
+          "absent": 0
+        },
+        "lot_size": {
+          "present": 1458,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "number": 1458
+          },
+          "absent": 0
+        },
+        "freeze_quantity": {
+          "present": 1458,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "number": 1458
+          },
+          "absent": 0
+        },
+        "exchange_token": {
+          "present": 1458,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 1458
+          },
+          "absent": 0
+        },
+        "tick_size": {
+          "present": 1458,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "number": 1458
+          },
+          "absent": 0
+        },
+        "trading_symbol": {
+          "present": 1458,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 1458
+          },
+          "absent": 0
+        },
+        "short_name": {
+          "present": 946,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "string": 946
+          },
+          "absent": 512
+        },
+        "qty_multiplier": {
+          "present": 1458,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "number": 1458
+          },
+          "absent": 0
+        },
+        "intraday_margin": {
+          "present": 1458,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "number": 1458
+          },
+          "absent": 0
+        },
+        "intraday_leverage": {
+          "present": 1458,
+          "null": 0,
+          "empty_string": 0,
+          "types": {
+            "number": 1458
+          },
+          "absent": 0
+        }
+      },
+      "segment_counts": {
+        "BSE_EQ": 1458
+      },
+      "exchange_counts": {
+        "BSE": 1458
+      },
+      "segment_instrument_type_counts": {
+        "BSE_EQ/A": 687,
+        "BSE_EQ/B": 764,
+        "BSE_EQ/E": 1,
+        "BSE_EQ/F": 6
+      },
+      "numeric": {
+        "lot_size": {
+          "present": 1458,
+          "finite_numbers": 1458,
+          "non_numeric": 0,
+          "zero": 0,
+          "negative": 0,
+          "min": 1,
+          "max": 1
+        },
+        "freeze_quantity": {
+          "present": 1458,
+          "finite_numbers": 1458,
+          "non_numeric": 0,
+          "zero": 0,
+          "negative": 0,
+          "min": 100000,
+          "max": 100000
+        },
+        "tick_size": {
+          "present": 1458,
+          "finite_numbers": 1458,
+          "non_numeric": 0,
+          "zero": 0,
+          "negative": 0,
+          "min": 1,
+          "max": 5
+        },
+        "qty_multiplier": {
+          "present": 1458,
+          "finite_numbers": 1458,
+          "non_numeric": 0,
+          "zero": 0,
+          "negative": 0,
+          "min": 1,
+          "max": 1
+        },
+        "intraday_margin": {
+          "present": 1458,
+          "finite_numbers": 1458,
+          "non_numeric": 0,
+          "zero": 0,
+          "negative": 0,
+          "min": 20,
+          "max": 100
+        },
+        "intraday_leverage": {
+          "present": 1458,
+          "finite_numbers": 1458,
+          "non_numeric": 0,
+          "zero": 0,
+          "negative": 0,
+          "min": 1,
+          "max": 5
+        }
+      },
+      "instrument_keys": {
+        "unique": 1458,
+        "duplicate_groups": 0,
+        "excess_records": 0,
+        "examples": []
+      },
+      "segment_exchange_tokens": {
+        "unique": 1458,
+        "duplicate_groups": 0,
+        "excess_records": 0,
+        "examples": []
+      },
+      "malformed_key_prefix": {
+        "count": 0,
+        "examples": []
+      },
+      "isin_syntax_and_luhn": {
+        "present": 1458,
+        "valid": 1458,
+        "invalid": 0,
+        "prefix_counts": {
+          "INE": 1387,
+          "INF": 71
+        },
+        "invalid_examples": [],
+        "authority": "Diagnostic syntax/check-digit only; not proof of listing or company membership"
+      },
+      "cash_identity": {
+        "records": 1458,
+        "key_isin_mismatches": 0,
+        "mismatch_examples": [],
+        "symbols": {
+          "unique": 1458,
+          "duplicate_groups": 0,
+          "excess_records": 0,
+          "examples": []
+        }
+      },
+      "diagnostic_dates_are_not_fetch_dates": true,
+      "requested_stocks": [
+        {
+          "requested_symbol": "BBL",
+          "matches": [
+            {
+              "instrument_key": "BSE_EQ|INE464A01036",
+              "isin": "INE464A01036",
+              "trading_symbol": "BBL",
+              "name": "BHARAT BIJLEE LTD.",
+              "instrument_type": "A",
+              "lot_size": 1,
+              "tick_size": 5
+            }
+          ]
+        },
+        {
+          "requested_symbol": "LATENTVIEW",
+          "matches": [
+            {
+              "instrument_key": "BSE_EQ|INE0I7C01011",
+              "isin": "INE0I7C01011",
+              "trading_symbol": "LATENTVIEW",
+              "name": "Latent View Analytics Limited",
+              "short_name": "Latent View Analytics",
+              "instrument_type": "A",
+              "lot_size": 1,
+              "tick_size": 5
+            }
+          ]
+        },
+        {
+          "requested_symbol": "JWL",
+          "matches": [
+            {
+              "instrument_key": "BSE_EQ|INE209L01016",
+              "isin": "INE209L01016",
+              "trading_symbol": "JWL",
+              "name": "JUPITER WAGONS LIMITED",
+              "short_name": "Commercial Engineers",
+              "instrument_type": "A",
+              "lot_size": 1,
+              "tick_size": 5
+            }
+          ]
+        },
+        {
+          "requested_symbol": "RAILTEL",
+          "matches": [
+            {
+              "instrument_key": "BSE_EQ|INE0DD101019",
+              "isin": "INE0DD101019",
+              "trading_symbol": "RAILTEL",
+              "name": "RailTel Corporation of India L",
+              "short_name": "RAILTEL CORPORATION",
+              "instrument_type": "A",
+              "lot_size": 1,
+              "tick_size": 5
+            }
+          ]
+        },
+        {
+          "requested_symbol": "KEC",
+          "matches": [
+            {
+              "instrument_key": "BSE_EQ|INE389H01022",
+              "isin": "INE389H01022",
+              "trading_symbol": "KEC",
+              "name": "KEC INTERNATIONAL LTD.",
+              "short_name": "KEC INTERNATIONAL",
+              "instrument_type": "A",
+              "lot_size": 1,
+              "tick_size": 5
+            }
+          ]
+        },
+        {
+          "requested_symbol": "TRANSRAILL",
+          "matches": [
+            {
+              "instrument_key": "BSE_EQ|INE454P01035",
+              "isin": "INE454P01035",
+              "trading_symbol": "TRANSRAILL",
+              "name": "Transrail Lighting Limited",
+              "instrument_type": "A",
+              "lot_size": 1,
+              "tick_size": 5
+            }
+          ]
+        },
+        {
+          "requested_symbol": "GODFRYPHLP",
+          "matches": [
+            {
+              "instrument_key": "BSE_EQ|INE260B01028",
+              "isin": "INE260B01028",
+              "trading_symbol": "GODFRYPHLP",
+              "name": "GODFREY PHILLIPS INDIA LTD.",
+              "short_name": "GODFREY PHILLIPS",
+              "instrument_type": "A",
+              "lot_size": 1,
+              "tick_size": 5
+            }
+          ]
+        },
+        {
+          "requested_symbol": "BSOFT",
+          "matches": [
+            {
+              "instrument_key": "BSE_EQ|INE836A01035",
+              "isin": "INE836A01035",
+              "trading_symbol": "BSOFT",
+              "name": "BIRLASOFT LIMITED",
+              "short_name": "BIRLASOFT",
+              "instrument_type": "A",
+              "lot_size": 1,
+              "tick_size": 5
+            }
+          ]
+        },
+        {
+          "requested_symbol": "ZENSARTECH",
+          "matches": [
+            {
+              "instrument_key": "BSE_EQ|INE520A01027",
+              "isin": "INE520A01027",
+              "trading_symbol": "ZENSARTECH",
+              "name": "ZENSAR TECHNOLOGIES LTD.",
+              "short_name": "ZENSAR TECHNOLOGIES",
+              "instrument_type": "A",
+              "lot_size": 1,
+              "tick_size": 5
+            }
+          ]
+        },
+        {
+          "requested_symbol": "RHIM",
+          "matches": [
+            {
+              "instrument_key": "BSE_EQ|INE743M01012",
+              "isin": "INE743M01012",
+              "trading_symbol": "RHIM",
+              "name": "RHI MAGNESITA INDIA LIMITED",
+              "short_name": "RHI Magnesita India",
+              "instrument_type": "A",
+              "lot_size": 1,
+              "tick_size": 5
+            }
+          ]
+        },
+        {
+          "requested_symbol": "SURYAROSNI",
+          "matches": [
+            {
+              "instrument_key": "BSE_EQ|INE335A01020",
+              "isin": "INE335A01020",
+              "trading_symbol": "SURYAROSNI",
+              "name": "SURYA ROSHNI LTD.",
+              "instrument_type": "A",
+              "lot_size": 1,
+              "tick_size": 5
+            }
+          ]
+        },
+        {
+          "requested_symbol": "THERMAX",
+          "matches": [
+            {
+              "instrument_key": "BSE_EQ|INE152A01029",
+              "isin": "INE152A01029",
+              "trading_symbol": "THERMAX",
+              "name": "THERMAX LTD.",
+              "short_name": "THERMAX",
+              "instrument_type": "A",
+              "lot_size": 1,
+              "tick_size": 5
+            }
+          ]
+        }
+      ],
+      "crc32": "09067f1f"
+    }
+  ],
+  "nse_eq_eq_candidate_diagnostics": {
+    "count": 2376,
+    "distinct_symbols": 2376,
+    "distinct_isins": 2376,
+    "isin_prefix_counts": {
+      "IN9": 1,
+      "INE": 2047,
+      "INF": 328
+    },
+    "security_type_counts": {
+      "NORMAL": 2376
+    },
+    "symbol_syntax_failures": 0,
+    "isin_syntax_failures": 0,
+    "key_isin_mismatches": 0,
+    "checksum_failures": [],
+    "fund_prefix_symbols": [
+      "SMALLIETF",
+      "CHEMICAL",
+      "MOMENTUM30",
+      "TOP15IETF",
+      "QUALITY30",
+      "MID150",
+      "MSCIINDIA",
+      "NIFTY100EW",
+      "EVIETF",
+      "NIFTY1",
+      "GOLDAXIS",
+      "NIFTYAXIS",
+      "SILVERBEES",
+      "AUTOBEES",
+      "GILT5YBEES",
+      "PHARMABEES",
+      "BANKNIFTY1",
+      "SILVER1",
+      "MIDCAP",
+      "CONS",
+      "NV20",
+      "NEXT50ETF",
+      "GOLD1",
+      "IT",
+      "JUNIORBEES",
+      "LIQUIDBEES",
+      "INFRABEES",
+      "SHARIABEES",
+      "HEALTHAXIS",
+      "ITAXIS",
+      "BNKETFAXIS",
+      "NIF100BEES",
+      "LIQGRWBEES",
+      "MANUFGBEES",
+      "SNXT30BEES",
+      "LIQUID1",
+      "ICICIB22",
+      "UNIONGOLD",
+      "DIVOPPBEES",
+      "MNC",
+      "LOWVOL1",
+      "ALPHA",
+      "CONSUMBEES",
+      "BBNPPGOLD",
+      "MOINFRA",
+      "MOMGF",
+      "MONEXT50",
+      "MON50EQUAL",
+      "MOCAPITAL",
+      "CHOICEGOLD",
+      "MOSERVICE",
+      "MOMNC",
+      "MOENERGY",
+      "MOIPO",
+      "BBNPNBETF",
+      "MONIFTY100",
+      "MOGOLD",
+      "MOSILVER",
+      "MOMIDMTM",
+      "MOTOUR",
+      "MOPSE",
+      "MOALPHA50",
+      "MOSMALL250",
+      "MOREALTY",
+      "SILVERAXIS",
+      "MODEFENCE",
+      "MOMENTUM50",
+      "MOVALUE",
+      "MOHEALTH",
+      "MONQ50",
+      "SENSEXAXIS",
+      "MON100",
+      "SILVERBND",
+      "GOLDBND",
+      "MOGSEC",
+      "AONESILVER",
+      "MONIFTY500",
+      "MOQUALITY",
+      "AONEGOLD",
+      "AONETMMQ50",
+      "MOLOWVOL",
+      "MOMOMENTUM",
+      "LIQUIDCASE",
+      "GOLDCASE",
+      "SILVERCASE",
+      "MID150CASE",
+      "TOP100CASE",
+      "NIFTYCASE",
+      "LTGILTCASE",
+      "SML100CASE",
+      "LICNFNHGP",
+      "LICNETFSEN",
+      "LICNETFN50",
+      "LICNETFGSC",
+      "EBBETF0430",
+      "LICMFGOLD",
+      "EBBETF0431",
+      "CONSUMAXIS",
+      "GILT10BETA",
+      "GILT5BETA",
+      "ITBETA",
+      "LICNMID100",
+      "NIFTYBETA",
+      "MIDCAPBETA",
+      "SILVERBETA",
+      "BBETF0432",
+      "MOM50",
+      "GOLDBETA",
+      "BANKBETA",
+      "NEXT50BETA",
+      "SNXT50BETA",
+      "EGOLD",
+      "CASHIETF",
+      "ESILVER",
+      "EBANKNIFTY",
+      "EMULTIMQ",
+      "ECAPINSURE",
+      "EBBETF0433",
+      "MOM100",
+      "ENEXT50",
+      "SBILIQETF",
+      "ELIQUID",
+      "ELM250",
+      "ESENSEX",
+      "ENIFTY",
+      "TECH",
+      "BSLSENETFG",
+      "HEALTHY",
+      "SBIMIDMOM",
+      "SENSEXIETF",
+      "SBINMID150",
+      "SBISMLETF",
+      "SBIVALETF",
+      "VALUE",
+      "EQUAL50",
+      "SELECTIPO",
+      "INTERNET",
+      "SMALL250",
+      "ENERGY",
+      "DIVIDEND",
+      "TOP20",
+      "INFRA",
+      "DEFENCE",
+      "HEALTHCARE",
+      "LIQUIDPLUS",
+      "CONSUMER",
+      "EQUAL200",
+      "SILVERAG",
+      "GSEC10YEAR",
+      "BANKETF",
+      "LIQUID",
+      "SENSEXETF",
+      "ALPHAETF",
+      "ITETF",
+      "SMALLCAP",
+      "MIDSMALL",
+      "EVINDIA",
+      "METAL",
+      "BANKPSU",
+      "MULTICAP",
+      "MIDCAPETF",
+      "MAKEINDIA",
+      "GOLDETF",
+      "LOWVOL",
+      "ESG",
+      "MOBANK10",
+      "BFSI",
+      "MAFANG",
+      "MAHKTECH",
+      "MASPTOP50",
+      "SBISILVER",
+      "NIFTYETF",
+      "SBINEQWETF",
+      "SENSEXBETA",
+      "NEXT50",
+      "NIFTYQLITY",
+      "PSUBANK",
+      "MOMENTUM",
+      "BSLGOLDETF",
+      "SBIBPB",
+      "ABSLNN50ET",
+      "ABSLBANETF",
+      "ABSLPSE",
+      "ABSLLIQUID",
+      "SILVER",
+      "BSLNIFTY",
+      "LIQUIDSHRI",
+      "IVZINGOLD",
+      "NV20BEES",
+      "HNGSNGBEES",
+      "GOLDBEES",
+      "LTGILTBEES",
+      "PSUBNKBEES",
+      "BANKBEES",
+      "ITBEES",
+      "NIFTYBEES",
+      "MIDQ50ADD",
+      "HEALTHADD",
+      "FMCGADD",
+      "BANK10ADD",
+      "MIDCAPADD",
+      "MSCIADD",
+      "SMALLADD",
+      "NEXT50ADD",
+      "GSEC5IETF",
+      "LIQUIDBETF",
+      "HSBCGOLD",
+      "BANKIETF",
+      "BANKBETF",
+      "NIFTYBETF",
+      "INFRAIETF",
+      "ITIETF",
+      "NIF100IETF",
+      "VAL30IETF",
+      "MOM30IETF",
+      "FINIETF",
+      "ALPL30IETF",
+      "PSUBNKIETF",
+      "MIDSELIETF",
+      "AUTOIETF",
+      "NV20IETF",
+      "MIDCAPIETF",
+      "TNIDETF",
+      "MID150BEES",
+      "IDFNIFTYET",
+      "TWCGOLDETF",
+      "IVZINNIFTY",
+      "BANKADD",
+      "EQUAL50ADD",
+      "SILVERADD",
+      "FLEXIADD",
+      "TOP10ADD",
+      "NEXT30ADD",
+      "LIQUIDADD",
+      "GOLDADD",
+      "ITADD",
+      "PSUBANKADD",
+      "SENSEXADD",
+      "PVTBANKADD",
+      "LIQUIDETF",
+      "NIFTYADD",
+      "HDFCSILVER",
+      "HDFCSML250",
+      "HDFCBSE500",
+      "HDFCQUAL",
+      "HDFCGROWTH",
+      "HDFCVALUE",
+      "HDFCLIQUID",
+      "HDFCNIFIT",
+      "HDFCPVTBAN",
+      "HDFCSENSEX",
+      "HDFCNIFBAN",
+      "HDFCMOMENT",
+      "HDFCPSUBK",
+      "HDFCMID150",
+      "HDFCLOWVOL",
+      "HDFCNIF100",
+      "HDFCNEXT50",
+      "VALUEAXIS",
+      "SETFNIF50",
+      "SETF10GILT",
+      "ABSL10BANK",
+      "ABSLMSCIN",
+      "AONENIFTY",
+      "AONELIQUID",
+      "AONETOTAL",
+      "LIQUIDSBI",
+      "SETFNIFBK",
+      "SETFNN50",
+      "HDFCGOLD",
+      "HDFCNIFTY",
+      "CPSEETF",
+      "SETFGOLD",
+      "ABGSEC",
+      "QGOLDHALF",
+      "QNIFTY",
+      "GSEC10ABSL",
+      "GROWWSC250",
+      "GROWWRLTY",
+      "GROWWCAPM",
+      "GROWWMC150",
+      "GROWWMETAL",
+      "GROWWPSE",
+      "GROWWCHEM",
+      "GROWWSLVR",
+      "GROWWGOLD",
+      "GROWWHOSPI",
+      "GROWWMOM50",
+      "GROWWLOVOL",
+      "GROWWPOWER",
+      "GROWWNIFTY",
+      "GROWWNET",
+      "GROWWNXT50",
+      "GSEC10IETF",
+      "OILIETF",
+      "QUAL30IETF",
+      "PVTBANIETF",
+      "TATSILV",
+      "COMMOIETF",
+      "FMCGIETF",
+      "LOWVOLIETF",
+      "METALIETF",
+      "TATAGOLD",
+      "GROWWPSUBK",
+      "PVTBKGROWW",
+      "SMALLGROWW",
+      "NIFTYIETF",
+      "MSCI360",
+      "GOLD360",
+      "SILVER360",
+      "NEXT50IETF",
+      "GOLDIETF",
+      "SBIETFIT",
+      "SBIETFPB",
+      "NPBET",
+      "HEALTHIETF",
+      "LIQUIDIETF",
+      "SBIETFCON",
+      "SBIETFQLTY",
+      "SILVERIETF",
+      "GROWWEV",
+      "GROWWLIQID",
+      "GROWWDEFNC",
+      "GROWWRAIL",
+      "GROWWN200",
+      "NETF",
+      "CONSUMIETF",
+      "BSE500IETF"
+    ],
+    "test_named_records": [],
+    "current_nse_company_membership": "UNVERIFIED: contemporaneous authoritative EQUITY_L.csv is not paired with this snapshot",
+    "current_suspension_status": "UNVERIFIED: contemporaneous suspension source is not paired with this snapshot",
+    "eligible_universe_count": null
+  },
+  "bse_mis_crosscheck": {
+    "mis_records": 1458,
+    "matched_master_keys": 1458,
+    "unmatched": [],
+    "matching_records_with_field_differences": 0,
+    "differing_field_counts": {},
+    "difference_examples": [],
+    "margin_leverage_pairs": {
+      "100/1": 43,
+      "20/5": 1391,
+      "50/2": 24
+    },
+    "margin_times_leverage_equal_100_at_1e_9": 1458,
+    "max_absolute_product_residual": 0,
+    "meaning": "Historical broker intraday-product eligibility, not complete BSE cash membership, current permission, or overnight position sizing"
+  },
+  "cross_exchange_isin_diagnostics": {
+    "nse_eq_eq_candidates": 2376,
+    "with_bse_eq_isin_match": 2202,
+    "without_bse_eq_isin_match": 174,
+    "rule": "Same ISIN is cross-exchange security evidence only; NSE and BSE instrument keys, ticks, series and tradability remain exchange-specific"
+  },
+  "transrail_name_resolution": {
+    "NSE.json.gz": [
+      {
+        "segment": "NSE_EQ",
+        "name": "TRANSRAIL LIGHTING LTD",
+        "exchange": "NSE",
+        "isin": "INE454P01035",
+        "instrument_type": "EQ",
+        "instrument_key": "NSE_EQ|INE454P01035",
+        "lot_size": 1,
+        "freeze_quantity": 100000,
+        "exchange_token": "28714",
+        "tick_size": 5,
+        "trading_symbol": "TRANSRAILL",
+        "qty_multiplier": 1,
+        "security_type": "NORMAL"
+      }
+    ],
+    "BSE.json.gz": [
+      {
+        "segment": "BSE_EQ",
+        "name": "Transrail Lighting Limited",
+        "exchange": "BSE",
+        "isin": "INE454P01035",
+        "instrument_type": "A",
+        "instrument_key": "BSE_EQ|INE454P01035",
+        "lot_size": 1,
+        "freeze_quantity": 100000,
+        "exchange_token": "544317",
+        "tick_size": 5,
+        "trading_symbol": "TRANSRAILL",
+        "qty_multiplier": 1
+      }
+    ],
+    "BSE_MIS.json.gz": [
+      {
+        "segment": "BSE_EQ",
+        "name": "Transrail Lighting Limited",
+        "exchange": "BSE",
+        "isin": "INE454P01035",
+        "instrument_type": "A",
+        "instrument_key": "BSE_EQ|INE454P01035",
+        "lot_size": 1,
+        "freeze_quantity": 100000,
+        "exchange_token": "544317",
+        "tick_size": 5,
+        "trading_symbol": "TRANSRAILL",
+        "qty_multiplier": 1,
+        "intraday_margin": 20,
+        "intraday_leverage": 5
+      }
+    ]
+  },
+  "scoped_consumers": [
+    {
+      "path": "lib/official-nse-master.mjs",
+      "role": "Current pure validators and fresh-provider loader; NSE_EQ/EQ selection must also intersect official NSE company symbol+ISIN membership and current suspensions. Archive master alone is insufficient.",
+      "sha256": "cf6661489a149f1034b8aa055c35758b9d3f619c51317d51738ccfbab99dff8b"
+    },
+    {
+      "path": "server-official-nse-master-patch.mjs",
+      "role": "Current source loader fetches fresh sources and saves universe metadata with revision increment, invalidates scan cache and records suspension metadata. Does not read the preserved archive.",
+      "sha256": "015c702803b8b9a4dad4fab782027730a5c9a5708642cf3f8ef8309520cf386a"
+    }
+  ],
+  "pure_missing_membership_probe": {
+    "error_code": "official_nse_membership_required",
+    "suspension_rows_supplied": 0,
+    "membership_supplied": false,
+    "external_calls": 0,
+    "meaning": "Negative offline validation probe only; the empty suspension list is not current suspension evidence"
+  },
+  "authority_and_limits": [
+    "Full serialized content review is not authorization to import or deploy. No current-provider master, official membership or suspension data was fetched.",
+    "No source retrieval timestamp/HTTP Last-Modified accompanies these records. Archive modification time, contract expiry and current documentation do not establish snapshot freshness.",
+    "2376 NSE_EQ/EQ candidates include 328 INF-prefixed fund identities. The remaining 2048 identities are not automatically 2048 eligible company stocks; exact dated NSE membership and suspensions are still required.",
+    "BSE group codes A/B/etc are not NSE EQ-series codes. Do not apply NSE-specific type filtering to BSE data.",
+    "The master stores instrument identity and trading metadata, not OHLCV, live quotes, EPS/P/E, news, institutional flows or portfolio state.",
+    "Do not normalize ticker names, units, prices or historic ISINs silently. Corporate-action-aware dated mapping is required for candle joins.",
+    "Raw tick_size values are preserved. The audited source does not establish the currency/unit conversion needed for a pricing consumer.",
+    "Syntax/Luhn failures are diagnostic discrepancies, not authority to rewrite or delete source identities.",
+    "All twelve user-requested companies have archived NSE_EQ/EQ matches after exact source name resolution of Transrail to TRANSRAILL; this is not current saved-universe proof."
+  ],
+  "online_reference": {
+    "url": "https://upstox.com/developer/api-documentation/instruments/",
+    "consulted_on": "2026-09-28",
+    "claims": [
+      "Use instrument_key as the unique identifier; exchange_token may be reused after expiry.",
+      "MIS files represent intraday-product availability, with intraday margin percentage and leverage.",
+      "BOD instruments are refreshed daily; an archived copy cannot establish current membership."
+    ],
+    "scope": "Documentation consultation only; no provider data refresh"
+  },
+  "independent_validation": {
+    "independent_reader": "Python stdlib zipfile/gzip/json, complete field reconciliation",
+    "members": [
+      {
+        "member": "AM 07 Parameter Files/NSE.json.gz",
+        "crc32": "29889e1a",
+        "all_fields_agree": true,
+        "records": 86140,
+        "field_values": 1715422,
+        "source_sha256": "ff1660b9630d8f0f39a869fdb187a10b756ba8b015114bd75400ea3b1a7dec12"
+      },
+      {
+        "member": "AM 07 Parameter Files/BSE.json.gz",
+        "crc32": "756e889f",
+        "all_fields_agree": true,
+        "records": 27089,
+        "field_values": 432070,
+        "source_sha256": "b8cca24a12d9b78880b79153e689f4e52c5535040925c1919352c9d249181e32"
+      },
+      {
+        "member": "AM 07 Parameter Files/BSE_MIS.json.gz",
+        "crc32": "09067f1f",
+        "all_fields_agree": true,
+        "records": 1458,
+        "field_values": 21358,
+        "source_sha256": "1b30f9bd3b937508b88655c81facf570a44028b3059017983f5ea49527ca603c"
+      }
+    ],
+    "all_twelve_requested_companies_present_in_each_master": true,
+    "nse_eq_eq_and_fund_prefix_counts_agree": true,
+    "bse_mis_full_crosscheck_agrees": true,
+    "cross_exchange_match_count_agrees": true,
+    "native_recalculation_or_live_validation": false
+  },
+  "reproduction_scripts": [
+    {
+      "name": "audit.mjs",
+      "sha256": "813c0aa9de305758c3d69efe1539963622e034cf60b53ecc083f798a3f516626",
+      "source": "import fs from 'node:fs';\nimport crypto from 'node:crypto';\nimport zlib from 'node:zlib';\nimport {execFileSync} from 'node:child_process';\nconst archive='/Users/sourceborn/Documents/ChatGPT/Ash/V01-2026-09-07/payload/raw-assets/AM.07.Parameter.Files.zip';\nconst sha=x=>crypto.createHash('sha256').update(x).digest('hex');\nconst rawArchive=fs.readFileSync(archive);\nif(sha(rawArchive)!=='652be4ddb2b40915543ad848b2bfa10d011c6c2c5723a6e6a3480a85ddb2e2e5')throw Error('Archive pin mismatch');\nconst counts = values => Object.fromEntries([...values.reduce((m,v)=>m.set(String(v),1+(m.get(String(v))||0)),new Map())].sort((a,b)=>a[0].localeCompare(b[0])));\nconst duplicates = (rows,key) => {\n const groups=new Map(); for (const row of rows) { const k=key(row); groups.set(k,[...(groups.get(k)||[]),row]); }\n const repeated=[...groups].filter(([,rs])=>rs.length>1);\n return {unique:groups.size,duplicate_groups:repeated.length,excess_records:repeated.reduce((s,[,rs])=>s+rs.length-1,0),examples:repeated.slice(0,12).map(([key,rs])=>({key,count:rs.length,records:rs.slice(0,3)}))};\n};\nconst isinValid = value => {\n if(!/^[A-Z]{2}[A-Z0-9]{9}\\d$/.test(value))return false;\n const digits=[...value].map(c=>/[A-Z]/.test(c)?String(c.charCodeAt(0)-55):c).join('');\n return [...digits].reverse().reduce((s,c,i)=>{let n=Number(c)*(i%2?2:1);return s+Math.floor(n/10)+n%10;},0)%10===0;\n};\nconst numericFields=['lot_size','freeze_quantity','minimum_lot','tick_size','qty_multiplier','strike_price','expiry','last_trading_date','intraday_margin','intraday_leverage'];\nconst requested=['BBL','LATENTVIEW','JWL','RAILTEL','KEC','TRANSRAILL','GODFRYPHLP','BSOFT','ZENSARTECH','RHIM','SURYAROSNI','THERMAX'];\nconst result={schema_version:'ashstocks-am07-instrument-content-v1',audit_date:'2026-09-28',review_commit:'910c72f1ab6fdf014c081746626f38e2fe029759',archive:{path:archive,bytes:rawArchive.length,sha256:sha(rawArchive)},method:{full_gzip_decode:true,full_json_parse:true,all_records_and_fields_visited:true,raw_modified:false,provider_fetches:0,mongo_operations:0,app_runtime_executed:false},members:[]};\nconst datasets={};\nfor(const name of ['NSE.json.gz','BSE.json.gz','BSE_MIS.json.gz']){\n const member='AM 07 Parameter Files/'+name;\n const compressed=execFileSync('unzip',['-p',archive,member],{maxBuffer:5000000});\n const raw=zlib.gunzipSync(compressed),value=JSON.parse(raw.toString('utf8'));\n const rows=Array.isArray(value)?value:Object.values(value);\n if(!Array.isArray(value)||rows.some(r=>!r||Array.isArray(r)||typeof r!=='object'))throw Error('Unexpected record shape');\n datasets[name]=rows;\n const fields={};for(const r of rows)for(const [k,v] of Object.entries(r)){\n  const f=fields[k] ||= {present:0,null:0,empty_string:0,types:{}};\n  f.present++;if(v===null)f.null++;if(v==='')f.empty_string++;\n  const t=v===null?'null':Array.isArray(v)?'array':typeof v;f.types[t]=(f.types[t]||0)+1;\n }\n for(const f of Object.values(fields))f.absent=rows.length-f.present;\n const numeric={};for(const k of numericFields){const vs=rows.filter(r=>Object.hasOwn(r,k)).map(r=>r[k]);if(!vs.length)continue;\n  const ns=vs.filter(v=>typeof v==='number'&&Number.isFinite(v));\n  numeric[k]={present:vs.length,finite_numbers:ns.length,non_numeric:vs.length-ns.length,zero:ns.filter(n=>n===0).length,negative:ns.filter(n=>n<0).length,min:Math.min(...ns),max:Math.max(...ns)};\n  if(['expiry','last_trading_date'].includes(k))numeric[k].diagnostic_unix_ms_range=[Math.min(...ns),Math.max(...ns)].map(n=>new Date(n).toISOString());\n }\n const cash=rows.filter(r=>String(r.segment).endsWith('_EQ'));\n const malformedKeys=rows.filter(r=>typeof r.instrument_key!=='string'||!r.instrument_key.startsWith(r.segment+'|'));\n const isinRows=rows.filter(r=>Object.hasOwn(r,'isin'));\n const invalidIsins=isinRows.filter(r=>!isinValid(r.isin));\n const identityMismatches=cash.filter(r=>r.instrument_key!==r.segment+'|'+r.isin);\n result.members.push({member,bytes:compressed.length,sha256:sha(compressed),uncompressed_bytes:raw.length,uncompressed_sha256:sha(raw),root_type:'array',records:rows.length,field_value_count:Object.values(fields).reduce((s,f)=>s+f.present,0),fields,segment_counts:counts(rows.map(r=>r.segment)),exchange_counts:counts(rows.map(r=>r.exchange)),segment_instrument_type_counts:counts(rows.map(r=>r.segment+'/'+r.instrument_type)),numeric,\n  instrument_keys:duplicates(rows,r=>r.instrument_key),segment_exchange_tokens:duplicates(rows,r=>r.segment+'|'+r.exchange_token),\n  malformed_key_prefix:{count:malformedKeys.length,examples:malformedKeys.slice(0,5)},\n  isin_syntax_and_luhn:{present:isinRows.length,valid:isinRows.length-invalidIsins.length,invalid:invalidIsins.length,prefix_counts:counts(isinRows.map(r=>String(r.isin).slice(0,3))),invalid_examples:invalidIsins.slice(0,8),authority:'Diagnostic syntax/check-digit only; not proof of listing or company membership'},\n  cash_identity:{records:cash.length,key_isin_mismatches:identityMismatches.length,mismatch_examples:identityMismatches.slice(0,8),symbols:duplicates(cash,r=>r.trading_symbol)},\n  diagnostic_dates_are_not_fetch_dates:true,\n  requested_stocks:requested.map(symbol=>({requested_symbol:symbol,matches:cash.filter(r=>r.trading_symbol===symbol).map(r=>({instrument_key:r.instrument_key,isin:r.isin,trading_symbol:r.trading_symbol,name:r.name,short_name:r.short_name,instrument_type:r.instrument_type,lot_size:r.lot_size,tick_size:r.tick_size}))}))});\n}\nconst nse=datasets['NSE.json.gz'], bse=datasets['BSE.json.gz'], mis=datasets['BSE_MIS.json.gz'];\nconst candidates=nse.filter(r=>r.exchange==='NSE'&&r.segment==='NSE_EQ'&&r.instrument_type==='EQ');\nresult.nse_eq_eq_candidate_diagnostics={count:candidates.length,distinct_symbols:new Set(candidates.map(r=>r.trading_symbol)).size,distinct_isins:new Set(candidates.map(r=>r.isin)).size,isin_prefix_counts:counts(candidates.map(r=>r.isin?.slice(0,3))),security_type_counts:counts(candidates.map(r=>r.security_type)),symbol_syntax_failures:candidates.filter(r=>!/^[A-Z0-9][A-Z0-9&._-]{0,49}$/.test(r.trading_symbol)).length,isin_syntax_failures:candidates.filter(r=>!/^IN[A-Z0-9]{10}$/.test(r.isin)).length,key_isin_mismatches:candidates.filter(r=>r.instrument_key!=='NSE_EQ|'+r.isin).length,checksum_failures:candidates.filter(r=>!isinValid(r.isin)).map(r=>({symbol:r.trading_symbol,isin:r.isin})),fund_prefix_symbols:candidates.filter(r=>r.isin?.startsWith('INF')).map(r=>r.trading_symbol),test_named_records:candidates.filter(r=>/DUMMY|TEST/i.test(r.name+' '+r.trading_symbol)),current_nse_company_membership:'UNVERIFIED: contemporaneous authoritative EQUITY_L.csv is not paired with this snapshot',current_suspension_status:'UNVERIFIED: contemporaneous suspension source is not paired with this snapshot',eligible_universe_count:null};\nconst bseByKey=new Map(bse.map(r=>[r.instrument_key,r]));const differingFields={}, missing=[],different=[];\nfor(const r of mis){const match=bseByKey.get(r.instrument_key);if(!match){missing.push(r);continue;}\n const diffs=[];for(const k of new Set([...Object.keys(r),...Object.keys(match)])){if(['intraday_margin','intraday_leverage'].includes(k))continue;\n  if(JSON.stringify(r[k])!==JSON.stringify(match[k])){diffs.push({field:k,mis:r[k]??null,master:match[k]??null});differingFields[k]=(differingFields[k]||0)+1;}}\n if(diffs.length)different.push({instrument_key:r.instrument_key,trading_symbol:r.trading_symbol,differences:diffs});\n}\nconst residuals=mis.map(r=>Math.abs(r.intraday_margin*r.intraday_leverage-100));\nresult.bse_mis_crosscheck={mis_records:mis.length,matched_master_keys:mis.length-missing.length,unmatched:missing,matching_records_with_field_differences:different.length,differing_field_counts:differingFields,difference_examples:different.slice(0,12),margin_leverage_pairs:counts(mis.map(r=>r.intraday_margin+'/'+r.intraday_leverage)),margin_times_leverage_equal_100_at_1e_9:residuals.filter(n=>n<=1e-9).length,max_absolute_product_residual:Math.max(...residuals),meaning:'Historical broker intraday-product eligibility, not complete BSE cash membership, current permission, or overnight position sizing'};\nconst bseCash=bse.filter(r=>r.segment==='BSE_EQ');const bseByIsin=new Map();for(const r of bseCash){const rs=bseByIsin.get(r.isin)||[];rs.push(r);bseByIsin.set(r.isin,rs);}\nresult.cross_exchange_isin_diagnostics={nse_eq_eq_candidates:candidates.length,with_bse_eq_isin_match:candidates.filter(r=>bseByIsin.has(r.isin)).length,without_bse_eq_isin_match:candidates.filter(r=>!bseByIsin.has(r.isin)).length,rule:'Same ISIN is cross-exchange security evidence only; NSE and BSE instrument keys, ticks, series and tradability remain exchange-specific'};\nresult.transrail_name_resolution=Object.fromEntries(Object.entries(datasets).map(([k,rs])=>[k,rs.filter(r=>r.segment.endsWith('_EQ')&&/TRANSRAIL/i.test(r.name+' '+r.trading_symbol))]));\nconst repo='/Users/sourceborn/Documents/ChatGPT/Ash/AshStocks';\nresult.scoped_consumers=[{path:'lib/official-nse-master.mjs',role:'Current pure validators and fresh-provider loader; NSE_EQ/EQ selection must also intersect official NSE company symbol+ISIN membership and current suspensions. Archive master alone is insufficient.'},{path:'server-official-nse-master-patch.mjs',role:'Current source loader fetches fresh sources and saves universe metadata with revision increment, invalidates scan cache and records suspension metadata. Does not read the preserved archive.'}].map(s=>({...s,sha256:sha(fs.readFileSync(repo+'/'+s.path))}));\nconst pure=await import(repo+'/lib/official-nse-master.mjs');\ntry{pure.buildOfficialNseUniverse(nse,[]);throw Error('Unexpected missing-membership acceptance');}catch(e){if(e.code!=='official_nse_membership_required')throw e;result.pure_missing_membership_probe={error_code:e.code,suspension_rows_supplied:0,membership_supplied:false,external_calls:0,meaning:'Negative offline validation probe only; the empty suspension list is not current suspension evidence'};}\nresult.authority_and_limits=[\n 'Full serialized content review is not authorization to import or deploy. No current-provider master, official membership or suspension data was fetched.',\n 'No source retrieval timestamp/HTTP Last-Modified accompanies these records. Archive modification time, contract expiry and current documentation do not establish snapshot freshness.',\n '2376 NSE_EQ/EQ candidates include 328 INF-prefixed fund identities. The remaining 2048 identities are not automatically 2048 eligible company stocks; exact dated NSE membership and suspensions are still required.',\n 'BSE group codes A/B/etc are not NSE EQ-series codes. Do not apply NSE-specific type filtering to BSE data.',\n 'The master stores instrument identity and trading metadata, not OHLCV, live quotes, EPS/P/E, news, institutional flows or portfolio state.',\n 'Do not normalize ticker names, units, prices or historic ISINs silently. Corporate-action-aware dated mapping is required for candle joins.',\n 'Raw tick_size values are preserved. The audited source does not establish the currency/unit conversion needed for a pricing consumer.',\n 'Syntax/Luhn failures are diagnostic discrepancies, not authority to rewrite or delete source identities.',\n 'All twelve user-requested companies have archived NSE_EQ/EQ matches after exact source name resolution of Transrail to TRANSRAILL; this is not current saved-universe proof.'\n];\nresult.online_reference={url:'https://upstox.com/developer/api-documentation/instruments/',consulted_on:'2026-09-28',claims:['Use instrument_key as the unique identifier; exchange_token may be reused after expiry.','MIS files represent intraday-product availability, with intraday margin percentage and leverage.','BOD instruments are refreshed daily; an archived copy cannot establish current membership.'],scope:'Documentation consultation only; no provider data refresh'};\nconsole.log(JSON.stringify(result,null,2));\n"
+    },
+    {
+      "name": "independent.py",
+      "sha256": "b383d85b47b1bb3f024ab96817076cb81a3be7789aeaf9a95830338c2e50b3c1",
+      "source": "import collections, gzip, hashlib, json, pathlib, re, zipfile, zlib\n\nrepo = pathlib.Path('/Users/sourceborn/Documents/ChatGPT/Ash/AshStocks')\nev = json.loads((repo / 'data/asset-review/am07-instrument-master-evidence-2026-09-28.json').read_text())\narchive = pathlib.Path(ev['archive']['path'])\nassert hashlib.sha256(archive.read_bytes()).hexdigest() == ev['archive']['sha256']\ndatasets = {}\nout = []\ndef isin_valid(s):\n    if not re.fullmatch(r'[A-Z]{2}[A-Z0-9]{9}\\d', s): return False\n    ds = ''.join(str(ord(c)-55) if c.isalpha() else c for c in s)\n    total = 0\n    for i, c in enumerate(ds):\n        n = int(c) * (2 if i % 2 == len(ds) % 2 else 1)\n        total += n if n < 10 else n-9\n    return total % 10 == 0\nwith zipfile.ZipFile(archive) as z:\n    for m in ev['members']:\n        info = z.getinfo(m['member'])\n        compressed = z.read(info)\n        assert zlib.crc32(compressed) == info.CRC\n        assert hashlib.sha256(compressed).hexdigest() == m['sha256']\n        raw = gzip.decompress(compressed)\n        assert hashlib.sha256(raw).hexdigest() == m['uncompressed_sha256']\n        assert len(compressed) == m['bytes'] and len(raw) == m['uncompressed_bytes']\n        rows = json.loads(raw)\n        datasets[m['member'].split('/')[-1]] = rows\n        assert len(rows) == m['records']\n        assert sum(len(r) for r in rows) == m['field_value_count']\n        fields = collections.defaultdict(list)\n        for r in rows:\n            for k, v in r.items(): fields[k].append(v)\n        assert set(fields) == set(m['fields'])\n        for k, vs in fields.items():\n            f = m['fields'][k]\n            types = collections.Counter('null' if v is None else 'boolean' if isinstance(v, bool) else 'number' if isinstance(v, (int,float)) else 'string' if isinstance(v,str) else type(v).__name__ for v in vs)\n            assert len(vs) == f['present'] and len(rows)-len(vs) == f['absent']\n            assert dict(types) == f['types']\n            assert sum(v is None for v in vs) == f['null'] and sum(v == '' for v in vs) == f['empty_string']\n        assert dict(collections.Counter(r['segment'] for r in rows)) == m['segment_counts']\n        assert dict(collections.Counter(r['segment']+'/'+r['instrument_type'] for r in rows)) == m['segment_instrument_type_counts']\n        assert len(set(r['instrument_key'] for r in rows)) == len(rows)\n        assert len(set((r['segment'],r['exchange_token']) for r in rows)) == len(rows)\n        assert all(r['instrument_key'].startswith(r['segment']+'|') for r in rows)\n        cash = [r for r in rows if r['segment'].endswith('_EQ')]\n        assert all(r['instrument_key'] == r['segment']+'|'+r['isin'] for r in cash)\n        assert sum(not isin_valid(r['isin']) for r in rows if 'isin' in r) == m['isin_syntax_and_luhn']['invalid']\n        for requested in m['requested_stocks']:\n            assert len([r for r in cash if r['trading_symbol']==requested['requested_symbol']]) == 1\n        out.append({'member':m['member'],'crc32':f'{info.CRC:08x}','all_fields_agree':True,'records':len(rows),'field_values':sum(len(r) for r in rows),'source_sha256':m['sha256']})\nnse = [r for r in datasets['NSE.json.gz'] if r['segment']=='NSE_EQ' and r['instrument_type']=='EQ']\nassert len(nse)==2376 and sum(r['isin'].startswith('INF') for r in nse)==328\nbse = {r['instrument_key']:r for r in datasets['BSE.json.gz']}\nfor r in datasets['BSE_MIS.json.gz']:\n    assert {k:v for k,v in r.items() if k not in ('intraday_margin','intraday_leverage')} == bse[r['instrument_key']]\n    assert r['intraday_margin']*r['intraday_leverage']==100\nassert sum(any(b['isin']==r['isin'] for b in datasets['BSE.json.gz'] if b['segment']=='BSE_EQ') for r in nse)==2202\nprint(json.dumps({'independent_reader':'Python stdlib zipfile/gzip/json, complete field reconciliation','members':out,'all_twelve_requested_companies_present_in_each_master':True,'nse_eq_eq_and_fund_prefix_counts_agree':True,'bse_mis_full_crosscheck_agrees':True,'cross_exchange_match_count_agrees':True,'native_recalculation_or_live_validation':False},indent=2))\n"
+    }
+  ]
+}

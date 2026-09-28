@@ -1,0 +1,2020 @@
+{
+  "schema_version": "ashstocks-am07-legacy-xls-evidence-v1",
+  "review_date": "2026-09-28",
+  "baseline_commit": "910c72f1ab6fdf014c081746626f38e2fe029759",
+  "scope": "Complete stored-cell and BIFF record scan of exactly one binary XLS member; source-preserving evidence only.",
+  "status": "reviewed_stored_content",
+  "source": {
+    "archive": "AM.07.Parameter.Files.zip",
+    "archive_bytes": 10303731,
+    "archive_sha256": "652be4ddb2b40915543ad848b2bfa10d011c6c2c5723a6e6a3480a85ddb2e2e5",
+    "archive_pin_freshly_verified": true,
+    "member": "AM 07 Parameter Files/Latest_22082022.xls",
+    "member_bytes": 74240,
+    "member_sha256": "8738c1b480cbf28bb43f3bc760174123d6d77f7753be80b12d6f77b5077d140a",
+    "member_crc32": "7e67f366",
+    "member_read_to_eof_and_crc_verified": true,
+    "member_signature_hex": "d0cf11e0a1b11ae1"
+  },
+  "method": {
+    "reader": "xlrd",
+    "version": "2.0.2",
+    "runtime": "bundled Python 3.12",
+    "load": "open_workbook(file_contents=raw, formatting_info=True, on_demand=False)",
+    "reader_installation": "Previously supplied temporary vendor was absent and bundled xlrd was unavailable. Pinned xlrd==2.0.2 was installed from https://pypi.org/simple into a new audit-only temporary directory after sandbox approval. No repository dependencies were changed.",
+    "read_coverage": "Every coordinate of every sheet scanned. All physical BIFF cell records independently expanded and reconciled to xlrd stored positions, with no duplicate coordinates. Every workbook-stream BIFF record parsed to stream EOF.",
+    "arithmetic": "Decimal from stored numeric values; USD conversion comparison uses ROUND_HALF_UP to two decimal places.",
+    "workbook_recalculated": false,
+    "native_excel_rendered": false,
+    "external_links_refreshed": false,
+    "macros_or_source_code_executed": false,
+    "raw_source_writes": false,
+    "network_access": "Only pinned reader dependency acquisition; no market-data provider or database calls."
+  },
+  "workbook": {
+    "format": "OLE compound / BIFF8",
+    "biff_version": 80,
+    "date_mode": 0,
+    "date_epoch": "Excel 1900",
+    "sheet_count": 1,
+    "sheet": "Daily Trends in FII Investments",
+    "sheet_visibility": "visible",
+    "declared_and_scanned_range": "A1:O58",
+    "nonempty_value_bounds": "A1:H36",
+    "rows_scanned": 58,
+    "columns_scanned": 15,
+    "rectangular_positions_scanned": 870,
+    "physical_stored_cell_positions": 535,
+    "physical_position_duplicates": 0,
+    "nonempty_cells": 133,
+    "formatted_blank_cells": 402,
+    "unstored_empty_positions": 335,
+    "cell_type_counts": {
+      "empty": 335,
+      "text": 49,
+      "number": 82,
+      "date": 2,
+      "boolean": 0,
+      "error": 0,
+      "format_only_blank": 402
+    },
+    "hidden_rows": [],
+    "hidden_columns": [],
+    "merged_range_count": 28,
+    "merged_ranges": [
+      "A26:A30",
+      "A36:H56",
+      "B23:B25",
+      "C23:D24",
+      "E23:F24",
+      "G23:H23",
+      "G24:H24",
+      "A31:H33",
+      "A23:A25",
+      "A22:H22",
+      "C3:C4",
+      "B5:B7",
+      "A20:H20",
+      "B8:B10",
+      "A3:A4",
+      "B3:B4",
+      "D3:D4",
+      "E3:E4",
+      "F3:F4",
+      "A5:A17",
+      "B14:B17",
+      "A21:H21",
+      "A1:H1",
+      "A2:H2",
+      "A19:H19",
+      "G3:G4",
+      "B11:B13",
+      "H5:H17"
+    ],
+    "defined_names": [],
+    "cell_note_count": 0,
+    "hyperlink_count": 0,
+    "stored_value_cells": [
+      {
+        "cell": "A1",
+        "type": 1,
+        "value": "Daily Trends in FPI Investments on 22-August-2022",
+        "xf": 91
+      },
+      {
+        "cell": "A3",
+        "type": 1,
+        "value": "Reporting Date",
+        "xf": 108
+      },
+      {
+        "cell": "B3",
+        "type": 1,
+        "value": "Debt/Equity/Hybrid",
+        "xf": 100
+      },
+      {
+        "cell": "C3",
+        "type": 1,
+        "value": "Investment Route",
+        "xf": 106
+      },
+      {
+        "cell": "D3",
+        "type": 1,
+        "value": "Gross Purchases(Rs. Crore)",
+        "xf": 100
+      },
+      {
+        "cell": "E3",
+        "type": 1,
+        "value": "Gross Sales (Rs. Crore)",
+        "xf": 100
+      },
+      {
+        "cell": "F3",
+        "type": 1,
+        "value": "Net Investment (Rs. Crore)",
+        "xf": 100
+      },
+      {
+        "cell": "G3",
+        "type": 1,
+        "value": "Net Investment US($) million",
+        "xf": 100
+      },
+      {
+        "cell": "H3",
+        "type": 1,
+        "value": "Conversion",
+        "xf": 82
+      },
+      {
+        "cell": "H4",
+        "type": 1,
+        "value": "(1 USD TO INR)*",
+        "xf": 82
+      },
+      {
+        "cell": "A5",
+        "type": 3,
+        "value": 44795,
+        "xf": 89,
+        "date": "2022-08-22T00:00:00"
+      },
+      {
+        "cell": "B5",
+        "type": 1,
+        "value": "Equity",
+        "xf": 90
+      },
+      {
+        "cell": "C5",
+        "type": 1,
+        "value": "Stock Exchange",
+        "xf": 88
+      },
+      {
+        "cell": "D5",
+        "type": 2,
+        "value": 7006.97,
+        "xf": 88
+      },
+      {
+        "cell": "E5",
+        "type": 2,
+        "value": 5476.56,
+        "xf": 88
+      },
+      {
+        "cell": "F5",
+        "type": 2,
+        "value": 1530.41,
+        "xf": 88
+      },
+      {
+        "cell": "G5",
+        "type": 2,
+        "value": 191.89,
+        "xf": 88
+      },
+      {
+        "cell": "H5",
+        "type": 1,
+        "value": "Rs.79.7528",
+        "xf": 102
+      },
+      {
+        "cell": "C6",
+        "type": 1,
+        "value": "Primary market & others",
+        "xf": 88
+      },
+      {
+        "cell": "D6",
+        "type": 2,
+        "value": 1.59,
+        "xf": 88
+      },
+      {
+        "cell": "E6",
+        "type": 2,
+        "value": 0,
+        "xf": 88
+      },
+      {
+        "cell": "F6",
+        "type": 2,
+        "value": 1.59,
+        "xf": 88
+      },
+      {
+        "cell": "G6",
+        "type": 2,
+        "value": 0.2,
+        "xf": 88
+      },
+      {
+        "cell": "C7",
+        "type": 1,
+        "value": "Sub-total",
+        "xf": 88
+      },
+      {
+        "cell": "D7",
+        "type": 2,
+        "value": 7008.56,
+        "xf": 88
+      },
+      {
+        "cell": "E7",
+        "type": 2,
+        "value": 5476.56,
+        "xf": 88
+      },
+      {
+        "cell": "F7",
+        "type": 2,
+        "value": 1532,
+        "xf": 88
+      },
+      {
+        "cell": "G7",
+        "type": 2,
+        "value": 192.09,
+        "xf": 88
+      },
+      {
+        "cell": "B8",
+        "type": 1,
+        "value": "Debt",
+        "xf": 90
+      },
+      {
+        "cell": "C8",
+        "type": 1,
+        "value": "Stock Exchange",
+        "xf": 88
+      },
+      {
+        "cell": "D8",
+        "type": 2,
+        "value": 83.11,
+        "xf": 88
+      },
+      {
+        "cell": "E8",
+        "type": 2,
+        "value": 206.32,
+        "xf": 88
+      },
+      {
+        "cell": "F8",
+        "type": 2,
+        "value": -123.21,
+        "xf": 88
+      },
+      {
+        "cell": "G8",
+        "type": 2,
+        "value": -15.45,
+        "xf": 88
+      },
+      {
+        "cell": "C9",
+        "type": 1,
+        "value": "Primary market & others",
+        "xf": 88
+      },
+      {
+        "cell": "D9",
+        "type": 2,
+        "value": 128.5,
+        "xf": 88
+      },
+      {
+        "cell": "E9",
+        "type": 2,
+        "value": 0,
+        "xf": 88
+      },
+      {
+        "cell": "F9",
+        "type": 2,
+        "value": 128.5,
+        "xf": 88
+      },
+      {
+        "cell": "G9",
+        "type": 2,
+        "value": 16.11,
+        "xf": 88
+      },
+      {
+        "cell": "C10",
+        "type": 1,
+        "value": "Sub-total",
+        "xf": 88
+      },
+      {
+        "cell": "D10",
+        "type": 2,
+        "value": 211.61,
+        "xf": 88
+      },
+      {
+        "cell": "E10",
+        "type": 2,
+        "value": 206.32,
+        "xf": 88
+      },
+      {
+        "cell": "F10",
+        "type": 2,
+        "value": 5.29,
+        "xf": 88
+      },
+      {
+        "cell": "G10",
+        "type": 2,
+        "value": 0.66,
+        "xf": 88
+      },
+      {
+        "cell": "B11",
+        "type": 1,
+        "value": "Debt-VRR",
+        "xf": 101
+      },
+      {
+        "cell": "C11",
+        "type": 1,
+        "value": "Stock Exchange",
+        "xf": 88
+      },
+      {
+        "cell": "D11",
+        "type": 2,
+        "value": 47.58,
+        "xf": 88
+      },
+      {
+        "cell": "E11",
+        "type": 2,
+        "value": 122.5,
+        "xf": 88
+      },
+      {
+        "cell": "F11",
+        "type": 2,
+        "value": -74.92,
+        "xf": 88
+      },
+      {
+        "cell": "G11",
+        "type": 2,
+        "value": -9.39,
+        "xf": 88
+      },
+      {
+        "cell": "C12",
+        "type": 1,
+        "value": "Primary market & others",
+        "xf": 88
+      },
+      {
+        "cell": "D12",
+        "type": 2,
+        "value": 31,
+        "xf": 88
+      },
+      {
+        "cell": "E12",
+        "type": 2,
+        "value": 0,
+        "xf": 88
+      },
+      {
+        "cell": "F12",
+        "type": 2,
+        "value": 31,
+        "xf": 88
+      },
+      {
+        "cell": "G12",
+        "type": 2,
+        "value": 3.89,
+        "xf": 88
+      },
+      {
+        "cell": "C13",
+        "type": 1,
+        "value": "Sub-total",
+        "xf": 88
+      },
+      {
+        "cell": "D13",
+        "type": 2,
+        "value": 78.58,
+        "xf": 88
+      },
+      {
+        "cell": "E13",
+        "type": 2,
+        "value": 122.5,
+        "xf": 88
+      },
+      {
+        "cell": "F13",
+        "type": 2,
+        "value": -43.92,
+        "xf": 88
+      },
+      {
+        "cell": "G13",
+        "type": 2,
+        "value": -5.5,
+        "xf": 88
+      },
+      {
+        "cell": "B14",
+        "type": 1,
+        "value": "Hybrid",
+        "xf": 90
+      },
+      {
+        "cell": "C14",
+        "type": 1,
+        "value": "Stock Exchange",
+        "xf": 88
+      },
+      {
+        "cell": "D14",
+        "type": 2,
+        "value": 26.79,
+        "xf": 88
+      },
+      {
+        "cell": "E14",
+        "type": 2,
+        "value": 3.52,
+        "xf": 88
+      },
+      {
+        "cell": "F14",
+        "type": 2,
+        "value": 23.27,
+        "xf": 88
+      },
+      {
+        "cell": "G14",
+        "type": 2,
+        "value": 2.92,
+        "xf": 88
+      },
+      {
+        "cell": "C15",
+        "type": 1,
+        "value": "Primary market & others",
+        "xf": 88
+      },
+      {
+        "cell": "D15",
+        "type": 2,
+        "value": 0,
+        "xf": 88
+      },
+      {
+        "cell": "E15",
+        "type": 2,
+        "value": 0,
+        "xf": 88
+      },
+      {
+        "cell": "F15",
+        "type": 2,
+        "value": 0,
+        "xf": 88
+      },
+      {
+        "cell": "G15",
+        "type": 2,
+        "value": 0,
+        "xf": 88
+      },
+      {
+        "cell": "C16",
+        "type": 1,
+        "value": "Sub-total",
+        "xf": 88
+      },
+      {
+        "cell": "D16",
+        "type": 2,
+        "value": 26.79,
+        "xf": 88
+      },
+      {
+        "cell": "E16",
+        "type": 2,
+        "value": 3.52,
+        "xf": 88
+      },
+      {
+        "cell": "F16",
+        "type": 2,
+        "value": 23.27,
+        "xf": 88
+      },
+      {
+        "cell": "G16",
+        "type": 2,
+        "value": 2.92,
+        "xf": 88
+      },
+      {
+        "cell": "C17",
+        "type": 1,
+        "value": "Total",
+        "xf": 88
+      },
+      {
+        "cell": "D17",
+        "type": 2,
+        "value": 7325.54,
+        "xf": 88
+      },
+      {
+        "cell": "E17",
+        "type": 2,
+        "value": 5808.9,
+        "xf": 88
+      },
+      {
+        "cell": "F17",
+        "type": 2,
+        "value": 1516.64,
+        "xf": 88
+      },
+      {
+        "cell": "G17",
+        "type": 2,
+        "value": 190.17,
+        "xf": 88
+      },
+      {
+        "cell": "A19",
+        "type": 1,
+        "value": "The data presented above is compiled on the basis of reports submitted to depositories by DDPs on 22-August-2022 and constitutes trades conducted by FPIs on and upto the previous trading day(s).",
+        "xf": 97
+      },
+      {
+        "cell": "A21",
+        "type": 1,
+        "value": "Daily Trends in FPI Derivative Trades on 22-August-2022",
+        "xf": 91
+      },
+      {
+        "cell": "A23",
+        "type": 1,
+        "value": "Reporting Date",
+        "xf": 133
+      },
+      {
+        "cell": "B23",
+        "type": 1,
+        "value": "Derivative Products",
+        "xf": 121
+      },
+      {
+        "cell": "C23",
+        "type": 1,
+        "value": "Buy",
+        "xf": 122
+      },
+      {
+        "cell": "E23",
+        "type": 1,
+        "value": "Sell",
+        "xf": 122
+      },
+      {
+        "cell": "G23",
+        "type": 1,
+        "value": "Open Interest at the",
+        "xf": 122
+      },
+      {
+        "cell": "G24",
+        "type": 1,
+        "value": "end of the date",
+        "xf": 122
+      },
+      {
+        "cell": "C25",
+        "type": 1,
+        "value": "No. of Contracts",
+        "xf": 83
+      },
+      {
+        "cell": "D25",
+        "type": 1,
+        "value": "Amount in Crore",
+        "xf": 83
+      },
+      {
+        "cell": "E25",
+        "type": 1,
+        "value": "No. of Contracts",
+        "xf": 83
+      },
+      {
+        "cell": "F25",
+        "type": 1,
+        "value": "Amount in crore",
+        "xf": 83
+      },
+      {
+        "cell": "G25",
+        "type": 1,
+        "value": "No. of Contracts",
+        "xf": 83
+      },
+      {
+        "cell": "H25",
+        "type": 1,
+        "value": "Amount in Crore",
+        "xf": 84
+      },
+      {
+        "cell": "A26",
+        "type": 3,
+        "value": 44795,
+        "xf": 110,
+        "date": "2022-08-22T00:00:00"
+      },
+      {
+        "cell": "B26",
+        "type": 1,
+        "value": "Index Futures",
+        "xf": 85
+      },
+      {
+        "cell": "C26",
+        "type": 2,
+        "value": 26228,
+        "xf": 88
+      },
+      {
+        "cell": "D26",
+        "type": 2,
+        "value": 2414.2,
+        "xf": 88
+      },
+      {
+        "cell": "E26",
+        "type": 2,
+        "value": 43221,
+        "xf": 88
+      },
+      {
+        "cell": "F26",
+        "type": 2,
+        "value": 4061.39,
+        "xf": 88
+      },
+      {
+        "cell": "G26",
+        "type": 2,
+        "value": 193212,
+        "xf": 88
+      },
+      {
+        "cell": "H26",
+        "type": 2,
+        "value": 17688.78,
+        "xf": 88
+      },
+      {
+        "cell": "B27",
+        "type": 1,
+        "value": "Index Options",
+        "xf": 77
+      },
+      {
+        "cell": "C27",
+        "type": 2,
+        "value": 7615279,
+        "xf": 88
+      },
+      {
+        "cell": "D27",
+        "type": 2,
+        "value": 729765.02,
+        "xf": 88
+      },
+      {
+        "cell": "E27",
+        "type": 2,
+        "value": 7638077,
+        "xf": 88
+      },
+      {
+        "cell": "F27",
+        "type": 2,
+        "value": 731780.32,
+        "xf": 88
+      },
+      {
+        "cell": "G27",
+        "type": 2,
+        "value": 1374095,
+        "xf": 88
+      },
+      {
+        "cell": "H27",
+        "type": 2,
+        "value": 125128,
+        "xf": 88
+      },
+      {
+        "cell": "B28",
+        "type": 1,
+        "value": "Stock Futures",
+        "xf": 77
+      },
+      {
+        "cell": "C28",
+        "type": 2,
+        "value": 239624,
+        "xf": 88
+      },
+      {
+        "cell": "D28",
+        "type": 2,
+        "value": 17113.34,
+        "xf": 88
+      },
+      {
+        "cell": "E28",
+        "type": 2,
+        "value": 252625,
+        "xf": 88
+      },
+      {
+        "cell": "F28",
+        "type": 2,
+        "value": 18471.1,
+        "xf": 88
+      },
+      {
+        "cell": "G28",
+        "type": 2,
+        "value": 2147154,
+        "xf": 88
+      },
+      {
+        "cell": "H28",
+        "type": 2,
+        "value": 150546.34,
+        "xf": 88
+      },
+      {
+        "cell": "B29",
+        "type": 1,
+        "value": "Stock Options",
+        "xf": 77
+      },
+      {
+        "cell": "C29",
+        "type": 2,
+        "value": 170797,
+        "xf": 88
+      },
+      {
+        "cell": "D29",
+        "type": 2,
+        "value": 13314.34,
+        "xf": 88
+      },
+      {
+        "cell": "E29",
+        "type": 2,
+        "value": 169516,
+        "xf": 88
+      },
+      {
+        "cell": "F29",
+        "type": 2,
+        "value": 13211.02,
+        "xf": 88
+      },
+      {
+        "cell": "G29",
+        "type": 2,
+        "value": 181036,
+        "xf": 88
+      },
+      {
+        "cell": "H29",
+        "type": 2,
+        "value": 13042.78,
+        "xf": 88
+      },
+      {
+        "cell": "B30",
+        "type": 1,
+        "value": "Interest Rate Futures",
+        "xf": 77
+      },
+      {
+        "cell": "C30",
+        "type": 2,
+        "value": 0,
+        "xf": 88
+      },
+      {
+        "cell": "D30",
+        "type": 2,
+        "value": 0,
+        "xf": 88
+      },
+      {
+        "cell": "E30",
+        "type": 2,
+        "value": 0,
+        "xf": 88
+      },
+      {
+        "cell": "F30",
+        "type": 2,
+        "value": 0,
+        "xf": 88
+      },
+      {
+        "cell": "G30",
+        "type": 2,
+        "value": 1125,
+        "xf": 88
+      },
+      {
+        "cell": "H30",
+        "type": 2,
+        "value": 20.82,
+        "xf": 88
+      },
+      {
+        "cell": "A31",
+        "type": 1,
+        "value": "The above report is compiled on the basis of reports submitted to depositories by NSE and BSE on 22-August-2022  and constitutes  FPIs trading / position of the previous trading day",
+        "xf": 124
+      },
+      {
+        "cell": "A36",
+        "type": 1,
+        "value": "Note to Daily Trends in FPI Investments\n\n* Conversion rate: With effect from January 01, 1999, the daily RBI reference rate as on the trading day has been adopted. (If the trading day is a bank holiday, immediately preceding day's reference rate has been used).\n\nDiscrepancies in total figures, if any, are due to rounding off\n\n\"Note: The data pertains to all the activities undertaken by FPIs in Indian Securities Market, including trades done in secondary market, primary market and activities involved in right/bonus issues, private placement, merger & acquisition, etc.\" \n\nNote:\nThe Stock Exchanges data pertains to following: \nPurchase and sale in secondary market \nPurchase and sale of mutual fund units in secondary market \nPrimary Market and Others data pertains to following: \nPurchase in primary market \nPreferential allotment \nPurchase through rights issue \nConversion of debentures into equity shares \nReceipt of bonus shares \nRedemption of debenture /units of mutual funds \nLodging shares in terms of open offer \nRepurchase of units by mutual fund \nBuyback of shares by company \nPayment of allotment/call money \nSquare off - on account of short delivery received \nSquare off and auction-on account of short delivery given \nConsolidation sub division of securities \n",
+        "xf": 112
+      }
+    ],
+    "format_only_blank_cell_addresses": [
+      "B1",
+      "C1",
+      "D1",
+      "E1",
+      "F1",
+      "G1",
+      "H1",
+      "A2",
+      "B2",
+      "C2",
+      "D2",
+      "E2",
+      "F2",
+      "G2",
+      "H2",
+      "A4",
+      "B4",
+      "C4",
+      "D4",
+      "E4",
+      "F4",
+      "G4",
+      "I5",
+      "J5",
+      "A6",
+      "B6",
+      "H6",
+      "I6",
+      "J6",
+      "A7",
+      "B7",
+      "H7",
+      "I7",
+      "A8",
+      "H8",
+      "I8",
+      "J8",
+      "A9",
+      "B9",
+      "H9",
+      "I9",
+      "J9",
+      "A10",
+      "B10",
+      "H10",
+      "I10",
+      "A11",
+      "H11",
+      "I11",
+      "A12",
+      "B12",
+      "H12",
+      "I12",
+      "A13",
+      "B13",
+      "H13",
+      "I13",
+      "A14",
+      "H14",
+      "I14",
+      "A15",
+      "B15",
+      "H15",
+      "I15",
+      "A16",
+      "B16",
+      "H16",
+      "I16",
+      "A17",
+      "B17",
+      "H17",
+      "I17",
+      "A18",
+      "B18",
+      "C18",
+      "D18",
+      "E18",
+      "F18",
+      "G18",
+      "H18",
+      "I18",
+      "B19",
+      "C19",
+      "D19",
+      "E19",
+      "F19",
+      "G19",
+      "H19",
+      "A20",
+      "B20",
+      "C20",
+      "D20",
+      "E20",
+      "F20",
+      "G20",
+      "H20",
+      "B21",
+      "C21",
+      "D21",
+      "E21",
+      "F21",
+      "G21",
+      "H21",
+      "A22",
+      "B22",
+      "C22",
+      "D22",
+      "E22",
+      "F22",
+      "G22",
+      "H22",
+      "D23",
+      "F23",
+      "H23",
+      "A24",
+      "B24",
+      "C24",
+      "D24",
+      "E24",
+      "F24",
+      "H24",
+      "A25",
+      "B25",
+      "J26",
+      "K26",
+      "L26",
+      "M26",
+      "N26",
+      "O26",
+      "A27",
+      "J27",
+      "K27",
+      "L27",
+      "M27",
+      "N27",
+      "O27",
+      "A28",
+      "J28",
+      "K28",
+      "L28",
+      "M28",
+      "N28",
+      "O28",
+      "A29",
+      "J29",
+      "K29",
+      "L29",
+      "M29",
+      "N29",
+      "O29",
+      "A30",
+      "J30",
+      "K30",
+      "L30",
+      "M30",
+      "N30",
+      "O30",
+      "B31",
+      "C31",
+      "D31",
+      "E31",
+      "F31",
+      "G31",
+      "H31",
+      "A32",
+      "B32",
+      "C32",
+      "D32",
+      "E32",
+      "F32",
+      "G32",
+      "H32",
+      "A33",
+      "B33",
+      "C33",
+      "D33",
+      "E33",
+      "F33",
+      "G33",
+      "H33",
+      "A34",
+      "B34",
+      "C34",
+      "D34",
+      "E34",
+      "F34",
+      "G34",
+      "H34",
+      "A35",
+      "B35",
+      "C35",
+      "D35",
+      "E35",
+      "F35",
+      "G35",
+      "H35",
+      "B36",
+      "C36",
+      "D36",
+      "E36",
+      "F36",
+      "G36",
+      "H36",
+      "I36",
+      "A37",
+      "B37",
+      "C37",
+      "D37",
+      "E37",
+      "F37",
+      "G37",
+      "H37",
+      "I37",
+      "A38",
+      "B38",
+      "C38",
+      "D38",
+      "E38",
+      "F38",
+      "G38",
+      "H38",
+      "I38",
+      "A39",
+      "B39",
+      "C39",
+      "D39",
+      "E39",
+      "F39",
+      "G39",
+      "H39",
+      "I39",
+      "A40",
+      "B40",
+      "C40",
+      "D40",
+      "E40",
+      "F40",
+      "G40",
+      "H40",
+      "I40",
+      "A41",
+      "B41",
+      "C41",
+      "D41",
+      "E41",
+      "F41",
+      "G41",
+      "H41",
+      "I41",
+      "A42",
+      "B42",
+      "C42",
+      "D42",
+      "E42",
+      "F42",
+      "G42",
+      "H42",
+      "I42",
+      "A43",
+      "B43",
+      "C43",
+      "D43",
+      "E43",
+      "F43",
+      "G43",
+      "H43",
+      "I43",
+      "A44",
+      "B44",
+      "C44",
+      "D44",
+      "E44",
+      "F44",
+      "G44",
+      "H44",
+      "I44",
+      "A45",
+      "B45",
+      "C45",
+      "D45",
+      "E45",
+      "F45",
+      "G45",
+      "H45",
+      "I45",
+      "A46",
+      "B46",
+      "C46",
+      "D46",
+      "E46",
+      "F46",
+      "G46",
+      "H46",
+      "I46",
+      "A47",
+      "B47",
+      "C47",
+      "D47",
+      "E47",
+      "F47",
+      "G47",
+      "H47",
+      "I47",
+      "A48",
+      "B48",
+      "C48",
+      "D48",
+      "E48",
+      "F48",
+      "G48",
+      "H48",
+      "I48",
+      "A49",
+      "B49",
+      "C49",
+      "D49",
+      "E49",
+      "F49",
+      "G49",
+      "H49",
+      "I49",
+      "A50",
+      "B50",
+      "C50",
+      "D50",
+      "E50",
+      "F50",
+      "G50",
+      "H50",
+      "I50",
+      "A51",
+      "B51",
+      "C51",
+      "D51",
+      "E51",
+      "F51",
+      "G51",
+      "H51",
+      "I51",
+      "A52",
+      "B52",
+      "C52",
+      "D52",
+      "E52",
+      "F52",
+      "G52",
+      "H52",
+      "I52",
+      "A53",
+      "B53",
+      "C53",
+      "D53",
+      "E53",
+      "F53",
+      "G53",
+      "H53",
+      "I53",
+      "A54",
+      "B54",
+      "C54",
+      "D54",
+      "E54",
+      "F54",
+      "G54",
+      "H54",
+      "I54",
+      "A55",
+      "B55",
+      "C55",
+      "D55",
+      "E55",
+      "F55",
+      "G55",
+      "H55",
+      "I55",
+      "A56",
+      "B56",
+      "C56",
+      "D56",
+      "E56",
+      "F56",
+      "G56",
+      "H56",
+      "I56",
+      "A57",
+      "B57",
+      "C57",
+      "D57",
+      "E57",
+      "F57",
+      "G57",
+      "H57",
+      "I57",
+      "A58",
+      "B58",
+      "C58",
+      "D58",
+      "E58",
+      "F58",
+      "G58",
+      "H58",
+      "I58"
+    ]
+  },
+  "biff": {
+    "workbook_stream_bytes": 32840,
+    "bytes_parsed": 32840,
+    "trailing_unparsed_bytes": 0,
+    "record_count": 738,
+    "record_counts_by_hex_opcode": {
+      "0x000a": 2,
+      "0x000c": 1,
+      "0x000d": 1,
+      "0x000e": 1,
+      "0x000f": 1,
+      "0x0010": 1,
+      "0x0011": 1,
+      "0x0012": 1,
+      "0x0013": 1,
+      "0x0014": 1,
+      "0x0015": 1,
+      "0x0017": 1,
+      "0x0019": 1,
+      "0x001d": 1,
+      "0x0022": 1,
+      "0x0026": 1,
+      "0x0027": 1,
+      "0x0028": 1,
+      "0x0029": 1,
+      "0x002a": 1,
+      "0x002b": 1,
+      "0x0031": 33,
+      "0x003d": 1,
+      "0x0040": 1,
+      "0x0042": 1,
+      "0x004d": 1,
+      "0x0055": 1,
+      "0x005c": 1,
+      "0x005f": 1,
+      "0x007d": 8,
+      "0x0080": 1,
+      "0x0081": 1,
+      "0x0082": 1,
+      "0x0083": 1,
+      "0x0084": 1,
+      "0x0085": 1,
+      "0x008c": 1,
+      "0x008d": 1,
+      "0x009c": 1,
+      "0x00a1": 1,
+      "0x00bd": 19,
+      "0x00be": 65,
+      "0x00c1": 1,
+      "0x00d7": 2,
+      "0x00da": 1,
+      "0x00e0": 134,
+      "0x00e1": 1,
+      "0x00e2": 1,
+      "0x00e5": 1,
+      "0x00fc": 1,
+      "0x00fd": 49,
+      "0x00ff": 1,
+      "0x013d": 1,
+      "0x0160": 1,
+      "0x0161": 1,
+      "0x01ae": 1,
+      "0x01af": 1,
+      "0x01b7": 1,
+      "0x01bc": 1,
+      "0x01c0": 1,
+      "0x01c1": 1,
+      "0x0200": 1,
+      "0x0201": 11,
+      "0x0203": 2,
+      "0x0208": 58,
+      "0x020b": 1,
+      "0x0225": 1,
+      "0x023e": 1,
+      "0x027e": 3,
+      "0x0293": 58,
+      "0x041e": 32,
+      "0x0809": 2,
+      "0x0863": 1,
+      "0x0867": 1,
+      "0x087c": 1,
+      "0x087d": 134,
+      "0x088b": 1,
+      "0x088c": 1,
+      "0x088e": 1,
+      "0x0892": 58,
+      "0x0896": 1,
+      "0x089a": 1,
+      "0x089b": 1,
+      "0x089c": 1,
+      "0x08a3": 1
+    },
+    "relevant_feature_record_counts": {
+      "FORMULA_0006": 0,
+      "ARRAY_0221": 0,
+      "SHRFMLA_04bc": 0,
+      "BOOLERR_0205": 0,
+      "NAME_0018": 0,
+      "EXTERNNAME_0023": 0,
+      "SUPBOOK_01ae": 1,
+      "EXTERNSHEET_0017": 1,
+      "FILEPASS_002f": 0,
+      "NOTE_001c": 0,
+      "OBJ_005d": 0,
+      "MSODRAWING_00ec": 0,
+      "MSODRAWINGGROUP_00eb": 0,
+      "HLINK_01b8": 0,
+      "CONDFMT_01b0": 0,
+      "CF_01b1": 0,
+      "DVAL_01b2": 0,
+      "DV_01be": 0
+    },
+    "formula_records": 0,
+    "typed_error_cells": 0,
+    "supbook": {
+      "count": 1,
+      "raw_hex": "01000104",
+      "interpretation": "Internal workbook reference marker 0x0401 for one sheet, not an external workbook path."
+    },
+    "externsheet": {
+      "count": 1,
+      "raw_hex": "0100000000000000",
+      "interpretation": "One reference to sheet index 0 within the internal SUPBOOK."
+    },
+    "ole_directory": [
+      {
+        "name": "Root Entry",
+        "entry_type": 5,
+        "bytes": 0
+      },
+      {
+        "name": "Workbook",
+        "entry_type": 2,
+        "bytes": 32840
+      },
+      {
+        "name": "\u0005SummaryInformation",
+        "entry_type": 2,
+        "bytes": 34552
+      },
+      {
+        "name": "\u0005DocumentSummaryInformation",
+        "entry_type": 2,
+        "bytes": 4096
+      }
+    ],
+    "vba_storage_present": false,
+    "metadata_limit": "SummaryInformation and DocumentSummaryInformation streams were inventoried. Their property sets and possible thumbnail were not decoded or rendered. BIFF extension/formatting records were counted, not exhaustively interpreted as native Excel features."
+  },
+  "content": {
+    "title_cell": "A1",
+    "title": "Daily Trends in FPI Investments on 22-August-2022",
+    "reporting_date_cells": [
+      "A5",
+      "A26"
+    ],
+    "reporting_date_serial": 44795,
+    "reporting_date": "2022-08-22",
+    "distinct_reporting_dates": 1,
+    "trade_date": "not explicitly supplied",
+    "cash_note_cell": "A19",
+    "cash_note": "The data presented above is compiled on the basis of reports submitted to depositories by DDPs on 22-August-2022 and constitutes trades conducted by FPIs on and upto the previous trading day(s).",
+    "derivative_note_cell": "A31",
+    "derivative_note": "The above report is compiled on the basis of reports submitted to depositories by NSE and BSE on 22-August-2022  and constitutes  FPIs trading / position of the previous trading day",
+    "date_interpretation": "Reporting/submission date is 2022-08-22. Investment note says activity occurred on and up to previous trading day(s); derivative note says previous trading day. No market-calendar inference was made. The filename Latest_22082022.xls is not evidence of present currentness.",
+    "report_notes_cell": "A36",
+    "report_notes": "Note to Daily Trends in FPI Investments\n\n* Conversion rate: With effect from January 01, 1999, the daily RBI reference rate as on the trading day has been adopted. (If the trading day is a bank holiday, immediately preceding day's reference rate has been used).\n\nDiscrepancies in total figures, if any, are due to rounding off\n\n\"Note: The data pertains to all the activities undertaken by FPIs in Indian Securities Market, including trades done in secondary market, primary market and activities involved in right/bonus issues, private placement, merger & acquisition, etc.\" \n\nNote:\nThe Stock Exchanges data pertains to following: \nPurchase and sale in secondary market \nPurchase and sale of mutual fund units in secondary market \nPrimary Market and Others data pertains to following: \nPurchase in primary market \nPreferential allotment \nPurchase through rights issue \nConversion of debentures into equity shares \nReceipt of bonus shares \nRedemption of debenture /units of mutual funds \nLodging shares in terms of open offer \nRepurchase of units by mutual fund \nBuyback of shares by company \nPayment of allotment/call money \nSquare off - on account of short delivery received \nSquare off and auction-on account of short delivery given \nConsolidation sub division of securities \n",
+    "investment_table": {
+      "range": "A3:H17",
+      "grain": "reporting date x investment category x route, plus subtotals and grand total",
+      "detail_rows": 8,
+      "subtotal_rows": 4,
+      "grand_total_rows": 1,
+      "categories": [
+        "Equity",
+        "Debt",
+        "Debt-VRR",
+        "Hybrid"
+      ],
+      "detail_routes": [
+        "Stock Exchange",
+        "Primary market & others"
+      ],
+      "units": {
+        "D:F": "INR crore",
+        "G": "USD million",
+        "H5": "INR per USD, stored as text Rs.79.7528"
+      },
+      "rows": [
+        {
+          "excel_row": 5,
+          "reporting_date": "2022-08-22",
+          "category": "Equity",
+          "investment_route": "Stock Exchange",
+          "row_role": "detail",
+          "gross_purchases_inr_crore": 7006.97,
+          "gross_sales_inr_crore": 5476.56,
+          "net_investment_inr_crore": 1530.41,
+          "net_investment_usd_million": 191.89
+        },
+        {
+          "excel_row": 6,
+          "reporting_date": "2022-08-22",
+          "category": "Equity",
+          "investment_route": "Primary market & others",
+          "row_role": "detail",
+          "gross_purchases_inr_crore": 1.59,
+          "gross_sales_inr_crore": 0,
+          "net_investment_inr_crore": 1.59,
+          "net_investment_usd_million": 0.2
+        },
+        {
+          "excel_row": 7,
+          "reporting_date": "2022-08-22",
+          "category": "Equity",
+          "investment_route": "Sub-total",
+          "row_role": "subtotal",
+          "gross_purchases_inr_crore": 7008.56,
+          "gross_sales_inr_crore": 5476.56,
+          "net_investment_inr_crore": 1532,
+          "net_investment_usd_million": 192.09
+        },
+        {
+          "excel_row": 8,
+          "reporting_date": "2022-08-22",
+          "category": "Debt",
+          "investment_route": "Stock Exchange",
+          "row_role": "detail",
+          "gross_purchases_inr_crore": 83.11,
+          "gross_sales_inr_crore": 206.32,
+          "net_investment_inr_crore": -123.21,
+          "net_investment_usd_million": -15.45
+        },
+        {
+          "excel_row": 9,
+          "reporting_date": "2022-08-22",
+          "category": "Debt",
+          "investment_route": "Primary market & others",
+          "row_role": "detail",
+          "gross_purchases_inr_crore": 128.5,
+          "gross_sales_inr_crore": 0,
+          "net_investment_inr_crore": 128.5,
+          "net_investment_usd_million": 16.11
+        },
+        {
+          "excel_row": 10,
+          "reporting_date": "2022-08-22",
+          "category": "Debt",
+          "investment_route": "Sub-total",
+          "row_role": "subtotal",
+          "gross_purchases_inr_crore": 211.61,
+          "gross_sales_inr_crore": 206.32,
+          "net_investment_inr_crore": 5.29,
+          "net_investment_usd_million": 0.66
+        },
+        {
+          "excel_row": 11,
+          "reporting_date": "2022-08-22",
+          "category": "Debt-VRR",
+          "investment_route": "Stock Exchange",
+          "row_role": "detail",
+          "gross_purchases_inr_crore": 47.58,
+          "gross_sales_inr_crore": 122.5,
+          "net_investment_inr_crore": -74.92,
+          "net_investment_usd_million": -9.39
+        },
+        {
+          "excel_row": 12,
+          "reporting_date": "2022-08-22",
+          "category": "Debt-VRR",
+          "investment_route": "Primary market & others",
+          "row_role": "detail",
+          "gross_purchases_inr_crore": 31,
+          "gross_sales_inr_crore": 0,
+          "net_investment_inr_crore": 31,
+          "net_investment_usd_million": 3.89
+        },
+        {
+          "excel_row": 13,
+          "reporting_date": "2022-08-22",
+          "category": "Debt-VRR",
+          "investment_route": "Sub-total",
+          "row_role": "subtotal",
+          "gross_purchases_inr_crore": 78.58,
+          "gross_sales_inr_crore": 122.5,
+          "net_investment_inr_crore": -43.92,
+          "net_investment_usd_million": -5.5
+        },
+        {
+          "excel_row": 14,
+          "reporting_date": "2022-08-22",
+          "category": "Hybrid",
+          "investment_route": "Stock Exchange",
+          "row_role": "detail",
+          "gross_purchases_inr_crore": 26.79,
+          "gross_sales_inr_crore": 3.52,
+          "net_investment_inr_crore": 23.27,
+          "net_investment_usd_million": 2.92
+        },
+        {
+          "excel_row": 15,
+          "reporting_date": "2022-08-22",
+          "category": "Hybrid",
+          "investment_route": "Primary market & others",
+          "row_role": "detail",
+          "gross_purchases_inr_crore": 0,
+          "gross_sales_inr_crore": 0,
+          "net_investment_inr_crore": 0,
+          "net_investment_usd_million": 0
+        },
+        {
+          "excel_row": 16,
+          "reporting_date": "2022-08-22",
+          "category": "Hybrid",
+          "investment_route": "Sub-total",
+          "row_role": "subtotal",
+          "gross_purchases_inr_crore": 26.79,
+          "gross_sales_inr_crore": 3.52,
+          "net_investment_inr_crore": 23.27,
+          "net_investment_usd_million": 2.92
+        },
+        {
+          "excel_row": 17,
+          "reporting_date": "2022-08-22",
+          "category": "All categories",
+          "investment_route": "Total",
+          "row_role": "grand_total",
+          "gross_purchases_inr_crore": 7325.54,
+          "gross_sales_inr_crore": 5808.9,
+          "net_investment_inr_crore": 1516.64,
+          "net_investment_usd_million": 190.17
+        }
+      ],
+      "aggregation_rule": "Use the eight detail rows, four subtotals, or grand total as alternatives. Adding detail rows and their subtotals double-counts. The note includes rights/bonus issues, private placements, corporate actions, mutual fund units and other activity, so these aggregates are not purely secondary-market equity cash trades.",
+      "merged_category_caveat": "The source merges B14:B17 under Hybrid, including the C17 Total row. Row 17 is interpreted as the all-category grand total because C17 says Total and D17:G17 reconcile to the four category subtotals. Blindly filling the merged Hybrid label into row 17 would misclassify the grand total."
+    },
+    "derivatives_table": {
+      "range": "A23:H30",
+      "grain": "one reporting date x five aggregate derivative product categories",
+      "data_rows": 5,
+      "products": [
+        "Index Futures",
+        "Index Options",
+        "Stock Futures",
+        "Stock Options",
+        "Interest Rate Futures"
+      ],
+      "units": {
+        "C,E,G": "contract counts",
+        "D,F,H": "amount in crore; derivative headers do not restate currency"
+      },
+      "currency_interpretation": "Indian securities report context suggests INR, but derivative headers explicitly say only crore. Preserve this qualification.",
+      "rows": [
+        {
+          "excel_row": 26,
+          "reporting_date": "2022-08-22",
+          "derivative_product": "Index Futures",
+          "buy_contracts": 26228,
+          "buy_amount_crore": 2414.2,
+          "sell_contracts": 43221,
+          "sell_amount_crore": 4061.39,
+          "open_interest_contracts": 193212,
+          "open_interest_amount_crore": 17688.78
+        },
+        {
+          "excel_row": 27,
+          "reporting_date": "2022-08-22",
+          "derivative_product": "Index Options",
+          "buy_contracts": 7615279,
+          "buy_amount_crore": 729765.02,
+          "sell_contracts": 7638077,
+          "sell_amount_crore": 731780.32,
+          "open_interest_contracts": 1374095,
+          "open_interest_amount_crore": 125128
+        },
+        {
+          "excel_row": 28,
+          "reporting_date": "2022-08-22",
+          "derivative_product": "Stock Futures",
+          "buy_contracts": 239624,
+          "buy_amount_crore": 17113.34,
+          "sell_contracts": 252625,
+          "sell_amount_crore": 18471.1,
+          "open_interest_contracts": 2147154,
+          "open_interest_amount_crore": 150546.34
+        },
+        {
+          "excel_row": 29,
+          "reporting_date": "2022-08-22",
+          "derivative_product": "Stock Options",
+          "buy_contracts": 170797,
+          "buy_amount_crore": 13314.34,
+          "sell_contracts": 169516,
+          "sell_amount_crore": 13211.02,
+          "open_interest_contracts": 181036,
+          "open_interest_amount_crore": 13042.78
+        },
+        {
+          "excel_row": 30,
+          "reporting_date": "2022-08-22",
+          "derivative_product": "Interest Rate Futures",
+          "buy_contracts": 0,
+          "buy_amount_crore": 0,
+          "sell_contracts": 0,
+          "sell_amount_crore": 0,
+          "open_interest_contracts": 1125,
+          "open_interest_amount_crore": 20.82
+        }
+      ],
+      "limits": "No contract identifiers, expiry, strike, underlying security identifiers, premiums, or notional valuation methodology are stored. Do not transfer valuation definitions from the separate 2026 root reports to this 2022 report without evidence."
+    },
+    "identities": {
+      "security_identifiers_present": false,
+      "symbol_column_present": false,
+      "isin_column_present": false,
+      "security_master_rows": 0,
+      "company_rows": 0,
+      "identity_resolution": "Report categories and routes are aggregate classifications; Stock Futures and Stock Options do not identify individual companies."
+    }
+  },
+  "quality_checks": {
+    "net_equals_purchases_minus_sales": {
+      "checks": 13,
+      "failures": 0,
+      "results": [
+        {
+          "row": 5,
+          "delta_inr_crore": "0.00"
+        },
+        {
+          "row": 6,
+          "delta_inr_crore": "0.00"
+        },
+        {
+          "row": 7,
+          "delta_inr_crore": "0.00"
+        },
+        {
+          "row": 8,
+          "delta_inr_crore": "0.00"
+        },
+        {
+          "row": 9,
+          "delta_inr_crore": "0.0"
+        },
+        {
+          "row": 10,
+          "delta_inr_crore": "0.00"
+        },
+        {
+          "row": 11,
+          "delta_inr_crore": "0.00"
+        },
+        {
+          "row": 12,
+          "delta_inr_crore": "0.0"
+        },
+        {
+          "row": 13,
+          "delta_inr_crore": "0.00"
+        },
+        {
+          "row": 14,
+          "delta_inr_crore": "0.00"
+        },
+        {
+          "row": 15,
+          "delta_inr_crore": "0.0"
+        },
+        {
+          "row": 16,
+          "delta_inr_crore": "0.00"
+        },
+        {
+          "row": 17,
+          "delta_inr_crore": "0.00"
+        }
+      ]
+    },
+    "category_subtotals": {
+      "checks": 16,
+      "failures": 0,
+      "results": [
+        {
+          "subtotal_row": 7,
+          "detail_rows": [
+            5,
+            6
+          ],
+          "column_deltas": {
+            "D": "0.00",
+            "E": "0.00",
+            "F": "0.00",
+            "G": "0.00"
+          }
+        },
+        {
+          "subtotal_row": 10,
+          "detail_rows": [
+            8,
+            9
+          ],
+          "column_deltas": {
+            "D": "0.00",
+            "E": "0.00",
+            "F": "0.00",
+            "G": "0.00"
+          }
+        },
+        {
+          "subtotal_row": 13,
+          "detail_rows": [
+            11,
+            12
+          ],
+          "column_deltas": {
+            "D": "0.00",
+            "E": "0.0",
+            "F": "0.00",
+            "G": "0.00"
+          }
+        },
+        {
+          "subtotal_row": 16,
+          "detail_rows": [
+            14,
+            15
+          ],
+          "column_deltas": {
+            "D": "0.00",
+            "E": "0.00",
+            "F": "0.00",
+            "G": "0.00"
+          }
+        }
+      ]
+    },
+    "grand_total": {
+      "checks": 4,
+      "failures": 0,
+      "column_deltas": {
+        "D": "0.00",
+        "E": "0.00",
+        "F": "0.00",
+        "G": "0.00"
+      }
+    },
+    "fx_conversion": {
+      "rate_cell": "H5",
+      "rate_inr_per_usd": "79.7528",
+      "equation": "USD million = INR crore * 10 / INR-per-USD",
+      "checks": 13,
+      "exact_matches_after_two_decimal_rounding": 12,
+      "maximum_absolute_rounding_difference_usd_million": "0.01",
+      "results": [
+        {
+          "cell": "G5",
+          "stored_usd_million": "191.89",
+          "net_inr_crore_divided_by_rate_to_usd_million_rounded": "191.89",
+          "stored_minus_rounded": "0.00"
+        },
+        {
+          "cell": "G6",
+          "stored_usd_million": "0.2",
+          "net_inr_crore_divided_by_rate_to_usd_million_rounded": "0.20",
+          "stored_minus_rounded": "0.00"
+        },
+        {
+          "cell": "G7",
+          "stored_usd_million": "192.09",
+          "net_inr_crore_divided_by_rate_to_usd_million_rounded": "192.09",
+          "stored_minus_rounded": "0.00"
+        },
+        {
+          "cell": "G8",
+          "stored_usd_million": "-15.45",
+          "net_inr_crore_divided_by_rate_to_usd_million_rounded": "-15.45",
+          "stored_minus_rounded": "0.00"
+        },
+        {
+          "cell": "G9",
+          "stored_usd_million": "16.11",
+          "net_inr_crore_divided_by_rate_to_usd_million_rounded": "16.11",
+          "stored_minus_rounded": "0.00"
+        },
+        {
+          "cell": "G10",
+          "stored_usd_million": "0.66",
+          "net_inr_crore_divided_by_rate_to_usd_million_rounded": "0.66",
+          "stored_minus_rounded": "0.00"
+        },
+        {
+          "cell": "G11",
+          "stored_usd_million": "-9.39",
+          "net_inr_crore_divided_by_rate_to_usd_million_rounded": "-9.39",
+          "stored_minus_rounded": "0.00"
+        },
+        {
+          "cell": "G12",
+          "stored_usd_million": "3.89",
+          "net_inr_crore_divided_by_rate_to_usd_million_rounded": "3.89",
+          "stored_minus_rounded": "0.00"
+        },
+        {
+          "cell": "G13",
+          "stored_usd_million": "-5.5",
+          "net_inr_crore_divided_by_rate_to_usd_million_rounded": "-5.51",
+          "stored_minus_rounded": "0.01"
+        },
+        {
+          "cell": "G14",
+          "stored_usd_million": "2.92",
+          "net_inr_crore_divided_by_rate_to_usd_million_rounded": "2.92",
+          "stored_minus_rounded": "0.00"
+        },
+        {
+          "cell": "G15",
+          "stored_usd_million": "0.0",
+          "net_inr_crore_divided_by_rate_to_usd_million_rounded": "0.00",
+          "stored_minus_rounded": "0.00"
+        },
+        {
+          "cell": "G16",
+          "stored_usd_million": "2.92",
+          "net_inr_crore_divided_by_rate_to_usd_million_rounded": "2.92",
+          "stored_minus_rounded": "0.00"
+        },
+        {
+          "cell": "G17",
+          "stored_usd_million": "190.17",
+          "net_inr_crore_divided_by_rate_to_usd_million_rounded": "190.17",
+          "stored_minus_rounded": "0.00"
+        }
+      ],
+      "finding": "G13 stores -5.50, the exact sum of G11 (-9.39) and G12 (3.89), whereas direct conversion of F13 (-43.92 crore) rounds to -5.51. The workbook explicitly notes total discrepancies from rounding. Stored values are preserved."
+    },
+    "derivatives_nonnegative_numeric_cells": {
+      "checks": 30,
+      "failures": 0
+    },
+    "derivatives_contract_counts_are_integers": {
+      "checks": 15,
+      "failures": 0
+    },
+    "duplicates": {
+      "investment_detail_composite_key_duplicates": 0,
+      "derivative_product_date_key_duplicates": 0
+    }
+  },
+  "duplicate_context": {
+    "accepted_root_evidence": "data/asset-review/archived-reports-evidence-2026-09-24.json#/legacy_xls",
+    "accepted_root_evidence_sha256": "15d4e04b506832d9b071be54683d7cef2bb38b215efcf2f3a5d6467612f42845",
+    "root_binary_xls_comparisons": [
+      {
+        "asset": "fii_stats_05-Jun-2026.xls",
+        "bytes": 9216,
+        "sha256": "69f845663e636a495c5ff54ce41549f348094332d7b3c8a20e1ef47bce64f8eb",
+        "accepted_pin_reverified": true,
+        "identical_to_am07_member": false,
+        "accepted_reported_dates": [
+          "2026-06-05"
+        ]
+      },
+      {
+        "asset": "fii_stats_08-Jun-2026.1.xls",
+        "bytes": 9216,
+        "sha256": "97aca37bc73cc59aa32431e25e06be2608fd7ce035ff8e85e5f2f6757c65ed69",
+        "accepted_pin_reverified": true,
+        "identical_to_am07_member": false,
+        "accepted_reported_dates": [
+          "2026-06-08"
+        ]
+      },
+      {
+        "asset": "fii_stats_08-Jun-2026.xls",
+        "bytes": 9216,
+        "sha256": "97aca37bc73cc59aa32431e25e06be2608fd7ce035ff8e85e5f2f6757c65ed69",
+        "accepted_pin_reverified": true,
+        "identical_to_am07_member": false,
+        "accepted_reported_dates": [
+          "2026-06-08"
+        ]
+      }
+    ],
+    "all_root_xls_assets_byte_compared": 13,
+    "root_byte_identical_assets": [],
+    "other_am07_members_same_uncompressed_size_compared": [],
+    "am07_archive_duplicate_limit": "All other archive entries differ in size unless explicitly listed above; unequal size excludes exact byte equality. No unrelated archive content was re-audited.",
+    "reuse_conclusion": "None of the three accepted root binary XLS assets is byte-identical. Root reports cover June 5/8 2026 and use a different derivative taxonomy. This 2022 FPI report therefore receives independent content evidence; no accepted root content status is reused.",
+    "other_am07_member_sizes_checked": 43,
+    "scope_limit": "Duplicate findings cover this archive and the 13 root .xls assets only; they do not assert global uniqueness across unrelated archives or sources."
+  },
+  "fit_for_project": {
+    "historical_aggregate_context": "One archived reporting-date candidate for FPI investment-category/route and derivative-product aggregate context, subject to provenance and reporting-date semantics.",
+    "universe_contribution": "No stock identifiers or company mapping; contributes zero security-master identities.",
+    "history_contribution": "One reporting date, not continuous history, stock-level OHLCV, company ownership, investor holdings, or 15-year coverage.",
+    "currentness": "2022 report; no current quote, EPS, PE, provider freshness or live tradability is established.",
+    "activation": "No import, runtime wiring, provider activation, database access, or trade execution performed."
+  },
+  "limits": [
+    "All stored worksheet values were read; this does not establish upstream authority, publication authenticity, exact trading date, or currentness.",
+    "No native Excel rendering or recalculation was performed. Zero executable FORMULA records are a structural observation, not a formula recalculation test.",
+    "Merged header/category/date anchors were interpreted only in derived table records; original blank cells and source values remain intact.",
+    "BIFF ancillary and future feature records are inventoried, not a full semantic validation of all native Excel features.",
+    "No fresh website/provider comparison, historical identity validation, Mongo coverage check, or runtime suitability approval was performed."
+  ],
+  "boundaries": {
+    "raw_sources_modified": false,
+    "repository_runtime_modified": false,
+    "provider_calls_performed": false,
+    "mongo_accessed": false,
+    "render_deployment_accessed": false,
+    "trades_executed": false,
+    "commit_created": false,
+    "push_performed": false
+  }
+}

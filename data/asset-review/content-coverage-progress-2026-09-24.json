@@ -49,6 +49,22 @@
     {
       "file": "data/asset-review/am07-text-spec-evidence-2026-09-24.json",
       "sha256": "5ea615a18e034619707ddb02936a353599d4d6cae904b048e3ea291edfc2c377"
+    },
+    {
+      "file": "data/asset-review/am07-core-csv-evidence-2026-09-28.json",
+      "sha256": "84569afa6319a81776008b4d43dcefd0c669e8970a08d2a22e2c3e820ad985e6"
+    },
+    {
+      "file": "data/asset-review/am07-research-csv-evidence-2026-09-28.json",
+      "sha256": "de3e8964f44e54fc6423404013ba303bf15faf51912f595e1274e1adf08005e0"
+    },
+    {
+      "file": "data/asset-review/am07-legacy-xls-evidence-2026-09-28.json",
+      "sha256": "a8dd4d91fe674326dbb25eb0d98767a694fc1be91da29dceadeaff820b34dee7"
+    },
+    {
+      "file": "data/asset-review/am07-instrument-master-evidence-2026-09-28.json",
+      "sha256": "54e862baf1e51907013c30842133fe6956cdc32ced3fa1af80d23b35641a910e"
     }
   ],
   "updates": [
@@ -1402,6 +1418,103 @@
         "partial": 2,
         "inventory_only": 13
       }
+    },
+    {
+      "asset": "AM.07.Parameter.Files.zip",
+      "from": "partial",
+      "to": "partial",
+      "evidence": null,
+      "member_updates": [
+        {
+          "member": "AM 07 Parameter Files/parameters_v0_7.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/am07-core-csv-evidence-2026-09-28.json"
+        },
+        {
+          "member": "AM 07 Parameter Files/mini_market_internals_16stocks.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/am07-core-csv-evidence-2026-09-28.json"
+        },
+        {
+          "member": "AM 07 Parameter Files/industry_coverage_summary.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/am07-core-csv-evidence-2026-09-28.json"
+        },
+        {
+          "member": "AM 07 Parameter Files/mpl_jun2026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/am07-core-csv-evidence-2026-09-28.json"
+        },
+        {
+          "member": "AM 07 Parameter Files/participantwise_volume_latest_clean.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/am07-research-csv-evidence-2026-09-28.json"
+        },
+        {
+          "member": "AM 07 Parameter Files/Q1_FII_20D_ranked_year_stats.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/am07-research-csv-evidence-2026-09-28.json"
+        },
+        {
+          "member": "AM 07 Parameter Files/signal_correlation_matrix.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/am07-research-csv-evidence-2026-09-28.json"
+        },
+        {
+          "member": "AM 07 Parameter Files/signal_forward_return_distribution.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/am07-research-csv-evidence-2026-09-28.json"
+        },
+        {
+          "member": "AM 07 Parameter Files/top_combo_triggers.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/am07-research-csv-evidence-2026-09-28.json"
+        },
+        {
+          "member": "AM 07 Parameter Files/top_pre_fall_triggers.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/am07-research-csv-evidence-2026-09-28.json"
+        },
+        {
+          "member": "AM 07 Parameter Files/Latest_22082022.xls",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/am07-legacy-xls-evidence-2026-09-28.json"
+        },
+        {
+          "member": "AM 07 Parameter Files/NSE.json.gz",
+          "from": "partial",
+          "to": "reviewed",
+          "evidence": "data/asset-review/am07-instrument-master-evidence-2026-09-28.json"
+        },
+        {
+          "member": "AM 07 Parameter Files/BSE.json.gz",
+          "from": "partial",
+          "to": "reviewed",
+          "evidence": "data/asset-review/am07-instrument-master-evidence-2026-09-28.json"
+        },
+        {
+          "member": "AM 07 Parameter Files/BSE_MIS.json.gz",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/am07-instrument-master-evidence-2026-09-28.json"
+        }
+      ],
+      "remaining_member_status_counts": {
+        "reviewed": 43,
+        "partial": 0,
+        "inventory_only": 1
+      }
     }
   ],
   "summary": {
@@ -1414,48 +1527,48 @@
     },
     "members": 592,
     "member_status_counts": {
-      "reviewed": 448,
-      "partial": 6,
-      "inventory_only": 138
+      "reviewed": 462,
+      "partial": 4,
+      "inventory_only": 126
     },
-    "member_status_upgrades": 143,
+    "member_status_upgrades": 157,
     "corrupt_archive": "2021_06.zip",
     "corrupt_archive_member_count": null
   },
-  "excluded_promotions": "Only thirteen new FO.Gold.COmm members and six named AM07 members are upgraded in this batch. Two previously reviewed FO CSVs were reread without double counting. AM07 remains partial; monthly/other archive siblings are not promoted. Historical reading, arithmetic agreement and diagnostic fixtures do not establish current data, authority, imports or production safety. No source deletion or strategy activation.",
+  "excluded_promotions": "Only the fourteen named AM07 members are upgraded: ten CSVs, one binary XLS and three gzip JSON masters. Two instrument masters advance from partial, twelve other members from inventory-only. Historical content review and duplicate-context checks do not establish current company membership, feed readiness, imports, formula authority or runtime approval. AM07 remains partial with one unread DOCX. No other archive siblings, PDFs or corrupt contents are promoted.",
   "mongo_accessed": false,
   "imported": false,
   "runtime_modified": false,
   "latest_batch": {
-    "id": "fo-report-am07-content-2026-09-24",
-    "checkpoint": "docs/FO_REPORT_AND_AM07_CHECKPOINT_2026-09-24.md",
-    "reviewed_against_commit": "611c1c26aad6beebac2ba5473a52333efa5e3220",
-    "previous_progress_sha256": "ae08397aefbc053f1031fe8100c54f126f2337581ff6fa83fb010be825098f9b",
+    "id": "am07-structured-content-2026-09-28",
+    "checkpoint": "docs/AM07_STRUCTURED_CONTENT_CHECKPOINT_2026-09-28.md",
+    "reviewed_against_commit": "910c72f1ab6fdf014c081746626f38e2fe029759",
+    "previous_progress_sha256": "282cf67c6297d2bf5476a08cc2a9ee5e4756998a002c92ef344bbf9c8f9f80aa",
     "previous_summary": {
       "assets": 171,
       "asset_status_counts": {
-        "reviewed": 79,
-        "partial": 22,
+        "reviewed": 80,
+        "partial": 21,
         "inventory_only": 69,
         "corrupt": 1
       },
       "members": 592,
       "member_status_counts": {
-        "reviewed": 429,
+        "reviewed": 448,
         "partial": 6,
-        "inventory_only": 157
+        "inventory_only": 138
       },
-      "member_status_upgrades": 124,
+      "member_status_upgrades": 143,
       "corrupt_archive": "2021_06.zip",
       "corrupt_archive_member_count": null
     },
-    "new_member_status_upgrades": 19,
-    "direct_csv_member_upgrades": 12,
+    "new_member_status_upgrades": 14,
+    "direct_csv_member_upgrades": 10,
     "binary_xls_member_upgrades": 1,
-    "text_spec_member_upgrades": 6,
-    "newly_reviewed_archives": 1,
+    "gzip_json_member_upgrades": 3,
+    "newly_reviewed_archives": 0,
     "newly_partial_archives": 0,
     "update_application": "Apply every updates entry in array order to the immutable baseline; repeated asset entries are sequential member-level progress, not duplicate assets.",
-    "historical_digest_note": "FO evidence records the pre-acceptance progress digest as historical input, not the digest of this updated overlay."
+    "historical_digest_note": "Evidence proposals retain their pre-acceptance scope and individually proposed counts. This integrated overlay records accepted combined coverage."
   }
 }

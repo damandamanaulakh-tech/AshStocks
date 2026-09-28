@@ -1,0 +1,6405 @@
+{
+  "schema_version": "ash-am07-core-csv-evidence-v1",
+  "as_of": "2026-09-28",
+  "baseline_head": "910c72f1ab6fdf014c081746626f38e2fe029759",
+  "branch": "codex/valuation-targets-market-refresh",
+  "scope": "Complete serialized content audit of exactly four AM07 CSV members; no runtime or source changes",
+  "asset": "AM.07.Parameter.Files.zip",
+  "archive": {
+    "path": "/Users/sourceborn/Documents/ChatGPT/Ash/V01-2026-09-07/payload/raw-assets/AM.07.Parameter.Files.zip",
+    "bytes": 10303731,
+    "sha256": "652be4ddb2b40915543ad848b2bfa10d011c6c2c5723a6e6a3480a85ddb2e2e5",
+    "pinned_sha256": "652be4ddb2b40915543ad848b2bfa10d011c6c2c5723a6e6a3480a85ddb2e2e5",
+    "pinned_sha256_matches": true
+  },
+  "method": {
+    "primary": "Bundled @oai/artifact-tool Workbook.fromCSV followed by getUsedRange().values; every used cell traversed",
+    "independent": "Bundled Python zipfile reads to EOF, CRC32 recomputation and csv.reader(strict=True); each parsed field compared to primary tool",
+    "workbook_recalculated": false,
+    "source_formulas_activated": false,
+    "sampling_used": false
+  },
+  "members": [
+    {
+      "member": "AM 07 Parameter Files/parameters_v0_7.csv",
+      "bytes": 212305,
+      "sha256": "3aa679a7e8cb1f31c62dc22c3e0367e725f63d075bff37c7ee7459ea7f5e1bf3",
+      "crc32": "dd487346",
+      "computed_crc32": "dd487346",
+      "crc_verified_to_eof": true,
+      "compressed_bytes": 12891,
+      "encoding": "UTF-8",
+      "utf8_bom": false,
+      "newlines": {
+        "crlf": 0,
+        "lf_total": 1201
+      },
+      "data_rows": 1200,
+      "columns": 10,
+      "header": [
+        "Parameter_ID",
+        "Block_ID",
+        "Block_Name",
+        "Parameter_No_In_Block",
+        "Parameter_Name",
+        "Applies_To",
+        "Data_Type",
+        "Default_Status",
+        "Source_Priority",
+        "Notes"
+      ],
+      "all_data_fields": 12000,
+      "all_used_cells": 12010,
+      "all_used_cells_consumed": true,
+      "independent_rows": 1200,
+      "independent_cells_match": true,
+      "independent_cell_mismatches": [],
+      "independent_canonical_rows_sha256": "14d2157b1da86b269dce998b75c6a618a13e2b728db703b9dcf7b473cef6b798",
+      "artifact_canonical_rows_sha256": "14d2157b1da86b269dce998b75c6a618a13e2b728db703b9dcf7b473cef6b798",
+      "row_width_errors": [],
+      "duplicate_headers": [],
+      "exact_duplicate_rows": [],
+      "blank_fields": 0,
+      "missing_by_column": {
+        "Parameter_ID": 0,
+        "Block_ID": 0,
+        "Block_Name": 0,
+        "Parameter_No_In_Block": 0,
+        "Parameter_Name": 0,
+        "Applies_To": 0,
+        "Data_Type": 0,
+        "Default_Status": 0,
+        "Source_Priority": 0,
+        "Notes": 0
+      },
+      "columns_profile": {
+        "Parameter_ID": {
+          "filled": 1200,
+          "empty": 0,
+          "distinct": 1200,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {}
+        },
+        "Block_ID": {
+          "filled": 1200,
+          "empty": 0,
+          "distinct": 24,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {},
+          "values": {
+            "B01": 50,
+            "B02": 50,
+            "B03": 50,
+            "B04": 50,
+            "B05": 50,
+            "B06": 50,
+            "B07": 50,
+            "B08": 50,
+            "B09": 50,
+            "B10": 50,
+            "B11": 50,
+            "B12": 50,
+            "B13": 50,
+            "B14": 50,
+            "B15": 50,
+            "B16": 50,
+            "B17": 50,
+            "B18": 50,
+            "B19": 50,
+            "B20": 50,
+            "B21": 50,
+            "B22": 50,
+            "B23": 50,
+            "B24": 50
+          }
+        },
+        "Block_Name": {
+          "filled": 1200,
+          "empty": 0,
+          "distinct": 24,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {},
+          "values": {
+            "Industry Identity": 50,
+            "15-Year Performance": 50,
+            "Growth Drivers": 50,
+            "Collapse Drivers": 50,
+            "Consumer Behavior": 50,
+            "Technology Shift": 50,
+            "Regulation Policy": 50,
+            "Capital Flow": 50,
+            "Business Model": 50,
+            "Margin Structure": 50,
+            "Competition": 50,
+            "Product Lifecycle": 50,
+            "Demand Gap": 50,
+            "Trust Emotion": 50,
+            "Supply Chain": 50,
+            "Market Timing": 50,
+            "Failure Pattern": 50,
+            "Winner Pattern": 50,
+            "New Idea Mutation": 50,
+            "Trade Invest Build Decision": 50,
+            "Stock Fundamentals": 50,
+            "Technical Price Liquidity": 50,
+            "Gold Currency Commodity": 50,
+            "Data Quality Realtime": 50
+          }
+        },
+        "Parameter_No_In_Block": {
+          "filled": 1200,
+          "empty": 0,
+          "distinct": 50,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {},
+          "numeric": {
+            "min": 1,
+            "max": 50,
+            "zero": 0,
+            "negative": 0,
+            "noninteger": 0,
+            "nonfinite": 0
+          },
+          "values": {
+            "1": 24,
+            "2": 24,
+            "3": 24,
+            "4": 24,
+            "5": 24,
+            "6": 24,
+            "7": 24,
+            "8": 24,
+            "9": 24,
+            "10": 24,
+            "11": 24,
+            "12": 24,
+            "13": 24,
+            "14": 24,
+            "15": 24,
+            "16": 24,
+            "17": 24,
+            "18": 24,
+            "19": 24,
+            "20": 24,
+            "21": 24,
+            "22": 24,
+            "23": 24,
+            "24": 24,
+            "25": 24,
+            "26": 24,
+            "27": 24,
+            "28": 24,
+            "29": 24,
+            "30": 24,
+            "31": 24,
+            "32": 24,
+            "33": 24,
+            "34": 24,
+            "35": 24,
+            "36": 24,
+            "37": 24,
+            "38": 24,
+            "39": 24,
+            "40": 24,
+            "41": 24,
+            "42": 24,
+            "43": 24,
+            "44": 24,
+            "45": 24,
+            "46": 24,
+            "47": 24,
+            "48": 24,
+            "49": 24,
+            "50": 24
+          }
+        },
+        "Parameter_Name": {
+          "filled": 1200,
+          "empty": 0,
+          "distinct": 1197,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {}
+        },
+        "Applies_To": {
+          "filled": 1200,
+          "empty": 0,
+          "distinct": 4,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {},
+          "values": {
+            "All": 1000,
+            "Equity/Stock": 100,
+            "Gold/Currency/Commodity/ETF/Index": 50,
+            "All/Data": 50
+          }
+        },
+        "Data_Type": {
+          "filled": 1200,
+          "empty": 0,
+          "distinct": 2,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {},
+          "values": {
+            "numeric/text/date": 898,
+            "numeric": 302
+          }
+        },
+        "Default_Status": {
+          "filled": 1200,
+          "empty": 0,
+          "distinct": 1,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {},
+          "values": {
+            "DATA_NEEDED": 1200
+          }
+        },
+        "Source_Priority": {
+          "filled": 1200,
+          "empty": 0,
+          "distinct": 1,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {},
+          "values": {
+            "Yahoo/NSE/BSE/API/User/Research": 1200
+          }
+        },
+        "Notes": {
+          "filled": 1200,
+          "empty": 0,
+          "distinct": 1,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {},
+          "values": {
+            "Do not delete; mark duplicate/merged if replaced": 1200
+          }
+        }
+      },
+      "formula_like_values": [],
+      "key": [
+        "Parameter_ID"
+      ],
+      "duplicate_key_rows": []
+    },
+    {
+      "member": "AM 07 Parameter Files/mini_market_internals_16stocks.csv",
+      "bytes": 690809,
+      "sha256": "47d96ac175309c23af66581a40a9af6415b07aaee24d64aa0d18b41508a359ba",
+      "crc32": "1e5c6f68",
+      "computed_crc32": "1e5c6f68",
+      "crc_verified_to_eof": true,
+      "compressed_bytes": 201054,
+      "encoding": "UTF-8",
+      "utf8_bom": false,
+      "newlines": {
+        "crlf": 0,
+        "lf_total": 2478
+      },
+      "data_rows": 2477,
+      "columns": 21,
+      "header": [
+        "trade_date",
+        "n_symbols",
+        "equal_weight_ret_1d",
+        "dispersion_1d",
+        "up_pct_1d",
+        "down3_pct_1d",
+        "up3_pct_1d",
+        "tail_down3_5d",
+        "tail_up3_5d",
+        "total_volume",
+        "total_turnover",
+        "avg_delivery_pct",
+        "total_delivery_qty",
+        "avg_trades",
+        "volume_hhi",
+        "delivery_hhi",
+        "tail_repair_ratio_5d",
+        "sample_tail_damage_q90_fire",
+        "sample_tail_damage_q95_fire",
+        "sample_damage_cluster_5in10",
+        "data_status"
+      ],
+      "all_data_fields": 52017,
+      "all_used_cells": 52038,
+      "all_used_cells_consumed": true,
+      "independent_rows": 2477,
+      "independent_cells_match": true,
+      "independent_cell_mismatches": [],
+      "independent_canonical_rows_sha256": "682635377e3b0cbb683bc841be830802d596e520bfdc2be473c35d7238c5ca9f",
+      "artifact_canonical_rows_sha256": "682635377e3b0cbb683bc841be830802d596e520bfdc2be473c35d7238c5ca9f",
+      "row_width_errors": [],
+      "duplicate_headers": [],
+      "exact_duplicate_rows": [],
+      "blank_fields": 800,
+      "missing_by_column": {
+        "trade_date": 0,
+        "n_symbols": 0,
+        "equal_weight_ret_1d": 1,
+        "dispersion_1d": 1,
+        "up_pct_1d": 1,
+        "down3_pct_1d": 1,
+        "up3_pct_1d": 1,
+        "tail_down3_5d": 5,
+        "tail_up3_5d": 5,
+        "total_volume": 0,
+        "total_turnover": 0,
+        "avg_delivery_pct": 2,
+        "total_delivery_qty": 0,
+        "avg_trades": 0,
+        "volume_hhi": 0,
+        "delivery_hhi": 2,
+        "tail_repair_ratio_5d": 781,
+        "sample_tail_damage_q90_fire": 0,
+        "sample_tail_damage_q95_fire": 0,
+        "sample_damage_cluster_5in10": 0,
+        "data_status": 0
+      },
+      "columns_profile": {
+        "trade_date": {
+          "filled": 2477,
+          "empty": 0,
+          "distinct": 2477,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {}
+        },
+        "n_symbols": {
+          "filled": 2477,
+          "empty": 0,
+          "distinct": 1,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {},
+          "numeric": {
+            "min": 13,
+            "max": 13,
+            "zero": 0,
+            "negative": 0,
+            "noninteger": 0,
+            "nonfinite": 0
+          },
+          "values": {
+            "13": 2477
+          }
+        },
+        "equal_weight_ret_1d": {
+          "filled": 2476,
+          "empty": 1,
+          "distinct": 2477,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {},
+          "numeric": {
+            "min": -0.11811802673547254,
+            "max": 0.1637766529929463,
+            "zero": 0,
+            "negative": 1129,
+            "noninteger": 2476,
+            "nonfinite": 0
+          }
+        },
+        "dispersion_1d": {
+          "filled": 2476,
+          "empty": 1,
+          "distinct": 2477,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {},
+          "numeric": {
+            "min": 0.0022871344762352684,
+            "max": 0.25475361368012506,
+            "zero": 0,
+            "negative": 0,
+            "noninteger": 2476,
+            "nonfinite": 0
+          }
+        },
+        "up_pct_1d": {
+          "filled": 2476,
+          "empty": 1,
+          "distinct": 15,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {},
+          "numeric": {
+            "min": 0,
+            "max": 1,
+            "zero": 42,
+            "negative": 0,
+            "noninteger": 2388,
+            "nonfinite": 0
+          },
+          "values": {
+            "": 1,
+            "0.23076923076923078": 198,
+            "0.7692307692307693": 219,
+            "0.3076923076923077": 211,
+            "0.46153846153846156": 297,
+            "0.07692307692307693": 77,
+            "0.6923076923076923": 226,
+            "0.8461538461538461": 147,
+            "0.0": 42,
+            "0.6153846153846154": 247,
+            "0.38461538461538464": 270,
+            "1.0": 46,
+            "0.5384615384615384": 272,
+            "0.9230769230769231": 99,
+            "0.15384615384615385": 125
+          }
+        },
+        "down3_pct_1d": {
+          "filled": 2476,
+          "empty": 1,
+          "distinct": 14,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {},
+          "numeric": {
+            "min": 0,
+            "max": 1,
+            "zero": 1891,
+            "negative": 0,
+            "noninteger": 583,
+            "nonfinite": 0
+          },
+          "values": {
+            "": 1,
+            "0.07692307692307693": 391,
+            "0.0": 1891,
+            "0.23076923076923078": 37,
+            "0.5384615384615384": 8,
+            "0.15384615384615385": 93,
+            "0.3076923076923077": 23,
+            "0.38461538461538464": 15,
+            "0.46153846153846156": 6,
+            "0.7692307692307693": 3,
+            "1.0": 2,
+            "0.9230769230769231": 1,
+            "0.6923076923076923": 3,
+            "0.6153846153846154": 3
+          }
+        },
+        "up3_pct_1d": {
+          "filled": 2476,
+          "empty": 1,
+          "distinct": 13,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {},
+          "numeric": {
+            "min": 0,
+            "max": 1,
+            "zero": 1644,
+            "negative": 0,
+            "noninteger": 831,
+            "nonfinite": 0
+          },
+          "values": {
+            "": 1,
+            "0.07692307692307693": 539,
+            "0.0": 1644,
+            "0.23076923076923078": 56,
+            "0.15384615384615385": 185,
+            "0.38461538461538464": 11,
+            "0.46153846153846156": 11,
+            "0.3076923076923077": 17,
+            "0.5384615384615384": 3,
+            "0.7692307692307693": 2,
+            "0.6153846153846154": 6,
+            "0.6923076923076923": 1,
+            "1.0": 1
+          }
+        },
+        "tail_down3_5d": {
+          "filled": 2472,
+          "empty": 5,
+          "distinct": 15,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {},
+          "numeric": {
+            "min": 0,
+            "max": 1,
+            "zero": 776,
+            "negative": 0,
+            "noninteger": 1689,
+            "nonfinite": 0
+          },
+          "values": {
+            "": 5,
+            "0.3076923076923077": 165,
+            "0.46153846153846156": 73,
+            "0.7692307692307693": 15,
+            "0.8461538461538461": 6,
+            "0.38461538461538464": 104,
+            "0.15384615384615385": 373,
+            "0.0": 776,
+            "0.5384615384615384": 53,
+            "0.07692307692307693": 587,
+            "0.23076923076923078": 246,
+            "0.6153846153846154": 45,
+            "0.6923076923076923": 17,
+            "1.0": 7,
+            "0.9230769230769231": 5
+          }
+        },
+        "tail_up3_5d": {
+          "filled": 2472,
+          "empty": 5,
+          "distinct": 14,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {},
+          "numeric": {
+            "min": 0,
+            "max": 0.9230769230769231,
+            "zero": 443,
+            "negative": 0,
+            "noninteger": 2029,
+            "nonfinite": 0
+          },
+          "values": {
+            "": 5,
+            "0.15384615384615385": 447,
+            "0.0": 443,
+            "0.07692307692307693": 549,
+            "0.7692307692307693": 21,
+            "0.5384615384615384": 75,
+            "0.46153846153846156": 120,
+            "0.38461538461538464": 151,
+            "0.23076923076923078": 328,
+            "0.6153846153846154": 55,
+            "0.3076923076923077": 249,
+            "0.6923076923076923": 25,
+            "0.9230769230769231": 3,
+            "0.8461538461538461": 6
+          }
+        },
+        "total_volume": {
+          "filled": 2477,
+          "empty": 0,
+          "distinct": 2477,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {},
+          "numeric": {
+            "min": 4419475,
+            "max": 541976961,
+            "zero": 0,
+            "negative": 0,
+            "noninteger": 0,
+            "nonfinite": 0
+          }
+        },
+        "total_turnover": {
+          "filled": 2477,
+          "empty": 0,
+          "distinct": 2477,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {},
+          "numeric": {
+            "min": 2890069537.95,
+            "max": 626744591415.85,
+            "zero": 0,
+            "negative": 0,
+            "noninteger": 2375,
+            "nonfinite": 0
+          }
+        },
+        "avg_delivery_pct": {
+          "filled": 2475,
+          "empty": 2,
+          "distinct": 2396,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {},
+          "numeric": {
+            "min": 20.21,
+            "max": 71.92923076923077,
+            "zero": 0,
+            "negative": 0,
+            "noninteger": 2474,
+            "nonfinite": 0
+          }
+        },
+        "total_delivery_qty": {
+          "filled": 2477,
+          "empty": 0,
+          "distinct": 2476,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {},
+          "numeric": {
+            "min": 0,
+            "max": 380859747,
+            "zero": 2,
+            "negative": 0,
+            "noninteger": 0,
+            "nonfinite": 0
+          }
+        },
+        "avg_trades": {
+          "filled": 2477,
+          "empty": 0,
+          "distinct": 2475,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {},
+          "numeric": {
+            "min": 6479.2307692307695,
+            "max": 583679.1538461539,
+            "zero": 0,
+            "negative": 0,
+            "noninteger": 2293,
+            "nonfinite": 0
+          }
+        },
+        "volume_hhi": {
+          "filled": 2477,
+          "empty": 0,
+          "distinct": 2477,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {},
+          "numeric": {
+            "min": 0.1065235404612088,
+            "max": 0.7832253931069914,
+            "zero": 0,
+            "negative": 0,
+            "noninteger": 2477,
+            "nonfinite": 0
+          }
+        },
+        "delivery_hhi": {
+          "filled": 2475,
+          "empty": 2,
+          "distinct": 2476,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {},
+          "numeric": {
+            "min": 0.10350810816230892,
+            "max": 0.7817846170027692,
+            "zero": 0,
+            "negative": 0,
+            "noninteger": 2475,
+            "nonfinite": 0
+          }
+        },
+        "tail_repair_ratio_5d": {
+          "filled": 1696,
+          "empty": 781,
+          "distinct": 41,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {},
+          "numeric": {
+            "min": 0,
+            "max": 11,
+            "zero": 387,
+            "negative": 0,
+            "noninteger": 634,
+            "nonfinite": 0
+          },
+          "values": {
+            "": 781,
+            "0.5": 126,
+            "0.3333333333333333": 83,
+            "0.0": 387,
+            "0.09090909090909091": 2,
+            "0.2": 39,
+            "3.0": 129,
+            "2.5": 24,
+            "1.0": 216,
+            "2.0": 153,
+            "8.0": 13,
+            "0.25": 57,
+            "5.0": 50,
+            "0.6666666666666666": 60,
+            "4.0": 73,
+            "0.8": 3,
+            "1.3333333333333333": 16,
+            "6.999999999999999": 27,
+            "1.5": 54,
+            "1.6666666666666667": 9,
+            "6.0": 29,
+            "0.16666666666666666": 29,
+            "0.14285714285714288": 19,
+            "0.4285714285714286": 2,
+            "0.28571428571428575": 7,
+            "0.4": 17,
+            "0.75": 10,
+            "1.25": 3,
+            "3.4999999999999996": 10,
+            "0.125": 11,
+            "0.1": 4,
+            "0.375": 3,
+            "0.6": 7,
+            "0.11111111111111112": 8,
+            "4.5": 1,
+            "9.0": 6,
+            "2.333333333333333": 1,
+            "1.7499999999999998": 1,
+            "10.0": 3,
+            "0.08333333333333333": 1,
+            "11.0": 3
+          }
+        },
+        "sample_tail_damage_q90_fire": {
+          "filled": 2477,
+          "empty": 0,
+          "distinct": 2,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {},
+          "numeric": {
+            "min": 0,
+            "max": 1,
+            "zero": 2152,
+            "negative": 0,
+            "noninteger": 0,
+            "nonfinite": 0
+          },
+          "values": {
+            "0": 2152,
+            "1": 325
+          }
+        },
+        "sample_tail_damage_q95_fire": {
+          "filled": 2477,
+          "empty": 0,
+          "distinct": 2,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {},
+          "numeric": {
+            "min": 0,
+            "max": 1,
+            "zero": 2329,
+            "negative": 0,
+            "noninteger": 0,
+            "nonfinite": 0
+          },
+          "values": {
+            "0": 2329,
+            "1": 148
+          }
+        },
+        "sample_damage_cluster_5in10": {
+          "filled": 2477,
+          "empty": 0,
+          "distinct": 2,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {},
+          "numeric": {
+            "min": 0,
+            "max": 1,
+            "zero": 2291,
+            "negative": 0,
+            "noninteger": 0,
+            "nonfinite": 0
+          },
+          "values": {
+            "0": 2291,
+            "1": 186
+          }
+        },
+        "data_status": {
+          "filled": 2477,
+          "empty": 0,
+          "distinct": 1,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {},
+          "values": {
+            "SAMPLE_16_STOCKS_NOT_MARKET_WIDE": 2477
+          }
+        }
+      },
+      "formula_like_values": [],
+      "key": [
+        "trade_date"
+      ],
+      "duplicate_key_rows": []
+    },
+    {
+      "member": "AM 07 Parameter Files/industry_coverage_summary.csv",
+      "bytes": 266,
+      "sha256": "b3ce0e056050717ae4b5da14607ef6d5888a803b19af7a15a8a7035967b88253",
+      "crc32": "5a0b55c2",
+      "computed_crc32": "5a0b55c2",
+      "crc_verified_to_eof": true,
+      "compressed_bytes": 213,
+      "encoding": "UTF-8",
+      "utf8_bom": false,
+      "newlines": {
+        "crlf": 0,
+        "lf_total": 10
+      },
+      "data_rows": 9,
+      "columns": 3,
+      "header": [
+        "industry_group",
+        "stocks",
+        "symbols"
+      ],
+      "all_data_fields": 27,
+      "all_used_cells": 30,
+      "all_used_cells_consumed": true,
+      "independent_rows": 9,
+      "independent_cells_match": true,
+      "independent_cell_mismatches": [],
+      "independent_canonical_rows_sha256": "9a511fed4ee2f7378de7dadca07a79711b3088d4bc47461bb3c9355a00da1bad",
+      "artifact_canonical_rows_sha256": "9a511fed4ee2f7378de7dadca07a79711b3088d4bc47461bb3c9355a00da1bad",
+      "row_width_errors": [],
+      "duplicate_headers": [],
+      "exact_duplicate_rows": [],
+      "blank_fields": 0,
+      "missing_by_column": {
+        "industry_group": 0,
+        "stocks": 0,
+        "symbols": 0
+      },
+      "columns_profile": {
+        "industry_group": {
+          "filled": 9,
+          "empty": 0,
+          "distinct": 9,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {},
+          "values": {
+            "Auto": 1,
+            "Banks": 1,
+            "Energy/Oil-Gas": 1,
+            "FMCG": 1,
+            "Finance/NBFC": 1,
+            "IT": 1,
+            "Metals": 1,
+            "Pharma": 1,
+            "Telecom": 1
+          }
+        },
+        "stocks": {
+          "filled": 9,
+          "empty": 0,
+          "distinct": 3,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {},
+          "numeric": {
+            "min": 1,
+            "max": 3,
+            "zero": 0,
+            "negative": 0,
+            "noninteger": 0,
+            "nonfinite": 0
+          },
+          "values": {
+            "1": 3,
+            "2": 5,
+            "3": 1
+          }
+        },
+        "symbols": {
+          "filled": 9,
+          "empty": 0,
+          "distinct": 9,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {},
+          "values": {
+            "M&M, MARUTI": 1,
+            "HDFCBANK, ICICIBANK, SBIN": 1,
+            "ONGC, RELIANCE": 1,
+            "HINDUNILVR": 1,
+            "BAJAJFINSV, BAJFINANCE": 1,
+            "INFY, TCS": 1,
+            "TATASTEEL": 1,
+            "DRREDDY, SUNPHARMA": 1,
+            "BHARTIARTL": 1
+          }
+        }
+      },
+      "formula_like_values": [],
+      "key": [
+        "industry_group"
+      ],
+      "duplicate_key_rows": []
+    },
+    {
+      "member": "AM 07 Parameter Files/mpl_jun2026.csv",
+      "bytes": 3914,
+      "sha256": "a5c6c690927813d1beb64c4f1a337557df74b23320b17859bcffdee6fa9b433d",
+      "crc32": "3992b904",
+      "computed_crc32": "3992b904",
+      "crc_verified_to_eof": true,
+      "compressed_bytes": 2255,
+      "encoding": "UTF-8",
+      "utf8_bom": false,
+      "newlines": {
+        "crlf": 212,
+        "lf_total": 212
+      },
+      "data_rows": 211,
+      "columns": 2,
+      "header": [
+        "UNDERLYING_NAME",
+        "MWPL (June 2026)"
+      ],
+      "all_data_fields": 422,
+      "all_used_cells": 424,
+      "all_used_cells_consumed": true,
+      "independent_rows": 211,
+      "independent_cells_match": true,
+      "independent_cell_mismatches": [],
+      "independent_canonical_rows_sha256": "bd94573abf1e8f16ce05a70ac7d3b71486cae1f9049177e9c8cc4316ded07e8e",
+      "artifact_canonical_rows_sha256": "bd94573abf1e8f16ce05a70ac7d3b71486cae1f9049177e9c8cc4316ded07e8e",
+      "row_width_errors": [],
+      "duplicate_headers": [],
+      "exact_duplicate_rows": [],
+      "blank_fields": 0,
+      "missing_by_column": {
+        "UNDERLYING_NAME": 0,
+        "MWPL (June 2026)": 0
+      },
+      "columns_profile": {
+        "UNDERLYING_NAME": {
+          "filled": 211,
+          "empty": 0,
+          "distinct": 211,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {}
+        },
+        "MWPL (June 2026)": {
+          "filled": 211,
+          "empty": 0,
+          "distinct": 211,
+          "whitespace_only": 0,
+          "trim_would_change": 0,
+          "literal_missing_tokens": {},
+          "numeric": {
+            "min": 736885,
+            "max": 12096038468,
+            "zero": 0,
+            "negative": 0,
+            "noninteger": 0,
+            "nonfinite": 0
+          }
+        }
+      },
+      "formula_like_values": [],
+      "key": [
+        "UNDERLYING_NAME"
+      ],
+      "duplicate_key_rows": []
+    }
+  ],
+  "duplicate_context_comparisons": [
+    {
+      "member": "AM 07 Parameter Files/mini_market_internals_16stocks.csv",
+      "comparison_archive": "volume_delivery_batch_check_v0_1.zip",
+      "comparison_archive_sha256": "cb8f516e21f7cac8c18b28b540035573b6277e4ea3540b902a2d9fa24c8d0061",
+      "comparison_member": "volume_delivery_batch_check_v0_1/mini_market_internals_16stocks.csv",
+      "comparison_bytes": 690809,
+      "comparison_sha256": "47d96ac175309c23af66581a40a9af6415b07aaee24d64aa0d18b41508a359ba",
+      "exact_bytes_equal": true,
+      "csv_cells_equal": true,
+      "raw_line_endings_only": true,
+      "comparison_crc_verified_to_eof": true,
+      "accepted_evidence": {
+        "file": "data/asset-review/derived-delivery-context-evidence-2026-09-24.json",
+        "locator": "/members/2",
+        "sha256": "b1692deb1293d66cb156b9a923b75e2149f88c0bfa7b22e56654ac578ff1f7c7",
+        "overlay_accepted_hash_matches": true
+      },
+      "context_applicability": "Identical labels, dates, sample size, numeric fields and missingness preserve the prior pilot-data constraints. Archive duplication supplies no additional independent observation or market-wide authority.",
+      "prior_evidence_limit": "Aggregate producer formulas, point-in-time calibration, calendar continuity, corporate-action policy and historical constituent identity remain unresolved. Previous underlying-source recomputations are referenced, not newly repeated."
+    },
+    {
+      "member": "AM 07 Parameter Files/industry_coverage_summary.csv",
+      "comparison_archive": "volume_delivery_batch_check_v0_1.zip",
+      "comparison_archive_sha256": "cb8f516e21f7cac8c18b28b540035573b6277e4ea3540b902a2d9fa24c8d0061",
+      "comparison_member": "volume_delivery_batch_check_v0_1/industry_coverage_summary.csv",
+      "comparison_bytes": 266,
+      "comparison_sha256": "b3ce0e056050717ae4b5da14607ef6d5888a803b19af7a15a8a7035967b88253",
+      "exact_bytes_equal": true,
+      "csv_cells_equal": true,
+      "raw_line_endings_only": true,
+      "comparison_crc_verified_to_eof": true,
+      "accepted_evidence": {
+        "file": "data/asset-review/derived-delivery-context-evidence-2026-09-24.json",
+        "locator": "/members/0",
+        "sha256": "b1692deb1293d66cb156b9a923b75e2149f88c0bfa7b22e56654ac578ff1f7c7",
+        "overlay_accepted_hash_matches": true
+      },
+      "context_applicability": "Identical labels, dates, sample size, numeric fields and missingness preserve the prior pilot-data constraints. Archive duplication supplies no additional independent observation or market-wide authority.",
+      "prior_evidence_limit": "Aggregate producer formulas, point-in-time calibration, calendar continuity, corporate-action policy and historical constituent identity remain unresolved. Previous underlying-source recomputations are referenced, not newly repeated."
+    },
+    {
+      "member": "AM 07 Parameter Files/mpl_jun2026.csv",
+      "comparison_archive": "BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv.zip",
+      "comparison_archive_sha256": "81341ff03db112396a09711b22dc352984f67b8bfb5a712ba6f71e3529b17757",
+      "comparison_member": "BhavCopy_NSE_FO_0_0_0_20260608_F_0000.csv/mpl_jun2026.csv",
+      "comparison_bytes": 3702,
+      "comparison_sha256": "dece2fb1f6cda3e2dbf1312ee0cb8596c7534a797add8773c3165479b938707e",
+      "exact_bytes_equal": false,
+      "csv_cells_equal": true,
+      "raw_line_endings_only": true,
+      "comparison_crc_verified_to_eof": true,
+      "accepted_evidence": {
+        "file": "data/asset-review/bhavcopy-content-evidence-2026-09-24.json",
+        "locator": "/members/3",
+        "sha256": "942e4450789c02ab767baeb3110cc68f877bd68a406c6111752df76b7755f277",
+        "overlay_accepted_hash_matches": true
+      },
+      "context_applicability": "Same June 2026 column and same 211 symbol-limit pairs; CRLF-only difference has no cell-level effect. Prior position-limit context applies, without current regulatory verification.",
+      "prior_evidence_limit": "Prior regulatory links and fopl ratios were not independently reopened or recomputed; only MPL bytes and all CSV cells were freshly compared."
+    }
+  ],
+  "findings": [
+    {
+      "id": "CORE-01",
+      "severity": "authority_boundary",
+      "members": [
+        "AM 07 Parameter Files/parameters_v0_7.csv"
+      ],
+      "finding": "All 1200 rows are DATA_NEEDED. B01-B20 contain 1000 generic block-plus-template names; B21-B24 contain 200 more specific labels. No observation values, dedicated unit/scale contracts, computation definitions, thresholds, calibration dates, per-row sources or resolved data types are supplied. Some labels do express percentages; those labels are not a complete unit contract.",
+      "evidence": "/parameter_dictionary",
+      "consequence": "A research and implementation inventory is present; 1200 evaluated runtime signals are not demonstrated. Preserve the declared source-priority string as a claim, not a verified provider hierarchy."
+    },
+    {
+      "id": "CORE-02",
+      "severity": "mapping_conflict",
+      "members": [
+        "AM 07 Parameter Files/parameters_v0_7.csv"
+      ],
+      "finding": "The application static framework names disagree with CSV block meanings for B04 through B21, 18 of 24 blocks. For example B04 is Collapse Drivers in the CSV and Valuation and Re-rating in code; B15 is Supply Chain in the CSV and Delivery and Volume in code. All 1200 source IDs P0001-P1200 differ from the 175 runtime catalog IDs.",
+      "evidence": "/parameter_dictionary/runtime_framework_name_comparison",
+      "consequence": "Block number or parameter ordinal cannot be used as an automatic mapping. Four B02 dashboard source labels cite this dictionary but their 1M/3M/6M/12M return definitions do not appear in its corresponding ordinal rows. This audit does not select which specification should govern."
+    },
+    {
+      "id": "CORE-03",
+      "severity": "schema_limit",
+      "members": [
+        "AM 07 Parameter Files/parameters_v0_7.csv"
+      ],
+      "finding": "898 types are the ambiguous numeric/text/date union. Some numeric labels such as Price source (P1158), Parameter version (P1186), Commercial use allowed (P1194) and Redistribution allowed (P1195) require explicit semantic contracts before coercion. Three name pairs repeat across equity and commodity blocks while all IDs are unique.",
+      "evidence": "/parameter_dictionary/last_four_blocks_complete_source_rows",
+      "consequence": "No automatic type coercion, name-only deduplication or activation is justified. The source explicitly says not to delete entries and to mark duplicate/merged if replaced."
+    },
+    {
+      "id": "CORE-04",
+      "severity": "sample_and_time_boundary",
+      "members": [
+        "AM 07 Parameter Files/mini_market_internals_16stocks.csv",
+        "AM 07 Parameter Files/industry_coverage_summary.csv"
+      ],
+      "finding": "Internals contain 2477 dates from 2016-02-02 to 2026-06-08 and n_symbols=13 on every row; every status says SAMPLE_16_STOCKS_NOT_MARKET_WIDE. The industry table describes 16 distinct historical symbols in nine groups, not 16 simultaneous daily constituents. The series has a 128-calendar-day gap from 2021-02-01 to 2021-06-09; the latter row stores a 0.1637766529929463 one-day return label.",
+      "evidence": "/market_internals",
+      "consequence": "These are dated pilot aggregates, not complete market breadth or verified continuous session windows. Accepted duplicate context documents membership changes and observation-gap effects; this audit does not reopen the 32201-row underlying table or independently recertify those calculations."
+    },
+    {
+      "id": "CORE-05",
+      "severity": "missingness_boundary",
+      "members": [
+        "AM 07 Parameter Files/mini_market_internals_16stocks.csv"
+      ],
+      "finding": "800 fields are empty. The 781 missing tail-repair ratios decompose into five missing-tail rows and 776 zero-denominator rows. On 2019-01-28 and 2020-04-13 both average delivery percentage and delivery HHI are blank while saved total delivery quantity is zero. Initial unavailable tails coexist with zero research flags.",
+      "evidence": "/market_internals/missing_delivery_rows",
+      "consequence": "A saved aggregate zero or binary zero cannot be read as observed zero delivery or verified absence of risk. No blanks or saved zeros were replaced."
+    },
+    {
+      "id": "CORE-06",
+      "severity": "research_calibration_boundary",
+      "members": [
+        "AM 07 Parameter Files/mini_market_internals_16stocks.csv"
+      ],
+      "finding": "All q90/q95 flags reproduce using inclusive full-sample tail thresholds 0.38461538461538464 and 0.5384615384615384; all trailing-10 five-fire cluster flags and all filled tail-repair ratios reproduce. The CSV supplies no producer code, fit timestamp or training-only threshold contract.",
+      "evidence": "/market_internals/thresholds_reproducing_saved_flags",
+      "consequence": "This reconstruction is arithmetic consistency, not recovered producer intent or proof of point-in-time validity; possible future-information leakage remains unresolved."
+    },
+    {
+      "id": "CORE-07",
+      "severity": "unit_and_authority_boundary",
+      "members": [
+        "AM 07 Parameter Files/mpl_jun2026.csv"
+      ],
+      "finding": "211 unique symbols have positive integer June 2026 MWPL limits between 736885 and 12096038468. The file contains no current positions, actual institutional trades or row-level effective dates. Exact CSV cells match the accepted bhavcopy copy, with CRLF versus LF accounting for all 212 differing bytes.",
+      "evidence": "/mwpl",
+      "consequence": "Retain the monthly period and position-limit meaning. These numbers do not establish actual ownership, net purchases, a ranking score, current limits or regulatory completeness; no current external authority check was made."
+    },
+    {
+      "id": "CORE-08",
+      "severity": "coverage_only",
+      "members": [
+        "AM 07 Parameter Files/parameters_v0_7.csv",
+        "AM 07 Parameter Files/mini_market_internals_16stocks.csv",
+        "AM 07 Parameter Files/industry_coverage_summary.csv",
+        "AM 07 Parameter Files/mpl_jun2026.csv"
+      ],
+      "finding": "Every source CSV cell was consumed and independently matched. Primary keys have zero duplicates and rows have zero width errors. Two copies match accepted evidence byte-for-byte and the MWPL copy matches cell-for-cell after newline decoding.",
+      "evidence": "/duplicate_context_comparisons",
+      "consequence": "Exactly four member-level content-coverage upgrades may be proposed. This does not complete the AM07 archive or promote any runtime authority."
+    }
+  ],
+  "consumer_inspection": [
+    {
+      "file": "server.js",
+      "locations": [
+        17,
+        268
+      ],
+      "observed": "Imports and applies applyDataIntelligencePatches during source construction; inspected statically only."
+    },
+    {
+      "file": "server-data-intelligence-patch.mjs",
+      "locations": [
+        15,
+        39,
+        184,
+        193,
+        233
+      ],
+      "observed": "Hardcodes a 1200-parameter framework and names the CSV as source, with 24 hardcoded blocks. It does not parse the CSV. Compare all block names in parameter_dictionary.runtime_framework_name_comparison."
+    },
+    {
+      "file": "app-am07-dashboard.js",
+      "locations": [
+        21,
+        22,
+        23,
+        24
+      ],
+      "observed": "B02_P006-B02_P009 have hardcoded momentum labels and cite parameters_v0_7 B02. Source ordinals contain generic risk/opportunity/quality/velocity labels, with no thresholds or 21/63/126/252-day formulas."
+    },
+    {
+      "file": "server-parameter-tunnel-patch.mjs",
+      "locations": [
+        4,
+        283,
+        284,
+        285,
+        286,
+        293
+      ],
+      "observed": "Loads the separate 175-entry JSON catalog. Momentum branches use candle returns; B15_P016 uses last-20 OHLCV volume buckets and at least 21 candles. These do not consume mini-market aggregate CSV records."
+    },
+    {
+      "file": "data/parameter-catalog-175.json",
+      "locations": [
+        2522
+      ],
+      "observed": "NO07 delivery spike requires own-60D percentile80 and positive CLV, with NSE_DELIVERY_FEED_REQUIRED readiness. Aggregate sample delivery or breadth is not that stock-level contract."
+    },
+    {
+      "file": "lib/stock-selection-engine.mjs",
+      "locations": [
+        261,
+        265,
+        281,
+        282
+      ],
+      "observed": "DELIVERY_20 reads a 20-day delivery percentile and positive return condition. A supplied fpiCategoryTotalPctMwpl emits FPI_MWPL_PROFILE_UNVALIDATED annotation."
+    },
+    {
+      "file": "config/stock-selection-parameters.v0.1.json",
+      "locations": [
+        99
+      ],
+      "observed": "fpiMwpl uses audit_annotation_only, scoreWeightPct 0 and deterministic_ratio_not_rank_eligible. Saved MWPL limits alone cannot supply actual FPI activity."
+    },
+    {
+      "scope": "Tracked/local Python, JS and MJS filename search excluding node_modules",
+      "observed": "Exact names of the four members found only the parameter metadata and dashboard source labels. No named CSV reader for these members was found. Generic loading paths were not exhaustively ruled out."
+    }
+  ],
+  "proposed_coverage_updates": [
+    {
+      "asset": "AM.07.Parameter.Files.zip",
+      "from": "partial",
+      "to": "partial",
+      "accepted": false,
+      "evidence": "data/asset-review/am07-core-csv-evidence-2026-09-28.json",
+      "member_updates": [
+        {
+          "member": "AM 07 Parameter Files/parameters_v0_7.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "basis": "Fresh all-row/all-cell dual-parser audit with SHA256 and verified CRC; limits preserved"
+        },
+        {
+          "member": "AM 07 Parameter Files/mini_market_internals_16stocks.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "basis": "Fresh all-row/all-cell dual-parser audit with SHA256 and verified CRC; limits preserved"
+        },
+        {
+          "member": "AM 07 Parameter Files/industry_coverage_summary.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "basis": "Fresh all-row/all-cell dual-parser audit with SHA256 and verified CRC; limits preserved"
+        },
+        {
+          "member": "AM 07 Parameter Files/mpl_jun2026.csv",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "basis": "Fresh all-row/all-cell dual-parser audit with SHA256 and verified CRC; limits preserved"
+        }
+      ],
+      "remaining_member_status_counts_if_applied_alone": {
+        "reviewed": 33,
+        "partial": 2,
+        "inventory_only": 9
+      },
+      "count_basis": "Current input overlay ends at 29 reviewed, 2 partial and 13 inventory-only members in this asset. This is a scoped proposal only and must be reconciled with parallel work before acceptance."
+    }
+  ],
+  "limits": [
+    "Only the four listed AM07 members received new full-content review. Other AM07 members gain no coverage here.",
+    "reviewed means complete serialized-content inspection, not source authority, economic correctness, currentness, feed readiness, validated strategy edge or activation.",
+    "Comparisons reopen only the three matching members of the accepted delivery and bhavcopy archives. Underlying delivery rows, original producer code, current exchange rules and current provider identities were not newly verified.",
+    "The industry CSV provides no classification authority or effective date. MWPL provides a month in its header but no daily validity stamp or unit definition beyond the label.",
+    "Artifact Tool CSV import was read only; no spreadsheet export, formula activation, source repair, numerical coercion or source normalization was saved.",
+    "Bounded static consumer inspection is not a live call-path or deployed-service test; no server, application suite, provider request, Mongo query, trade or deployment was run.",
+    "Coverage overlay and phase plan were not edited. Four member transitions are proposals pending integration and independent acceptance.",
+    "Archive source and comparison copies remain intact; exact and semantic duplicates are reported without deletion or preferred-source selection."
+  ],
+  "raw_sources_modified": false,
+  "runtime_modified": false,
+  "overlay_modified": false,
+  "database_accessed": false,
+  "network_accessed": false,
+  "parameter_dictionary": {
+    "id_range": [
+      "P0001",
+      "P1200"
+    ],
+    "sequential_id_mismatches": [],
+    "blocks": [
+      {
+        "block_id": "B01",
+        "names": [
+          "Industry Identity"
+        ],
+        "data_rows": 50,
+        "first_id": "P0001",
+        "last_id": "P0050",
+        "numbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50
+        ],
+        "sequence_valid": true,
+        "names_all_follow_block_prefix": true
+      },
+      {
+        "block_id": "B02",
+        "names": [
+          "15-Year Performance"
+        ],
+        "data_rows": 50,
+        "first_id": "P0051",
+        "last_id": "P0100",
+        "numbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50
+        ],
+        "sequence_valid": true,
+        "names_all_follow_block_prefix": true
+      },
+      {
+        "block_id": "B03",
+        "names": [
+          "Growth Drivers"
+        ],
+        "data_rows": 50,
+        "first_id": "P0101",
+        "last_id": "P0150",
+        "numbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50
+        ],
+        "sequence_valid": true,
+        "names_all_follow_block_prefix": true
+      },
+      {
+        "block_id": "B04",
+        "names": [
+          "Collapse Drivers"
+        ],
+        "data_rows": 50,
+        "first_id": "P0151",
+        "last_id": "P0200",
+        "numbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50
+        ],
+        "sequence_valid": true,
+        "names_all_follow_block_prefix": true
+      },
+      {
+        "block_id": "B05",
+        "names": [
+          "Consumer Behavior"
+        ],
+        "data_rows": 50,
+        "first_id": "P0201",
+        "last_id": "P0250",
+        "numbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50
+        ],
+        "sequence_valid": true,
+        "names_all_follow_block_prefix": true
+      },
+      {
+        "block_id": "B06",
+        "names": [
+          "Technology Shift"
+        ],
+        "data_rows": 50,
+        "first_id": "P0251",
+        "last_id": "P0300",
+        "numbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50
+        ],
+        "sequence_valid": true,
+        "names_all_follow_block_prefix": true
+      },
+      {
+        "block_id": "B07",
+        "names": [
+          "Regulation Policy"
+        ],
+        "data_rows": 50,
+        "first_id": "P0301",
+        "last_id": "P0350",
+        "numbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50
+        ],
+        "sequence_valid": true,
+        "names_all_follow_block_prefix": true
+      },
+      {
+        "block_id": "B08",
+        "names": [
+          "Capital Flow"
+        ],
+        "data_rows": 50,
+        "first_id": "P0351",
+        "last_id": "P0400",
+        "numbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50
+        ],
+        "sequence_valid": true,
+        "names_all_follow_block_prefix": true
+      },
+      {
+        "block_id": "B09",
+        "names": [
+          "Business Model"
+        ],
+        "data_rows": 50,
+        "first_id": "P0401",
+        "last_id": "P0450",
+        "numbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50
+        ],
+        "sequence_valid": true,
+        "names_all_follow_block_prefix": true
+      },
+      {
+        "block_id": "B10",
+        "names": [
+          "Margin Structure"
+        ],
+        "data_rows": 50,
+        "first_id": "P0451",
+        "last_id": "P0500",
+        "numbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50
+        ],
+        "sequence_valid": true,
+        "names_all_follow_block_prefix": true
+      },
+      {
+        "block_id": "B11",
+        "names": [
+          "Competition"
+        ],
+        "data_rows": 50,
+        "first_id": "P0501",
+        "last_id": "P0550",
+        "numbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50
+        ],
+        "sequence_valid": true,
+        "names_all_follow_block_prefix": true
+      },
+      {
+        "block_id": "B12",
+        "names": [
+          "Product Lifecycle"
+        ],
+        "data_rows": 50,
+        "first_id": "P0551",
+        "last_id": "P0600",
+        "numbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50
+        ],
+        "sequence_valid": true,
+        "names_all_follow_block_prefix": true
+      },
+      {
+        "block_id": "B13",
+        "names": [
+          "Demand Gap"
+        ],
+        "data_rows": 50,
+        "first_id": "P0601",
+        "last_id": "P0650",
+        "numbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50
+        ],
+        "sequence_valid": true,
+        "names_all_follow_block_prefix": true
+      },
+      {
+        "block_id": "B14",
+        "names": [
+          "Trust Emotion"
+        ],
+        "data_rows": 50,
+        "first_id": "P0651",
+        "last_id": "P0700",
+        "numbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50
+        ],
+        "sequence_valid": true,
+        "names_all_follow_block_prefix": true
+      },
+      {
+        "block_id": "B15",
+        "names": [
+          "Supply Chain"
+        ],
+        "data_rows": 50,
+        "first_id": "P0701",
+        "last_id": "P0750",
+        "numbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50
+        ],
+        "sequence_valid": true,
+        "names_all_follow_block_prefix": true
+      },
+      {
+        "block_id": "B16",
+        "names": [
+          "Market Timing"
+        ],
+        "data_rows": 50,
+        "first_id": "P0751",
+        "last_id": "P0800",
+        "numbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50
+        ],
+        "sequence_valid": true,
+        "names_all_follow_block_prefix": true
+      },
+      {
+        "block_id": "B17",
+        "names": [
+          "Failure Pattern"
+        ],
+        "data_rows": 50,
+        "first_id": "P0801",
+        "last_id": "P0850",
+        "numbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50
+        ],
+        "sequence_valid": true,
+        "names_all_follow_block_prefix": true
+      },
+      {
+        "block_id": "B18",
+        "names": [
+          "Winner Pattern"
+        ],
+        "data_rows": 50,
+        "first_id": "P0851",
+        "last_id": "P0900",
+        "numbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50
+        ],
+        "sequence_valid": true,
+        "names_all_follow_block_prefix": true
+      },
+      {
+        "block_id": "B19",
+        "names": [
+          "New Idea Mutation"
+        ],
+        "data_rows": 50,
+        "first_id": "P0901",
+        "last_id": "P0950",
+        "numbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50
+        ],
+        "sequence_valid": true,
+        "names_all_follow_block_prefix": true
+      },
+      {
+        "block_id": "B20",
+        "names": [
+          "Trade Invest Build Decision"
+        ],
+        "data_rows": 50,
+        "first_id": "P0951",
+        "last_id": "P1000",
+        "numbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50
+        ],
+        "sequence_valid": true,
+        "names_all_follow_block_prefix": true
+      },
+      {
+        "block_id": "B21",
+        "names": [
+          "Stock Fundamentals"
+        ],
+        "data_rows": 50,
+        "first_id": "P1001",
+        "last_id": "P1050",
+        "numbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50
+        ],
+        "sequence_valid": true,
+        "names_all_follow_block_prefix": false
+      },
+      {
+        "block_id": "B22",
+        "names": [
+          "Technical Price Liquidity"
+        ],
+        "data_rows": 50,
+        "first_id": "P1051",
+        "last_id": "P1100",
+        "numbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50
+        ],
+        "sequence_valid": true,
+        "names_all_follow_block_prefix": false
+      },
+      {
+        "block_id": "B23",
+        "names": [
+          "Gold Currency Commodity"
+        ],
+        "data_rows": 50,
+        "first_id": "P1101",
+        "last_id": "P1150",
+        "numbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50
+        ],
+        "sequence_valid": true,
+        "names_all_follow_block_prefix": false
+      },
+      {
+        "block_id": "B24",
+        "names": [
+          "Data Quality Realtime"
+        ],
+        "data_rows": 50,
+        "first_id": "P1151",
+        "last_id": "P1200",
+        "numbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50
+        ],
+        "sequence_valid": true,
+        "names_all_follow_block_prefix": false
+      }
+    ],
+    "suffix_templates": [
+      {
+        "number": 1,
+        "suffixes": {
+          "Primary metric": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 2,
+        "suffixes": {
+          "Secondary metric": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 3,
+        "suffixes": {
+          "Trend metric": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 4,
+        "suffixes": {
+          "Growth metric": 20
+        },
+        "data_types": {
+          "numeric": 20
+        }
+      },
+      {
+        "number": 5,
+        "suffixes": {
+          "Decline metric": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 6,
+        "suffixes": {
+          "Risk metric": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 7,
+        "suffixes": {
+          "Opportunity metric": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 8,
+        "suffixes": {
+          "Quality metric": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 9,
+        "suffixes": {
+          "Velocity metric": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 10,
+        "suffixes": {
+          "Stability metric": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 11,
+        "suffixes": {
+          "Volatility metric": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 12,
+        "suffixes": {
+          "Liquidity metric": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 13,
+        "suffixes": {
+          "Trust metric": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 14,
+        "suffixes": {
+          "Demand metric": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 15,
+        "suffixes": {
+          "Supply metric": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 16,
+        "suffixes": {
+          "Policy metric": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 17,
+        "suffixes": {
+          "Technology metric": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 18,
+        "suffixes": {
+          "Capital flow metric": 20
+        },
+        "data_types": {
+          "numeric": 20
+        }
+      },
+      {
+        "number": 19,
+        "suffixes": {
+          "Margin metric": 20
+        },
+        "data_types": {
+          "numeric": 20
+        }
+      },
+      {
+        "number": 20,
+        "suffixes": {
+          "Competition metric": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 21,
+        "suffixes": {
+          "Lifecycle metric": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 22,
+        "suffixes": {
+          "Gap metric": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 23,
+        "suffixes": {
+          "Emotion metric": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 24,
+        "suffixes": {
+          "Timing metric": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 25,
+        "suffixes": {
+          "Failure signal": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 26,
+        "suffixes": {
+          "Winner signal": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 27,
+        "suffixes": {
+          "Mutation signal": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 28,
+        "suffixes": {
+          "Trade route signal": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 29,
+        "suffixes": {
+          "Invest route signal": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 30,
+        "suffixes": {
+          "Build route signal": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 31,
+        "suffixes": {
+          "Avoid route signal": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 32,
+        "suffixes": {
+          "Proof need": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 33,
+        "suffixes": {
+          "Data status": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 34,
+        "suffixes": {
+          "Source confidence": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 35,
+        "suffixes": {
+          "15Y rank impact": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 36,
+        "suffixes": {
+          "52W impact": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 37,
+        "suffixes": {
+          "Current price impact": 20
+        },
+        "data_types": {
+          "numeric": 20
+        }
+      },
+      {
+        "number": 38,
+        "suffixes": {
+          "Volume impact": 20
+        },
+        "data_types": {
+          "numeric": 20
+        }
+      },
+      {
+        "number": 39,
+        "suffixes": {
+          "Macro sensitivity": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 40,
+        "suffixes": {
+          "Currency sensitivity": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 41,
+        "suffixes": {
+          "Commodity sensitivity": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 42,
+        "suffixes": {
+          "Gold hedge relevance": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 43,
+        "suffixes": {
+          "Correlation relevance": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 44,
+        "suffixes": {
+          "Regime relevance": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 45,
+        "suffixes": {
+          "Backtest relevance": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 46,
+        "suffixes": {
+          "Paper test relevance": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 47,
+        "suffixes": {
+          "Manual approval relevance": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 48,
+        "suffixes": {
+          "Risk governor relevance": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 49,
+        "suffixes": {
+          "Public claim risk": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      },
+      {
+        "number": 50,
+        "suffixes": {
+          "Next action": 20
+        },
+        "data_types": {
+          "numeric/text/date": 17,
+          "numeric": 3
+        }
+      }
+    ],
+    "generic_data_type_count": 898,
+    "declared_default_status_counts": {
+      "DATA_NEEDED": 1200
+    },
+    "source_priority_counts": {
+      "Yahoo/NSE/BSE/API/User/Research": 1200
+    },
+    "has_unit_column": false,
+    "has_formula_column": false,
+    "has_calibration_or_effective_date_column": false,
+    "suffix_template_scope": "B01-B20 only; all 1000 names match block-name plus one of 50 generic suffixes",
+    "last_four_blocks_complete_source_rows": [
+      {
+        "Parameter_ID": "P1001",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "1",
+        "Parameter_Name": "Market capitalization",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1002",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "2",
+        "Parameter_Name": "Enterprise value",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1003",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "3",
+        "Parameter_Name": "P/E ratio",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1004",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "4",
+        "Parameter_Name": "Forward P/E",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1005",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "5",
+        "Parameter_Name": "PEG ratio",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1006",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "6",
+        "Parameter_Name": "Dividend yield",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1007",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "7",
+        "Parameter_Name": "Debt to equity",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1008",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "8",
+        "Parameter_Name": "Earnings growth",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1009",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "9",
+        "Parameter_Name": "Revenue growth",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1010",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "10",
+        "Parameter_Name": "Profit margin",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1011",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "11",
+        "Parameter_Name": "Price to book",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1012",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "12",
+        "Parameter_Name": "Return on equity",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1013",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "13",
+        "Parameter_Name": "ROCE",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1014",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "14",
+        "Parameter_Name": "ROA",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1015",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "15",
+        "Parameter_Name": "Gross margin",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1016",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "16",
+        "Parameter_Name": "Operating margin",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1017",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "17",
+        "Parameter_Name": "EBITDA margin",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1018",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "18",
+        "Parameter_Name": "Free cash flow yield",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1019",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "19",
+        "Parameter_Name": "Interest coverage",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1020",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "20",
+        "Parameter_Name": "Current ratio",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1021",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "21",
+        "Parameter_Name": "Quick ratio",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1022",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "22",
+        "Parameter_Name": "Cash conversion cycle",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1023",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "23",
+        "Parameter_Name": "Working capital cycle",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1024",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "24",
+        "Parameter_Name": "Inventory turnover",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1025",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "25",
+        "Parameter_Name": "Receivable days",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1026",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "26",
+        "Parameter_Name": "Promoter holding",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1027",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "27",
+        "Parameter_Name": "Promoter pledge",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1028",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "28",
+        "Parameter_Name": "Institutional holding",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1029",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "29",
+        "Parameter_Name": "Retail holding",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1030",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "30",
+        "Parameter_Name": "Book value growth",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1031",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "31",
+        "Parameter_Name": "EPS growth",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1032",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "32",
+        "Parameter_Name": "Dividend payout",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1033",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "33",
+        "Parameter_Name": "Capex intensity",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1034",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "34",
+        "Parameter_Name": "R&D % revenue",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1035",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "35",
+        "Parameter_Name": "Advertising % revenue",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1036",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "36",
+        "Parameter_Name": "Employee cost ratio",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1037",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "37",
+        "Parameter_Name": "Tax rate",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1038",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "38",
+        "Parameter_Name": "ROIC",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1039",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "39",
+        "Parameter_Name": "Sales growth 3Y",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1040",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "40",
+        "Parameter_Name": "Sales growth 5Y",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1041",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "41",
+        "Parameter_Name": "Profit growth 3Y",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1042",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "42",
+        "Parameter_Name": "Profit growth 5Y",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1043",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "43",
+        "Parameter_Name": "Cash balance",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1044",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "44",
+        "Parameter_Name": "Debt maturity",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1045",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "45",
+        "Parameter_Name": "Credit rating",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1046",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "46",
+        "Parameter_Name": "Auditor change",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1047",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "47",
+        "Parameter_Name": "Related-party risk",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1048",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "48",
+        "Parameter_Name": "Governance score",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1049",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "49",
+        "Parameter_Name": "Sustainability score",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1050",
+        "Block_ID": "B21",
+        "Block_Name": "Stock Fundamentals",
+        "Parameter_No_In_Block": "50",
+        "Parameter_Name": "Innovation metric",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1051",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "1",
+        "Parameter_Name": "Current price",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1052",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "2",
+        "Parameter_Name": "Real-time timestamp",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1053",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "3",
+        "Parameter_Name": "52-week high",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1054",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "4",
+        "Parameter_Name": "52-week low",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1055",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "5",
+        "Parameter_Name": "52W position %",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1056",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "6",
+        "Parameter_Name": "1-day return",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1057",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "7",
+        "Parameter_Name": "1-week return",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1058",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "8",
+        "Parameter_Name": "1-month return",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1059",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "9",
+        "Parameter_Name": "3-month return",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1060",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "10",
+        "Parameter_Name": "6-month return",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1061",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "11",
+        "Parameter_Name": "1-year return",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1062",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "12",
+        "Parameter_Name": "3-year return",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1063",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "13",
+        "Parameter_Name": "5-year return",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1064",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "14",
+        "Parameter_Name": "10-year return",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1065",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "15",
+        "Parameter_Name": "15-year return",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1066",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "16",
+        "Parameter_Name": "Beta",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1067",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "17",
+        "Parameter_Name": "ATR",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1068",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "18",
+        "Parameter_Name": "RSI",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1069",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "19",
+        "Parameter_Name": "MACD",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1070",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "20",
+        "Parameter_Name": "ADX",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1071",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "21",
+        "Parameter_Name": "20 DMA",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1072",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "22",
+        "Parameter_Name": "50 DMA",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1073",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "23",
+        "Parameter_Name": "100 DMA",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1074",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "24",
+        "Parameter_Name": "200 DMA",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1075",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "25",
+        "Parameter_Name": "Price vs 200 DMA",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1076",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "26",
+        "Parameter_Name": "Volume 20D avg",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1077",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "27",
+        "Parameter_Name": "Volume 50D avg",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1078",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "28",
+        "Parameter_Name": "Volume 252D avg",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1079",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "29",
+        "Parameter_Name": "Delivery %",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1080",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "30",
+        "Parameter_Name": "Turnover",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1081",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "31",
+        "Parameter_Name": "Bid-ask spread",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1082",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "32",
+        "Parameter_Name": "Liquidity rank",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1083",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "33",
+        "Parameter_Name": "Gap frequency",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1084",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "34",
+        "Parameter_Name": "Breakout count",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1085",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "35",
+        "Parameter_Name": "Failed breakout count",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1086",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "36",
+        "Parameter_Name": "Support strength",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1087",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "37",
+        "Parameter_Name": "Resistance strength",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1088",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "38",
+        "Parameter_Name": "Relative strength vs index",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1089",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "39",
+        "Parameter_Name": "Relative strength vs sector",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1090",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "40",
+        "Parameter_Name": "Momentum 1M",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1091",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "41",
+        "Parameter_Name": "Momentum 3M",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1092",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "42",
+        "Parameter_Name": "Momentum 6M",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1093",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "43",
+        "Parameter_Name": "Momentum 12M",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1094",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "44",
+        "Parameter_Name": "VWAP status",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1095",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "45",
+        "Parameter_Name": "ORB status",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1096",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "46",
+        "Parameter_Name": "Trend structure",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1097",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "47",
+        "Parameter_Name": "Volatility regime",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1098",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "48",
+        "Parameter_Name": "Circuit risk",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1099",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "49",
+        "Parameter_Name": "Slippage estimate",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1100",
+        "Block_ID": "B22",
+        "Block_Name": "Technical Price Liquidity",
+        "Parameter_No_In_Block": "50",
+        "Parameter_Name": "Data delay seconds",
+        "Applies_To": "Equity/Stock",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1101",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "1",
+        "Parameter_Name": "Asset type",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1102",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "2",
+        "Parameter_Name": "Commodity family",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1103",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "3",
+        "Parameter_Name": "Currency pair",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1104",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "4",
+        "Parameter_Name": "Contract ticker",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1105",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "5",
+        "Parameter_Name": "Spot ticker",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1106",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "6",
+        "Parameter_Name": "Futures curve",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1107",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "7",
+        "Parameter_Name": "Front-month price",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1108",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "8",
+        "Parameter_Name": "52-week high",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1109",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "9",
+        "Parameter_Name": "52-week low",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1110",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "10",
+        "Parameter_Name": "52W position %",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1111",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "11",
+        "Parameter_Name": "Contango/backwardation",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1112",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "12",
+        "Parameter_Name": "Open interest",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1113",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "13",
+        "Parameter_Name": "Volume",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1114",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "14",
+        "Parameter_Name": "Roll yield",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1115",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "15",
+        "Parameter_Name": "Inventory level",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1116",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "16",
+        "Parameter_Name": "Central bank demand",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1117",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "17",
+        "Parameter_Name": "Real yield sensitivity",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1118",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "18",
+        "Parameter_Name": "Dollar sensitivity",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1119",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "19",
+        "Parameter_Name": "Inflation sensitivity",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1120",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "20",
+        "Parameter_Name": "Risk-off sensitivity",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1121",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "21",
+        "Parameter_Name": "Geopolitical sensitivity",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1122",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "22",
+        "Parameter_Name": "Seasonality",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1123",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "23",
+        "Parameter_Name": "Import duty impact",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1124",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "24",
+        "Parameter_Name": "India demand",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1125",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "25",
+        "Parameter_Name": "Jewelry demand",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1126",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "26",
+        "Parameter_Name": "Industrial demand",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1127",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "27",
+        "Parameter_Name": "ETF flow",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1128",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "28",
+        "Parameter_Name": "FX reserve impact",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1129",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "29",
+        "Parameter_Name": "Trade balance impact",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1130",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "30",
+        "Parameter_Name": "Oil sensitivity",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1131",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "31",
+        "Parameter_Name": "Gas sensitivity",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1132",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "32",
+        "Parameter_Name": "Copper doctor signal",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1133",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "33",
+        "Parameter_Name": "Agriculture weather risk",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1134",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "34",
+        "Parameter_Name": "Monsoon impact",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1135",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "35",
+        "Parameter_Name": "Storage cost",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1136",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "36",
+        "Parameter_Name": "Transportation cost",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1137",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "37",
+        "Parameter_Name": "Contract expiry",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1138",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "38",
+        "Parameter_Name": "Tick size",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1139",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "39",
+        "Parameter_Name": "Lot size",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1140",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "40",
+        "Parameter_Name": "Margin requirement",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1141",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "41",
+        "Parameter_Name": "Hedge use case",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1142",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "42",
+        "Parameter_Name": "Correlation with equities",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1143",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "43",
+        "Parameter_Name": "Correlation with bonds",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1144",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "44",
+        "Parameter_Name": "Correlation with INR",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1145",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "45",
+        "Parameter_Name": "Macro sentinel use",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1146",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "46",
+        "Parameter_Name": "Portfolio hedge score",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1147",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "47",
+        "Parameter_Name": "Commodity cycle phase",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1148",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "48",
+        "Parameter_Name": "Supply shock signal",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1149",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "49",
+        "Parameter_Name": "Demand shock signal",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1150",
+        "Block_ID": "B23",
+        "Block_Name": "Gold Currency Commodity",
+        "Parameter_No_In_Block": "50",
+        "Parameter_Name": "No-trade liquidity flag",
+        "Applies_To": "Gold/Currency/Commodity/ETF/Index",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1151",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "1",
+        "Parameter_Name": "Yahoo ticker",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1152",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "2",
+        "Parameter_Name": "Yahoo source URL",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1153",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "3",
+        "Parameter_Name": "NSE/BSE ticker",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1154",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "4",
+        "Parameter_Name": "ISIN",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1155",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "5",
+        "Parameter_Name": "Instrument token",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1156",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "6",
+        "Parameter_Name": "Last fetch time",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1157",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "7",
+        "Parameter_Name": "Fetch status",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1158",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "8",
+        "Parameter_Name": "Price source",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1159",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "9",
+        "Parameter_Name": "Fundamental source",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1160",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "10",
+        "Parameter_Name": "News source",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1161",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "11",
+        "Parameter_Name": "Sentiment source",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1162",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "12",
+        "Parameter_Name": "Historical source",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1163",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "13",
+        "Parameter_Name": "Data freshness",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1164",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "14",
+        "Parameter_Name": "Missing field count",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1165",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "15",
+        "Parameter_Name": "Stale field count",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1166",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "16",
+        "Parameter_Name": "Duplicate field count",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1167",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "17",
+        "Parameter_Name": "Corporate action adjusted",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1168",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "18",
+        "Parameter_Name": "Split adjusted",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1169",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "19",
+        "Parameter_Name": "Dividend adjusted",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1170",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "20",
+        "Parameter_Name": "Currency normalized",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1171",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "21",
+        "Parameter_Name": "Units normalized",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1172",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "22",
+        "Parameter_Name": "Timezone normalized",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1173",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "23",
+        "Parameter_Name": "Outlier flag",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1174",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "24",
+        "Parameter_Name": "Bad tick flag",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1175",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "25",
+        "Parameter_Name": "Volume anomaly flag",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1176",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "26",
+        "Parameter_Name": "Price anomaly flag",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1177",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "27",
+        "Parameter_Name": "Holiday calendar check",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1178",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "28",
+        "Parameter_Name": "Trading status",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1179",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "29",
+        "Parameter_Name": "Suspended flag",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1180",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "30",
+        "Parameter_Name": "Delisted flag",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1181",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "31",
+        "Parameter_Name": "Survivorship bias flag",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1182",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "32",
+        "Parameter_Name": "Lookahead bias flag",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1183",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "33",
+        "Parameter_Name": "Source confidence",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1184",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "34",
+        "Parameter_Name": "Manual override flag",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1185",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "35",
+        "Parameter_Name": "Audit trail ID",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1186",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "36",
+        "Parameter_Name": "Parameter version",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1187",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "37",
+        "Parameter_Name": "Data owner",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1188",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "38",
+        "Parameter_Name": "Review status",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1189",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "39",
+        "Parameter_Name": "Validation status",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1190",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "40",
+        "Parameter_Name": "API error code",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1191",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "41",
+        "Parameter_Name": "Retry count",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1192",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "42",
+        "Parameter_Name": "Rate limit flag",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1193",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "43",
+        "Parameter_Name": "Compliance note",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1194",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "44",
+        "Parameter_Name": "Commercial use allowed",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1195",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "45",
+        "Parameter_Name": "Redistribution allowed",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1196",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "46",
+        "Parameter_Name": "Licensed data needed",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1197",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "47",
+        "Parameter_Name": "User-provided data flag",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1198",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "48",
+        "Parameter_Name": "Synthetic data flag",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1199",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "49",
+        "Parameter_Name": "Proof debt tag",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      },
+      {
+        "Parameter_ID": "P1200",
+        "Block_ID": "B24",
+        "Block_Name": "Data Quality Realtime",
+        "Parameter_No_In_Block": "50",
+        "Parameter_Name": "Next data action",
+        "Applies_To": "All/Data",
+        "Data_Type": "numeric/text/date",
+        "Default_Status": "DATA_NEEDED",
+        "Source_Priority": "Yahoo/NSE/BSE/API/User/Research",
+        "Notes": "Do not delete; mark duplicate/merged if replaced"
+      }
+    ],
+    "duplicate_parameter_names": [
+      {
+        "name": "52-week high",
+        "rows": [
+          {
+            "parameter_id": "P1053",
+            "block_id": "B22",
+            "number": "3"
+          },
+          {
+            "parameter_id": "P1108",
+            "block_id": "B23",
+            "number": "8"
+          }
+        ]
+      },
+      {
+        "name": "52-week low",
+        "rows": [
+          {
+            "parameter_id": "P1054",
+            "block_id": "B22",
+            "number": "4"
+          },
+          {
+            "parameter_id": "P1109",
+            "block_id": "B23",
+            "number": "9"
+          }
+        ]
+      },
+      {
+        "name": "52W position %",
+        "rows": [
+          {
+            "parameter_id": "P1055",
+            "block_id": "B22",
+            "number": "5"
+          },
+          {
+            "parameter_id": "P1110",
+            "block_id": "B23",
+            "number": "10"
+          }
+        ]
+      }
+    ],
+    "runtime_framework_name_comparison": [
+      {
+        "block_id": "B01",
+        "csv_block_name": "Industry Identity",
+        "runtime_static_block_name": "Industry Identity",
+        "matches": true
+      },
+      {
+        "block_id": "B02",
+        "csv_block_name": "15-Year Performance",
+        "runtime_static_block_name": "15-Year Performance",
+        "matches": true
+      },
+      {
+        "block_id": "B03",
+        "csv_block_name": "Growth Drivers",
+        "runtime_static_block_name": "Growth Drivers",
+        "matches": true
+      },
+      {
+        "block_id": "B04",
+        "csv_block_name": "Collapse Drivers",
+        "runtime_static_block_name": "Valuation and Re-rating",
+        "matches": false
+      },
+      {
+        "block_id": "B05",
+        "csv_block_name": "Consumer Behavior",
+        "runtime_static_block_name": "Financial Quality",
+        "matches": false
+      },
+      {
+        "block_id": "B06",
+        "csv_block_name": "Technology Shift",
+        "runtime_static_block_name": "Balance Sheet Risk",
+        "matches": false
+      },
+      {
+        "block_id": "B07",
+        "csv_block_name": "Regulation Policy",
+        "runtime_static_block_name": "Cash Flow",
+        "matches": false
+      },
+      {
+        "block_id": "B08",
+        "csv_block_name": "Capital Flow",
+        "runtime_static_block_name": "Management and Governance",
+        "matches": false
+      },
+      {
+        "block_id": "B09",
+        "csv_block_name": "Business Model",
+        "runtime_static_block_name": "Sector Tailwind",
+        "matches": false
+      },
+      {
+        "block_id": "B10",
+        "csv_block_name": "Margin Structure",
+        "runtime_static_block_name": "Order and Execution Pipeline",
+        "matches": false
+      },
+      {
+        "block_id": "B11",
+        "csv_block_name": "Competition",
+        "runtime_static_block_name": "Event Calendar",
+        "matches": false
+      },
+      {
+        "block_id": "B12",
+        "csv_block_name": "Product Lifecycle",
+        "runtime_static_block_name": "FII/DII Flow",
+        "matches": false
+      },
+      {
+        "block_id": "B13",
+        "csv_block_name": "Demand Gap",
+        "runtime_static_block_name": "Derivatives and OI",
+        "matches": false
+      },
+      {
+        "block_id": "B14",
+        "csv_block_name": "Trust Emotion",
+        "runtime_static_block_name": "Market Breadth",
+        "matches": false
+      },
+      {
+        "block_id": "B15",
+        "csv_block_name": "Supply Chain",
+        "runtime_static_block_name": "Delivery and Volume",
+        "matches": false
+      },
+      {
+        "block_id": "B16",
+        "csv_block_name": "Market Timing",
+        "runtime_static_block_name": "Macro",
+        "matches": false
+      },
+      {
+        "block_id": "B17",
+        "csv_block_name": "Failure Pattern",
+        "runtime_static_block_name": "Currency and Commodity",
+        "matches": false
+      },
+      {
+        "block_id": "B18",
+        "csv_block_name": "Winner Pattern",
+        "runtime_static_block_name": "News and Sentiment",
+        "matches": false
+      },
+      {
+        "block_id": "B19",
+        "csv_block_name": "New Idea Mutation",
+        "runtime_static_block_name": "Risk Governor",
+        "matches": false
+      },
+      {
+        "block_id": "B20",
+        "csv_block_name": "Trade Invest Build Decision",
+        "runtime_static_block_name": "Portfolio Rotation",
+        "matches": false
+      },
+      {
+        "block_id": "B21",
+        "csv_block_name": "Stock Fundamentals",
+        "runtime_static_block_name": "Execution Plan",
+        "matches": false
+      },
+      {
+        "block_id": "B22",
+        "csv_block_name": "Technical Price Liquidity",
+        "runtime_static_block_name": "Technical Price Liquidity",
+        "matches": true
+      },
+      {
+        "block_id": "B23",
+        "csv_block_name": "Gold Currency Commodity",
+        "runtime_static_block_name": "Gold Currency Commodity",
+        "matches": true
+      },
+      {
+        "block_id": "B24",
+        "csv_block_name": "Data Quality Realtime",
+        "runtime_static_block_name": "Data Quality Realtime",
+        "matches": true
+      }
+    ],
+    "runtime_framework_name_mismatches": 18,
+    "runtime_catalog": {
+      "file": "data/parameter-catalog-175.json",
+      "records": 175,
+      "direct_parameter_id_matches": 0,
+      "comparison_basis": "Exact identifier equality only; no inferred ordinal aliases",
+      "specific_source_claim_conflicts": [
+        {
+          "source_parameter_id": "P0056",
+          "source_parameter_name": "15-Year Performance - Risk metric",
+          "source_number": "6",
+          "app_id": "B02_P006",
+          "app_label": "1M return positive"
+        },
+        {
+          "source_parameter_id": "P0057",
+          "source_parameter_name": "15-Year Performance - Opportunity metric",
+          "source_number": "7",
+          "app_id": "B02_P007",
+          "app_label": "3M return positive"
+        },
+        {
+          "source_parameter_id": "P0058",
+          "source_parameter_name": "15-Year Performance - Quality metric",
+          "source_number": "8",
+          "app_id": "B02_P008",
+          "app_label": "6M return above 8%"
+        },
+        {
+          "source_parameter_id": "P0059",
+          "source_parameter_name": "15-Year Performance - Velocity metric",
+          "source_number": "9",
+          "app_id": "B02_P009",
+          "app_label": "12M return above 12%"
+        }
+      ]
+    },
+    "duplicate_block_and_number_keys": []
+  },
+  "market_internals": {
+    "dates": {
+      "min": "2016-02-02",
+      "max": "2026-06-08",
+      "distinct": 2477,
+      "invalid": 0,
+      "ascending": true,
+      "gaps_over_seven_calendar_days": [
+        {
+          "previous": "2021-02-01",
+          "current": "2021-06-09",
+          "calendar_days": 128,
+          "source_row": 1240
+        }
+      ],
+      "calendar_day_age_at_review": 112
+    },
+    "n_symbols_counts": {
+      "13": 2477
+    },
+    "status_counts": {
+      "SAMPLE_16_STOCKS_NOT_MARKET_WIDE": 2477
+    },
+    "missing_delivery_rows": [
+      {
+        "source_row": 741,
+        "trade_date": "2019-01-28",
+        "n_symbols": "13",
+        "equal_weight_ret_1d": "-0.01158104990619706",
+        "dispersion_1d": "0.014027250559015977",
+        "up_pct_1d": "0.07692307692307693",
+        "down3_pct_1d": "0.07692307692307693",
+        "up3_pct_1d": "0.0",
+        "tail_down3_5d": "0.38461538461538464",
+        "tail_up3_5d": "0.07692307692307693",
+        "total_volume": "66704558",
+        "total_turnover": "65970280242.3",
+        "avg_delivery_pct": "",
+        "total_delivery_qty": "0.0",
+        "avg_trades": "114544.30769230769",
+        "volume_hhi": "0.14088911914214053",
+        "delivery_hhi": "",
+        "tail_repair_ratio_5d": "0.2",
+        "sample_tail_damage_q90_fire": "1",
+        "sample_tail_damage_q95_fire": "0",
+        "sample_damage_cluster_5in10": "0",
+        "data_status": "SAMPLE_16_STOCKS_NOT_MARKET_WIDE"
+      },
+      {
+        "source_row": 1036,
+        "trade_date": "2020-04-13",
+        "n_symbols": "13",
+        "equal_weight_ret_1d": "-0.009697320738682493",
+        "dispersion_1d": "0.03169318233395468",
+        "up_pct_1d": "0.3076923076923077",
+        "down3_pct_1d": "0.23076923076923078",
+        "up3_pct_1d": "0.15384615384615385",
+        "tail_down3_5d": "0.0",
+        "tail_up3_5d": "0.7692307692307693",
+        "total_volume": "177431777",
+        "total_turnover": "113939448065.8",
+        "avg_delivery_pct": "",
+        "total_delivery_qty": "0.0",
+        "avg_trades": "222903.3076923077",
+        "volume_hhi": "0.15889453008041668",
+        "delivery_hhi": "",
+        "tail_repair_ratio_5d": "",
+        "sample_tail_damage_q90_fire": "0",
+        "sample_tail_damage_q95_fire": "0",
+        "sample_damage_cluster_5in10": "0",
+        "data_status": "SAMPLE_16_STOCKS_NOT_MARKET_WIDE"
+      }
+    ],
+    "gap_return_rows": [
+      {
+        "source_row": 1240,
+        "trade_date": "2021-06-09",
+        "n_symbols": "13",
+        "equal_weight_ret_1d": "0.1637766529929463",
+        "dispersion_1d": "0.23307855199964803",
+        "up_pct_1d": "0.6153846153846154",
+        "down3_pct_1d": "0.07692307692307693",
+        "up3_pct_1d": "0.5384615384615384",
+        "tail_down3_5d": "0.15384615384615385",
+        "tail_up3_5d": "0.38461538461538464",
+        "total_volume": "120673010",
+        "total_turnover": "91616485363.05",
+        "avg_delivery_pct": "38.39846153846154",
+        "total_delivery_qty": "39853976.0",
+        "avg_trades": "125442.69230769231",
+        "volume_hhi": "0.15732146169931938",
+        "delivery_hhi": "0.12975649520056967",
+        "tail_repair_ratio_5d": "2.5",
+        "sample_tail_damage_q90_fire": "0",
+        "sample_tail_damage_q95_fire": "0",
+        "sample_damage_cluster_5in10": "1",
+        "data_status": "SAMPLE_16_STOCKS_NOT_MARKET_WIDE"
+      }
+    ],
+    "thresholds_reproducing_saved_flags": {
+      "q90": 0.38461538461538464,
+      "q95": 0.5384615384615384
+    },
+    "full_sample_inclusive_q90_mismatches": 0,
+    "full_sample_inclusive_q95_mismatches": 0,
+    "cluster_5in10_mismatches": 0,
+    "tail_ratio_mismatches": 0,
+    "blank_tail_ratio_counts": {
+      "all": 781,
+      "missing_tail": 5,
+      "zero_denominator": 776
+    },
+    "units": {
+      "trade_date": "ISO date, observed records not an independently verified exchange calendar",
+      "n_symbols": "count, 13 per observation",
+      "returns_breadth_tail_dispersion": "fractions, not percent points",
+      "avg_delivery_pct": "percentage points (0-100)",
+      "total_volume": "aggregate traded quantity",
+      "total_delivery_qty": "aggregate deliverable quantity; saved zeros on missing-delivery dates require caution",
+      "total_turnover": "rupees inherited from accepted duplicate upstream-context evidence; unit not explicit in this CSV header",
+      "avg_trades": "average count",
+      "volume_hhi": "sum of squared quantity shares (fraction scale)",
+      "delivery_hhi": "sum of squared delivery quantity shares (fraction scale)",
+      "tail_repair_ratio_5d": "dimensionless ratio, blank for missing or zero denominator",
+      "sample_flags": "binary research flags, original threshold training/timing contract absent"
+    }
+  },
+  "industry_coverage": {
+    "complete_source_rows": [
+      {
+        "industry_group": "Auto",
+        "stocks": "2",
+        "symbols": "M&M, MARUTI"
+      },
+      {
+        "industry_group": "Banks",
+        "stocks": "3",
+        "symbols": "HDFCBANK, ICICIBANK, SBIN"
+      },
+      {
+        "industry_group": "Energy/Oil-Gas",
+        "stocks": "2",
+        "symbols": "ONGC, RELIANCE"
+      },
+      {
+        "industry_group": "FMCG",
+        "stocks": "1",
+        "symbols": "HINDUNILVR"
+      },
+      {
+        "industry_group": "Finance/NBFC",
+        "stocks": "2",
+        "symbols": "BAJAJFINSV, BAJFINANCE"
+      },
+      {
+        "industry_group": "IT",
+        "stocks": "2",
+        "symbols": "INFY, TCS"
+      },
+      {
+        "industry_group": "Metals",
+        "stocks": "1",
+        "symbols": "TATASTEEL"
+      },
+      {
+        "industry_group": "Pharma",
+        "stocks": "2",
+        "symbols": "DRREDDY, SUNPHARMA"
+      },
+      {
+        "industry_group": "Telecom",
+        "stocks": "1",
+        "symbols": "BHARTIARTL"
+      }
+    ],
+    "declared_stock_count_sum": 16,
+    "distinct_symbols": 16,
+    "duplicate_symbol_labels": [],
+    "symbol_count_mismatches": [],
+    "as_of_date_present": false,
+    "classification_authority_present": false
+  },
+  "mwpl": {
+    "period_from_header": "June 2026",
+    "row_level_effective_date_present": false,
+    "symbols": [
+      "360ONE",
+      "ABB",
+      "ABCAPITAL",
+      "ADANIENSOL",
+      "ADANIENT",
+      "ADANIGREEN",
+      "ADANIPORTS",
+      "ADANIPOWER",
+      "ALKEM",
+      "AMBER",
+      "AMBUJACEM",
+      "ANGELONE",
+      "APLAPOLLO",
+      "APOLLOHOSP",
+      "ASHOKLEY",
+      "ASIANPAINT",
+      "ASTRAL",
+      "AUBANK",
+      "AUROPHARMA",
+      "AXISBANK",
+      "BAJAJ-AUTO",
+      "BAJAJFINSV",
+      "BAJAJHLDNG",
+      "BAJFINANCE",
+      "BANDHANBNK",
+      "BANKBARODA",
+      "BANKINDIA",
+      "BDL",
+      "BEL",
+      "BHARATFORG",
+      "BHARTIARTL",
+      "BHEL",
+      "BIOCON",
+      "BLUESTARCO",
+      "BOSCHLTD",
+      "BPCL",
+      "BRITANNIA",
+      "BSE",
+      "CAMS",
+      "CANBK",
+      "CDSL",
+      "CGPOWER",
+      "CHOLAFIN",
+      "CIPLA",
+      "COALINDIA",
+      "COCHINSHIP",
+      "COFORGE",
+      "COLPAL",
+      "CONCOR",
+      "CROMPTON",
+      "CUMMINSIND",
+      "DABUR",
+      "DALBHARAT",
+      "DELHIVERY",
+      "DIVISLAB",
+      "DIXON",
+      "DLF",
+      "DMART",
+      "DRREDDY",
+      "EICHERMOT",
+      "ETERNAL",
+      "EXIDEIND",
+      "FEDERALBNK",
+      "FORCEMOT",
+      "FORTIS",
+      "GAIL",
+      "GLENMARK",
+      "GMRAIRPORT",
+      "GODFRYPHLP",
+      "GODREJCP",
+      "GODREJPROP",
+      "GRASIM",
+      "GVT&D",
+      "HAL",
+      "HAVELLS",
+      "HCLTECH",
+      "HDFCAMC",
+      "HDFCBANK",
+      "HDFCLIFE",
+      "HEROMOTOCO",
+      "HINDALCO",
+      "HINDPETRO",
+      "HINDUNILVR",
+      "HINDZINC",
+      "HYUNDAI",
+      "ICICIBANK",
+      "ICICIGI",
+      "ICICIPRULI",
+      "IDEA",
+      "IDFCFIRSTB",
+      "IEX",
+      "INDHOTEL",
+      "INDIANB",
+      "INDIGO",
+      "INDUSINDBK",
+      "INDUSTOWER",
+      "INFY",
+      "INOXWIND",
+      "IOC",
+      "IREDA",
+      "IRFC",
+      "ITC",
+      "JINDALSTEL",
+      "JIOFIN",
+      "JSWENERGY",
+      "JSWSTEEL",
+      "JUBLFOOD",
+      "KALYANKJIL",
+      "KAYNES",
+      "KEI",
+      "KFINTECH",
+      "KOTAKBANK",
+      "KPITTECH",
+      "LAURUSLABS",
+      "LICHSGFIN",
+      "LICI",
+      "LODHA",
+      "LT",
+      "LTF",
+      "LTM",
+      "LUPIN",
+      "M&M",
+      "MANAPPURAM",
+      "MANKIND",
+      "MARICO",
+      "MARUTI",
+      "MAXHEALTH",
+      "MAZDOCK",
+      "MCX",
+      "MFSL",
+      "MOTHERSON",
+      "MOTILALOFS",
+      "MPHASIS",
+      "MUTHOOTFIN",
+      "NAM-INDIA",
+      "NATIONALUM",
+      "NAUKRI",
+      "NBCC",
+      "NESTLEIND",
+      "NHPC",
+      "NMDC",
+      "NTPC",
+      "NUVAMA",
+      "NYKAA",
+      "OBEROIRLTY",
+      "OFSS",
+      "OIL",
+      "ONGC",
+      "PAGEIND",
+      "PATANJALI",
+      "PAYTM",
+      "PERSISTENT",
+      "PETRONET",
+      "PFC",
+      "PGEL",
+      "PHOENIXLTD",
+      "PIDILITIND",
+      "PIIND",
+      "PNB",
+      "PNBHOUSING",
+      "POLICYBZR",
+      "POLYCAB",
+      "POWERGRID",
+      "POWERINDIA",
+      "PREMIERENE",
+      "PRESTIGE",
+      "RADICO",
+      "RBLBANK",
+      "RECLTD",
+      "RELIANCE",
+      "RVNL",
+      "SAIL",
+      "SAMMAANCAP",
+      "SBICARD",
+      "SBILIFE",
+      "SBIN",
+      "SHREECEM",
+      "SHRIRAMFIN",
+      "SIEMENS",
+      "SOLARINDS",
+      "SONACOMS",
+      "SRF",
+      "SUNPHARMA",
+      "SUPREMEIND",
+      "SUZLON",
+      "SWIGGY",
+      "TATACONSUM",
+      "TATAELXSI",
+      "TATAPOWER",
+      "TATASTEEL",
+      "TCS",
+      "TECHM",
+      "TIINDIA",
+      "TITAN",
+      "TMPV",
+      "TORNTPHARM",
+      "TRENT",
+      "TVSMOTOR",
+      "ULTRACEMCO",
+      "UNIONBANK",
+      "UNITDSPR",
+      "UNOMINDA",
+      "UPL",
+      "VBL",
+      "VEDL",
+      "VMM",
+      "VOLTAS",
+      "WAAREEENER",
+      "WIPRO",
+      "YESBANK",
+      "ZYDUSLIFE"
+    ],
+    "nonpositive_limits": [],
+    "noninteger_limits": [],
+    "currency_or_crore_label_present": false,
+    "role": "Saved market-wide position limits; no actual positions, ownership or institutional-flow measurements"
+  },
+  "summary": {
+    "members_fully_read": 4,
+    "total_data_rows": 3897,
+    "total_data_fields": 64466,
+    "blank_data_fields": 800,
+    "all_primary_independent_fields_equal": true,
+    "all_crc_matches": true,
+    "exact_byte_duplicate_members": 2,
+    "semantic_duplicate_members": 3,
+    "total_used_cells_including_headers": 64502,
+    "nonempty_data_fields": 63666
+  },
+  "input_evidence_pins": {
+    "data/asset-review/derived-delivery-context-evidence-2026-09-24.json": {
+      "sha256": "b1692deb1293d66cb156b9a923b75e2149f88c0bfa7b22e56654ac578ff1f7c7",
+      "bytes": 79883
+    },
+    "data/asset-review/bhavcopy-content-evidence-2026-09-24.json": {
+      "sha256": "942e4450789c02ab767baeb3110cc68f877bd68a406c6111752df76b7755f277",
+      "bytes": 53420
+    },
+    "data/asset-review/content-coverage-progress-2026-09-24.json": {
+      "sha256": "282cf67c6297d2bf5476a08cc2a9ee5e4756998a002c92ef344bbf9c8f9f80aa",
+      "bytes": 54147
+    },
+    "data/asset-review/remaining-content-baseline-2026-09-24.json": {
+      "sha256": "ee04b8138113febb39e6323a2048a3c78c9b11c3ace96653fb1ad2080de1bf52",
+      "bytes": 480929
+    }
+  },
+  "consumer_file_pins": {
+    "server.js": {
+      "sha256": "7f19f871e85fa21bb460fd47d6e01ee69e409f922e03daae4a8c386168a4557e"
+    },
+    "server-data-intelligence-patch.mjs": {
+      "sha256": "84bae920306261373c556cca87bdd0db38996ce211488ba373640aeb4426c7c0"
+    },
+    "app-am07-dashboard.js": {
+      "sha256": "9cc0a2897c8b2761f4afe87b5347e35d5583efb9a60a25b3784f6fac81276877"
+    },
+    "server-parameter-tunnel-patch.mjs": {
+      "sha256": "dcf63a726ee2bd9c00d39e5f3d6c8293973fbc0589aad86997b304751558ed32"
+    },
+    "data/parameter-catalog-175.json": {
+      "sha256": "38e608f9f8d2823c9691258d0d655336b76ee40e5ea970012665f05e16f1ebe2"
+    },
+    "lib/stock-selection-engine.mjs": {
+      "sha256": "0f5bd4513d04c1c304533ad2fd524d7d8f54566b4e76ef643d024e3a5094bbb5"
+    },
+    "config/stock-selection-parameters.v0.1.json": {
+      "sha256": "555c3f9f4710264cf251cccbd2107c2710fa2207ffc8757e12bc95a2dad71c6f"
+    }
+  }
+}

@@ -1,0 +1,2229 @@
+{
+  "schema_version": "ashstocks-am07-research-csv-evidence-v1",
+  "review_date": "2026-09-28",
+  "repository": {
+    "path": "/Users/sourceborn/Documents/ChatGPT/Ash/AshStocks",
+    "head": "910c72f1ab6fdf014c081746626f38e2fe029759",
+    "branch": "codex/valuation-targets-market-refresh",
+    "verification": "HEAD and branch freshly read; code path review is local static inspection only."
+  },
+  "source": {
+    "path": "/Users/sourceborn/Documents/ChatGPT/Ash/V01-2026-09-07/payload/raw-assets/AM.07.Parameter.Files.zip",
+    "asset": "AM.07.Parameter.Files.zip",
+    "bytes": 10303731,
+    "sha256": "652be4ddb2b40915543ad848b2bfa10d011c6c2c5723a6e6a3480a85ddb2e2e5",
+    "pinned_sha256_matches": true,
+    "scope_member_count": 6,
+    "source_preserved": true,
+    "zip_directory_has_file_members": 44,
+    "archive_wide_content_review_claimed": false
+  },
+  "method": {
+    "skill": "/Users/sourceborn/.codex/plugins/cache/openai-primary-runtime/spreadsheets/26.915.20218/skills/spreadsheets/SKILL.md",
+    "primary": "Bundled Node and @oai/artifact-tool Workbook.fromCSV, full used-range values/formulas, not header sampling.",
+    "secondary": "Bundled Python csv/zipfile, independent all-cell parsing, arithmetic identities, numpy correlation matrix consistency.",
+    "node": "/Users/sourceborn/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+    "python": "/Users/sourceborn/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "source_execution": false,
+    "source_extraction_to_persistent_files": false,
+    "primary_secondary_agreement": true,
+    "formula_recalculation": "Not applicable: CSVs contain stored values and zero formulas; no source workbook was authored/exported.",
+    "rendering": "Not performed: read-only plain CSV audit, no changed visual output.",
+    "numeric_tolerances": {
+      "trigger_derived_ratio_absolute": 5.1e-10,
+      "peer_comparison_absolute": 5e-8,
+      "integer_totals": 0
+    },
+    "tolerance_note": "Peer tolerance covers serialized decimal rounding only; it does not declare byte identity or independent evidence."
+  },
+  "summary": {
+    "members_reviewed": 6,
+    "data_rows": 72,
+    "rows_including_headers": 78,
+    "cells_including_headers": 647,
+    "data_cells": 591,
+    "total_member_bytes": 7639,
+    "malformed_rows": 0,
+    "blank_cells": 0,
+    "native_formula_cells": 0,
+    "duplicate_data_rows_within_members": 0,
+    "exact_byte_duplicate_peers": 0,
+    "semantic_peer_correspondences": 5,
+    "source_table_content_proposed_reviewed": 6,
+    "live_or_predictive_validity_established": false
+  },
+  "accepted_context_evidence": [
+    {
+      "file": "data/asset-review/additional-asset-evidence-2026-09-24.json",
+      "sha256": "0eb6c0645f001e56bb17d752c597257ebdd2b1eedf01ad5101f6d0fe5bd136a8",
+      "locator": "member fii_volume_derivatives_review_v0_3_csv_pack/participantwise_volume_latest_clean.csv",
+      "use": "Earlier full CSV profile and date/context correspondence. Peer archive/member bytes freshly compared."
+    },
+    {
+      "file": "data/asset-review/ifr-cash-research-evidence-2026-09-24.json",
+      "sha256": "7484e17ce61516f7fe01e53cf7183228468bf5d5c83dd6a411eeb88887b0b5fd",
+      "locators": [
+        "/archives/0/members/5",
+        "/archives/0/members/6",
+        "/forward_window_tail/15",
+        "/forward_distribution_reproduced_from_exported_forward_values",
+        "/correlation",
+        "/limitations"
+      ],
+      "use": "Inherited daily sequence, correlation-reproduction and incomplete forward-window limitations. Full primary peer summaries freshly compared; underlying daily series not rerun."
+    },
+    {
+      "file": "data/asset-review/research-formula-evidence-2026-09-24.json",
+      "sha256": "587cd79a0a3a1a5ce6718fc784fe1bcdb06cd4327ac6241f3f0dbbc81a47c893",
+      "locators": [
+        "/numeric_reproduction/daily",
+        "/source_definitions/ifr",
+        "/runtime_findings/3"
+      ],
+      "use": "Historical market-internals/date context, full-sample threshold limitation and existing static-lift consumer finding. Trigger peer tables and current consumer code freshly checked."
+    }
+  ],
+  "members": [
+    {
+      "name": "participantwise_volume_latest_clean.csv",
+      "member": "AM 07 Parameter Files/participantwise_volume_latest_clean.csv",
+      "source_pin": {
+        "sha256": "1f9b2aeb9d7960e54decddc2d1b996461f63513fb5d90f01df1ecfc7c12daed7",
+        "bytes": 1235,
+        "crc32": "2e2a96b1",
+        "crc_verified": true
+      },
+      "full_read": {
+        "primary": "Workbook.fromCSV -> Source.getUsedRange().values and .formulas",
+        "range": "A1:R6",
+        "rows_including_header": 6,
+        "data_rows": 5,
+        "columns": 18,
+        "primary_secondary_cell_equality": true,
+        "all_rows_retained": true,
+        "native_formula_count": 0
+      },
+      "structural_checks": {
+        "width_errors": [],
+        "blank_cells": [],
+        "duplicate_data_rows": 0,
+        "formula_prefix_cells": []
+      },
+      "all_cells": [
+        [
+          "trade_date",
+          "client_type",
+          "Future Index Long",
+          "Future Index Short",
+          "Future Stock Long",
+          "Future Stock Short",
+          "Option Index Call Long",
+          "Option Index Put Long",
+          "Option Index Call Short",
+          "Option Index Put Short",
+          "Option Stock Call Long",
+          "Option Stock Put Long",
+          "Option Stock Call Short",
+          "Option Stock Put Short",
+          "Total Long Contracts",
+          "Total Short Contracts",
+          "kind",
+          "source_file"
+        ],
+        [
+          "08-06-2026",
+          "Client",
+          "62382",
+          "59803",
+          "237034",
+          "274749",
+          "28464818",
+          "28779593",
+          "28358639",
+          "28788259",
+          "1047286",
+          "405130",
+          "922120",
+          "429025",
+          "58996243",
+          "58832595",
+          "participant_vol",
+          "FII.zip:FII/fao_participant_vol_08062026.csv"
+        ],
+        [
+          "08-06-2026",
+          "DII",
+          "9490",
+          "2938",
+          "62494",
+          "63763",
+          "15",
+          "2236",
+          "45",
+          "2219",
+          "948",
+          "0",
+          "45546",
+          "1642",
+          "75183",
+          "116153",
+          "participant_vol",
+          "FII.zip:FII/fao_participant_vol_08062026.csv"
+        ],
+        [
+          "08-06-2026",
+          "FII",
+          "9342",
+          "19250",
+          "228502",
+          "229731",
+          "4130862",
+          "4289739",
+          "4148739",
+          "4270531",
+          "124972",
+          "77874",
+          "135136",
+          "68295",
+          "8861291",
+          "8871682",
+          "participant_vol",
+          "FII.zip:FII/fao_participant_vol_08062026.csv"
+        ],
+        [
+          "08-06-2026",
+          "Pro",
+          "37838",
+          "37061",
+          "359977",
+          "319764",
+          "39433843",
+          "33881353",
+          "39522115",
+          "33891912",
+          "1790770",
+          "1012922",
+          "1861174",
+          "996964",
+          "76516703",
+          "76628990",
+          "participant_vol",
+          "FII.zip:FII/fao_participant_vol_08062026.csv"
+        ],
+        [
+          "08-06-2026",
+          "TOTAL",
+          "119052",
+          "119052",
+          "888007",
+          "888007",
+          "72029538",
+          "66952921",
+          "72029538",
+          "66952921",
+          "2963976",
+          "1495926",
+          "2963976",
+          "1495926",
+          "144449420",
+          "144449420",
+          "participant_vol",
+          "FII.zip:FII/fao_participant_vol_08062026.csv"
+        ]
+      ],
+      "independent_arithmetic": {
+        "component_column_total_differences": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "row_long_total_differences": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "row_short_total_differences": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "market_long_short_differences": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "row_net_long_minus_short": [
+          163648,
+          -40970,
+          -10391,
+          -112287,
+          0
+        ],
+        "total_one_side_contracts": 144449420,
+        "sum_four_participants_one_side": 144449420,
+        "fii_gross_share_pct": 6.138125372881387
+      },
+      "review": {
+        "meaning": "One historical participant derivatives trading-volume snapshot. Rows are Client, DII, FII, Pro and a market TOTAL; volumes are contracts by futures/options side, not OI positions or rupee cash flows.",
+        "window": {
+          "raw_trade_date": "08-06-2026",
+          "interpreted_iso_date": "2026-06-08",
+          "basis": "Embedded source basename fao_participant_vol_08062026.csv and the peer's ISO dates agree under day-first parsing.",
+          "distinct_dates": 1,
+          "latest_label_is_not_currentness": true
+        },
+        "units": {
+          "numeric_columns": "Nonnegative integer contracts",
+          "total": "One side 144449420 contracts. TOTAL is already the sum of four participant classes; including it again double-counts the market."
+        },
+        "observations": [
+          "All 14 numeric column totals, all 10 per-row long/short sums, and all seven market long/short pairs reconcile exactly.",
+          "FII total long minus short is -10391 volume contracts; this is not a position, cash outflow or forecast.",
+          "The only stored zero is DII Option Stock Put Long. It is a supplied numeric zero, not a missing cell."
+        ],
+        "limitations": [
+          "Single day cannot establish rolling participation history or current feed health.",
+          "Embedded source_file is a provenance claim; original exchange fetch/authenticity was not verified.",
+          "All 5 peer differences are date serialization, with every other field exactly equal. Keep both source contexts."
+        ],
+        "proposed_usage": "Historical snapshot reference and arithmetic fixture only."
+      },
+      "status_proposal": {
+        "before": "inventory_only",
+        "after": "reviewed",
+        "basis": "All bytes read, CRC and SHA256 verified, all source CSV cells independently parsed and interpreted with stated limits.",
+        "arithmetic_validation": "partial; only explicitly listed identities and summary consistency checked",
+        "runtime_adoption": "not approved",
+        "overlay_or_plan_changed": false
+      },
+      "peer_comparison": {
+        "archive": "fii_volume_derivatives_review_v0_3_csv_pack.zip",
+        "archive_sha256": "519b9ebf1f04020a9126d44216684255a8a92beacdbb715fbbb77ef161079dea",
+        "member": "fii_volume_derivatives_review_v0_3_csv_pack/participantwise_volume_latest_clean.csv",
+        "member_sha256": "209fadbebb6c7a80b1f66fb19558fb6408346ac0642266ad94eb7f5798778782",
+        "member_bytes": 1229,
+        "bytes_identical": false,
+        "shape_equal": true,
+        "all_cell_text_identical": false,
+        "changed_cell_count": 5,
+        "text_cell_differences": [
+          [
+            2,
+            1,
+            "08-06-2026",
+            "2026-06-08"
+          ],
+          [
+            3,
+            1,
+            "08-06-2026",
+            "2026-06-08"
+          ],
+          [
+            4,
+            1,
+            "08-06-2026",
+            "2026-06-08"
+          ],
+          [
+            5,
+            1,
+            "08-06-2026",
+            "2026-06-08"
+          ],
+          [
+            6,
+            1,
+            "08-06-2026",
+            "2026-06-08"
+          ]
+        ],
+        "numeric_cell_difference_count": 0,
+        "max_absolute_numeric_delta": 0,
+        "numeric_differences_within_5e_minus_8": true
+      }
+    },
+    {
+      "name": "Q1_FII_20D_ranked_year_stats.csv",
+      "member": "AM 07 Parameter Files/Q1_FII_20D_ranked_year_stats.csv",
+      "source_pin": {
+        "sha256": "ab0ce1f08f410456ad46f1f896f206661eddd1bbf92e1a345352973bc156e2af",
+        "bytes": 278,
+        "crc32": "b1fd9e0c",
+        "crc_verified": true
+      },
+      "full_read": {
+        "primary": "Workbook.fromCSV -> Source.getUsedRange().values and .formulas",
+        "range": "A1:E7",
+        "rows_including_header": 7,
+        "data_rows": 6,
+        "columns": 5,
+        "primary_secondary_cell_equality": true,
+        "all_rows_retained": true,
+        "native_formula_count": 0
+      },
+      "structural_checks": {
+        "width_errors": [],
+        "blank_cells": [],
+        "duplicate_data_rows": 0,
+        "formula_prefix_cells": []
+      },
+      "all_cells": [
+        [
+          "year",
+          "rankable_dates",
+          "observations",
+          "avg_rankable_symbols",
+          "unique_scrips"
+        ],
+        [
+          "2009",
+          "220",
+          "2794",
+          "71.22763063707946",
+          "142"
+        ],
+        [
+          "2014",
+          "79",
+          "830",
+          "58.30361445783132",
+          "85"
+        ],
+        [
+          "2017",
+          "22",
+          "204",
+          "51.970588235294116",
+          "52"
+        ],
+        [
+          "2018",
+          "224",
+          "2768",
+          "69.15101156069365",
+          "167"
+        ],
+        [
+          "2019",
+          "245",
+          "3890",
+          "84.13007712082262",
+          "239"
+        ],
+        [
+          "2020",
+          "65",
+          "1012",
+          "83.54743083003953",
+          "144"
+        ]
+      ],
+      "independent_arithmetic": {
+        "rankable_dates_sum": 855,
+        "observations_sum": 11498,
+        "year_rows": [
+          {
+            "year": 2009,
+            "observations_per_rankable_date": 12.7,
+            "reported_avg_rankable_symbols": 71.22763063707946,
+            "reported_avg_diff_from_observations_per_date": 58.527630637079454,
+            "average_le_unique": true
+          },
+          {
+            "year": 2014,
+            "observations_per_rankable_date": 10.50632911392405,
+            "reported_avg_rankable_symbols": 58.30361445783132,
+            "reported_avg_diff_from_observations_per_date": 47.79728534390728,
+            "average_le_unique": true
+          },
+          {
+            "year": 2017,
+            "observations_per_rankable_date": 9.272727272727273,
+            "reported_avg_rankable_symbols": 51.970588235294116,
+            "reported_avg_diff_from_observations_per_date": 42.69786096256684,
+            "average_le_unique": true
+          },
+          {
+            "year": 2018,
+            "observations_per_rankable_date": 12.357142857142858,
+            "reported_avg_rankable_symbols": 69.15101156069365,
+            "reported_avg_diff_from_observations_per_date": 56.793868703550785,
+            "average_le_unique": true
+          },
+          {
+            "year": 2019,
+            "observations_per_rankable_date": 15.877551020408163,
+            "reported_avg_rankable_symbols": 84.13007712082262,
+            "reported_avg_diff_from_observations_per_date": 68.25252610041446,
+            "average_le_unique": true
+          },
+          {
+            "year": 2020,
+            "observations_per_rankable_date": 15.569230769230769,
+            "reported_avg_rankable_symbols": 83.54743083003953,
+            "reported_avg_diff_from_observations_per_date": 67.97820006080876,
+            "average_le_unique": true
+          }
+        ],
+        "sum_annual_unique_scrips_not_global_unique": 829
+      },
+      "review": {
+        "meaning": "Six annual coverage summaries for a named Q1 FII 20D ranking study. It is not a ranked signal table and contains no return, trade or outcome observations.",
+        "window": {
+          "years": [
+            2009,
+            2014,
+            2017,
+            2018,
+            2019,
+            2020
+          ],
+          "missing_between_first_and_last": [
+            2010,
+            2011,
+            2012,
+            2013,
+            2015,
+            2016
+          ],
+          "rankable_dates_sum": 855,
+          "observations_sum": 11498,
+          "date_span_within_each_year": "unspecified",
+          "meaning_of_Q1_and_20D": "not defined by this CSV"
+        },
+        "units": {
+          "rankable_dates": "counts of dates",
+          "observations": "count of observations, selection and grain unspecified",
+          "avg_rankable_symbols": "reported average symbol count; weighting/denominator unspecified",
+          "unique_scrips": "within-year distinct identifiers"
+        },
+        "observations": [
+          "Year key is unique and increasing, all count fields are positive integers, and all six average counts are at most the within-year unique counts.",
+          "observations/rankable_dates ranges from 9.2727 to 15.8776, while avg_rankable_symbols ranges from 51.9706 to 84.1301. These are not the same statistic. The difference is a definition gap, not sufficient proof of an arithmetic error.",
+          "Annual unique_scrips sum is 829 but cannot be interpreted as 829 unique scrips across the study because cross-year identity overlap is absent."
+        ],
+        "limitations": [
+          "Raw ranked observations, date-level universe sizes, IDs, ranking recipe, missingness policy and generator are absent from the selected file.",
+          "No source formula can be recalculated from this summary.",
+          "No counterpart in the three scoped peer packs was identified; no archive-wide absence claim is made.",
+          "Filename 20D does not prove 20 trading sessions. The separate current Q1 join script uses a different input file."
+        ],
+        "proposed_usage": "Historical coverage note with unresolved definitions; do not use to prove sample representativeness, backtest returns or live availability."
+      },
+      "status_proposal": {
+        "before": "inventory_only",
+        "after": "reviewed",
+        "basis": "All bytes read, CRC and SHA256 verified, all source CSV cells independently parsed and interpreted with stated limits.",
+        "arithmetic_validation": "partial; only explicitly listed identities and summary consistency checked",
+        "runtime_adoption": "not approved",
+        "overlay_or_plan_changed": false
+      }
+    },
+    {
+      "name": "signal_correlation_matrix.csv",
+      "member": "AM 07 Parameter Files/signal_correlation_matrix.csv",
+      "source_pin": {
+        "sha256": "7502b7d4d1ca674fb6f28acab1a58327bb7fffaa402f3339c8d66c50f6b96567",
+        "bytes": 1896,
+        "crc32": "631c1e79",
+        "crc_verified": true
+      },
+      "full_read": {
+        "primary": "Workbook.fromCSV -> Source.getUsedRange().values and .formulas",
+        "range": "A1:M13",
+        "rows_including_header": 13,
+        "data_rows": 12,
+        "columns": 13,
+        "primary_secondary_cell_equality": true,
+        "all_rows_retained": true,
+        "native_formula_count": 0
+      },
+      "structural_checks": {
+        "width_errors": [],
+        "blank_cells": [],
+        "duplicate_data_rows": 0,
+        "formula_prefix_cells": []
+      },
+      "all_cells": [
+        [
+          "signal",
+          "IFR_DAMAGE",
+          "TD95_SHOCK",
+          "STRUCT_FRACTURE",
+          "FII_Q10",
+          "FII_Q05",
+          "FII_SELL_CLUSTER",
+          "FII_DII_DIV",
+          "FII_ANY",
+          "IFR_FII_STRICT",
+          "IFR_FII_Q10",
+          "IFR_FII_SELL",
+          "IFR_FII_DIV"
+        ],
+        [
+          "IFR_DAMAGE",
+          "1",
+          "0.49002166",
+          "0.512419883",
+          "0.134546794",
+          "0.12965988",
+          "0.225834521",
+          "0.19894104",
+          "0.190530253",
+          "0.897815296",
+          "0.480281818",
+          "0.818809718",
+          "0.881512155"
+        ],
+        [
+          "TD95_SHOCK",
+          "0.49002166",
+          "1",
+          "0.576134932",
+          "0.131371295",
+          "0.164552582",
+          "0.196362182",
+          "0.17818142",
+          "0.172983968",
+          "0.463675454",
+          "0.238132628",
+          "0.443939714",
+          "0.455511971"
+        ],
+        [
+          "STRUCT_FRACTURE",
+          "0.512419883",
+          "0.576134932",
+          "1",
+          "0.086179987",
+          "0.083376433",
+          "0.144995777",
+          "0.135553405",
+          "0.123639884",
+          "0.480120662",
+          "0.254749787",
+          "0.467199036",
+          "0.489505354"
+        ],
+        [
+          "FII_Q10",
+          "0.134546794",
+          "0.131371295",
+          "0.086179987",
+          "1",
+          "0.68447452",
+          "0.386167337",
+          "0.3630631",
+          "0.347621876",
+          "0.167061744",
+          "0.407706003",
+          "0.147391715",
+          "0.172772145"
+        ],
+        [
+          "FII_Q05",
+          "0.12965988",
+          "0.164552582",
+          "0.083376433",
+          "0.68447452",
+          "1",
+          "0.290114573",
+          "0.252560615",
+          "0.237938317",
+          "0.155571829",
+          "0.352688512",
+          "0.13608871",
+          "0.160148492"
+        ],
+        [
+          "FII_SELL_CLUSTER",
+          "0.225834521",
+          "0.196362182",
+          "0.144995777",
+          "0.386167337",
+          "0.290114573",
+          "1",
+          "0.595270529",
+          "0.705802932",
+          "0.287243902",
+          "0.148337034",
+          "0.342339955",
+          "0.278999467"
+        ],
+        [
+          "FII_DII_DIV",
+          "0.19894104",
+          "0.17818142",
+          "0.135553405",
+          "0.3630631",
+          "0.252560615",
+          "0.595270529",
+          "1",
+          "0.921962411",
+          "0.269808409",
+          "0.153723757",
+          "0.24302946",
+          "0.282145514"
+        ],
+        [
+          "FII_ANY",
+          "0.190530253",
+          "0.172983968",
+          "0.123639884",
+          "0.347621876",
+          "0.237938317",
+          "0.705802932",
+          "0.921962411",
+          "1",
+          "0.264938492",
+          "0.141727526",
+          "0.241624544",
+          "0.260127558"
+        ],
+        [
+          "IFR_FII_STRICT",
+          "0.897815296",
+          "0.463675454",
+          "0.480120662",
+          "0.167061744",
+          "0.155571829",
+          "0.287243902",
+          "0.269808409",
+          "0.264938492",
+          "1",
+          "0.534945016",
+          "0.912002415",
+          "0.981841319"
+        ],
+        [
+          "IFR_FII_Q10",
+          "0.480281818",
+          "0.238132628",
+          "0.254749787",
+          "0.407706003",
+          "0.352688512",
+          "0.148337034",
+          "0.153723757",
+          "0.141727526",
+          "0.534945016",
+          "1",
+          "0.476728747",
+          "0.544838565"
+        ],
+        [
+          "IFR_FII_SELL",
+          "0.818809718",
+          "0.443939714",
+          "0.467199036",
+          "0.147391715",
+          "0.13608871",
+          "0.342339955",
+          "0.24302946",
+          "0.241624544",
+          "0.912002415",
+          "0.476728747",
+          "1",
+          "0.889101898"
+        ],
+        [
+          "IFR_FII_DIV",
+          "0.881512155",
+          "0.455511971",
+          "0.489505354",
+          "0.172772145",
+          "0.160148492",
+          "0.278999467",
+          "0.282145514",
+          "0.260127558",
+          "0.981841319",
+          "0.544838565",
+          "0.889101898",
+          "1"
+        ]
+      ],
+      "independent_arithmetic": {
+        "row_column_labels_match": true,
+        "diagonal_all_one": true,
+        "maximum_asymmetry": 0,
+        "min": 0.083376433,
+        "max": 1,
+        "minimum_eigenvalue": 0.01433471116540638,
+        "off_diagonal_pairs_at_least_0_8": [
+          {
+            "correlation": 0.981841319,
+            "signal_a": "IFR_FII_STRICT",
+            "signal_b": "IFR_FII_DIV"
+          },
+          {
+            "correlation": 0.921962411,
+            "signal_a": "FII_DII_DIV",
+            "signal_b": "FII_ANY"
+          },
+          {
+            "correlation": 0.912002415,
+            "signal_a": "IFR_FII_STRICT",
+            "signal_b": "IFR_FII_SELL"
+          },
+          {
+            "correlation": 0.897815296,
+            "signal_a": "IFR_DAMAGE",
+            "signal_b": "IFR_FII_STRICT"
+          },
+          {
+            "correlation": 0.889101898,
+            "signal_a": "IFR_FII_SELL",
+            "signal_b": "IFR_FII_DIV"
+          },
+          {
+            "correlation": 0.881512155,
+            "signal_a": "IFR_DAMAGE",
+            "signal_b": "IFR_FII_DIV"
+          },
+          {
+            "correlation": 0.818809718,
+            "signal_a": "IFR_DAMAGE",
+            "signal_b": "IFR_FII_SELL"
+          }
+        ]
+      },
+      "review": {
+        "meaning": "Stored 12-by-12 signal correlation matrix; identical signal row/column order and no missing numeric entries.",
+        "window": {
+          "source_dates_and_sample_count": "Not stored in this CSV.",
+          "peer_context": "Previously reviewed IFR cash evidence uses 3315 joined dates from 2007-01-08 to 2022-12-08; association is supported by exact labels and all values matching within rounding, not by dates embedded here."
+        },
+        "units": {
+          "correlation": "Dimensionless coefficient in [-1,1]; not return or probability."
+        },
+        "observations": [
+          "All diagonal entries are 1, symmetry error is 0, all values are finite and in range, and minimum eigenvalue is positive (about 0.0143347). These establish matrix consistency only.",
+          "Seven off-diagonal pairs are at least 0.8, including IFR_FII_STRICT / IFR_FII_DIV at 0.981841319 and FII_DII_DIV / FII_ANY at 0.921962411. The table supports concern about overlap among named signals, not independence.",
+          "All 144 numeric fields differ lexically from the peer because of serialization/precision; maximum numerical difference is about 4.61e-10."
+        ],
+        "inherited_peer_limitations": [
+          "Prior evidence recomputed an 11-signal/121-cell submatrix but left STRUCT_FRACTURE definition unresolved. This pass did not rerun underlying daily-signal generation.",
+          "The peer's thresholds use retrospective full-sample calibration; coefficient reproduction is not point-in-time predictive validation."
+        ],
+        "limitations": [
+          "Correlation method, estimator, date filters, handling of missing signal values and population are not specified in this CSV.",
+          "FII_DII_DIV here corresponds by peer context to FII_DII_DIVERGENCE in the distribution table; this is a contextual alias, not an automatic schema merge.",
+          "ADAPTIVE_STACK_TRIGGER appears in the distribution table but is absent from this matrix.",
+          "The provided coefficient table cannot reproduce the underlying signal sequence."
+        ],
+        "proposed_usage": "Historical signal-overlap reference with peer lineage and retained unresolved definition."
+      },
+      "status_proposal": {
+        "before": "inventory_only",
+        "after": "reviewed",
+        "basis": "All bytes read, CRC and SHA256 verified, all source CSV cells independently parsed and interpreted with stated limits.",
+        "arithmetic_validation": "partial; only explicitly listed identities and summary consistency checked",
+        "runtime_adoption": "not approved",
+        "overlay_or_plan_changed": false
+      },
+      "peer_comparison": {
+        "archive": "IFR_FII_Cash_Stack_Test_v0_6_CSV.zip",
+        "archive_sha256": "2008f4036bdb44e068779ad648785b4433609442e406efd87ad834ea6664d9f7",
+        "member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/signal_correlation_matrix.csv",
+        "member_sha256": "d6f2db92665d14e8f34d6888cc46a629309e322ac6a18d639cd2659f2e57a8fb",
+        "member_bytes": 2934,
+        "bytes_identical": false,
+        "shape_equal": true,
+        "all_cell_text_identical": false,
+        "changed_cell_count": 144,
+        "text_cell_differences": [],
+        "numeric_cell_difference_count": 144,
+        "max_absolute_numeric_delta": 4.610232196000652e-10,
+        "numeric_differences_within_5e_minus_8": true
+      }
+    },
+    {
+      "name": "signal_forward_return_distribution.csv",
+      "member": "AM 07 Parameter Files/signal_forward_return_distribution.csv",
+      "source_pin": {
+        "sha256": "0564107a4fb3364da76ec5e173a68a31d6d0dac5cf96822b0b9096daa38b9ae9",
+        "bytes": 1719,
+        "crc32": "b5e14c34",
+        "crc_verified": true
+      },
+      "full_read": {
+        "primary": "Workbook.fromCSV -> Source.getUsedRange().values and .formulas",
+        "range": "A1:J15",
+        "rows_including_header": 15,
+        "data_rows": 14,
+        "columns": 10,
+        "primary_secondary_cell_equality": true,
+        "all_rows_retained": true,
+        "native_formula_count": 0
+      },
+      "structural_checks": {
+        "width_errors": [],
+        "blank_cells": [],
+        "duplicate_data_rows": 0,
+        "formula_prefix_cells": []
+      },
+      "all_cells": [
+        [
+          "signal",
+          "group",
+          "count",
+          "mean_fwd15_pct",
+          "median_fwd15_pct",
+          "p05_fwd15_pct",
+          "p25_fwd15_pct",
+          "p75_fwd15_pct",
+          "p95_fwd15_pct",
+          "negative_fwd15_pct"
+        ],
+        [
+          "IFR_DAMAGE",
+          "FIRED",
+          "253",
+          "-0.842610038",
+          "0.789062107",
+          "-20.61152906",
+          "-6.885977435",
+          "5.881083839",
+          "14.41095581",
+          "45.84980237"
+        ],
+        [
+          "IFR_DAMAGE",
+          "NOT_FIRED",
+          "3062",
+          "1.309901453",
+          "1.733098303",
+          "-9.386898684",
+          "-2.659366152",
+          "5.289799903",
+          "10.92702114",
+          "37.9817113"
+        ],
+        [
+          "FII_Q10",
+          "FIRED",
+          "341",
+          "1.884459949",
+          "2.544315482",
+          "-8.962275225",
+          "-2.100398981",
+          "6.384219154",
+          "12.38328592",
+          "33.43108504"
+        ],
+        [
+          "FII_Q10",
+          "NOT_FIRED",
+          "2974",
+          "1.060906882",
+          "1.559759975",
+          "-10.49864542",
+          "-3.08790387",
+          "5.173029588",
+          "10.9423563",
+          "39.1728312"
+        ],
+        [
+          "FII_SELL_CLUSTER",
+          "FIRED",
+          "1064",
+          "0.211356741",
+          "1.244455367",
+          "-13.4181011",
+          "-4.238705307",
+          "5.556617835",
+          "11.01355092",
+          "42.66917293"
+        ],
+        [
+          "FII_SELL_CLUSTER",
+          "NOT_FIRED",
+          "2251",
+          "1.587229825",
+          "1.833609697",
+          "-8.883862131",
+          "-2.203613378",
+          "5.246946714",
+          "11.17890091",
+          "36.65037761"
+        ],
+        [
+          "FII_DII_DIVERGENCE",
+          "FIRED",
+          "1480",
+          "0.517710121",
+          "1.444826936",
+          "-12.07580219",
+          "-3.886717853",
+          "5.661295715",
+          "11.21949501",
+          "40.67567568"
+        ],
+        [
+          "FII_DII_DIVERGENCE",
+          "NOT_FIRED",
+          "1835",
+          "1.652058273",
+          "1.853977084",
+          "-8.55423497",
+          "-2.182776506",
+          "5.061891884",
+          "10.98714671",
+          "36.89373297"
+        ],
+        [
+          "FII_ANY",
+          "FIRED",
+          "1614",
+          "0.611228879",
+          "1.459879698",
+          "-11.98358063",
+          "-3.832662398",
+          "5.617902959",
+          "11.22633738",
+          "40.45848823"
+        ],
+        [
+          "FII_ANY",
+          "NOT_FIRED",
+          "1701",
+          "1.652683421",
+          "1.871418827",
+          "-8.405918615",
+          "-2.183598111",
+          "5.067570439",
+          "10.98679584",
+          "36.80188125"
+        ],
+        [
+          "IFR_FII_STRICT",
+          "FIRED",
+          "207",
+          "-0.768027694",
+          "1.534068003",
+          "-21.38615394",
+          "-6.629552004",
+          "5.996667141",
+          "14.12922048",
+          "43.96135266"
+        ],
+        [
+          "IFR_FII_STRICT",
+          "NOT_FIRED",
+          "3108",
+          "1.273075818",
+          "1.674606731",
+          "-9.467884308",
+          "-2.723739807",
+          "5.28130206",
+          "10.97746665",
+          "38.22393822"
+        ],
+        [
+          "ADAPTIVE_STACK_TRIGGER",
+          "FIRED",
+          "1660",
+          "0.561641448",
+          "1.413008244",
+          "-12.15487311",
+          "-3.886717853",
+          "5.606951259",
+          "11.31576044",
+          "40.84337349"
+        ],
+        [
+          "ADAPTIVE_STACK_TRIGGER",
+          "NOT_FIRED",
+          "1655",
+          "1.731367435",
+          "1.892571808",
+          "-8.204887245",
+          "-2.086608479",
+          "5.06833557",
+          "10.94333724",
+          "36.3141994"
+        ]
+      ],
+      "independent_arithmetic": {
+        "quantile_order_failures": [],
+        "signal_pairs": [
+          {
+            "signal": "IFR_DAMAGE",
+            "count_sum": 3315,
+            "weighted_mean_fwd15_pct": 1.1456222954666666,
+            "fired_minus_not_fired_mean_pct_points": -2.152511491,
+            "implied_negative_counts": [
+              115.9999999961,
+              1163.000000006
+            ],
+            "nearest_integer_negative_counts": [
+              116,
+              1163
+            ],
+            "negative_count_sum": 1279,
+            "max_negative_count_integer_residual": 5.9999365475960076e-9
+          },
+          {
+            "signal": "FII_Q10",
+            "count_sum": 3315,
+            "weighted_mean_fwd15_pct": 1.1456222955285067,
+            "fired_minus_not_fired_mean_pct_points": 0.823553067,
+            "implied_negative_counts": [
+              113.9999999864,
+              1164.9999998879998
+            ],
+            "nearest_integer_negative_counts": [
+              114,
+              1165
+            ],
+            "negative_count_sum": 1279,
+            "max_negative_count_integer_residual": 1.1200017979717813e-7
+          },
+          {
+            "signal": "FII_SELL_CLUSTER",
+            "count_sum": 3315,
+            "weighted_mean_fwd15_pct": 1.1456222951731523,
+            "fired_minus_not_fired_mean_pct_points": -1.3758730840000002,
+            "implied_negative_counts": [
+              453.99999997520007,
+              825.0000000011
+            ],
+            "nearest_integer_negative_counts": [
+              454,
+              825
+            ],
+            "negative_count_sum": 1279,
+            "max_negative_count_integer_residual": 2.4799930997687625e-8
+          },
+          {
+            "signal": "FII_DII_DIVERGENCE",
+            "count_sum": 3315,
+            "weighted_mean_fwd15_pct": 1.1456222956365008,
+            "fired_minus_not_fired_mean_pct_points": -1.1343481519999998,
+            "implied_negative_counts": [
+              602.000000064,
+              676.9999999995
+            ],
+            "nearest_integer_negative_counts": [
+              602,
+              677
+            ],
+            "negative_count_sum": 1279,
+            "max_negative_count_integer_residual": 6.400000529538374e-8
+          },
+          {
+            "signal": "FII_ANY",
+            "count_sum": 3315,
+            "weighted_mean_fwd15_pct": 1.1456222955737558,
+            "fired_minus_not_fired_mean_pct_points": -1.041454542,
+            "implied_negative_counts": [
+              653.0000000322001,
+              626.0000000625
+            ],
+            "nearest_integer_negative_counts": [
+              653,
+              626
+            ],
+            "negative_count_sum": 1279,
+            "max_negative_count_integer_residual": 6.250002115848474e-8
+          },
+          {
+            "signal": "IFR_FII_STRICT",
+            "count_sum": 3315,
+            "weighted_mean_fwd15_pct": 1.1456222955312216,
+            "fired_minus_not_fired_mean_pct_points": -2.041103512,
+            "implied_negative_counts": [
+              91.00000000620001,
+              1187.9999998776
+            ],
+            "nearest_integer_negative_counts": [
+              91,
+              1188
+            ],
+            "negative_count_sum": 1279,
+            "max_negative_count_integer_residual": 1.2240002433827613e-7
+          },
+          {
+            "signal": "ADAPTIVE_STACK_TRIGGER",
+            "count_sum": 3315,
+            "weighted_mean_fwd15_pct": 1.1456222952051283,
+            "fired_minus_not_fired_mean_pct_points": -1.1697259869999999,
+            "implied_negative_counts": [
+              677.9999999339999,
+              601.00000007
+            ],
+            "nearest_integer_negative_counts": [
+              678,
+              601
+            ],
+            "negative_count_sum": 1279,
+            "max_negative_count_integer_residual": 7.000005552981747e-8
+          }
+        ]
+      },
+      "review": {
+        "meaning": "Fourteen stored distribution summaries: FIRED and NOT_FIRED groups for seven signals.",
+        "window": {
+          "header_horizon": "fwd15",
+          "paired_population": 3315,
+          "dates": "Not stored in this CSV.",
+          "peer_context": "The matching IFR peer evidence describes the next 15 retained joined-row returns, not verified consecutive exchange sessions. Full windows span 21-103 calendar days; 15 incomplete end windows remain populated, final value zero."
+        },
+        "units": {
+          "mean_median_quantiles": "Return percentage points. A stored -0.842610038 means -0.842610038 percent, not -84.2610038 percent.",
+          "negative_fwd15_pct": "Percentage of group observations with negative stored forward return, 0-100 scale.",
+          "count": "Group observation count"
+        },
+        "observations": [
+          "Every FIRED/NOT_FIRED pair sums to 3315; these seven pairs reuse one population, so counts should not be summed into seven independent samples.",
+          "All ordered quantiles satisfy p05 <= p25 <= median <= p75 <= p95.",
+          "All seven weighted means agree at about 1.145622295 percent; integer reconstruction of negative rates yields 1279 negative stored forward labels for each paired population.",
+          "FII_Q10 FIRED has higher mean forward return than NOT_FIRED (difference +0.823553067 percentage points); six other FIRED groups have lower means. This is descriptive, not a causal signal claim.",
+          "IFR_DAMAGE and IFR_FII_STRICT fired-group means are negative but their medians are positive. All seven fired-group negative-return rates are below 50 percent, so negative mean does not mean most fired observations fell.",
+          "All labels/counts match peer; 98 numeric fields differ only within rounding, maximum difference about 4.96e-9."
+        ],
+        "inherited_peer_limitations": [
+          "The 2026-09-24 evidence reproduced all 14 summaries from the exported forward values, including truncated tail windows.",
+          "Joined-date omissions, retrospective threshold calibration, overlapping horizons and incomplete tails limit any predictive or investable interpretation."
+        ],
+        "limitations": [
+          "No underlying dated outcome rows or calculation formulas in this CSV.",
+          "No confidence intervals, cost/slippage model, independence adjustment or held-out evaluation supplied.",
+          "The full daily-series reproduction was inherited from accepted peer evidence and not rerun in this bounded six-file audit."
+        ],
+        "proposed_usage": "Historical descriptive return-distribution reference, with the incomplete-horizon limitation attached."
+      },
+      "status_proposal": {
+        "before": "inventory_only",
+        "after": "reviewed",
+        "basis": "All bytes read, CRC and SHA256 verified, all source CSV cells independently parsed and interpreted with stated limits.",
+        "arithmetic_validation": "partial; only explicitly listed identities and summary consistency checked",
+        "runtime_adoption": "not approved",
+        "overlay_or_plan_changed": false
+      },
+      "peer_comparison": {
+        "archive": "IFR_FII_Cash_Stack_Test_v0_6_CSV.zip",
+        "archive_sha256": "2008f4036bdb44e068779ad648785b4433609442e406efd87ad834ea6664d9f7",
+        "member": "IFR_FII_Cash_Stack_Test_v0_6_CSV/signal_forward_return_distribution.csv",
+        "member_sha256": "595e3cbebbb05e98945832c8cda3b216a325dd50e78b9985e3f7125f3d03cb85",
+        "member_bytes": 2354,
+        "bytes_identical": false,
+        "shape_equal": true,
+        "all_cell_text_identical": false,
+        "changed_cell_count": 98,
+        "text_cell_differences": [],
+        "numeric_cell_difference_count": 98,
+        "max_absolute_numeric_delta": 4.956739019235101e-9,
+        "numeric_differences_within_5e_minus_8": true
+      }
+    },
+    {
+      "name": "top_combo_triggers.csv",
+      "member": "AM 07 Parameter Files/top_combo_triggers.csv",
+      "source_pin": {
+        "sha256": "8d57d51f1448f33d9f8e05a7b178ee642f9314c3396b978a4483b713bc760fdc",
+        "bytes": 1131,
+        "crc32": "6ff33d00",
+        "crc_verified": true
+      },
+      "full_read": {
+        "primary": "Workbook.fromCSV -> Source.getUsedRange().values and .formulas",
+        "range": "A1:E16",
+        "rows_including_header": 16,
+        "data_rows": 15,
+        "columns": 5,
+        "primary_secondary_cell_equality": true,
+        "all_rows_retained": true,
+        "native_formula_count": 0
+      },
+      "structural_checks": {
+        "width_errors": [],
+        "blank_cells": [],
+        "duplicate_data_rows": 0,
+        "formula_prefix_cells": []
+      },
+      "all_cells": [
+        [
+          "trigger",
+          "fires",
+          "precision",
+          "recall",
+          "lift"
+        ],
+        [
+          "tail_down3_5d>90% & ret_10d>90%",
+          "21",
+          "0.285714286",
+          "0.00794702",
+          "2.710312204"
+        ],
+        [
+          "tail_down3_5d>90% & ret_10d>85%",
+          "27",
+          "0.259259259",
+          "0.009271523",
+          "2.459357371"
+        ],
+        [
+          "tail_down3_5d>90% & tail_up3_5d>90%",
+          "101",
+          "0.257425743",
+          "0.034437086",
+          "2.441964461"
+        ],
+        [
+          "tail_down3_5d>85% & ret_10d>90%",
+          "39",
+          "0.256410256",
+          "0.013245033",
+          "2.432331465"
+        ],
+        [
+          "tail_down3_5d>75% & ret_5d>90%",
+          "41",
+          "0.243902439",
+          "0.013245033",
+          "2.31368115"
+        ],
+        [
+          "tail_down3_5d>90% & tail_up3_5d>75%",
+          "211",
+          "0.241706161",
+          "0.067549669",
+          "2.292847054"
+        ],
+        [
+          "dbi_5d>90% & yield_chg_5d>90%",
+          "25",
+          "0.24",
+          "0.00794702",
+          "2.276662252"
+        ],
+        [
+          "tail_down3_5d>85% & tail_up3_5d>90%",
+          "142",
+          "0.23943662",
+          "0.045033113",
+          "2.271317974"
+        ],
+        [
+          "disp_5d>85% & tail_down3_5d>90%",
+          "301",
+          "0.235880399",
+          "0.094039735",
+          "2.237583331"
+        ],
+        [
+          "tail_down3_5d>90% & tail_up3_5d>85%",
+          "141",
+          "0.234042553",
+          "0.043708609",
+          "2.220149359"
+        ],
+        [
+          "tail_down3_5d>85% & tail_up3_5d>75%",
+          "305",
+          "0.229508197",
+          "0.092715232",
+          "2.177136033"
+        ],
+        [
+          "disp_5d>85% & tail_down3_5d>85%",
+          "397",
+          "0.229219144",
+          "0.120529801",
+          "2.174394048"
+        ],
+        [
+          "disp_5d>90% & tail_down3_5d>85%",
+          "298",
+          "0.228187919",
+          "0.090066225",
+          "2.164611761"
+        ],
+        [
+          "tail_down3_5d>85% & ret_10d>85%",
+          "53",
+          "0.226415094",
+          "0.01589404",
+          "2.147794577"
+        ],
+        [
+          "disp_5d>75% & tail_down3_5d>90%",
+          "409",
+          "0.222493888",
+          "0.120529801",
+          "2.110597646"
+        ]
+      ],
+      "independent_arithmetic": {
+        "rows": [
+          {
+            "trigger": "tail_down3_5d>90% & ret_10d>90%",
+            "implied_true_positives": 6,
+            "true_positive_integer_residual": 5.999999608263806e-9,
+            "implied_positive_population": 754.9999874166668,
+            "implied_base_rate": 0.10541748126962276,
+            "implied_sample_size": 7161.999872541335,
+            "precision_error_vs_tp_over_fires": 2.8571428556389833e-10,
+            "recall_error_vs_tp_over_755": 1.3245033195219413e-10,
+            "lift_error_vs_precision_over_755_of_7162": -3.519389224493352e-10
+          },
+          {
+            "trigger": "tail_down3_5d>90% & ret_10d>85%",
+            "implied_true_positives": 7,
+            "true_positive_integer_residual": 6.999999691004177e-9,
+            "implied_positive_population": 755.0000145607146,
+            "implied_base_rate": 0.10541748102862439,
+            "implied_sample_size": 7162.000146405573,
+            "precision_error_vs_tp_over_fires": -2.592592251993153e-10,
+            "recall_error_vs_tp_over_755": -1.7880794761504504e-10,
+            "lift_error_vs_precision_over_755_of_7162": 3.843512175194519e-10
+          },
+          {
+            "trigger": "tail_down3_5d>90% & tail_up3_5d>90%",
+            "implied_true_positives": 26,
+            "true_positive_integer_residual": 4.3000000005122274e-8,
+            "implied_positive_population": 755.0000020326924,
+            "implied_base_rate": 0.10541748133983182,
+            "implied_sample_size": 7162.000006420347,
+            "precision_error_vs_tp_over_fires": 4.25742552323527e-10,
+            "recall_error_vs_tp_over_755": -9.271523132570181e-11,
+            "lift_error_vs_precision_over_755_of_7162": -3.4679681348848135e-10
+          },
+          {
+            "trigger": "tail_down3_5d>85% & ret_10d>90%",
+            "implied_true_positives": 10,
+            "true_positive_integer_residual": 1.5999999547489097e-8,
+            "implied_positive_population": 755.0000064175001,
+            "implied_base_rate": 0.10541748100109374,
+            "implied_sample_size": 7162.000071028701,
+            "precision_error_vs_tp_over_fires": -4.1025638441993806e-10,
+            "recall_error_vs_tp_over_755": -1.1258278163894797e-10,
+            "lift_error_vs_precision_over_755_of_7162": -4.4404790955354656e-10
+          },
+          {
+            "trigger": "tail_down3_5d>75% & ret_5d>90%",
+            "implied_true_positives": 10,
+            "true_positive_integer_residual": 1.000000082740371e-9,
+            "implied_positive_population": 755.0000064175001,
+            "implied_base_rate": 0.1054174811425507,
+            "implied_sample_size": 7162.000061418201,
+            "precision_error_vs_tp_over_fires": -2.4390239827809523e-11,
+            "recall_error_vs_tp_over_755": -1.1258278163894797e-10,
+            "lift_error_vs_precision_over_755_of_7162": -5.653344459233267e-11
+          },
+          {
+            "trigger": "tail_down3_5d>90% & tail_up3_5d>75%",
+            "implied_true_positives": 51,
+            "true_positive_integer_residual": 2.899999884675708e-8,
+            "implied_positive_population": 754.9999985936274,
+            "implied_base_rate": 0.10541748110861998,
+            "implied_sample_size": 7161.999989505452,
+            "precision_error_vs_tp_over_fires": -1.3744075322286164e-10,
+            "recall_error_vs_tp_over_755": 1.258278203852825e-10,
+            "lift_error_vs_precision_over_755_of_7162": -3.9251712991017484e-10
+          },
+          {
+            "trigger": "dbi_5d>90% & yield_chg_5d>90%",
+            "implied_true_positives": 6,
+            "true_positive_integer_residual": 0,
+            "implied_positive_population": 754.9999874166668,
+            "implied_base_rate": 0.10541748113457103,
+            "implied_sample_size": 7161.999881716669,
+            "precision_error_vs_tp_over_fires": 0,
+            "recall_error_vs_tp_over_755": 1.3245033195219413e-10,
+            "lift_error_vs_precision_over_755_of_7162": 3.443711982242803e-10
+          },
+          {
+            "trigger": "tail_down3_5d>85% & tail_up3_5d>90%",
+            "implied_true_positives": 34,
+            "true_positive_integer_residual": 3.999999620418748e-8,
+            "implied_positive_population": 754.9999930051471,
+            "implied_base_rate": 0.10541748127776669,
+            "implied_sample_size": 7161.999925000883,
+            "precision_error_vs_tp_over_fires": 2.8169014343326637e-10,
+            "recall_error_vs_tp_over_755": 4.172185444351051e-10,
+            "lift_error_vs_precision_over_755_of_7162": -6.958300602377676e-11
+          },
+          {
+            "trigger": "disp_5d>85% & tail_down3_5d>90%",
+            "implied_true_positives": 71,
+            "true_positive_integer_residual": 9.899999042772833e-8,
+            "implied_positive_population": 755.0000007975352,
+            "implied_base_rate": 0.10541748132105654,
+            "implied_sample_size": 7161.999995979114,
+            "precision_error_vs_tp_over_fires": 3.2890365431192947e-10,
+            "recall_error_vs_tp_over_755": -9.933774636206039e-11,
+            "lift_error_vs_precision_over_755_of_7162": -4.998566005554039e-10
+          },
+          {
+            "trigger": "tail_down3_5d>90% & tail_up3_5d>85%",
+            "implied_true_positives": 33,
+            "true_positive_integer_residual": 2.6999998681276338e-8,
+            "implied_positive_population": 755.0000046901515,
+            "implied_base_rate": 0.1054174810587597,
+            "implied_sample_size": 7162.000050725122,
+            "precision_error_vs_tp_over_fires": -1.9148937990820514e-10,
+            "recall_error_vs_tp_over_755": -2.7152317894074685e-10,
+            "lift_error_vs_precision_over_755_of_7162": 1.15964571278937e-10
+          },
+          {
+            "trigger": "tail_down3_5d>85% & tail_up3_5d>75%",
+            "implied_true_positives": 70,
+            "true_positive_integer_residual": 8.49999963747905e-8,
+            "implied_positive_population": 754.9999982742858,
+            "implied_base_rate": 0.10541748127871806,
+            "implied_sample_size": 7161.999974919786,
+            "precision_error_vs_tp_over_fires": 2.786885167083142e-10,
+            "recall_error_vs_tp_over_755": 2.1192052279683793e-10,
+            "lift_error_vs_precision_over_755_of_7162": -4.016786903093816e-12
+          },
+          {
+            "trigger": "disp_5d>85% & tail_down3_5d>85%",
+            "implied_true_positives": 91,
+            "true_positive_integer_residual": 1.679999996895276e-7,
+            "implied_positive_population": 755.0000020326922,
+            "implied_base_rate": 0.1054174813488084,
+            "implied_sample_size": 7162.000005810482,
+            "precision_error_vs_tp_over_fires": 4.2317382931145175e-10,
+            "recall_error_vs_tp_over_755": -3.2450329923161547e-10,
+            "lift_error_vs_precision_over_755_of_7162": -7.580025496167764e-11
+          },
+          {
+            "trigger": "disp_5d>90% & tail_down3_5d>85%",
+            "implied_true_positives": 68,
+            "true_positive_integer_residual": 1.3800000431274384e-7,
+            "implied_positive_population": 755.0000013878677,
+            "implied_base_rate": 0.10541748091333593,
+            "implied_sample_size": 7162.000029279354,
+            "precision_error_vs_tp_over_fires": -4.6308726298072145e-10,
+            "recall_error_vs_tp_over_755": -1.6556291060343398e-10,
+            "lift_error_vs_precision_over_755_of_7162": 4.773101913713163e-10
+          },
+          {
+            "trigger": "tail_down3_5d>85% & ret_10d>85%",
+            "implied_true_positives": 12,
+            "true_positive_integer_residual": 1.799999971296984e-8,
+            "implied_positive_population": 754.9999874166668,
+            "implied_base_rate": 0.10541748099404015,
+            "implied_sample_size": 7161.999891264251,
+            "precision_error_vs_tp_over_fires": -3.3962263557008043e-10,
+            "recall_error_vs_tp_over_755": 2.6490066390438827e-10,
+            "lift_error_vs_precision_over_755_of_7162": -3.361222411513154e-11
+          },
+          {
+            "trigger": "disp_5d>75% & tail_down3_5d>90%",
+            "implied_true_positives": 91,
+            "true_positive_integer_residual": 1.9200000167529652e-7,
+            "implied_positive_population": 755.0000020326922,
+            "implied_base_rate": 0.10541748135731599,
+            "implied_sample_size": 7162.000005232482,
+            "precision_error_vs_tp_over_fires": 4.694376554148505e-10,
+            "recall_error_vs_tp_over_755": -3.2450329923161547e-10,
+            "lift_error_vs_precision_over_755_of_7162": 3.127320624685126e-10
+          }
+        ],
+        "fires_range": [
+          21,
+          409
+        ],
+        "precision_range": [
+          0.222493888,
+          0.285714286
+        ],
+        "descending_lift": true
+      },
+      "review": {
+        "meaning": "Fifteen selected combinations of two threshold conditions, ordered by reported lift.",
+        "window": {
+          "raw_dates_and_event_horizon": "Not stored in this CSV.",
+          "algebraically_implied_sample_rows": 7162,
+          "algebraically_implied_positive_labels": 755,
+          "implied_positive_rate": 0.10541748115051662,
+          "peer_context": "Reviewed IFR research evidence has 7162 market-internal rows from 1996-01-02 through 2024-07-05 and full-sample quantile calibration."
+        },
+        "units": {
+          "fires": "Count of observations meeting both conditions; unique event count is not specified.",
+          "precision": "Fraction TP/fires, not a 0-100 percentage.",
+          "recall": "Fraction TP/positive-label population.",
+          "lift": "Dimensionless ratio precision/base positive rate.",
+          "threshold_percent_sign": "Percentile shorthand in the trigger label; not proof of an absolute 90 percent return threshold."
+        },
+        "observations": [
+          "All 15 rows independently reconstruct integer TP, precision=TP/fires, recall=TP/755 and lift=(TP/fires)/(755/7162) within 5.1e-10.",
+          "The leading combination has 6 implied true positives among 21 fires, precision 28.5714286 percent, recall 0.794702 percent and lift 2.710312204.",
+          "Selection by highest observed lift can favor small samples; no independent current-performance conclusion follows.",
+          "All labels and counts match the peer; 44 numeric strings differ, maximum numeric difference about 5e-10."
+        ],
+        "limitations": [
+          "Only top combinations are retained; tested candidate count, multiple-testing controls, calibration split, dated fires, forward label and exact prediction horizon are absent.",
+          "Percentile cutoffs need their calibration population and precise numeric thresholds before reproduction.",
+          "The two-condition AND text does not establish executable runtime signal logic."
+        ],
+        "proposed_usage": "Historical candidate research and regression reference only."
+      },
+      "status_proposal": {
+        "before": "inventory_only",
+        "after": "reviewed",
+        "basis": "All bytes read, CRC and SHA256 verified, all source CSV cells independently parsed and interpreted with stated limits.",
+        "arithmetic_validation": "partial; only explicitly listed identities and summary consistency checked",
+        "runtime_adoption": "not approved",
+        "overlay_or_plan_changed": false
+      },
+      "peer_comparison": {
+        "archive": "IFR_Expansion_Check_v0_4_CSV.zip",
+        "archive_sha256": "2a78f497333e78d0c1a2459e0ec3d83cb5847130cd41d374f86ab6cfaed16e30",
+        "member": "IFR_Expansion_Check_v0_4_CSV/top_combo_triggers.csv",
+        "member_sha256": "d6797a499860528880f96349f4fdd5f9744221872f4e08a3271069c4157cfe61",
+        "member_bytes": 1415,
+        "bytes_identical": false,
+        "shape_equal": true,
+        "all_cell_text_identical": false,
+        "changed_cell_count": 44,
+        "text_cell_differences": [],
+        "numeric_cell_difference_count": 44,
+        "max_absolute_numeric_delta": 4.998566005554039e-10,
+        "numeric_differences_within_5e_minus_8": true
+      }
+    },
+    {
+      "name": "top_pre_fall_triggers.csv",
+      "member": "AM 07 Parameter Files/top_pre_fall_triggers.csv",
+      "source_pin": {
+        "sha256": "f919ea4291d9e11071ba7f49630e62133cdf8a6d46a6f4f36ad21abe82a77687",
+        "bytes": 1380,
+        "crc32": "9a19a411",
+        "crc_verified": true
+      },
+      "full_read": {
+        "primary": "Workbook.fromCSV -> Source.getUsedRange().values and .formulas",
+        "range": "A1:E21",
+        "rows_including_header": 21,
+        "data_rows": 20,
+        "columns": 5,
+        "primary_secondary_cell_equality": true,
+        "all_rows_retained": true,
+        "native_formula_count": 0
+      },
+      "structural_checks": {
+        "width_errors": [],
+        "blank_cells": [],
+        "duplicate_data_rows": 0,
+        "formula_prefix_cells": []
+      },
+      "all_cells": [
+        [
+          "trigger",
+          "fires",
+          "precision",
+          "recall",
+          "lift"
+        ],
+        [
+          "tail_down3_5d > 95pct (0.264)",
+          "358",
+          "0.240223464",
+          "0.113907285",
+          "2.278782049"
+        ],
+        [
+          "disp_5d > 95pct (0.039)",
+          "358",
+          "0.217877095",
+          "0.103311258",
+          "2.066802323"
+        ],
+        [
+          "ret_10d < 5pct (-0.083)",
+          "358",
+          "0.206703911",
+          "0.098013245",
+          "1.960812461"
+        ],
+        [
+          "tail_down3_5d > 90pct (0.213)",
+          "715",
+          "0.201398601",
+          "0.190728477",
+          "1.910485806"
+        ],
+        [
+          "ret_5d < 5pct (-0.058)",
+          "358",
+          "0.189944134",
+          "0.090066225",
+          "1.801827667"
+        ],
+        [
+          "tail_down3_5d > 85pct (0.182)",
+          "1074",
+          "0.186219739",
+          "0.264900662",
+          "1.766497712"
+        ],
+        [
+          "tail_up3_5d > 95pct (0.243)",
+          "357",
+          "0.176470588",
+          "0.083443709",
+          "1.674016362"
+        ],
+        [
+          "disp_5d > 90pct (0.035)",
+          "716",
+          "0.173184358",
+          "0.164238411",
+          "1.642842872"
+        ],
+        [
+          "yield_chg_5d < 5pct (-0.154)",
+          "99",
+          "0.171717172",
+          "0.022516556",
+          "1.628925012"
+        ],
+        [
+          "tail_down3_5d > 80pct (0.157)",
+          "1432",
+          "0.169692737",
+          "0.321854305",
+          "1.60972104"
+        ],
+        [
+          "ret_10d < 10pct (-0.058)",
+          "716",
+          "0.168994413",
+          "0.160264901",
+          "1.603096674"
+        ],
+        [
+          "disp_5d > 85pct (0.033)",
+          "1074",
+          "0.168528864",
+          "0.239735099",
+          "1.59868043"
+        ],
+        [
+          "ret_5d < 10pct (-0.041)",
+          "716",
+          "0.163407821",
+          "0.154966887",
+          "1.550101743"
+        ],
+        [
+          "disp_5d > 80pct (0.031)",
+          "1432",
+          "0.158519553",
+          "0.300662252",
+          "1.503731178"
+        ],
+        [
+          "ret_5d < 15pct (-0.031)",
+          "1074",
+          "0.153631285",
+          "0.218543046",
+          "1.457360613"
+        ],
+        [
+          "ret_10d < 15pct (-0.044)",
+          "1073",
+          "0.150046598",
+          "0.213245033",
+          "1.423355943"
+        ],
+        [
+          "ret_5d < 20pct (-0.023)",
+          "1432",
+          "0.148743017",
+          "0.282119205",
+          "1.410990048"
+        ],
+        [
+          "ret_10d < 20pct (-0.033)",
+          "1431",
+          "0.143955276",
+          "0.272847682",
+          "1.365573095"
+        ],
+        [
+          "tail_up3_5d > 90pct (0.205)",
+          "716",
+          "0.141061453",
+          "0.133774834",
+          "1.338122017"
+        ],
+        [
+          "dbi_5d < 10pct (2.540)",
+          "716",
+          "0.141061453",
+          "0.133774834",
+          "1.338122017"
+        ]
+      ],
+      "independent_arithmetic": {
+        "rows": [
+          {
+            "trigger": "tail_down3_5d > 95pct (0.264)",
+            "implied_true_positives": 86,
+            "true_positive_integer_residual": 1.1199999505606684e-7,
+            "implied_positive_population": 754.9999984636628,
+            "implied_base_rate": 0.10541748128366092,
+            "implied_sample_size": 7161.999976380419,
+            "precision_error_vs_tp_over_fires": 3.1284916324203493e-10,
+            "recall_error_vs_tp_over_755": 2.3178807484480757e-10,
+            "lift_error_vs_precision_over_755_of_7162": 8.957057318070838e-11
+          },
+          {
+            "trigger": "disp_5d > 95pct (0.039)",
+            "implied_true_positives": 78,
+            "true_positive_integer_residual": 9.999993721976352e-9,
+            "implied_positive_population": 755.0000020326922,
+            "implied_base_rate": 0.10541748118598374,
+            "implied_sample_size": 7162.000016872692,
+            "precision_error_vs_tp_over_fires": 2.7932961499388398e-11,
+            "recall_error_vs_tp_over_755": -2.781456870382115e-10,
+            "lift_error_vs_precision_over_755_of_7162": -4.3038950181539803e-10
+          },
+          {
+            "trigger": "ret_10d < 5pct (-0.083)",
+            "implied_true_positives": 74,
+            "true_positive_integer_residual": 1.3799999010188913e-7,
+            "implied_positive_population": 755.0000002550676,
+            "implied_base_rate": 0.10541748133045957,
+            "implied_sample_size": 7161.999990194379,
+            "precision_error_vs_tp_over_fires": 3.854748464870994e-10,
+            "recall_error_vs_tp_over_755": -3.3112582120686795e-11,
+            "lift_error_vs_precision_over_755_of_7162": 3.0963032138231483e-10
+          },
+          {
+            "trigger": "tail_down3_5d > 90pct (0.213)",
+            "implied_true_positives": 144,
+            "true_positive_integer_residual": 2.8499999871201e-7,
+            "implied_positive_population": 754.9999992921875,
+            "implied_base_rate": 0.10541748091898674,
+            "implied_sample_size": 7162.0000090156245,
+            "precision_error_vs_tp_over_fires": -3.9860140188530124e-10,
+            "recall_error_vs_tp_over_755": 1.7880794067615113e-10,
+            "lift_error_vs_precision_over_755_of_7162": 4.148565935224724e-10
+          },
+          {
+            "trigger": "ret_5d < 5pct (-0.058)",
+            "implied_true_positives": 68,
+            "true_positive_integer_residual": 2.8000002316730388e-8,
+            "implied_positive_population": 755.0000013878677,
+            "implied_base_rate": 0.10541748108255682,
+            "implied_sample_size": 7162.000017782589,
+            "precision_error_vs_tp_over_fires": -7.821229774940264e-11,
+            "recall_error_vs_tp_over_755": -1.6556291060343398e-10,
+            "lift_error_vs_precision_over_755_of_7162": 4.1966052855002545e-10
+          },
+          {
+            "trigger": "tail_down3_5d > 85pct (0.182)",
+            "implied_true_positives": 200,
+            "true_positive_integer_residual": 3.140000046641944e-7,
+            "implied_positive_population": 755.00000071725,
+            "implied_base_rate": 0.10541748100492303,
+            "implied_sample_size": 7162.0000166954405,
+            "precision_error_vs_tp_over_fires": -2.923649933261885e-10,
+            "recall_error_vs_tp_over_755": -2.51655640770565e-10,
+            "lift_error_vs_precision_over_755_of_7162": -3.336662057762396e-10
+          },
+          {
+            "trigger": "tail_up3_5d > 95pct (0.243)",
+            "implied_true_positives": 63,
+            "true_positive_integer_residual": 8.399999273933645e-8,
+            "implied_positive_population": 754.9999964646826,
+            "implied_base_rate": 0.10541748097919727,
+            "implied_sample_size": 7161.999978102984,
+            "precision_error_vs_tp_over_fires": -2.352941175232104e-10,
+            "recall_error_vs_tp_over_755": 3.9072847735077687e-10,
+            "lift_error_vs_precision_over_755_of_7162": 4.885079007976856e-10
+          },
+          {
+            "trigger": "disp_5d > 90pct (0.035)",
+            "implied_true_positives": 124,
+            "true_positive_integer_residual": 3.2800001292798697e-7,
+            "implied_positive_population": 754.9999981429436,
+            "implied_base_rate": 0.10541748145954156,
+            "implied_sample_size": 7161.999961388822,
+            "precision_error_vs_tp_over_fires": 4.581005574877395e-10,
+            "recall_error_vs_tp_over_755": 4.0397352130128183e-10,
+            "lift_error_vs_precision_over_755_of_7162": -4.703097911118448e-10
+          },
+          {
+            "trigger": "yield_chg_5d < 5pct (-0.154)",
+            "implied_true_positives": 17,
+            "true_positive_integer_residual": 2.799999876401671e-8,
+            "implied_positive_population": 755.0000097705883,
+            "implied_base_rate": 0.10541748130514923,
+            "implied_sample_size": 7162.00008217906,
+            "precision_error_vs_tp_over_fires": 2.8282828856696085e-10,
+            "recall_error_vs_tp_over_755": -2.9139072751926953e-10,
+            "lift_error_vs_precision_over_755_of_7162": 2.935314213914353e-10
+          },
+          {
+            "trigger": "tail_down3_5d > 80pct (0.157)",
+            "implied_true_positives": 243,
+            "true_positive_integer_residual": 6.159999941246497e-7,
+            "implied_positive_population": 754.9999991455761,
+            "implied_base_rate": 0.10541748090712663,
+            "implied_sample_size": 7162.000008430624,
+            "precision_error_vs_tp_over_fires": -4.301675959883511e-10,
+            "recall_error_vs_tp_over_755": 3.6423841720534256e-10,
+            "lift_error_vs_precision_over_755_of_7162": -3.6405345404944e-10
+          },
+          {
+            "trigger": "ret_10d < 10pct (-0.058)",
+            "implied_true_positives": 121,
+            "true_positive_integer_residual": 2.919999957384789e-7,
+            "implied_positive_population": 754.9999984088844,
+            "implied_base_rate": 0.10541748089235946,
+            "implied_sample_size": 7162.000002445571,
+            "precision_error_vs_tp_over_fires": -4.0782122123772524e-10,
+            "recall_error_vs_tp_over_755": 3.3774832930433263e-10,
+            "lift_error_vs_precision_over_755_of_7162": 5.719802409487329e-11
+          },
+          {
+            "trigger": "disp_5d > 85pct (0.033)",
+            "implied_true_positives": 181,
+            "true_positive_integer_residual": 6.400000529538374e-8,
+            "implied_positive_population": 755.0000010636741,
+            "implied_base_rate": 0.105417481090952,
+            "implied_sample_size": 7162.000014136895,
+            "precision_error_vs_tp_over_fires": -5.959030491275996e-11,
+            "recall_error_vs_tp_over_755": -3.3774832930433263e-10,
+            "lift_error_vs_precision_over_755_of_7162": 3.380320467982756e-10
+          },
+          {
+            "trigger": "ret_5d < 10pct (-0.041)",
+            "implied_true_positives": 117,
+            "true_positive_integer_residual": 1.6399999935856613e-7,
+            "implied_positive_population": 755.0000020326924,
+            "implied_base_rate": 0.10541748097369891,
+            "implied_sample_size": 7162.000031295196,
+            "precision_error_vs_tp_over_fires": -2.2905027874386974e-10,
+            "recall_error_vs_tp_over_755": -4.172185374962112e-10,
+            "lift_error_vs_precision_over_755_of_7162": 4.2720782467142726e-10
+          },
+          {
+            "trigger": "disp_5d > 80pct (0.031)",
+            "implied_true_positives": 227,
+            "true_positive_integer_residual": 1.0399998018328915e-7,
+            "implied_positive_population": 754.9999991352422,
+            "implied_base_rate": 0.10541748107586289,
+            "implied_sample_size": 7161.999996868756,
+            "precision_error_vs_tp_over_fires": -7.262568324506447e-11,
+            "recall_error_vs_tp_over_755": 3.443708651573729e-10,
+            "lift_error_vs_precision_over_755_of_7162": 3.759665911928778e-10
+          },
+          {
+            "trigger": "ret_5d < 15pct (-0.031)",
+            "implied_true_positives": 165,
+            "true_positive_integer_residual": 9.000001455206075e-8,
+            "implied_positive_population": 755.0000012354545,
+            "implied_base_rate": 0.1054174811845282,
+            "implied_sample_size": 7162.000009408909,
+            "precision_error_vs_tp_over_fires": 8.37988844981652e-11,
+            "recall_error_vs_tp_over_755": -3.576159091078779e-10,
+            "lift_error_vs_precision_over_755_of_7162": 3.247253577143283e-10
+          },
+          {
+            "trigger": "ret_10d < 15pct (-0.044)",
+            "implied_true_positives": 161,
+            "true_positive_integer_residual": 3.460000073118863e-7,
+            "implied_positive_population": 755.0000003986025,
+            "implied_base_rate": 0.10541748094559367,
+            "implied_sample_size": 7162.000017703522,
+            "precision_error_vs_tp_over_fires": -3.2246039172179053e-10,
+            "recall_error_vs_tp_over_755": -1.1258277643477754e-10,
+            "lift_error_vs_precision_over_755_of_7162": -2.9200175610810675e-10
+          },
+          {
+            "trigger": "ret_5d < 20pct (-0.023)",
+            "implied_true_positives": 213,
+            "true_positive_integer_residual": 3.440000000409782e-7,
+            "implied_positive_population": 755.0000007975352,
+            "implied_base_rate": 0.10541748130033587,
+            "implied_sample_size": 7161.9999973868635,
+            "precision_error_vs_tp_over_fires": 2.4022347999697047e-10,
+            "recall_error_vs_tp_over_755": -2.980132807195446e-10,
+            "lift_error_vs_precision_over_755_of_7162": 2.7348412423577884e-10
+          },
+          {
+            "trigger": "ret_10d < 20pct (-0.033)",
+            "implied_true_positives": 206,
+            "true_positive_integer_residual": 4.400001785143104e-8,
+            "implied_positive_population": 755.0000003298544,
+            "implied_base_rate": 0.10541748114918739,
+            "implied_sample_size": 7162.000003219336,
+            "precision_error_vs_tp_over_fires": -3.074773768929617e-11,
+            "recall_error_vs_tp_over_755": -1.1920531228781783e-10,
+            "lift_error_vs_precision_over_755_of_7162": -2.744571236945603e-10
+          },
+          {
+            "trigger": "tail_up3_5d > 90pct (0.205)",
+            "implied_true_positives": 101,
+            "true_positive_integer_residual": 3.480000003719397e-7,
+            "implied_positive_population": 755.0000024668317,
+            "implied_base_rate": 0.10541748152104427,
+            "implied_sample_size": 7161.999998227169,
+            "precision_error_vs_tp_over_fires": 4.860335189871279e-10,
+            "recall_error_vs_tp_over_755": -4.370860895441808e-10,
+            "lift_error_vs_precision_over_755_of_7162": -9.275202828007423e-11
+          },
+          {
+            "trigger": "dbi_5d < 10pct (2.540)",
+            "implied_true_positives": 101,
+            "true_positive_integer_residual": 3.480000003719397e-7,
+            "implied_positive_population": 755.0000024668317,
+            "implied_base_rate": 0.10541748152104427,
+            "implied_sample_size": 7161.999998227169,
+            "precision_error_vs_tp_over_fires": 4.860335189871279e-10,
+            "recall_error_vs_tp_over_755": -4.370860895441808e-10,
+            "lift_error_vs_precision_over_755_of_7162": -9.275202828007423e-11
+          }
+        ],
+        "fires_range": [
+          99,
+          1432
+        ],
+        "precision_range": [
+          0.141061453,
+          0.240223464
+        ],
+        "descending_lift": true
+      },
+      "review": {
+        "meaning": "Twenty selected single-condition pre-fall threshold results, ordered by reported lift.",
+        "window": {
+          "raw_dates_and_event_horizon": "Not stored in this CSV.",
+          "algebraically_implied_sample_rows": 7162,
+          "algebraically_implied_positive_labels": 755,
+          "implied_positive_rate": 0.10541748115051662,
+          "peer_context": "Matching IFR peer and previously reviewed market internals; context is historical, with full-sample quantile calibration."
+        },
+        "units": {
+          "fires": "Count of firing observations, not proven independent market events.",
+          "precision": "Fraction TP/fires.",
+          "recall": "Fraction TP/755.",
+          "lift": "Dimensionless precision divided by the implied positive-label rate.",
+          "parenthesized_thresholds": "Rounded numeric cutoffs in feature-native units. Return-feature examples use decimal returns; do not use display-rounded cutoffs as exact original thresholds."
+        },
+        "observations": [
+          "All 20 rows independently reconstruct integer TP, precision=TP/fires, recall=TP/755 and lift=(TP/fires)/(755/7162) within 5.1e-10.",
+          "The highest-lift single condition implies 86 true positives among 358 fires, 24.0223464 percent precision and 11.3907285 percent recall.",
+          "Precision spans 14.1061453-24.0223464 percent. Lift above one is relative to the roughly 10.5417 percent positive base rate; it is not high absolute prediction accuracy.",
+          "tail_up3_5d > 90pct and dbi_5d < 10pct have identical metric tuples but different trigger definitions. Do not deduplicate on metrics alone.",
+          "All labels and counts match the peer; 60 numeric strings differ only within rounding, maximum difference about 4.89e-10."
+        ],
+        "limitations": [
+          "Prediction label, forecast horizon, event independence, date range and sample exclusions are not embedded.",
+          "Yield-change trigger has 99 fires; eligible yield-history denominator is not shown. The algebraically common full-sample base rate does not establish feature-specific eligibility.",
+          "All source cells are values; thresholds and label generation cannot be independently regenerated from these summary rows alone."
+        ],
+        "proposed_usage": "Historical threshold-candidate reference with low absolute precision and unresolved label/window definitions."
+      },
+      "status_proposal": {
+        "before": "inventory_only",
+        "after": "reviewed",
+        "basis": "All bytes read, CRC and SHA256 verified, all source CSV cells independently parsed and interpreted with stated limits.",
+        "arithmetic_validation": "partial; only explicitly listed identities and summary consistency checked",
+        "runtime_adoption": "not approved",
+        "overlay_or_plan_changed": false
+      },
+      "peer_comparison": {
+        "archive": "IFR_Expansion_Check_v0_4_CSV.zip",
+        "archive_sha256": "2a78f497333e78d0c1a2459e0ec3d83cb5847130cd41d374f86ab6cfaed16e30",
+        "member": "IFR_Expansion_Check_v0_4_CSV/top_pre_fall_triggers.csv",
+        "member_sha256": "6504ac5d6827fb71e81703e5b7d5b00557aa4929966349f9c7e39c243923be75",
+        "member_bytes": 1772,
+        "bytes_identical": false,
+        "shape_equal": true,
+        "all_cell_text_identical": false,
+        "changed_cell_count": 60,
+        "text_cell_differences": [],
+        "numeric_cell_difference_count": 60,
+        "max_absolute_numeric_delta": 4.885079007976856e-10,
+        "numeric_differences_within_5e_minus_8": true
+      }
+    }
+  ],
+  "cross_file_checks": {
+    "duplicate_policy": "Five peer correspondences have equal labels/order/counts with date format or numeric rounding changes. Preserve AM07 member hashes and archive provenance. No automatic duplicate reuse, merge, deletion, second-sample counting or source-authority promotion.",
+    "no_new_independent_samples": "Repeated summaries in AM07 do not add independent evidence to previously reviewed IFR/participant research.",
+    "dissimilar_populations": "3315 IFR cash joined rows, 7162 trigger-research rows, Q1 annual coverage counts and a one-day participant snapshot are distinct populations. Do not join/average them by filename similarity.",
+    "trigger_denominator_reconstruction": {
+      "all_35_rows_within_tolerance": true,
+      "positive_labels": 755,
+      "total_rows": 7162,
+      "positive_label_rate": 0.10541748115051662,
+      "formulas": [
+        "TP = nearest_integer(fires * precision)",
+        "precision = TP / fires",
+        "recall = TP / 755",
+        "lift = precision / (755 / 7162)"
+      ],
+      "scope_limit": "An algebraic consistency check. Does not recover label definitions, calibration dates, event independence or source feature generation."
+    },
+    "forward_population_reconstruction": {
+      "signal_pairs": 7,
+      "population_each": 3315,
+      "negative_labels_each": 1279,
+      "weighted_mean_fwd15_pct_approx": 1.145622295,
+      "scope_limit": "Consistency of reported group summaries; medians/quantiles cannot be independently recomputed without dated individual outcomes."
+    }
+  },
+  "current_consumers": {
+    "static_inspection_only": true,
+    "server_imported_or_started": false,
+    "files": [
+      {
+        "file": "server.js",
+        "sha256": "7f19f871e85fa21bb460fd47d6e01ee69e409f922e03daae4a8c386168a4557e",
+        "lines": [
+          256,
+          281
+        ],
+        "finding": "Wrapper applies data intelligence and intelligence score patches in the local server construction."
+      },
+      {
+        "file": "server-data-intelligence-patch.mjs",
+        "sha256": "84bae920306261373c556cca87bdd0db38996ce211488ba373640aeb4426c7c0",
+        "lines": [
+          95,
+          102
+        ],
+        "finding": "Six hardcoded trigger summary rows. It does not read either CSV dynamically; four pre-fall and two combo rows match source metrics rounded to four decimals."
+      },
+      {
+        "file": "server-data-intelligence-patch.mjs",
+        "lines": [
+          181,
+          204
+        ],
+        "finding": "/api/data-intelligence payload presents an arithmetic average of six stored lifts and uses the label validated_triggers with a current response timestamp; timestamp does not update historical research."
+      },
+      {
+        "file": "server-intelligence-score-patch.mjs",
+        "sha256": "bf4ecacc0a11a111759def111b9158a22c06cd8e44eff73527689f49c0765aef",
+        "lines": [
+          34,
+          40
+        ],
+        "finding": "regimeRiskScore uses average static lift * 10 for every row, without evaluating current source conditions."
+      },
+      {
+        "file": "server-intelligence-score-patch.mjs",
+        "lines": [
+          52,
+          75
+        ],
+        "finding": "regime risk contributes to intelligence score and SELECT_READY/WATCH_READY/RISK_REVIEW logic in the paper scoring patch. This is a local code-consumer finding, not production behavior verification."
+      },
+      {
+        "file": "server-framework-patch.mjs",
+        "sha256": "f7e9f20ac737dcf608f54c49a6ec5859cb33c21bcc50edf189fb86aca8af1b04",
+        "lines": [
+          89,
+          95
+        ],
+        "finding": "Lists signal_forward_return_distribution.csv as an event-validation source with PAPER_PROOF_PARTIAL; declaration does not demonstrate ingestion."
+      },
+      {
+        "file": "app-data-intelligence.js",
+        "sha256": "7aa351ae6bf7a9a22bb0e8429f5b9bd6bf55277c2ccc7aff82e17db7e0484226",
+        "lines": [
+          96,
+          119
+        ],
+        "finding": "Displays trigger rows and average Trigger Lift from the payload; does not recompute historical research."
+      },
+      {
+        "file": "scripts/q1_upstox_price_join.mjs",
+        "sha256": "f43f71250a12c5343b47fa9d09ac76a39ab624caa905c6080452301eea72f3e4",
+        "lines": [
+          5,
+          11
+        ],
+        "finding": "Consumes Q1_FII_20D_ranked_top_bottom_deciles_READY_FOR_PRICE_JOIN.csv, not this annual summary file. Source search found no direct consumer for the scoped Q1 stats filename."
+      }
+    ],
+    "exact_name_search_scope": "Repository text source and docs searched, excluding data evidence dumps for consumer classification; no direct loader identified for scoped participant snapshot, correlation matrix or Q1 year stats.",
+    "hardcoded_lift_comparison": [
+      {
+        "member": "top_pre_fall_triggers.csv",
+        "source_csv_row": 2,
+        "source_lift": 2.278782049,
+        "hardcoded_lift": 2.2788,
+        "matches_four_decimal_rounding": true
+      },
+      {
+        "member": "top_pre_fall_triggers.csv",
+        "source_csv_row": 3,
+        "source_lift": 2.066802323,
+        "hardcoded_lift": 2.0668,
+        "matches_four_decimal_rounding": true
+      },
+      {
+        "member": "top_pre_fall_triggers.csv",
+        "source_csv_row": 4,
+        "source_lift": 1.960812461,
+        "hardcoded_lift": 1.9608,
+        "matches_four_decimal_rounding": true
+      },
+      {
+        "member": "top_pre_fall_triggers.csv",
+        "source_csv_row": 5,
+        "source_lift": 1.910485806,
+        "hardcoded_lift": 1.9105,
+        "matches_four_decimal_rounding": true
+      },
+      {
+        "member": "top_combo_triggers.csv",
+        "source_csv_row": 2,
+        "source_lift": 2.710312204,
+        "hardcoded_lift": 2.7103,
+        "matches_four_decimal_rounding": true
+      },
+      {
+        "member": "top_combo_triggers.csv",
+        "source_csv_row": 10,
+        "source_lift": 2.237583331,
+        "hardcoded_lift": 2.2376,
+        "matches_four_decimal_rounding": true
+      }
+    ],
+    "static_lift_mean": 2.1941333333333337,
+    "resulting_constant_regime_risk_component": 21.941333333333336,
+    "defect_review_only": "The existing static historical lift contribution must not be interpreted as a current trigger computation. No correction, score change or activation was made."
+  },
+  "limits": [
+    "Content status reviewed means full reading and explicit checks, not complete scientific validation, approved authority, currentness or runtime readiness.",
+    "The six CSVs have no executable formulas; inferred metric identities are recorded separately from source definitions.",
+    "Source-generator code, full exchange calendars, point-in-time instrument identity, survivorship, corporate-action adjustment, costs and out-of-sample validity were not established.",
+    "Prior evidence supplies some context and reproducibility limits; only the explicitly listed summary and peer comparisons were freshly recomputed.",
+    "No source files changed, no provider/network/Render/database access, no runtime or archive code execution, no trade/order activity, no overlay/plan changes and no Git commit/push/publication."
+  ],
+  "proposed_statuses_only": true,
+  "review_gate": "Eligible for historical source review with these limitations retained. Any future runtime integration or research correction is separate work."
+}
