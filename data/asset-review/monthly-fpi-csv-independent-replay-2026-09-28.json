@@ -1,0 +1,2913 @@
+{
+  "schema_version": "monthly-fpi-independent-replay-v1",
+  "review_date": "2026-09-28",
+  "reviewed_against_commit": "510a8c6a01ea19d28518188ae6364c2052bf343f",
+  "script_sha256": "30c9978f43042e6a8e4d89efee9d68e00a3d98c703edf8e6dd02e1ba66af7afa",
+  "scope": "All eleven CSV members, using an independent Node streaming CSV parser and BigInt decimal arithmetic; root November comparison. No workbook authoring, runtime change, data import or Mongo access.",
+  "november_comparison_independent_python": {
+    "schema_version": "november-fpi-comparison-v1",
+    "method": "Independent Python csv.DictReader and Decimal full positional comparison. Explicit date formats, numeric values compared exactly, transaction type padding normalized. Transaction identifiers remain strings.",
+    "script_sha256": "af655e2555879d6c1ef793b97ba76ccf0caf677d59808ea54f9146863ea5385e",
+    "rows_compared": 240283,
+    "semantically_equal_rows": 233643,
+    "custodian_transaction_key_order_mismatches": 25,
+    "differing_column_counts": {
+      "VALUE (in Rs)": 6615,
+      "RFDE_TXN_ID": 25
+    },
+    "root_minus_archive_numeric_delta_sum": {
+      "RATE": "0.0000",
+      "QUANTITY": "0.00",
+      "VALUE (in Rs)": "38.19"
+    },
+    "max_absolute_numeric_delta": {
+      "RATE": "0",
+      "QUANTITY": "0",
+      "VALUE (in Rs)": "0.50"
+    },
+    "value_difference_rounding_diagnostics": {
+      "differs": 6615,
+      "within_half_unit_of_root_last_printed_decimal": 6615,
+      "equal_after_quantize_to_root_printed_exponent": 6238
+    },
+    "all_identifier_difference_locators": [
+      {
+        "csv_record": 15436,
+        "archive_id_length": 12,
+        "root_id_length": 8,
+        "both_ascii_digit_strings": true,
+        "equal_after_removing_leading_zeroes": true,
+        "only_id_differs_in_canonical_row": true
+      },
+      {
+        "csv_record": 17622,
+        "archive_id_length": 12,
+        "root_id_length": 8,
+        "both_ascii_digit_strings": true,
+        "equal_after_removing_leading_zeroes": true,
+        "only_id_differs_in_canonical_row": true
+      },
+      {
+        "csv_record": 51342,
+        "archive_id_length": 12,
+        "root_id_length": 8,
+        "both_ascii_digit_strings": true,
+        "equal_after_removing_leading_zeroes": true,
+        "only_id_differs_in_canonical_row": true
+      },
+      {
+        "csv_record": 51738,
+        "archive_id_length": 12,
+        "root_id_length": 8,
+        "both_ascii_digit_strings": true,
+        "equal_after_removing_leading_zeroes": true,
+        "only_id_differs_in_canonical_row": true
+      },
+      {
+        "csv_record": 51770,
+        "archive_id_length": 12,
+        "root_id_length": 8,
+        "both_ascii_digit_strings": true,
+        "equal_after_removing_leading_zeroes": true,
+        "only_id_differs_in_canonical_row": true
+      },
+      {
+        "csv_record": 52443,
+        "archive_id_length": 12,
+        "root_id_length": 8,
+        "both_ascii_digit_strings": true,
+        "equal_after_removing_leading_zeroes": true,
+        "only_id_differs_in_canonical_row": true
+      },
+      {
+        "csv_record": 52602,
+        "archive_id_length": 12,
+        "root_id_length": 8,
+        "both_ascii_digit_strings": true,
+        "equal_after_removing_leading_zeroes": true,
+        "only_id_differs_in_canonical_row": true
+      },
+      {
+        "csv_record": 52797,
+        "archive_id_length": 12,
+        "root_id_length": 8,
+        "both_ascii_digit_strings": true,
+        "equal_after_removing_leading_zeroes": true,
+        "only_id_differs_in_canonical_row": true
+      },
+      {
+        "csv_record": 52804,
+        "archive_id_length": 12,
+        "root_id_length": 8,
+        "both_ascii_digit_strings": true,
+        "equal_after_removing_leading_zeroes": true,
+        "only_id_differs_in_canonical_row": true
+      },
+      {
+        "csv_record": 52810,
+        "archive_id_length": 12,
+        "root_id_length": 8,
+        "both_ascii_digit_strings": true,
+        "equal_after_removing_leading_zeroes": true,
+        "only_id_differs_in_canonical_row": true
+      },
+      {
+        "csv_record": 52919,
+        "archive_id_length": 12,
+        "root_id_length": 8,
+        "both_ascii_digit_strings": true,
+        "equal_after_removing_leading_zeroes": true,
+        "only_id_differs_in_canonical_row": true
+      },
+      {
+        "csv_record": 53001,
+        "archive_id_length": 12,
+        "root_id_length": 8,
+        "both_ascii_digit_strings": true,
+        "equal_after_removing_leading_zeroes": true,
+        "only_id_differs_in_canonical_row": true
+      },
+      {
+        "csv_record": 53468,
+        "archive_id_length": 12,
+        "root_id_length": 8,
+        "both_ascii_digit_strings": true,
+        "equal_after_removing_leading_zeroes": true,
+        "only_id_differs_in_canonical_row": true
+      },
+      {
+        "csv_record": 53818,
+        "archive_id_length": 12,
+        "root_id_length": 8,
+        "both_ascii_digit_strings": true,
+        "equal_after_removing_leading_zeroes": true,
+        "only_id_differs_in_canonical_row": true
+      },
+      {
+        "csv_record": 94228,
+        "archive_id_length": 12,
+        "root_id_length": 8,
+        "both_ascii_digit_strings": true,
+        "equal_after_removing_leading_zeroes": true,
+        "only_id_differs_in_canonical_row": true
+      },
+      {
+        "csv_record": 94688,
+        "archive_id_length": 12,
+        "root_id_length": 8,
+        "both_ascii_digit_strings": true,
+        "equal_after_removing_leading_zeroes": true,
+        "only_id_differs_in_canonical_row": true
+      },
+      {
+        "csv_record": 96704,
+        "archive_id_length": 12,
+        "root_id_length": 8,
+        "both_ascii_digit_strings": true,
+        "equal_after_removing_leading_zeroes": true,
+        "only_id_differs_in_canonical_row": true
+      },
+      {
+        "csv_record": 96756,
+        "archive_id_length": 12,
+        "root_id_length": 8,
+        "both_ascii_digit_strings": true,
+        "equal_after_removing_leading_zeroes": true,
+        "only_id_differs_in_canonical_row": true
+      },
+      {
+        "csv_record": 146480,
+        "archive_id_length": 12,
+        "root_id_length": 8,
+        "both_ascii_digit_strings": true,
+        "equal_after_removing_leading_zeroes": true,
+        "only_id_differs_in_canonical_row": true
+      },
+      {
+        "csv_record": 146811,
+        "archive_id_length": 12,
+        "root_id_length": 8,
+        "both_ascii_digit_strings": true,
+        "equal_after_removing_leading_zeroes": true,
+        "only_id_differs_in_canonical_row": true
+      },
+      {
+        "csv_record": 196095,
+        "archive_id_length": 12,
+        "root_id_length": 8,
+        "both_ascii_digit_strings": true,
+        "equal_after_removing_leading_zeroes": true,
+        "only_id_differs_in_canonical_row": true
+      },
+      {
+        "csv_record": 196335,
+        "archive_id_length": 12,
+        "root_id_length": 8,
+        "both_ascii_digit_strings": true,
+        "equal_after_removing_leading_zeroes": true,
+        "only_id_differs_in_canonical_row": true
+      },
+      {
+        "csv_record": 197228,
+        "archive_id_length": 12,
+        "root_id_length": 8,
+        "both_ascii_digit_strings": true,
+        "equal_after_removing_leading_zeroes": true,
+        "only_id_differs_in_canonical_row": true
+      },
+      {
+        "csv_record": 199324,
+        "archive_id_length": 12,
+        "root_id_length": 8,
+        "both_ascii_digit_strings": true,
+        "equal_after_removing_leading_zeroes": true,
+        "only_id_differs_in_canonical_row": true
+      },
+      {
+        "csv_record": 201024,
+        "archive_id_length": 12,
+        "root_id_length": 8,
+        "both_ascii_digit_strings": true,
+        "equal_after_removing_leading_zeroes": true,
+        "only_id_differs_in_canonical_row": true
+      }
+    ],
+    "limits": [
+      "A positional match with equal other fields does not authorize merging source IDs or deleting rows.",
+      "Rounding compatibility diagnoses presentation loss but is not proof of a specific software export mechanism.",
+      "Neither raw source is changed or chosen automatically as canonical.",
+      "Default Decimal quantize uses ROUND_HALF_EVEN; only 6238 of 6615 value differences reproduce exactly under that policy. No universal source rounding rule is inferred."
+    ]
+  },
+  "source_contract_review": {
+    "reviewed_on": "2026-09-28",
+    "official_reference": "https://www.cdslindia.com/Publications/EquityDataFII.html",
+    "status": "Reference inspected; not applied as an ingestion or signal contract",
+    "limits": [
+      "Historical effective version and masked-code stability are not verified.",
+      "Current official download bytes were not compared with preserved GitHub release bytes.",
+      "Amendment, cancellation and revision precedence remains unresolved; raw transaction codes are retained without net-flow sign assignment."
+    ]
+  },
+  "consumer_source_review": {
+    "commit": "510a8c6a01ea19d28518188ae6364c2052bf343f",
+    "scope": "Selected institutional normalization, session-window, scanner-advisory, dashboard and legacy-score paths. Not a full repository reread.",
+    "files": [
+      {
+        "file": "server-upstox-institutional-patch.mjs",
+        "sha256": "97c583f00f5e6b4daee5ba7ce694f3aa1374a1e25aeb6b76b797a88cb3598777",
+        "lines": [
+          [
+            115,
+            202
+          ],
+          [
+            280,
+            362
+          ],
+          [
+            394,
+            448
+          ],
+          [
+            476,
+            558
+          ]
+        ]
+      },
+      {
+        "file": "app.js",
+        "sha256": "8dac72e64263ecd8521ab0d78c85a0f070d31c34bad5babbbf7bfde0cd74ee1a",
+        "lines": [
+          [
+            1340,
+            1393
+          ]
+        ]
+      },
+      {
+        "file": "server-data-intelligence-patch.mjs",
+        "sha256": "84bae920306261373c556cca87bdd0db38996ce211488ba373640aeb4426c7c0",
+        "lines": [
+          [
+            103,
+            120
+          ]
+        ]
+      },
+      {
+        "file": "server-intelligence-score-patch.mjs",
+        "sha256": "bf4ecacc0a11a111759def111b9158a22c06cd8e44eff73527689f49c0765aef",
+        "lines": [
+          [
+            30,
+            40
+          ]
+        ]
+      },
+      {
+        "file": "server-stock-selection-patch.mjs",
+        "sha256": "96e26eb1ece2bb89636ac2a83c3d70f09054d937e0c5555a06a38572ca2c91da",
+        "lines": [
+          [
+            1,
+            65
+          ]
+        ]
+      }
+    ],
+    "mapping": [
+      {
+        "consumer": "NO03, NO04, NO05 and FII Holding dashboard",
+        "requires": "Current eligible adjacent-quarter ownership percentages by verified security identity",
+        "archive_fit": "Not supplied by transaction records; no DII ownership or outstanding-share denominator"
+      },
+      {
+        "consumer": "NO08 and FII cash flow (5D) dashboard",
+        "requires": "Current market-wide NSE cash activity over five verified completed sessions",
+        "archive_fit": "Historical, sparse trade reports across code classes are not current five-session cash evidence"
+      },
+      {
+        "consumer": "Historical FPI transaction research",
+        "requires": "Dated identity and instrument/exchange contract, revision precedence, point-in-time availability, canonical-copy decision",
+        "archive_fit": "Candidate historical source only, not implemented or imported"
+      },
+      {
+        "consumer": "OHLCV, EPS, P/E and valuation targets",
+        "requires": "Validated market bars and dated company financial/valuation inputs",
+        "archive_fit": "Not supplied by these reports"
+      }
+    ],
+    "existing_hazard": "Legacy institutionalFlowScore still consumes a fixed June 8 2026 FII/DII snapshot without a freshness guard; separate approval is required for correction.",
+    "literal_search": {
+      "scope": "rg over visible non-ignored .js/.mjs/.py files below repo; excludes node_modules, data and vendor",
+      "patterns": [
+        "RFDE_CUST_REG_NUM",
+        "RFDE_TXN_ID",
+        "TR_TYPE(*)"
+      ],
+      "matching_files": 0,
+      "limit": "Negative literal search does not prove absence of generic or dynamic consumers; reviewed stock-selection patch embeds manifest metadata, not these transaction rows."
+    }
+  },
+  "cross_file_scope": {
+    "tested": "Agent packages check pairwise intersections within the two 2009 archives and within the four 2021/2023 archives; November root/archive positional comparison is separate.",
+    "not_claimed": "No all-eleven global candidate-key uniqueness proof. Masked identifiers and revision semantics are not assumed stable between years."
+  },
+  "members": [
+    {
+      "asset": "2009_1.zip",
+      "member": "2009_1.csv",
+      "bytes": 84753926,
+      "sha256": "7d7736f4d677ff74693e89baeb5422228959ddb9dd9f756f851b4013d5fc3a1b",
+      "records": 302081,
+      "blank_records": 0,
+      "parser": "Independent Node streaming state machine; fatal UTF-8 decoder; unzip exit status checked",
+      "header": [
+        "   ",
+        "RFDE_CUST_REG_NUM",
+        "RFDE_RPT_DT",
+        "RFDE_TXN_ID",
+        "FII",
+        "SUB_ACC",
+        "BRKER",
+        "SCRIP_NAME",
+        "ISIN",
+        "TR_DATE",
+        "TR_TYPE(*)",
+        "RFDE_SE_REG_NUM",
+        "RFDE_STLD_CODE",
+        "RATE",
+        "QUANTITY",
+        "VALUE (in Rs)",
+        "RFDE_INSTR_TYPE",
+        "RFDE_REASON_DLAY",
+        "RFDE_RPT_TYPE",
+        "RFDE_AMDMNT_REASON"
+      ],
+      "data_rows": 302080,
+      "field_count": 6041600,
+      "width_counts": {
+        "20": 302080
+      },
+      "ordinal_errors": 0,
+      "duplicate_trimmed_rows_excluding_ordinal": 1,
+      "custodian_transaction_key_repeats": 22,
+      "custodian_transaction_key_conflicting_rows": 21,
+      "invalid_isin_syntax_or_checksum_rows": 357,
+      "date_counts": {
+        "RFDE_RPT_DT": {
+          "2009-01-01": 1,
+          "2009-01-02": 415,
+          "2009-01-07": 2503,
+          "2009-01-12": 4068,
+          "2009-01-05": 1634,
+          "2009-01-09": 3889,
+          "2009-01-06": 1876,
+          "2009-01-14": 2286,
+          "2009-01-15": 2103,
+          "2009-01-29": 1965,
+          "2009-01-16": 2712,
+          "2009-01-21": 1601,
+          "2009-01-22": 2343,
+          "2009-01-13": 2490,
+          "2009-01-20": 1529,
+          "2009-01-30": 2463,
+          "2009-01-19": 2618,
+          "2009-02-02": 2301,
+          "2009-01-27": 2112,
+          "2009-02-03": 2190,
+          "2009-02-04": 2281,
+          "2009-02-05": 1985,
+          "2009-03-12": 1726,
+          "2009-01-23": 3391,
+          "2009-05-07": 3147,
+          "2009-01-28": 1715,
+          "2009-02-24": 1768,
+          "2009-03-25": 2356,
+          "2009-02-06": 2038,
+          "2009-02-12": 1857,
+          "2009-02-09": 2031,
+          "2009-02-10": 2012,
+          "2009-02-17": 1672,
+          "2009-03-04": 1834,
+          "2009-02-11": 2392,
+          "2009-02-16": 1817,
+          "2009-02-25": 1856,
+          "2009-04-17": 3110,
+          "2009-02-13": 1749,
+          "2009-02-19": 2094,
+          "2009-02-18": 1597,
+          "2009-03-03": 1928,
+          "2009-02-26": 1868,
+          "2009-03-05": 2006,
+          "2009-03-19": 2572,
+          "2009-03-23": 1897,
+          "2009-02-20": 1969,
+          "2009-03-13": 3186,
+          "2009-02-27": 2326,
+          "2009-06-17": 2973,
+          "2009-03-02": 2430,
+          "2009-03-06": 2213,
+          "2009-03-09": 1987,
+          "2009-03-18": 1923,
+          "2009-05-14": 3006,
+          "2009-03-16": 2408,
+          "2009-03-20": 1920,
+          "2009-03-17": 1941,
+          "2009-03-27": 2736,
+          "2009-06-30": 2361,
+          "2009-08-26": 1,
+          "2009-05-15": 2237,
+          "2009-03-24": 2157,
+          "2009-04-13": 2402,
+          "2009-03-31": 2136,
+          "2009-03-26": 2360,
+          "2009-04-01": 2787,
+          "2009-04-06": 2801,
+          "2009-03-30": 2661,
+          "2009-04-08": 3309,
+          "2009-04-09": 3458,
+          "2009-04-20": 2859,
+          "2009-04-15": 2313,
+          "2009-04-02": 2144,
+          "2009-04-16": 3699,
+          "2009-04-27": 2129,
+          "2009-05-06": 2790,
+          "2009-04-21": 2833,
+          "2009-04-24": 2080,
+          "2009-04-22": 2145,
+          "2009-04-29": 2143,
+          "2009-05-11": 2656,
+          "2009-04-28": 2246,
+          "2009-04-23": 2169,
+          "2009-05-18": 2472,
+          "2009-07-20": 10,
+          "2009-05-04": 2839,
+          "2009-05-08": 2750,
+          "2009-05-05": 3601,
+          "2009-06-03": 3732,
+          "2009-05-13": 2942,
+          "2009-05-12": 2765,
+          "2009-05-19": 523,
+          "2009-05-20": 6212,
+          "2009-06-08": 3146,
+          "2009-06-01": 5070,
+          "2009-05-21": 4336,
+          "2009-05-22": 3773,
+          "2009-05-25": 2675,
+          "2009-05-26": 2313,
+          "2009-05-27": 2498,
+          "2009-05-29": 3457,
+          "2009-06-12": 3109,
+          "2009-06-04": 3560,
+          "2009-05-28": 3246,
+          "2009-06-02": 3127,
+          "2009-06-05": 3641,
+          "2009-06-10": 3544,
+          "2009-06-15": 2546,
+          "2009-07-30": 1,
+          "2009-06-18": 2692,
+          "2009-06-09": 3049,
+          "2009-06-11": 2907,
+          "2009-06-26": 3375,
+          "2009-06-22": 3654,
+          "2009-06-29": 2705,
+          "2009-06-16": 2452,
+          "2009-06-19": 2844,
+          "2009-07-02": 12,
+          "2009-06-23": 2294,
+          "2009-07-01": 3139,
+          "2009-06-24": 2776,
+          "2009-07-03": 3,
+          "2009-06-25": 2554,
+          "2009-08-11": 10,
+          "2009-08-05": 1,
+          "2009-08-17": 3,
+          "2009-08-18": 3,
+          "2009-07-06": 2,
+          "2009-07-07": 4,
+          "2009-07-16": 1,
+          "2009-07-17": 2,
+          "2009-07-08": 13,
+          "2009-07-15": 1,
+          "2009-11-20": 2,
+          "2009-07-10": 1,
+          "2009-07-13": 1
+        },
+        "TR_DATE": {
+          "2009-01-01": 425,
+          "2009-01-02": 1635,
+          "2009-01-05": 1908,
+          "2009-01-06": 2502,
+          "2009-01-07": 3897,
+          "2009-01-09": 4029,
+          "2009-01-10": 28,
+          "2009-01-12": 2484,
+          "2009-01-13": 2278,
+          "2009-01-14": 2100,
+          "2009-01-15": 2745,
+          "2009-01-16": 2596,
+          "2009-01-19": 1526,
+          "2009-01-20": 1628,
+          "2009-01-21": 2303,
+          "2009-01-22": 3401,
+          "2009-01-23": 2122,
+          "2009-01-24": 1,
+          "2009-01-27": 1726,
+          "2009-01-28": 1949,
+          "2009-01-29": 2468,
+          "2009-01-30": 2298,
+          "2009-02-02": 2193,
+          "2009-02-03": 2294,
+          "2009-02-04": 1970,
+          "2009-02-05": 2057,
+          "2009-02-06": 2040,
+          "2009-02-07": 2,
+          "2009-02-09": 2012,
+          "2009-02-10": 2393,
+          "2009-02-11": 1843,
+          "2009-02-12": 1749,
+          "2009-02-13": 1806,
+          "2009-02-16": 1673,
+          "2009-02-17": 1589,
+          "2009-02-18": 2102,
+          "2009-02-19": 1979,
+          "2009-02-20": 1762,
+          "2009-02-24": 1851,
+          "2009-02-25": 1888,
+          "2009-02-26": 2328,
+          "2009-02-27": 2436,
+          "2009-03-02": 1922,
+          "2009-03-03": 1827,
+          "2009-03-04": 2015,
+          "2009-03-05": 2215,
+          "2009-03-06": 1984,
+          "2009-03-07": 6,
+          "2009-03-09": 1707,
+          "2009-03-12": 3202,
+          "2009-03-13": 2402,
+          "2009-03-14": 1,
+          "2009-03-16": 1943,
+          "2009-03-17": 2057,
+          "2009-03-18": 2556,
+          "2009-03-19": 1788,
+          "2009-03-20": 1894,
+          "2009-03-23": 2159,
+          "2009-03-24": 2348,
+          "2009-03-25": 2366,
+          "2009-03-26": 2832,
+          "2009-03-27": 2588,
+          "2009-03-28": 3,
+          "2009-03-30": 2125,
+          "2009-03-31": 2787,
+          "2009-04-01": 2154,
+          "2009-04-02": 2787,
+          "2009-04-04": 1,
+          "2009-04-06": 3312,
+          "2009-04-08": 3490,
+          "2009-04-09": 2386,
+          "2009-04-11": 2,
+          "2009-04-13": 2329,
+          "2009-04-15": 3701,
+          "2009-04-16": 3088,
+          "2009-04-17": 3014,
+          "2009-04-20": 2675,
+          "2009-04-21": 2183,
+          "2009-04-22": 2169,
+          "2009-04-23": 2075,
+          "2009-04-24": 2108,
+          "2009-04-27": 2247,
+          "2009-04-28": 2134,
+          "2009-04-29": 2858,
+          "2009-05-01": 1,
+          "2009-05-04": 3587,
+          "2009-05-05": 2795,
+          "2009-05-06": 3147,
+          "2009-05-07": 2733,
+          "2009-05-08": 2661,
+          "2009-05-11": 2781,
+          "2009-05-12": 2980,
+          "2009-05-13": 2981,
+          "2009-05-14": 2231,
+          "2009-05-15": 2452,
+          "2009-05-16": 2,
+          "2009-05-18": 523,
+          "2009-05-19": 6250,
+          "2009-05-20": 4328,
+          "2009-05-21": 3738,
+          "2009-05-22": 2662,
+          "2009-05-23": 1,
+          "2009-05-25": 2343,
+          "2009-05-26": 2453,
+          "2009-05-27": 3240,
+          "2009-05-28": 3462,
+          "2009-05-29": 5066,
+          "2009-05-30": 2,
+          "2009-06-01": 3149,
+          "2009-06-02": 3721,
+          "2009-06-03": 3566,
+          "2009-06-04": 3627,
+          "2009-06-05": 3138,
+          "2009-06-06": 3,
+          "2009-06-08": 3051,
+          "2009-06-09": 3550,
+          "2009-06-10": 2904,
+          "2009-06-11": 3107,
+          "2009-06-12": 2549,
+          "2009-06-15": 2451,
+          "2009-06-16": 3079,
+          "2009-06-17": 2661,
+          "2009-06-18": 2838,
+          "2009-06-19": 3586,
+          "2009-06-20": 1,
+          "2009-06-22": 2302,
+          "2009-06-23": 2782,
+          "2009-06-24": 2557,
+          "2009-06-25": 3370,
+          "2009-06-26": 2701,
+          "2009-06-27": 4,
+          "2009-06-29": 2362,
+          "2009-06-30": 3146
+        }
+      },
+      "report_minus_trade_calendar_days": {
+        "0": 132,
+        "1": 221398,
+        "2": 10222,
+        "3": 57134,
+        "4": 9474,
+        "5": 3022,
+        "6": 194,
+        "7": 78,
+        "8": 67,
+        "9": 24,
+        "10": 26,
+        "11": 48,
+        "12": 22,
+        "13": 19,
+        "14": 13,
+        "15": 14,
+        "16": 9,
+        "17": 5,
+        "18": 8,
+        "19": 12,
+        "20": 10,
+        "21": 8,
+        "22": 16,
+        "23": 3,
+        "24": 3,
+        "25": 5,
+        "26": 3,
+        "27": 24,
+        "28": 21,
+        "30": 1,
+        "33": 1,
+        "34": 1,
+        "38": 1,
+        "43": 1,
+        "51": 1,
+        "53": 10,
+        "55": 3,
+        "56": 3,
+        "57": 2,
+        "60": 1,
+        "62": 1,
+        "70": 8,
+        "71": 1,
+        "72": 1,
+        "73": 1,
+        "90": 10,
+        "104": 3,
+        "105": 8,
+        "109": 1,
+        "112": 4,
+        "143": 2,
+        "166": 1
+      },
+      "trimmed_code_counts": {
+        "TR_TYPE(*)": {
+          "10": 226,
+          "11": 11,
+          "12": 3,
+          "13": 273,
+          "14": 26,
+          "15": 104,
+          "16": 32,
+          "17": 2,
+          "01": 153317,
+          "04": 146709,
+          "08": 42,
+          "07": 998,
+          "02": 169,
+          "05": 34,
+          "09": 86,
+          "03": 43,
+          "06": 5
+        },
+        "RFDE_SE_REG_NUM": {
+          "1": 57328,
+          "23": 242091,
+          "99": 2661
+        },
+        "RFDE_STLD_CODE": {
+          "REG_DL_STLD_02": 1219,
+          "REG_DL_STLD_01": 296615,
+          "REG_DL_STLD_03": 2201,
+          "REG_DL_STLD_04": 2045
+        },
+        "RFDE_INSTR_TYPE": {
+          "REG_DL_INSTR_EQ": 300628,
+          "REG_DL_INSTR_PS": 198,
+          "REG_DL_INSTR_MD": 397,
+          "REG_DL_INSTR_EU": 830,
+          "REG_DL_INSTR_WR": 27
+        },
+        "RFDE_REASON_DLAY": {
+          "REG_DL_DLAY_P": 300790,
+          "REG_DL_DLAY_D": 1278,
+          "REG_DL_DLAY_S": 12
+        },
+        "RFDE_RPT_TYPE": {
+          "DL_RPT_TYPE_N": 302080
+        },
+        "RFDE_AMDMNT_REASON": {
+          "DL_AMDMNT_DEL_00": 302078,
+          "DL_AMDMNT_DEL_09": 2
+        }
+      },
+      "stored_numeric_sums": {
+        "RATE": "153425437.0232",
+        "QUANTITY": "23416218082.09",
+        "VALUE (in Rs)": "5024067199470.83"
+      },
+      "zero_numeric_rows": {
+        "RATE": 1731,
+        "VALUE (in Rs)": 1731,
+        "QUANTITY": 1
+      },
+      "negative_numeric_rows": {},
+      "fractional_numeric_rows": {
+        "RATE": 288769,
+        "VALUE (in Rs)": 224139,
+        "QUANTITY": 275
+      },
+      "rate_quantity_value": {
+        "nonzero_residual_rows": 118232,
+        "residual_over_one_paisa_rows": 0,
+        "max_absolute_residual_rupees": "0.009900"
+      }
+    },
+    {
+      "asset": "2009_2.zip",
+      "member": "2009_2.csv",
+      "bytes": 101508296,
+      "sha256": "039d13c630fb481b511b5338d4de44e9d56803565f6b3842bd2c81b99a9d73e4",
+      "records": 360072,
+      "blank_records": 0,
+      "parser": "Independent Node streaming state machine; fatal UTF-8 decoder; unzip exit status checked",
+      "header": [
+        "   ",
+        "RFDE_CUST_REG_NUM",
+        "RFDE_RPT_DT",
+        "RFDE_TXN_ID",
+        "FII",
+        "SUB_ACC",
+        "BRKER",
+        "SCRIP_NAME",
+        "ISIN",
+        "TR_DATE",
+        "TR_TYPE(*)",
+        "RFDE_SE_REG_NUM",
+        "RFDE_STLD_CODE",
+        "RATE",
+        "QUANTITY",
+        "VALUE (in Rs)",
+        "RFDE_INSTR_TYPE",
+        "RFDE_REASON_DLAY",
+        "RFDE_RPT_TYPE",
+        "RFDE_AMDMNT_REASON"
+      ],
+      "data_rows": 360071,
+      "field_count": 7201420,
+      "width_counts": {
+        "20": 360071
+      },
+      "ordinal_errors": 0,
+      "duplicate_trimmed_rows_excluding_ordinal": 0,
+      "custodian_transaction_key_repeats": 1,
+      "custodian_transaction_key_conflicting_rows": 1,
+      "invalid_isin_syntax_or_checksum_rows": 627,
+      "date_counts": {
+        "RFDE_RPT_DT": {
+          "2009-07-02": 2252,
+          "2009-07-03": 2443,
+          "2009-07-07": 3167,
+          "2009-07-08": 2398,
+          "2009-07-10": 2568,
+          "2009-07-17": 2795,
+          "2009-07-06": 2252,
+          "2009-07-09": 2908,
+          "2009-07-13": 2688,
+          "2009-07-14": 2367,
+          "2009-07-16": 2630,
+          "2009-07-21": 2520,
+          "2009-07-15": 2389,
+          "2009-07-20": 2825,
+          "2009-08-04": 2410,
+          "2009-12-29": 1863,
+          "2009-08-17": 2266,
+          "2009-07-22": 2531,
+          "2009-07-23": 3082,
+          "2009-07-24": 3377,
+          "2009-07-27": 3197,
+          "2009-07-29": 2809,
+          "2009-08-14": 2462,
+          "2009-09-08": 2496,
+          "2009-07-28": 2979,
+          "2009-07-31": 3519,
+          "2009-07-30": 2913,
+          "2009-08-19": 1732,
+          "2009-08-03": 5440,
+          "2009-08-07": 3272,
+          "2009-10-01": 3867,
+          "2009-10-08": 3095,
+          "2009-08-25": 2582,
+          "2009-08-10": 2497,
+          "2009-08-06": 2916,
+          "2009-08-05": 2536,
+          "2009-08-11": 2820,
+          "2009-08-12": 2643,
+          "2009-08-21": 2249,
+          "2009-09-07": 2142,
+          "2009-09-24": 3212,
+          "2009-08-13": 2783,
+          "2009-09-01": 3278,
+          "2009-08-26": 2366,
+          "2009-09-02": 2825,
+          "2009-08-31": 2303,
+          "2009-08-18": 2436,
+          "2009-08-27": 2492,
+          "2009-08-28": 2886,
+          "2009-08-20": 3097,
+          "2009-08-24": 2693,
+          "2009-09-10": 3400,
+          "2009-11-05": 3765,
+          "2009-10-12": 2802,
+          "2009-09-11": 3233,
+          "2009-09-17": 2571,
+          "2009-09-03": 2291,
+          "2009-09-04": 2393,
+          "2009-09-25": 4658,
+          "2009-09-16": 2689,
+          "2009-09-14": 3086,
+          "2009-09-15": 2104,
+          "2009-09-09": 3027,
+          "2009-09-22": 3588,
+          "2009-09-29": 2984,
+          "2009-10-05": 3257,
+          "2009-09-23": 2707,
+          "2009-10-07": 3943,
+          "2009-09-18": 3728,
+          "2009-09-26": 1,
+          "2009-09-30": 3386,
+          "2009-11-26": 2526,
+          "2009-10-06": 3873,
+          "2009-10-14": 2972,
+          "2009-10-16": 3257,
+          "2009-12-30": 2623,
+          "2009-10-29": 3042,
+          "2009-10-09": 3230,
+          "2009-10-28": 3379,
+          "2009-10-15": 3903,
+          "2009-10-21": 3593,
+          "2009-10-20": 3485,
+          "2009-10-22": 3343,
+          "2009-10-26": 2976,
+          "2009-10-30": 3459,
+          "2009-10-23": 3328,
+          "2009-11-13": 2477,
+          "2009-10-27": 2444,
+          "2009-11-03": 3921,
+          "2009-11-04": 2814,
+          "2009-11-10": 2626,
+          "2009-11-06": 2848,
+          "2009-11-09": 2875,
+          "2009-11-16": 2514,
+          "2009-11-11": 2820,
+          "2009-11-12": 2839,
+          "2009-12-02": 3425,
+          "2009-11-24": 2702,
+          "2009-11-27": 2897,
+          "2009-11-19": 3142,
+          "2009-11-18": 2787,
+          "2009-11-20": 3100,
+          "2009-11-23": 2392,
+          "2009-11-17": 2992,
+          "2009-11-30": 2324,
+          "2009-12-15": 2678,
+          "2009-11-25": 2826,
+          "2009-12-16": 2972,
+          "2010-01-19": 1,
+          "2009-12-07": 4459,
+          "2009-12-08": 2369,
+          "2009-12-31": 1781,
+          "2009-12-01": 4016,
+          "2009-12-03": 3049,
+          "2010-01-15": 1,
+          "2010-01-07": 5,
+          "2009-12-21": 3114,
+          "2009-12-04": 2588,
+          "2010-01-21": 1,
+          "2009-12-14": 3169,
+          "2009-12-09": 3084,
+          "2009-12-10": 2687,
+          "2010-01-04": 2261,
+          "2009-12-17": 2660,
+          "2009-12-18": 3079,
+          "2009-12-11": 3029,
+          "2010-01-05": 4,
+          "2009-12-24": 2352,
+          "2010-02-11": 1,
+          "2010-05-12": 1,
+          "2009-12-23": 2589,
+          "2009-12-22": 2477,
+          "2010-01-28": 1,
+          "2010-02-08": 4,
+          "2010-01-06": 2,
+          "2010-01-08": 1,
+          "2010-03-02": 1
+        },
+        "TR_DATE": {
+          "2009-07-01": 2295,
+          "2009-07-02": 2459,
+          "2009-07-03": 2257,
+          "2009-07-04": 5,
+          "2009-07-06": 3168,
+          "2009-07-07": 2386,
+          "2009-07-08": 2906,
+          "2009-07-09": 2561,
+          "2009-07-10": 2695,
+          "2009-07-13": 2351,
+          "2009-07-14": 2391,
+          "2009-07-15": 2621,
+          "2009-07-16": 2800,
+          "2009-07-17": 2817,
+          "2009-07-18": 10,
+          "2009-07-20": 2511,
+          "2009-07-21": 2538,
+          "2009-07-22": 3086,
+          "2009-07-23": 3385,
+          "2009-07-24": 3617,
+          "2009-07-25": 1,
+          "2009-07-27": 3026,
+          "2009-07-28": 2872,
+          "2009-07-29": 2917,
+          "2009-07-30": 3458,
+          "2009-07-31": 5008,
+          "2009-08-01": 4,
+          "2009-08-03": 2402,
+          "2009-08-04": 2591,
+          "2009-08-05": 2844,
+          "2009-08-06": 3320,
+          "2009-08-07": 2451,
+          "2009-08-08": 9,
+          "2009-08-10": 2814,
+          "2009-08-11": 2680,
+          "2009-08-12": 2788,
+          "2009-08-13": 2492,
+          "2009-08-14": 2265,
+          "2009-08-17": 2441,
+          "2009-08-18": 2234,
+          "2009-08-19": 2597,
+          "2009-08-20": 2280,
+          "2009-08-21": 2647,
+          "2009-08-22": 2,
+          "2009-08-24": 2601,
+          "2009-08-25": 2362,
+          "2009-08-26": 2512,
+          "2009-08-27": 2897,
+          "2009-08-28": 2297,
+          "2009-08-29": 2,
+          "2009-08-31": 3260,
+          "2009-09-01": 2767,
+          "2009-09-02": 2299,
+          "2009-09-03": 2398,
+          "2009-09-04": 2121,
+          "2009-09-07": 2493,
+          "2009-09-08": 3064,
+          "2009-09-09": 3357,
+          "2009-09-10": 3243,
+          "2009-09-11": 3092,
+          "2009-09-14": 2187,
+          "2009-09-15": 2699,
+          "2009-09-16": 2589,
+          "2009-09-17": 3774,
+          "2009-09-18": 3578,
+          "2009-09-21": 1,
+          "2009-09-22": 2690,
+          "2009-09-23": 3195,
+          "2009-09-24": 4559,
+          "2009-09-25": 3044,
+          "2009-09-26": 24,
+          "2009-09-29": 3374,
+          "2009-09-30": 3901,
+          "2009-10-01": 3346,
+          "2009-10-03": 197,
+          "2009-10-05": 3357,
+          "2009-10-06": 4036,
+          "2009-10-07": 3090,
+          "2009-10-08": 3244,
+          "2009-10-09": 2797,
+          "2009-10-12": 2979,
+          "2009-10-14": 3938,
+          "2009-10-15": 3226,
+          "2009-10-16": 3329,
+          "2009-10-17": 144,
+          "2009-10-19": 2,
+          "2009-10-20": 3634,
+          "2009-10-21": 3320,
+          "2009-10-22": 3323,
+          "2009-10-23": 2971,
+          "2009-10-26": 2466,
+          "2009-10-27": 3398,
+          "2009-10-28": 2941,
+          "2009-10-29": 3516,
+          "2009-10-30": 3913,
+          "2009-10-31": 18,
+          "2009-11-03": 3617,
+          "2009-11-04": 2944,
+          "2009-11-05": 2851,
+          "2009-11-06": 2858,
+          "2009-11-09": 2606,
+          "2009-11-10": 2817,
+          "2009-11-11": 2872,
+          "2009-11-12": 2454,
+          "2009-11-13": 2513,
+          "2009-11-16": 3018,
+          "2009-11-17": 2770,
+          "2009-11-18": 3202,
+          "2009-11-19": 3048,
+          "2009-11-20": 2361,
+          "2009-11-21": 29,
+          "2009-11-23": 2720,
+          "2009-11-24": 2826,
+          "2009-11-25": 2499,
+          "2009-11-26": 3077,
+          "2009-11-27": 2327,
+          "2009-11-30": 4031,
+          "2009-12-01": 3424,
+          "2009-12-02": 3025,
+          "2009-12-03": 2605,
+          "2009-12-04": 2516,
+          "2009-12-05": 1741,
+          "2009-12-07": 2369,
+          "2009-12-08": 3086,
+          "2009-12-09": 2698,
+          "2009-12-10": 3112,
+          "2009-12-11": 3013,
+          "2009-12-12": 104,
+          "2009-12-14": 2668,
+          "2009-12-15": 2969,
+          "2009-12-16": 2684,
+          "2009-12-17": 3165,
+          "2009-12-18": 2944,
+          "2009-12-19": 120,
+          "2009-12-21": 2475,
+          "2009-12-22": 2513,
+          "2009-12-23": 2354,
+          "2009-12-24": 1846,
+          "2009-12-25": 1,
+          "2009-12-26": 10,
+          "2009-12-29": 2604,
+          "2009-12-30": 1769,
+          "2009-12-31": 2249
+        }
+      },
+      "report_minus_trade_calendar_days": {
+        "0": 282,
+        "1": 273417,
+        "2": 7430,
+        "3": 55125,
+        "4": 19363,
+        "5": 2553,
+        "6": 254,
+        "7": 256,
+        "8": 119,
+        "9": 41,
+        "10": 421,
+        "11": 430,
+        "12": 38,
+        "13": 28,
+        "14": 17,
+        "15": 20,
+        "16": 13,
+        "17": 8,
+        "18": 4,
+        "19": 13,
+        "20": 12,
+        "21": 32,
+        "22": 18,
+        "23": 8,
+        "24": 1,
+        "25": 6,
+        "26": 5,
+        "27": 12,
+        "28": 43,
+        "29": 16,
+        "30": 5,
+        "31": 1,
+        "37": 2,
+        "38": 10,
+        "41": 4,
+        "42": 1,
+        "45": 1,
+        "48": 3,
+        "49": 2,
+        "53": 1,
+        "55": 2,
+        "56": 2,
+        "61": 2,
+        "64": 1,
+        "69": 2,
+        "73": 1,
+        "84": 7,
+        "96": 36,
+        "151": 1,
+        "172": 2
+      },
+      "trimmed_code_counts": {
+        "TR_TYPE(*)": {
+          "10": 295,
+          "11": 21,
+          "12": 1,
+          "13": 310,
+          "14": 29,
+          "15": 1598,
+          "16": 171,
+          "17": 5,
+          "01": 188854,
+          "04": 161187,
+          "02": 1632,
+          "09": 35,
+          "07": 5463,
+          "03": 328,
+          "05": 70,
+          "08": 66,
+          "06": 6
+        },
+        "RFDE_SE_REG_NUM": {
+          "1": 64294,
+          "23": 285608,
+          "99": 10169
+        },
+        "RFDE_STLD_CODE": {
+          "REG_DL_STLD_01": 345357,
+          "REG_DL_STLD_04": 9876,
+          "REG_DL_STLD_03": 2633,
+          "REG_DL_STLD_02": 2205
+        },
+        "RFDE_INSTR_TYPE": {
+          "REG_DL_INSTR_EQ": 355669,
+          "REG_DL_INSTR_MD": 633,
+          "REG_DL_INSTR_WR": 122,
+          "REG_DL_INSTR_EU": 3589,
+          "REG_DL_INSTR_PS": 58
+        },
+        "RFDE_REASON_DLAY": {
+          "REG_DL_DLAY_P": 358072,
+          "REG_DL_DLAY_D": 1977,
+          "REG_DL_DLAY_S": 22
+        },
+        "RFDE_RPT_TYPE": {
+          "DL_RPT_TYPE_N": 360071
+        },
+        "RFDE_AMDMNT_REASON": {
+          "DL_AMDMNT_DEL_00": 360071
+        }
+      },
+      "stored_numeric_sums": {
+        "RATE": "239797350.8498",
+        "QUANTITY": "25993761795.56",
+        "VALUE (in Rs)": "6552599974087.14"
+      },
+      "zero_numeric_rows": {
+        "RATE": 7876,
+        "VALUE (in Rs)": 7876
+      },
+      "negative_numeric_rows": {},
+      "fractional_numeric_rows": {
+        "RATE": 337540,
+        "VALUE (in Rs)": 266828,
+        "QUANTITY": 499
+      },
+      "rate_quantity_value": {
+        "nonzero_residual_rows": 138124,
+        "residual_over_one_paisa_rows": 0,
+        "max_absolute_residual_rupees": "0.009900"
+      }
+    },
+    {
+      "asset": "2014_4.zip",
+      "member": "apr_2014.csv",
+      "bytes": 21193681,
+      "sha256": "450d4823fb251ac6e315941c0034112e881a8070e65e59676d729df70b64cc7c",
+      "records": 75040,
+      "blank_records": 0,
+      "parser": "Independent Node streaming state machine; fatal UTF-8 decoder; unzip exit status checked",
+      "header": [
+        "   ",
+        "RFDE_CUST_REG_NUM",
+        "RFDE_RPT_DT",
+        "RFDE_TXN_ID",
+        "FII",
+        "SUB_ACC",
+        "BRKER",
+        "SCRIP_NAME",
+        "ISIN",
+        "TR_DATE",
+        "TR_TYPE(*)",
+        "RFDE_SE_REG_NUM",
+        "RFDE_STLD_CODE",
+        "RATE",
+        "QUANTITY",
+        "VALUE (in Rs)",
+        "RFDE_INSTR_TYPE",
+        "RFDE_REASON_DLAY",
+        "RFDE_RPT_TYPE",
+        "RFDE_AMDMNT_REASON"
+      ],
+      "data_rows": 75039,
+      "field_count": 1500780,
+      "width_counts": {
+        "20": 75039
+      },
+      "ordinal_errors": 0,
+      "duplicate_trimmed_rows_excluding_ordinal": 0,
+      "custodian_transaction_key_repeats": 1,
+      "custodian_transaction_key_conflicting_rows": 1,
+      "invalid_isin_syntax_or_checksum_rows": 23,
+      "date_counts": {
+        "RFDE_RPT_DT": {
+          "2014-04-02": 2,
+          "2014-04-03": 8569,
+          "2014-04-09": 4008,
+          "2014-04-04": 4745,
+          "2014-04-07": 3443,
+          "2014-04-15": 4500,
+          "2014-04-10": 6004,
+          "2014-04-11": 4858,
+          "2014-04-16": 4317,
+          "2014-04-17": 4127,
+          "2014-04-30": 3748,
+          "2014-04-21": 3337,
+          "2014-04-22": 2451,
+          "2014-04-25": 4538,
+          "2014-04-29": 3332,
+          "2014-05-21": 4,
+          "2014-04-23": 3471,
+          "2014-04-28": 4381,
+          "2014-05-08": 3,
+          "2014-05-09": 1,
+          "2014-05-02": 5187,
+          "2014-05-05": 13
+        },
+        "TR_DATE": {
+          "2014-04-01": 4149,
+          "2014-04-02": 4439,
+          "2014-04-03": 4717,
+          "2014-04-04": 3466,
+          "2014-04-07": 4002,
+          "2014-04-09": 6006,
+          "2014-04-10": 4865,
+          "2014-04-11": 4500,
+          "2014-04-15": 4376,
+          "2014-04-16": 4119,
+          "2014-04-17": 3337,
+          "2014-04-21": 2450,
+          "2014-04-22": 3471,
+          "2014-04-23": 4524,
+          "2014-04-25": 4407,
+          "2014-04-28": 3298,
+          "2014-04-29": 3478,
+          "2014-04-30": 5435
+        }
+      },
+      "report_minus_trade_calendar_days": {
+        "0": 328,
+        "1": 41063,
+        "2": 17866,
+        "3": 7814,
+        "4": 7828,
+        "5": 32,
+        "6": 28,
+        "7": 8,
+        "8": 4,
+        "10": 4,
+        "13": 1,
+        "14": 1,
+        "15": 53,
+        "16": 1,
+        "19": 4,
+        "35": 4
+      },
+      "trimmed_code_counts": {
+        "TR_TYPE(*)": {
+          "10": 116,
+          "13": 12,
+          "14": 2,
+          "15": 252,
+          "23": 21,
+          "01": 40288,
+          "04": 33790,
+          "08": 8,
+          "02": 29,
+          "07": 29,
+          "09": 1,
+          "05": 489,
+          "03": 2
+        },
+        "RFDE_SE_REG_NUM": {
+          "1": 12521,
+          "23": 61531,
+          "99": 987
+        },
+        "RFDE_STLD_CODE": {
+          "REG_DL_STLD_01": 73494,
+          "REG_DL_STLD_03": 403,
+          "REG_DL_STLD_02": 180,
+          "REG_DL_STLD_04": 962
+        },
+        "RFDE_INSTR_TYPE": {
+          "REG_DL_INSTR_EQ": 74327,
+          "REG_DL_INSTR_MD": 146,
+          "REG_DL_INSTR_ID": 74,
+          "REG_DL_INSTR_PS": 1,
+          "REG_DL_INSTR_RR": 23,
+          "REG_DL_INSTR_EU": 468
+        },
+        "RFDE_REASON_DLAY": {
+          "REG_DL_DLAY_P": 74941,
+          "REG_DL_DLAY_D": 72,
+          "REG_DL_DLAY_O": 26
+        },
+        "RFDE_RPT_TYPE": {
+          "DL_RPT_TYPE_N": 75039
+        },
+        "RFDE_AMDMNT_REASON": {
+          "DL_AMDMNT_DEL_00": 75034,
+          "DL_AMDMNT_DEL_15": 5
+        }
+      },
+      "stored_numeric_sums": {
+        "RATE": "62772598.3760",
+        "QUANTITY": "4358492304.91",
+        "VALUE (in Rs)": "1337953059823.98"
+      },
+      "zero_numeric_rows": {
+        "RATE": 576,
+        "VALUE (in Rs)": 576
+      },
+      "negative_numeric_rows": {},
+      "fractional_numeric_rows": {
+        "RATE": 70973,
+        "VALUE (in Rs)": 62592,
+        "QUANTITY": 121
+      },
+      "rate_quantity_value": {
+        "nonzero_residual_rows": 44561,
+        "residual_over_one_paisa_rows": 0,
+        "max_absolute_residual_rupees": "0.009900"
+      }
+    },
+    {
+      "asset": "2014_5.zip",
+      "member": "may_2014.csv",
+      "bytes": 29679449,
+      "sha256": "ae1f223b531d51a5d0939f0ad09bb9204162b16f5aa6b67dccf5ae5824402b7a",
+      "records": 104801,
+      "blank_records": 0,
+      "parser": "Independent Node streaming state machine; fatal UTF-8 decoder; unzip exit status checked",
+      "header": [
+        "   ",
+        "RFDE_CUST_REG_NUM",
+        "RFDE_RPT_DT",
+        "RFDE_TXN_ID",
+        "FII",
+        "SUB_ACC",
+        "BRKER",
+        "SCRIP_NAME",
+        "ISIN",
+        "TR_DATE",
+        "TR_TYPE(*)",
+        "RFDE_SE_REG_NUM",
+        "RFDE_STLD_CODE",
+        "RATE",
+        "QUANTITY",
+        "VALUE (in Rs)",
+        "RFDE_INSTR_TYPE",
+        "RFDE_REASON_DLAY",
+        "RFDE_RPT_TYPE",
+        "RFDE_AMDMNT_REASON"
+      ],
+      "data_rows": 104800,
+      "field_count": 2096000,
+      "width_counts": {
+        "20": 104800
+      },
+      "ordinal_errors": 0,
+      "duplicate_trimmed_rows_excluding_ordinal": 0,
+      "custodian_transaction_key_repeats": 0,
+      "custodian_transaction_key_conflicting_rows": 0,
+      "invalid_isin_syntax_or_checksum_rows": 0,
+      "date_counts": {
+        "RFDE_RPT_DT": {
+          "2014-05-02": 11,
+          "2014-05-05": 3326,
+          "2014-05-06": 2907,
+          "2014-05-07": 2573,
+          "2014-05-08": 3738,
+          "2014-05-09": 3775,
+          "2014-05-12": 4496,
+          "2014-05-13": 4320,
+          "2014-05-16": 4925,
+          "2014-05-19": 6529,
+          "2014-05-15": 9440,
+          "2014-05-26": 5643,
+          "2014-05-20": 6346,
+          "2014-05-21": 6031,
+          "2014-06-16": 1,
+          "2014-05-22": 5846,
+          "2014-05-23": 5787,
+          "2014-06-02": 9419,
+          "2014-05-28": 4538,
+          "2014-05-29": 5112,
+          "2014-05-27": 4857,
+          "2014-05-30": 5163,
+          "2014-06-03": 2,
+          "2014-06-04": 7,
+          "2014-06-05": 2,
+          "2014-06-09": 5,
+          "2014-06-23": 1
+        },
+        "TR_DATE": {
+          "2014-05-02": 3329,
+          "2014-05-05": 2919,
+          "2014-05-06": 2576,
+          "2014-05-07": 3742,
+          "2014-05-08": 3766,
+          "2014-05-09": 4500,
+          "2014-05-12": 4334,
+          "2014-05-13": 4773,
+          "2014-05-14": 4666,
+          "2014-05-15": 4936,
+          "2014-05-16": 6533,
+          "2014-05-19": 6341,
+          "2014-05-20": 6025,
+          "2014-05-21": 5851,
+          "2014-05-22": 5855,
+          "2014-05-23": 5544,
+          "2014-05-24": 28,
+          "2014-05-26": 4857,
+          "2014-05-27": 4535,
+          "2014-05-28": 5091,
+          "2014-05-29": 5168,
+          "2014-05-30": 9424,
+          "2014-05-31": 7
+        }
+      },
+      "report_minus_trade_calendar_days": {
+        "0": 55,
+        "1": 70426,
+        "2": 4851,
+        "3": 29302,
+        "4": 88,
+        "5": 35,
+        "6": 10,
+        "7": 7,
+        "8": 6,
+        "10": 7,
+        "11": 1,
+        "14": 10,
+        "24": 1,
+        "32": 1
+      },
+      "trimmed_code_counts": {
+        "TR_TYPE(*)": {
+          "10": 64,
+          "11": 23,
+          "13": 21,
+          "14": 1,
+          "15": 80,
+          "02": 102,
+          "03": 20,
+          "01": 59108,
+          "04": 45271,
+          "08": 20,
+          "05": 78,
+          "09": 9,
+          "07": 3
+        },
+        "RFDE_SE_REG_NUM": {
+          "1": 20260,
+          "23": 84136,
+          "99": 404
+        },
+        "RFDE_STLD_CODE": {
+          "REG_DL_STLD_04": 381,
+          "REG_DL_STLD_01": 102988,
+          "REG_DL_STLD_03": 1019,
+          "REG_DL_STLD_02": 412
+        },
+        "RFDE_INSTR_TYPE": {
+          "REG_DL_INSTR_EU": 146,
+          "REG_DL_INSTR_EQ": 104433,
+          "REG_DL_INSTR_ID": 99,
+          "REG_DL_INSTR_MD": 122
+        },
+        "RFDE_REASON_DLAY": {
+          "REG_DL_DLAY_P": 104636,
+          "REG_DL_DLAY_D": 164
+        },
+        "RFDE_RPT_TYPE": {
+          "DL_RPT_TYPE_N": 104800
+        },
+        "RFDE_AMDMNT_REASON": {
+          "DL_AMDMNT_DEL_00": 104791,
+          "DL_AMDMNT_DEL_15": 9
+        }
+      },
+      "stored_numeric_sums": {
+        "RATE": "88175255.1908",
+        "QUANTITY": "7255620970.24",
+        "VALUE (in Rs)": "2397007995290.17"
+      },
+      "zero_numeric_rows": {
+        "RATE": 167,
+        "VALUE (in Rs)": 167
+      },
+      "negative_numeric_rows": {},
+      "fractional_numeric_rows": {
+        "RATE": 98838,
+        "VALUE (in Rs)": 84890,
+        "QUANTITY": 101
+      },
+      "rate_quantity_value": {
+        "nonzero_residual_rows": 58299,
+        "residual_over_one_paisa_rows": 0,
+        "max_absolute_residual_rupees": "0.009900"
+      }
+    },
+    {
+      "asset": "2014_6.zip",
+      "member": "jun_2014.csv",
+      "bytes": 27755251,
+      "sha256": "56f373262b9ea5243198ce0ef9b78023ab44bf3308bea3a6507133349b96b82e",
+      "records": 98075,
+      "blank_records": 0,
+      "parser": "Independent Node streaming state machine; fatal UTF-8 decoder; unzip exit status checked",
+      "header": [
+        "   ",
+        "RFDE_CUST_REG_NUM",
+        "RFDE_RPT_DT",
+        "RFDE_TXN_ID",
+        "FII",
+        "SUB_ACC",
+        "BRKER",
+        "SCRIP_NAME",
+        "ISIN",
+        "TR_DATE",
+        "TR_TYPE(*)",
+        "RFDE_SE_REG_NUM",
+        "RFDE_STLD_CODE",
+        "RATE",
+        "QUANTITY",
+        "VALUE (in Rs)",
+        "RFDE_INSTR_TYPE",
+        "RFDE_REASON_DLAY",
+        "RFDE_RPT_TYPE",
+        "RFDE_AMDMNT_REASON"
+      ],
+      "data_rows": 98074,
+      "field_count": 1961480,
+      "width_counts": {
+        "20": 98074
+      },
+      "ordinal_errors": 0,
+      "duplicate_trimmed_rows_excluding_ordinal": 0,
+      "custodian_transaction_key_repeats": 1,
+      "custodian_transaction_key_conflicting_rows": 1,
+      "invalid_isin_syntax_or_checksum_rows": 3,
+      "date_counts": {
+        "RFDE_RPT_DT": {
+          "2014-06-03": 4017,
+          "2014-06-04": 5010,
+          "2014-06-05": 4588,
+          "2014-06-06": 5255,
+          "2014-06-09": 5265,
+          "2014-06-11": 5345,
+          "2014-06-12": 5718,
+          "2014-06-23": 4493,
+          "2014-06-24": 3839,
+          "2014-06-10": 5268,
+          "2014-06-13": 4988,
+          "2014-06-19": 4481,
+          "2014-06-16": 4836,
+          "2014-06-18": 4324,
+          "2014-06-17": 4430,
+          "2014-06-26": 4155,
+          "2014-06-20": 4267,
+          "2014-06-30": 4206,
+          "2014-07-04": 21,
+          "2014-06-25": 3750,
+          "2014-06-27": 4632,
+          "2014-07-08": 2,
+          "2014-07-02": 5167,
+          "2014-07-03": 12,
+          "2014-07-07": 4,
+          "2014-07-18": 1
+        },
+        "TR_DATE": {
+          "2014-06-02": 4033,
+          "2014-06-03": 5056,
+          "2014-06-04": 4589,
+          "2014-06-05": 5248,
+          "2014-06-06": 5215,
+          "2014-06-07": 13,
+          "2014-06-09": 5263,
+          "2014-06-10": 5384,
+          "2014-06-11": 5598,
+          "2014-06-12": 5050,
+          "2014-06-13": 4885,
+          "2014-06-16": 4442,
+          "2014-06-17": 4298,
+          "2014-06-18": 4492,
+          "2014-06-19": 4209,
+          "2014-06-20": 4522,
+          "2014-06-21": 20,
+          "2014-06-23": 3833,
+          "2014-06-24": 3737,
+          "2014-06-25": 4139,
+          "2014-06-26": 4659,
+          "2014-06-27": 4217,
+          "2014-06-28": 2,
+          "2014-06-30": 5170
+        }
+      },
+      "report_minus_trade_calendar_days": {
+        "0": 401,
+        "1": 73541,
+        "2": 5236,
+        "3": 18679,
+        "4": 47,
+        "5": 28,
+        "6": 33,
+        "7": 31,
+        "8": 31,
+        "9": 2,
+        "10": 21,
+        "11": 1,
+        "13": 3,
+        "14": 1,
+        "17": 1,
+        "19": 5,
+        "20": 12,
+        "21": 1
+      },
+      "trimmed_code_counts": {
+        "TR_TYPE(*)": {
+          "10": 26,
+          "11": 1,
+          "13": 89,
+          "14": 3,
+          "15": 336,
+          "16": 8,
+          "01": 52046,
+          "04": 44789,
+          "02": 222,
+          "08": 2,
+          "03": 97,
+          "05": 2,
+          "07": 439,
+          "09": 14
+        },
+        "RFDE_SE_REG_NUM": {
+          "1": 17069,
+          "23": 79622,
+          "99": 1383
+        },
+        "RFDE_STLD_CODE": {
+          "REG_DL_STLD_01": 95696,
+          "REG_DL_STLD_02": 438,
+          "REG_DL_STLD_03": 612,
+          "REG_DL_STLD_04": 1328
+        },
+        "RFDE_INSTR_TYPE": {
+          "REG_DL_INSTR_EQ": 97302,
+          "REG_DL_INSTR_MD": 111,
+          "REG_DL_INSTR_ID": 71,
+          "REG_DL_INSTR_EU": 590
+        },
+        "RFDE_REASON_DLAY": {
+          "REG_DL_DLAY_P": 97973,
+          "REG_DL_DLAY_O": 26,
+          "REG_DL_DLAY_D": 75
+        },
+        "RFDE_RPT_TYPE": {
+          "DL_RPT_TYPE_N": 98074
+        },
+        "RFDE_AMDMNT_REASON": {
+          "DL_AMDMNT_DEL_00": 98058,
+          "DL_AMDMNT_DEL_15": 16
+        }
+      },
+      "stored_numeric_sums": {
+        "RATE": "84698829.4145",
+        "QUANTITY": "6981796615.43",
+        "VALUE (in Rs)": "1965105704993.34"
+      },
+      "zero_numeric_rows": {
+        "RATE": 1122,
+        "VALUE (in Rs)": 1122
+      },
+      "negative_numeric_rows": {},
+      "fractional_numeric_rows": {
+        "RATE": 92394,
+        "VALUE (in Rs)": 80665,
+        "QUANTITY": 92
+      },
+      "rate_quantity_value": {
+        "nonzero_residual_rows": 56978,
+        "residual_over_one_paisa_rows": 0,
+        "max_absolute_residual_rupees": "0.009900"
+      }
+    },
+    {
+      "asset": "2014_8.zip",
+      "member": "aug_2014.csv",
+      "bytes": 22920418,
+      "sha256": "a788649bad994c466412639640bca5042ec536afebe19b3c54d882d12b004b45",
+      "records": 81250,
+      "blank_records": 0,
+      "parser": "Independent Node streaming state machine; fatal UTF-8 decoder; unzip exit status checked",
+      "header": [
+        "   ",
+        "RFDE_CUST_REG_NUM",
+        "RFDE_RPT_DT",
+        "RFDE_TXN_ID",
+        "FII",
+        "SUB_ACC",
+        "BRKER",
+        "SCRIP_NAME",
+        "ISIN",
+        "TR_DATE",
+        "TR_TYPE(*)",
+        "RFDE_SE_REG_NUM",
+        "RFDE_STLD_CODE",
+        "RATE",
+        "QUANTITY",
+        "VALUE (in Rs)",
+        "RFDE_INSTR_TYPE",
+        "RFDE_REASON_DLAY",
+        "RFDE_RPT_TYPE",
+        "RFDE_AMDMNT_REASON"
+      ],
+      "data_rows": 81249,
+      "field_count": 1624980,
+      "width_counts": {
+        "20": 81249
+      },
+      "ordinal_errors": 0,
+      "duplicate_trimmed_rows_excluding_ordinal": 0,
+      "custodian_transaction_key_repeats": 3,
+      "custodian_transaction_key_conflicting_rows": 3,
+      "invalid_isin_syntax_or_checksum_rows": 67,
+      "date_counts": {
+        "RFDE_RPT_DT": {
+          "2014-08-04": 4743,
+          "2014-08-05": 4061,
+          "2014-08-06": 3902,
+          "2014-08-07": 4070,
+          "2014-08-11": 3958,
+          "2014-08-14": 5049,
+          "2014-08-08": 3561,
+          "2014-08-12": 3448,
+          "2014-08-13": 4185,
+          "2014-08-27": 3879,
+          "2014-08-19": 9046,
+          "2014-08-20": 4902,
+          "2014-08-22": 3995,
+          "2014-09-03": 21,
+          "2014-08-21": 4377,
+          "2014-08-25": 3898,
+          "2014-08-26": 3341,
+          "2014-08-28": 4459,
+          "2014-09-01": 6335,
+          "2014-09-10": 2,
+          "2014-09-05": 5,
+          "2014-09-02": 9,
+          "2014-09-11": 3
+        },
+        "TR_DATE": {
+          "2014-08-01": 4763,
+          "2014-08-04": 4054,
+          "2014-08-05": 3900,
+          "2014-08-06": 4061,
+          "2014-08-07": 3578,
+          "2014-08-08": 3970,
+          "2014-08-11": 3444,
+          "2014-08-12": 4187,
+          "2014-08-13": 4995,
+          "2014-08-14": 4750,
+          "2014-08-18": 4333,
+          "2014-08-19": 4897,
+          "2014-08-20": 4399,
+          "2014-08-21": 4015,
+          "2014-08-22": 3895,
+          "2014-08-25": 3397,
+          "2014-08-26": 3877,
+          "2014-08-27": 4217,
+          "2014-08-28": 6517
+        }
+      },
+      "report_minus_trade_calendar_days": {
+        "0": 230,
+        "1": 57138,
+        "2": 29,
+        "3": 12658,
+        "4": 6360,
+        "5": 4746,
+        "6": 35,
+        "7": 20,
+        "8": 5,
+        "10": 3,
+        "11": 2,
+        "12": 2,
+        "13": 1,
+        "14": 14,
+        "15": 4,
+        "20": 2
+      },
+      "trimmed_code_counts": {
+        "TR_TYPE(*)": {
+          "10": 50,
+          "13": 46,
+          "14": 2,
+          "15": 230,
+          "16": 3,
+          "01": 45408,
+          "04": 35091,
+          "08": 4,
+          "07": 225,
+          "02": 136,
+          "03": 40,
+          "05": 14
+        },
+        "RFDE_SE_REG_NUM": {
+          "1": 13693,
+          "23": 66725,
+          "99": 831
+        },
+        "RFDE_STLD_CODE": {
+          "REG_DL_STLD_01": 78878,
+          "REG_DL_STLD_03": 1099,
+          "REG_DL_STLD_02": 461,
+          "REG_DL_STLD_04": 811
+        },
+        "RFDE_INSTR_TYPE": {
+          "REG_DL_INSTR_EQ": 80951,
+          "REG_DL_INSTR_ID": 58,
+          "REG_DL_INSTR_MD": 93,
+          "REG_DL_INSTR_EU": 77,
+          "REG_DL_INSTR_RR": 60,
+          "REG_DL_INSTR_FC": 10
+        },
+        "RFDE_REASON_DLAY": {
+          "REG_DL_DLAY_P": 81147,
+          "REG_DL_DLAY_O": 6,
+          "REG_DL_DLAY_D": 96
+        },
+        "RFDE_RPT_TYPE": {
+          "DL_RPT_TYPE_N": 81249
+        },
+        "RFDE_AMDMNT_REASON": {
+          "DL_AMDMNT_DEL_00": 81249
+        }
+      },
+      "stored_numeric_sums": {
+        "RATE": "74303018.7216",
+        "QUANTITY": "4309985712.68",
+        "VALUE (in Rs)": "1406210843655.13"
+      },
+      "zero_numeric_rows": {
+        "RATE": 668,
+        "VALUE (in Rs)": 668
+      },
+      "negative_numeric_rows": {},
+      "fractional_numeric_rows": {
+        "RATE": 76887,
+        "VALUE (in Rs)": 68912,
+        "QUANTITY": 74
+      },
+      "rate_quantity_value": {
+        "nonzero_residual_rows": 48980,
+        "residual_over_one_paisa_rows": 0,
+        "max_absolute_residual_rupees": "0.009900"
+      }
+    },
+    {
+      "asset": "2017_5.zip",
+      "member": "may_2017.csv",
+      "bytes": 38764697,
+      "sha256": "d6cabc543eff4754efc9fa7ca561363885b7d6098b67b079853b0926b4527a79",
+      "records": 135649,
+      "blank_records": 0,
+      "parser": "Independent Node streaming state machine; fatal UTF-8 decoder; unzip exit status checked",
+      "header": [
+        "   ",
+        "RFDE_CUST_REG_NUM",
+        "RFDE_RPT_DT",
+        "RFDE_TXN_ID",
+        "FII",
+        "SUB_ACC",
+        "BRKER",
+        "SCRIP_NAME",
+        "ISIN",
+        "TR_DATE",
+        "TR_TYPE(*)",
+        "RFDE_SE_REG_NUM",
+        "RFDE_STLD_CODE",
+        "RATE",
+        "QUANTITY",
+        "VALUE (in Rs)",
+        "RFDE_INSTR_TYPE",
+        "RFDE_REASON_DLAY",
+        "RFDE_RPT_TYPE",
+        "RFDE_AMDMNT_REASON"
+      ],
+      "data_rows": 135648,
+      "field_count": 2712960,
+      "width_counts": {
+        "20": 135648
+      },
+      "ordinal_errors": 0,
+      "duplicate_trimmed_rows_excluding_ordinal": 0,
+      "custodian_transaction_key_repeats": 0,
+      "custodian_transaction_key_conflicting_rows": 0,
+      "invalid_isin_syntax_or_checksum_rows": 2,
+      "date_counts": {
+        "RFDE_RPT_DT": {
+          "2017-05-03": 7198,
+          "2017-05-04": 5512,
+          "2017-05-05": 7088,
+          "2017-05-12": 6031,
+          "2017-06-16": 56,
+          "2017-05-08": 5170,
+          "2017-05-09": 4944,
+          "2017-05-11": 11376,
+          "2017-05-23": 5058,
+          "2017-05-24": 6405,
+          "2017-05-29": 6031,
+          "2017-05-15": 5498,
+          "2017-05-17": 6655,
+          "2017-05-19": 5496,
+          "2017-05-16": 5791,
+          "2017-05-18": 5991,
+          "2017-08-21": 3,
+          "2017-05-22": 5660,
+          "2017-06-23": 14,
+          "2017-05-26": 6540,
+          "2017-05-25": 5898,
+          "2017-05-30": 4420,
+          "2017-05-31": 4164,
+          "2017-06-01": 14595,
+          "2017-06-08": 35,
+          "2017-06-19": 1,
+          "2017-06-02": 13,
+          "2017-06-05": 2,
+          "2017-06-07": 3
+        },
+        "TR_DATE": {
+          "2017-05-02": 7204,
+          "2017-05-03": 5512,
+          "2017-05-04": 7081,
+          "2017-05-05": 5358,
+          "2017-05-06": 8,
+          "2017-05-08": 4759,
+          "2017-05-09": 5253,
+          "2017-05-10": 6057,
+          "2017-05-11": 6103,
+          "2017-05-12": 5485,
+          "2017-05-13": 3,
+          "2017-05-15": 5436,
+          "2017-05-16": 7123,
+          "2017-05-17": 6096,
+          "2017-05-18": 5564,
+          "2017-05-19": 5386,
+          "2017-05-20": 10,
+          "2017-05-22": 4917,
+          "2017-05-23": 6389,
+          "2017-05-24": 6061,
+          "2017-05-25": 6886,
+          "2017-05-26": 5689,
+          "2017-05-29": 4507,
+          "2017-05-30": 4154,
+          "2017-05-31": 14607
+        }
+      },
+      "report_minus_trade_calendar_days": {
+        "0": 793,
+        "1": 106896,
+        "2": 5299,
+        "3": 21707,
+        "4": 593,
+        "5": 120,
+        "6": 105,
+        "7": 11,
+        "8": 10,
+        "9": 1,
+        "10": 1,
+        "14": 35,
+        "15": 2,
+        "18": 54,
+        "19": 1,
+        "24": 1,
+        "29": 1,
+        "34": 10,
+        "39": 3,
+        "44": 2,
+        "89": 2,
+        "101": 1
+      },
+      "trimmed_code_counts": {
+        "TR_TYPE(*)": {
+          "10": 14,
+          "13": 21,
+          "14": 3,
+          "15": 622,
+          "16": 337,
+          "04": 59089,
+          "01": 74104,
+          "02": 341,
+          "03": 94,
+          "07": 804,
+          "05": 214,
+          "08": 5
+        },
+        "RFDE_SE_REG_NUM": {
+          "1": 21681,
+          "23": 111231,
+          "99": 2736
+        },
+        "RFDE_STLD_CODE": {
+          "REG_DL_STLD_01": 131461,
+          "REG_DL_STLD_04": 2687,
+          "REG_DL_STLD_03": 947,
+          "REG_DL_STLD_02": 553
+        },
+        "RFDE_INSTR_TYPE": {
+          "REG_DL_INSTR_EQ": 134418,
+          "REG_DL_INSTR_EU": 1135,
+          "REG_DL_INSTR_MD": 67,
+          "REG_DL_INSTR_WR": 4,
+          "REG_DL_INSTR_OE": 2,
+          "REG_DL_INSTR_PS": 6,
+          "REG_DL_INSTR_ID": 16
+        },
+        "RFDE_REASON_DLAY": {
+          "REG_DL_DLAY_P": 135395,
+          "REG_DL_DLAY_D": 59,
+          "REG_DL_DLAY_O": 194
+        },
+        "RFDE_RPT_TYPE": {
+          "DL_RPT_TYPE_N": 135648
+        },
+        "RFDE_AMDMNT_REASON": {
+          "DL_AMDMNT_DEL_00": 135648
+        }
+      },
+      "stored_numeric_sums": {
+        "RATE": "160430252.0923",
+        "QUANTITY": "8224849394.58",
+        "VALUE (in Rs)": "2498951068097.07"
+      },
+      "zero_numeric_rows": {
+        "RATE": 2402,
+        "VALUE (in Rs)": 2402
+      },
+      "negative_numeric_rows": {},
+      "fractional_numeric_rows": {
+        "RATE": 129463,
+        "VALUE (in Rs)": 120180,
+        "QUANTITY": 57
+      },
+      "rate_quantity_value": {
+        "nonzero_residual_rows": 89143,
+        "residual_over_one_paisa_rows": 0,
+        "max_absolute_residual_rupees": "0.009900"
+      }
+    },
+    {
+      "asset": "2021_03.zip",
+      "member": "Mar_2021.csv",
+      "bytes": 36983876,
+      "sha256": "6a2a11d054caa26eb9f346b9e1af88bb64fd66ffe598062c1d49eeedd82a2dd3",
+      "records": 161296,
+      "blank_records": 0,
+      "parser": "Independent Node streaming state machine; fatal UTF-8 decoder; unzip exit status checked",
+      "header": [
+        "RFDE_CUST_REG_NUM",
+        "RFDE_RPT_DT",
+        "RFDE_TXN_ID",
+        "FII",
+        "SUB_ACC",
+        "BRKER",
+        "SCRIP_NAME",
+        "ISIN",
+        "TR_DATE",
+        "TR_TYPE(*)",
+        "RFDE_SE_REG_NUM",
+        "RFDE_STLD_CODE",
+        "RATE",
+        "QUANTITY",
+        "VALUE (in Rs)",
+        "RFDE_INSTR_TYPE",
+        "RFDE_REASON_DLAY",
+        "RFDE_RPT_TYPE",
+        "RFDE_AMDMNT_REASON"
+      ],
+      "data_rows": 161295,
+      "field_count": 3064605,
+      "width_counts": {
+        "19": 161295
+      },
+      "ordinal_errors": 0,
+      "duplicate_trimmed_rows_excluding_ordinal": 0,
+      "custodian_transaction_key_repeats": 0,
+      "custodian_transaction_key_conflicting_rows": 0,
+      "invalid_isin_syntax_or_checksum_rows": 1,
+      "date_counts": {
+        "RFDE_RPT_DT": {
+          "2021-03-01": 2,
+          "2021-03-02": 4440,
+          "2021-03-03": 5048,
+          "2021-03-04": 13420,
+          "2021-03-05": 7633,
+          "2021-03-08": 7425,
+          "2021-03-09": 7037,
+          "2021-03-10": 8553,
+          "2021-03-12": 8448,
+          "2021-03-15": 8213,
+          "2021-03-16": 6196,
+          "2021-03-17": 7548,
+          "2021-03-18": 6907,
+          "2021-03-19": 6643,
+          "2021-03-22": 13325,
+          "2021-03-23": 6320,
+          "2021-03-24": 6656,
+          "2021-03-25": 5872,
+          "2021-03-26": 6962,
+          "2021-03-30": 5822,
+          "2021-03-31": 10696,
+          "2021-04-05": 8103,
+          "2021-04-06": 23,
+          "2021-04-07": 3
+        },
+        "TR_DATE": {
+          "2021-03-01": 6015,
+          "2021-03-02": 8017,
+          "2021-03-03": 8898,
+          "2021-03-04": 7590,
+          "2021-03-05": 7456,
+          "2021-03-08": 7032,
+          "2021-03-09": 8555,
+          "2021-03-10": 8442,
+          "2021-03-12": 8221,
+          "2021-03-15": 6231,
+          "2021-03-16": 7473,
+          "2021-03-17": 7080,
+          "2021-03-18": 6670,
+          "2021-03-19": 12852,
+          "2021-03-22": 6354,
+          "2021-03-20": 287,
+          "2021-03-23": 6648,
+          "2021-03-24": 5868,
+          "2021-03-25": 6985,
+          "2021-03-26": 5784,
+          "2021-03-30": 10690,
+          "2021-03-31": 8147
+        }
+      },
+      "report_minus_trade_calendar_days": {
+        "0": 292,
+        "1": 105010,
+        "2": 11817,
+        "3": 30018,
+        "4": 5778,
+        "5": 8309,
+        "6": 54,
+        "7": 17
+      },
+      "trimmed_code_counts": {
+        "TR_TYPE(*)": {
+          "1": 86666,
+          "2": 441,
+          "3": 128,
+          "4": 72921,
+          "5": 39,
+          "7": 462,
+          "8": 6,
+          "10": 27,
+          "11": 103,
+          "12": 25,
+          "13": 19,
+          "14": 5,
+          "15": 453
+        },
+        "RFDE_SE_REG_NUM": {
+          "1": 13050,
+          "23": 145907,
+          "25": 1,
+          "99": 2337
+        },
+        "RFDE_STLD_CODE": {
+          "REG_DL_STLD_04": 2288,
+          "REG_DL_STLD_01": 157726,
+          "REG_DL_STLD_02": 518,
+          "REG_DL_STLD_03": 763
+        },
+        "RFDE_INSTR_TYPE": {
+          "REG_DL_INSTR_EQ": 160567,
+          "REG_DL_INSTR_EU": 663,
+          "REG_DL_INSTR_MD": 61,
+          "REG_DL_INSTR_PS": 2,
+          "REG_DL_INSTR_RR": 2
+        },
+        "RFDE_REASON_DLAY": {
+          "REG_DL_DLAY_P": 160479,
+          "REG_DL_DLAY_D": 748,
+          "REG_DL_DLAY_O": 68
+        },
+        "RFDE_RPT_TYPE": {
+          "DL_RPT_TYPE_N": 161295
+        },
+        "RFDE_AMDMNT_REASON": {
+          "DL_AMDMNT_DEL_00": 161294,
+          "DL_AMDMNT_DEL_15": 1
+        }
+      },
+      "stored_numeric_sums": {
+        "RATE": "333678744.0291",
+        "QUANTITY": "9775984098.68",
+        "VALUE (in Rs)": "3860964370706.10"
+      },
+      "zero_numeric_rows": {
+        "RATE": 1730,
+        "VALUE (in Rs)": 1730
+      },
+      "negative_numeric_rows": {},
+      "fractional_numeric_rows": {
+        "RATE": 156376,
+        "VALUE (in Rs)": 147225,
+        "QUANTITY": 47
+      },
+      "rate_quantity_value": {
+        "nonzero_residual_rows": 124863,
+        "residual_over_one_paisa_rows": 5103,
+        "max_absolute_residual_rupees": "0.50"
+      }
+    },
+    {
+      "asset": "Jun_2023.zip",
+      "member": "June 2023.csv",
+      "bytes": 57489245,
+      "sha256": "5c04093b2196a95852f7101d6a51fa67d41e142261d1275e72c6c8b7656beaf8",
+      "records": 231626,
+      "blank_records": 0,
+      "parser": "Independent Node streaming state machine; fatal UTF-8 decoder; unzip exit status checked",
+      "header": [
+        "RFDE_CUST_REG_NUM",
+        "RFDE_RPT_DT",
+        "RFDE_TXN_ID",
+        "FII",
+        "SUB_ACC",
+        "BRKER",
+        "SCRIP_NAME",
+        "ISIN",
+        "TR_DATE",
+        "TR_TYPE(*)",
+        "RFDE_SE_REG_NUM",
+        "RFDE_STLD_CODE",
+        "RATE",
+        "QUANTITY",
+        "VALUE (in Rs)",
+        "RFDE_INSTR_TYPE",
+        "RFDE_REASON_DLAY",
+        "RFDE_RPT_TYPE",
+        "RFDE_AMDMNT_REASON"
+      ],
+      "data_rows": 231625,
+      "field_count": 4400875,
+      "width_counts": {
+        "19": 231625
+      },
+      "ordinal_errors": 0,
+      "duplicate_trimmed_rows_excluding_ordinal": 0,
+      "custodian_transaction_key_repeats": 0,
+      "custodian_transaction_key_conflicting_rows": 0,
+      "invalid_isin_syntax_or_checksum_rows": 2,
+      "date_counts": {
+        "RFDE_RPT_DT": {
+          "2023-06-01": 1,
+          "2023-06-02": 11405,
+          "2023-06-05": 10828,
+          "2023-06-06": 10602,
+          "2023-06-07": 9618,
+          "2023-06-08": 12587,
+          "2023-06-09": 10281,
+          "2023-06-12": 10657,
+          "2023-06-13": 9704,
+          "2023-06-14": 10806,
+          "2023-06-15": 11416,
+          "2023-06-16": 11792,
+          "2023-06-19": 14103,
+          "2023-06-20": 9112,
+          "2023-06-21": 10413,
+          "2023-06-22": 12009,
+          "2023-06-23": 9765,
+          "2023-06-26": 10612,
+          "2023-06-27": 11970,
+          "2023-06-28": 10746,
+          "2023-06-30": 11040,
+          "2023-07-03": 12093,
+          "2023-07-04": 65
+        },
+        "TR_DATE": {
+          "2023-06-01": 11393,
+          "2023-06-02": 10800,
+          "2023-06-05": 10621,
+          "2023-06-06": 9643,
+          "2023-06-07": 12590,
+          "2023-06-08": 10280,
+          "2023-06-09": 10690,
+          "2023-06-12": 9632,
+          "2023-06-10": 39,
+          "2023-06-13": 10813,
+          "2023-06-14": 11920,
+          "2023-06-15": 10507,
+          "2023-06-16": 15053,
+          "2023-06-19": 8974,
+          "2023-06-17": 6,
+          "2023-06-20": 10449,
+          "2023-06-21": 12043,
+          "2023-06-22": 9687,
+          "2023-06-23": 10427,
+          "2023-06-26": 12011,
+          "2023-06-27": 10856,
+          "2023-06-28": 11270,
+          "2023-06-30": 11921
+        }
+      },
+      "report_minus_trade_calendar_days": {
+        "0": 1561,
+        "1": 159892,
+        "2": 11702,
+        "3": 57732,
+        "4": 302,
+        "5": 319,
+        "6": 62,
+        "7": 55
+      },
+      "trimmed_code_counts": {
+        "TR_TYPE(*)": {
+          "11": 103,
+          "13": 7,
+          "14": 10,
+          "15": 1749,
+          "16": 2,
+          "02": 169,
+          "04": 105410,
+          "01": 121488,
+          "07": 2652,
+          "08": 16,
+          "03": 15,
+          "05": 4
+        },
+        "RFDE_SE_REG_NUM": {
+          "1": 40717,
+          "23": 186138,
+          "99": 4770
+        },
+        "RFDE_STLD_CODE": {
+          "REG_DL_STLD_04": 4667,
+          "REG_DL_STLD_01": 224969,
+          "REG_DL_STLD_03": 1736,
+          "REG_DL_STLD_02": 253
+        },
+        "RFDE_INSTR_TYPE": {
+          "REG_DL_INSTR_EQ": 230010,
+          "REG_DL_INSTR_EU": 1548,
+          "REG_DL_INSTR_MD": 60,
+          "REG_DL_INSTR_ME": 4,
+          "REG_DL_INSTR_WR": 2,
+          "REG_DL_INSTR_PS": 1
+        },
+        "RFDE_REASON_DLAY": {
+          "REG_DL_DLAY_P": 227774,
+          "REG_DL_DLAY_O": 3317,
+          "REG_DL_DLAY_D": 534
+        },
+        "RFDE_RPT_TYPE": {
+          "DL_RPT_TYPE_N": 231625
+        },
+        "RFDE_AMDMNT_REASON": {
+          "DL_AMDMNT_DEL_00": 231616,
+          "DL_AMDMNT_DEL_15": 9
+        }
+      },
+      "stored_numeric_sums": {
+        "RATE": "391961216.0661",
+        "QUANTITY": "9984680807.28",
+        "VALUE (in Rs)": "4296452710922.99"
+      },
+      "zero_numeric_rows": {
+        "RATE": 4447,
+        "VALUE (in Rs)": 4447
+      },
+      "negative_numeric_rows": {},
+      "fractional_numeric_rows": {
+        "RATE": 221204,
+        "VALUE (in Rs)": 211477,
+        "QUANTITY": 53
+      },
+      "rate_quantity_value": {
+        "nonzero_residual_rows": 181686,
+        "residual_over_one_paisa_rows": 0,
+        "max_absolute_residual_rupees": "0.005000"
+      }
+    },
+    {
+      "asset": "Sep_2023.zip",
+      "member": "Sept 2023.csv",
+      "bytes": 70905361,
+      "sha256": "492775b463c455c461dc24295e4ff905076a3ea51f7293a5d9e894c8207e7911",
+      "records": 283835,
+      "blank_records": 0,
+      "parser": "Independent Node streaming state machine; fatal UTF-8 decoder; unzip exit status checked",
+      "header": [
+        "RFDE_CUST_REG_NUM",
+        "RFDE_RPT_DT",
+        "RFDE_TXN_ID",
+        "FII",
+        "SUB_ACC",
+        "BRKER",
+        "SCRIP_NAME",
+        "ISIN",
+        "TR_DATE",
+        "TR_TYPE(*)",
+        "RFDE_SE_REG_NUM",
+        "RFDE_STLD_CODE",
+        "RATE",
+        "QUANTITY",
+        "VALUE (in Rs)",
+        "RFDE_INSTR_TYPE",
+        "RFDE_REASON_DLAY",
+        "RFDE_RPT_TYPE",
+        "RFDE_AMDMNT_REASON"
+      ],
+      "data_rows": 283834,
+      "field_count": 5392846,
+      "width_counts": {
+        "19": 283834
+      },
+      "ordinal_errors": 0,
+      "duplicate_trimmed_rows_excluding_ordinal": 0,
+      "custodian_transaction_key_repeats": 0,
+      "custodian_transaction_key_conflicting_rows": 0,
+      "invalid_isin_syntax_or_checksum_rows": 1,
+      "date_counts": {
+        "RFDE_RPT_DT": {
+          "2023-09-04": 11354,
+          "2023-09-05": 11472,
+          "2023-09-06": 11796,
+          "2023-09-07": 13686,
+          "2023-09-08": 13758,
+          "2023-09-11": 13921,
+          "2023-09-12": 14729,
+          "2023-09-13": 17135,
+          "2023-09-14": 16019,
+          "2023-09-15": 12003,
+          "2023-09-18": 22499,
+          "2023-09-20": 11270,
+          "2023-09-21": 14707,
+          "2023-09-22": 13430,
+          "2023-09-25": 14307,
+          "2023-09-26": 12270,
+          "2023-09-27": 13740,
+          "2023-09-28": 12632,
+          "2023-09-29": 48,
+          "2023-10-03": 32956,
+          "2023-10-04": 100,
+          "2023-10-05": 2
+        },
+        "TR_DATE": {
+          "2023-09-01": 11407,
+          "2023-09-04": 11405,
+          "2023-09-05": 11835,
+          "2023-09-02": 5,
+          "2023-09-06": 13660,
+          "2023-09-07": 13758,
+          "2023-09-08": 13922,
+          "2023-09-11": 14675,
+          "2023-09-12": 17146,
+          "2023-09-09": 30,
+          "2023-09-13": 16011,
+          "2023-09-14": 12047,
+          "2023-09-15": 22468,
+          "2023-09-16": 134,
+          "2023-09-18": 11056,
+          "2023-09-20": 14767,
+          "2023-09-21": 13455,
+          "2023-09-22": 14169,
+          "2023-09-25": 12508,
+          "2023-09-26": 13750,
+          "2023-09-27": 13536,
+          "2023-09-28": 16807,
+          "2023-09-29": 14314,
+          "2023-09-30": 969
+        }
+      },
+      "report_minus_trade_calendar_days": {
+        "0": 1151,
+        "1": 176318,
+        "2": 11146,
+        "3": 62794,
+        "4": 14463,
+        "5": 16145,
+        "6": 1786,
+        "7": 31
+      },
+      "trimmed_code_counts": {
+        "TR_TYPE(*)": {
+          "10": 8,
+          "11": 663,
+          "13": 7,
+          "14": 5,
+          "15": 2199,
+          "16": 14,
+          "17": 4,
+          "04": 141130,
+          "02": 681,
+          "01": 135036,
+          "07": 3989,
+          "03": 21,
+          "05": 6,
+          "08": 5,
+          "09": 66
+        },
+        "RFDE_SE_REG_NUM": {
+          "1": 60638,
+          "23": 215814,
+          "99": 7382
+        },
+        "RFDE_STLD_CODE": {
+          "REG_DL_STLD_04": 7547,
+          "REG_DL_STLD_02": 313,
+          "REG_DL_STLD_01": 274615,
+          "REG_DL_STLD_03": 1359
+        },
+        "RFDE_INSTR_TYPE": {
+          "REG_DL_INSTR_EQ": 280286,
+          "REG_DL_INSTR_MD": 38,
+          "REG_DL_INSTR_EU": 3491,
+          "REG_DL_INSTR_WR": 5,
+          "REG_DL_INSTR_ME": 11,
+          "REG_DL_INSTR_PS": 3
+        },
+        "RFDE_REASON_DLAY": {
+          "REG_DL_DLAY_P": 278183,
+          "REG_DL_DLAY_D": 5606,
+          "REG_DL_DLAY_O": 45
+        },
+        "RFDE_RPT_TYPE": {
+          "DL_RPT_TYPE_N": 283834
+        },
+        "RFDE_AMDMNT_REASON": {
+          "DL_AMDMNT_DEL_00": 283834
+        }
+      },
+      "stored_numeric_sums": {
+        "RATE": "478311650.1659",
+        "QUANTITY": "14345200508.90",
+        "VALUE (in Rs)": "4836312168131.48"
+      },
+      "zero_numeric_rows": {
+        "RATE": 6254,
+        "VALUE (in Rs)": 6254
+      },
+      "negative_numeric_rows": {},
+      "fractional_numeric_rows": {
+        "RATE": 270181,
+        "VALUE (in Rs)": 258880,
+        "QUANTITY": 23
+      },
+      "rate_quantity_value": {
+        "nonzero_residual_rows": 222853,
+        "residual_over_one_paisa_rows": 0,
+        "max_absolute_residual_rupees": "0.005000"
+      }
+    },
+    {
+      "asset": "Nov_2023.zip",
+      "member": "Nov 2023.csv",
+      "bytes": 59967102,
+      "sha256": "e4a355938cfb71294b7f47c43b07c0259b43de92561f61e4d989794ddd4367b0",
+      "records": 240284,
+      "blank_records": 0,
+      "parser": "Independent Node streaming state machine; fatal UTF-8 decoder; unzip exit status checked",
+      "header": [
+        "RFDE_CUST_REG_NUM",
+        "RFDE_RPT_DT",
+        "RFDE_TXN_ID",
+        "FII",
+        "SUB_ACC",
+        "BRKER",
+        "SCRIP_NAME",
+        "ISIN",
+        "TR_DATE",
+        "TR_TYPE(*)",
+        "RFDE_SE_REG_NUM",
+        "RFDE_STLD_CODE",
+        "RATE",
+        "QUANTITY",
+        "VALUE (in Rs)",
+        "RFDE_INSTR_TYPE",
+        "RFDE_REASON_DLAY",
+        "RFDE_RPT_TYPE",
+        "RFDE_AMDMNT_REASON"
+      ],
+      "data_rows": 240283,
+      "field_count": 4565377,
+      "width_counts": {
+        "19": 240283
+      },
+      "ordinal_errors": 0,
+      "duplicate_trimmed_rows_excluding_ordinal": 0,
+      "custodian_transaction_key_repeats": 0,
+      "custodian_transaction_key_conflicting_rows": 0,
+      "invalid_isin_syntax_or_checksum_rows": 0,
+      "date_counts": {
+        "RFDE_RPT_DT": {
+          "2023-11-03": 759,
+          "2023-11-06": 1020,
+          "2023-11-07": 1307,
+          "2023-11-08": 2765,
+          "2023-11-09": 1837,
+          "2023-11-10": 35390,
+          "2023-11-11": 8130,
+          "2023-11-13": 11198,
+          "2023-11-15": 10310,
+          "2023-11-16": 17425,
+          "2023-11-17": 15202,
+          "2023-11-20": 12622,
+          "2023-11-21": 12459,
+          "2023-11-22": 13790,
+          "2023-11-23": 12259,
+          "2023-11-24": 10374,
+          "2023-11-28": 3754,
+          "2023-11-29": 5321,
+          "2023-11-30": 28324,
+          "2023-12-01": 35986,
+          "2023-12-04": 39,
+          "2023-12-05": 6,
+          "2023-12-06": 5,
+          "2023-12-07": 1
+        },
+        "TR_DATE": {
+          "2023-11-02": 1078,
+          "2023-11-03": 6335,
+          "2023-11-06": 6981,
+          "2023-11-01": 282,
+          "2023-11-07": 12499,
+          "2023-11-08": 11527,
+          "2023-11-09": 12500,
+          "2023-11-10": 11041,
+          "2023-11-04": 12,
+          "2023-11-12": 54,
+          "2023-11-13": 10410,
+          "2023-11-15": 17424,
+          "2023-11-16": 15190,
+          "2023-11-17": 12629,
+          "2023-11-18": 3,
+          "2023-11-20": 12461,
+          "2023-11-21": 13803,
+          "2023-11-22": 12282,
+          "2023-11-23": 10339,
+          "2023-11-24": 9853,
+          "2023-11-28": 14287,
+          "2023-11-29": 13474,
+          "2023-11-30": 35819
+        }
+      },
+      "report_minus_trade_calendar_days": {
+        "0": 141,
+        "1": 151264,
+        "2": 29208,
+        "3": 35226,
+        "4": 12436,
+        "5": 490,
+        "6": 6368,
+        "7": 5150
+      },
+      "trimmed_code_counts": {
+        "TR_TYPE(*)": {
+          "10": 1,
+          "13": 3,
+          "15": 194,
+          "16": 8,
+          "04": 114243,
+          "01": 125019,
+          "02": 688,
+          "03": 62,
+          "07": 57,
+          "08": 4,
+          "05": 4
+        },
+        "RFDE_SE_REG_NUM": {
+          "1": 48230,
+          "23": 191041,
+          "99": 1012
+        },
+        "RFDE_STLD_CODE": {
+          "REG_DL_STLD_01": 236721,
+          "REG_DL_STLD_02": 306,
+          "REG_DL_STLD_04": 958,
+          "REG_DL_STLD_03": 2298
+        },
+        "RFDE_INSTR_TYPE": {
+          "REG_DL_INSTR_EQ": 239705,
+          "REG_DL_INSTR_MD": 30,
+          "REG_DL_INSTR_EU": 548
+        },
+        "RFDE_REASON_DLAY": {
+          "REG_DL_DLAY_P": 237120,
+          "REG_DL_DLAY_D": 3150,
+          "REG_DL_DLAY_O": 13
+        },
+        "RFDE_RPT_TYPE": {
+          "DL_RPT_TYPE_N": 240283
+        },
+        "RFDE_AMDMNT_REASON": {
+          "DL_AMDMNT_DEL_00": 240283
+        }
+      },
+      "stored_numeric_sums": {
+        "RATE": "416968277.6402",
+        "QUANTITY": "12007745233.93",
+        "VALUE (in Rs)": "4401341974998.79"
+      },
+      "zero_numeric_rows": {
+        "RATE": 405,
+        "VALUE (in Rs)": 405
+      },
+      "negative_numeric_rows": {},
+      "fractional_numeric_rows": {
+        "RATE": 234861,
+        "VALUE (in Rs)": 225665,
+        "QUANTITY": 12
+      },
+      "rate_quantity_value": {
+        "nonzero_residual_rows": 197841,
+        "residual_over_one_paisa_rows": 0,
+        "max_absolute_residual_rupees": "0.005000"
+      }
+    }
+  ],
+  "november_comparison": {
+    "bytes": 54174058,
+    "sha256": "9b3ad7c1585cb08bdc238959d485f9c9de9577b21e8a4de0e6df60e7706a1c25",
+    "records": 240284,
+    "blank_records": 0,
+    "parser": "Independent Node streaming state machine; fatal UTF-8 decoder; unzip exit status checked",
+    "root_asset": "Nov.2023.csv",
+    "archive_asset": "Nov_2023.zip",
+    "archive_member": "Nov 2023.csv",
+    "rows_compared": 240283,
+    "custodian_transaction_key_order_mismatches": 25,
+    "semantically_equal_rows": 233643,
+    "differing_column_counts": {
+      "VALUE (in Rs)": 6615,
+      "RFDE_TXN_ID": 25
+    },
+    "root_minus_archive_numeric_delta_sum": {
+      "RATE": "0",
+      "QUANTITY": "0",
+      "VALUE (in Rs)": "38.19"
+    },
+    "max_absolute_numeric_delta": {
+      "RATE": "0",
+      "QUANTITY": "0",
+      "VALUE (in Rs)": "0.5"
+    },
+    "bounded_row_locators": [
+      {
+        "csv_record": 2,
+        "differing_columns": [
+          "VALUE (in Rs)"
+        ]
+      },
+      {
+        "csv_record": 19,
+        "differing_columns": [
+          "VALUE (in Rs)"
+        ]
+      },
+      {
+        "csv_record": 53,
+        "differing_columns": [
+          "VALUE (in Rs)"
+        ]
+      },
+      {
+        "csv_record": 68,
+        "differing_columns": [
+          "VALUE (in Rs)"
+        ]
+      },
+      {
+        "csv_record": 82,
+        "differing_columns": [
+          "VALUE (in Rs)"
+        ]
+      },
+      {
+        "csv_record": 110,
+        "differing_columns": [
+          "VALUE (in Rs)"
+        ]
+      },
+      {
+        "csv_record": 112,
+        "differing_columns": [
+          "VALUE (in Rs)"
+        ]
+      },
+      {
+        "csv_record": 160,
+        "differing_columns": [
+          "VALUE (in Rs)"
+        ]
+      }
+    ],
+    "normalization": "Trim text, parse explicit dates, compare exact decimal values, normalize transaction-code leading zeros without assigning meanings. No rounding to force equality."
+  },
+  "total_data_rows": 2073998,
+  "total_fields": 40562923,
+  "limits": [
+    "Read and replay of stored transactions is not approval for current signals.",
+    "Numeric sums do not assign buy/sell signs or amend/cancel semantics and are not net institutional flow.",
+    "ISIN syntax/checksum does not prove current eligibility or corporate-action continuity.",
+    "Per-member duplicate/key diagnostics do not prove cross-file identity uniqueness.",
+    "No source or existing evidence file was modified."
+  ]
+}
