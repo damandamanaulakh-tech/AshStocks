@@ -109,6 +109,22 @@
     {
       "file": "data/asset-review/monthly-fpi-2018-workbook-independent-replay-2026-09-28.json",
       "sha256": "6dd51cbbe905e387fa7fc680e6b36c213d902068bfbe57cfd0722386b25513e9"
+    },
+    {
+      "file": "data/asset-review/monthly-fpi-2019-jan-apr-workbook-evidence-2026-09-29.json",
+      "sha256": "5e3d440fd655043a027f88f400d14d1c5e375676c5f59a3eb59a499926a32609"
+    },
+    {
+      "file": "data/asset-review/monthly-fpi-2019-may-aug-workbook-evidence-2026-09-29.json",
+      "sha256": "0f9ed7e16f8e91ad5141886f4b32454365c19ebe5c9617e3db5fd105799dd663"
+    },
+    {
+      "file": "data/asset-review/monthly-fpi-2019-sep-dec-workbook-evidence-2026-09-29.json",
+      "sha256": "50aac32f5fa51f9e31161f64d72526e5112f2e2b6f8dcd1bd07e6d3104ac11e0"
+    },
+    {
+      "file": "data/asset-review/monthly-fpi-2019-workbook-independent-replay-2026-09-29.json",
+      "sha256": "1aa3902aaf12864becc614656787bee3176987592762879f20774c0a9bf26519"
     }
   ],
   "updates": [
@@ -1886,56 +1902,224 @@
           "evidence": "data/asset-review/monthly-fpi-2018-sep-dec-workbook-evidence-2026-09-28.json"
         }
       ]
+    },
+    {
+      "asset": "2019_1.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/monthly-fpi-2019-jan-apr-workbook-evidence-2026-09-29.json",
+      "member_updates": [
+        {
+          "member": "Jan 2019.xlsx",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/monthly-fpi-2019-jan-apr-workbook-evidence-2026-09-29.json"
+        }
+      ]
+    },
+    {
+      "asset": "2019_2.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/monthly-fpi-2019-jan-apr-workbook-evidence-2026-09-29.json",
+      "member_updates": [
+        {
+          "member": "Feb 2019.xlsx",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/monthly-fpi-2019-jan-apr-workbook-evidence-2026-09-29.json"
+        }
+      ]
+    },
+    {
+      "asset": "2019_3.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/monthly-fpi-2019-jan-apr-workbook-evidence-2026-09-29.json",
+      "member_updates": [
+        {
+          "member": "Mar 2019.xlsx",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/monthly-fpi-2019-jan-apr-workbook-evidence-2026-09-29.json"
+        }
+      ]
+    },
+    {
+      "asset": "2019_4.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/monthly-fpi-2019-jan-apr-workbook-evidence-2026-09-29.json",
+      "member_updates": [
+        {
+          "member": "Apr 2019.xlsx",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/monthly-fpi-2019-jan-apr-workbook-evidence-2026-09-29.json"
+        }
+      ]
+    },
+    {
+      "asset": "2019_5.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/monthly-fpi-2019-may-aug-workbook-evidence-2026-09-29.json",
+      "member_updates": [
+        {
+          "member": "May 2019.xlsx",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/monthly-fpi-2019-may-aug-workbook-evidence-2026-09-29.json"
+        }
+      ]
+    },
+    {
+      "asset": "2019_6.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/monthly-fpi-2019-may-aug-workbook-evidence-2026-09-29.json",
+      "member_updates": [
+        {
+          "member": "Jun 2019.xlsx",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/monthly-fpi-2019-may-aug-workbook-evidence-2026-09-29.json"
+        }
+      ]
+    },
+    {
+      "asset": "2019_7.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/monthly-fpi-2019-may-aug-workbook-evidence-2026-09-29.json",
+      "member_updates": [
+        {
+          "member": "Jul 2019.xlsx",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/monthly-fpi-2019-may-aug-workbook-evidence-2026-09-29.json"
+        }
+      ]
+    },
+    {
+      "asset": "2019_8.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/monthly-fpi-2019-may-aug-workbook-evidence-2026-09-29.json",
+      "member_updates": [
+        {
+          "member": "Aug 2019.xlsx",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/monthly-fpi-2019-may-aug-workbook-evidence-2026-09-29.json"
+        }
+      ]
+    },
+    {
+      "asset": "2019_9.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/monthly-fpi-2019-sep-dec-workbook-evidence-2026-09-29.json",
+      "member_updates": [
+        {
+          "member": "Sep 2019.xlsx",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/monthly-fpi-2019-sep-dec-workbook-evidence-2026-09-29.json"
+        }
+      ]
+    },
+    {
+      "asset": "2019_10.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/monthly-fpi-2019-sep-dec-workbook-evidence-2026-09-29.json",
+      "member_updates": [
+        {
+          "member": "Oct 2019.xlsx",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/monthly-fpi-2019-sep-dec-workbook-evidence-2026-09-29.json"
+        }
+      ]
+    },
+    {
+      "asset": "2019_11.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/monthly-fpi-2019-sep-dec-workbook-evidence-2026-09-29.json",
+      "member_updates": [
+        {
+          "member": "Nov 2019.xlsx",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/monthly-fpi-2019-sep-dec-workbook-evidence-2026-09-29.json"
+        }
+      ]
+    },
+    {
+      "asset": "2019_12.zip",
+      "from": "inventory_only",
+      "to": "reviewed",
+      "evidence": "data/asset-review/monthly-fpi-2019-sep-dec-workbook-evidence-2026-09-29.json",
+      "member_updates": [
+        {
+          "member": "December 2019.xlsx",
+          "from": "inventory_only",
+          "to": "reviewed",
+          "evidence": "data/asset-review/monthly-fpi-2019-sep-dec-workbook-evidence-2026-09-29.json"
+        }
+      ]
     }
   ],
   "summary": {
     "assets": 171,
     "asset_status_counts": {
-      "reviewed": 103,
-      "inventory_only": 51,
+      "reviewed": 115,
+      "inventory_only": 39,
       "corrupt": 1,
       "partial": 16
     },
     "members": 592,
     "member_status_counts": {
-      "reviewed": 485,
+      "reviewed": 497,
       "partial": 0,
-      "inventory_only": 107
+      "inventory_only": 95
     },
-    "member_status_upgrades": 180,
+    "member_status_upgrades": 192,
     "corrupt_archive": "2021_06.zip",
     "corrupt_archive_member_count": null
   },
-  "excluded_promotions": "Only the eleven present 2018 monthly-FPI archives and their immediate workbook members advance to reviewed. June 2018 is not in the preserved 171-asset release and is not added. The monthly-FPI family now has 24 reviewed archives, 49 inventory-only workbooks and one corrupt archive (2021_06.zip). Other families and partial PDFs are unchanged. Serialized-content review does not authorize import or establish current signals.",
+  "excluded_promotions": "Only the twelve present 2019 monthly-FPI archives and their immediate workbook members advance to reviewed. The monthly-FPI family now has 36 reviewed archives, 37 inventory-only workbooks and one corrupt archive (2021_06.zip). Missing June 2018 is not added or credited. Other families and partial PDFs are unchanged. Serialized-content review does not authorize import or establish current signals.",
   "mongo_accessed": false,
   "imported": false,
   "runtime_modified": false,
   "latest_batch": {
-    "id": "monthly-fpi-2018-workbooks-2026-09-29",
-    "checkpoint": "docs/MONTHLY_FPI_2018_WORKBOOK_CHECKPOINT_2026-09-29.md",
-    "reviewed_against_commit": "4ca7b694e051734ce64e37871c27887d13df8637",
-    "previous_progress_sha256": "49ee13c8ed943ce0760956ff3f74d93b10dd4d31178ecf1740535e1bee40d7be",
+    "id": "monthly-fpi-2019-workbooks-2026-09-29",
+    "checkpoint": "docs/MONTHLY_FPI_2019_WORKBOOK_CHECKPOINT_2026-09-29.md",
+    "reviewed_against_commit": "bbecb54690452f8a76684fe55b2fe68a387df09d",
+    "previous_progress_sha256": "5abd59a8b91dcccdae145873ca3fad5f0fdd54f56529c62e9425dfda3e0148b5",
     "previous_summary": {
       "assets": 171,
       "asset_status_counts": {
-        "reviewed": 92,
-        "inventory_only": 62,
+        "reviewed": 103,
+        "inventory_only": 51,
         "corrupt": 1,
         "partial": 16
       },
       "members": 592,
       "member_status_counts": {
-        "reviewed": 474,
+        "reviewed": 485,
         "partial": 0,
-        "inventory_only": 118
+        "inventory_only": 107
       },
-      "member_status_upgrades": 169,
+      "member_status_upgrades": 180,
       "corrupt_archive": "2021_06.zip",
       "corrupt_archive_member_count": null
     },
-    "new_member_status_upgrades": 11,
-    "workbook_member_upgrades": 11,
-    "newly_reviewed_archives": 11,
+    "new_member_status_upgrades": 12,
+    "workbook_member_upgrades": 12,
+    "newly_reviewed_archives": 12,
     "newly_partial_archives": 0,
     "update_application": "Apply every updates entry in array order to the immutable baseline; repeated asset entries are sequential member-level progress, not duplicate assets."
   }

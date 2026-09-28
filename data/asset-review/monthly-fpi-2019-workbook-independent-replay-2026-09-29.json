@@ -1,0 +1,5834 @@
+{
+  "schema_version": "ashstocks-monthly-fpi-2019-independent-replay-v1",
+  "reviewed_against_commit": "bbecb54690452f8a76684fe55b2fe68a387df09d",
+  "method": "Independent lxml streaming XML parser, exact serialized Decimal arithmetic, numeric Excel dates mapped by actual header coordinates and workbook epoch. No raw investor, broker or transaction identifiers published. No native workbook rendering/recalculation.",
+  "script_sha256": "41d2dfa46550071691ffc60f89963c27e2033fb19139b8e71bc70518a999b763",
+  "archives": [
+    {
+      "asset": "2019_1.zip",
+      "asset_bytes": 13427961,
+      "asset_sha256": "46a9064671ff6768e35752e3eaaca05a2ff7b9f2bf7d4d00cc7339188ccbca6c",
+      "member": "Jan 2019.xlsx",
+      "member_bytes": 13507612,
+      "member_sha256": "fd57c914fcff91e23a06b642481c7de83a7c5b03f970f4edc268e306dfa2ef7d",
+      "member_crc32": "14039e8d",
+      "shared_strings": 47509,
+      "package_parts": [
+        {
+          "part": "[Content_Types].xml",
+          "bytes": 1541,
+          "sha256": "fd18046f39017b1ad7e36687a19a585b5504a0a466d40539f7c29160ee770e81",
+          "crc32": "73fb4389"
+        },
+        {
+          "part": "_rels/.rels",
+          "bytes": 735,
+          "sha256": "ad78dfe44ec71f967f96e95bdf6baf2545c39e1a5e4413e7b8e9413eb95fd922",
+          "crc32": "65be5e13"
+        },
+        {
+          "part": "customXml/_rels/item1.xml.rels",
+          "bytes": 296,
+          "sha256": "80482f86e196171d66001e0e74d1900408a3aaf2463e54005d251b5f2db9a0b0",
+          "crc32": "7a393f74"
+        },
+        {
+          "part": "customXml/item1.xml",
+          "bytes": 356,
+          "sha256": "bf4db226ab59839e7d4d4bb6138f504f22e873bdb1c8e8f9a4016c436b2ce319",
+          "crc32": "3ad0d1ba"
+        },
+        {
+          "part": "customXml/itemProps1.xml",
+          "bytes": 235,
+          "sha256": "462f8e0115e48f938c6e0090ade4b95690c29e86b193c964d9c5200ddc21e5eb",
+          "crc32": "32e2d577"
+        },
+        {
+          "part": "docProps/app.xml",
+          "bytes": 785,
+          "sha256": "0dba4aa98e8cb1a9c94918473269152036a7666a53e4cfdc1ac698c468645eaf",
+          "crc32": "d91641de"
+        },
+        {
+          "part": "docProps/core.xml",
+          "bytes": 625,
+          "sha256": "b76ddcd2b2b30ae38022621fd8ba601b31f425d5b53754200e68d3b4b6398c38",
+          "crc32": "3e22b01f"
+        },
+        {
+          "part": "docProps/custom.xml",
+          "bytes": 628,
+          "sha256": "a314cfcaa7b3764051bcdd74349d320d19870e1f26769cf2afde745a98f7392a",
+          "crc32": "1593a253"
+        },
+        {
+          "part": "xl/_rels/workbook.xml.rels",
+          "bytes": 840,
+          "sha256": "09a51c4201a98f679afbc363fb1f5db0252843fab619ec0219f062c80b87573b",
+          "crc32": "2d0fffa0"
+        },
+        {
+          "part": "xl/printerSettings/printerSettings1.bin",
+          "bytes": 14720,
+          "sha256": "f24b597ab23997c842718af9f98b567eb9529d7e476a67a8d865a3574e846b7e",
+          "crc32": "2454317d"
+        },
+        {
+          "part": "xl/sharedStrings.xml",
+          "bytes": 1413877,
+          "sha256": "540fe74b68ca7cc48909eef1adae23b72b38520b52419ff044d18382fdbf44ba",
+          "crc32": "39811452"
+        },
+        {
+          "part": "xl/styles.xml",
+          "bytes": 1542,
+          "sha256": "3c5cc72b57b03e3905b05ec85502c4355eb574973c7506920a11ccbb52a53e2e",
+          "crc32": "f7e03b43"
+        },
+        {
+          "part": "xl/theme/theme1.xml",
+          "bytes": 6798,
+          "sha256": "a0df54cd7c507e485061a0ba3de7503eb81f6dfa8cc701ee4478439bdf26dfbb",
+          "crc32": "586e828b"
+        },
+        {
+          "part": "xl/workbook.xml",
+          "bytes": 1168,
+          "sha256": "36c2328fbc81c49a0dfd937a800c25cf79320a763fbeeb718acfb641620d48e6",
+          "crc32": "e94928c1"
+        },
+        {
+          "part": "xl/worksheets/_rels/sheet1.xml.rels",
+          "bytes": 322,
+          "sha256": "65cefb6727e21f882eb83bb6c10370afa59aafda7f007f531df0c30026dc4684",
+          "crc32": "4b326d3b"
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "bytes": 84430714,
+          "sha256": "dfa89c8da0291bf386b7371859e97b7d753e6ee84039d06251edcb5ebdff0a00",
+          "crc32": "77e2bb58"
+        }
+      ],
+      "sheets": [
+        {
+          "sheet": "Sheet1",
+          "state": "visible",
+          "date1904": false,
+          "header_by_column": {
+            "A": "RFDE_CUST_REG_NUM",
+            "B": "RFDE_RPT_DT",
+            "C": "RFDE_TXN_ID",
+            "D": "FII",
+            "E": "SUB_ACC",
+            "F": "BRKER",
+            "G": "SCRIP_NAME",
+            "H": "ISIN",
+            "I": "TR_DATE",
+            "J": "TR_TYPE(*)",
+            "K": "RFDE_SE_REG_NUM",
+            "L": "RFDE_STLD_CODE",
+            "M": "RATE",
+            "N": "QUANTITY",
+            "O": "VALUE (in Rs)",
+            "P": "RFDE_INSTR_TYPE",
+            "Q": "RFDE_REASON_DLAY",
+            "R": "RFDE_RPT_TYPE",
+            "S": "RFDE_AMDMNT_REASON"
+          },
+          "header_column_map": {
+            "RFDE_CUST_REG_NUM": "A",
+            "RFDE_RPT_DT": "B",
+            "RFDE_TXN_ID": "C",
+            "FII": "D",
+            "SUB_ACC": "E",
+            "BRKER": "F",
+            "SCRIP_NAME": "G",
+            "ISIN": "H",
+            "TR_DATE": "I",
+            "TR_TYPE(*)": "J",
+            "RFDE_SE_REG_NUM": "K",
+            "RFDE_STLD_CODE": "L",
+            "RATE": "M",
+            "QUANTITY": "N",
+            "VALUE (in Rs)": "O",
+            "RFDE_INSTR_TYPE": "P",
+            "RFDE_REASON_DLAY": "Q",
+            "RFDE_RPT_TYPE": "R",
+            "RFDE_AMDMNT_REASON": "S"
+          },
+          "data_rows": 122488,
+          "physical_cells_including_header": 2327291,
+          "row_widths_including_header": {
+            "19": 122489
+          },
+          "types_including_header": {
+            "s": 1274996,
+            "n": 1052295
+          },
+          "data_field_types": {
+            "RFDE_CUST_REG_NUM": {
+              "n": 109288,
+              "s": 13200
+            },
+            "RFDE_RPT_DT": {
+              "n": 122488
+            },
+            "RFDE_TXN_ID": {
+              "s": 36897,
+              "n": 85591
+            },
+            "FII": {
+              "s": 122488
+            },
+            "SUB_ACC": {
+              "s": 122488
+            },
+            "BRKER": {
+              "s": 122488
+            },
+            "SCRIP_NAME": {
+              "s": 122488
+            },
+            "ISIN": {
+              "s": 122488
+            },
+            "TR_DATE": {
+              "n": 122488
+            },
+            "TR_TYPE(*)": {
+              "n": 122488
+            },
+            "RFDE_SE_REG_NUM": {
+              "n": 122488
+            },
+            "RFDE_STLD_CODE": {
+              "s": 122488
+            },
+            "RATE": {
+              "n": 122488
+            },
+            "QUANTITY": {
+              "n": 122488
+            },
+            "VALUE (in Rs)": {
+              "n": 122488
+            },
+            "RFDE_INSTR_TYPE": {
+              "s": 122488
+            },
+            "RFDE_REASON_DLAY": {
+              "s": 122488
+            },
+            "RFDE_RPT_TYPE": {
+              "s": 122488
+            },
+            "RFDE_AMDMNT_REASON": {
+              "s": 122488
+            }
+          },
+          "position_cell_types": {
+            "A:s": 13201,
+            "B:s": 1,
+            "C:s": 36898,
+            "D:s": 122489,
+            "E:s": 122489,
+            "F:s": 122489,
+            "G:s": 122489,
+            "H:s": 122489,
+            "I:s": 1,
+            "J:s": 1,
+            "K:s": 1,
+            "L:s": 122489,
+            "M:s": 1,
+            "N:s": 1,
+            "O:s": 1,
+            "P:s": 122489,
+            "Q:s": 122489,
+            "R:s": 122489,
+            "S:s": 122489,
+            "A:n": 109288,
+            "B:n": 122488,
+            "I:n": 122488,
+            "J:n": 122488,
+            "K:n": 122488,
+            "M:n": 122488,
+            "N:n": 122488,
+            "O:n": 122488,
+            "C:n": 85591
+          },
+          "formula_cells": 0,
+          "error_cells": 0,
+          "empty_data_fields": {},
+          "edge_whitespace_fields": {
+            "SCRIP_NAME": 28174
+          },
+          "ordinal_rows": 0,
+          "ordinal_not_equal_data_row_number": 0,
+          "code_counts": {
+            "TR_TYPE(*)": {
+              "1": 67049,
+              "10": 57,
+              "11": 235,
+              "13": 8,
+              "15": 407,
+              "16": 201,
+              "2": 16,
+              "3": 2,
+              "4": 53759,
+              "5": 1,
+              "7": 689,
+              "8": 29,
+              "9": 35
+            },
+            "RFDE_SE_REG_NUM": {
+              "1": 15651,
+              "23": 105253,
+              "99": 1584
+            },
+            "RFDE_STLD_CODE": {
+              "REG_DL_STLD_01": 119234,
+              "REG_DL_STLD_02": 474,
+              "REG_DL_STLD_03": 1174,
+              "REG_DL_STLD_04": 1606
+            },
+            "RFDE_INSTR_TYPE": {
+              "REG_DL_INSTR_EQ": 121759,
+              "REG_DL_INSTR_EU": 558,
+              "REG_DL_INSTR_FC": 8,
+              "REG_DL_INSTR_ID": 41,
+              "REG_DL_INSTR_MD": 111,
+              "REG_DL_INSTR_ME": 11
+            },
+            "RFDE_REASON_DLAY": {
+              "REG_DL_DLAY_D": 445,
+              "REG_DL_DLAY_O": 133,
+              "REG_DL_DLAY_P": 121910
+            },
+            "RFDE_RPT_TYPE": {
+              "DL_RPT_TYPE_N": 122488
+            },
+            "RFDE_AMDMNT_REASON": {
+              "DL_AMDMNT_DEL_00": 122488
+            }
+          },
+          "daily_date_counts": {
+            "RFDE_RPT_DT": {
+              "2019-01-01": 25,
+              "2019-01-02": 533,
+              "2019-01-03": 2970,
+              "2019-01-04": 6101,
+              "2019-01-07": 4439,
+              "2019-01-08": 4203,
+              "2019-01-09": 5114,
+              "2019-01-10": 5408,
+              "2019-01-11": 5906,
+              "2019-01-14": 5009,
+              "2019-01-15": 4891,
+              "2019-01-16": 5043,
+              "2019-01-17": 4851,
+              "2019-01-18": 5871,
+              "2019-01-21": 4446,
+              "2019-01-22": 4257,
+              "2019-01-23": 5323,
+              "2019-01-24": 5702,
+              "2019-01-25": 6653,
+              "2019-01-28": 7294,
+              "2019-01-29": 6667,
+              "2019-01-30": 6691,
+              "2019-01-31": 7047,
+              "2019-02-01": 8017,
+              "2019-02-04": 8,
+              "2019-02-05": 19
+            },
+            "TR_DATE": {
+              "2019-01-01": 559,
+              "2019-01-02": 2968,
+              "2019-01-03": 6104,
+              "2019-01-04": 4441,
+              "2019-01-07": 4201,
+              "2019-01-08": 5103,
+              "2019-01-09": 5424,
+              "2019-01-10": 5886,
+              "2019-01-11": 5030,
+              "2019-01-14": 4935,
+              "2019-01-15": 4964,
+              "2019-01-16": 4802,
+              "2019-01-17": 5955,
+              "2019-01-18": 4584,
+              "2019-01-19": 16,
+              "2019-01-21": 4080,
+              "2019-01-22": 5393,
+              "2019-01-23": 5525,
+              "2019-01-24": 6579,
+              "2019-01-25": 7599,
+              "2019-01-28": 6575,
+              "2019-01-29": 6699,
+              "2019-01-30": 7028,
+              "2019-01-31": 8038
+            }
+          },
+          "reporting_lag_counts": {
+            "0": 647,
+            "1": 100179,
+            "2": 121,
+            "3": 21157,
+            "4": 332,
+            "5": 45,
+            "6": 6,
+            "7": 1
+          },
+          "invalid_date_rows": 0,
+          "numeric": {
+            "RATE": {
+              "sum": "159247182.43419999990056830",
+              "zero": 1298,
+              "negative": 0,
+              "fractional": 118476,
+              "min": "0",
+              "max": "96000"
+            },
+            "QUANTITY": {
+              "sum": "7169273106.0900000000188",
+              "zero": 0,
+              "negative": 0,
+              "fractional": 55,
+              "min": "1",
+              "max": "303000000"
+            },
+            "VALUE (in Rs)": {
+              "sum": "2020616279811.270000242823075",
+              "zero": 1298,
+              "negative": 0,
+              "fractional": 111690,
+              "min": "0",
+              "max": "7092290700"
+            }
+          },
+          "residual": {
+            "nonzero": 107866,
+            "above_0_01": 0,
+            "maximum_abs": "0.0050000643175",
+            "sum": "15.306634522015180379999999988"
+          },
+          "isin_distinct_including_invalid": 951,
+          "isin_syntax_invalid_rows": 1,
+          "isin_checksum_invalid_rows": 0,
+          "trim_only_nonordinal_row_duplicates": 0,
+          "trim_only_custodian_transaction_key_repeats": 0,
+          "repeat_key_different_trim_only_row": 0
+        }
+      ],
+      "primary_evidence": "data/asset-review/monthly-fpi-2019-jan-apr-workbook-evidence-2026-09-29.json"
+    },
+    {
+      "asset": "2019_2.zip",
+      "asset_bytes": 13019041,
+      "asset_sha256": "6056af732c97f82a9cd74d1d2b0b3960357c915514f0884d042a27ba4674a6b9",
+      "member": "Feb 2019.xlsx",
+      "member_bytes": 13102476,
+      "member_sha256": "7932b1d7e7242c141054df8bee12c85d5af8aba3caf0ffc3335becedc21ca22c",
+      "member_crc32": "be549bae",
+      "shared_strings": 47798,
+      "package_parts": [
+        {
+          "part": "[Content_Types].xml",
+          "bytes": 1541,
+          "sha256": "fd18046f39017b1ad7e36687a19a585b5504a0a466d40539f7c29160ee770e81",
+          "crc32": "73fb4389"
+        },
+        {
+          "part": "_rels/.rels",
+          "bytes": 735,
+          "sha256": "ad78dfe44ec71f967f96e95bdf6baf2545c39e1a5e4413e7b8e9413eb95fd922",
+          "crc32": "65be5e13"
+        },
+        {
+          "part": "customXml/_rels/item1.xml.rels",
+          "bytes": 296,
+          "sha256": "80482f86e196171d66001e0e74d1900408a3aaf2463e54005d251b5f2db9a0b0",
+          "crc32": "7a393f74"
+        },
+        {
+          "part": "customXml/item1.xml",
+          "bytes": 356,
+          "sha256": "9dc7cd3104ca74076b4fffb76379050e565c5c1ac2bc1f6296da15d1e6dc0c74",
+          "crc32": "949661c6"
+        },
+        {
+          "part": "customXml/itemProps1.xml",
+          "bytes": 235,
+          "sha256": "99919588bc00d7d9efa2577055a7dbeee6ca6b20cd8ff14087b671141940adcd",
+          "crc32": "277e661d"
+        },
+        {
+          "part": "docProps/app.xml",
+          "bytes": 785,
+          "sha256": "0dba4aa98e8cb1a9c94918473269152036a7666a53e4cfdc1ac698c468645eaf",
+          "crc32": "d91641de"
+        },
+        {
+          "part": "docProps/core.xml",
+          "bytes": 625,
+          "sha256": "ede13b49445bb1dabf7b6db4d3351f3ca8c4cd42d9e86eb022fb49cb62e737ef",
+          "crc32": "813e30cc"
+        },
+        {
+          "part": "docProps/custom.xml",
+          "bytes": 628,
+          "sha256": "78ea9fb48a3d5f3e0bce0f072ac0bda94f35d70467b69b3e4a71e2f0df986d89",
+          "crc32": "7fe75d59"
+        },
+        {
+          "part": "xl/_rels/workbook.xml.rels",
+          "bytes": 840,
+          "sha256": "09a51c4201a98f679afbc363fb1f5db0252843fab619ec0219f062c80b87573b",
+          "crc32": "2d0fffa0"
+        },
+        {
+          "part": "xl/printerSettings/printerSettings1.bin",
+          "bytes": 14720,
+          "sha256": "1bf153f0279549c846e810820bc4aa36a4562ee0eae7532b373590f926ad15df",
+          "crc32": "d8ed8007"
+        },
+        {
+          "part": "xl/sharedStrings.xml",
+          "bytes": 1421771,
+          "sha256": "8cb28bc10a033db4a08010e01a43765a6c9bbfd4f1297fde29da0c30d6a2e9a5",
+          "crc32": "f0e8d9c5"
+        },
+        {
+          "part": "xl/styles.xml",
+          "bytes": 1542,
+          "sha256": "3c5cc72b57b03e3905b05ec85502c4355eb574973c7506920a11ccbb52a53e2e",
+          "crc32": "f7e03b43"
+        },
+        {
+          "part": "xl/theme/theme1.xml",
+          "bytes": 6798,
+          "sha256": "a0df54cd7c507e485061a0ba3de7503eb81f6dfa8cc701ee4478439bdf26dfbb",
+          "crc32": "586e828b"
+        },
+        {
+          "part": "xl/workbook.xml",
+          "bytes": 1168,
+          "sha256": "36c2328fbc81c49a0dfd937a800c25cf79320a763fbeeb718acfb641620d48e6",
+          "crc32": "e94928c1"
+        },
+        {
+          "part": "xl/worksheets/_rels/sheet1.xml.rels",
+          "bytes": 322,
+          "sha256": "65cefb6727e21f882eb83bb6c10370afa59aafda7f007f531df0c30026dc4684",
+          "crc32": "4b326d3b"
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "bytes": 81495083,
+          "sha256": "5c8be212c9b7d1f5071df3cb7304788a1adad90eccfd406db5b6d058bf9b7c08",
+          "crc32": "3d12c9c3"
+        }
+      ],
+      "sheets": [
+        {
+          "sheet": "Sheet1",
+          "state": "visible",
+          "date1904": false,
+          "header_by_column": {
+            "A": "RFDE_CUST_REG_NUM",
+            "B": "RFDE_RPT_DT",
+            "C": "RFDE_TXN_ID",
+            "D": "FII",
+            "E": "SUB_ACC",
+            "F": "BRKER",
+            "G": "SCRIP_NAME",
+            "H": "ISIN",
+            "I": "TR_DATE",
+            "J": "TR_TYPE(*)",
+            "K": "RFDE_SE_REG_NUM",
+            "L": "RFDE_STLD_CODE",
+            "M": "RATE",
+            "N": "QUANTITY",
+            "O": "VALUE (in Rs)",
+            "P": "RFDE_INSTR_TYPE",
+            "Q": "RFDE_REASON_DLAY",
+            "R": "RFDE_RPT_TYPE",
+            "S": "RFDE_AMDMNT_REASON"
+          },
+          "header_column_map": {
+            "RFDE_CUST_REG_NUM": "A",
+            "RFDE_RPT_DT": "B",
+            "RFDE_TXN_ID": "C",
+            "FII": "D",
+            "SUB_ACC": "E",
+            "BRKER": "F",
+            "SCRIP_NAME": "G",
+            "ISIN": "H",
+            "TR_DATE": "I",
+            "TR_TYPE(*)": "J",
+            "RFDE_SE_REG_NUM": "K",
+            "RFDE_STLD_CODE": "L",
+            "RATE": "M",
+            "QUANTITY": "N",
+            "VALUE (in Rs)": "O",
+            "RFDE_INSTR_TYPE": "P",
+            "RFDE_REASON_DLAY": "Q",
+            "RFDE_RPT_TYPE": "R",
+            "RFDE_AMDMNT_REASON": "S"
+          },
+          "data_rows": 118481,
+          "physical_cells_including_header": 2251158,
+          "row_widths_including_header": {
+            "19": 118482
+          },
+          "types_including_header": {
+            "s": 1234147,
+            "n": 1017011
+          },
+          "data_field_types": {
+            "RFDE_CUST_REG_NUM": {
+              "n": 106286,
+              "s": 12195
+            },
+            "RFDE_RPT_DT": {
+              "n": 118481
+            },
+            "RFDE_TXN_ID": {
+              "n": 81358,
+              "s": 37123
+            },
+            "FII": {
+              "s": 118481
+            },
+            "SUB_ACC": {
+              "s": 118481
+            },
+            "BRKER": {
+              "s": 118481
+            },
+            "SCRIP_NAME": {
+              "s": 118481
+            },
+            "ISIN": {
+              "s": 118481
+            },
+            "TR_DATE": {
+              "n": 118481
+            },
+            "TR_TYPE(*)": {
+              "n": 118481
+            },
+            "RFDE_SE_REG_NUM": {
+              "n": 118481
+            },
+            "RFDE_STLD_CODE": {
+              "s": 118481
+            },
+            "RATE": {
+              "n": 118481
+            },
+            "QUANTITY": {
+              "n": 118481
+            },
+            "VALUE (in Rs)": {
+              "n": 118481
+            },
+            "RFDE_INSTR_TYPE": {
+              "s": 118481
+            },
+            "RFDE_REASON_DLAY": {
+              "s": 118481
+            },
+            "RFDE_RPT_TYPE": {
+              "s": 118481
+            },
+            "RFDE_AMDMNT_REASON": {
+              "s": 118481
+            }
+          },
+          "position_cell_types": {
+            "A:s": 12196,
+            "B:s": 1,
+            "C:s": 37124,
+            "D:s": 118482,
+            "E:s": 118482,
+            "F:s": 118482,
+            "G:s": 118482,
+            "H:s": 118482,
+            "I:s": 1,
+            "J:s": 1,
+            "K:s": 1,
+            "L:s": 118482,
+            "M:s": 1,
+            "N:s": 1,
+            "O:s": 1,
+            "P:s": 118482,
+            "Q:s": 118482,
+            "R:s": 118482,
+            "S:s": 118482,
+            "A:n": 106286,
+            "B:n": 118481,
+            "C:n": 81358,
+            "I:n": 118481,
+            "J:n": 118481,
+            "K:n": 118481,
+            "M:n": 118481,
+            "N:n": 118481,
+            "O:n": 118481
+          },
+          "formula_cells": 0,
+          "error_cells": 0,
+          "empty_data_fields": {},
+          "edge_whitespace_fields": {
+            "SCRIP_NAME": 28266
+          },
+          "ordinal_rows": 0,
+          "ordinal_not_equal_data_row_number": 0,
+          "code_counts": {
+            "TR_TYPE(*)": {
+              "1": 60397,
+              "10": 82,
+              "11": 553,
+              "13": 11,
+              "14": 1,
+              "15": 569,
+              "16": 122,
+              "17": 5,
+              "2": 142,
+              "23": 2,
+              "3": 2,
+              "4": 55319,
+              "7": 1229,
+              "8": 28,
+              "9": 19
+            },
+            "RFDE_SE_REG_NUM": {
+              "1": 13595,
+              "23": 102403,
+              "99": 2483
+            },
+            "RFDE_STLD_CODE": {
+              "REG_DL_STLD_01": 113992,
+              "REG_DL_STLD_02": 667,
+              "REG_DL_STLD_03": 1218,
+              "REG_DL_STLD_04": 2604
+            },
+            "RFDE_INSTR_TYPE": {
+              "REG_DL_INSTR_EQ": 117204,
+              "REG_DL_INSTR_EU": 1083,
+              "REG_DL_INSTR_ID": 30,
+              "REG_DL_INSTR_MD": 159,
+              "REG_DL_INSTR_ME": 5
+            },
+            "RFDE_REASON_DLAY": {
+              "REG_DL_DLAY_D": 407,
+              "REG_DL_DLAY_O": 194,
+              "REG_DL_DLAY_P": 117880
+            },
+            "RFDE_RPT_TYPE": {
+              "DL_RPT_TYPE_N": 118481
+            },
+            "RFDE_AMDMNT_REASON": {
+              "DL_AMDMNT_DEL_00": 118481
+            }
+          },
+          "daily_date_counts": {
+            "RFDE_RPT_DT": {
+              "2019-02-04": 6675,
+              "2019-02-05": 4245,
+              "2019-02-06": 4468,
+              "2019-02-07": 4894,
+              "2019-02-08": 4593,
+              "2019-02-11": 5244,
+              "2019-02-12": 6034,
+              "2019-02-13": 6630,
+              "2019-02-14": 5951,
+              "2019-02-15": 6480,
+              "2019-02-18": 6503,
+              "2019-02-19": 9,
+              "2019-02-20": 10481,
+              "2019-02-21": 6304,
+              "2019-02-22": 7114,
+              "2019-02-25": 5675,
+              "2019-02-26": 5564,
+              "2019-02-27": 6384,
+              "2019-02-28": 5882,
+              "2019-03-01": 9264,
+              "2019-03-05": 58,
+              "2019-03-06": 28,
+              "2019-03-07": 1
+            },
+            "TR_DATE": {
+              "2019-02-01": 6681,
+              "2019-02-04": 4158,
+              "2019-02-05": 4553,
+              "2019-02-06": 4903,
+              "2019-02-07": 4595,
+              "2019-02-08": 5262,
+              "2019-02-11": 6072,
+              "2019-02-12": 6583,
+              "2019-02-13": 5953,
+              "2019-02-14": 6453,
+              "2019-02-15": 6282,
+              "2019-02-18": 6012,
+              "2019-02-19": 4738,
+              "2019-02-20": 6293,
+              "2019-02-21": 7124,
+              "2019-02-22": 5700,
+              "2019-02-25": 5766,
+              "2019-02-26": 6387,
+              "2019-02-27": 5632,
+              "2019-02-28": 9334
+            }
+          },
+          "reporting_lag_counts": {
+            "0": 543,
+            "1": 87774,
+            "2": 5822,
+            "3": 23901,
+            "4": 197,
+            "5": 184,
+            "6": 57,
+            "7": 3
+          },
+          "invalid_date_rows": 0,
+          "numeric": {
+            "RATE": {
+              "sum": "153623325.98519999996395831",
+              "zero": 1927,
+              "negative": 0,
+              "fractional": 113758,
+              "min": "0",
+              "max": "62055.126400000001"
+            },
+            "QUANTITY": {
+              "sum": "10293685307.6400000000846",
+              "zero": 0,
+              "negative": 0,
+              "fractional": 79,
+              "min": "1",
+              "max": "903598732"
+            },
+            "VALUE (in Rs)": {
+              "sum": "2192751150186.8999977834638437",
+              "zero": 1927,
+              "negative": 0,
+              "fractional": 107543,
+              "min": "0",
+              "max": "28480618793.779999"
+            }
+          },
+          "residual": {
+            "nonzero": 103771,
+            "above_0_01": 0,
+            "maximum_abs": "0.0050001233375",
+            "sum": "15.055865114044024310000000002"
+          },
+          "isin_distinct_including_invalid": 978,
+          "isin_syntax_invalid_rows": 2,
+          "isin_checksum_invalid_rows": 0,
+          "trim_only_nonordinal_row_duplicates": 0,
+          "trim_only_custodian_transaction_key_repeats": 0,
+          "repeat_key_different_trim_only_row": 0
+        }
+      ],
+      "primary_evidence": "data/asset-review/monthly-fpi-2019-jan-apr-workbook-evidence-2026-09-29.json"
+    },
+    {
+      "asset": "2019_3.zip",
+      "asset_bytes": 12614586,
+      "asset_sha256": "9f3360ceb18efcc6a941dd054234bcb27d8dcb28522e6d39e55558d198e4200d",
+      "member": "Mar 2019.xlsx",
+      "member_bytes": 12701545,
+      "member_sha256": "97eff7e3d52c3a5d3556c9c551f5d7dc5096f4f5c223d8386e9aa6b9f66221c3",
+      "member_crc32": "a11a6fbd",
+      "shared_strings": 52659,
+      "package_parts": [
+        {
+          "part": "[Content_Types].xml",
+          "bytes": 1541,
+          "sha256": "fd18046f39017b1ad7e36687a19a585b5504a0a466d40539f7c29160ee770e81",
+          "crc32": "73fb4389"
+        },
+        {
+          "part": "_rels/.rels",
+          "bytes": 735,
+          "sha256": "ad78dfe44ec71f967f96e95bdf6baf2545c39e1a5e4413e7b8e9413eb95fd922",
+          "crc32": "65be5e13"
+        },
+        {
+          "part": "customXml/_rels/item1.xml.rels",
+          "bytes": 296,
+          "sha256": "80482f86e196171d66001e0e74d1900408a3aaf2463e54005d251b5f2db9a0b0",
+          "crc32": "7a393f74"
+        },
+        {
+          "part": "customXml/item1.xml",
+          "bytes": 356,
+          "sha256": "256e5dbd3e67ab758cebd671108eb6b1f58bbaefbb1a483de7b700305d309d3c",
+          "crc32": "4f60d74a"
+        },
+        {
+          "part": "customXml/itemProps1.xml",
+          "bytes": 235,
+          "sha256": "5a1b0519869a5bd01db0c357ad8ca4f9b30a1b54caddcc0145354058a140577f",
+          "crc32": "8e1e27ad"
+        },
+        {
+          "part": "docProps/app.xml",
+          "bytes": 785,
+          "sha256": "0dba4aa98e8cb1a9c94918473269152036a7666a53e4cfdc1ac698c468645eaf",
+          "crc32": "d91641de"
+        },
+        {
+          "part": "docProps/core.xml",
+          "bytes": 625,
+          "sha256": "4304b61452cae1db6e5d72ef60ed4cffe1cc156050df61f1b49b40d6c4883e15",
+          "crc32": "a4e653a0"
+        },
+        {
+          "part": "docProps/custom.xml",
+          "bytes": 628,
+          "sha256": "6a003f97118e2c5f3ce67cb45686661f010f60bbbd0fee226c50197ab84dede8",
+          "crc32": "6e50182e"
+        },
+        {
+          "part": "xl/_rels/workbook.xml.rels",
+          "bytes": 840,
+          "sha256": "09a51c4201a98f679afbc363fb1f5db0252843fab619ec0219f062c80b87573b",
+          "crc32": "2d0fffa0"
+        },
+        {
+          "part": "xl/printerSettings/printerSettings1.bin",
+          "bytes": 14720,
+          "sha256": "dfebede2de4710732cd762baabb5ef800f69237256730be9120a35a5981bbc75",
+          "crc32": "71a34be7"
+        },
+        {
+          "part": "xl/sharedStrings.xml",
+          "bytes": 1560845,
+          "sha256": "8aac460ba8bec8e9f7f3c8c2f07c9b8487435a3561f2f1747805cf77a28b490c",
+          "crc32": "915b8fa8"
+        },
+        {
+          "part": "xl/styles.xml",
+          "bytes": 1542,
+          "sha256": "3c5cc72b57b03e3905b05ec85502c4355eb574973c7506920a11ccbb52a53e2e",
+          "crc32": "f7e03b43"
+        },
+        {
+          "part": "xl/theme/theme1.xml",
+          "bytes": 6798,
+          "sha256": "a0df54cd7c507e485061a0ba3de7503eb81f6dfa8cc701ee4478439bdf26dfbb",
+          "crc32": "586e828b"
+        },
+        {
+          "part": "xl/workbook.xml",
+          "bytes": 1168,
+          "sha256": "36c2328fbc81c49a0dfd937a800c25cf79320a763fbeeb718acfb641620d48e6",
+          "crc32": "e94928c1"
+        },
+        {
+          "part": "xl/worksheets/_rels/sheet1.xml.rels",
+          "bytes": 322,
+          "sha256": "65cefb6727e21f882eb83bb6c10370afa59aafda7f007f531df0c30026dc4684",
+          "crc32": "4b326d3b"
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "bytes": 79106972,
+          "sha256": "826883e5380c9dec7f6ec26aa950c0a2d556ce7dc7068916d430337321477dea",
+          "crc32": "a22d12f3"
+        }
+      ],
+      "sheets": [
+        {
+          "sheet": "Sheet1",
+          "state": "visible",
+          "date1904": false,
+          "header_by_column": {
+            "A": "RFDE_CUST_REG_NUM",
+            "B": "RFDE_RPT_DT",
+            "C": "RFDE_TXN_ID",
+            "D": "FII",
+            "E": "SUB_ACC",
+            "F": "BRKER",
+            "G": "SCRIP_NAME",
+            "H": "ISIN",
+            "I": "TR_DATE",
+            "J": "TR_TYPE(*)",
+            "K": "RFDE_SE_REG_NUM",
+            "L": "RFDE_STLD_CODE",
+            "M": "RATE",
+            "N": "QUANTITY",
+            "O": "VALUE (in Rs)",
+            "P": "RFDE_INSTR_TYPE",
+            "Q": "RFDE_REASON_DLAY",
+            "R": "RFDE_RPT_TYPE",
+            "S": "RFDE_AMDMNT_REASON"
+          },
+          "header_column_map": {
+            "RFDE_CUST_REG_NUM": "A",
+            "RFDE_RPT_DT": "B",
+            "RFDE_TXN_ID": "C",
+            "FII": "D",
+            "SUB_ACC": "E",
+            "BRKER": "F",
+            "SCRIP_NAME": "G",
+            "ISIN": "H",
+            "TR_DATE": "I",
+            "TR_TYPE(*)": "J",
+            "RFDE_SE_REG_NUM": "K",
+            "RFDE_STLD_CODE": "L",
+            "RATE": "M",
+            "QUANTITY": "N",
+            "VALUE (in Rs)": "O",
+            "RFDE_INSTR_TYPE": "P",
+            "RFDE_REASON_DLAY": "Q",
+            "RFDE_RPT_TYPE": "R",
+            "RFDE_AMDMNT_REASON": "S"
+          },
+          "data_rows": 115055,
+          "physical_cells_including_header": 2186064,
+          "row_widths_including_header": {
+            "19": 115056
+          },
+          "types_including_header": {
+            "s": 1206580,
+            "n": 979484
+          },
+          "data_field_types": {
+            "RFDE_CUST_REG_NUM": {
+              "n": 100570,
+              "s": 14485
+            },
+            "RFDE_RPT_DT": {
+              "n": 115055
+            },
+            "RFDE_TXN_ID": {
+              "n": 73529,
+              "s": 41526
+            },
+            "FII": {
+              "s": 115055
+            },
+            "SUB_ACC": {
+              "s": 115055
+            },
+            "BRKER": {
+              "s": 115055
+            },
+            "SCRIP_NAME": {
+              "s": 115055
+            },
+            "ISIN": {
+              "s": 115055
+            },
+            "TR_DATE": {
+              "n": 115055
+            },
+            "TR_TYPE(*)": {
+              "n": 115055
+            },
+            "RFDE_SE_REG_NUM": {
+              "n": 115055
+            },
+            "RFDE_STLD_CODE": {
+              "s": 115055
+            },
+            "RATE": {
+              "n": 115055
+            },
+            "QUANTITY": {
+              "n": 115055
+            },
+            "VALUE (in Rs)": {
+              "n": 115055
+            },
+            "RFDE_INSTR_TYPE": {
+              "s": 115055
+            },
+            "RFDE_REASON_DLAY": {
+              "s": 115055
+            },
+            "RFDE_RPT_TYPE": {
+              "s": 115055
+            },
+            "RFDE_AMDMNT_REASON": {
+              "s": 115055
+            }
+          },
+          "position_cell_types": {
+            "A:s": 14486,
+            "B:s": 1,
+            "C:s": 41527,
+            "D:s": 115056,
+            "E:s": 115056,
+            "F:s": 115056,
+            "G:s": 115056,
+            "H:s": 115056,
+            "I:s": 1,
+            "J:s": 1,
+            "K:s": 1,
+            "L:s": 115056,
+            "M:s": 1,
+            "N:s": 1,
+            "O:s": 1,
+            "P:s": 115056,
+            "Q:s": 115056,
+            "R:s": 115056,
+            "S:s": 115056,
+            "A:n": 100570,
+            "B:n": 115055,
+            "C:n": 73529,
+            "I:n": 115055,
+            "J:n": 115055,
+            "K:n": 115055,
+            "M:n": 115055,
+            "N:n": 115055,
+            "O:n": 115055
+          },
+          "formula_cells": 0,
+          "error_cells": 0,
+          "empty_data_fields": {},
+          "edge_whitespace_fields": {
+            "SCRIP_NAME": 24528
+          },
+          "ordinal_rows": 0,
+          "ordinal_not_equal_data_row_number": 0,
+          "code_counts": {
+            "TR_TYPE(*)": {
+              "1": 59700,
+              "10": 79,
+              "11": 209,
+              "13": 5,
+              "14": 6,
+              "15": 1263,
+              "16": 34,
+              "2": 183,
+              "3": 26,
+              "4": 51133,
+              "6": 2,
+              "7": 2355,
+              "8": 16,
+              "9": 44
+            },
+            "RFDE_SE_REG_NUM": {
+              "1": 11707,
+              "23": 99169,
+              "99": 4179
+            },
+            "RFDE_STLD_CODE": {
+              "REG_DL_STLD_01": 109723,
+              "REG_DL_STLD_02": 339,
+              "REG_DL_STLD_03": 799,
+              "REG_DL_STLD_04": 4194
+            },
+            "RFDE_INSTR_TYPE": {
+              "REG_DL_INSTR_EQ": 112498,
+              "REG_DL_INSTR_EU": 2380,
+              "REG_DL_INSTR_FC": 1,
+              "REG_DL_INSTR_ID": 16,
+              "REG_DL_INSTR_MD": 153,
+              "REG_DL_INSTR_ME": 5,
+              "REG_DL_INSTR_PS": 2
+            },
+            "RFDE_REASON_DLAY": {
+              "REG_DL_DLAY_D": 1295,
+              "REG_DL_DLAY_O": 484,
+              "REG_DL_DLAY_P": 113276
+            },
+            "RFDE_RPT_TYPE": {
+              "DL_RPT_TYPE_N": 115055
+            },
+            "RFDE_AMDMNT_REASON": {
+              "DL_AMDMNT_DEL_00": 115055
+            }
+          },
+          "daily_date_counts": {
+            "RFDE_RPT_DT": {
+              "2019-03-05": 4745,
+              "2019-03-06": 6879,
+              "2019-03-07": 5769,
+              "2019-03-08": 6599,
+              "2019-03-11": 5049,
+              "2019-03-12": 5667,
+              "2019-03-13": 6651,
+              "2019-03-14": 5716,
+              "2019-03-15": 5944,
+              "2019-03-18": 9703,
+              "2019-03-19": 5265,
+              "2019-03-20": 6194,
+              "2019-03-22": 5889,
+              "2019-03-25": 7275,
+              "2019-03-26": 4797,
+              "2019-03-27": 4626,
+              "2019-03-28": 5549,
+              "2019-03-29": 6449,
+              "2019-04-02": 6258,
+              "2019-04-03": 14,
+              "2019-04-04": 17
+            },
+            "TR_DATE": {
+              "2019-03-01": 4752,
+              "2019-03-05": 6930,
+              "2019-03-06": 6160,
+              "2019-03-07": 6311,
+              "2019-03-08": 5049,
+              "2019-03-11": 5525,
+              "2019-03-12": 6646,
+              "2019-03-13": 5750,
+              "2019-03-14": 5241,
+              "2019-03-15": 10467,
+              "2019-03-18": 5166,
+              "2019-03-19": 6199,
+              "2019-03-20": 5829,
+              "2019-03-22": 7306,
+              "2019-03-25": 4739,
+              "2019-03-26": 4730,
+              "2019-03-27": 4945,
+              "2019-03-28": 7054,
+              "2019-03-29": 6201,
+              "2019-03-30": 55
+            }
+          },
+          "reporting_lag_counts": {
+            "0": 1629,
+            "1": 73801,
+            "2": 6254,
+            "3": 22036,
+            "4": 11078,
+            "5": 73,
+            "6": 43,
+            "7": 141
+          },
+          "invalid_date_rows": 0,
+          "numeric": {
+            "RATE": {
+              "sum": "152354363.11829999998996583",
+              "zero": 3767,
+              "negative": 0,
+              "fractional": 108943,
+              "min": "0",
+              "max": "112000"
+            },
+            "QUANTITY": {
+              "sum": "10029158511.5600000001157",
+              "zero": 0,
+              "negative": 0,
+              "fractional": 84,
+              "min": "1",
+              "max": "332244889"
+            },
+            "VALUE (in Rs)": {
+              "sum": "2553218146582.309999621821998",
+              "zero": 3767,
+              "negative": 0,
+              "fractional": 101983,
+              "min": "0",
+              "max": "46350000000"
+            }
+          },
+          "residual": {
+            "nonzero": 98822,
+            "above_0_01": 0,
+            "maximum_abs": "0.0050000996450",
+            "sum": "13.734650862499384930000000017"
+          },
+          "isin_distinct_including_invalid": 1001,
+          "isin_syntax_invalid_rows": 0,
+          "isin_checksum_invalid_rows": 0,
+          "trim_only_nonordinal_row_duplicates": 0,
+          "trim_only_custodian_transaction_key_repeats": 0,
+          "repeat_key_different_trim_only_row": 0
+        }
+      ],
+      "primary_evidence": "data/asset-review/monthly-fpi-2019-jan-apr-workbook-evidence-2026-09-29.json"
+    },
+    {
+      "asset": "2019_4.zip",
+      "asset_bytes": 10818954,
+      "asset_sha256": "25387e03f9f3e3a1c45c2c8b56f8aa056b8aba3d6baa6229c65a94b00c65bdd6",
+      "member": "Apr 2019.xlsx",
+      "member_bytes": 10896767,
+      "member_sha256": "f3f3746ec2e10f6aade9e85ab1f2f9a8d6f3ec82dc5406ac5c1d764e44bcd093",
+      "member_crc32": "0727ebdd",
+      "shared_strings": 40637,
+      "package_parts": [
+        {
+          "part": "[Content_Types].xml",
+          "bytes": 1541,
+          "sha256": "fd18046f39017b1ad7e36687a19a585b5504a0a466d40539f7c29160ee770e81",
+          "crc32": "73fb4389"
+        },
+        {
+          "part": "_rels/.rels",
+          "bytes": 735,
+          "sha256": "ad78dfe44ec71f967f96e95bdf6baf2545c39e1a5e4413e7b8e9413eb95fd922",
+          "crc32": "65be5e13"
+        },
+        {
+          "part": "customXml/_rels/item1.xml.rels",
+          "bytes": 296,
+          "sha256": "80482f86e196171d66001e0e74d1900408a3aaf2463e54005d251b5f2db9a0b0",
+          "crc32": "7a393f74"
+        },
+        {
+          "part": "customXml/item1.xml",
+          "bytes": 356,
+          "sha256": "8428d8c67c7399f6799b80e7caaec98255eddaff8041c738b33589d18936dbf8",
+          "crc32": "58a9a6a5"
+        },
+        {
+          "part": "customXml/itemProps1.xml",
+          "bytes": 235,
+          "sha256": "2115c17e8d767c911f391b5250f5037d3fbd12670da0b851db0dd013e77efcfb",
+          "crc32": "ea1d7cef"
+        },
+        {
+          "part": "docProps/app.xml",
+          "bytes": 785,
+          "sha256": "0dba4aa98e8cb1a9c94918473269152036a7666a53e4cfdc1ac698c468645eaf",
+          "crc32": "d91641de"
+        },
+        {
+          "part": "docProps/core.xml",
+          "bytes": 625,
+          "sha256": "b69cd8063f0377f9aadebe1c2c12f080a3d4004236c899f9d62ecef3596e8547",
+          "crc32": "201b173e"
+        },
+        {
+          "part": "docProps/custom.xml",
+          "bytes": 628,
+          "sha256": "83cbcfaab70dc0f8b78d9b1ca7112f374e541dcede7a2fdaeb4a33c5592c9bfc",
+          "crc32": "5d3904a5"
+        },
+        {
+          "part": "xl/_rels/workbook.xml.rels",
+          "bytes": 840,
+          "sha256": "09a51c4201a98f679afbc363fb1f5db0252843fab619ec0219f062c80b87573b",
+          "crc32": "2d0fffa0"
+        },
+        {
+          "part": "xl/printerSettings/printerSettings1.bin",
+          "bytes": 14720,
+          "sha256": "5729bf65b5f48808034f5d60f8c4d3fbe5575122de52dea6296ea53ef33f8e16",
+          "crc32": "7587d18e"
+        },
+        {
+          "part": "xl/sharedStrings.xml",
+          "bytes": 1221475,
+          "sha256": "8be1470d0ae5ce56741b039265f77376ee06e4b9058d074222748334138ee31b",
+          "crc32": "36766f85"
+        },
+        {
+          "part": "xl/styles.xml",
+          "bytes": 1542,
+          "sha256": "3c5cc72b57b03e3905b05ec85502c4355eb574973c7506920a11ccbb52a53e2e",
+          "crc32": "f7e03b43"
+        },
+        {
+          "part": "xl/theme/theme1.xml",
+          "bytes": 6798,
+          "sha256": "a0df54cd7c507e485061a0ba3de7503eb81f6dfa8cc701ee4478439bdf26dfbb",
+          "crc32": "586e828b"
+        },
+        {
+          "part": "xl/workbook.xml",
+          "bytes": 1168,
+          "sha256": "36c2328fbc81c49a0dfd937a800c25cf79320a763fbeeb718acfb641620d48e6",
+          "crc32": "e94928c1"
+        },
+        {
+          "part": "xl/worksheets/_rels/sheet1.xml.rels",
+          "bytes": 322,
+          "sha256": "65cefb6727e21f882eb83bb6c10370afa59aafda7f007f531df0c30026dc4684",
+          "crc32": "4b326d3b"
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "bytes": 67526605,
+          "sha256": "4018d046e70aa6bf91d3edad4eacde18c882a42ef110d575cff513495b978008",
+          "crc32": "f94c2e0b"
+        }
+      ],
+      "sheets": [
+        {
+          "sheet": "Sheet1",
+          "state": "visible",
+          "date1904": false,
+          "header_by_column": {
+            "A": "RFDE_CUST_REG_NUM",
+            "B": "RFDE_RPT_DT",
+            "C": "RFDE_TXN_ID",
+            "D": "FII",
+            "E": "SUB_ACC",
+            "F": "BRKER",
+            "G": "SCRIP_NAME",
+            "H": "ISIN",
+            "I": "TR_DATE",
+            "J": "TR_TYPE(*)",
+            "K": "RFDE_SE_REG_NUM",
+            "L": "RFDE_STLD_CODE",
+            "M": "RATE",
+            "N": "QUANTITY",
+            "O": "VALUE (in Rs)",
+            "P": "RFDE_INSTR_TYPE",
+            "Q": "RFDE_REASON_DLAY",
+            "R": "RFDE_RPT_TYPE",
+            "S": "RFDE_AMDMNT_REASON"
+          },
+          "header_column_map": {
+            "RFDE_CUST_REG_NUM": "A",
+            "RFDE_RPT_DT": "B",
+            "RFDE_TXN_ID": "C",
+            "FII": "D",
+            "SUB_ACC": "E",
+            "BRKER": "F",
+            "SCRIP_NAME": "G",
+            "ISIN": "H",
+            "TR_DATE": "I",
+            "TR_TYPE(*)": "J",
+            "RFDE_SE_REG_NUM": "K",
+            "RFDE_STLD_CODE": "L",
+            "RATE": "M",
+            "QUANTITY": "N",
+            "VALUE (in Rs)": "O",
+            "RFDE_INSTR_TYPE": "P",
+            "RFDE_REASON_DLAY": "Q",
+            "RFDE_RPT_TYPE": "R",
+            "RFDE_AMDMNT_REASON": "S"
+          },
+          "data_rows": 98657,
+          "physical_cells_including_header": 1874502,
+          "row_widths_including_header": {
+            "19": 98658
+          },
+          "types_including_header": {
+            "s": 1030752,
+            "n": 843750
+          },
+          "data_field_types": {
+            "RFDE_CUST_REG_NUM": {
+              "n": 84658,
+              "s": 13999
+            },
+            "RFDE_RPT_DT": {
+              "n": 98657
+            },
+            "RFDE_TXN_ID": {
+              "n": 68493,
+              "s": 30164
+            },
+            "FII": {
+              "s": 98657
+            },
+            "SUB_ACC": {
+              "s": 98657
+            },
+            "BRKER": {
+              "s": 98657
+            },
+            "SCRIP_NAME": {
+              "s": 98657
+            },
+            "ISIN": {
+              "s": 98657
+            },
+            "TR_DATE": {
+              "n": 98657
+            },
+            "TR_TYPE(*)": {
+              "n": 98657
+            },
+            "RFDE_SE_REG_NUM": {
+              "n": 98657
+            },
+            "RFDE_STLD_CODE": {
+              "s": 98657
+            },
+            "RATE": {
+              "n": 98657
+            },
+            "QUANTITY": {
+              "n": 98657
+            },
+            "VALUE (in Rs)": {
+              "n": 98657
+            },
+            "RFDE_INSTR_TYPE": {
+              "s": 98657
+            },
+            "RFDE_REASON_DLAY": {
+              "s": 98657
+            },
+            "RFDE_RPT_TYPE": {
+              "s": 98657
+            },
+            "RFDE_AMDMNT_REASON": {
+              "s": 98657
+            }
+          },
+          "position_cell_types": {
+            "A:s": 14000,
+            "B:s": 1,
+            "C:s": 30165,
+            "D:s": 98658,
+            "E:s": 98658,
+            "F:s": 98658,
+            "G:s": 98658,
+            "H:s": 98658,
+            "I:s": 1,
+            "J:s": 1,
+            "K:s": 1,
+            "L:s": 98658,
+            "M:s": 1,
+            "N:s": 1,
+            "O:s": 1,
+            "P:s": 98658,
+            "Q:s": 98658,
+            "R:s": 98658,
+            "S:s": 98658,
+            "A:n": 84658,
+            "B:n": 98657,
+            "C:n": 68493,
+            "I:n": 98657,
+            "J:n": 98657,
+            "K:n": 98657,
+            "M:n": 98657,
+            "N:n": 98657,
+            "O:n": 98657
+          },
+          "formula_cells": 0,
+          "error_cells": 0,
+          "empty_data_fields": {},
+          "edge_whitespace_fields": {
+            "SCRIP_NAME": 24408
+          },
+          "ordinal_rows": 0,
+          "ordinal_not_equal_data_row_number": 0,
+          "code_counts": {
+            "TR_TYPE(*)": {
+              "1": 49613,
+              "10": 91,
+              "11": 543,
+              "12": 18,
+              "13": 4,
+              "15": 162,
+              "16": 36,
+              "2": 135,
+              "3": 15,
+              "4": 47790,
+              "5": 4,
+              "7": 201,
+              "8": 45
+            },
+            "RFDE_SE_REG_NUM": {
+              "1": 10899,
+              "23": 86557,
+              "99": 1201
+            },
+            "RFDE_STLD_CODE": {
+              "REG_DL_STLD_01": 96344,
+              "REG_DL_STLD_02": 347,
+              "REG_DL_STLD_03": 718,
+              "REG_DL_STLD_04": 1248
+            },
+            "RFDE_INSTR_TYPE": {
+              "REG_DL_INSTR_EQ": 98099,
+              "REG_DL_INSTR_EU": 283,
+              "REG_DL_INSTR_ID": 27,
+              "REG_DL_INSTR_MD": 200,
+              "REG_DL_INSTR_ME": 7,
+              "REG_DL_INSTR_PS": 12,
+              "REG_DL_INSTR_RR": 29
+            },
+            "RFDE_REASON_DLAY": {
+              "REG_DL_DLAY_D": 356,
+              "REG_DL_DLAY_O": 287,
+              "REG_DL_DLAY_P": 98014
+            },
+            "RFDE_RPT_TYPE": {
+              "DL_RPT_TYPE_N": 98657
+            },
+            "RFDE_AMDMNT_REASON": {
+              "DL_AMDMNT_DEL_00": 98657
+            }
+          },
+          "daily_date_counts": {
+            "RFDE_RPT_DT": {
+              "2019-04-02": 4679,
+              "2019-04-03": 3864,
+              "2019-04-04": 4490,
+              "2019-04-05": 8986,
+              "2019-04-08": 4540,
+              "2019-04-09": 5289,
+              "2019-04-10": 5441,
+              "2019-04-11": 4837,
+              "2019-04-12": 4375,
+              "2019-04-15": 4256,
+              "2019-04-16": 4577,
+              "2019-04-18": 5093,
+              "2019-04-22": 5996,
+              "2019-04-23": 3187,
+              "2019-04-24": 4462,
+              "2019-04-25": 5762,
+              "2019-04-26": 5912,
+              "2019-04-30": 5012,
+              "2019-05-02": 7873,
+              "2019-05-03": 8,
+              "2019-05-06": 18
+            },
+            "TR_DATE": {
+              "2019-04-01": 4727,
+              "2019-04-02": 5755,
+              "2019-04-03": 5641,
+              "2019-04-04": 5907,
+              "2019-04-05": 4472,
+              "2019-04-08": 5327,
+              "2019-04-09": 5484,
+              "2019-04-10": 4837,
+              "2019-04-11": 4355,
+              "2019-04-12": 4283,
+              "2019-04-15": 4542,
+              "2019-04-16": 5122,
+              "2019-04-18": 5991,
+              "2019-04-22": 3190,
+              "2019-04-23": 4454,
+              "2019-04-24": 5769,
+              "2019-04-25": 5930,
+              "2019-04-26": 5070,
+              "2019-04-30": 7801
+            }
+          },
+          "reporting_lag_counts": {
+            "0": 229,
+            "1": 62124,
+            "2": 14698,
+            "3": 10400,
+            "4": 10957,
+            "5": 57,
+            "6": 171,
+            "7": 21
+          },
+          "invalid_date_rows": 0,
+          "numeric": {
+            "RATE": {
+              "sum": "134257883.97210000001020317",
+              "zero": 569,
+              "negative": 0,
+              "fractional": 95398,
+              "min": "0",
+              "max": "60783.05"
+            },
+            "QUANTITY": {
+              "sum": "6804939132.819999999947",
+              "zero": 0,
+              "negative": 0,
+              "fractional": 97,
+              "min": "1",
+              "max": "210500000"
+            },
+            "VALUE (in Rs)": {
+              "sum": "1922899227738.580000680124306",
+              "zero": 569,
+              "negative": 0,
+              "fractional": 89281,
+              "min": "0",
+              "max": "12986361191.49"
+            }
+          },
+          "residual": {
+            "nonzero": 86047,
+            "above_0_01": 0,
+            "maximum_abs": "0.0050001691750",
+            "sum": "14.10499638608497447999999954"
+          },
+          "isin_distinct_including_invalid": 953,
+          "isin_syntax_invalid_rows": 52,
+          "isin_checksum_invalid_rows": 0,
+          "trim_only_nonordinal_row_duplicates": 0,
+          "trim_only_custodian_transaction_key_repeats": 0,
+          "repeat_key_different_trim_only_row": 0
+        }
+      ],
+      "primary_evidence": "data/asset-review/monthly-fpi-2019-jan-apr-workbook-evidence-2026-09-29.json"
+    },
+    {
+      "asset": "2019_5.zip",
+      "asset_bytes": 15503686,
+      "asset_sha256": "989250ebe8f0f6cd798bf138b6d18f74f49c285b0fc9e7607561fa826c5d78c0",
+      "member": "May 2019.xlsx",
+      "member_bytes": 15603389,
+      "member_sha256": "d089aa96db3c7f8872707c132e3d7adf86d03e050d325f40e052294180b0491b",
+      "member_crc32": "ab94439b",
+      "shared_strings": 53921,
+      "package_parts": [
+        {
+          "part": "[Content_Types].xml",
+          "bytes": 1541,
+          "sha256": "fd18046f39017b1ad7e36687a19a585b5504a0a466d40539f7c29160ee770e81",
+          "crc32": "73fb4389"
+        },
+        {
+          "part": "_rels/.rels",
+          "bytes": 735,
+          "sha256": "ad78dfe44ec71f967f96e95bdf6baf2545c39e1a5e4413e7b8e9413eb95fd922",
+          "crc32": "65be5e13"
+        },
+        {
+          "part": "customXml/_rels/item1.xml.rels",
+          "bytes": 296,
+          "sha256": "80482f86e196171d66001e0e74d1900408a3aaf2463e54005d251b5f2db9a0b0",
+          "crc32": "7a393f74"
+        },
+        {
+          "part": "customXml/item1.xml",
+          "bytes": 356,
+          "sha256": "22aa236e315ecf01567b7b0390efa44cc58c67f4ce99e83ee473b86f0e92f4c3",
+          "crc32": "c185d13d"
+        },
+        {
+          "part": "customXml/itemProps1.xml",
+          "bytes": 235,
+          "sha256": "f99ac68b1a1dbdd1ad2df0ba88c17f7de602f29fa9eb949f04e4efba6ad3ae63",
+          "crc32": "f9045b8d"
+        },
+        {
+          "part": "docProps/app.xml",
+          "bytes": 785,
+          "sha256": "0dba4aa98e8cb1a9c94918473269152036a7666a53e4cfdc1ac698c468645eaf",
+          "crc32": "d91641de"
+        },
+        {
+          "part": "docProps/core.xml",
+          "bytes": 625,
+          "sha256": "918cc2df3964d975c3dd9ce883a682038f622fdfac8289b198e822b9a4c7d2c9",
+          "crc32": "21010b5b"
+        },
+        {
+          "part": "docProps/custom.xml",
+          "bytes": 628,
+          "sha256": "da069d209020463accaf3732cc468511a589f542934c56c41074d7545266cb5e",
+          "crc32": "b16cc7ff"
+        },
+        {
+          "part": "xl/_rels/workbook.xml.rels",
+          "bytes": 840,
+          "sha256": "09a51c4201a98f679afbc363fb1f5db0252843fab619ec0219f062c80b87573b",
+          "crc32": "2d0fffa0"
+        },
+        {
+          "part": "xl/printerSettings/printerSettings1.bin",
+          "bytes": 14720,
+          "sha256": "fdbbcab1b1090851a1daaf634fc05b0c1270843723c5e4976e63ff7f479ab059",
+          "crc32": "0a980b01"
+        },
+        {
+          "part": "xl/sharedStrings.xml",
+          "bytes": 1595087,
+          "sha256": "eccd748af1c07d537735e884143ce08192885fc8c7fdce493883cae23b8bd3e0",
+          "crc32": "99d25187"
+        },
+        {
+          "part": "xl/styles.xml",
+          "bytes": 1542,
+          "sha256": "3c5cc72b57b03e3905b05ec85502c4355eb574973c7506920a11ccbb52a53e2e",
+          "crc32": "f7e03b43"
+        },
+        {
+          "part": "xl/theme/theme1.xml",
+          "bytes": 6798,
+          "sha256": "a0df54cd7c507e485061a0ba3de7503eb81f6dfa8cc701ee4478439bdf26dfbb",
+          "crc32": "586e828b"
+        },
+        {
+          "part": "xl/workbook.xml",
+          "bytes": 1168,
+          "sha256": "36c2328fbc81c49a0dfd937a800c25cf79320a763fbeeb718acfb641620d48e6",
+          "crc32": "e94928c1"
+        },
+        {
+          "part": "xl/worksheets/_rels/sheet1.xml.rels",
+          "bytes": 322,
+          "sha256": "65cefb6727e21f882eb83bb6c10370afa59aafda7f007f531df0c30026dc4684",
+          "crc32": "4b326d3b"
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "bytes": 97690183,
+          "sha256": "64739741dee09b83cd56dfae2ab82edf2b4ad19939dea9e34e9e377b3b75fb43",
+          "crc32": "c13c5f86"
+        }
+      ],
+      "sheets": [
+        {
+          "sheet": "Sheet1",
+          "state": "visible",
+          "date1904": false,
+          "header_by_column": {
+            "A": "RFDE_CUST_REG_NUM",
+            "B": "RFDE_RPT_DT",
+            "C": "RFDE_TXN_ID",
+            "D": "FII",
+            "E": "SUB_ACC",
+            "F": "BRKER",
+            "G": "SCRIP_NAME",
+            "H": "ISIN",
+            "I": "TR_DATE",
+            "J": "TR_TYPE(*)",
+            "K": "RFDE_SE_REG_NUM",
+            "L": "RFDE_STLD_CODE",
+            "M": "RATE",
+            "N": "QUANTITY",
+            "O": "VALUE (in Rs)",
+            "P": "RFDE_INSTR_TYPE",
+            "Q": "RFDE_REASON_DLAY",
+            "R": "RFDE_RPT_TYPE",
+            "S": "RFDE_AMDMNT_REASON"
+          },
+          "header_column_map": {
+            "RFDE_CUST_REG_NUM": "A",
+            "RFDE_RPT_DT": "B",
+            "RFDE_TXN_ID": "C",
+            "FII": "D",
+            "SUB_ACC": "E",
+            "BRKER": "F",
+            "SCRIP_NAME": "G",
+            "ISIN": "H",
+            "TR_DATE": "I",
+            "TR_TYPE(*)": "J",
+            "RFDE_SE_REG_NUM": "K",
+            "RFDE_STLD_CODE": "L",
+            "RATE": "M",
+            "QUANTITY": "N",
+            "VALUE (in Rs)": "O",
+            "RFDE_INSTR_TYPE": "P",
+            "RFDE_REASON_DLAY": "Q",
+            "RFDE_RPT_TYPE": "R",
+            "RFDE_AMDMNT_REASON": "S"
+          },
+          "data_rows": 141264,
+          "physical_cells_including_header": 2684035,
+          "row_widths_including_header": {
+            "19": 141265
+          },
+          "types_including_header": {
+            "s": 1474736,
+            "n": 1209299
+          },
+          "data_field_types": {
+            "RFDE_CUST_REG_NUM": {
+              "n": 122024,
+              "s": 19240
+            },
+            "RFDE_RPT_DT": {
+              "n": 141264
+            },
+            "RFDE_TXN_ID": {
+              "n": 98427,
+              "s": 42837
+            },
+            "FII": {
+              "s": 141264
+            },
+            "SUB_ACC": {
+              "s": 141264
+            },
+            "BRKER": {
+              "s": 141264
+            },
+            "SCRIP_NAME": {
+              "s": 141264
+            },
+            "ISIN": {
+              "s": 141264
+            },
+            "TR_DATE": {
+              "n": 141264
+            },
+            "TR_TYPE(*)": {
+              "n": 141264
+            },
+            "RFDE_SE_REG_NUM": {
+              "n": 141264
+            },
+            "RFDE_STLD_CODE": {
+              "s": 141264
+            },
+            "RATE": {
+              "n": 141264
+            },
+            "QUANTITY": {
+              "n": 141264
+            },
+            "VALUE (in Rs)": {
+              "n": 141264
+            },
+            "RFDE_INSTR_TYPE": {
+              "s": 141264
+            },
+            "RFDE_REASON_DLAY": {
+              "s": 141264
+            },
+            "RFDE_RPT_TYPE": {
+              "s": 141264
+            },
+            "RFDE_AMDMNT_REASON": {
+              "s": 141264
+            }
+          },
+          "position_cell_types": {
+            "A:s": 19241,
+            "B:s": 1,
+            "C:s": 42838,
+            "D:s": 141265,
+            "E:s": 141265,
+            "F:s": 141265,
+            "G:s": 141265,
+            "H:s": 141265,
+            "I:s": 1,
+            "J:s": 1,
+            "K:s": 1,
+            "L:s": 141265,
+            "M:s": 1,
+            "N:s": 1,
+            "O:s": 1,
+            "P:s": 141265,
+            "Q:s": 141265,
+            "R:s": 141265,
+            "S:s": 141265,
+            "A:n": 122024,
+            "B:n": 141264,
+            "C:n": 98427,
+            "I:n": 141264,
+            "J:n": 141264,
+            "K:n": 141264,
+            "M:n": 141264,
+            "N:n": 141264,
+            "O:n": 141264
+          },
+          "formula_cells": 0,
+          "error_cells": 0,
+          "empty_data_fields": {},
+          "edge_whitespace_fields": {
+            "SCRIP_NAME": 29132
+          },
+          "ordinal_rows": 0,
+          "ordinal_not_equal_data_row_number": 0,
+          "code_counts": {
+            "TR_TYPE(*)": {
+              "1": 59278,
+              "10": 56,
+              "11": 10,
+              "13": 16,
+              "14": 3,
+              "15": 1139,
+              "2": 47,
+              "3": 4,
+              "4": 78688,
+              "5": 1761,
+              "6": 37,
+              "7": 187,
+              "8": 36,
+              "9": 2
+            },
+            "RFDE_SE_REG_NUM": {
+              "1": 16025,
+              "23": 121984,
+              "99": 3255
+            },
+            "RFDE_STLD_CODE": {
+              "REG_DL_STLD_01": 136325,
+              "REG_DL_STLD_02": 521,
+              "REG_DL_STLD_03": 1215,
+              "REG_DL_STLD_04": 3203
+            },
+            "RFDE_INSTR_TYPE": {
+              "REG_DL_INSTR_EQ": 139072,
+              "REG_DL_INSTR_EU": 1970,
+              "REG_DL_INSTR_FC": 15,
+              "REG_DL_INSTR_ID": 33,
+              "REG_DL_INSTR_MD": 107,
+              "REG_DL_INSTR_ME": 26,
+              "REG_DL_INSTR_NC": 1,
+              "REG_DL_INSTR_RR": 40
+            },
+            "RFDE_REASON_DLAY": {
+              "REG_DL_DLAY_D": 460,
+              "REG_DL_DLAY_O": 236,
+              "REG_DL_DLAY_P": 140568
+            },
+            "RFDE_RPT_TYPE": {
+              "DL_RPT_TYPE_N": 141264
+            },
+            "RFDE_AMDMNT_REASON": {
+              "DL_AMDMNT_DEL_00": 141264
+            }
+          },
+          "daily_date_counts": {
+            "RFDE_RPT_DT": {
+              "2019-05-03": 5782,
+              "2019-05-06": 5210,
+              "2019-05-07": 5616,
+              "2019-05-08": 6580,
+              "2019-05-09": 6535,
+              "2019-05-10": 5395,
+              "2019-05-13": 5277,
+              "2019-05-14": 4938,
+              "2019-05-15": 6580,
+              "2019-05-16": 5649,
+              "2019-05-17": 5395,
+              "2019-05-20": 5542,
+              "2019-05-21": 6198,
+              "2019-05-22": 5853,
+              "2019-05-23": 5351,
+              "2019-05-24": 6121,
+              "2019-05-27": 5627,
+              "2019-05-28": 4226,
+              "2019-05-29": 16966,
+              "2019-05-30": 8299,
+              "2019-05-31": 6719,
+              "2019-06-03": 7377,
+              "2019-06-04": 9,
+              "2019-06-06": 18,
+              "2019-06-07": 1
+            },
+            "TR_DATE": {
+              "2019-05-02": 5793,
+              "2019-05-03": 5215,
+              "2019-05-06": 5470,
+              "2019-05-07": 6309,
+              "2019-05-08": 6955,
+              "2019-05-09": 5391,
+              "2019-05-10": 5279,
+              "2019-05-13": 4939,
+              "2019-05-14": 6552,
+              "2019-05-15": 5649,
+              "2019-05-16": 5425,
+              "2019-05-17": 5605,
+              "2019-05-20": 6146,
+              "2019-05-21": 5835,
+              "2019-05-22": 5340,
+              "2019-05-23": 6128,
+              "2019-05-24": 5750,
+              "2019-05-27": 3960,
+              "2019-05-28": 16627,
+              "2019-05-29": 8776,
+              "2019-05-30": 6730,
+              "2019-05-31": 7390
+            }
+          },
+          "reporting_lag_counts": {
+            "0": 1395,
+            "1": 110404,
+            "2": 138,
+            "3": 28897,
+            "4": 356,
+            "5": 48,
+            "6": 21,
+            "7": 5
+          },
+          "invalid_date_rows": 0,
+          "numeric": {
+            "RATE": {
+              "sum": "195717845.34220000004680961",
+              "zero": 2377,
+              "negative": 0,
+              "fractional": 136065,
+              "min": "0",
+              "max": "100000"
+            },
+            "QUANTITY": {
+              "sum": "18020339404.790000000032",
+              "zero": 0,
+              "negative": 0,
+              "fractional": 67,
+              "min": "1",
+              "max": "275120371"
+            },
+            "VALUE (in Rs)": {
+              "sum": "2682970099176.900001644956228",
+              "zero": 2377,
+              "negative": 0,
+              "fractional": 127998,
+              "min": "0",
+              "max": "4088747146.7199998"
+            }
+          },
+          "residual": {
+            "nonzero": 123950,
+            "above_0_01": 0,
+            "maximum_abs": "0.0050001930570",
+            "sum": "17.660215367349066239999999781"
+          },
+          "isin_distinct_including_invalid": 967,
+          "isin_syntax_invalid_rows": 53,
+          "isin_checksum_invalid_rows": 0,
+          "trim_only_nonordinal_row_duplicates": 0,
+          "trim_only_custodian_transaction_key_repeats": 0,
+          "repeat_key_different_trim_only_row": 0
+        }
+      ],
+      "primary_evidence": "data/asset-review/monthly-fpi-2019-may-aug-workbook-evidence-2026-09-29.json"
+    },
+    {
+      "asset": "2019_6.zip",
+      "asset_bytes": 11880293,
+      "asset_sha256": "7be052f056f4faa7a5170a021167bcde760afb3bc16327b5a92977162d53cd2a",
+      "member": "Jun 2019.xlsx",
+      "member_bytes": 11948396,
+      "member_sha256": "bfc5ec6bb3f7639c964b481352cd4e654b779a8f24488112831b75d6f265a751",
+      "member_crc32": "1218e920",
+      "shared_strings": 46680,
+      "package_parts": [
+        {
+          "part": "[Content_Types].xml",
+          "bytes": 1541,
+          "sha256": "fd18046f39017b1ad7e36687a19a585b5504a0a466d40539f7c29160ee770e81",
+          "crc32": "73fb4389"
+        },
+        {
+          "part": "_rels/.rels",
+          "bytes": 735,
+          "sha256": "ad78dfe44ec71f967f96e95bdf6baf2545c39e1a5e4413e7b8e9413eb95fd922",
+          "crc32": "65be5e13"
+        },
+        {
+          "part": "customXml/_rels/item1.xml.rels",
+          "bytes": 296,
+          "sha256": "80482f86e196171d66001e0e74d1900408a3aaf2463e54005d251b5f2db9a0b0",
+          "crc32": "7a393f74"
+        },
+        {
+          "part": "customXml/item1.xml",
+          "bytes": 356,
+          "sha256": "e0d24dfaa2664d07f39bfb717bcca3e59de88dcc051f258caabf297b2b175161",
+          "crc32": "7f3ab8ff"
+        },
+        {
+          "part": "customXml/itemProps1.xml",
+          "bytes": 235,
+          "sha256": "66c107364330aa19852d53d174cff6e0b0cb328ea91af13bea7e690f7d60663f",
+          "crc32": "da8eae4b"
+        },
+        {
+          "part": "docProps/app.xml",
+          "bytes": 785,
+          "sha256": "0dba4aa98e8cb1a9c94918473269152036a7666a53e4cfdc1ac698c468645eaf",
+          "crc32": "d91641de"
+        },
+        {
+          "part": "docProps/core.xml",
+          "bytes": 625,
+          "sha256": "c5d9e7e72f39d20d47abb19ab36209879f621be0d1c1b2d819e24eb5517e9f3e",
+          "crc32": "6e1aa44d"
+        },
+        {
+          "part": "docProps/custom.xml",
+          "bytes": 628,
+          "sha256": "9f0be68d1faeb310d3221b98711fcde6811f1ef2f5e05906cc84857f52969efe",
+          "crc32": "71cee787"
+        },
+        {
+          "part": "xl/_rels/workbook.xml.rels",
+          "bytes": 840,
+          "sha256": "09a51c4201a98f679afbc363fb1f5db0252843fab619ec0219f062c80b87573b",
+          "crc32": "2d0fffa0"
+        },
+        {
+          "part": "xl/printerSettings/printerSettings1.bin",
+          "bytes": 14720,
+          "sha256": "21fd60de84d214623e3bb20432918ce0fb2e1be6c658140ce92b3fa264409448",
+          "crc32": "31a36ad6"
+        },
+        {
+          "part": "xl/sharedStrings.xml",
+          "bytes": 1383748,
+          "sha256": "750f019d12cb69bb8777cf21609f1be99f7b5b7695adad664acca0c1d01a9ece",
+          "crc32": "7154ddb3"
+        },
+        {
+          "part": "xl/styles.xml",
+          "bytes": 1542,
+          "sha256": "3c5cc72b57b03e3905b05ec85502c4355eb574973c7506920a11ccbb52a53e2e",
+          "crc32": "f7e03b43"
+        },
+        {
+          "part": "xl/theme/theme1.xml",
+          "bytes": 6798,
+          "sha256": "a0df54cd7c507e485061a0ba3de7503eb81f6dfa8cc701ee4478439bdf26dfbb",
+          "crc32": "586e828b"
+        },
+        {
+          "part": "xl/workbook.xml",
+          "bytes": 1168,
+          "sha256": "36c2328fbc81c49a0dfd937a800c25cf79320a763fbeeb718acfb641620d48e6",
+          "crc32": "e94928c1"
+        },
+        {
+          "part": "xl/worksheets/_rels/sheet1.xml.rels",
+          "bytes": 322,
+          "sha256": "65cefb6727e21f882eb83bb6c10370afa59aafda7f007f531df0c30026dc4684",
+          "crc32": "4b326d3b"
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "bytes": 73934525,
+          "sha256": "2d5e2c918d556b1931d2d9b29913b7b0ac10b2fa5864f33d60b6f051fba15e99",
+          "crc32": "90578c11"
+        }
+      ],
+      "sheets": [
+        {
+          "sheet": "Sheet1",
+          "state": "visible",
+          "date1904": false,
+          "header_by_column": {
+            "A": "RFDE_CUST_REG_NUM",
+            "B": "RFDE_RPT_DT",
+            "C": "RFDE_TXN_ID",
+            "D": "FII",
+            "E": "SUB_ACC",
+            "F": "BRKER",
+            "G": "SCRIP_NAME",
+            "H": "ISIN",
+            "I": "TR_DATE",
+            "J": "TR_TYPE(*)",
+            "K": "RFDE_SE_REG_NUM",
+            "L": "RFDE_STLD_CODE",
+            "M": "RATE",
+            "N": "QUANTITY",
+            "O": "VALUE (in Rs)",
+            "P": "RFDE_INSTR_TYPE",
+            "Q": "RFDE_REASON_DLAY",
+            "R": "RFDE_RPT_TYPE",
+            "S": "RFDE_AMDMNT_REASON"
+          },
+          "header_column_map": {
+            "RFDE_CUST_REG_NUM": "A",
+            "RFDE_RPT_DT": "B",
+            "RFDE_TXN_ID": "C",
+            "FII": "D",
+            "SUB_ACC": "E",
+            "BRKER": "F",
+            "SCRIP_NAME": "G",
+            "ISIN": "H",
+            "TR_DATE": "I",
+            "TR_TYPE(*)": "J",
+            "RFDE_SE_REG_NUM": "K",
+            "RFDE_STLD_CODE": "L",
+            "RATE": "M",
+            "QUANTITY": "N",
+            "VALUE (in Rs)": "O",
+            "RFDE_INSTR_TYPE": "P",
+            "RFDE_REASON_DLAY": "Q",
+            "RFDE_RPT_TYPE": "R",
+            "RFDE_AMDMNT_REASON": "S"
+          },
+          "data_rows": 107792,
+          "physical_cells_including_header": 2048067,
+          "row_widths_including_header": {
+            "19": 107793
+          },
+          "types_including_header": {
+            "s": 1127433,
+            "n": 920634
+          },
+          "data_field_types": {
+            "RFDE_CUST_REG_NUM": {
+              "n": 94691,
+              "s": 13101
+            },
+            "RFDE_RPT_DT": {
+              "n": 107792
+            },
+            "RFDE_TXN_ID": {
+              "n": 71399,
+              "s": 36393
+            },
+            "FII": {
+              "s": 107792
+            },
+            "SUB_ACC": {
+              "s": 107792
+            },
+            "BRKER": {
+              "s": 107792
+            },
+            "SCRIP_NAME": {
+              "s": 107792
+            },
+            "ISIN": {
+              "s": 107792
+            },
+            "TR_DATE": {
+              "n": 107792
+            },
+            "TR_TYPE(*)": {
+              "n": 107792
+            },
+            "RFDE_SE_REG_NUM": {
+              "n": 107792
+            },
+            "RFDE_STLD_CODE": {
+              "s": 107792
+            },
+            "RATE": {
+              "n": 107792
+            },
+            "QUANTITY": {
+              "n": 107792
+            },
+            "VALUE (in Rs)": {
+              "n": 107792
+            },
+            "RFDE_INSTR_TYPE": {
+              "s": 107792
+            },
+            "RFDE_REASON_DLAY": {
+              "s": 107792
+            },
+            "RFDE_RPT_TYPE": {
+              "s": 107792
+            },
+            "RFDE_AMDMNT_REASON": {
+              "s": 107792
+            }
+          },
+          "position_cell_types": {
+            "A:s": 13102,
+            "B:s": 1,
+            "C:s": 36394,
+            "D:s": 107793,
+            "E:s": 107793,
+            "F:s": 107793,
+            "G:s": 107793,
+            "H:s": 107793,
+            "I:s": 1,
+            "J:s": 1,
+            "K:s": 1,
+            "L:s": 107793,
+            "M:s": 1,
+            "N:s": 1,
+            "O:s": 1,
+            "P:s": 107793,
+            "Q:s": 107793,
+            "R:s": 107793,
+            "S:s": 107793,
+            "A:n": 94691,
+            "B:n": 107792,
+            "C:n": 71399,
+            "I:n": 107792,
+            "J:n": 107792,
+            "K:n": 107792,
+            "M:n": 107792,
+            "N:n": 107792,
+            "O:n": 107792
+          },
+          "formula_cells": 0,
+          "error_cells": 0,
+          "empty_data_fields": {},
+          "edge_whitespace_fields": {
+            "SCRIP_NAME": 21930
+          },
+          "ordinal_rows": 0,
+          "ordinal_not_equal_data_row_number": 0,
+          "code_counts": {
+            "TR_TYPE(*)": {
+              "1": 50988,
+              "10": 49,
+              "11": 141,
+              "13": 10,
+              "15": 466,
+              "16": 1,
+              "2": 49,
+              "3": 1,
+              "4": 55181,
+              "5": 2,
+              "6": 2,
+              "7": 889,
+              "8": 13
+            },
+            "RFDE_SE_REG_NUM": {
+              "1": 12356,
+              "23": 93709,
+              "99": 1727
+            },
+            "RFDE_STLD_CODE": {
+              "REG_DL_STLD_01": 104775,
+              "REG_DL_STLD_02": 333,
+              "REG_DL_STLD_03": 988,
+              "REG_DL_STLD_04": 1696
+            },
+            "RFDE_INSTR_TYPE": {
+              "REG_DL_INSTR_EQ": 106945,
+              "REG_DL_INSTR_EU": 730,
+              "REG_DL_INSTR_ID": 36,
+              "REG_DL_INSTR_MD": 81
+            },
+            "RFDE_REASON_DLAY": {
+              "REG_DL_DLAY_D": 643,
+              "REG_DL_DLAY_O": 154,
+              "REG_DL_DLAY_P": 106995
+            },
+            "RFDE_RPT_TYPE": {
+              "DL_RPT_TYPE_N": 107792
+            },
+            "RFDE_AMDMNT_REASON": {
+              "DL_AMDMNT_DEL_00": 107792
+            }
+          },
+          "daily_date_counts": {
+            "RFDE_RPT_DT": {
+              "2019-06-03": 1,
+              "2019-06-04": 5563,
+              "2019-06-06": 6898,
+              "2019-06-07": 7253,
+              "2019-06-10": 4598,
+              "2019-06-11": 5555,
+              "2019-06-12": 5558,
+              "2019-06-13": 5377,
+              "2019-06-14": 5370,
+              "2019-06-17": 5334,
+              "2019-06-18": 5658,
+              "2019-06-19": 5859,
+              "2019-06-20": 5866,
+              "2019-06-21": 5253,
+              "2019-06-24": 7383,
+              "2019-06-25": 5475,
+              "2019-06-26": 4610,
+              "2019-06-27": 5029,
+              "2019-06-28": 4899,
+              "2019-07-01": 6163,
+              "2019-07-02": 69,
+              "2019-07-03": 20,
+              "2019-07-04": 1
+            },
+            "TR_DATE": {
+              "2019-06-01": 1,
+              "2019-06-03": 6256,
+              "2019-06-04": 6215,
+              "2019-06-06": 7259,
+              "2019-06-07": 4595,
+              "2019-06-10": 5555,
+              "2019-06-11": 5517,
+              "2019-06-12": 5423,
+              "2019-06-13": 5435,
+              "2019-06-14": 5347,
+              "2019-06-15": 2,
+              "2019-06-17": 5549,
+              "2019-06-18": 5712,
+              "2019-06-19": 5909,
+              "2019-06-20": 5165,
+              "2019-06-21": 8857,
+              "2019-06-24": 4212,
+              "2019-06-25": 4610,
+              "2019-06-26": 4864,
+              "2019-06-27": 5531,
+              "2019-06-28": 5778
+            }
+          },
+          "reporting_lag_counts": {
+            "0": 823,
+            "1": 75036,
+            "2": 6284,
+            "3": 23679,
+            "4": 1829,
+            "5": 64,
+            "6": 71,
+            "7": 6
+          },
+          "invalid_date_rows": 0,
+          "numeric": {
+            "RATE": {
+              "sum": "148281519.77110000009097351",
+              "zero": 1514,
+              "negative": 0,
+              "fractional": 103906,
+              "min": "0",
+              "max": "57401.621899999998"
+            },
+            "QUANTITY": {
+              "sum": "6043122354.7000000000039",
+              "zero": 0,
+              "negative": 0,
+              "fractional": 61,
+              "min": "1",
+              "max": "322200000"
+            },
+            "VALUE (in Rs)": {
+              "sum": "1976000718658.449999116978523",
+              "zero": 1514,
+              "negative": 0,
+              "fractional": 98231,
+              "min": "0",
+              "max": "14245632000"
+            }
+          },
+          "residual": {
+            "nonzero": 96013,
+            "above_0_01": 0,
+            "maximum_abs": "0.00500005121050",
+            "sum": "13.539757553004507659999999814"
+          },
+          "isin_distinct_including_invalid": 888,
+          "isin_syntax_invalid_rows": 0,
+          "isin_checksum_invalid_rows": 0,
+          "trim_only_nonordinal_row_duplicates": 0,
+          "trim_only_custodian_transaction_key_repeats": 0,
+          "repeat_key_different_trim_only_row": 0
+        }
+      ],
+      "primary_evidence": "data/asset-review/monthly-fpi-2019-may-aug-workbook-evidence-2026-09-29.json"
+    },
+    {
+      "asset": "2019_7.zip",
+      "asset_bytes": 13412377,
+      "asset_sha256": "4d6e3ed575f64d19f5e3d3b3fcf7af54fcab56224ae840ae5d98bf4cf85c9100",
+      "member": "Jul 2019.xlsx",
+      "member_bytes": 13477862,
+      "member_sha256": "247fa1867e309f9a3ca8e2c55e83d04626621bd17f1480c8f02f0f447d7467aa",
+      "member_crc32": "e72764e7",
+      "shared_strings": 51022,
+      "package_parts": [
+        {
+          "part": "[Content_Types].xml",
+          "bytes": 1541,
+          "sha256": "fd18046f39017b1ad7e36687a19a585b5504a0a466d40539f7c29160ee770e81",
+          "crc32": "73fb4389"
+        },
+        {
+          "part": "_rels/.rels",
+          "bytes": 735,
+          "sha256": "ad78dfe44ec71f967f96e95bdf6baf2545c39e1a5e4413e7b8e9413eb95fd922",
+          "crc32": "65be5e13"
+        },
+        {
+          "part": "customXml/_rels/item1.xml.rels",
+          "bytes": 296,
+          "sha256": "80482f86e196171d66001e0e74d1900408a3aaf2463e54005d251b5f2db9a0b0",
+          "crc32": "7a393f74"
+        },
+        {
+          "part": "customXml/item1.xml",
+          "bytes": 356,
+          "sha256": "b5d69656861110294aac2262fead33a672ceb2012b1dbc78afd75f3bdb0d76fc",
+          "crc32": "3a97f498"
+        },
+        {
+          "part": "customXml/itemProps1.xml",
+          "bytes": 235,
+          "sha256": "5311ace604cca0d6af1ea0ba713125dff2a8a6168737a5cf63fada604395d8a9",
+          "crc32": "a85bd1b9"
+        },
+        {
+          "part": "docProps/app.xml",
+          "bytes": 785,
+          "sha256": "0dba4aa98e8cb1a9c94918473269152036a7666a53e4cfdc1ac698c468645eaf",
+          "crc32": "d91641de"
+        },
+        {
+          "part": "docProps/core.xml",
+          "bytes": 625,
+          "sha256": "3c7233f1f4e11ff58f25f0fcb1f56bfef838b7a1d6af97416ab56c26a0699284",
+          "crc32": "20e3216c"
+        },
+        {
+          "part": "docProps/custom.xml",
+          "bytes": 628,
+          "sha256": "f82b396a0bf1d618e6de262c4bdb6de144ee092117e697876557ae1479815cf3",
+          "crc32": "dc92fdcf"
+        },
+        {
+          "part": "xl/_rels/workbook.xml.rels",
+          "bytes": 840,
+          "sha256": "09a51c4201a98f679afbc363fb1f5db0252843fab619ec0219f062c80b87573b",
+          "crc32": "2d0fffa0"
+        },
+        {
+          "part": "xl/printerSettings/printerSettings1.bin",
+          "bytes": 14720,
+          "sha256": "9d0dd9077e9d746e63fc490cc9a64a729c483603f014445f91f68cfbb6ad4821",
+          "crc32": "909b3650"
+        },
+        {
+          "part": "xl/sharedStrings.xml",
+          "bytes": 1506419,
+          "sha256": "86e8ec9e273475c33299e1d4566bb6433b74f5428c17c7fe6a1e6b54ec90a117",
+          "crc32": "8aa84c59"
+        },
+        {
+          "part": "xl/styles.xml",
+          "bytes": 1542,
+          "sha256": "3c5cc72b57b03e3905b05ec85502c4355eb574973c7506920a11ccbb52a53e2e",
+          "crc32": "f7e03b43"
+        },
+        {
+          "part": "xl/theme/theme1.xml",
+          "bytes": 6798,
+          "sha256": "a0df54cd7c507e485061a0ba3de7503eb81f6dfa8cc701ee4478439bdf26dfbb",
+          "crc32": "586e828b"
+        },
+        {
+          "part": "xl/workbook.xml",
+          "bytes": 1168,
+          "sha256": "36c2328fbc81c49a0dfd937a800c25cf79320a763fbeeb718acfb641620d48e6",
+          "crc32": "e94928c1"
+        },
+        {
+          "part": "xl/worksheets/_rels/sheet1.xml.rels",
+          "bytes": 322,
+          "sha256": "65cefb6727e21f882eb83bb6c10370afa59aafda7f007f531df0c30026dc4684",
+          "crc32": "4b326d3b"
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "bytes": 82039309,
+          "sha256": "26312510518f2c9fb64335722eb4debdc398271a45d80f9cda2c39c5615de7e4",
+          "crc32": "8f64048b"
+        }
+      ],
+      "sheets": [
+        {
+          "sheet": "Sheet1",
+          "state": "visible",
+          "date1904": false,
+          "header_by_column": {
+            "B": "RFDE_CUST_REG_NUM",
+            "C": "RFDE_RPT_DT",
+            "D": "RFDE_TXN_ID",
+            "E": "FII",
+            "F": "SUB_ACC",
+            "G": "BRKER",
+            "H": "SCRIP_NAME",
+            "I": "ISIN",
+            "J": "TR_DATE",
+            "K": "TR_TYPE(*)",
+            "L": "RFDE_SE_REG_NUM",
+            "M": "RFDE_STLD_CODE",
+            "N": "RATE",
+            "O": "QUANTITY",
+            "P": "VALUE (in Rs)",
+            "Q": "RFDE_INSTR_TYPE",
+            "R": "RFDE_REASON_DLAY",
+            "S": "RFDE_RPT_TYPE",
+            "T": "RFDE_AMDMNT_REASON"
+          },
+          "header_column_map": {
+            "RFDE_CUST_REG_NUM": "B",
+            "RFDE_RPT_DT": "C",
+            "RFDE_TXN_ID": "D",
+            "FII": "E",
+            "SUB_ACC": "F",
+            "BRKER": "G",
+            "SCRIP_NAME": "H",
+            "ISIN": "I",
+            "TR_DATE": "J",
+            "TR_TYPE(*)": "K",
+            "RFDE_SE_REG_NUM": "L",
+            "RFDE_STLD_CODE": "M",
+            "RATE": "N",
+            "QUANTITY": "O",
+            "VALUE (in Rs)": "P",
+            "RFDE_INSTR_TYPE": "Q",
+            "RFDE_REASON_DLAY": "R",
+            "RFDE_RPT_TYPE": "S",
+            "RFDE_AMDMNT_REASON": "T"
+          },
+          "data_rows": 114432,
+          "physical_cells_including_header": 2288659,
+          "row_widths_including_header": {
+            "19": 1,
+            "20": 114432
+          },
+          "types_including_header": {
+            "s": 1200946,
+            "n": 1087713
+          },
+          "data_field_types": {
+            "RFDE_CUST_REG_NUM": {
+              "s": 16337,
+              "n": 98095
+            },
+            "RFDE_RPT_DT": {
+              "n": 114432
+            },
+            "RFDE_TXN_ID": {
+              "n": 74162,
+              "s": 40270
+            },
+            "FII": {
+              "s": 114432
+            },
+            "SUB_ACC": {
+              "s": 114432
+            },
+            "BRKER": {
+              "s": 114432
+            },
+            "SCRIP_NAME": {
+              "s": 114432
+            },
+            "ISIN": {
+              "s": 114432
+            },
+            "TR_DATE": {
+              "n": 114432
+            },
+            "TR_TYPE(*)": {
+              "n": 114432
+            },
+            "RFDE_SE_REG_NUM": {
+              "n": 114432
+            },
+            "RFDE_STLD_CODE": {
+              "s": 114432
+            },
+            "RATE": {
+              "n": 114432
+            },
+            "QUANTITY": {
+              "n": 114432
+            },
+            "VALUE (in Rs)": {
+              "n": 114432
+            },
+            "RFDE_INSTR_TYPE": {
+              "s": 114432
+            },
+            "RFDE_REASON_DLAY": {
+              "s": 114432
+            },
+            "RFDE_RPT_TYPE": {
+              "s": 114432
+            },
+            "RFDE_AMDMNT_REASON": {
+              "s": 114432
+            }
+          },
+          "position_cell_types": {
+            "B:s": 16338,
+            "C:s": 1,
+            "D:s": 40271,
+            "E:s": 114433,
+            "F:s": 114433,
+            "G:s": 114433,
+            "H:s": 114433,
+            "I:s": 114433,
+            "J:s": 1,
+            "K:s": 1,
+            "L:s": 1,
+            "M:s": 114433,
+            "N:s": 1,
+            "O:s": 1,
+            "P:s": 1,
+            "Q:s": 114433,
+            "R:s": 114433,
+            "S:s": 114433,
+            "T:s": 114433,
+            "A:n": 114432,
+            "C:n": 114432,
+            "D:n": 74162,
+            "J:n": 114432,
+            "K:n": 114432,
+            "L:n": 114432,
+            "N:n": 114432,
+            "O:n": 114432,
+            "P:n": 114432,
+            "B:n": 98095
+          },
+          "formula_cells": 0,
+          "error_cells": 0,
+          "empty_data_fields": {},
+          "edge_whitespace_fields": {
+            "SCRIP_NAME": 30069
+          },
+          "ordinal_rows": 114432,
+          "ordinal_not_equal_data_row_number": 0,
+          "code_counts": {
+            "TR_TYPE(*)": {
+              "1": 52582,
+              "10": 78,
+              "11": 48,
+              "13": 16,
+              "15": 1790,
+              "16": 119,
+              "2": 120,
+              "23": 1,
+              "3": 39,
+              "4": 56523,
+              "5": 14,
+              "7": 2999,
+              "8": 19,
+              "9": 84
+            },
+            "RFDE_SE_REG_NUM": {
+              "1": 11458,
+              "23": 97537,
+              "99": 5437
+            },
+            "RFDE_STLD_CODE": {
+              "REG_DL_STLD_01": 107110,
+              "REG_DL_STLD_02": 640,
+              "REG_DL_STLD_03": 1301,
+              "REG_DL_STLD_04": 5381
+            },
+            "RFDE_INSTR_TYPE": {
+              "REG_DL_INSTR_EQ": 111210,
+              "REG_DL_INSTR_EU": 3018,
+              "REG_DL_INSTR_ID": 21,
+              "REG_DL_INSTR_MD": 173,
+              "REG_DL_INSTR_ME": 10
+            },
+            "RFDE_REASON_DLAY": {
+              "REG_DL_DLAY_D": 404,
+              "REG_DL_DLAY_O": 263,
+              "REG_DL_DLAY_P": 113761,
+              "REG_DL_DLAY_S": 4
+            },
+            "RFDE_RPT_TYPE": {
+              "DL_RPT_TYPE_N": 114432
+            },
+            "RFDE_AMDMNT_REASON": {
+              "DL_AMDMNT_DEL_00": 114431,
+              "DL_AMDMNT_DEL_15": 1
+            }
+          },
+          "daily_date_counts": {
+            "RFDE_RPT_DT": {
+              "2019-07-02": 4458,
+              "2019-07-03": 5416,
+              "2019-07-04": 4087,
+              "2019-07-05": 3448,
+              "2019-07-08": 3917,
+              "2019-07-09": 4376,
+              "2019-07-10": 4960,
+              "2019-07-11": 5265,
+              "2019-07-12": 4478,
+              "2019-07-15": 5374,
+              "2019-07-16": 5356,
+              "2019-07-17": 4533,
+              "2019-07-18": 4831,
+              "2019-07-19": 5099,
+              "2019-07-22": 5392,
+              "2019-07-23": 4428,
+              "2019-07-24": 6357,
+              "2019-07-25": 5857,
+              "2019-07-26": 5359,
+              "2019-07-29": 5103,
+              "2019-07-30": 4190,
+              "2019-07-31": 5318,
+              "2019-08-01": 6796,
+              "2019-08-02": 14,
+              "2019-08-05": 17,
+              "2019-08-06": 1,
+              "2019-08-07": 2
+            },
+            "TR_DATE": {
+              "2019-07-01": 4449,
+              "2019-07-02": 5511,
+              "2019-07-03": 4126,
+              "2019-07-04": 3260,
+              "2019-07-05": 4002,
+              "2019-07-08": 4380,
+              "2019-07-09": 4949,
+              "2019-07-10": 4802,
+              "2019-07-11": 4774,
+              "2019-07-12": 4793,
+              "2019-07-15": 6101,
+              "2019-07-16": 4547,
+              "2019-07-17": 4816,
+              "2019-07-18": 5097,
+              "2019-07-19": 5397,
+              "2019-07-22": 4291,
+              "2019-07-23": 5718,
+              "2019-07-24": 6622,
+              "2019-07-25": 5456,
+              "2019-07-26": 5013,
+              "2019-07-29": 4197,
+              "2019-07-30": 5414,
+              "2019-07-31": 6717
+            }
+          },
+          "reporting_lag_counts": {
+            "0": 2423,
+            "1": 92441,
+            "2": 414,
+            "3": 18949,
+            "4": 132,
+            "5": 62,
+            "6": 3,
+            "7": 8
+          },
+          "invalid_date_rows": 0,
+          "numeric": {
+            "RATE": {
+              "sum": "147900350.83759999992903652",
+              "zero": 5106,
+              "negative": 0,
+              "fractional": 107020,
+              "min": "0",
+              "max": "56933.599999999999"
+            },
+            "QUANTITY": {
+              "sum": "9443579682.3899999997321",
+              "zero": 0,
+              "negative": 0,
+              "fractional": 121,
+              "min": "1",
+              "max": "192461478"
+            },
+            "VALUE (in Rs)": {
+              "sum": "2099853533672.11999929584673",
+              "zero": 5106,
+              "negative": 0,
+              "fractional": 101063,
+              "min": "0",
+              "max": "11975792080"
+            }
+          },
+          "residual": {
+            "nonzero": 98958,
+            "above_0_01": 0,
+            "maximum_abs": "0.0050000598900",
+            "sum": "14.255719751727561630000000438"
+          },
+          "isin_distinct_including_invalid": 918,
+          "isin_syntax_invalid_rows": 0,
+          "isin_checksum_invalid_rows": 0,
+          "trim_only_nonordinal_row_duplicates": 0,
+          "trim_only_custodian_transaction_key_repeats": 0,
+          "repeat_key_different_trim_only_row": 0
+        }
+      ],
+      "primary_evidence": "data/asset-review/monthly-fpi-2019-may-aug-workbook-evidence-2026-09-29.json"
+    },
+    {
+      "asset": "2019_8.zip",
+      "asset_bytes": 13904753,
+      "asset_sha256": "4da208fdb7d5f44b85d1f4ad950bb5a34a0a4a76653ee04e3416e95f3a779ed7",
+      "member": "Aug 2019.xlsx",
+      "member_bytes": 13977190,
+      "member_sha256": "7ef9c7801d8cc8a4eb7b5582b5f7f0686604fd740c27f40524c0943d1b5eacd4",
+      "member_crc32": "bc7f001d",
+      "shared_strings": 48968,
+      "package_parts": [
+        {
+          "part": "[Content_Types].xml",
+          "bytes": 1541,
+          "sha256": "fd18046f39017b1ad7e36687a19a585b5504a0a466d40539f7c29160ee770e81",
+          "crc32": "73fb4389"
+        },
+        {
+          "part": "_rels/.rels",
+          "bytes": 735,
+          "sha256": "ad78dfe44ec71f967f96e95bdf6baf2545c39e1a5e4413e7b8e9413eb95fd922",
+          "crc32": "65be5e13"
+        },
+        {
+          "part": "customXml/_rels/item1.xml.rels",
+          "bytes": 296,
+          "sha256": "80482f86e196171d66001e0e74d1900408a3aaf2463e54005d251b5f2db9a0b0",
+          "crc32": "7a393f74"
+        },
+        {
+          "part": "customXml/item1.xml",
+          "bytes": 356,
+          "sha256": "9c523647f3bcd09ed91886468ba995ac892f420d8870d3d1f48c2c17b5d47b6f",
+          "crc32": "f7f49996"
+        },
+        {
+          "part": "customXml/itemProps1.xml",
+          "bytes": 235,
+          "sha256": "da16f1791016a2530a72b4980fcb43662a28efa1b5a9b2a96bdadf6315932a48",
+          "crc32": "1372401e"
+        },
+        {
+          "part": "docProps/app.xml",
+          "bytes": 785,
+          "sha256": "0dba4aa98e8cb1a9c94918473269152036a7666a53e4cfdc1ac698c468645eaf",
+          "crc32": "d91641de"
+        },
+        {
+          "part": "docProps/core.xml",
+          "bytes": 625,
+          "sha256": "8eab22bfb194cda5240f312f4f9d6200963dfae745f836e2429a28000d1d034d",
+          "crc32": "643e207c"
+        },
+        {
+          "part": "docProps/custom.xml",
+          "bytes": 628,
+          "sha256": "39abf493d74530db3aa0f95c31e4eb432d8c18c647f918aca78a563af5e1bbf7",
+          "crc32": "a3872a85"
+        },
+        {
+          "part": "xl/_rels/workbook.xml.rels",
+          "bytes": 840,
+          "sha256": "09a51c4201a98f679afbc363fb1f5db0252843fab619ec0219f062c80b87573b",
+          "crc32": "2d0fffa0"
+        },
+        {
+          "part": "xl/printerSettings/printerSettings1.bin",
+          "bytes": 14720,
+          "sha256": "39e1a548dd9a50b91d141b75558481e892d926e185487b8cf9254d24acfc0f65",
+          "crc32": "350e9c8b"
+        },
+        {
+          "part": "xl/sharedStrings.xml",
+          "bytes": 1447565,
+          "sha256": "d65a2c117b1fb432afbbb54320011fa9ae494ea91acfc82d11d7069ca9a00c4e",
+          "crc32": "71b4a28e"
+        },
+        {
+          "part": "xl/styles.xml",
+          "bytes": 1542,
+          "sha256": "3c5cc72b57b03e3905b05ec85502c4355eb574973c7506920a11ccbb52a53e2e",
+          "crc32": "f7e03b43"
+        },
+        {
+          "part": "xl/theme/theme1.xml",
+          "bytes": 6798,
+          "sha256": "a0df54cd7c507e485061a0ba3de7503eb81f6dfa8cc701ee4478439bdf26dfbb",
+          "crc32": "586e828b"
+        },
+        {
+          "part": "xl/workbook.xml",
+          "bytes": 1168,
+          "sha256": "36c2328fbc81c49a0dfd937a800c25cf79320a763fbeeb718acfb641620d48e6",
+          "crc32": "e94928c1"
+        },
+        {
+          "part": "xl/worksheets/_rels/sheet1.xml.rels",
+          "bytes": 322,
+          "sha256": "65cefb6727e21f882eb83bb6c10370afa59aafda7f007f531df0c30026dc4684",
+          "crc32": "4b326d3b"
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "bytes": 84975944,
+          "sha256": "ab487169086504091b64ead1d1563bf368783eb3c85ea2e8ff5caa9063ad055d",
+          "crc32": "e03585e6"
+        }
+      ],
+      "sheets": [
+        {
+          "sheet": "Sheet1",
+          "state": "visible",
+          "date1904": false,
+          "header_by_column": {
+            "B": "RFDE_CUST_REG_NUM",
+            "C": "RFDE_RPT_DT",
+            "D": "RFDE_TXN_ID",
+            "E": "FII",
+            "F": "SUB_ACC",
+            "G": "BRKER",
+            "H": "SCRIP_NAME",
+            "I": "ISIN",
+            "J": "TR_DATE",
+            "K": "TR_TYPE(*)",
+            "L": "RFDE_SE_REG_NUM",
+            "M": "RFDE_STLD_CODE",
+            "N": "RATE",
+            "O": "QUANTITY",
+            "P": "VALUE (in Rs)",
+            "Q": "RFDE_INSTR_TYPE",
+            "R": "RFDE_REASON_DLAY",
+            "S": "RFDE_RPT_TYPE",
+            "T": "RFDE_AMDMNT_REASON"
+          },
+          "header_column_map": {
+            "RFDE_CUST_REG_NUM": "B",
+            "RFDE_RPT_DT": "C",
+            "RFDE_TXN_ID": "D",
+            "FII": "E",
+            "SUB_ACC": "F",
+            "BRKER": "G",
+            "SCRIP_NAME": "H",
+            "ISIN": "I",
+            "TR_DATE": "J",
+            "TR_TYPE(*)": "K",
+            "RFDE_SE_REG_NUM": "L",
+            "RFDE_STLD_CODE": "M",
+            "RATE": "N",
+            "QUANTITY": "O",
+            "VALUE (in Rs)": "P",
+            "RFDE_INSTR_TYPE": "Q",
+            "RFDE_REASON_DLAY": "R",
+            "RFDE_RPT_TYPE": "S",
+            "RFDE_AMDMNT_REASON": "T"
+          },
+          "data_rows": 118301,
+          "physical_cells_including_header": 2366039,
+          "row_widths_including_header": {
+            "19": 1,
+            "20": 118301
+          },
+          "types_including_header": {
+            "s": 1237153,
+            "n": 1128886
+          },
+          "data_field_types": {
+            "RFDE_CUST_REG_NUM": {
+              "n": 102741,
+              "s": 15560
+            },
+            "RFDE_RPT_DT": {
+              "n": 118301
+            },
+            "RFDE_TXN_ID": {
+              "n": 79737,
+              "s": 38564
+            },
+            "FII": {
+              "s": 118301
+            },
+            "SUB_ACC": {
+              "s": 118301
+            },
+            "BRKER": {
+              "s": 118301
+            },
+            "SCRIP_NAME": {
+              "s": 118301
+            },
+            "ISIN": {
+              "s": 118301
+            },
+            "TR_DATE": {
+              "n": 118301
+            },
+            "TR_TYPE(*)": {
+              "n": 118301
+            },
+            "RFDE_SE_REG_NUM": {
+              "n": 118301
+            },
+            "RFDE_STLD_CODE": {
+              "s": 118301
+            },
+            "RATE": {
+              "n": 118301
+            },
+            "QUANTITY": {
+              "n": 118301
+            },
+            "VALUE (in Rs)": {
+              "n": 118301
+            },
+            "RFDE_INSTR_TYPE": {
+              "s": 118301
+            },
+            "RFDE_REASON_DLAY": {
+              "s": 118301
+            },
+            "RFDE_RPT_TYPE": {
+              "s": 118301
+            },
+            "RFDE_AMDMNT_REASON": {
+              "s": 118301
+            }
+          },
+          "position_cell_types": {
+            "B:s": 15561,
+            "C:s": 1,
+            "D:s": 38565,
+            "E:s": 118302,
+            "F:s": 118302,
+            "G:s": 118302,
+            "H:s": 118302,
+            "I:s": 118302,
+            "J:s": 1,
+            "K:s": 1,
+            "L:s": 1,
+            "M:s": 118302,
+            "N:s": 1,
+            "O:s": 1,
+            "P:s": 1,
+            "Q:s": 118302,
+            "R:s": 118302,
+            "S:s": 118302,
+            "T:s": 118302,
+            "A:n": 118301,
+            "B:n": 102741,
+            "C:n": 118301,
+            "D:n": 79737,
+            "J:n": 118301,
+            "K:n": 118301,
+            "L:n": 118301,
+            "N:n": 118301,
+            "O:n": 118301,
+            "P:n": 118301
+          },
+          "formula_cells": 0,
+          "error_cells": 0,
+          "empty_data_fields": {},
+          "edge_whitespace_fields": {
+            "SCRIP_NAME": 36315
+          },
+          "ordinal_rows": 118301,
+          "ordinal_not_equal_data_row_number": 0,
+          "code_counts": {
+            "TR_TYPE(*)": {
+              "1": 52877,
+              "10": 60,
+              "11": 59,
+              "13": 10,
+              "14": 1,
+              "15": 217,
+              "2": 127,
+              "23": 1,
+              "3": 15,
+              "4": 64341,
+              "5": 18,
+              "7": 375,
+              "8": 20,
+              "9": 180
+            },
+            "RFDE_SE_REG_NUM": {
+              "1": 10580,
+              "23": 106709,
+              "99": 1012
+            },
+            "RFDE_STLD_CODE": {
+              "REG_DL_STLD_01": 116230,
+              "REG_DL_STLD_02": 510,
+              "REG_DL_STLD_03": 548,
+              "REG_DL_STLD_04": 1013
+            },
+            "RFDE_INSTR_TYPE": {
+              "REG_DL_INSTR_EQ": 117725,
+              "REG_DL_INSTR_EU": 433,
+              "REG_DL_INSTR_ID": 26,
+              "REG_DL_INSTR_MD": 114,
+              "REG_DL_INSTR_ME": 3
+            },
+            "RFDE_REASON_DLAY": {
+              "REG_DL_DLAY_D": 160,
+              "REG_DL_DLAY_O": 137,
+              "REG_DL_DLAY_P": 118004
+            },
+            "RFDE_RPT_TYPE": {
+              "DL_RPT_TYPE_N": 118301
+            },
+            "RFDE_AMDMNT_REASON": {
+              "DL_AMDMNT_DEL_00": 118300,
+              "DL_AMDMNT_DEL_15": 1
+            }
+          },
+          "daily_date_counts": {
+            "RFDE_RPT_DT": {
+              "2019-08-02": 5822,
+              "2019-08-05": 5728,
+              "2019-08-06": 5762,
+              "2019-08-07": 7081,
+              "2019-08-08": 5918,
+              "2019-08-09": 5254,
+              "2019-08-13": 5211,
+              "2019-08-14": 6703,
+              "2019-08-16": 5912,
+              "2019-08-19": 7752,
+              "2019-08-20": 4980,
+              "2019-08-21": 5337,
+              "2019-08-22": 4723,
+              "2019-08-23": 5011,
+              "2019-08-26": 5015,
+              "2019-08-27": 5122,
+              "2019-08-28": 11727,
+              "2019-08-29": 4929,
+              "2019-08-30": 4579,
+              "2019-09-03": 5710,
+              "2019-09-04": 9,
+              "2019-09-05": 16
+            },
+            "TR_DATE": {
+              "2019-08-01": 5826,
+              "2019-08-02": 5622,
+              "2019-08-03": 105,
+              "2019-08-05": 5776,
+              "2019-08-06": 6896,
+              "2019-08-07": 6105,
+              "2019-08-08": 5238,
+              "2019-08-09": 5213,
+              "2019-08-13": 6665,
+              "2019-08-14": 5958,
+              "2019-08-16": 7759,
+              "2019-08-19": 4970,
+              "2019-08-20": 5325,
+              "2019-08-21": 4714,
+              "2019-08-22": 5198,
+              "2019-08-23": 5063,
+              "2019-08-26": 4919,
+              "2019-08-27": 11723,
+              "2019-08-28": 4945,
+              "2019-08-29": 4665,
+              "2019-08-30": 5616
+            }
+          },
+          "reporting_lag_counts": {
+            "0": 308,
+            "1": 82283,
+            "2": 6096,
+            "3": 18383,
+            "4": 10876,
+            "5": 299,
+            "6": 46,
+            "7": 10
+          },
+          "invalid_date_rows": 0,
+          "numeric": {
+            "RATE": {
+              "sum": "150669707.77599999989306700",
+              "zero": 626,
+              "negative": 0,
+              "fractional": 115161,
+              "min": "0",
+              "max": "59231.349000000002"
+            },
+            "QUANTITY": {
+              "sum": "8893532521.21999999708394",
+              "zero": 0,
+              "negative": 0,
+              "fractional": 45,
+              "min": "1",
+              "max": "327100000"
+            },
+            "VALUE (in Rs)": {
+              "sum": "2391940779012.649998532501720",
+              "zero": 626,
+              "negative": 0,
+              "fractional": 109134,
+              "min": "0",
+              "max": "7288573040"
+            }
+          },
+          "residual": {
+            "nonzero": 106850,
+            "above_0_01": 0,
+            "maximum_abs": "0.0050001914188",
+            "sum": "13.5923305810428627360000086604"
+          },
+          "isin_distinct_including_invalid": 895,
+          "isin_syntax_invalid_rows": 0,
+          "isin_checksum_invalid_rows": 0,
+          "trim_only_nonordinal_row_duplicates": 0,
+          "trim_only_custodian_transaction_key_repeats": 0,
+          "repeat_key_different_trim_only_row": 0
+        }
+      ],
+      "primary_evidence": "data/asset-review/monthly-fpi-2019-may-aug-workbook-evidence-2026-09-29.json"
+    },
+    {
+      "asset": "2019_9.zip",
+      "asset_bytes": 11785299,
+      "asset_sha256": "2964cd605d093fe915ffdc77583291c177dd1eb0a59161aebfad847835789f2a",
+      "member": "Sep 2019.xlsx",
+      "member_bytes": 11864934,
+      "member_sha256": "3beb3219eab51ad2e976a10bf9976cdd2cc03942fc63300bdc058dfde1a7f4c9",
+      "member_crc32": "5fb040f7",
+      "shared_strings": 48289,
+      "package_parts": [
+        {
+          "part": "[Content_Types].xml",
+          "bytes": 1541,
+          "sha256": "fd18046f39017b1ad7e36687a19a585b5504a0a466d40539f7c29160ee770e81",
+          "crc32": "73fb4389"
+        },
+        {
+          "part": "_rels/.rels",
+          "bytes": 735,
+          "sha256": "ad78dfe44ec71f967f96e95bdf6baf2545c39e1a5e4413e7b8e9413eb95fd922",
+          "crc32": "65be5e13"
+        },
+        {
+          "part": "customXml/_rels/item1.xml.rels",
+          "bytes": 296,
+          "sha256": "80482f86e196171d66001e0e74d1900408a3aaf2463e54005d251b5f2db9a0b0",
+          "crc32": "7a393f74"
+        },
+        {
+          "part": "customXml/item1.xml",
+          "bytes": 354,
+          "sha256": "c29a3afb2088924b894c13c86f406be81c704d0783bcec8cfdece68111fc9a5b",
+          "crc32": "64f0c397"
+        },
+        {
+          "part": "customXml/itemProps1.xml",
+          "bytes": 235,
+          "sha256": "a84fcbdc41eb0c7973a932c1937b5ba8945a0fa1279dff2acdf42db0ca64ca7b",
+          "crc32": "1cdf578d"
+        },
+        {
+          "part": "docProps/app.xml",
+          "bytes": 785,
+          "sha256": "0dba4aa98e8cb1a9c94918473269152036a7666a53e4cfdc1ac698c468645eaf",
+          "crc32": "d91641de"
+        },
+        {
+          "part": "docProps/core.xml",
+          "bytes": 625,
+          "sha256": "97c83cab23e2df273342b34e10f04be810314333d04a8243bdfd7cb8e48ebefd",
+          "crc32": "62d3899e"
+        },
+        {
+          "part": "docProps/custom.xml",
+          "bytes": 626,
+          "sha256": "4ea2f8bb0954c73d88b21535183d2721864eab89c98bacc8e3fdfa3e276f4940",
+          "crc32": "950258e2"
+        },
+        {
+          "part": "xl/_rels/workbook.xml.rels",
+          "bytes": 840,
+          "sha256": "09a51c4201a98f679afbc363fb1f5db0252843fab619ec0219f062c80b87573b",
+          "crc32": "2d0fffa0"
+        },
+        {
+          "part": "xl/printerSettings/printerSettings1.bin",
+          "bytes": 14720,
+          "sha256": "fed08e50c03dc51ebb2a6b5b83d8858e5e3045968edd9872862462df94ae1d1d",
+          "crc32": "e2acecd2"
+        },
+        {
+          "part": "xl/sharedStrings.xml",
+          "bytes": 1431530,
+          "sha256": "5bb92b753ec80eff8e33109a968af8878c27cbf563d6cb02088df3f973f905f1",
+          "crc32": "c973b4ba"
+        },
+        {
+          "part": "xl/styles.xml",
+          "bytes": 1542,
+          "sha256": "3c5cc72b57b03e3905b05ec85502c4355eb574973c7506920a11ccbb52a53e2e",
+          "crc32": "f7e03b43"
+        },
+        {
+          "part": "xl/theme/theme1.xml",
+          "bytes": 6798,
+          "sha256": "a0df54cd7c507e485061a0ba3de7503eb81f6dfa8cc701ee4478439bdf26dfbb",
+          "crc32": "586e828b"
+        },
+        {
+          "part": "xl/workbook.xml",
+          "bytes": 1168,
+          "sha256": "36c2328fbc81c49a0dfd937a800c25cf79320a763fbeeb718acfb641620d48e6",
+          "crc32": "e94928c1"
+        },
+        {
+          "part": "xl/worksheets/_rels/sheet1.xml.rels",
+          "bytes": 322,
+          "sha256": "65cefb6727e21f882eb83bb6c10370afa59aafda7f007f531df0c30026dc4684",
+          "crc32": "4b326d3b"
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "bytes": 73609153,
+          "sha256": "4c9b17d589940696d8e5e038f2a163de02f493af5e976174029f8c2b24a79fe9",
+          "crc32": "29c40daf"
+        }
+      ],
+      "sheets": [
+        {
+          "sheet": "Sheet1",
+          "state": "visible",
+          "date1904": false,
+          "header_by_column": {
+            "A": "RFDE_CUST_REG_NUM",
+            "B": "RFDE_RPT_DT",
+            "C": "RFDE_TXN_ID",
+            "D": "FII",
+            "E": "SUB_ACC",
+            "F": "BRKER",
+            "G": "SCRIP_NAME",
+            "H": "ISIN",
+            "I": "TR_DATE",
+            "J": "TR_TYPE(*)",
+            "K": "RFDE_SE_REG_NUM",
+            "L": "RFDE_STLD_CODE",
+            "M": "RATE",
+            "N": "QUANTITY",
+            "O": "VALUE (in Rs)",
+            "P": "RFDE_INSTR_TYPE",
+            "Q": "RFDE_REASON_DLAY",
+            "R": "RFDE_RPT_TYPE",
+            "S": "RFDE_AMDMNT_REASON"
+          },
+          "header_column_map": {
+            "RFDE_CUST_REG_NUM": "A",
+            "RFDE_RPT_DT": "B",
+            "RFDE_TXN_ID": "C",
+            "FII": "D",
+            "SUB_ACC": "E",
+            "BRKER": "F",
+            "SCRIP_NAME": "G",
+            "ISIN": "H",
+            "TR_DATE": "I",
+            "TR_TYPE(*)": "J",
+            "RFDE_SE_REG_NUM": "K",
+            "RFDE_STLD_CODE": "L",
+            "RATE": "M",
+            "QUANTITY": "N",
+            "VALUE (in Rs)": "O",
+            "RFDE_INSTR_TYPE": "P",
+            "RFDE_REASON_DLAY": "Q",
+            "RFDE_RPT_TYPE": "R",
+            "RFDE_AMDMNT_REASON": "S"
+          },
+          "data_rows": 107316,
+          "physical_cells_including_header": 2039023,
+          "row_widths_including_header": {
+            "19": 107317
+          },
+          "types_including_header": {
+            "s": 1124785,
+            "n": 914238
+          },
+          "data_field_types": {
+            "RFDE_CUST_REG_NUM": {
+              "n": 93154,
+              "s": 14162
+            },
+            "RFDE_RPT_DT": {
+              "n": 107316
+            },
+            "RFDE_TXN_ID": {
+              "s": 37444,
+              "n": 69872
+            },
+            "FII": {
+              "s": 107316
+            },
+            "SUB_ACC": {
+              "s": 107316
+            },
+            "BRKER": {
+              "s": 107316
+            },
+            "SCRIP_NAME": {
+              "s": 107316
+            },
+            "ISIN": {
+              "s": 107316
+            },
+            "TR_DATE": {
+              "n": 107316
+            },
+            "TR_TYPE(*)": {
+              "n": 107316
+            },
+            "RFDE_SE_REG_NUM": {
+              "n": 107316
+            },
+            "RFDE_STLD_CODE": {
+              "s": 107316
+            },
+            "RATE": {
+              "n": 107316
+            },
+            "QUANTITY": {
+              "n": 107316
+            },
+            "VALUE (in Rs)": {
+              "n": 107316
+            },
+            "RFDE_INSTR_TYPE": {
+              "s": 107316
+            },
+            "RFDE_REASON_DLAY": {
+              "s": 107316
+            },
+            "RFDE_RPT_TYPE": {
+              "s": 107316
+            },
+            "RFDE_AMDMNT_REASON": {
+              "s": 107316
+            }
+          },
+          "position_cell_types": {
+            "A:s": 14163,
+            "B:s": 1,
+            "C:s": 37445,
+            "D:s": 107317,
+            "E:s": 107317,
+            "F:s": 107317,
+            "G:s": 107317,
+            "H:s": 107317,
+            "I:s": 1,
+            "J:s": 1,
+            "K:s": 1,
+            "L:s": 107317,
+            "M:s": 1,
+            "N:s": 1,
+            "O:s": 1,
+            "P:s": 107317,
+            "Q:s": 107317,
+            "R:s": 107317,
+            "S:s": 107317,
+            "A:n": 93154,
+            "B:n": 107316,
+            "I:n": 107316,
+            "J:n": 107316,
+            "K:n": 107316,
+            "M:n": 107316,
+            "N:n": 107316,
+            "O:n": 107316,
+            "C:n": 69872
+          },
+          "formula_cells": 0,
+          "error_cells": 0,
+          "empty_data_fields": {},
+          "edge_whitespace_fields": {
+            "SCRIP_NAME": 29787
+          },
+          "ordinal_rows": 0,
+          "ordinal_not_equal_data_row_number": 0,
+          "code_counts": {
+            "TR_TYPE(*)": {
+              "1": 50340,
+              "10": 48,
+              "11": 747,
+              "13": 13,
+              "15": 1752,
+              "16": 2,
+              "2": 367,
+              "3": 106,
+              "4": 52149,
+              "7": 1776,
+              "8": 12,
+              "9": 4
+            },
+            "RFDE_SE_REG_NUM": {
+              "1": 10028,
+              "23": 92757,
+              "99": 4531
+            },
+            "RFDE_STLD_CODE": {
+              "REG_DL_STLD_01": 101509,
+              "REG_DL_STLD_02": 573,
+              "REG_DL_STLD_03": 526,
+              "REG_DL_STLD_04": 4708
+            },
+            "RFDE_INSTR_TYPE": {
+              "REG_DL_INSTR_EQ": 106484,
+              "REG_DL_INSTR_EU": 723,
+              "REG_DL_INSTR_ID": 22,
+              "REG_DL_INSTR_MD": 86,
+              "REG_DL_INSTR_ME": 1
+            },
+            "RFDE_REASON_DLAY": {
+              "REG_DL_DLAY_D": 660,
+              "REG_DL_DLAY_O": 248,
+              "REG_DL_DLAY_P": 106408
+            },
+            "RFDE_RPT_TYPE": {
+              "DL_RPT_TYPE_N": 107316
+            },
+            "RFDE_AMDMNT_REASON": {
+              "DL_AMDMNT_DEL_00": 107313,
+              "DL_AMDMNT_DEL_15": 3
+            }
+          },
+          "daily_date_counts": {
+            "RFDE_RPT_DT": {
+              "2019-09-03": 2,
+              "2019-09-04": 4604,
+              "2019-09-05": 4570,
+              "2019-09-06": 5046,
+              "2019-09-09": 4457,
+              "2019-09-11": 4352,
+              "2019-09-12": 6353,
+              "2019-09-13": 4816,
+              "2019-09-16": 4055,
+              "2019-09-17": 4900,
+              "2019-09-18": 6107,
+              "2019-09-19": 3955,
+              "2019-09-20": 3775,
+              "2019-09-23": 14382,
+              "2019-09-24": 6878,
+              "2019-09-25": 5307,
+              "2019-09-26": 6070,
+              "2019-09-27": 6303,
+              "2019-09-30": 5265,
+              "2019-10-01": 6093,
+              "2019-10-03": 11,
+              "2019-10-04": 15
+            },
+            "TR_DATE": {
+              "2019-09-03": 4611,
+              "2019-09-04": 4532,
+              "2019-09-05": 5085,
+              "2019-09-06": 4458,
+              "2019-09-07": 1,
+              "2019-09-09": 4222,
+              "2019-09-11": 6486,
+              "2019-09-12": 4818,
+              "2019-09-13": 4050,
+              "2019-09-16": 4900,
+              "2019-09-17": 6105,
+              "2019-09-18": 4648,
+              "2019-09-19": 3810,
+              "2019-09-20": 11711,
+              "2019-09-21": 1879,
+              "2019-09-23": 6968,
+              "2019-09-24": 5326,
+              "2019-09-25": 6032,
+              "2019-09-26": 6375,
+              "2019-09-27": 4910,
+              "2019-09-30": 6389
+            }
+          },
+          "reporting_lag_counts": {
+            "0": 567,
+            "1": 74547,
+            "2": 6195,
+            "3": 25098,
+            "4": 173,
+            "5": 722,
+            "6": 10,
+            "7": 4
+          },
+          "invalid_date_rows": 0,
+          "numeric": {
+            "RATE": {
+              "sum": "133096523.77290000003459105",
+              "zero": 3712,
+              "negative": 0,
+              "fractional": 100717,
+              "min": "0",
+              "max": "66554.702499999999"
+            },
+            "QUANTITY": {
+              "sum": "9147525959.1300000000184",
+              "zero": 0,
+              "negative": 0,
+              "fractional": 60,
+              "min": "1",
+              "max": "211861504"
+            },
+            "VALUE (in Rs)": {
+              "sum": "2233679127377.6900008383492996",
+              "zero": 3712,
+              "negative": 0,
+              "fractional": 95136,
+              "min": "0",
+              "max": "10064000000"
+            }
+          },
+          "residual": {
+            "nonzero": 93200,
+            "above_0_01": 0,
+            "maximum_abs": "0.00500008515331",
+            "sum": "12.415414426809827179999999984"
+          },
+          "isin_distinct_including_invalid": 908,
+          "isin_syntax_invalid_rows": 0,
+          "isin_checksum_invalid_rows": 0,
+          "trim_only_nonordinal_row_duplicates": 0,
+          "trim_only_custodian_transaction_key_repeats": 0,
+          "repeat_key_different_trim_only_row": 0
+        }
+      ],
+      "primary_evidence": "data/asset-review/monthly-fpi-2019-sep-dec-workbook-evidence-2026-09-29.json"
+    },
+    {
+      "asset": "2019_10.zip",
+      "asset_bytes": 11325712,
+      "asset_sha256": "ab5d8e8b7fd0723e0e442d96f607603a641a74cddb7c32a857785b03ed80aeb8",
+      "member": "Oct 2019.xlsx",
+      "member_bytes": 11407362,
+      "member_sha256": "be965127b2b4c37e5088a6264e395b241556c60b50c504392940d3d4ae27f142",
+      "member_crc32": "773074f6",
+      "shared_strings": 44028,
+      "package_parts": [
+        {
+          "part": "[Content_Types].xml",
+          "bytes": 1541,
+          "sha256": "fd18046f39017b1ad7e36687a19a585b5504a0a466d40539f7c29160ee770e81",
+          "crc32": "73fb4389"
+        },
+        {
+          "part": "_rels/.rels",
+          "bytes": 735,
+          "sha256": "ad78dfe44ec71f967f96e95bdf6baf2545c39e1a5e4413e7b8e9413eb95fd922",
+          "crc32": "65be5e13"
+        },
+        {
+          "part": "customXml/_rels/item1.xml.rels",
+          "bytes": 296,
+          "sha256": "80482f86e196171d66001e0e74d1900408a3aaf2463e54005d251b5f2db9a0b0",
+          "crc32": "7a393f74"
+        },
+        {
+          "part": "customXml/item1.xml",
+          "bytes": 356,
+          "sha256": "e8fbd5ebb6f1dc5235a997670ff46f07ab0eb312b7cfc521a305059408f39cb6",
+          "crc32": "440cffb7"
+        },
+        {
+          "part": "customXml/itemProps1.xml",
+          "bytes": 235,
+          "sha256": "c0d1f662c38fa14c0104be1c4467ec3f5b388525527bd73ac924ce5673c4f4d7",
+          "crc32": "55ca8f42"
+        },
+        {
+          "part": "docProps/app.xml",
+          "bytes": 785,
+          "sha256": "0dba4aa98e8cb1a9c94918473269152036a7666a53e4cfdc1ac698c468645eaf",
+          "crc32": "d91641de"
+        },
+        {
+          "part": "docProps/core.xml",
+          "bytes": 625,
+          "sha256": "61934625f65fed551d3fa43fcd73f5c30f8d1fae9007cacd4f06b05c8ac8d592",
+          "crc32": "6255fee3"
+        },
+        {
+          "part": "docProps/custom.xml",
+          "bytes": 628,
+          "sha256": "8aa6b365dc91b216f91bfaa527978fa1e37a2a41d34e4a63734fa8084831ac52",
+          "crc32": "fee6acf8"
+        },
+        {
+          "part": "xl/_rels/workbook.xml.rels",
+          "bytes": 840,
+          "sha256": "09a51c4201a98f679afbc363fb1f5db0252843fab619ec0219f062c80b87573b",
+          "crc32": "2d0fffa0"
+        },
+        {
+          "part": "xl/printerSettings/printerSettings1.bin",
+          "bytes": 5420,
+          "sha256": "57fdf8419495754cb2988b332f18f43e2a40b7f62d8b401567aa02cc603176ab",
+          "crc32": "63221fb4"
+        },
+        {
+          "part": "xl/sharedStrings.xml",
+          "bytes": 1306937,
+          "sha256": "2f5d94ed14decda5e0d51eabfeb54eb5158ad02a1e6b93b2266557519988b4f3",
+          "crc32": "9f464245"
+        },
+        {
+          "part": "xl/styles.xml",
+          "bytes": 1542,
+          "sha256": "3c5cc72b57b03e3905b05ec85502c4355eb574973c7506920a11ccbb52a53e2e",
+          "crc32": "f7e03b43"
+        },
+        {
+          "part": "xl/theme/theme1.xml",
+          "bytes": 6798,
+          "sha256": "a0df54cd7c507e485061a0ba3de7503eb81f6dfa8cc701ee4478439bdf26dfbb",
+          "crc32": "586e828b"
+        },
+        {
+          "part": "xl/workbook.xml",
+          "bytes": 1167,
+          "sha256": "760b00bfaf5916a8a73a9f13046b2fd8a48167f08e59e07c98a4e4f0e71643d4",
+          "crc32": "657285e3"
+        },
+        {
+          "part": "xl/worksheets/_rels/sheet1.xml.rels",
+          "bytes": 322,
+          "sha256": "65cefb6727e21f882eb83bb6c10370afa59aafda7f007f531df0c30026dc4684",
+          "crc32": "4b326d3b"
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "bytes": 70665884,
+          "sha256": "1766c0745ba91edf5fe6b263fcfed1a0314278aab90e46b4b753063744b4da78",
+          "crc32": "398cf25c"
+        }
+      ],
+      "sheets": [
+        {
+          "sheet": "Sheet1",
+          "state": "visible",
+          "date1904": false,
+          "header_by_column": {
+            "A": "RFDE_CUST_REG_NUM",
+            "B": "RFDE_RPT_DT",
+            "C": "RFDE_TXN_ID",
+            "D": "FII",
+            "E": "SUB_ACC",
+            "F": "BRKER",
+            "G": "SCRIP_NAME",
+            "H": "ISIN",
+            "I": "TR_DATE",
+            "J": "TR_TYPE(*)",
+            "K": "RFDE_SE_REG_NUM",
+            "L": "RFDE_STLD_CODE",
+            "M": "RATE",
+            "N": "QUANTITY",
+            "O": "VALUE (in Rs)",
+            "P": "RFDE_INSTR_TYPE",
+            "Q": "RFDE_REASON_DLAY",
+            "R": "RFDE_RPT_TYPE",
+            "S": "RFDE_AMDMNT_REASON"
+          },
+          "header_column_map": {
+            "RFDE_CUST_REG_NUM": "A",
+            "RFDE_RPT_DT": "B",
+            "RFDE_TXN_ID": "C",
+            "FII": "D",
+            "SUB_ACC": "E",
+            "BRKER": "F",
+            "SCRIP_NAME": "G",
+            "ISIN": "H",
+            "TR_DATE": "I",
+            "TR_TYPE(*)": "J",
+            "RFDE_SE_REG_NUM": "K",
+            "RFDE_STLD_CODE": "L",
+            "RATE": "M",
+            "QUANTITY": "N",
+            "VALUE (in Rs)": "O",
+            "RFDE_INSTR_TYPE": "P",
+            "RFDE_REASON_DLAY": "Q",
+            "RFDE_RPT_TYPE": "R",
+            "RFDE_AMDMNT_REASON": "S"
+          },
+          "data_rows": 103113,
+          "physical_cells_including_header": 1959166,
+          "row_widths_including_header": {
+            "19": 103114
+          },
+          "types_including_header": {
+            "s": 1078777,
+            "n": 880389
+          },
+          "data_field_types": {
+            "RFDE_CUST_REG_NUM": {
+              "n": 89246,
+              "s": 13867
+            },
+            "RFDE_RPT_DT": {
+              "n": 103113
+            },
+            "RFDE_TXN_ID": {
+              "s": 33761,
+              "n": 69352
+            },
+            "FII": {
+              "s": 103113
+            },
+            "SUB_ACC": {
+              "s": 103113
+            },
+            "BRKER": {
+              "s": 103113
+            },
+            "SCRIP_NAME": {
+              "s": 103113
+            },
+            "ISIN": {
+              "s": 103113
+            },
+            "TR_DATE": {
+              "n": 103113
+            },
+            "TR_TYPE(*)": {
+              "n": 103113
+            },
+            "RFDE_SE_REG_NUM": {
+              "n": 103113
+            },
+            "RFDE_STLD_CODE": {
+              "s": 103113
+            },
+            "RATE": {
+              "n": 103113
+            },
+            "QUANTITY": {
+              "n": 103113
+            },
+            "VALUE (in Rs)": {
+              "n": 103113
+            },
+            "RFDE_INSTR_TYPE": {
+              "s": 103113
+            },
+            "RFDE_REASON_DLAY": {
+              "s": 103113
+            },
+            "RFDE_RPT_TYPE": {
+              "s": 103113
+            },
+            "RFDE_AMDMNT_REASON": {
+              "s": 103113
+            }
+          },
+          "position_cell_types": {
+            "A:s": 13868,
+            "B:s": 1,
+            "C:s": 33762,
+            "D:s": 103114,
+            "E:s": 103114,
+            "F:s": 103114,
+            "G:s": 103114,
+            "H:s": 103114,
+            "I:s": 1,
+            "J:s": 1,
+            "K:s": 1,
+            "L:s": 103114,
+            "M:s": 1,
+            "N:s": 1,
+            "O:s": 1,
+            "P:s": 103114,
+            "Q:s": 103114,
+            "R:s": 103114,
+            "S:s": 103114,
+            "A:n": 89246,
+            "B:n": 103113,
+            "I:n": 103113,
+            "J:n": 103113,
+            "K:n": 103113,
+            "M:n": 103113,
+            "N:n": 103113,
+            "O:n": 103113,
+            "C:n": 69352
+          },
+          "formula_cells": 0,
+          "error_cells": 0,
+          "empty_data_fields": {},
+          "edge_whitespace_fields": {
+            "SCRIP_NAME": 27012
+          },
+          "ordinal_rows": 0,
+          "ordinal_not_equal_data_row_number": 0,
+          "code_counts": {
+            "TR_TYPE(*)": {
+              "1": 49526,
+              "10": 36,
+              "11": 4,
+              "13": 9,
+              "14": 13,
+              "15": 400,
+              "16": 160,
+              "2": 76,
+              "3": 6,
+              "4": 52137,
+              "7": 712,
+              "8": 17,
+              "9": 17
+            },
+            "RFDE_SE_REG_NUM": {
+              "1": 10609,
+              "23": 90742,
+              "99": 1762
+            },
+            "RFDE_STLD_CODE": {
+              "REG_DL_STLD_01": 99194,
+              "REG_DL_STLD_02": 1171,
+              "REG_DL_STLD_03": 1047,
+              "REG_DL_STLD_04": 1701
+            },
+            "RFDE_INSTR_TYPE": {
+              "REG_DL_INSTR_EQ": 102274,
+              "REG_DL_INSTR_EU": 739,
+              "REG_DL_INSTR_ID": 22,
+              "REG_DL_INSTR_MD": 72,
+              "REG_DL_INSTR_ME": 6
+            },
+            "RFDE_REASON_DLAY": {
+              "REG_DL_DLAY_D": 1580,
+              "REG_DL_DLAY_O": 182,
+              "REG_DL_DLAY_P": 101351
+            },
+            "RFDE_RPT_TYPE": {
+              "DL_RPT_TYPE_N": 103113
+            },
+            "RFDE_AMDMNT_REASON": {
+              "DL_AMDMNT_DEL_00": 103112,
+              "DL_AMDMNT_DEL_15": 1
+            }
+          },
+          "daily_date_counts": {
+            "RFDE_RPT_DT": {
+              "2019-10-01": 9,
+              "2019-10-03": 5002,
+              "2019-10-04": 6364,
+              "2019-10-07": 4576,
+              "2019-10-09": 3619,
+              "2019-10-10": 6376,
+              "2019-10-11": 4438,
+              "2019-10-14": 4058,
+              "2019-10-15": 5039,
+              "2019-10-16": 5897,
+              "2019-10-17": 5069,
+              "2019-10-18": 4878,
+              "2019-10-22": 5559,
+              "2019-10-23": 7273,
+              "2019-10-24": 5421,
+              "2019-10-25": 5901,
+              "2019-10-27": 3,
+              "2019-10-29": 4948,
+              "2019-10-30": 6289,
+              "2019-10-31": 5736,
+              "2019-11-01": 6462,
+              "2019-11-04": 146,
+              "2019-11-05": 50
+            },
+            "TR_DATE": {
+              "2019-10-01": 5022,
+              "2019-10-03": 6360,
+              "2019-10-04": 4575,
+              "2019-10-07": 3629,
+              "2019-10-09": 6385,
+              "2019-10-10": 4300,
+              "2019-10-11": 4287,
+              "2019-10-14": 4932,
+              "2019-10-15": 5897,
+              "2019-10-16": 5071,
+              "2019-10-17": 4842,
+              "2019-10-18": 5526,
+              "2019-10-19": 63,
+              "2019-10-22": 7188,
+              "2019-10-23": 5511,
+              "2019-10-24": 5762,
+              "2019-10-25": 5036,
+              "2019-10-27": 51,
+              "2019-10-29": 6089,
+              "2019-10-30": 5932,
+              "2019-10-31": 6655
+            }
+          },
+          "reporting_lag_counts": {
+            "0": 678,
+            "1": 74236,
+            "2": 8749,
+            "3": 8709,
+            "4": 10596,
+            "5": 125,
+            "6": 18,
+            "7": 2
+          },
+          "invalid_date_rows": 0,
+          "numeric": {
+            "RATE": {
+              "sum": "132387243.34550000010935651",
+              "zero": 1590,
+              "negative": 0,
+              "fractional": 99706,
+              "min": "0",
+              "max": "65940"
+            },
+            "QUANTITY": {
+              "sum": "9074495594.2999999999987",
+              "zero": 0,
+              "negative": 0,
+              "fractional": 40,
+              "min": "1",
+              "max": "698670437"
+            },
+            "VALUE (in Rs)": {
+              "sum": "2248222677710.969997658670403",
+              "zero": 1590,
+              "negative": 0,
+              "fractional": 93860,
+              "min": "0",
+              "max": "23526189891.009998"
+            }
+          },
+          "residual": {
+            "nonzero": 91993,
+            "above_0_01": 0,
+            "maximum_abs": "0.0050001",
+            "sum": "12.321693663980809579999999993"
+          },
+          "isin_distinct_including_invalid": 849,
+          "isin_syntax_invalid_rows": 0,
+          "isin_checksum_invalid_rows": 0,
+          "trim_only_nonordinal_row_duplicates": 0,
+          "trim_only_custodian_transaction_key_repeats": 0,
+          "repeat_key_different_trim_only_row": 0
+        }
+      ],
+      "primary_evidence": "data/asset-review/monthly-fpi-2019-sep-dec-workbook-evidence-2026-09-29.json"
+    },
+    {
+      "asset": "2019_11.zip",
+      "asset_bytes": 12642389,
+      "asset_sha256": "4a6545a03ef31a1aba082caee20ec12f8adf0d3ed710534999adccfe7cadeacc",
+      "member": "Nov 2019.xlsx",
+      "member_bytes": 12723230,
+      "member_sha256": "01031ecdefa97dbdce885910e40d7d31994e49b888029d87bde26dd7d197bbae",
+      "member_crc32": "c8994c92",
+      "shared_strings": 45366,
+      "package_parts": [
+        {
+          "part": "[Content_Types].xml",
+          "bytes": 1541,
+          "sha256": "fd18046f39017b1ad7e36687a19a585b5504a0a466d40539f7c29160ee770e81",
+          "crc32": "73fb4389"
+        },
+        {
+          "part": "_rels/.rels",
+          "bytes": 735,
+          "sha256": "ad78dfe44ec71f967f96e95bdf6baf2545c39e1a5e4413e7b8e9413eb95fd922",
+          "crc32": "65be5e13"
+        },
+        {
+          "part": "customXml/_rels/item1.xml.rels",
+          "bytes": 296,
+          "sha256": "80482f86e196171d66001e0e74d1900408a3aaf2463e54005d251b5f2db9a0b0",
+          "crc32": "7a393f74"
+        },
+        {
+          "part": "customXml/item1.xml",
+          "bytes": 354,
+          "sha256": "d9107588736ec6d0d92d4ba51f2f34dc32eb541190e24a21106df35e6cf524e6",
+          "crc32": "31ba4980"
+        },
+        {
+          "part": "customXml/itemProps1.xml",
+          "bytes": 235,
+          "sha256": "b23f1387bffd78c959e2e9c4490eaf0a369b02644892d0e8af8a6426c6294871",
+          "crc32": "580d1262"
+        },
+        {
+          "part": "docProps/app.xml",
+          "bytes": 785,
+          "sha256": "0dba4aa98e8cb1a9c94918473269152036a7666a53e4cfdc1ac698c468645eaf",
+          "crc32": "d91641de"
+        },
+        {
+          "part": "docProps/core.xml",
+          "bytes": 625,
+          "sha256": "660ab9015f4c2ef188b39985619f2397eaa56dcc58f4e32dd0a84c5e700040bc",
+          "crc32": "7ee2ed33"
+        },
+        {
+          "part": "docProps/custom.xml",
+          "bytes": 626,
+          "sha256": "e962ef7e21d7c7456cc03ff661327080ebe2b809cb0bcf931718d44d2e68a1f2",
+          "crc32": "e600599b"
+        },
+        {
+          "part": "xl/_rels/workbook.xml.rels",
+          "bytes": 840,
+          "sha256": "09a51c4201a98f679afbc363fb1f5db0252843fab619ec0219f062c80b87573b",
+          "crc32": "2d0fffa0"
+        },
+        {
+          "part": "xl/printerSettings/printerSettings1.bin",
+          "bytes": 14720,
+          "sha256": "cdea9f86eac13a4f2b112863b0ab4093ff274d24eb368bcc9e37df159d5744b4",
+          "crc32": "a35140f8"
+        },
+        {
+          "part": "xl/sharedStrings.xml",
+          "bytes": 1348023,
+          "sha256": "4aec9d9528b3ba202604fa90fee489ccd08465f2250c3d1ac699d2f590135543",
+          "crc32": "2e2ddcd6"
+        },
+        {
+          "part": "xl/styles.xml",
+          "bytes": 1542,
+          "sha256": "3c5cc72b57b03e3905b05ec85502c4355eb574973c7506920a11ccbb52a53e2e",
+          "crc32": "f7e03b43"
+        },
+        {
+          "part": "xl/theme/theme1.xml",
+          "bytes": 6798,
+          "sha256": "a0df54cd7c507e485061a0ba3de7503eb81f6dfa8cc701ee4478439bdf26dfbb",
+          "crc32": "586e828b"
+        },
+        {
+          "part": "xl/workbook.xml",
+          "bytes": 1168,
+          "sha256": "36c2328fbc81c49a0dfd937a800c25cf79320a763fbeeb718acfb641620d48e6",
+          "crc32": "e94928c1"
+        },
+        {
+          "part": "xl/worksheets/_rels/sheet1.xml.rels",
+          "bytes": 322,
+          "sha256": "65cefb6727e21f882eb83bb6c10370afa59aafda7f007f531df0c30026dc4684",
+          "crc32": "4b326d3b"
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "bytes": 78733346,
+          "sha256": "1505599b4329398e4b07a12b9b01e793d537aa7a73ad3750aead42e9252b526c",
+          "crc32": "e524c5bd"
+        }
+      ],
+      "sheets": [
+        {
+          "sheet": "Sheet1",
+          "state": "visible",
+          "date1904": false,
+          "header_by_column": {
+            "A": "RFDE_CUST_REG_NUM",
+            "B": "RFDE_RPT_DT",
+            "C": "RFDE_TXN_ID",
+            "D": "FII",
+            "E": "SUB_ACC",
+            "F": "BRKER",
+            "G": "SCRIP_NAME",
+            "H": "ISIN",
+            "I": "TR_DATE",
+            "J": "TR_TYPE(*)",
+            "K": "RFDE_SE_REG_NUM",
+            "L": "RFDE_STLD_CODE",
+            "M": "RATE",
+            "N": "QUANTITY",
+            "O": "VALUE (in Rs)",
+            "P": "RFDE_INSTR_TYPE",
+            "Q": "RFDE_REASON_DLAY",
+            "R": "RFDE_RPT_TYPE",
+            "S": "RFDE_AMDMNT_REASON"
+          },
+          "header_column_map": {
+            "RFDE_CUST_REG_NUM": "A",
+            "RFDE_RPT_DT": "B",
+            "RFDE_TXN_ID": "C",
+            "FII": "D",
+            "SUB_ACC": "E",
+            "BRKER": "F",
+            "SCRIP_NAME": "G",
+            "ISIN": "H",
+            "TR_DATE": "I",
+            "TR_TYPE(*)": "J",
+            "RFDE_SE_REG_NUM": "K",
+            "RFDE_STLD_CODE": "L",
+            "RATE": "M",
+            "QUANTITY": "N",
+            "VALUE (in Rs)": "O",
+            "RFDE_INSTR_TYPE": "P",
+            "RFDE_REASON_DLAY": "Q",
+            "RFDE_RPT_TYPE": "R",
+            "RFDE_AMDMNT_REASON": "S"
+          },
+          "data_rows": 114535,
+          "physical_cells_including_header": 2176184,
+          "row_widths_including_header": {
+            "19": 114536
+          },
+          "types_including_header": {
+            "s": 1195517,
+            "n": 980667
+          },
+          "data_field_types": {
+            "RFDE_CUST_REG_NUM": {
+              "n": 99515,
+              "s": 15020
+            },
+            "RFDE_RPT_DT": {
+              "n": 114535
+            },
+            "RFDE_TXN_ID": {
+              "n": 79407,
+              "s": 35128
+            },
+            "FII": {
+              "s": 114535
+            },
+            "SUB_ACC": {
+              "s": 114535
+            },
+            "BRKER": {
+              "s": 114535
+            },
+            "SCRIP_NAME": {
+              "s": 114535
+            },
+            "ISIN": {
+              "s": 114535
+            },
+            "TR_DATE": {
+              "n": 114535
+            },
+            "TR_TYPE(*)": {
+              "n": 114535
+            },
+            "RFDE_SE_REG_NUM": {
+              "n": 114535
+            },
+            "RFDE_STLD_CODE": {
+              "s": 114535
+            },
+            "RATE": {
+              "n": 114535
+            },
+            "QUANTITY": {
+              "n": 114535
+            },
+            "VALUE (in Rs)": {
+              "n": 114535
+            },
+            "RFDE_INSTR_TYPE": {
+              "s": 114535
+            },
+            "RFDE_REASON_DLAY": {
+              "s": 114535
+            },
+            "RFDE_RPT_TYPE": {
+              "s": 114535
+            },
+            "RFDE_AMDMNT_REASON": {
+              "s": 114535
+            }
+          },
+          "position_cell_types": {
+            "A:s": 15021,
+            "B:s": 1,
+            "C:s": 35129,
+            "D:s": 114536,
+            "E:s": 114536,
+            "F:s": 114536,
+            "G:s": 114536,
+            "H:s": 114536,
+            "I:s": 1,
+            "J:s": 1,
+            "K:s": 1,
+            "L:s": 114536,
+            "M:s": 1,
+            "N:s": 1,
+            "O:s": 1,
+            "P:s": 114536,
+            "Q:s": 114536,
+            "R:s": 114536,
+            "S:s": 114536,
+            "A:n": 99515,
+            "B:n": 114535,
+            "C:n": 79407,
+            "I:n": 114535,
+            "J:n": 114535,
+            "K:n": 114535,
+            "M:n": 114535,
+            "N:n": 114535,
+            "O:n": 114535
+          },
+          "formula_cells": 0,
+          "error_cells": 0,
+          "empty_data_fields": {},
+          "edge_whitespace_fields": {
+            "SCRIP_NAME": 33274
+          },
+          "ordinal_rows": 0,
+          "ordinal_not_equal_data_row_number": 0,
+          "code_counts": {
+            "TR_TYPE(*)": {
+              "1": 55137,
+              "10": 65,
+              "11": 102,
+              "13": 3,
+              "14": 1,
+              "15": 212,
+              "16": 12,
+              "2": 233,
+              "23": 1,
+              "3": 121,
+              "4": 58581,
+              "7": 56,
+              "8": 11
+            },
+            "RFDE_SE_REG_NUM": {
+              "1": 12025,
+              "23": 101542,
+              "99": 968
+            },
+            "RFDE_STLD_CODE": {
+              "REG_DL_STLD_01": 111128,
+              "REG_DL_STLD_02": 894,
+              "REG_DL_STLD_03": 1618,
+              "REG_DL_STLD_04": 895
+            },
+            "RFDE_INSTR_TYPE": {
+              "REG_DL_INSTR_EQ": 114074,
+              "REG_DL_INSTR_EU": 333,
+              "REG_DL_INSTR_ID": 30,
+              "REG_DL_INSTR_MD": 98
+            },
+            "RFDE_REASON_DLAY": {
+              "REG_DL_DLAY_D": 349,
+              "REG_DL_DLAY_O": 128,
+              "REG_DL_DLAY_P": 114058
+            },
+            "RFDE_RPT_TYPE": {
+              "DL_RPT_TYPE_N": 114535
+            },
+            "RFDE_AMDMNT_REASON": {
+              "DL_AMDMNT_DEL_00": 114535
+            }
+          },
+          "daily_date_counts": {
+            "RFDE_RPT_DT": {
+              "2019-11-01": 14,
+              "2019-11-04": 4572,
+              "2019-11-05": 5179,
+              "2019-11-06": 5298,
+              "2019-11-07": 5327,
+              "2019-11-08": 5489,
+              "2019-11-11": 4653,
+              "2019-11-13": 4878,
+              "2019-11-14": 8463,
+              "2019-11-15": 5237,
+              "2019-11-18": 4451,
+              "2019-11-19": 5126,
+              "2019-11-20": 4960,
+              "2019-11-21": 4755,
+              "2019-11-22": 6059,
+              "2019-11-25": 4551,
+              "2019-11-26": 1,
+              "2019-11-27": 21565,
+              "2019-11-28": 4933,
+              "2019-11-29": 3987,
+              "2019-12-02": 3245,
+              "2019-12-03": 27,
+              "2019-12-04": 1765
+            },
+            "TR_DATE": {
+              "2019-11-01": 4592,
+              "2019-11-04": 5177,
+              "2019-11-05": 5305,
+              "2019-11-06": 5332,
+              "2019-11-07": 5528,
+              "2019-11-08": 4704,
+              "2019-11-11": 4671,
+              "2019-11-13": 8574,
+              "2019-11-14": 5243,
+              "2019-11-15": 4444,
+              "2019-11-18": 5128,
+              "2019-11-19": 4968,
+              "2019-11-20": 4742,
+              "2019-11-21": 6049,
+              "2019-11-22": 4570,
+              "2019-11-25": 4699,
+              "2019-11-26": 16896,
+              "2019-11-27": 5014,
+              "2019-11-28": 3935,
+              "2019-11-29": 4964
+            }
+          },
+          "reporting_lag_counts": {
+            "0": 161,
+            "1": 81402,
+            "2": 9538,
+            "3": 21405,
+            "4": 105,
+            "5": 1870,
+            "6": 52,
+            "7": 2
+          },
+          "invalid_date_rows": 0,
+          "numeric": {
+            "RATE": {
+              "sum": "155959765.73739999996423774",
+              "zero": 617,
+              "negative": 0,
+              "fractional": 111676,
+              "min": "0",
+              "max": "66022.705900000001"
+            },
+            "QUANTITY": {
+              "sum": "10332724381.32999999996903",
+              "zero": 0,
+              "negative": 0,
+              "fractional": 74,
+              "min": "1",
+              "max": "165006550"
+            },
+            "VALUE (in Rs)": {
+              "sum": "2878133264619.6299999889068056",
+              "zero": 617,
+              "negative": 0,
+              "fractional": 105240,
+              "min": "0",
+              "max": "28164975000"
+            }
+          },
+          "residual": {
+            "nonzero": 103661,
+            "above_0_01": 0,
+            "maximum_abs": "0.00500026577718",
+            "sum": "15.7982596313209935260000000003"
+          },
+          "isin_distinct_including_invalid": 878,
+          "isin_syntax_invalid_rows": 0,
+          "isin_checksum_invalid_rows": 0,
+          "trim_only_nonordinal_row_duplicates": 0,
+          "trim_only_custodian_transaction_key_repeats": 0,
+          "repeat_key_different_trim_only_row": 0
+        }
+      ],
+      "primary_evidence": "data/asset-review/monthly-fpi-2019-sep-dec-workbook-evidence-2026-09-29.json"
+    },
+    {
+      "asset": "2019_12.zip",
+      "asset_bytes": 11595739,
+      "asset_sha256": "f68bd732297477e54b76726f0a73d18400538db973a61e620293d3e89dae3fb5",
+      "member": "December 2019.xlsx",
+      "member_bytes": 11671153,
+      "member_sha256": "6b90cb812ea6b32427a0243aff4f320ac8f6a68d3ea85031841cc03838316884",
+      "member_crc32": "2c299b4d",
+      "shared_strings": 46118,
+      "package_parts": [
+        {
+          "part": "[Content_Types].xml",
+          "bytes": 1541,
+          "sha256": "fd18046f39017b1ad7e36687a19a585b5504a0a466d40539f7c29160ee770e81",
+          "crc32": "73fb4389"
+        },
+        {
+          "part": "_rels/.rels",
+          "bytes": 735,
+          "sha256": "ad78dfe44ec71f967f96e95bdf6baf2545c39e1a5e4413e7b8e9413eb95fd922",
+          "crc32": "65be5e13"
+        },
+        {
+          "part": "customXml/_rels/item1.xml.rels",
+          "bytes": 296,
+          "sha256": "80482f86e196171d66001e0e74d1900408a3aaf2463e54005d251b5f2db9a0b0",
+          "crc32": "7a393f74"
+        },
+        {
+          "part": "customXml/item1.xml",
+          "bytes": 354,
+          "sha256": "45b7e6989da652c7a65802f1abb0585b1aa1dcfc21ac099a30a83f1466272472",
+          "crc32": "d886ae3c"
+        },
+        {
+          "part": "customXml/itemProps1.xml",
+          "bytes": 235,
+          "sha256": "070647c4f0efbd9ca4312504a3370f6a669f09f68b01380e686969142f8bd8d4",
+          "crc32": "b1390b44"
+        },
+        {
+          "part": "docProps/app.xml",
+          "bytes": 785,
+          "sha256": "0dba4aa98e8cb1a9c94918473269152036a7666a53e4cfdc1ac698c468645eaf",
+          "crc32": "d91641de"
+        },
+        {
+          "part": "docProps/core.xml",
+          "bytes": 625,
+          "sha256": "256b9d61b046774f83049e9397af36d0d7c61eacf8be2e9c2ebb5873bfc724fe",
+          "crc32": "4d56d2b8"
+        },
+        {
+          "part": "docProps/custom.xml",
+          "bytes": 626,
+          "sha256": "bd04d4c73096a18e3e1d6c16125ae2685d938418a082bddc98eaf0c7d894b278",
+          "crc32": "eeab6427"
+        },
+        {
+          "part": "xl/_rels/workbook.xml.rels",
+          "bytes": 840,
+          "sha256": "09a51c4201a98f679afbc363fb1f5db0252843fab619ec0219f062c80b87573b",
+          "crc32": "2d0fffa0"
+        },
+        {
+          "part": "xl/printerSettings/printerSettings1.bin",
+          "bytes": 5420,
+          "sha256": "57fdf8419495754cb2988b332f18f43e2a40b7f62d8b401567aa02cc603176ab",
+          "crc32": "63221fb4"
+        },
+        {
+          "part": "xl/sharedStrings.xml",
+          "bytes": 1367836,
+          "sha256": "58d7e84d5a196ea04f8999812822e0f975ac9933c12f239fc801934c6b51276b",
+          "crc32": "decaba26"
+        },
+        {
+          "part": "xl/styles.xml",
+          "bytes": 1542,
+          "sha256": "3c5cc72b57b03e3905b05ec85502c4355eb574973c7506920a11ccbb52a53e2e",
+          "crc32": "f7e03b43"
+        },
+        {
+          "part": "xl/theme/theme1.xml",
+          "bytes": 6798,
+          "sha256": "a0df54cd7c507e485061a0ba3de7503eb81f6dfa8cc701ee4478439bdf26dfbb",
+          "crc32": "586e828b"
+        },
+        {
+          "part": "xl/workbook.xml",
+          "bytes": 1148,
+          "sha256": "9e281bf5aea5c7dc721adc6f61c0ba214df12800dd89929488d4259b77c3a7f1",
+          "crc32": "5e28ffa6"
+        },
+        {
+          "part": "xl/worksheets/_rels/sheet1.xml.rels",
+          "bytes": 322,
+          "sha256": "65cefb6727e21f882eb83bb6c10370afa59aafda7f007f531df0c30026dc4684",
+          "crc32": "4b326d3b"
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "bytes": 72401381,
+          "sha256": "a224994a96e2ff031991e2e0bddf98e647f383c87fa85e707a714071cc88ad68",
+          "crc32": "54a15465"
+        }
+      ],
+      "sheets": [
+        {
+          "sheet": "Sheet1",
+          "state": "visible",
+          "date1904": false,
+          "header_by_column": {
+            "A": "RFDE_CUST_REG_NUM",
+            "B": "RFDE_RPT_DT",
+            "C": "RFDE_TXN_ID",
+            "D": "FII",
+            "E": "SUB_ACC",
+            "F": "BRKER",
+            "G": "SCRIP_NAME",
+            "H": "ISIN",
+            "I": "TR_DATE",
+            "J": "TR_TYPE(*)",
+            "K": "RFDE_SE_REG_NUM",
+            "L": "RFDE_STLD_CODE",
+            "M": "RATE",
+            "N": "QUANTITY",
+            "O": "VALUE (in Rs)",
+            "P": "RFDE_INSTR_TYPE",
+            "Q": "RFDE_REASON_DLAY",
+            "R": "RFDE_RPT_TYPE",
+            "S": "RFDE_AMDMNT_REASON"
+          },
+          "header_column_map": {
+            "RFDE_CUST_REG_NUM": "A",
+            "RFDE_RPT_DT": "B",
+            "RFDE_TXN_ID": "C",
+            "FII": "D",
+            "SUB_ACC": "E",
+            "BRKER": "F",
+            "SCRIP_NAME": "G",
+            "ISIN": "H",
+            "TR_DATE": "I",
+            "TR_TYPE(*)": "J",
+            "RFDE_SE_REG_NUM": "K",
+            "RFDE_STLD_CODE": "L",
+            "RATE": "M",
+            "QUANTITY": "N",
+            "VALUE (in Rs)": "O",
+            "RFDE_INSTR_TYPE": "P",
+            "RFDE_REASON_DLAY": "Q",
+            "RFDE_RPT_TYPE": "R",
+            "RFDE_AMDMNT_REASON": "S"
+          },
+          "data_rows": 105652,
+          "physical_cells_including_header": 2007407,
+          "row_widths_including_header": {
+            "19": 105653
+          },
+          "types_including_header": {
+            "s": 1105888,
+            "n": 901519
+          },
+          "data_field_types": {
+            "RFDE_CUST_REG_NUM": {
+              "n": 92211,
+              "s": 13441
+            },
+            "RFDE_RPT_DT": {
+              "n": 105652
+            },
+            "RFDE_TXN_ID": {
+              "n": 69744,
+              "s": 35908
+            },
+            "FII": {
+              "s": 105652
+            },
+            "SUB_ACC": {
+              "s": 105652
+            },
+            "BRKER": {
+              "s": 105652
+            },
+            "SCRIP_NAME": {
+              "s": 105652
+            },
+            "ISIN": {
+              "s": 105652
+            },
+            "TR_DATE": {
+              "n": 105652
+            },
+            "TR_TYPE(*)": {
+              "n": 105652
+            },
+            "RFDE_SE_REG_NUM": {
+              "n": 105652
+            },
+            "RFDE_STLD_CODE": {
+              "s": 105652
+            },
+            "RATE": {
+              "n": 105652
+            },
+            "QUANTITY": {
+              "n": 105652
+            },
+            "VALUE (in Rs)": {
+              "n": 105652
+            },
+            "RFDE_INSTR_TYPE": {
+              "s": 105652
+            },
+            "RFDE_REASON_DLAY": {
+              "s": 105652
+            },
+            "RFDE_RPT_TYPE": {
+              "s": 105652
+            },
+            "RFDE_AMDMNT_REASON": {
+              "s": 105652
+            }
+          },
+          "position_cell_types": {
+            "A:s": 13442,
+            "B:s": 1,
+            "C:s": 35909,
+            "D:s": 105653,
+            "E:s": 105653,
+            "F:s": 105653,
+            "G:s": 105653,
+            "H:s": 105653,
+            "I:s": 1,
+            "J:s": 1,
+            "K:s": 1,
+            "L:s": 105653,
+            "M:s": 1,
+            "N:s": 1,
+            "O:s": 1,
+            "P:s": 105653,
+            "Q:s": 105653,
+            "R:s": 105653,
+            "S:s": 105653,
+            "A:n": 92211,
+            "B:n": 105652,
+            "C:n": 69744,
+            "I:n": 105652,
+            "J:n": 105652,
+            "K:n": 105652,
+            "M:n": 105652,
+            "N:n": 105652,
+            "O:n": 105652
+          },
+          "formula_cells": 0,
+          "error_cells": 0,
+          "empty_data_fields": {},
+          "edge_whitespace_fields": {
+            "SCRIP_NAME": 29603
+          },
+          "ordinal_rows": 0,
+          "ordinal_not_equal_data_row_number": 0,
+          "code_counts": {
+            "TR_TYPE(*)": {
+              "1": 50029,
+              "10": 30,
+              "11": 43,
+              "13": 5,
+              "14": 1,
+              "15": 1233,
+              "16": 3,
+              "2": 157,
+              "3": 8,
+              "4": 52083,
+              "7": 2050,
+              "8": 8,
+              "9": 2
+            },
+            "RFDE_SE_REG_NUM": {
+              "1": 9483,
+              "23": 92601,
+              "99": 3568
+            },
+            "RFDE_STLD_CODE": {
+              "REG_DL_STLD_01": 100587,
+              "REG_DL_STLD_02": 557,
+              "REG_DL_STLD_03": 1037,
+              "REG_DL_STLD_04": 3471
+            },
+            "RFDE_INSTR_TYPE": {
+              "REG_DL_INSTR_EQ": 103534,
+              "REG_DL_INSTR_EU": 2035,
+              "REG_DL_INSTR_ID": 19,
+              "REG_DL_INSTR_MD": 61,
+              "REG_DL_INSTR_ME": 3
+            },
+            "RFDE_REASON_DLAY": {
+              "REG_DL_DLAY_D": 262,
+              "REG_DL_DLAY_O": 127,
+              "REG_DL_DLAY_P": 105263
+            },
+            "RFDE_RPT_TYPE": {
+              "DL_RPT_TYPE_N": 105652
+            },
+            "RFDE_AMDMNT_REASON": {
+              "DL_AMDMNT_DEL_00": 105652
+            }
+          },
+          "daily_date_counts": {
+            "RFDE_RPT_DT": {
+              "2019-12-03": 3375,
+              "2019-12-04": 6592,
+              "2019-12-05": 5600,
+              "2019-12-06": 5024,
+              "2019-12-09": 4545,
+              "2019-12-10": 4726,
+              "2019-12-11": 4716,
+              "2019-12-12": 4742,
+              "2019-12-13": 6064,
+              "2019-12-16": 5607,
+              "2019-12-17": 6385,
+              "2019-12-18": 7513,
+              "2019-12-19": 5742,
+              "2019-12-20": 5002,
+              "2019-12-23": 7994,
+              "2019-12-24": 4885,
+              "2019-12-26": 3398,
+              "2019-12-27": 2938,
+              "2019-12-30": 4207,
+              "2019-12-31": 3522,
+              "2020-01-01": 3005,
+              "2020-01-02": 69,
+              "2020-01-03": 1
+            },
+            "TR_DATE": {
+              "2019-12-02": 4670,
+              "2019-12-03": 5305,
+              "2019-12-04": 5607,
+              "2019-12-05": 5031,
+              "2019-12-06": 4518,
+              "2019-12-07": 11,
+              "2019-12-09": 4726,
+              "2019-12-10": 4715,
+              "2019-12-11": 4793,
+              "2019-12-12": 5547,
+              "2019-12-13": 6133,
+              "2019-12-16": 5245,
+              "2019-12-17": 8598,
+              "2019-12-18": 5725,
+              "2019-12-19": 5020,
+              "2019-12-20": 8004,
+              "2019-12-21": 3,
+              "2019-12-23": 4865,
+              "2019-12-24": 3317,
+              "2019-12-26": 3135,
+              "2019-12-27": 4112,
+              "2019-12-30": 3503,
+              "2019-12-31": 3069
+            }
+          },
+          "reporting_lag_counts": {
+            "0": 1762,
+            "1": 76619,
+            "2": 4801,
+            "3": 22214,
+            "4": 130,
+            "5": 109,
+            "6": 13,
+            "7": 4
+          },
+          "invalid_date_rows": 0,
+          "numeric": {
+            "RATE": {
+              "sum": "145489292.82849999994085713",
+              "zero": 3308,
+              "negative": 0,
+              "fractional": 100414,
+              "min": "0",
+              "max": "151000"
+            },
+            "QUANTITY": {
+              "sum": "8244150830.25999999901034",
+              "zero": 0,
+              "negative": 0,
+              "fractional": 42,
+              "min": "1",
+              "max": "344000000"
+            },
+            "VALUE (in Rs)": {
+              "sum": "1984428385323.3799993032507252",
+              "zero": 3308,
+              "negative": 0,
+              "fractional": 95219,
+              "min": "0",
+              "max": "17499994000"
+            }
+          },
+          "residual": {
+            "nonzero": 93403,
+            "above_0_01": 0,
+            "maximum_abs": "0.0050000457638",
+            "sum": "14.009232383726621470000002977"
+          },
+          "isin_distinct_including_invalid": 883,
+          "isin_syntax_invalid_rows": 0,
+          "isin_checksum_invalid_rows": 0,
+          "trim_only_nonordinal_row_duplicates": 0,
+          "trim_only_custodian_transaction_key_repeats": 0,
+          "repeat_key_different_trim_only_row": 0
+        }
+      ],
+      "primary_evidence": "data/asset-review/monthly-fpi-2019-sep-dec-workbook-evidence-2026-09-29.json"
+    }
+  ],
+  "review_date": "2026-09-29",
+  "source_scan_started_on": "2026-09-29",
+  "independent_reconciliation": {
+    "checks_passed": 637,
+    "failures": 0,
+    "check_labels": [
+      "exact twelve-archive scope",
+      "2019_1.zip:asset",
+      "2019_1.zip:asset_bytes",
+      "2019_1.zip:asset_sha256",
+      "2019_1.zip:member",
+      "2019_1.zip:member_bytes",
+      "2019_1.zip:member_sha256",
+      "2019_1.zip:member_crc32",
+      "2019_1.zip:package_parts",
+      "2019_1.zip:shared_strings",
+      "2019_1.zip:header_by_column",
+      "2019_1.zip:data_rows",
+      "2019_1.zip:physical_cells_including_header",
+      "2019_1.zip:row_widths_including_header",
+      "2019_1.zip:types_including_header",
+      "2019_1.zip:formula_cells",
+      "2019_1.zip:error_cells",
+      "2019_1.zip:data_field_types",
+      "2019_1.zip:empty_data_fields",
+      "2019_1.zip:edge_whitespace_fields",
+      "2019_1.zip:code_counts",
+      "2019_1.zip:daily_date_counts",
+      "2019_1.zip:reporting_lag_counts",
+      "2019_1.zip:RATE:sum",
+      "2019_1.zip:RATE:min",
+      "2019_1.zip:RATE:max",
+      "2019_1.zip:RATE:zero",
+      "2019_1.zip:RATE:negative",
+      "2019_1.zip:RATE:fractional",
+      "2019_1.zip:QUANTITY:sum",
+      "2019_1.zip:QUANTITY:min",
+      "2019_1.zip:QUANTITY:max",
+      "2019_1.zip:QUANTITY:zero",
+      "2019_1.zip:QUANTITY:negative",
+      "2019_1.zip:QUANTITY:fractional",
+      "2019_1.zip:VALUE (in Rs):sum",
+      "2019_1.zip:VALUE (in Rs):min",
+      "2019_1.zip:VALUE (in Rs):max",
+      "2019_1.zip:VALUE (in Rs):zero",
+      "2019_1.zip:VALUE (in Rs):negative",
+      "2019_1.zip:VALUE (in Rs):fractional",
+      "2019_1.zip:residual:sum",
+      "2019_1.zip:residual:maximum_abs",
+      "2019_1.zip:residual:nonzero",
+      "2019_1.zip:residual:above_0_01",
+      "2019_1.zip:isin_syntax_invalid_rows",
+      "2019_1.zip:isin_checksum_invalid_rows",
+      "2019_1.zip:trim_only_nonordinal_row_duplicates",
+      "2019_1.zip:trim_only_custodian_transaction_key_repeats",
+      "2019_1.zip:ordinal_rows",
+      "2019_1.zip:ordinal_not_equal_data_row_number",
+      "2019_1.zip:strict residual below one paisa",
+      "2019_1.zip:trim_only_nonordinal_row_duplicates:zero under both definitions",
+      "2019_1.zip:trim_only_custodian_transaction_key_repeats:zero under both definitions",
+      "2019_2.zip:asset",
+      "2019_2.zip:asset_bytes",
+      "2019_2.zip:asset_sha256",
+      "2019_2.zip:member",
+      "2019_2.zip:member_bytes",
+      "2019_2.zip:member_sha256",
+      "2019_2.zip:member_crc32",
+      "2019_2.zip:package_parts",
+      "2019_2.zip:shared_strings",
+      "2019_2.zip:header_by_column",
+      "2019_2.zip:data_rows",
+      "2019_2.zip:physical_cells_including_header",
+      "2019_2.zip:row_widths_including_header",
+      "2019_2.zip:types_including_header",
+      "2019_2.zip:formula_cells",
+      "2019_2.zip:error_cells",
+      "2019_2.zip:data_field_types",
+      "2019_2.zip:empty_data_fields",
+      "2019_2.zip:edge_whitespace_fields",
+      "2019_2.zip:code_counts",
+      "2019_2.zip:daily_date_counts",
+      "2019_2.zip:reporting_lag_counts",
+      "2019_2.zip:RATE:sum",
+      "2019_2.zip:RATE:min",
+      "2019_2.zip:RATE:max",
+      "2019_2.zip:RATE:zero",
+      "2019_2.zip:RATE:negative",
+      "2019_2.zip:RATE:fractional",
+      "2019_2.zip:QUANTITY:sum",
+      "2019_2.zip:QUANTITY:min",
+      "2019_2.zip:QUANTITY:max",
+      "2019_2.zip:QUANTITY:zero",
+      "2019_2.zip:QUANTITY:negative",
+      "2019_2.zip:QUANTITY:fractional",
+      "2019_2.zip:VALUE (in Rs):sum",
+      "2019_2.zip:VALUE (in Rs):min",
+      "2019_2.zip:VALUE (in Rs):max",
+      "2019_2.zip:VALUE (in Rs):zero",
+      "2019_2.zip:VALUE (in Rs):negative",
+      "2019_2.zip:VALUE (in Rs):fractional",
+      "2019_2.zip:residual:sum",
+      "2019_2.zip:residual:maximum_abs",
+      "2019_2.zip:residual:nonzero",
+      "2019_2.zip:residual:above_0_01",
+      "2019_2.zip:isin_syntax_invalid_rows",
+      "2019_2.zip:isin_checksum_invalid_rows",
+      "2019_2.zip:trim_only_nonordinal_row_duplicates",
+      "2019_2.zip:trim_only_custodian_transaction_key_repeats",
+      "2019_2.zip:ordinal_rows",
+      "2019_2.zip:ordinal_not_equal_data_row_number",
+      "2019_2.zip:strict residual below one paisa",
+      "2019_2.zip:trim_only_nonordinal_row_duplicates:zero under both definitions",
+      "2019_2.zip:trim_only_custodian_transaction_key_repeats:zero under both definitions",
+      "2019_3.zip:asset",
+      "2019_3.zip:asset_bytes",
+      "2019_3.zip:asset_sha256",
+      "2019_3.zip:member",
+      "2019_3.zip:member_bytes",
+      "2019_3.zip:member_sha256",
+      "2019_3.zip:member_crc32",
+      "2019_3.zip:package_parts",
+      "2019_3.zip:shared_strings",
+      "2019_3.zip:header_by_column",
+      "2019_3.zip:data_rows",
+      "2019_3.zip:physical_cells_including_header",
+      "2019_3.zip:row_widths_including_header",
+      "2019_3.zip:types_including_header",
+      "2019_3.zip:formula_cells",
+      "2019_3.zip:error_cells",
+      "2019_3.zip:data_field_types",
+      "2019_3.zip:empty_data_fields",
+      "2019_3.zip:edge_whitespace_fields",
+      "2019_3.zip:code_counts",
+      "2019_3.zip:daily_date_counts",
+      "2019_3.zip:reporting_lag_counts",
+      "2019_3.zip:RATE:sum",
+      "2019_3.zip:RATE:min",
+      "2019_3.zip:RATE:max",
+      "2019_3.zip:RATE:zero",
+      "2019_3.zip:RATE:negative",
+      "2019_3.zip:RATE:fractional",
+      "2019_3.zip:QUANTITY:sum",
+      "2019_3.zip:QUANTITY:min",
+      "2019_3.zip:QUANTITY:max",
+      "2019_3.zip:QUANTITY:zero",
+      "2019_3.zip:QUANTITY:negative",
+      "2019_3.zip:QUANTITY:fractional",
+      "2019_3.zip:VALUE (in Rs):sum",
+      "2019_3.zip:VALUE (in Rs):min",
+      "2019_3.zip:VALUE (in Rs):max",
+      "2019_3.zip:VALUE (in Rs):zero",
+      "2019_3.zip:VALUE (in Rs):negative",
+      "2019_3.zip:VALUE (in Rs):fractional",
+      "2019_3.zip:residual:sum",
+      "2019_3.zip:residual:maximum_abs",
+      "2019_3.zip:residual:nonzero",
+      "2019_3.zip:residual:above_0_01",
+      "2019_3.zip:isin_syntax_invalid_rows",
+      "2019_3.zip:isin_checksum_invalid_rows",
+      "2019_3.zip:trim_only_nonordinal_row_duplicates",
+      "2019_3.zip:trim_only_custodian_transaction_key_repeats",
+      "2019_3.zip:ordinal_rows",
+      "2019_3.zip:ordinal_not_equal_data_row_number",
+      "2019_3.zip:strict residual below one paisa",
+      "2019_3.zip:trim_only_nonordinal_row_duplicates:zero under both definitions",
+      "2019_3.zip:trim_only_custodian_transaction_key_repeats:zero under both definitions",
+      "2019_4.zip:asset",
+      "2019_4.zip:asset_bytes",
+      "2019_4.zip:asset_sha256",
+      "2019_4.zip:member",
+      "2019_4.zip:member_bytes",
+      "2019_4.zip:member_sha256",
+      "2019_4.zip:member_crc32",
+      "2019_4.zip:package_parts",
+      "2019_4.zip:shared_strings",
+      "2019_4.zip:header_by_column",
+      "2019_4.zip:data_rows",
+      "2019_4.zip:physical_cells_including_header",
+      "2019_4.zip:row_widths_including_header",
+      "2019_4.zip:types_including_header",
+      "2019_4.zip:formula_cells",
+      "2019_4.zip:error_cells",
+      "2019_4.zip:data_field_types",
+      "2019_4.zip:empty_data_fields",
+      "2019_4.zip:edge_whitespace_fields",
+      "2019_4.zip:code_counts",
+      "2019_4.zip:daily_date_counts",
+      "2019_4.zip:reporting_lag_counts",
+      "2019_4.zip:RATE:sum",
+      "2019_4.zip:RATE:min",
+      "2019_4.zip:RATE:max",
+      "2019_4.zip:RATE:zero",
+      "2019_4.zip:RATE:negative",
+      "2019_4.zip:RATE:fractional",
+      "2019_4.zip:QUANTITY:sum",
+      "2019_4.zip:QUANTITY:min",
+      "2019_4.zip:QUANTITY:max",
+      "2019_4.zip:QUANTITY:zero",
+      "2019_4.zip:QUANTITY:negative",
+      "2019_4.zip:QUANTITY:fractional",
+      "2019_4.zip:VALUE (in Rs):sum",
+      "2019_4.zip:VALUE (in Rs):min",
+      "2019_4.zip:VALUE (in Rs):max",
+      "2019_4.zip:VALUE (in Rs):zero",
+      "2019_4.zip:VALUE (in Rs):negative",
+      "2019_4.zip:VALUE (in Rs):fractional",
+      "2019_4.zip:residual:sum",
+      "2019_4.zip:residual:maximum_abs",
+      "2019_4.zip:residual:nonzero",
+      "2019_4.zip:residual:above_0_01",
+      "2019_4.zip:isin_syntax_invalid_rows",
+      "2019_4.zip:isin_checksum_invalid_rows",
+      "2019_4.zip:trim_only_nonordinal_row_duplicates",
+      "2019_4.zip:trim_only_custodian_transaction_key_repeats",
+      "2019_4.zip:ordinal_rows",
+      "2019_4.zip:ordinal_not_equal_data_row_number",
+      "2019_4.zip:strict residual below one paisa",
+      "2019_4.zip:trim_only_nonordinal_row_duplicates:zero under both definitions",
+      "2019_4.zip:trim_only_custodian_transaction_key_repeats:zero under both definitions",
+      "2019_5.zip:asset",
+      "2019_5.zip:asset_bytes",
+      "2019_5.zip:asset_sha256",
+      "2019_5.zip:member",
+      "2019_5.zip:member_bytes",
+      "2019_5.zip:member_sha256",
+      "2019_5.zip:member_crc32",
+      "2019_5.zip:package_parts",
+      "2019_5.zip:shared_strings",
+      "2019_5.zip:header_by_column",
+      "2019_5.zip:data_rows",
+      "2019_5.zip:physical_cells_including_header",
+      "2019_5.zip:row_widths_including_header",
+      "2019_5.zip:types_including_header",
+      "2019_5.zip:formula_cells",
+      "2019_5.zip:error_cells",
+      "2019_5.zip:data_field_types",
+      "2019_5.zip:empty_data_fields",
+      "2019_5.zip:edge_whitespace_fields",
+      "2019_5.zip:code_counts",
+      "2019_5.zip:daily_date_counts",
+      "2019_5.zip:reporting_lag_counts",
+      "2019_5.zip:RATE:sum",
+      "2019_5.zip:RATE:min",
+      "2019_5.zip:RATE:max",
+      "2019_5.zip:RATE:zero",
+      "2019_5.zip:RATE:negative",
+      "2019_5.zip:RATE:fractional",
+      "2019_5.zip:QUANTITY:sum",
+      "2019_5.zip:QUANTITY:min",
+      "2019_5.zip:QUANTITY:max",
+      "2019_5.zip:QUANTITY:zero",
+      "2019_5.zip:QUANTITY:negative",
+      "2019_5.zip:QUANTITY:fractional",
+      "2019_5.zip:VALUE (in Rs):sum",
+      "2019_5.zip:VALUE (in Rs):min",
+      "2019_5.zip:VALUE (in Rs):max",
+      "2019_5.zip:VALUE (in Rs):zero",
+      "2019_5.zip:VALUE (in Rs):negative",
+      "2019_5.zip:VALUE (in Rs):fractional",
+      "2019_5.zip:residual:sum",
+      "2019_5.zip:residual:maximum_abs",
+      "2019_5.zip:residual:nonzero",
+      "2019_5.zip:residual:above_0_01",
+      "2019_5.zip:isin_syntax_invalid_rows",
+      "2019_5.zip:isin_checksum_invalid_rows",
+      "2019_5.zip:trim_only_nonordinal_row_duplicates",
+      "2019_5.zip:trim_only_custodian_transaction_key_repeats",
+      "2019_5.zip:ordinal_rows",
+      "2019_5.zip:ordinal_not_equal_data_row_number",
+      "2019_5.zip:strict residual below one paisa",
+      "2019_5.zip:trim_only_nonordinal_row_duplicates:zero under both definitions",
+      "2019_5.zip:trim_only_custodian_transaction_key_repeats:zero under both definitions",
+      "2019_6.zip:asset",
+      "2019_6.zip:asset_bytes",
+      "2019_6.zip:asset_sha256",
+      "2019_6.zip:member",
+      "2019_6.zip:member_bytes",
+      "2019_6.zip:member_sha256",
+      "2019_6.zip:member_crc32",
+      "2019_6.zip:package_parts",
+      "2019_6.zip:shared_strings",
+      "2019_6.zip:header_by_column",
+      "2019_6.zip:data_rows",
+      "2019_6.zip:physical_cells_including_header",
+      "2019_6.zip:row_widths_including_header",
+      "2019_6.zip:types_including_header",
+      "2019_6.zip:formula_cells",
+      "2019_6.zip:error_cells",
+      "2019_6.zip:data_field_types",
+      "2019_6.zip:empty_data_fields",
+      "2019_6.zip:edge_whitespace_fields",
+      "2019_6.zip:code_counts",
+      "2019_6.zip:daily_date_counts",
+      "2019_6.zip:reporting_lag_counts",
+      "2019_6.zip:RATE:sum",
+      "2019_6.zip:RATE:min",
+      "2019_6.zip:RATE:max",
+      "2019_6.zip:RATE:zero",
+      "2019_6.zip:RATE:negative",
+      "2019_6.zip:RATE:fractional",
+      "2019_6.zip:QUANTITY:sum",
+      "2019_6.zip:QUANTITY:min",
+      "2019_6.zip:QUANTITY:max",
+      "2019_6.zip:QUANTITY:zero",
+      "2019_6.zip:QUANTITY:negative",
+      "2019_6.zip:QUANTITY:fractional",
+      "2019_6.zip:VALUE (in Rs):sum",
+      "2019_6.zip:VALUE (in Rs):min",
+      "2019_6.zip:VALUE (in Rs):max",
+      "2019_6.zip:VALUE (in Rs):zero",
+      "2019_6.zip:VALUE (in Rs):negative",
+      "2019_6.zip:VALUE (in Rs):fractional",
+      "2019_6.zip:residual:sum",
+      "2019_6.zip:residual:maximum_abs",
+      "2019_6.zip:residual:nonzero",
+      "2019_6.zip:residual:above_0_01",
+      "2019_6.zip:isin_syntax_invalid_rows",
+      "2019_6.zip:isin_checksum_invalid_rows",
+      "2019_6.zip:trim_only_nonordinal_row_duplicates",
+      "2019_6.zip:trim_only_custodian_transaction_key_repeats",
+      "2019_6.zip:ordinal_rows",
+      "2019_6.zip:ordinal_not_equal_data_row_number",
+      "2019_6.zip:strict residual below one paisa",
+      "2019_6.zip:trim_only_nonordinal_row_duplicates:zero under both definitions",
+      "2019_6.zip:trim_only_custodian_transaction_key_repeats:zero under both definitions",
+      "2019_7.zip:asset",
+      "2019_7.zip:asset_bytes",
+      "2019_7.zip:asset_sha256",
+      "2019_7.zip:member",
+      "2019_7.zip:member_bytes",
+      "2019_7.zip:member_sha256",
+      "2019_7.zip:member_crc32",
+      "2019_7.zip:package_parts",
+      "2019_7.zip:shared_strings",
+      "2019_7.zip:header_by_column",
+      "2019_7.zip:data_rows",
+      "2019_7.zip:physical_cells_including_header",
+      "2019_7.zip:row_widths_including_header",
+      "2019_7.zip:types_including_header",
+      "2019_7.zip:formula_cells",
+      "2019_7.zip:error_cells",
+      "2019_7.zip:data_field_types",
+      "2019_7.zip:empty_data_fields",
+      "2019_7.zip:edge_whitespace_fields",
+      "2019_7.zip:code_counts",
+      "2019_7.zip:daily_date_counts",
+      "2019_7.zip:reporting_lag_counts",
+      "2019_7.zip:RATE:sum",
+      "2019_7.zip:RATE:min",
+      "2019_7.zip:RATE:max",
+      "2019_7.zip:RATE:zero",
+      "2019_7.zip:RATE:negative",
+      "2019_7.zip:RATE:fractional",
+      "2019_7.zip:QUANTITY:sum",
+      "2019_7.zip:QUANTITY:min",
+      "2019_7.zip:QUANTITY:max",
+      "2019_7.zip:QUANTITY:zero",
+      "2019_7.zip:QUANTITY:negative",
+      "2019_7.zip:QUANTITY:fractional",
+      "2019_7.zip:VALUE (in Rs):sum",
+      "2019_7.zip:VALUE (in Rs):min",
+      "2019_7.zip:VALUE (in Rs):max",
+      "2019_7.zip:VALUE (in Rs):zero",
+      "2019_7.zip:VALUE (in Rs):negative",
+      "2019_7.zip:VALUE (in Rs):fractional",
+      "2019_7.zip:residual:sum",
+      "2019_7.zip:residual:maximum_abs",
+      "2019_7.zip:residual:nonzero",
+      "2019_7.zip:residual:above_0_01",
+      "2019_7.zip:isin_syntax_invalid_rows",
+      "2019_7.zip:isin_checksum_invalid_rows",
+      "2019_7.zip:trim_only_nonordinal_row_duplicates",
+      "2019_7.zip:trim_only_custodian_transaction_key_repeats",
+      "2019_7.zip:ordinal_rows",
+      "2019_7.zip:ordinal_not_equal_data_row_number",
+      "2019_7.zip:strict residual below one paisa",
+      "2019_7.zip:trim_only_nonordinal_row_duplicates:zero under both definitions",
+      "2019_7.zip:trim_only_custodian_transaction_key_repeats:zero under both definitions",
+      "2019_8.zip:asset",
+      "2019_8.zip:asset_bytes",
+      "2019_8.zip:asset_sha256",
+      "2019_8.zip:member",
+      "2019_8.zip:member_bytes",
+      "2019_8.zip:member_sha256",
+      "2019_8.zip:member_crc32",
+      "2019_8.zip:package_parts",
+      "2019_8.zip:shared_strings",
+      "2019_8.zip:header_by_column",
+      "2019_8.zip:data_rows",
+      "2019_8.zip:physical_cells_including_header",
+      "2019_8.zip:row_widths_including_header",
+      "2019_8.zip:types_including_header",
+      "2019_8.zip:formula_cells",
+      "2019_8.zip:error_cells",
+      "2019_8.zip:data_field_types",
+      "2019_8.zip:empty_data_fields",
+      "2019_8.zip:edge_whitespace_fields",
+      "2019_8.zip:code_counts",
+      "2019_8.zip:daily_date_counts",
+      "2019_8.zip:reporting_lag_counts",
+      "2019_8.zip:RATE:sum",
+      "2019_8.zip:RATE:min",
+      "2019_8.zip:RATE:max",
+      "2019_8.zip:RATE:zero",
+      "2019_8.zip:RATE:negative",
+      "2019_8.zip:RATE:fractional",
+      "2019_8.zip:QUANTITY:sum",
+      "2019_8.zip:QUANTITY:min",
+      "2019_8.zip:QUANTITY:max",
+      "2019_8.zip:QUANTITY:zero",
+      "2019_8.zip:QUANTITY:negative",
+      "2019_8.zip:QUANTITY:fractional",
+      "2019_8.zip:VALUE (in Rs):sum",
+      "2019_8.zip:VALUE (in Rs):min",
+      "2019_8.zip:VALUE (in Rs):max",
+      "2019_8.zip:VALUE (in Rs):zero",
+      "2019_8.zip:VALUE (in Rs):negative",
+      "2019_8.zip:VALUE (in Rs):fractional",
+      "2019_8.zip:residual:sum",
+      "2019_8.zip:residual:maximum_abs",
+      "2019_8.zip:residual:nonzero",
+      "2019_8.zip:residual:above_0_01",
+      "2019_8.zip:isin_syntax_invalid_rows",
+      "2019_8.zip:isin_checksum_invalid_rows",
+      "2019_8.zip:trim_only_nonordinal_row_duplicates",
+      "2019_8.zip:trim_only_custodian_transaction_key_repeats",
+      "2019_8.zip:ordinal_rows",
+      "2019_8.zip:ordinal_not_equal_data_row_number",
+      "2019_8.zip:strict residual below one paisa",
+      "2019_8.zip:trim_only_nonordinal_row_duplicates:zero under both definitions",
+      "2019_8.zip:trim_only_custodian_transaction_key_repeats:zero under both definitions",
+      "2019_9.zip:asset",
+      "2019_9.zip:asset_bytes",
+      "2019_9.zip:asset_sha256",
+      "2019_9.zip:member",
+      "2019_9.zip:member_bytes",
+      "2019_9.zip:member_sha256",
+      "2019_9.zip:member_crc32",
+      "2019_9.zip:package_parts",
+      "2019_9.zip:shared_strings",
+      "2019_9.zip:header_by_column",
+      "2019_9.zip:data_rows",
+      "2019_9.zip:physical_cells_including_header",
+      "2019_9.zip:row_widths_including_header",
+      "2019_9.zip:types_including_header",
+      "2019_9.zip:formula_cells",
+      "2019_9.zip:error_cells",
+      "2019_9.zip:data_field_types",
+      "2019_9.zip:empty_data_fields",
+      "2019_9.zip:edge_whitespace_fields",
+      "2019_9.zip:code_counts",
+      "2019_9.zip:daily_date_counts",
+      "2019_9.zip:reporting_lag_counts",
+      "2019_9.zip:RATE:sum",
+      "2019_9.zip:RATE:min",
+      "2019_9.zip:RATE:max",
+      "2019_9.zip:RATE:zero",
+      "2019_9.zip:RATE:negative",
+      "2019_9.zip:RATE:fractional",
+      "2019_9.zip:QUANTITY:sum",
+      "2019_9.zip:QUANTITY:min",
+      "2019_9.zip:QUANTITY:max",
+      "2019_9.zip:QUANTITY:zero",
+      "2019_9.zip:QUANTITY:negative",
+      "2019_9.zip:QUANTITY:fractional",
+      "2019_9.zip:VALUE (in Rs):sum",
+      "2019_9.zip:VALUE (in Rs):min",
+      "2019_9.zip:VALUE (in Rs):max",
+      "2019_9.zip:VALUE (in Rs):zero",
+      "2019_9.zip:VALUE (in Rs):negative",
+      "2019_9.zip:VALUE (in Rs):fractional",
+      "2019_9.zip:residual:sum",
+      "2019_9.zip:residual:maximum_abs",
+      "2019_9.zip:residual:nonzero",
+      "2019_9.zip:residual:above_0_01",
+      "2019_9.zip:isin_syntax_invalid_rows",
+      "2019_9.zip:isin_checksum_invalid_rows",
+      "2019_9.zip:trim_only_nonordinal_row_duplicates",
+      "2019_9.zip:trim_only_custodian_transaction_key_repeats",
+      "2019_9.zip:ordinal_rows",
+      "2019_9.zip:ordinal_not_equal_data_row_number",
+      "2019_9.zip:strict residual below one paisa",
+      "2019_9.zip:trim_only_nonordinal_row_duplicates:zero under both definitions",
+      "2019_9.zip:trim_only_custodian_transaction_key_repeats:zero under both definitions",
+      "2019_10.zip:asset",
+      "2019_10.zip:asset_bytes",
+      "2019_10.zip:asset_sha256",
+      "2019_10.zip:member",
+      "2019_10.zip:member_bytes",
+      "2019_10.zip:member_sha256",
+      "2019_10.zip:member_crc32",
+      "2019_10.zip:package_parts",
+      "2019_10.zip:shared_strings",
+      "2019_10.zip:header_by_column",
+      "2019_10.zip:data_rows",
+      "2019_10.zip:physical_cells_including_header",
+      "2019_10.zip:row_widths_including_header",
+      "2019_10.zip:types_including_header",
+      "2019_10.zip:formula_cells",
+      "2019_10.zip:error_cells",
+      "2019_10.zip:data_field_types",
+      "2019_10.zip:empty_data_fields",
+      "2019_10.zip:edge_whitespace_fields",
+      "2019_10.zip:code_counts",
+      "2019_10.zip:daily_date_counts",
+      "2019_10.zip:reporting_lag_counts",
+      "2019_10.zip:RATE:sum",
+      "2019_10.zip:RATE:min",
+      "2019_10.zip:RATE:max",
+      "2019_10.zip:RATE:zero",
+      "2019_10.zip:RATE:negative",
+      "2019_10.zip:RATE:fractional",
+      "2019_10.zip:QUANTITY:sum",
+      "2019_10.zip:QUANTITY:min",
+      "2019_10.zip:QUANTITY:max",
+      "2019_10.zip:QUANTITY:zero",
+      "2019_10.zip:QUANTITY:negative",
+      "2019_10.zip:QUANTITY:fractional",
+      "2019_10.zip:VALUE (in Rs):sum",
+      "2019_10.zip:VALUE (in Rs):min",
+      "2019_10.zip:VALUE (in Rs):max",
+      "2019_10.zip:VALUE (in Rs):zero",
+      "2019_10.zip:VALUE (in Rs):negative",
+      "2019_10.zip:VALUE (in Rs):fractional",
+      "2019_10.zip:residual:sum",
+      "2019_10.zip:residual:maximum_abs",
+      "2019_10.zip:residual:nonzero",
+      "2019_10.zip:residual:above_0_01",
+      "2019_10.zip:isin_syntax_invalid_rows",
+      "2019_10.zip:isin_checksum_invalid_rows",
+      "2019_10.zip:trim_only_nonordinal_row_duplicates",
+      "2019_10.zip:trim_only_custodian_transaction_key_repeats",
+      "2019_10.zip:ordinal_rows",
+      "2019_10.zip:ordinal_not_equal_data_row_number",
+      "2019_10.zip:strict residual below one paisa",
+      "2019_10.zip:trim_only_nonordinal_row_duplicates:zero under both definitions",
+      "2019_10.zip:trim_only_custodian_transaction_key_repeats:zero under both definitions",
+      "2019_11.zip:asset",
+      "2019_11.zip:asset_bytes",
+      "2019_11.zip:asset_sha256",
+      "2019_11.zip:member",
+      "2019_11.zip:member_bytes",
+      "2019_11.zip:member_sha256",
+      "2019_11.zip:member_crc32",
+      "2019_11.zip:package_parts",
+      "2019_11.zip:shared_strings",
+      "2019_11.zip:header_by_column",
+      "2019_11.zip:data_rows",
+      "2019_11.zip:physical_cells_including_header",
+      "2019_11.zip:row_widths_including_header",
+      "2019_11.zip:types_including_header",
+      "2019_11.zip:formula_cells",
+      "2019_11.zip:error_cells",
+      "2019_11.zip:data_field_types",
+      "2019_11.zip:empty_data_fields",
+      "2019_11.zip:edge_whitespace_fields",
+      "2019_11.zip:code_counts",
+      "2019_11.zip:daily_date_counts",
+      "2019_11.zip:reporting_lag_counts",
+      "2019_11.zip:RATE:sum",
+      "2019_11.zip:RATE:min",
+      "2019_11.zip:RATE:max",
+      "2019_11.zip:RATE:zero",
+      "2019_11.zip:RATE:negative",
+      "2019_11.zip:RATE:fractional",
+      "2019_11.zip:QUANTITY:sum",
+      "2019_11.zip:QUANTITY:min",
+      "2019_11.zip:QUANTITY:max",
+      "2019_11.zip:QUANTITY:zero",
+      "2019_11.zip:QUANTITY:negative",
+      "2019_11.zip:QUANTITY:fractional",
+      "2019_11.zip:VALUE (in Rs):sum",
+      "2019_11.zip:VALUE (in Rs):min",
+      "2019_11.zip:VALUE (in Rs):max",
+      "2019_11.zip:VALUE (in Rs):zero",
+      "2019_11.zip:VALUE (in Rs):negative",
+      "2019_11.zip:VALUE (in Rs):fractional",
+      "2019_11.zip:residual:sum",
+      "2019_11.zip:residual:maximum_abs",
+      "2019_11.zip:residual:nonzero",
+      "2019_11.zip:residual:above_0_01",
+      "2019_11.zip:isin_syntax_invalid_rows",
+      "2019_11.zip:isin_checksum_invalid_rows",
+      "2019_11.zip:trim_only_nonordinal_row_duplicates",
+      "2019_11.zip:trim_only_custodian_transaction_key_repeats",
+      "2019_11.zip:ordinal_rows",
+      "2019_11.zip:ordinal_not_equal_data_row_number",
+      "2019_11.zip:strict residual below one paisa",
+      "2019_11.zip:trim_only_nonordinal_row_duplicates:zero under both definitions",
+      "2019_11.zip:trim_only_custodian_transaction_key_repeats:zero under both definitions",
+      "2019_12.zip:asset",
+      "2019_12.zip:asset_bytes",
+      "2019_12.zip:asset_sha256",
+      "2019_12.zip:member",
+      "2019_12.zip:member_bytes",
+      "2019_12.zip:member_sha256",
+      "2019_12.zip:member_crc32",
+      "2019_12.zip:package_parts",
+      "2019_12.zip:shared_strings",
+      "2019_12.zip:header_by_column",
+      "2019_12.zip:data_rows",
+      "2019_12.zip:physical_cells_including_header",
+      "2019_12.zip:row_widths_including_header",
+      "2019_12.zip:types_including_header",
+      "2019_12.zip:formula_cells",
+      "2019_12.zip:error_cells",
+      "2019_12.zip:data_field_types",
+      "2019_12.zip:empty_data_fields",
+      "2019_12.zip:edge_whitespace_fields",
+      "2019_12.zip:code_counts",
+      "2019_12.zip:daily_date_counts",
+      "2019_12.zip:reporting_lag_counts",
+      "2019_12.zip:RATE:sum",
+      "2019_12.zip:RATE:min",
+      "2019_12.zip:RATE:max",
+      "2019_12.zip:RATE:zero",
+      "2019_12.zip:RATE:negative",
+      "2019_12.zip:RATE:fractional",
+      "2019_12.zip:QUANTITY:sum",
+      "2019_12.zip:QUANTITY:min",
+      "2019_12.zip:QUANTITY:max",
+      "2019_12.zip:QUANTITY:zero",
+      "2019_12.zip:QUANTITY:negative",
+      "2019_12.zip:QUANTITY:fractional",
+      "2019_12.zip:VALUE (in Rs):sum",
+      "2019_12.zip:VALUE (in Rs):min",
+      "2019_12.zip:VALUE (in Rs):max",
+      "2019_12.zip:VALUE (in Rs):zero",
+      "2019_12.zip:VALUE (in Rs):negative",
+      "2019_12.zip:VALUE (in Rs):fractional",
+      "2019_12.zip:residual:sum",
+      "2019_12.zip:residual:maximum_abs",
+      "2019_12.zip:residual:nonzero",
+      "2019_12.zip:residual:above_0_01",
+      "2019_12.zip:isin_syntax_invalid_rows",
+      "2019_12.zip:isin_checksum_invalid_rows",
+      "2019_12.zip:trim_only_nonordinal_row_duplicates",
+      "2019_12.zip:trim_only_custodian_transaction_key_repeats",
+      "2019_12.zip:ordinal_rows",
+      "2019_12.zip:ordinal_not_equal_data_row_number",
+      "2019_12.zip:strict residual below one paisa",
+      "2019_12.zip:trim_only_nonordinal_row_duplicates:zero under both definitions",
+      "2019_12.zip:trim_only_custodian_transaction_key_repeats:zero under both definitions"
+    ],
+    "comparison_script_sha256": "c5111f79c058e23bdb9063ce556bff76295b5959c3b31c1be54df2d078b7e5ca",
+    "evidence": [
+      {
+        "file": "data/asset-review/monthly-fpi-2019-jan-apr-workbook-evidence-2026-09-29.json",
+        "sha256": "5e3d440fd655043a027f88f400d14d1c5e375676c5f59a3eb59a499926a32609"
+      },
+      {
+        "file": "data/asset-review/monthly-fpi-2019-may-aug-workbook-evidence-2026-09-29.json",
+        "sha256": "0f9ed7e16f8e91ad5141886f4b32454365c19ebe5c9617e3db5fd105799dd663"
+      },
+      {
+        "file": "data/asset-review/monthly-fpi-2019-sep-dec-workbook-evidence-2026-09-29.json",
+        "sha256": "50aac32f5fa51f9e31161f64d72526e5112f2e2b6f8dcd1bd07e6d3104ac11e0"
+      }
+    ],
+    "limits": "Full per-workbook shared controls compared. Dictionaries are one grouped check each, not one count per element. Primary typed/raw/NFC duplicate methods and root trim-only methods differ; the compared whole-row and custodian+transaction counts are zero under both definitions. Residual signs are explicitly inverted where primary evidence defines product minus value. No cross-workbook uniqueness claim."
+  },
+  "consumer_source_review": {
+    "commit": "bbecb54690452f8a76684fe55b2fe68a387df09d",
+    "scope": "Five source hashes freshly rechecked. Reuse of the accepted selected-line consumer review and mapping from the immediately previous 2018 checkpoint, not another full repository or line reread.",
+    "files": [
+      {
+        "file": "server-upstox-institutional-patch.mjs",
+        "sha256": "97c583f00f5e6b4daee5ba7ce694f3aa1374a1e25aeb6b76b797a88cb3598777",
+        "lines": [
+          [
+            115,
+            202
+          ],
+          [
+            280,
+            362
+          ],
+          [
+            394,
+            448
+          ],
+          [
+            476,
+            558
+          ]
+        ]
+      },
+      {
+        "file": "app.js",
+        "sha256": "8dac72e64263ecd8521ab0d78c85a0f070d31c34bad5babbbf7bfde0cd74ee1a",
+        "lines": [
+          [
+            1340,
+            1393
+          ],
+          [
+            1141,
+            1159
+          ]
+        ]
+      },
+      {
+        "file": "server-data-intelligence-patch.mjs",
+        "sha256": "84bae920306261373c556cca87bdd0db38996ce211488ba373640aeb4426c7c0",
+        "lines": [
+          [
+            103,
+            120
+          ]
+        ]
+      },
+      {
+        "file": "server-intelligence-score-patch.mjs",
+        "sha256": "bf4ecacc0a11a111759def111b9158a22c06cd8e44eff73527689f49c0765aef",
+        "lines": [
+          [
+            30,
+            40
+          ]
+        ]
+      },
+      {
+        "file": "server-stock-selection-patch.mjs",
+        "sha256": "96e26eb1ece2bb89636ac2a83c3d70f09054d937e0c5555a06a38572ca2c91da",
+        "lines": [
+          [
+            1,
+            65
+          ]
+        ]
+      }
+    ],
+    "mapping": [
+      {
+        "consumer": "NO03, NO04, NO05 current institutional signals",
+        "requires": "Identity-matched latest eligible adjacent-quarter ownership percentages and changes",
+        "archive_fit": "Not supplied by transaction records; no DII ownership or outstanding-share denominator"
+      },
+      {
+        "consumer": "FII Holding dashboard display",
+        "requires": "Identity-matched freshly fetched reported ownership percentage; an older quarter may display with a historical label, while current factor eligibility requires the latest adjacent-quarter comparison",
+        "archive_fit": "These transaction workbooks supply neither reported ownership balances nor ownership percentages"
+      },
+      {
+        "consumer": "NO08 and FII cash flow (5D) dashboard",
+        "requires": "Current market-wide NSE cash activity over five verified completed sessions",
+        "archive_fit": "Historical, sparse trade reports across code classes are not current five-session cash evidence"
+      },
+      {
+        "consumer": "Historical FPI transaction research",
+        "requires": "Dated identity and instrument/exchange contract, revision precedence, point-in-time availability, canonical-copy decision",
+        "archive_fit": "Candidate historical source only, not implemented or imported"
+      },
+      {
+        "consumer": "OHLCV, EPS, P/E and valuation targets",
+        "requires": "Validated market bars and dated company financial/valuation inputs",
+        "archive_fit": "Not supplied by these reports"
+      }
+    ],
+    "existing_hazard": "Legacy institutionalFlowScore still consumes a fixed June 8 2026 FII/DII snapshot without a freshness guard; separate approval is required for correction.",
+    "review_date": "2026-09-29",
+    "prior_evidence": "data/asset-review/monthly-fpi-2018-workbook-independent-replay-2026-09-28.json"
+  },
+  "source_contract_review": {
+    "review_date": "2026-09-29",
+    "official_reference": "https://www.cdslindia.com/Publications/EquityDataFII.html",
+    "status": "Official page freshly inspected as documentation; no historical ingestion or signal contract adopted",
+    "limits": [
+      "The current page lists nineteen business fields, INR value units and twelve 2019 monthly download links. Download bytes were not compared with preserved release bytes.",
+      "Historical effective code version, masked-identity stability and revision precedence remain unestablished.",
+      "No buy/sell sign, issuer mapping or amendment policy is assigned. Observed code values are retained as aggregate opaque histograms."
+    ],
+    "unresolved_observed_code_classes": {
+      "TR_TYPE(*)": [
+        "23"
+      ],
+      "RFDE_SE_REG_NUM": [
+        "99"
+      ],
+      "RFDE_INSTR_TYPE": [
+        "REG_DL_INSTR_ID",
+        "REG_DL_INSTR_ME"
+      ]
+    }
+  },
+  "summary": {
+    "archives": 12,
+    "sheets": 12,
+    "data_rows": 1367086,
+    "business_fields": 25974634,
+    "physical_cells_including_headers_and_ordinals": 26207595,
+    "package_parts": 192,
+    "ordinal_data_cells": 232733,
+    "formula_cells": 0,
+    "error_cells": 0,
+    "invalid_date_rows": 0,
+    "isin_syntax_invalid_or_marker_rows": 108,
+    "isin_checksum_invalid_among_valid_format_rows": 0,
+    "fractional_quantity_rows": 825,
+    "maximum_absolute_value_minus_product_rupees": "0.00500026577718",
+    "opaque_code_totals": {
+      "TR_TYPE(*)": {
+        "1": 657516,
+        "10": 731,
+        "11": 2694,
+        "13": 110,
+        "15": 9610,
+        "16": 690,
+        "2": 1652,
+        "3": 345,
+        "4": 677684,
+        "5": 1800,
+        "7": 13518,
+        "8": 254,
+        "9": 387,
+        "14": 26,
+        "17": 5,
+        "23": 5,
+        "6": 41,
+        "12": 18
+      },
+      "RFDE_SE_REG_NUM": {
+        "1": 144416,
+        "23": 1190963,
+        "99": 31707
+      },
+      "RFDE_STLD_CODE": {
+        "REG_DL_STLD_01": 1316151,
+        "REG_DL_STLD_02": 7026,
+        "REG_DL_STLD_03": 12189,
+        "REG_DL_STLD_04": 31720
+      },
+      "RFDE_INSTR_TYPE": {
+        "REG_DL_INSTR_EQ": 1350878,
+        "REG_DL_INSTR_EU": 14285,
+        "REG_DL_INSTR_FC": 24,
+        "REG_DL_INSTR_ID": 323,
+        "REG_DL_INSTR_MD": 1415,
+        "REG_DL_INSTR_ME": 77,
+        "REG_DL_INSTR_PS": 14,
+        "REG_DL_INSTR_RR": 69,
+        "REG_DL_INSTR_NC": 1
+      },
+      "RFDE_REASON_DLAY": {
+        "REG_DL_DLAY_D": 7021,
+        "REG_DL_DLAY_O": 2573,
+        "REG_DL_DLAY_P": 1357488,
+        "REG_DL_DLAY_S": 4
+      },
+      "RFDE_RPT_TYPE": {
+        "DL_RPT_TYPE_N": 1367086
+      },
+      "RFDE_AMDMNT_REASON": {
+        "DL_AMDMNT_DEL_00": 1367080,
+        "DL_AMDMNT_DEL_15": 6
+      }
+    },
+    "zero_rate_rows": 26411,
+    "zero_value_rows": 26411
+  },
+  "limits": [
+    "Serialized content and structure are reviewed, not native Excel visual layout, recalculation or printer-driver behavior. Twelve printerSettings binaries are fully byte-read/hash-verified but opaque.",
+    "Read-only source review: no workbook edits, importer, Mongo reads/writes, provider authentication, deployment, strategy activation or trading occurred in this batch. The official documentation page was read online.",
+    "No raw investor, broker, transaction identifiers or document-author metadata are published by root replay. Numeric cell types/lexemes are preserved; lost original zeros/digits cannot be inferred.",
+    "Trade date, report date, archive label and availability time remain distinct. All observed reporting lags are 0-7 calendar days, not proof of exchange-session coverage or historical publication timing.",
+    "ISIN checks and within-file candidate-key tests do not establish current NSE membership, corporate-action continuity, or cross-month canonical identity/revisions.",
+    "Exact decimal sums are reconciliation controls, not net flows, holdings, current institutional evidence, OHLCV or EPS/P/E. No source values are normalized or repaired."
+  ]
+}
