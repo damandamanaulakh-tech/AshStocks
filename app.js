@@ -16,9 +16,11 @@ const state = {
   activeNavKey: "dashboard",
   horizon: "intraday",
   lastError: "",
+  scanError: "",
   activeParameter: null,
   universeRows: [],
   scanBasket: [],
+  scanInFlight: false,
   parameterCatalog: [],
   parameterStages: [],
   tunnelSelectedSymbols: [],
@@ -26,6 +28,7 @@ const state = {
   tunnelParameterQuery: "",
   tunnelStockQuery: "",
   lastAutoPortfolioAttemptAt: 0,
+  paperEngineOutcomeUnknown: false,
   paperLedgerTab: "open",
   portfolioView: "holdings",
   orderWorkspaceView: "book",
@@ -36,6 +39,12 @@ const state = {
 };
 
 const institutionalPendingSymbols = new Set();
+let marketContextRequest = null;
+
+const API_READ_TIMEOUT_MS = 20_000;
+const API_MUTATION_TIMEOUT_MS = 120_000;
+// Candle scans and master imports can legitimately take several minutes.
+const API_LONG_MUTATION_TIMEOUT_MS = 15 * 60_000;
 
 const indexKeys = [
   { label: "NIFTY 50", key: "NSE_INDEX|Nifty 50" },
@@ -195,7 +204,7 @@ async function loadNseMaster() {
   if (button) button.disabled = true;
   setNotice("Loading fresh NSE Master from Upstox into Mongo", "info");
   try {
-    const result = await api("/api/data-bank/load-upstox-nse", { method: "POST", body: { trigger: "dashboard" } });
+    const result = await api("/api/data-bank/load-upstox-nse", { method: "POST", timeoutMs: API_LONG_MUTATION_TIMEOUT_MS, body: { trigger: "dashboard" } });
     const saved = result.saved_universe || result.universe_count || result.rows_saved || result.count || "NSE";
     setNotice(`NSE Master loaded into Mongo: ${saved} instruments`, "ok");
     await refreshScan();
@@ -212,7 +221,8 @@ async function runPaperEngineNow() {
   if (button) button.disabled = true;
   setNotice("Running paper engine: Upstox scan, SELECT filter, paper fills, target/stop monitor", "info");
   try {
-    const result = await api("/api/paper-engine/run", { method: "POST", body: { trigger: "dashboard" } });
+    const result = await api("/api/paper-engine/run", { method: "POST", timeoutMs: API_LONG_MUTATION_TIMEOUT_MS, body: { trigger: "dashboard" } });
+    state.paperEngineOutcomeUnknown = false;
     const autoBuy = result.auto_buy || {};
     const filled = Number(autoBuy.orders_filled || 0);
     const ready = Number(autoBuy.candidates_ready || 0);
@@ -228,10 +238,12 @@ async function runPaperEngineNow() {
     return result;
   } catch (error) {
     state.lastError = error.message;
+    if (error.outcomeUnknown) state.paperEngineOutcomeUnknown = true;
     setNotice(`Paper engine failed: ${error.message}`, "error");
     return null;
   } finally {
     if (button) button.disabled = false;
+    renderAutoOrderReadiness();
   }
 }
 
@@ -251,6 +263,9 @@ function nseMarketOpenNow() {
 async function maybeAutoStartPaperPortfolio() {
   if (!nseMarketOpenNow()) return;
   if (!state.upstoxStatus?.token_visible) return;
+  // Independent startup requests can finish in any order. Missing/failed ledger
+  // data is not evidence that a SELECT stock has no existing position.
+  if (state.orders?.ok !== true || state.scanError || state.paperEngineOutcomeUnknown) return;
   const openSymbols = new Set(
     (state.orders?.positions || [])
       .filter((position) => position.status !== "CLOSED" && numberValue(position.qty) > 0)
@@ -291,29 +306,116 @@ function startClock() {
   setInterval(draw, 1000);
 }
 
+function apiFailure(message, metadata = {}) {
+  return Object.assign(new Error(message), { apiFailure: true, code: "request_failed", dependency: "application", retryable: false, ...metadata });
+}
+
+function apiResponseFailure(payload, status, readOnly) {
+  const code = typeof payload?.code === "string" && /^[a-z][a-z0-9_]{0,63}$/.test(payload.code) ? payload.code : "http_error";
+  const dependency = ["storage", "upstox", "provider", "network", "application"].includes(payload?.dependency) ? payload.dependency : "application";
+  const providerAuth = dependency === "upstox" && ["upstox_auth_rejected", "upstox_token_missing", "upstox_authentication_failed", "upstox_token_expired", "upstox_token_invalid", "upstox_auth_required", "upstox_access_token_missing"].includes(code);
+  const providerMessages = {
+    upstox_auth_rejected: "Upstox rejected authorization for this request. Token expiry is not established.",
+    upstox_token_missing: "No usable Upstox token is selected. Check the token source and expiry metadata in Settings.",
+    upstox_token_expired: "The Upstox token is reported expired. Renew it in Settings.",
+    upstox_access_denied: "Upstox denied access to this request. Check API permissions and instrument access; this does not prove token expiry.",
+    upstox_timeout: "The Upstox request timed out. Try Refresh later.",
+    upstox_network_error: "The server could not reach Upstox. Try Refresh later.",
+    upstox_rate_limited: "Upstox rate limit reached. Wait before trying Refresh again.",
+    upstox_unavailable: "Upstox is temporarily unavailable. Try Refresh later.",
+    upstox_quote_busy: "The quote service is busy. Wait for current requests to finish, then try Refresh.",
+    upstox_invalid_response: "Upstox returned an invalid response. No valid market data was established.",
+    upstox_response_too_large: "The Upstox response exceeded the safe size limit.",
+    upstox_redirect_refused: "The Upstox request returned an unexpected redirect and was stopped.",
+    upstox_request_target_invalid: "The Upstox request target was refused.",
+    upstox_http_error: "Upstox rejected this request. Token expiry is not established."
+  };
+  // Never reflect an unknown server exception, HTML error page or connection
+  // string into the dashboard. Preserve short business-validation messages.
+  const detail = status < 500 && typeof payload?.error === "string"
+    ? payload.error.replace(/[\u0000-\u001f\u007f]/g, " ").slice(0, 240) : "";
+  const message = dependency === "storage"
+    ? (code === "storage_timeout" ? "The storage request timed out. Try Refresh later." : "Storage is unavailable. Try Refresh later.")
+    : dependency === "upstox" && Object.hasOwn(providerMessages, code) ? providerMessages[code]
+      : providerAuth ? "Upstox authentication requires attention in Settings. Token expiry is not established."
+      : dependency === "upstox" ? "The Upstox request failed. Check the provider status and try Refresh later."
+      : status === 401 ? "Application sign-in is required. Reload and sign in."
+        : detail || (status >= 500 ? "The service is temporarily unavailable. Try Refresh later." : `Request failed (HTTP ${status}).`);
+  const retryable = readOnly && (typeof payload?.retryable === "boolean" ? payload.retryable : status === 429 || status >= 500);
+  const outcomeUnknown = !readOnly && (status >= 500 || status === 408);
+  return apiFailure(outcomeUnknown ? `${message} Request outcome is unknown; check status before trying again.` : message,
+    { code, dependency, status, providerAuth, retryable, outcomeUnknown });
+}
+
+function upstoxErrorHint(error) {
+  if (error?.dependency === "upstox" && error.code === "upstox_token_expired") return "Renew the Upstox token in Settings, then refresh.";
+  if (error?.providerAuth === true) return "Check the selected token and authorization in Settings, then retry. Rejection or missing selection alone does not establish expiry.";
+  if (error?.dependency === "upstox" && error.code === "upstox_access_denied") return "Check Upstox API permissions and instrument access. Replacing the token is not automatically indicated.";
+  return "Check the reported dependency and retry Refresh. A token change is not indicated by this error.";
+}
+
 async function api(path, options = {}) {
+  const method = String(options.method || "GET").toUpperCase();
+  const readOnly = method === "GET" || method === "HEAD";
+  const requestedTimeout = Number(options.timeoutMs);
+  const timeoutMs = Number.isFinite(requestedTimeout) && requestedTimeout > 0
+    ? Math.min(requestedTimeout, API_LONG_MUTATION_TIMEOUT_MS)
+    : readOnly ? API_READ_TIMEOUT_MS : API_MUTATION_TIMEOUT_MS;
+  const controller = new AbortController();
   const init = {
-    method: options.method || "GET",
+    method,
     headers: { accept: "application/json", ...(options.headers || {}) },
-    credentials: "same-origin"
+    credentials: "same-origin",
+    signal: controller.signal
   };
   if (options.body !== undefined) {
     init.headers["content-type"] = "application/json";
     init.body = JSON.stringify(options.body);
   }
-  const response = await fetch(path, init);
-  const text = await response.text();
-  let payload = {};
+  let timer;
+  let rejectCancellation;
+  const cancellation = new Promise((_, reject) => { rejectCancellation = reject; });
+  const cancel = () => {
+    rejectCancellation(apiFailure(readOnly ? "Request cancelled." : "Request cancelled; its outcome is unknown. Check status before trying again.", {
+      code: "request_cancelled", dependency: "network", outcomeUnknown: !readOnly
+    }));
+    controller.abort();
+  };
   try {
-    payload = text ? JSON.parse(text) : {};
-  } catch (_) {
-    payload = { ok: false, error: text || response.statusText };
+    options.signal?.addEventListener("abort", cancel, { once: true });
+    if (options.signal?.aborted) {
+      cancel();
+      return await cancellation;
+    }
+    timer = setTimeout(() => {
+      rejectCancellation(apiFailure(readOnly ? "Request timed out. Try Refresh later." : "Request timed out; it may still be running. Check status before trying again.", {
+        code: "request_timeout", dependency: "network", retryable: readOnly, outcomeUnknown: !readOnly
+      }));
+      controller.abort();
+    }, timeoutMs);
+    const request = (async () => {
+      const response = await fetch(path, init);
+      const text = await response.text();
+      let payload;
+      try { payload = text ? JSON.parse(text) : null; } catch { payload = null; }
+      if (!response.ok) throw apiResponseFailure(payload, response.status, readOnly);
+      if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
+        throw apiFailure("The service returned an invalid response.", { code: "invalid_response", retryable: readOnly, outcomeUnknown: !readOnly });
+      }
+      return payload;
+    })();
+    // A race also bounds response-body reads and non-cooperating fetch adapters.
+    // Aborting a mutation does not prove that the server rolled it back.
+    return await Promise.race([request, cancellation]);
+  } catch (error) {
+    if (error?.apiFailure) throw error;
+    throw apiFailure(readOnly ? "Unable to reach the service. Check the connection and try Refresh." : "Connection lost; the request outcome is unknown. Check status before trying again.", {
+      code: "network_error", dependency: "network", retryable: readOnly, outcomeUnknown: !readOnly
+    });
+  } finally {
+    clearTimeout(timer);
+    options.signal?.removeEventListener("abort", cancel);
   }
-  if (!response.ok) {
-    const reason = payload.error || payload.message || response.statusText;
-    throw new Error(`${response.status}: ${reason}`);
-  }
-  return payload;
 }
 
 function decisionDisplay(decision) {
@@ -633,7 +735,7 @@ function visibleRows() {
   });
 }
 
-function renderMarketStrip(status = "loading", quotes = []) {
+function renderMarketStrip(status = "loading", quotes = [], error = null) {
   const node = el("marketStrip");
   if (!node) return;
   if (status === "ready") state.marketQuotes = Array.isArray(quotes) ? quotes : [];
@@ -641,10 +743,10 @@ function renderMarketStrip(status = "loading", quotes = []) {
   if (status === "error") {
     node.innerHTML = `
       <article class="market-card danger market-error-card">
-        <span class="mini-label">Upstox quotes</span>
-        <strong>Quote unavailable</strong>
+        <span class="mini-label">${error?.dependency === "storage" ? "Storage readiness" : "Market data"}</span>
+        <strong>${error?.dependency === "storage" ? "Storage unavailable" : "Data unavailable"}</strong>
         <p>${escapeHtml(state.lastError || "Upstox did not return the requested market quotes.")}</p>
-        <small>Renew the Upstox token in Settings, then refresh.</small>
+        <small>${escapeHtml(upstoxErrorHint(error))}</small>
       </article>`;
     return;
   }
@@ -737,6 +839,7 @@ function renderSignalDashboard() {
   const radarBody = el("signalRadarBody");
   if (!radarBody) return;
   const rows = sortedRows();
+  const completedScan = state.scan?.ok === true && Array.isArray(state.scan?.rows);
   const counts = state.rows.reduce((summary, row) => {
     const key = row.decision === "SELECT"
       ? "SELECT"
@@ -754,10 +857,10 @@ function renderSignalDashboard() {
     ["watch", "WATCH", counts.WATCH || 0],
     ["blocked", "BLOCKED", counts.BLOCKED || 0],
     ["needed", "DATA NEEDED", counts["DATA NEEDED"] || 0]
-  ].map(([tone, label, count]) => `<span class="${tone}"><i></i>${label} <b>${count}</b></span>`).join("");
+  ].map(([tone, label, count]) => `<span class="${tone}"><i></i>${label} <b>${completedScan ? count : "—"}</b></span>`).join("");
 
   if (!rows.length) {
-    radarBody.innerHTML = `<tr><td colspan="10" class="signal-empty">Run the scanner to populate the Pre-Rise Radar with real NSE evidence.</td></tr>`;
+    radarBody.innerHTML = `<tr><td colspan="10" class="signal-empty">${completedScan ? "The completed scan returned no rows." : state.scanInFlight ? "Loading scanner evidence; no completed scan yet." : state.scanError ? "Scanner evidence is unavailable. Retry Refresh after the reported dependency recovers." : "Run the scanner to populate the Pre-Rise Radar with real NSE evidence."}</td></tr>`;
   } else {
     radarBody.innerHTML = rows.map((row, index) => {
       const metrics = rowMetrics(row);
@@ -788,7 +891,10 @@ function renderSignalDashboard() {
   const stamp = el("signalRadarStamp");
   if (stamp) {
     const scanAsOf = state.scan?.asOf || state.scan?.as_of || state.scan?.generated_at || state.scan?.last_run;
-    stamp.textContent = scanAsOf ? `Scores updated ${isoDate(scanAsOf)}` : `${state.rows.length} stocks evaluated from the latest scan`;
+    stamp.textContent = state.scanInFlight ? (completedScan ? "Refreshing scan; previous results shown" : "Scan loading; no completed scan yet")
+      : state.scanError ? (completedScan ? "Scan refresh failed; previous results shown" : "Scan unavailable; no completed scan yet")
+        : completedScan ? (scanAsOf ? `Scores updated ${isoDate(scanAsOf)}` : `${state.rows.length} stocks evaluated from the latest scan`)
+          : "No completed scan yet";
   }
 
   all("button[data-signal-symbol]", radarBody).forEach((target) => target.addEventListener("click", (event) => {
@@ -802,8 +908,11 @@ function renderSignalDashboard() {
   const contextByKey = Object.fromEntries(cards.map((card) => [card.key, card]));
   const breadth = context.breadth || {};
   const breadthTotal = [breadth.advancing, breadth.declining, breadth.unchanged].map(numberValue).filter((value) => value !== null).reduce((sum, value) => sum + value, 0);
-  const breadthPct = breadthTotal ? (numberValue(breadth.advancing) || 0) / breadthTotal * 100 : null;
-  const confidence = Math.max(0, Math.min(100, numberValue(insight.confidence) || 0));
+  const breadthComplete = breadth.status ? breadth.status === "available"
+    : [breadth.advancing, breadth.declining, breadth.unchanged].every((value) => numberValue(value) !== null);
+  const breadthPct = breadthComplete && breadthTotal ? (numberValue(breadth.advancing) || 0) / breadthTotal * 100 : null;
+  const reportedConfidence = numberValue(insight.confidence);
+  const confidence = reportedConfidence === null || insight.available === false ? null : Math.max(0, Math.min(100, reportedConfidence));
   const institutionalMarket = state.institutional.market || {};
   const fiiCash5d = numberValue(institutionalMarket.fii_cash_5d_net_cr);
   const topSectors = [...state.rows.reduce((map, row) => {
@@ -813,10 +922,10 @@ function renderSignalDashboard() {
   const regimeNode = el("signalMarketRegime");
   if (regimeNode) regimeNode.innerHTML = `
     <div class="regime-summary">
-      <div class="regime-gauge" style="--regime-angle:${(-75 + confidence * 1.5).toFixed(2)}deg"><span><strong>${escapeHtml(insight.bias || "LOADING")}</strong><small>Strength ${fmtNumber(confidence, 0)} / 100</small></span></div>
+      <div class="regime-gauge" style="--regime-angle:${(-75 + (confidence ?? 0) * 1.5).toFixed(2)}deg"><span><strong>${escapeHtml(insight.bias || "LOADING")}</strong><small>${confidence === null ? "Strength DATA NEEDED" : `Strength ${fmtNumber(confidence, 0)} / 100`}</small></span></div>
       <div class="regime-facts">
         <div><span>Trend (NIFTY 50)</span><strong class="${numberValue(contextByKey.nifty50?.change_pct) >= 0 ? "positive" : "negative"}">${contextByKey.nifty50?.price === null || contextByKey.nifty50?.price === undefined ? "DATA NEEDED" : `${fmtNumber(contextByKey.nifty50.price)} · ${fmtPct(contextByKey.nifty50.change_pct)}`}</strong></div>
-        <div><span>Market breadth</span><strong>${breadthPct === null ? "DATA NEEDED" : `${fmtNumber(breadthPct, 1)}% advance`}</strong></div>
+        <div title="Six-month-return proxy from the latest paper ranking, not exchange-wide daily breadth"><span>Paper ranking breadth</span><strong>${breadthPct === null ? "DATA NEEDED" : `${fmtNumber(breadthPct, 1)}% advance`}</strong></div>
         <div><span>FII cash flow (5D)</span><strong class="${fiiCash5d === null ? "data-needed" : fiiCash5d >= 0 ? "positive" : "negative"}" title="${escapeHtml(institutionalMarket.source || institutionalMarket.reason || "Upstox FII Activity API")}">${fiiCash5d === null ? (state.institutional.status === "loading" ? "UPSTOX…" : "DATA NEEDED") : `${fiiCash5d >= 0 ? "+" : ""}${fmtNumber(fiiCash5d, 2)} Cr`}</strong></div>
         <div><span>Volatility (India VIX)</span><strong>${contextByKey.indiavix?.price === null || contextByKey.indiavix?.price === undefined ? "DATA NEEDED" : `${fmtNumber(contextByKey.indiavix.price)} · ${fmtPct(contextByKey.indiavix.change_pct)}`}</strong></div>
         <div><span>SELECT sector strength</span><strong>${escapeHtml(topSectors || "No SELECT sectors")}</strong></div>
@@ -862,13 +971,22 @@ function renderSignalDashboard() {
   window.lucide?.createIcons?.();
 }
 
-async function loadSignalMarketContext() {
-  try {
-    state.marketContext = await api(`/api/market-context?ts=${Date.now()}`);
-  } catch (error) {
-    state.marketContext = { ok: false, error: error.message, insight: { bias: "DATA NEEDED", confidence: 0, notes: [error.message] }, cards: [], breadth: {} };
-  }
-  renderSignalDashboard();
+function loadSignalMarketContext() {
+  if (marketContextRequest) return marketContextRequest;
+  marketContextRequest = Promise.resolve().then(async () => {
+    try {
+      // Storage read (up to 18s) and provider wave (up to 8s) are sequential.
+      state.marketContext = await api(`/api/market-context?ts=${Date.now()}`, { timeoutMs: 30_000 });
+    } catch (error) {
+      state.marketContext = { ok: false, status: "unavailable", error: error.message, code: error.code, dependency: error.dependency, retryable: error.retryable,
+        insight: { bias: "DATA NEEDED", available: false, confidence: null, notes: [error.message] }, cards: [], breadth: {} };
+    } finally {
+      marketContextRequest = null;
+      renderSignalDashboard();
+    }
+    return state.marketContext;
+  });
+  return marketContextRequest;
 }
 
 function renderCandidates() {
@@ -1023,8 +1141,10 @@ function renderSymbol() {
 function renderAutoOrderReadiness(row = state.selected) {
   const node = el("autoOrderReadiness");
   if (!node) return;
+  const outcomeWarning = state.paperEngineOutcomeUnknown
+    ? `<p class="mark-warning">The last request outcome is unknown. Automatic browser retries are paused; check server status and the ledger before any manual rerun.</p>` : "";
   if (!row) {
-    node.innerHTML = `<div class="engine-order-state neutral">
+    node.innerHTML = `${outcomeWarning}<div class="engine-order-state neutral">
       <span>No selected NSE stock</span>
       <strong>Scanner has not returned a candidate</strong>
     </div>`;
@@ -1065,7 +1185,7 @@ function renderAutoOrderReadiness(row = state.selected) {
       : "Upstox quote required";
   const proofText = evaluated ? `${fmtNumber(evidenceScore)} | ${fmtInt(tunnel.positive_hits || 0)}/${fmtInt(evaluated)}` : decisionDisplay(row.decision);
 
-  node.innerHTML = `
+  node.innerHTML = `${outcomeWarning}
     <div class="engine-order-state ${tone}">
       <span>${escapeHtml(row.symbol)} · BUY MARKET · Paper Swing</span>
       <strong>${escapeHtml(status)}</strong>
@@ -1453,18 +1573,35 @@ function renderScreener() {
   all("[data-symbol]", body).forEach((button) => button.addEventListener("click", () => selectSymbol(button.dataset.symbol)));
 }
 
+function upstoxTokenSelectionLabel(status = {}) {
+  if (status.token_visible === true) return `Selected via ${status.token_source || "server"}; provider acceptance not verified by this check`;
+  if (status.token_selection_reason === "stored_expired_no_alternative") return "No usable token selected; stored token expiry has passed";
+  if (status.auth_storage_status === "unavailable") return "No token selected; saved credential storage is unreadable";
+  if (status.token_present === true) return "Token present, but no usable token selected";
+  if (status.token_present === false) return "No token present";
+  if (status.token_visible === false) return "No usable token selected";
+  return status.error ? "Selection check unavailable" : "Selection not checked";
+}
+
+function upstoxExpiryLabel(value) {
+  return value === "expired" ? "Expiry metadata has passed"
+    : value === "not_expired" ? "Expiry metadata has not passed; provider acceptance unverified"
+      : value === "missing" ? "No token in this source"
+        : "Unknown; expiry metadata absent or invalid";
+}
+
 function renderRuntime() {
   const ready = state.ready || {};
   const bank = ready.data_bank || {};
   const upstox = state.upstoxStatus || ready.upstox || {};
   const runtimeRows = [
     ["Render URL", location.origin],
-    ["Storage", ready.storage || "checking"],
+    ["Storage", ready.ok === false ? "unavailable" : ready.storage || "checking"],
     ["Mongo source", ready.source || ready.warning || "Render env pending"],
-    ["NSE universe", `${bank.universe_count || 0} rows`],
-    ["Instrument keys", `${bank.rows_with_instrument_key || 0} rows`],
-    ["Upstox token", upstox.token_visible ? `active via ${upstox.token_source || "server"}` : "token absent"],
-    ["Upstox key", upstox.key_visible || upstox.api_key_visible ? "active in server env" : "key absent"]
+    ["NSE universe", bank.universe_count === undefined ? "not reported" : `${bank.universe_count} rows`],
+    ["Instrument keys", bank.rows_with_instrument_key === undefined ? "not reported" : `${bank.rows_with_instrument_key} rows`],
+    ["Upstox token selection", upstoxTokenSelectionLabel(upstox)],
+    ["Upstox key", upstox.key_visible || upstox.api_key_visible ? "Present in server configuration; acceptance not checked" : upstox.key_visible === false || upstox.api_key_visible === false ? "Key absent" : "Not checked"]
   ];
   el("runtimeDetails").innerHTML = runtimeRows.map(([k, v]) => `<div class="detail-row"><span>${escapeHtml(k)}</span><strong>${escapeHtml(v)}</strong></div>`).join("");
   el("safetyDetails").innerHTML = [
@@ -1474,7 +1611,7 @@ function renderRuntime() {
     ["Fallback market data", "Disabled"],
     ["Token display", "Never printed in app"]
   ].map(([k, v]) => `<div class="detail-row"><span>${escapeHtml(k)}</span><strong>${escapeHtml(v)}</strong></div>`).join("");
-  const storage = ready.storage === "mongodb" ? "MongoDB storage" : `${ready.storage || "Storage check"} - fix Mongo env if this is not mongodb`;
+  const storage = ready.ok === false ? `Storage check failed: ${ready.error || "unavailable"}` : ready.storage === "mongodb" ? "MongoDB storage" : ready.storage || "Storage check pending";
   el("railConnection").textContent = storage;
   renderUpstoxSettings();
 }
@@ -1484,14 +1621,29 @@ function renderUpstoxSettings() {
   if (!node) return;
   const status = state.upstoxStatus || state.ready?.upstox || {};
   const callbackUrl = status.callback_url || `${location.origin}/api/upstox/callback`;
+  const selectionReasons = {
+    stored_selected: "Saved credential selected",
+    environment_selected: "Environment credential selected",
+    stored_expired_environment_selected: "Saved credential expired; distinct environment credential selected",
+    storage_unavailable_environment_selected: "Saved credential store unreadable; environment credential selected",
+    stored_expired_no_alternative: "Saved credential expired; no usable alternative selected",
+    storage_unavailable_no_token: "Saved credential store unreadable; no environment credential selected",
+    no_token: "No credential found"
+  };
   const rows = [
-    ["Token source", status.token_visible ? (status.token_source || "server") : "token absent"],
-    ["Saved at", status.token_saved_at ? isoDate(status.token_saved_at) : "env token or no stored token"],
-    ["Expires at", status.token_expires_at ? isoDate(status.token_expires_at) : "not supplied by token response"],
-    ["OAuth configured", status.oauth_configured ? "client key and secret active" : "client key/secret missing"],
+    ["Token selection", upstoxTokenSelectionLabel(status)],
+    ["Selection reason", Object.hasOwn(selectionReasons, status.token_selection_reason) ? selectionReasons[status.token_selection_reason] : "Not reported"],
+    ["Status check", status.error || (state.upstoxStatus ? "Server credential metadata only" : "Pending")],
+    ["Provider acceptance", "Not verified by token metadata; inspect dated quote and candle results"],
+    ["Credential store read", status.auth_storage_status === "available" ? "Available for this check" : status.auth_storage_status === "unavailable" ? "Unavailable; stored credential presence unknown" : "Not checked"],
+    ["Selected credential saved at", status.token_saved_at ? isoDate(status.token_saved_at) : "Not reported for selected source"],
+    ["Selected credential expires at", status.token_expires_at ? isoDate(status.token_expires_at) : "Not reported for selected source"],
+    ["Selected credential expiry", upstoxExpiryLabel(status.token_expiry_state)],
+    ["Stored credential expiry", upstoxExpiryLabel(status.stored_token_expiry_state)],
+    ["OAuth configured", status.oauth_configured === true ? "Client key and secret present; acceptance not checked" : status.oauth_configured === false ? "Client key/secret missing" : "Not checked"],
     ["Required Upstox Redirect URI", callbackUrl],
     ["Redirect matching", "Must match the Upstox Developer App exactly"],
-    ["Client key fingerprint", status.client_id_fingerprint || "client key missing"],
+    ["Client key fingerprint", status.client_id_fingerprint || "Not reported"],
     ["Secret display", status.token_printed === false ? "token never printed" : "token hidden"]
   ];
   node.innerHTML = rows.map(([k, v]) => `<div class="detail-row"><span>${escapeHtml(k)}</span><strong>${escapeHtml(v)}</strong></div>`).join("");
@@ -1499,6 +1651,10 @@ function renderUpstoxSettings() {
 
 function portfolioPnlClass(value) {
   return numberValue(value) > 0 ? "pnl-positive" : numberValue(value) < 0 ? "pnl-negative" : "pnl-flat";
+}
+
+function storedPaperMarks(mark = {}) {
+  return mark.status === "stored_snapshot_not_live" || mark.refreshed_on_read === false;
 }
 
 function buildPortfolioViewModel() {
@@ -1580,6 +1736,7 @@ function buildPortfolioViewModel() {
     funds,
     policy,
     mark,
+    storedMarks: storedPaperMarks(mark),
     startingCapital,
     investedValue,
     buyingPower,
@@ -1655,11 +1812,12 @@ function renderClosedTradeRows(model, limit = null) {
   </tr>`).join("");
 }
 
-function renderOpenPositionsCard(model, { limit = null, action = true, subtitle = "Live mark-to-market, targets and stops" } = {}) {
+function renderOpenPositionsCard(model, { limit = null, action = true, subtitle = null } = {}) {
   const rows = renderOpenPositionRows(model, limit);
+  const markSubtitle = subtitle || (model.storedMarks ? "Stored marks — not refreshed by this read" : "Mark-to-market, targets and stops");
   return `<article class="portfolio-card portfolio-open-card">
-    <header><div><h4>Open Positions <span>${model.positions.length}</span></h4><p>${escapeHtml(subtitle)}</p></div>${action ? `<button type="button" data-dashboard-book="open">Full ledger <i data-lucide="chevron-right"></i></button>` : ""}</header>
-    <div class="portfolio-table-scroll"><table><thead><tr><th>Symbol</th><th>Qty</th><th>Entry</th><th>LTP</th><th>Value</th><th>P&amp;L</th><th>Return</th><th>Target</th><th>Stop</th><th>Action</th></tr></thead><tbody>${rows || `<tr><td colspan="10" class="empty-state">No open paper positions.</td></tr>`}</tbody></table></div>
+    <header><div><h4>Open Positions <span>${model.positions.length}</span></h4><p>${escapeHtml(markSubtitle)}</p></div>${action ? `<button type="button" data-dashboard-book="open">Full ledger <i data-lucide="chevron-right"></i></button>` : ""}</header>
+    <div class="portfolio-table-scroll"><table><thead><tr><th>Symbol</th><th>Qty</th><th>Entry</th><th>${model.storedMarks ? "Saved mark" : "LTP"}</th><th>Value</th><th>P&amp;L</th><th>Return</th><th>Target</th><th>Stop</th><th>Action</th></tr></thead><tbody>${rows || `<tr><td colspan="10" class="empty-state">No open paper positions.</td></tr>`}</tbody></table></div>
   </article>`;
 }
 
@@ -1715,7 +1873,7 @@ function renderHoldingsDashboard(model) {
     { icon: "pie-chart", label: "Invested holdings", value: fmtPrice(model.investedValue), detail: `${fmtNumber(model.deploymentPct)}% deployed` },
     { icon: "indian-rupee", iconTone: "success", label: "Buying power", value: fmtPrice(model.buyingPower), detail: `${fmtNumber(model.cashPct)}% cash` },
     { icon: "activity", label: "Open holdings", value: fmtInt(model.positions.length), detail: `${fmtInt(model.maximumOpenPositions)} maximum positions` },
-    { icon: "trending-up", label: "Unrealized P&L", value: fmtPrice(model.unrealizedPnl), detail: "Live mark-to-market only", tone: portfolioPnlClass(model.unrealizedPnl), detailTone: portfolioPnlClass(model.unrealizedPnl) }
+    { icon: "trending-up", label: "Unrealized P&L", value: fmtPrice(model.unrealizedPnl), detail: model.storedMarks ? "Stored marks; not refreshed" : "Latest available marks", tone: portfolioPnlClass(model.unrealizedPnl), detailTone: portfolioPnlClass(model.unrealizedPnl) }
   ], "Current holdings summary");
   return `${metrics}<section class="portfolio-dashboard-grid">${renderOpenPositionsCard(model, { limit: null, action: false })}${renderRiskGovernorCard(model)}</section>`;
 }
@@ -1747,7 +1905,7 @@ function renderPaperBookDashboard(model) {
     return `${portfolioMetricGrid([
       { icon: "briefcase-business", label: "Open positions", value: fmtInt(model.positions.length), detail: `${fmtInt(model.maximumOpenPositions)} maximum` },
       { icon: "pie-chart", label: "Invested", value: fmtPrice(model.investedValue), detail: `${fmtNumber(model.deploymentPct)}% deployed` },
-      { icon: "trending-up", label: "Unrealized P&L", value: fmtPrice(model.unrealizedPnl), detail: "Live marks", tone: portfolioPnlClass(model.unrealizedPnl) },
+      { icon: "trending-up", label: "Unrealized P&L", value: fmtPrice(model.unrealizedPnl), detail: model.storedMarks ? "Stored marks; not refreshed" : "Latest available marks", tone: portfolioPnlClass(model.unrealizedPnl) },
       { icon: "indian-rupee", label: "Buying power", value: fmtPrice(model.buyingPower), detail: `${fmtNumber(model.cashPct)}% cash` },
       { icon: "shield-check", label: "Entry state", value: model.capitalBlocked ? "BLOCKED" : "AVAILABLE", detail: "Paper capital governor" }
     ], "Open position ledger summary")}<section class="portfolio-dashboard-grid">${renderOpenPositionsCard(model, { limit: null, action: false, subtitle: "Every current position with BUY/SELL controls" })}${renderRiskGovernorCard(model)}</section>`;
@@ -1799,8 +1957,9 @@ function renderPortfolioDashboard() {
     if (paperBookNode) paperBookNode.innerHTML = loading;
     return;
   }
-  const stampText = model.mark.quote_error
-    ? `Portfolio loaded. Live marks unavailable: ${model.mark.quote_error}`
+  const stampText = model.storedMarks
+    ? "Stored position snapshot: prices and unrealized P&L were not refreshed by this read. See each position's quote time."
+    : model.mark.quote_error ? `Portfolio loaded. Live marks unavailable: ${model.mark.quote_error}`
     : model.mark.as_of
       ? `Live mark-to-market from Upstox at ${isoDate(model.mark.as_of)}.`
       : "Portfolio loaded from the durable paper ledger; no live mark timestamp is available.";
@@ -1835,7 +1994,7 @@ async function refreshUpstoxStatus() {
     const payload = await api("/api/upstox/status");
     state.upstoxStatus = payload.status || null;
   } catch (error) {
-    state.upstoxStatus = { token_visible: false, error: error.message, callback_url: `${location.origin}/api/upstox/callback`, token_printed: false };
+    state.upstoxStatus = { token_visible: null, error: error.message, code: error.code, dependency: error.dependency, retryable: error.retryable, callback_url: `${location.origin}/api/upstox/callback`, token_printed: false };
   }
   renderUpstoxSettings();
 }
@@ -1858,8 +2017,10 @@ function renderOrders() {
   const capitalPolicy = state.orders?.capital_policy || {};
   const pnlClass = (value) => numberValue(value) > 0 ? "pnl-positive" : numberValue(value) < 0 ? "pnl-negative" : "pnl-flat";
   const mark = state.orders?.mark_to_market || {};
-  const quoteNote = mark.quote_error
-    ? `<p class="mark-warning">Upstox mark-to-market error: ${escapeHtml(mark.quote_error)}. Last persisted real quote remains visible.</p>`
+  const storedMarks = storedPaperMarks(mark);
+  const quoteNote = storedMarks
+    ? `<p class="mark-time">Stored position snapshot: prices and unrealized P&amp;L were not refreshed by this read. See each position's quote time.</p>`
+    : mark.quote_error ? `<p class="mark-warning">Upstox mark-to-market error: ${escapeHtml(mark.quote_error)}. Last persisted real quote remains visible.</p>`
     : mark.as_of
       ? `<p class="mark-time">Marked from Upstox quotes at ${escapeHtml(isoDate(mark.as_of))}</p>`
       : "";
@@ -1926,10 +2087,10 @@ function renderOrders() {
       <button type="button" role="tab" data-paper-ledger-tab="orders" aria-selected="${state.paperLedgerTab === "orders"}" class="${state.paperLedgerTab === "orders" ? "active" : ""}">Order History <strong>${orders.length}</strong></button>
     </div>
     <section class="ledger-panel" data-paper-ledger-panel="open" ${state.paperLedgerTab === "open" ? "" : "hidden"}>
-      <div class="ledger-panel-head"><h4>Open Positions</h4><span>Live mark-to-market return</span></div>
+      <div class="ledger-panel-head"><h4>Open Positions</h4><span>${storedMarks ? "Stored mark-to-market return" : "Mark-to-market return"}</span></div>
       <div class="ledger-scroll">
         <table>
-          <thead><tr><th>Symbol</th><th>Qty</th><th>Entry</th><th>LTP</th><th>Market value</th><th>Unrealized P&L</th><th>Return</th><th>Parameter proof</th><th>Quote time</th><th>Action</th></tr></thead>
+          <thead><tr><th>Symbol</th><th>Qty</th><th>Entry</th><th>${storedMarks ? "Saved mark" : "LTP"}</th><th>Market value</th><th>Unrealized P&L</th><th>Return</th><th>Parameter proof</th><th>Quote time</th><th>Action</th></tr></thead>
           <tbody>${positionRows || `<tr><td colspan="10">No open paper position.</td></tr>`}</tbody>
         </table>
       </div>
@@ -1968,57 +2129,75 @@ async function refreshMarketStrip() {
     renderMarketStrip("ready", payload.quotes || []);
   } catch (error) {
     state.lastError = error.message;
-    renderMarketStrip("error");
+    renderMarketStrip("error", [], error);
   }
 }
 
 async function refreshScan() {
-  setNotice("Reading Render runtime, Mongo state, and Upstox candles", "info");
+  if (state.scanInFlight) return null;
+  state.scanInFlight = true;
+  state.scanError = "";
+  renderSignalDashboard();
+  // Context can recover independently of scanner storage readiness.
+  void loadSignalMarketContext();
   try {
-    state.ready = await api("/api/ready");
-    await refreshUpstoxStatus();
-    await loadUniverseForFreshScan();
-    renderRuntime();
-    renderBasketMeta();
-  } catch (error) {
-    state.lastError = error.message;
-    setNotice(`Runtime check failed: ${error.message}`, "error");
-    renderMarketStrip("error");
-    return;
-  }
-  await refreshMarketStrip();
-  try {
-    const scan = await api("/api/scanner/run-upstox", { method: "POST", body: { horizon: state.horizon, universe: state.scanBasket } });
-    state.scan = scan;
-    state.rows = Array.isArray(scan.rows) ? scan.rows : [];
-    if (scan.institutional?.market) state.institutional.market = scan.institutional.market;
-    for (const stock of scan.institutional?.stocks || []) {
-      const symbol = nseSymbol(stock);
-      if (symbol) state.institutional.stocks[symbol] = stock;
+    setNotice("Reading Render runtime, Mongo state, and Upstox candles", "info");
+    try {
+      state.ready = await api("/api/ready");
+      await refreshUpstoxStatus();
+      await loadUniverseForFreshScan();
+      renderRuntime();
+      renderBasketMeta();
+    } catch (error) {
+      state.lastError = error.message;
+      state.scanError = error.message;
+      state.ready = { ok: false, error: error.message, code: error.code, dependency: error.dependency, retryable: error.retryable };
+      setNotice(`Runtime check failed: ${error.message}`, "error");
+      renderMarketStrip("error", [], error);
+      renderRuntime();
+      return null;
     }
-    if (scan.institutional) {
-      state.institutional.status = scan.institutional.ok ? "ready" : "data_needed";
-      state.institutional.asOf = scan.institutional.as_of || null;
-      state.institutional.version = scan.institutional.version || null;
+    await refreshMarketStrip();
+    try {
+      const scan = await api("/api/scanner/run-upstox", { method: "POST", timeoutMs: API_LONG_MUTATION_TIMEOUT_MS, body: { horizon: state.horizon, universe: state.scanBasket } });
+      if (scan?.ok !== true || !Array.isArray(scan.rows)) throw apiFailure("The scanner did not return a completed result.", { code: "invalid_scan_response" });
+      state.scan = scan;
+      state.rows = Array.isArray(scan.rows) ? scan.rows : [];
+      if (scan.institutional?.market) state.institutional.market = scan.institutional.market;
+      for (const stock of scan.institutional?.stocks || []) {
+        const symbol = nseSymbol(stock);
+        if (symbol) state.institutional.stocks[symbol] = stock;
+      }
+      if (scan.institutional) {
+        state.institutional.status = scan.institutional.ok ? "ready" : "data_needed";
+        state.institutional.asOf = scan.institutional.as_of || null;
+        state.institutional.version = scan.institutional.version || null;
+      }
+      const summary = scan.summary || {};
+      const failures = Array.isArray(scan.failures) ? scan.failures.length : 0;
+      setNotice(`Fresh NSE scan ${state.rows.length}/${state.universeRows.length || state.rows.length} rows | SELECT ${summary.SELECT || 0} | WATCH ${summary.WATCH || 0} | BLOCKED ${summary.BLOCKED || 0} | feed gaps ${failures}`, failures ? "warn" : "ok");
+      if (!state.selected || !state.rows.some((row) => row.symbol === state.selected.symbol)) {
+        const first = sortedRows().find((row) => ["SELECT", "WATCH"].includes(row.decision)) || sortedRows()[0] || null;
+        state.selected = first;
+      } else {
+        state.selected = state.rows.find((row) => row.symbol === state.selected.symbol);
+      }
+      renderAll();
+      const institutionalPromise = loadInstitutionalEvidence(sortedRows());
+      await Promise.all([state.selected ? selectSymbol(state.selected.symbol) : Promise.resolve(), institutionalPromise]);
+      await loadOrders();
+      await maybeAutoStartPaperPortfolio();
+      return scan;
+    } catch (error) {
+      state.lastError = error.message;
+      state.scanError = error.message;
+      setNotice(`Upstox scan failed: ${error.message}`, "error");
+      renderAll();
+      return null;
     }
-    const summary = scan.summary || {};
-    const failures = Array.isArray(scan.failures) ? scan.failures.length : 0;
-    setNotice(`Fresh NSE scan ${state.rows.length}/${state.universeRows.length || state.rows.length} rows | SELECT ${summary.SELECT || 0} | WATCH ${summary.WATCH || 0} | BLOCKED ${summary.BLOCKED || 0} | feed gaps ${failures}`, failures ? "warn" : "ok");
-    if (!state.selected || !state.rows.some((row) => row.symbol === state.selected.symbol)) {
-      const first = sortedRows().find((row) => ["SELECT", "WATCH"].includes(row.decision)) || sortedRows()[0] || null;
-      state.selected = first;
-    } else {
-      state.selected = state.rows.find((row) => row.symbol === state.selected.symbol);
-    }
-    renderAll();
-    const institutionalPromise = loadInstitutionalEvidence(sortedRows());
-    await Promise.all([state.selected ? selectSymbol(state.selected.symbol) : Promise.resolve(), institutionalPromise]);
-    await loadOrders();
-    await maybeAutoStartPaperPortfolio();
-  } catch (error) {
-    state.lastError = error.message;
-    setNotice(`Upstox scan failed: ${error.message}`, "error");
-    renderAll();
+  } finally {
+    state.scanInFlight = false;
+    renderSignalDashboard();
   }
 }
 
@@ -2121,7 +2300,8 @@ async function fetchAllPaperHistory(kind) {
   do {
     const query = new URLSearchParams({ kind, limit: "1000" });
     if (cursor) query.set("cursor", cursor);
-    const page = await api(`/api/paper-trader/history?${query}`);
+    // History can require two sequential storage reads, each bounded at 18s.
+    const page = await api(`/api/paper-trader/history?${query}`, { timeoutMs: 40_000 });
     rows.push(...(Array.isArray(page.records) ? page.records : []));
     const nextCursor = page.next_cursor || "";
     if (nextCursor && seenCursors.has(nextCursor)) throw new Error("paper ledger returned a repeated pagination cursor");
@@ -2376,11 +2556,15 @@ async function submitUpstoxToken(event) {
         expires_in: expiresIn
       }
     });
+    if (payload.ok !== true || !payload.status || typeof payload.status !== "object" || Array.isArray(payload.status)) {
+      throw apiFailure("The service did not confirm the saved credential. Check status before trying again.", { code: "invalid_token_save_response", outcomeUnknown: true });
+    }
     tokenInput.value = "";
     if (expiryInput) expiryInput.value = "";
     state.upstoxStatus = payload.status || null;
-    if (resultNode) resultNode.textContent = `Token saved in Mongo at ${isoDate(state.upstoxStatus?.token_saved_at)}`;
-    setNotice("Upstox token saved in Mongo. Scanner and quotes will use it now.", "ok");
+    const savedAt = state.upstoxStatus?.token_saved_at ? ` at ${isoDate(state.upstoxStatus.token_saved_at)}` : "";
+    if (resultNode) resultNode.textContent = `Token saved in the server credential store${savedAt}. ${upstoxTokenSelectionLabel(state.upstoxStatus)}.`;
+    setNotice("Upstox token saved. Saving does not verify provider acceptance; use Refresh to inspect dated quote and candle results.", "ok");
     renderRuntime();
   } catch (error) {
     if (resultNode) resultNode.textContent = `Token save failed: ${error.message}`;
@@ -2618,7 +2802,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   renderAll();
   renderFormulaSettings();
   window.lucide?.createIcons?.();
-  await Promise.all([loadOrders(), loadFormulaSettings()]);
-  await Promise.all([refreshScan(), loadSignalMarketContext(), loadReleaseIdentity()]);
   window.setInterval(maybeAutoStartPaperPortfolio, 60_000);
+  // Independent reads must not wait for a stalled ledger or settings request.
+  await Promise.allSettled([loadOrders(), loadFormulaSettings(), loadSignalMarketContext(), loadReleaseIdentity(), refreshScan()]);
 });
