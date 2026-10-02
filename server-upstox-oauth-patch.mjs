@@ -1,3 +1,5 @@
+import { UPSTOX_HTTP_FUNCTIONS } from "./lib/upstox-http.mjs";
+
 const UPSTOX_OAUTH_FUNCTIONS = String.raw`
 const UPSTOX_AUTHORIZATION_URL = "https://api.upstox.com/v2/login/authorization/dialog";
 const UPSTOX_TOKEN_URL = "https://api.upstox.com/v2/login/authorization/token";
@@ -75,6 +77,27 @@ function sanitizeUpstoxAuth(input = {}) {
   };
 }
 
+function upstoxTokenExpiryState(auth, now = Date.now()) {
+  if (!String(auth?.access_token || "").trim()) return "missing";
+  if (typeof auth.expires_at !== "string" || !Number.isFinite(now)) return "unknown";
+  // Only explicit, calendar-valid ISO instants are expiry evidence. Date.parse
+  // alone accepts numeric strings, normalizes impossible days and assumes a
+  // local timezone for ambiguous timestamps. No JWT/daily-expiry inference.
+  const value = auth.expires_at.trim();
+  const parts = value.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d{1,3})?(Z|[+-]\d{2}:\d{2})$/);
+  if (!parts) return "unknown";
+  const [, yearText, monthText, dayText, hourText, minuteText, secondText, zone] = parts;
+  const year = Number(yearText), month = Number(monthText), day = Number(dayText);
+  const leap = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+  const days = [31, leap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  if (month < 1 || month > 12 || day < 1 || day > days[month - 1]
+      || Number(hourText) > 23 || Number(minuteText) > 59 || Number(secondText) > 59
+      || (zone !== "Z" && (Number(zone.slice(1, 3)) > 23 || Number(zone.slice(4)) > 59))) return "unknown";
+  const expiresAt = Date.parse(value);
+  if (!Number.isFinite(expiresAt)) return "unknown";
+  return expiresAt <= now ? "expired" : "not_expired";
+}
+
 function upstoxAuthPublic(auth) {
   if (!auth?.access_token) return {
     token_visible: false,
@@ -82,6 +105,8 @@ function upstoxAuthPublic(auth) {
     token_saved_at: null,
     token_expires_at: null,
     token_age_minutes: null,
+    token_expiry_state: "missing",
+    provider_auth_status: "not_checked",
     token_printed: false
   };
   const savedAtMs = Date.parse(auth.saved_at || "");
@@ -90,6 +115,8 @@ function upstoxAuthPublic(auth) {
     token_source: auth.source || "stored",
     token_saved_at: auth.saved_at || null,
     token_expires_at: auth.expires_at || null,
+    token_expiry_state: upstoxTokenExpiryState(auth),
+    provider_auth_status: "not_checked",
     token_age_minutes: Number.isFinite(savedAtMs) ? Math.max(0, Math.floor((Date.now() - savedAtMs) / 60000)) : null,
     token_type: auth.token_type || "Bearer",
     api_user_id: auth.api_user_id || null,
@@ -97,19 +124,64 @@ function upstoxAuthPublic(auth) {
   };
 }
 
-async function currentUpstoxAuth() {
+async function resolveCurrentUpstoxAuth() {
+  let stored = null;
+  let storageStatus = "available";
   try {
     const store = await getStore();
-    const stored = store.getUpstoxAuth ? await store.getUpstoxAuth() : null;
-    if (stored?.access_token) return stored;
-  } catch (_) {}
+    if (typeof store?.getUpstoxAuth !== "function") storageStatus = "unavailable";
+    else stored = await store.getUpstoxAuth();
+  } catch (_) {
+    // Preserve the existing environment fallback without leaking storage
+    // errors or claiming that an unreadable credential store is empty.
+    storageStatus = "unavailable";
+  }
+  const storedToken = String(stored?.access_token || "").trim();
   const envToken = String(ENV.UPSTOX_ACCESS_TOKEN || "").trim();
-  if (!envToken) return null;
-  return { access_token: envToken, token_type: "Bearer", source: "render_env", saved_at: null, expires_at: null };
+  const storedExpiry = storageStatus === "unavailable" ? "unknown" : upstoxTokenExpiryState(stored);
+  const base = {
+    auth_storage_status: storageStatus,
+    stored_token_expiry_state: storedExpiry,
+    token_present: Boolean(storedToken || envToken) ? true : storageStatus === "available" ? false : null
+  };
+  if (storedToken && storedExpiry !== "expired") {
+    return { ...base, auth: { ...stored, access_token: storedToken }, token_selection_reason: "stored_selected" };
+  }
+  // A known-expired credential must not be selected again via another source.
+  if (envToken && !(storedExpiry === "expired" && envToken === storedToken)) {
+    return {
+      ...base,
+      auth: { access_token: envToken, token_type: "Bearer", source: "render_env", saved_at: null, expires_at: null },
+      token_selection_reason: storedExpiry === "expired" ? "stored_expired_environment_selected"
+        : storageStatus === "unavailable" ? "storage_unavailable_environment_selected" : "environment_selected"
+    };
+  }
+  return {
+    ...base, auth: null,
+    token_selection_reason: storedExpiry === "expired" ? "stored_expired_no_alternative"
+      : storageStatus === "unavailable" ? "storage_unavailable_no_token" : "no_token"
+  };
+}
+
+async function currentUpstoxAuth() {
+  return (await resolveCurrentUpstoxAuth()).auth;
 }
 
 async function currentUpstoxAccessToken() {
   return (await currentUpstoxAuth())?.access_token || "";
+}
+
+async function upstoxRequestAuth(stage) {
+  const selection = await resolveCurrentUpstoxAuth();
+  if (selection.auth?.access_token) return selection;
+  if (selection.auth_storage_status === "unavailable") {
+    if (typeof runtimeStorageFailure === "function") throw runtimeStorageFailure("auth_read", null);
+    const error = new Error("Saved provider credentials are temporarily unavailable.");
+    Object.assign(error, { runtimeStorageFailure: true, code: "storage_unavailable", dependency: "storage",
+      stage: "auth_read", retryable: true, status: 503 });
+    throw error;
+  }
+  throw upstoxRequestFailure(stage, "upstox_token_missing");
 }
 
 async function saveUpstoxAuth(input) {
@@ -119,11 +191,11 @@ async function saveUpstoxAuth(input) {
   return store.saveUpstoxAuth(auth);
 }
 
-async function upstoxRuntimeStatus(req = null) {
-  const auth = await currentUpstoxAuth();
+function upstoxResolvedRuntimeStatus({ auth, ...selection }, req = null) {
   return {
     ...upstoxStatus(),
     ...upstoxAuthPublic(auth),
+    ...selection,
     oauth_configured: Boolean(upstoxClientId() && upstoxClientSecret()),
     api_key_visible: Boolean(upstoxClientId()),
     api_secret_visible: Boolean(upstoxClientSecret()),
@@ -136,6 +208,10 @@ async function upstoxRuntimeStatus(req = null) {
     paper_only: true,
     live_orders: false
   };
+}
+
+async function upstoxRuntimeStatus(req = null) {
+  return upstoxResolvedRuntimeStatus(await resolveCurrentUpstoxAuth(), req);
 }
 
 function buildUpstoxAuthorizeUrl(req, options = {}) {
@@ -158,14 +234,12 @@ async function preflightUpstoxOAuthConfiguration(req) {
   }
   const callbackUrl = upstoxRedirectUri(req);
   try {
-    const response = await fetch(buildUpstoxAuthorizeUrl(req, { includeState: false }), {
+    const response = await upstoxFetchJson(buildUpstoxAuthorizeUrl(req, { includeState: false }), {
       method: "GET",
       redirect: "manual",
       headers: { accept: "text/html,application/json" }
-    });
-    const text = await response.text();
-    let payload = {};
-    try { payload = text ? JSON.parse(text) : {}; } catch { payload = {}; }
+    }, "oauth_preflight");
+    const payload = response.payload || {};
     const upstream = payload?.errors?.[0] || {};
     const errorCode = String(upstream.errorCode || payload?.errorCode || "").trim();
     const message = String(upstream.message || payload?.message || "").trim();
@@ -175,15 +249,18 @@ async function preflightUpstoxOAuthConfiguration(req) {
       return {
         ok: false,
         status: response.status,
-        error_code: errorCode || "UPSTOX_OAUTH_CONFIGURATION_REJECTED",
-        message: message || "Upstox rejected the configured client_id and redirect_uri.",
+        error_code: errorCode === "UDAPI100068" ? errorCode : "UPSTOX_OAUTH_CONFIGURATION_REJECTED",
+        message: "Upstox rejected the configured client_id and redirect_uri.",
         callback_url: callbackUrl,
         client_id_fingerprint: upstoxClientIdFingerprint()
       };
     }
+    if (!response.ok && response.status >= 400) throw upstoxHttpFailure("oauth_preflight", response.status);
     return { ok: true, status: response.status };
   } catch (error) {
-    return { ok: true, warning: "preflight_unavailable", detail: String(error?.message || error).slice(0, 160) };
+    const failure = upstoxRequestPayload(error);
+    return { ok: true, warning: "preflight_unavailable", detail: failure.error,
+      code: failure.code, dependency: failure.dependency, retryable: failure.retryable };
   }
 }
 
@@ -203,26 +280,37 @@ async function exchangeUpstoxOAuthCode(req, url) {
   form.set("redirect_uri", upstoxRedirectUri(req));
   form.set("grant_type", "authorization_code");
 
-  const response = await fetch(UPSTOX_TOKEN_URL, {
+  const response = await upstoxFetchJson(UPSTOX_TOKEN_URL, {
     method: "POST",
     headers: { accept: "application/json", "content-type": "application/x-www-form-urlencoded" },
     body: form
-  });
-  const text = await response.text();
-  let payload = {};
-  try { payload = text ? JSON.parse(text) : {}; } catch { payload = {}; }
-  if (!response.ok) {
-    const detail = payload?.errors?.[0]?.message || payload?.message || text.slice(0, 240) || response.statusText;
-    throw new Error("upstox_token_exchange_failed_" + response.status + ": " + detail);
-  }
+  }, "oauth_exchange");
+  const payload = response.payload;
+  if (payload.status && payload.status !== "success") throw upstoxRequestFailure("oauth_exchange", "upstox_invalid_response");
   const tokenPayload = payload.data && typeof payload.data === "object" ? payload.data : payload;
+  // Validate provider fields before the legacy sanitizer can coerce objects or
+  // scalars into strings and overwrite an otherwise usable saved credential.
+  if (Array.isArray(tokenPayload) || typeof tokenPayload.access_token !== "string" || !tokenPayload.access_token.trim()
+      || (tokenPayload.refresh_token != null && typeof tokenPayload.refresh_token !== "string")
+      || (tokenPayload.token_type != null && (typeof tokenPayload.token_type !== "string"
+        || (tokenPayload.token_type.trim() && !/^Bearer$/i.test(tokenPayload.token_type.trim()))))) {
+    throw upstoxRequestFailure("oauth_exchange", "upstox_invalid_response");
+  }
   const saved = await saveUpstoxAuth({ ...tokenPayload, source: "oauth", saved_at: new Date().toISOString() });
   return upstoxAuthPublic(saved);
 }
 
 async function handleUpstoxTokenPaste(req) {
-  const body = await readJsonBody(req);
-  const accessToken = String(body.access_token || body.token || "").trim();
+  let body;
+  try { body = await readJsonBody(req); }
+  catch (error) {
+    if (error instanceof SyntaxError) throw new Error("invalid_json_body");
+    throw error;
+  }
+  if (!body || typeof body !== "object" || Array.isArray(body)) throw new Error("upstox_token_invalid");
+  const rawToken = body.access_token ?? body.token ?? "";
+  if (typeof rawToken !== "string") throw new Error("upstox_token_invalid");
+  const accessToken = rawToken.trim();
   if (!accessToken) throw new Error("upstox_access_token_missing");
   const saved = await saveUpstoxAuth({
     access_token: accessToken,
@@ -231,6 +319,20 @@ async function handleUpstoxTokenPaste(req) {
     saved_at: new Date().toISOString()
   });
   return upstoxAuthPublic(saved);
+}
+
+function upstoxRouteFailure(error) {
+  if (error?.runtimeStorageFailure === true) return { status: 503, payload: upstoxRequestPayload(error) };
+  if (error?.upstoxRequestFailure === true) {
+    const safe = upstoxRequestFailure(error.stage, error.code, error.upstream_status);
+    return { status: safe.status, payload: upstoxRequestPayload(safe) };
+  }
+  const validation = ["upstox_state_missing", "upstox_state_invalid", "upstox_state_expired", "upstox_code_missing",
+    "upstox_api_key_missing", "upstox_api_secret_missing", "upstox_access_token_missing", "upstox_token_invalid", "invalid_json_body"];
+  const code = validation.includes(error?.message) ? error.message : "upstox_operation_failed";
+  return { status: code === "upstox_operation_failed" ? 500 : 400, payload: { ok: false, code,
+    error: code === "upstox_operation_failed" ? "Upstox operation could not be completed. Please retry." : code,
+    dependency: "application", retryable: code === "upstox_operation_failed", token_printed: false } };
 }
 
 function upstoxCallbackPage(result, error = "") {
@@ -258,7 +360,8 @@ const UPSTOX_PUBLIC_CALLBACK_ROUTE = String.raw`
           timer.unref?.();
           html(res, 200, upstoxCallbackPage(result));
         } catch (error) {
-          html(res, 400, upstoxCallbackPage(null, error.message));
+          const failure = upstoxRouteFailure(error);
+          html(res, failure.status, upstoxCallbackPage(null, failure.payload.error));
         }
         return;
       }
@@ -311,7 +414,8 @@ const UPSTOX_AUTH_ROUTES = String.raw`
           timer.unref?.();
           json(res, 200, { ok: true, status, token_printed: false });
         } catch (error) {
-          json(res, 400, { ok: false, error: error.message, token_printed: false });
+          const failure = upstoxRouteFailure(error);
+          json(res, failure.status, failure.payload);
         }
         return;
       }
@@ -375,7 +479,7 @@ export function applyUpstoxOAuthPatches(source, mustReplace) {
   output = mustReplace(
     output,
     '\nfunction dataBankSummary(state = defaultState()) {',
-    UPSTOX_OAUTH_FUNCTIONS + '\nfunction dataBankSummary(state = defaultState()) {',
+    UPSTOX_HTTP_FUNCTIONS + UPSTOX_OAUTH_FUNCTIONS + '\nfunction dataBankSummary(state = defaultState()) {',
     "upstox oauth functions"
   );
   output = mustReplace(
@@ -385,10 +489,22 @@ export function applyUpstoxOAuthPatches(source, mustReplace) {
     "candles stored token"
   );
   output = output.replaceAll('authorization: `Bearer ${ENV.UPSTOX_ACCESS_TOKEN}`', 'authorization: `Bearer ${accessToken}`');
+  const candlesStart = output.indexOf("async function fetchUpstoxCandles(");
+  const candlesEnd = output.indexOf("\nasync function runUpstoxScanner(", candlesStart);
+  if (candlesStart < 0 || candlesEnd < 0) throw new Error("Patch anchor missing: bounded Upstox candles");
+  output = mustReplace(output, output.slice(candlesStart, candlesEnd), String.raw`async function fetchUpstoxCandles(instrumentKey, from, to) {
+  const { auth } = await upstoxRequestAuth("candles");
+  const url = "https://api.upstox.com/v2/historical-candle/" + encodeURIComponent(instrumentKey) + "/day/" + to + "/" + from;
+  const response = await upstoxFetchJson(url, { headers: { accept: "application/json", authorization: "Bearer " + auth.access_token } }, "candles");
+  const payload = response.payload;
+  if (payload.status !== "success" || !Array.isArray(payload.data?.candles)) throw upstoxRequestFailure("candles", "upstox_invalid_response");
+  return normalizeCandles(payload.data.candles);
+}
+`, "bounded Upstox candle headers/body");
   output = mustReplace(
     output,
     'async function runUpstoxScanner(body = {}, fallbackUniverse = null) {\n  if (!ENV.UPSTOX_ACCESS_TOKEN) return { ok: false, error: "upstox_token_missing", status: upstoxStatus() };',
-    'async function runUpstoxScanner(body = {}, fallbackUniverse = null) {\n  if (!(await currentUpstoxAccessToken())) return { ok: false, error: "upstox_token_missing", status: await upstoxRuntimeStatus() };',
+    'async function runUpstoxScanner(body = {}, fallbackUniverse = null) {\n  try { await upstoxRequestAuth("candles"); }\n  catch (error) {\n    if (error?.runtimeStorageFailure === true) throw error;\n    return { ...upstoxRequestPayload(error), status: { token_visible: false, provider_auth_status: "not_checked", token_printed: false } };\n  }',
     "scanner stored token"
   );
   output = mustReplace(

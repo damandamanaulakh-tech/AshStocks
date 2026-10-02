@@ -24,6 +24,7 @@ import { applyParameterTunnelPatches } from "./server-parameter-tunnel-patch.mjs
 import { applyStockSelectionPatches } from "./server-stock-selection-patch.mjs";
 import { applySelectionSettingsPatches } from "./server-selection-settings-patch.mjs";
 import { applyPaperLedgerRetentionPatches } from "./server-paper-ledger-retention-patch.mjs";
+import { applyRuntimeResiliencePatches } from "./server-runtime-resilience-patch.mjs";
 
 const runtimeProcess = globalThis.process;
 const PORT = Number(runtimeProcess?.env?.PORT || 4173);
@@ -115,6 +116,12 @@ function patchServerSource(source) {
     '          const state = await store.getState();\n          json(res, 200, {\n            ok: true,',
     '          const state = await store.getState();\n          if (requireDb() && (store.mode !== "mongodb" || store.persistent !== true)) {\n            json(res, 503, { ok: false, error: "durable_mongodb_required", storage: store.mode, persistent: store.persistent, warning: store.warning || null, auth });\n            return;\n          }\n          json(res, 200, {\n            ok: true,',
     'readiness requires durable MongoDB'
+  );
+  output = mustReplace(
+    output,
+    '            provider: "AshStocks India Scanner",\n            engine: ENGINE_VERSION,\n            storage: store.mode,',
+    '            provider: "AshStocks India Scanner",\n            engine: ENGINE_VERSION,\n            commit: ENV.RENDER_GIT_COMMIT || ENV.RENDER_COMMIT || null,\n            storage: store.mode,',
+    'readiness identifies the checked release'
   );
   output = mustReplace(
     output,
@@ -265,6 +272,7 @@ function startDataBankBootstrap() {
   output = applyStockSelectionPatches(output, mustReplace);
   output = applySelectionSettingsPatches(output, mustReplace);
   output = applyPaperLedgerRetentionPatches(output, mustReplace);
+  output = applyRuntimeResiliencePatches(output, mustReplace);
   return output;
 }
 

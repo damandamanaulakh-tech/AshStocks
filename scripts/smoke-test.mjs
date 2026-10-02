@@ -7,6 +7,8 @@ import { fileURLToPath } from "node:url";
 const PORT = Number(process.env.SMOKE_PORT || 5199);
 const BASE = `http://127.0.0.1:${PORT}`;
 const ROOT = path.dirname(fileURLToPath(new URL("../package.json", import.meta.url)));
+const SMOKE_RELEASE_COMMIT = "1234567890abcdef1234567890abcdef12345678";
+const SMOKE_FALLBACK_COMMIT = "abcdef1234567890abcdef1234567890abcdef12";
 const Q1_INPUTS = [
   path.join(ROOT, "data", "q1_inputs", "fii_symbol_daily.csv"),
   path.join(ROOT, "data", "q1_inputs", "Q1_FII_20D_ranked_top_bottom_deciles_READY_FOR_PRICE_JOIN.csv")
@@ -15,6 +17,22 @@ const STATE_FILE = path.join(ROOT, "data", "app_state.json");
 const SCAN_LEDGER_FILE = path.join(ROOT, "data", "scan_ledger.jsonl");
 const UPSTOX_AUTH_FILE = path.join(ROOT, "data", "upstox_auth.json");
 const PAPER_LEDGER_FILE = path.join(ROOT, "data", "paper_ledger.jsonl");
+
+// All provider traffic is mocked, including the fail-closed suspension lookup
+// that now runs before scanner requests. Only explicit loopback requests reach TCP.
+function smokeProviderFetch(localFetch) {
+  return async (input, init) => {
+    const target = String(input);
+    if (target === "https://assets.upstox.com/market-quote/instruments/exchange/suspended-instrument.json.gz") {
+      return new Response(JSON.stringify([{ exchange: "NSE", segment: "NSE_EQ", instrument_type: "EQ",
+        trading_symbol: "SMOKESUSPENDED", isin: "INE000X01010", instrument_key: "NSE_EQ|INE000X01010" }]),
+      { status: 200, headers: { "content-type": "application/json", "last-modified": new Date().toUTCString() } });
+    }
+    const url = new URL(target);
+    if (url.protocol === "http:" && url.hostname === "127.0.0.1") return localFetch(input, init);
+    throw new Error("Unmocked external smoke request blocked: " + target);
+  };
+}
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -119,23 +137,40 @@ function kellyClosedTrades(wins, losses, winPnl = 100, lossPnl = -50) {
 
 async function runProductionMongoHealthGuard() {
   const script = `
+globalThis.fetch = (${smokeProviderFetch.toString()})(globalThis.fetch);
 process.env.NODE_ENV = "production";
 process.env.REQUIRE_AUTH = "true";
 process.env.REQUIRE_DB = "true";
 process.env.APP_PASSWORD = "smoke-password";
 process.env.APP_SESSION_SECRET = "smoke-session";
-process.env.MONGODB_URI = "mongodb://192.0.2.1:27017/ashstock";
+// Match every runtime URI alias: a failed primary must never fall through to an
+// inherited database. Only the owned loopback stub below is a valid candidate.
+for (const key of ["MONGODB_URI", "MONGO_URI", "MONGO_URL", "DATABASE_URL"]) process.env[key] = "";
 process.env.MONGO_TIMEOUT_MS = "500";
-const { createServer } = await import("./server.js");
-const server = createServer();
-await new Promise((resolve, reject) => {
-  server.once("error", reject);
-  server.listen(0, "127.0.0.1", resolve);
+process.env.DISABLE_DATA_BANK_AUTO_BOOTSTRAP = "true";
+process.env.DISABLE_PAPER_ENGINE_SCHEDULER = "true";
+const { createServer: createTcpServer } = await import("node:net");
+let mongoConnectionAttempts = 0;
+const mongoStub = createTcpServer((socket) => {
+  mongoConnectionAttempts += 1;
+  socket.destroy();
 });
-const port = server.address().port;
-const started = Date.now();
+let server;
 let result;
 try {
+  await new Promise((resolve, reject) => {
+    mongoStub.once("error", reject);
+    mongoStub.listen(0, "127.0.0.1", resolve);
+  });
+  process.env.MONGODB_URI = "mongodb://127.0.0.1:" + mongoStub.address().port + "/ashstock";
+  const { createServer } = await import("./server.js");
+  server = createServer();
+  await new Promise((resolve, reject) => {
+    server.once("error", reject);
+    server.listen(0, "127.0.0.1", resolve);
+  });
+  const port = server.address().port;
+  const started = Date.now();
   const healthResponse = await fetch("http://127.0.0.1:" + port + "/api/health");
   const readyResponse = await fetch("http://127.0.0.1:" + port + "/api/ready");
   result = {
@@ -143,18 +178,29 @@ try {
     healthBody: await healthResponse.json(),
     readyStatus: readyResponse.status,
     readyBody: await readyResponse.json(),
-    elapsedMs: Date.now() - started
+    elapsedMs: Date.now() - started,
+    mongoConnectionAttempts
   };
 } finally {
-  await new Promise((resolve) => server.close(resolve));
+  if (server?.listening) await new Promise((resolve) => server.close(resolve));
+  if (mongoStub.listening) await new Promise((resolve) => mongoStub.close(resolve));
 }
 if (result.healthStatus !== 200) throw new Error("production health should stay live");
 if (result.healthBody.ok !== true) throw new Error("production health should report ok=true");
 if (result.healthBody.ready !== null || result.healthBody.readiness_endpoint !== "/api/ready") throw new Error("liveness must not claim unchecked readiness");
 if (result.readyStatus !== 503) throw new Error("production readiness must fail when MongoDB is unreachable");
 if (result.readyBody.ok !== false) throw new Error("failed production readiness should report ok=false");
-if (result.readyBody.storage !== "unconfigured") throw new Error("failed Mongo readiness must not claim file persistence");
+if (result.readyBody.code !== "storage_unavailable" || result.readyBody.dependency !== "storage" || result.readyBody.stage !== "store_connect") throw new Error("failed Mongo readiness must expose the safe storage-connect classification");
+if (result.readyBody.retryable !== true) throw new Error("unreachable Mongo readiness must remain retryable");
+if (result.readyBody.read_ready !== false || result.readyBody.write_ready !== null || result.readyBody.trading_ready !== false) throw new Error("failed Mongo readiness must deny reads and trading without claiming unchecked write readiness");
+if (Object.hasOwn(result.readyBody, "storage") || Object.hasOwn(result.readyBody, "persistent")) throw new Error("failed Mongo readiness must not claim a fallback storage mode or persistence");
+if (result.readyBody.error !== "Saved data is temporarily unavailable. Please retry.") throw new Error("failed Mongo readiness must return the safe user-facing error");
+const serializedReady = JSON.stringify(result.readyBody);
+for (const sensitive of ["mongodb://", "127.0.0.1", "MongoServerSelectionError", "stack", "cause", "smoke-password", "smoke-session"]) {
+  if (serializedReady.includes(sensitive)) throw new Error("failed Mongo readiness must not expose driver or authentication details");
+}
 if (result.elapsedMs > 6000) throw new Error("production Mongo failure took too long");
+if (result.mongoConnectionAttempts < 1) throw new Error("production Mongo failure must exercise the real client against the owned loopback stub");
 console.log(JSON.stringify(result));
 `;
 
@@ -199,8 +245,11 @@ globalThis.__ASH_STOCK_ENV = {
   UPSTOX_API_SECRET: "smoke-secret",
   UPSTOX_ACCESS_TOKEN: "smoke-token",
   DISABLE_PAPER_ENGINE_AUTOBUY: "false",
-  PAPER_ENGINE_MAX_BUYS_PER_RUN: "1"
+  PAPER_ENGINE_MAX_BUYS_PER_RUN: "1",
+  MONGODB_URI: "", MONGO_URI: "", MONGO_URL: "", DATABASE_URL: "",
+  DISABLE_DATA_BANK_AUTO_BOOTSTRAP: "true", DISABLE_PAPER_ENGINE_SCHEDULER: "true"
 };
+globalThis.fetch = (${smokeProviderFetch.toString()})(globalThis.fetch);
 const nativeFetch = globalThis.fetch;
 const { createServer } = await import("./server.js");
 const server = createServer();
@@ -266,8 +315,10 @@ try {
   ];
   quoteData["NSE_EQ:INETEST00007"].depth.buy = [];
   const upstreamQuoteBatchSizes = [];
+  const upstreamProviderRequests = [];
   globalThis.fetch = async (url) => {
     const target = String(url);
+    if (new URL(target).protocol === "https:") upstreamProviderRequests.push(target);
     if (!target.startsWith("https://api.upstox.com/v2/market-quote/quotes")) throw new Error("unexpected network request " + target);
     upstreamQuoteBatchSizes.push(new URL(target).searchParams.get("instrument_key").split(",").filter(Boolean).length);
     return new Response(JSON.stringify({ status: "success", data: quoteData }), { status: 200, headers: { "content-type": "application/json" } });
@@ -279,8 +330,36 @@ try {
   globalThis.__ASH_STOCK_ENV.PAPER_ENGINE_MAX_BUYS_PER_RUN = "25";
   response = await nativeFetch(base + "/api/paper-engine/run", { method: "POST" });
   const result = await response.json();
-  response = await nativeFetch(base + "/api/paper-trader/orders");
-  const ledger = await response.json();
+  response = await nativeFetch(base + "/api/state");
+  const beforeLedgerRead = await response.json();
+  if (response.status !== 200) throw new Error("stored paper state should be readable before the dashboard GET");
+  const providerRequestsBeforeLedgerRead = upstreamProviderRequests.length;
+  const fixtureFs = (await import("node:fs")).default.promises;
+  const observedWrites = [];
+  const mutationMethods = ["writeFile", "appendFile", "rename", "mkdir", "unlink"];
+  const originalMutations = Object.fromEntries(mutationMethods.map((name) => [name, fixtureFs[name]]));
+  let ledger;
+  try {
+    for (const name of mutationMethods) fixtureFs[name] = async () => {
+      observedWrites.push(name);
+      throw new Error("Dashboard ledger GET must not call filesystem mutation: " + name);
+    };
+    response = await nativeFetch(base + "/api/paper-trader/orders");
+    ledger = await response.json();
+  } finally {
+    for (const name of mutationMethods) fixtureFs[name] = originalMutations[name];
+  }
+  if (response.status !== 200 || ledger.ok !== true) throw new Error("stored paper ledger should remain readable without writes");
+  if (observedWrites.length !== 0) throw new Error("dashboard ledger GET attempted a filesystem mutation");
+  if (upstreamProviderRequests.length !== providerRequestsBeforeLedgerRead) throw new Error("dashboard ledger GET must not fetch or reprice from a provider");
+  response = await nativeFetch(base + "/api/state");
+  const afterLedgerRead = await response.json();
+  if (response.status !== 200 || JSON.stringify(afterLedgerRead.state) !== JSON.stringify(beforeLedgerRead.state)) throw new Error("dashboard ledger GET must preserve the stored application state");
+  for (const position of ledger.positions || []) {
+    const saved = beforeLedgerRead.state?.paperTrader?.positions?.find((item) => item.symbol === position.symbol);
+    if (!saved || ["qty", "entry_price", "entry_cost", "current_price", "quote_timestamp", "checked_at"].some((key) => position[key] !== saved[key])) throw new Error("dashboard ledger GET must retain stored position quantities, prices, costs and evidence times");
+  }
+
   const firstOrder = firstResult.auto_buy?.orders?.[0];
   const firstPosition = ledger.positions?.find((position) => position.symbol === "REALQUOTE");
   if (result.auto_buy?.selection_contract !== "SELECT_FINAL") throw new Error("SELECT must be the final paper-buy authorization");
@@ -295,7 +374,8 @@ try {
   if (!ledger.positions.every((position) => position.parameter_evidence?.evaluated >= 80)) throw new Error("every paper position must retain parameter evidence");
   if (!ledger.positions.every((position) => Number.isFinite(position.unrealized_pnl) && Number.isFinite(position.unrealized_pnl_pct))) throw new Error("every open position must expose mark-to-market P&L");
   if (!Number.isFinite(ledger.funds?.unrealized_pnl) || !Number.isFinite(ledger.funds?.total_pnl)) throw new Error("paper funds must expose unrealized and total P&L");
-  if (ledger.mark_to_market?.source !== "Upstox Market Quote API" || ledger.mark_to_market?.marked_positions !== 3) throw new Error("paper ledger must revalue every filled position from Upstox quotes");
+  if (ledger.mark_to_market?.source !== "Stored position snapshot" || ledger.mark_to_market?.status !== "stored_snapshot_not_live" || ledger.mark_to_market?.refreshed_on_read !== false) throw new Error("paper ledger must label stored prices without claiming live repricing");
+  if (ledger.mark_to_market?.marked_positions !== 0 || ledger.mark_to_market?.as_of !== null) throw new Error("paper ledger GET must not claim a fresh marking pass or quote timestamp");
   const roundedAllocationOrder = ledger.orders?.find((order) => order.symbol === "REALQUOTE" && order.side === "BUY");
   if (roundedAllocationOrder?.allocation_cap_value !== 100000 || roundedAllocationOrder?.execution_evidence?.full_visible_ask_depth !== true) throw new Error("automatic BUY must retain its exact base cap and complete visible-depth proof");
 
@@ -498,7 +578,10 @@ async function main() {
     UPSTOX_ACCESS_TOKEN: "",
     NODE_ENV: "test",
     REQUIRE_AUTH: "false",
-    REQUIRE_DB: "false"
+    REQUIRE_DB: "false",
+    MONGODB_URI: "", MONGO_URI: "", MONGO_URL: "", DATABASE_URL: "",
+    DISABLE_DATA_BANK_AUTO_BOOTSTRAP: "true", DISABLE_PAPER_ENGINE_SCHEDULER: "true",
+    RENDER_GIT_COMMIT: SMOKE_RELEASE_COMMIT, RENDER_COMMIT: SMOKE_FALLBACK_COMMIT
   };
 
   assert(
@@ -597,6 +680,8 @@ async function main() {
     const ready = await request("/api/ready");
     assert(ready.response.status === 200, "ready should be 200 in local smoke");
     assert(ready.body.ok === true, "ready body should be ok");
+    assert(ready.body.commit === SMOKE_RELEASE_COMMIT && health.body.commit === SMOKE_RELEASE_COMMIT, "readiness and health must identify the checked release");
+    assert(ready.body.read_ready === true && ready.body.write_ready === null && ready.body.trading_ready === null && ready.body.readiness_scope === "stored-state-read", "read readiness cannot claim write or trading readiness");
     assert(ready.body.data_bank.upstox.instruments_json_url.endsWith("NSE.json.gz"), "ready should expose Upstox NSE instruments JSON URL");
 
     const state = await request("/api/state");
@@ -953,7 +1038,8 @@ async function main() {
       body: JSON.stringify({ universe: parameters.body.universe.slice(0, 1) })
     });
     assert(upstoxGuard.response.status === 409, "Upstox scanner should be guarded without token");
-    assert(upstoxGuard.body.error === "upstox_token_missing", "Upstox guard should report missing token");
+    assert(upstoxGuard.body.code === "upstox_token_missing" && upstoxGuard.body.dependency === "upstox" && upstoxGuard.body.stage === "candles", "Upstox guard should retain structured missing-token identity");
+    assert(upstoxGuard.body.status?.token_visible === false && upstoxGuard.body.status?.provider_auth_status === "not_checked", "Missing-token guard must not claim provider acceptance");
 
     const paperStatus = await request("/api/paper-engine/status");
     assert(paperStatus.response.status === 200, "paper-engine status should be readable");
@@ -1271,7 +1357,9 @@ async function main() {
   }
 }
 
+const smokeNativeFetch = globalThis.fetch;
+globalThis.fetch = smokeProviderFetch(smokeNativeFetch);
 main().catch((error) => {
   console.error(JSON.stringify({ ok: false, error: error.message }));
   process.exitCode = 1;
-});
+}).finally(() => { globalThis.fetch = smokeNativeFetch; });

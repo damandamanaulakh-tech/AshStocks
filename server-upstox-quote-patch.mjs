@@ -6,6 +6,7 @@ const UPSTOX_QUOTE_CACHE_MS = 15000;
 const UPSTOX_QUOTE_STREAM_MS = 15000;
 const UPSTOX_QUOTE_STREAM_MAX_KEYS = 12;
 let upstoxQuoteCache = { at: 0, key: "", payload: null };
+const upstoxQuoteInFlight = new Map();
 
 function upstoxQuotePublicStatus() {
   return {
@@ -111,55 +112,67 @@ async function resolveUpstoxQuoteInput(url, body = {}) {
 async function fetchUpstoxMarketQuotes(keys = []) {
   const instrumentKeys = normalizeQuoteKeys(keys);
   if (!instrumentKeys.length) throw new Error("instrument_key_required");
-  const accessToken = await currentUpstoxAccessToken();
-  if (!accessToken) throw new Error("upstox_token_missing");
-  const cacheKey = instrumentKeys.join(",");
+  const selection = await upstoxRequestAuth("quote");
+  const accessToken = selection.auth.access_token;
+  // Credential identity is private: never return this hash or the token.
+  const credentialKey = crypto.createHash("sha256").update(accessToken).digest("hex");
+  const cacheKey = credentialKey + ":" + instrumentKeys.join(",");
   if (upstoxQuoteCache.payload && upstoxQuoteCache.key === cacheKey && Date.now() - upstoxQuoteCache.at < UPSTOX_QUOTE_CACHE_MS) {
-    return upstoxQuoteCache.payload;
+    return { ...upstoxQuoteCache.payload, cache_hit: true };
   }
-  const batches = [];
-  for (let index = 0; index < instrumentKeys.length; index += UPSTOX_QUOTE_MAX_KEYS) {
-    batches.push(instrumentKeys.slice(index, index + UPSTOX_QUOTE_MAX_KEYS));
-  }
-  const quotes = [];
-  for (const batch of batches) {
-    const query = batch.map((key) => encodeURIComponent(key)).join(",");
-    const response = await fetch(UPSTOX_FULL_MARKET_QUOTE_URL + "?instrument_key=" + query, {
-      headers: {
-        accept: "application/json",
-        authorization: "Bearer " + accessToken
+  if (upstoxQuoteInFlight.has(cacheKey)) return upstoxQuoteInFlight.get(cacheKey);
+  if (upstoxQuoteInFlight.size >= 32) throw upstoxRequestFailure("quote", "upstox_quote_busy");
+  const request = (async () => {
+    const batches = [];
+    for (let index = 0; index < instrumentKeys.length; index += UPSTOX_QUOTE_MAX_KEYS) {
+      batches.push(instrumentKeys.slice(index, index + UPSTOX_QUOTE_MAX_KEYS));
+    }
+    const quotes = [];
+    for (const batch of batches) {
+      const query = batch.map((key) => encodeURIComponent(key)).join(",");
+      const response = await upstoxFetchJson(UPSTOX_FULL_MARKET_QUOTE_URL + "?instrument_key=" + query, {
+        headers: {
+          accept: "application/json",
+          authorization: "Bearer " + accessToken
+        }
+      }, "quote");
+      const payload = response.payload;
+      if (payload.status !== "success" || !payload.data || typeof payload.data !== "object") throw upstoxRequestFailure("quote", "upstox_invalid_response");
+      const data = payload.data;
+      const values = Array.isArray(data) ? data : Object.entries(data).map(([key, value]) => ({ key, value }));
+      for (const [index, entry] of values.entries()) {
+        const raw = entry?.value || entry || {};
+        const quote = normalizeUpstoxQuoteRow(raw, raw.instrument_key || raw.instrument_token || entry?.key || batch[index] || "");
+        if (!quotes.some((existing) => upstoxQuoteKeyMatches(existing.instrument_key, quote.instrument_key))) quotes.push(quote);
       }
-    });
-    const text = await response.text();
-    let payload = null;
-    try { payload = JSON.parse(text); } catch (_) {}
-    if (!response.ok) {
-      const detail = payload?.errors?.[0]?.message || payload?.message || text.slice(0, 220);
-      throw new Error("Upstox quote " + response.status + ": " + detail);
     }
-    const data = payload?.data || {};
-    const values = Array.isArray(data) ? data : Object.entries(data).map(([key, value]) => ({ key, value }));
-    for (const [index, entry] of values.entries()) {
-      const raw = entry?.value || entry || {};
-      const quote = normalizeUpstoxQuoteRow(raw, raw.instrument_key || raw.instrument_token || entry?.key || batch[index] || "");
-      if (!quotes.some((existing) => upstoxQuoteKeyMatches(existing.instrument_key, quote.instrument_key))) quotes.push(quote);
-    }
+    const result = {
+      ok: true,
+      version: UPSTOX_QUOTE_VERSION,
+      provider: "Upstox Market Quote API",
+      asOf: new Date().toISOString(),
+      quotes,
+      requested_key_count: instrumentKeys.length,
+      batch_count: batches.length,
+      batch_size: UPSTOX_QUOTE_MAX_KEYS,
+      cache_hit: false,
+      failures: instrumentKeys.filter((key) => !quotes.some((quote) => upstoxQuoteKeyMatches(quote.instrument_key, key))),
+      safety: { paper_only: true, live_orders: false, broker_write_enabled: false, token_printed: false },
+      // This describes the exact credential selected for this request, not a
+      // second store read that might select a renewed token mid-flight.
+      status: upstoxResolvedRuntimeStatus(selection)
+    };
+    upstoxQuoteCache = { at: Date.now(), key: cacheKey, payload: result };
+    return result;
+  })();
+  upstoxQuoteInFlight.set(cacheKey, request);
+  try { return await request; }
+  catch (error) {
+    if (error?.upstoxRequestFailure === true) error.upstox_status = upstoxResolvedRuntimeStatus(selection);
+    throw error;
+  } finally {
+    if (upstoxQuoteInFlight.get(cacheKey) === request) upstoxQuoteInFlight.delete(cacheKey);
   }
-  const result = {
-    ok: true,
-    version: UPSTOX_QUOTE_VERSION,
-    provider: "Upstox Market Quote API",
-    asOf: new Date().toISOString(),
-    quotes,
-    requested_key_count: instrumentKeys.length,
-    batch_count: batches.length,
-    batch_size: UPSTOX_QUOTE_MAX_KEYS,
-    failures: instrumentKeys.filter((key) => !quotes.some((quote) => upstoxQuoteKeyMatches(quote.instrument_key, key))),
-    safety: { paper_only: true, live_orders: false, broker_write_enabled: false, token_printed: false },
-    status: await upstoxRuntimeStatus()
-  };
-  upstoxQuoteCache = { at: Date.now(), key: cacheKey, payload: result };
-  return result;
 }
 
 async function upstoxQuoteResponse(url, req) {
@@ -181,13 +194,13 @@ async function upstoxQuoteResponse(url, req) {
     return { ...payload, symbol: input.symbol, requested_keys: input.keys };
   } catch (error) {
     return {
-      ok: false,
-      error: error.message,
+      ...upstoxRequestPayload(error),
+      http_status: error?.runtimeStorageFailure === true ? 503 : error?.status || 502,
       symbol: input.symbol,
       requested_keys: input.keys,
       quotes: [],
       failures: input.keys,
-      status: await upstoxRuntimeStatus(),
+      status: error?.upstox_status || { token_visible: null, provider_auth_status: "not_checked", token_printed: false },
       safety: { paper_only: true, live_orders: false, broker_write_enabled: false, token_printed: false }
     };
   }
@@ -199,7 +212,12 @@ function writeSseEvent(res, event, payload) {
 }
 
 async function streamUpstoxQuotes(url, req, res) {
+  let closed = req.destroyed === true || res.destroyed === true;
+  let timer = null;
+  let polling = false;
+  req.on("close", () => { closed = true; if (timer) clearInterval(timer); });
   const input = await resolveUpstoxQuoteInput(url, {});
+  if (closed) return;
   const keys = normalizeQuoteKeys(input.keys).slice(0, UPSTOX_QUOTE_STREAM_MAX_KEYS);
   res.writeHead(200, {
     "content-type": "text/event-stream; charset=utf-8",
@@ -221,7 +239,9 @@ async function streamUpstoxQuotes(url, req, res) {
     broker_write_enabled: false,
     token_printed: false
   };
-  writeSseEvent(res, "status", { ...streamMeta, status: await upstoxRuntimeStatus() });
+  const status = await upstoxRuntimeStatus();
+  if (closed) return;
+  writeSseEvent(res, "status", { ...streamMeta, status });
 
   if (!keys.length) {
     writeSseEvent(res, "error", { ...streamMeta, ok: false, error: "instrument_key_required", message: "Pass instrument_key or symbol. No fake stream started." });
@@ -229,36 +249,38 @@ async function streamUpstoxQuotes(url, req, res) {
     return;
   }
 
-  let closed = false;
-  req.on("close", () => { closed = true; });
-
   const poll = async () => {
-    if (closed) return;
+    if (closed || polling) return;
+    polling = true;
     try {
       const payload = await fetchUpstoxMarketQuotes(keys);
+      if (closed) return;
       writeSseEvent(res, "quote", {
         ...streamMeta,
         ok: true,
-        asOf: new Date().toISOString(),
+        asOf: payload.asOf,
+        cache_hit: payload.cache_hit,
         quotes: payload.quotes,
         failures: payload.failures,
         safety: payload.safety
       });
     } catch (error) {
+      if (closed) return;
       writeSseEvent(res, "error", {
         ...streamMeta,
-        ok: false,
+        ...upstoxRequestPayload(error),
         asOf: new Date().toISOString(),
-        error: error.message,
         rate_limited: /429|rate limit|1015/i.test(error.message || "")
       });
+    } finally {
+      polling = false;
     }
   };
 
   await poll();
-  const timer = setInterval(poll, UPSTOX_QUOTE_STREAM_MS);
+  if (closed) return;
+  timer = setInterval(poll, UPSTOX_QUOTE_STREAM_MS);
   timer.unref?.();
-  req.on("close", () => clearInterval(timer));
 }
 `;
 
@@ -278,7 +300,7 @@ const UPSTOX_QUOTE_ROUTES = String.raw`
           return;
         }
         const payload = await upstoxQuoteResponse(url, req);
-        json(res, payload.ok === false ? 502 : 200, payload);
+        json(res, payload.ok === false ? payload.http_status || 502 : 200, payload);
         return;
       }
 `;
